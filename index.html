@@ -32,19 +32,21 @@
         let iterationsTotales = 0;
 
         const sources = [
-            { nom: "Wiki FR", url: "https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Intelligence_artificielle&format=json&origin=*" },
-            { nom: "Wiki EN", url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Artificial_intelligence&format=json&origin=*" },
-            { nom: "Gutenberg EN", url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Literature&format=json&origin=*" }
+            { nom: "Wiki FR", url: "https://api.allorigins.win/get?url=" + encodeURIComponent("https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Intelligence_artificielle&format=json") },
+            { nom: "Wiki EN", url: "https://api.allorigins.win/get?url=" + encodeURIComponent("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Artificial_intelligence&format=json") },
+            { nom: "Gutenberg EN", url: "https://api.allorigins.win/get?url=" + encodeURIComponent("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Literature&format=json") }
         ];
 
         async function selectionnerFichierMemoire() {
-            const [handle] = await window.showOpenFilePicker({ types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }] });
-            fichierHandle = handle;
-            const file = await handle.getFile();
-            const data = JSON.parse(await file.text());
-            memoireGlobale = data.memoire_caracteres;
-            iterationsTotales = data.iteration;
-            document.getElementById("btn-fichier").innerText = "✔ Mémoire liée";
+            try {
+                [fichierHandle] = await window.showOpenFilePicker({ types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }] });
+                const file = await fichierHandle.getFile();
+                const data = JSON.parse(await file.text());
+                memoireGlobale = data.memoire_caracteres;
+                iterationsTotales = data.iteration;
+                document.getElementById("btn-fichier").innerText = "✔ Mémoire liée (Cycle " + iterationsTotales + ")";
+                document.getElementById("status").innerText = "Mémoire chargée avec succès.";
+            } catch (e) { document.getElementById("status").innerText = "Erreur de chargement fichier."; }
         }
 
         async function ecrireDirectement(iter) {
@@ -54,30 +56,35 @@
         }
 
         async function lancerEntrainementGlobal() {
+            if (!fichierHandle) { alert("Liez le fichier d'abord !"); return; }
             const alphabet = Object.keys(memoireGlobale);
             
             for (let source of sources) {
                 document.getElementById("status").innerText = "Lecture de : " + source.nom;
-                const resp = await fetch(source.url);
-                const data = await resp.json();
-                const texte = Object.values(data.query.pages)[0].extract || " ";
-                
-                for (let i = 0; i < 5000; i++) {
-                    iterationsTotales++;
-                    let char = texte[i % texte.length] || ' ';
-                    let pred = alphabet[Math.floor(Math.random() * alphabet.length)];
+                try {
+                    const resp = await fetch(source.url);
+                    const data = await resp.json();
+                    const content = JSON.parse(data.contents);
+                    const texte = Object.values(content.query.pages)[0].extract || " ";
                     
-                    if (memoireGlobale[char]) {
-                        memoireGlobale[char].total++;
-                        if (pred === char) memoireGlobale[char].succés++;
-                    }
+                    for (let i = 0; i < 5000; i++) {
+                        iterationsTotales++;
+                        let char = texte[i % texte.length] || ' ';
+                        let pred = alphabet[Math.floor(Math.random() * alphabet.length)];
+                        
+                        if (memoireGlobale[char]) {
+                            memoireGlobale[char].total++;
+                            if (pred === char) memoireGlobale[char].succés++;
+                        }
 
-                    // Mise à jour visuelle et sauvegarde
-                    if (iterationsTotales % 500 === 0) {
-                        await ecrireDirectement(iterationsTotales);
-                        majAffichage();
+                        if (iterationsTotales % 500 === 0) {
+                            await ecrireDirectement(iterationsTotales);
+                            majAffichage();
+                        }
+                        await new Promise(r => setTimeout(r, 1));
                     }
-                    await new Promise(r => setTimeout(r, 1));
+                } catch (e) {
+                    document.getElementById("status").innerText = "Erreur sur " + source.nom + ", passage au suivant...";
                 }
             }
             alert("Apprentissage Mondial terminé !");
