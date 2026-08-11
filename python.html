@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Module d'Apprentissage - Python</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #121212;
+            color: #00ff66;
+            padding: 20px;
+        }
+        h1 { color: #fff; }
+        button {
+            background: #00ff66;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover { background: #00cc52; }
+        .box {
+            border: 1px solid #333;
+            background: #1e1e1e;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Usine IA - Module Python</h1>
+    <p>Statut : <span id="status">En attente de liaison JSON...</span></p>
+
+    <div>
+        <button onclick="chargerMemoireJSON()">1. Choisir ton fichier memoire_python.json</button>
+        <button onclick="lancerApprentissage()">2. Lancer l'Apprentissage 24/24</button>
+        <button onclick="arreterApprentissage()">3. Stop</button>
+    </div>
+
+    <div class="box">
+        <h3>Journal d'activité / Génération :</h3>
+        <div id="output">Rien pour l'instant.</div>
+    </div>
+
+<script>
+    let fichierHandle = null;
+    let memoire = {};
+    let enCours = false;
+
+    async function chargerMemoireJSON() {
+        try {
+            [fichierHandle] = await window.showOpenFilePicker({
+                types: [{ description: 'Fichiers JSON', accept: {'application/json': ['.json']} }]
+            });
+            const fichier = await fichierHandle.getFile();
+            const contenu = await fichier.text();
+            memoire = contenu ? JSON.parse(contenu) : {};
+            document.getElementById('status').innerText = "Fichier JSON lié avec succès ! Prêt.";
+        } catch (err) {
+            document.getElementById('status').innerText = "Erreur de liaison : " + err.message;
+        }
+    }
+
+    async function sauvegarderMemoireJSON() {
+        if (!fichierHandle) return;
+        const writable = await fichierHandle.createWritable();
+        await writable.write(JSON.stringify(memoire, null, 2));
+        await writable.close();
+    }
+
+    async function fetchArticlePython() {
+        try {
+            // Recherche d'articles Wikipédia en lien avec Python / Programmation
+            const terms = ["Python (langage)", "Programmation informatique", "Algorithme", "OpenCV", "Script"];
+            const term = terms[Math.floor(Math.random() * terms.length)];
+            const res = await fetch(`https://fr.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`);
+            const data = await res.json();
+            const title = data.query.random[0].title;
+
+            const resPage = await fetch(`https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exexplaintext=1&titles=${encodeURIComponent(title)}&format=json&origin=*`);
+            const dataPage = await resPage.json();
+            const pages = dataPage.query.pages;
+            const pageId = Object.keys(pages)[0];
+            return pages[pageId].extract || "";
+        } catch (e) {
+            return "";
+        }
+    }
+
+    function ingérerTexte(texte) {
+        for (let i = 0; i < texte.length - 1; i++) {
+            let c1 = texte[i];
+            let c2 = texte[i+1];
+            if (!memoire[c1]) memoire[c1] = {};
+            memoire[c1][c2] = (memoire[c1][c2] || 0) + 1;
+        }
+    }
+
+    function genererTexte() {
+        let keys = Object.keys(memoire);
+        if (keys.length === 0) return "Mémoire vide, lance d'abord l'apprentissage !";
+        let courant = keys[Math.floor(Math.random() * keys.length)];
+        let resultat = courant;
+        for (let i = 0; i < 300; i++) {
+            let suivants = memoire[courant];
+            if (!suivants) break;
+            let total = Object.values(suivants).reduce((a, b) => a + b, 0);
+            let rand = Math.random() * total;
+            let cumul = 0;
+            let prochain = "";
+            for (let [char, poids] of Object.entries(suivants)) {
+                cumul += poids;
+                if (rand <= cumul) {
+                    prochain = char;
+                    break;
+                }
+            }
+            if (!prochain) break;
+            resultat += prochain;
+            courant = prochain;
+        }
+        return resultat;
+    }
+
+    async function lancerApprentissage() {
+        if (!fichierHandle) {
+            alert("Veuillez d'abord lier le fichier memoire_python.json !");
+            return;
+        }
+        enCours = true;
+        document.getElementById('status').innerText = "Apprentissage Python en cours...";
+
+        while (enCours) {
+            let texte = await fetchArticlePython();
+            if (texte) {
+                ingérerTexte(texte);
+                await sauvegarderMemoireJSON();
+                let gen = genererTexte();
+                document.getElementById('output').innerHTML = "<b>Génération en direct :</b><br>" + gen.replace(/\n/g, '<br>');
+            }
+            // Pause de 5 secondes entre chaque article
+            await new Promise(r => setTimeout(r, 5000));
+        }
+    }
+
+    function arreterApprentissage() {
+        enCours = false;
+        document.getElementById('status').innerText = "En pause.";
+    }
+</script>
+
+</body>
+</html>
