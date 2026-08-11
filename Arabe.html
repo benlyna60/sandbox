@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>IA Mobile : Module Arabe & Fichier Fixe</title>
+    <style>
+        body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 15px; max-width: 600px; margin: auto; text-align: right; }
+        .control-panel, .gen-panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 15px; text-align: left; }
+        button { background-color: #222; color: #fff; border: 1px solid #444; padding: 12px; cursor: pointer; width: 100%; margin-bottom: 8px; border-radius: 4px; font-weight: bold; font-size: 1em; }
+        .status-line { background-color: #1a1a1a; border-left: none; border-right: 3px solid #4caf50; padding: 10px; font-size: 0.85em; margin-bottom: 15px; line-height: 1.4; text-align: right; }
+        .output-box { background-color: #000; color: #00ff00; padding: 12px; border-radius: 4px; min-height: 40px; font-size: 1.2em; word-break: break-all; margin-top: 8px; border: 1px solid #333; text-align: right; direction: rtl; }
+        .bar-row { display: flex; align-items: center; margin-bottom: 4px; direction: ltr; }
+        .bar-label { width: 65px; font-weight: bold; font-size: 0.85em; text-align: left; }
+        .bar-track { flex-grow: 1; background-color: #222; height: 10px; border-radius: 3px; overflow: hidden; margin: 0 8px; }
+        .bar-fill { height: 100%; background-color: #4caf50; }
+        .bar-stats { width: 95px; text-align: right; font-size: 0.75em; color: #888; }
+        h2 { font-size: 0.95em; color: #fff; border-bottom: 1px solid #333; padding-bottom: 4px; margin-top: 0; text-align: left; }
+    </style>
+</head>
+<body onload="verifierConnexionPrecedente()">
+
+    <h1 style="text-align: left;">IA Mobile : Mémoire Arabe (Fichier Fixe)</h1>
+    
+    <div class="control-panel">
+        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #333;">1. Choisir ton fichier JSON (Arabe)</button>
+        <button onclick="lancerEntrainementArabe()" style="background-color: #0d47a1;">2. Lancer l'Apprentissage Arabe</button>
+        <button onclick="arreterEntrainement()" style="background-color: #b71c1c;">3. ⏹ Mettre en pause et Sauvegarder</button>
+    </div>
+
+    <div class="gen-panel">
+        <label style="direction: ltr; display: block;">Tester la génération en arabe :</label>
+        <button onclick="genererTexteIA()" style="background-color: #1b5e20; margin-top: 5px;">Générer du texte arabe</button>
+        <div id="resultat-generation" class="output-box">في انتظار التوليد...</div>
+    </div>
+    
+    <div id="status" class="status-line">Recherche d'un fichier JSON enregistré en mémoire...</div>
+    
+    <div class="control-panel">
+        <h2>État des Transitions (Arabe)</h2>
+        <div id="chart" style="text-align: left;">Liez ton fichier pour voir les statistiques...</div>
+    </div>
+
+    <script>
+        let fichierHandle = null;
+        let memoirePaires = {}; 
+        let iterationsTotales = 0;
+        let cycleActuel = 0;
+        let enCoursDApprentissage = false;
+
+        // Fonction utilitaire pour sauvegarder la "permission" d'accès au fichier dans le navigateur
+        async function verifierPermission(fileHandle, readWrite) {
+            const options = {};
+            if (readWrite) {
+                options.mode = 'readwrite';
+            }
+            if ((await fileHandle.queryPermission(options)) === 'granted') {
+                return true;
+            }
+            if ((await fileHandle.requestPermission(options)) === 'granted') {
+                return true;
+            }
+            return false;
+        }
+
+        // Au chargement de la page, essaie de récupérer le fichier si l'autorisation est mémorisée
+        async function verifierConnexionPrecedente() {
+            try {
+                // On utilise IndexedDB pour stocker la poignée (handle) du fichier de façon sécurisée
+                const db = await ouvrirBDD();
+                const stockHandle = await recupererHandleDB(db);
+                
+                if (stockHandle) {
+                    if (await verifierPermission(stockHandle, true)) {
+                        fichierHandle = stockHandle;
+                        await chargerDonneesFichier();
+                        document.getElementById("status").innerText = "✔ Fichier JSON reconnecté automatiquement ! Prêt.";
+                    } else {
+                        document.getElementById("status").innerText = "Clique sur le bouton 1 pour lier ton fichier JSON.";
+                    }
+                } else {
+                    document.getElementById("status").innerText = "Aucun fichier lié. Clique sur le bouton 1 pour commencer.";
+                }
+            } catch (e) {
+                document.getElementById("status").innerText = "Prêt. Sélectionne ton fichier JSON.";
+            }
+        }
+
+        // Sélection manuelle et enregistrement permanent de la référence du fichier
+        async function selectionnerFichierMemoire() {
+            try {
+                [fichierHandle] = await window.showOpenFilePicker({ 
+                    types: [{ description: 'Fichiers JSON', accept: { 'application/json': ['.json'] } }] 
+                });
+                
+                // Sauvegarder la référence dans IndexedDB pour les prochaines ouvertures
+                const db = await ouvrirBDD();
+                await sauvegarderHandleDB(db, fichierHandle);
+
+                await chargerDonneesFichier();
+                document.getElementById("status").innerText = "Fichier JSON arabe lié et mémorisé avec succès !";
+            } catch (e) { 
+                document.getElementById("status").innerText = "Sélection annulée ou non prise en charge."; 
+            }
+        }
+
+        async function chargerDonneesFichier() {
+            const file = await fichierHandle.getFile();
+            const textData = await file.text();
+            const data = JSON.parse(textData);
+            
+            iterationsTotales = data.iteration || 0;
+            cycleActuel = Math.floor(iterationsTotales / 15000);
+
+            if (data.memoire_paires) {
+                memoirePaires = data.memoire_paires;
+            } else {
+                memoirePaires = {};
+            }
+
+            document.getElementById("btn-fichier").innerText = "✔ Fichier lié (Cycle " + cycleActuel + " | Iter: " + iterationsTotales + ")";
+            majAffichage();
+        }
+
+        async function ecrireFichierDirect() {
+            if (!fichierHandle) return;
+            try {
+                const flux = await fichierHandle.createWritable();
+                const contenuJSON = {
+                    iteration: iterationsTotales,
+                    memoire_paires: memoirePaires
+                };
+                await flux.write(JSON.stringify(contenuJSON, null, 2));
+                await flux.close();
+            } catch (e) {
+                console.error("Erreur lors de l'écriture du fichier.");
+            }
+        }
+
+        // --- Gestion de la base de données interne du navigateur pour retenir le fichier ---
+        function ouvrirBDD() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open("IAMobileDB", 1);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    db.createObjectStore("handles");
+                };
+            });
+        }
+
+        function sauvegarderHandleDB(db, handle) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction("handles", "readwrite");
+                const store = transaction.objectStore("handles");
+                const request = store.put(handle, "fichierArabe");
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        function recupererHandleDB(db) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction("handles", "readonly");
+                const store = transaction.objectStore("handles");
+                const request = store.get("fichierArabe");
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // Récupération de textes aléatoires sur Wikipédia en Arabe
+        async function fetchWikiArabe() {
+            try {
+                const url = `https://ar.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`;
+                const res = await fetch(url);
+                const data = await res.json();
+                const title = data.query.random[0].title;
+
+                const contentUrl = `https://ar.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+                const contentRes = await fetch(contentUrl);
+                const contentData = await contentRes.json();
+                const pages = contentData.query.pages;
+                const extract = Object.values(pages)[0].extract;
+
+                return extract && extract.length > 200 ? extract : "تعليم البنى النصية العربية.";
+            } catch (e) {
+                return "خطأ في الشبكة، جاري متابعة التدريب.";
+            }
+        }
+
+        async function lancerEntrainementArabe() {
+            if (!fichierHandle) {
+                document.getElementById("status").innerText = "Erreur : Tu dois d'abord sélectionner ton fichier JSON avec le bouton 1 !";
+                return;
+            }
+            if (enCoursDApprentissage) return;
+            
+            enCoursDApprentissage = true;
+            
+            while (enCoursDApprentissage) {
+                cycleActuel++;
+                document.getElementById("status").innerHTML = `🔄 <b>Cycle n° ${cycleActuel}</b><br>📖 Chargement de <b>Wikipédia Arabe</b>...`;
+                
+                let texte = await fetchWikiArabe();
+                
+                document.getElementById("status").innerHTML = `🔄 <b>Cycle n° ${cycleActuel}</b><br>📖 Apprentissage en cours (Total : ${iterationsTotales})`;
+                
+                for (let i = 0; i < texte.length - 1; i++) {
+                    if (!enCoursDApprentissage) break;
+                    iterationsTotales++;
+                    
+                    let charActuel = texte[i];
+                    let charSuivant = texte[i + 1];
+
+                    if (!memoirePaires[charActuel]) {
+                        memoirePaires[charActuel] = {};
+                    }
+                    if (!memoirePaires[charActuel][charSuivant]) {
+                        memoirePaires[charActuel][charSuivant] = 0;
+                    }
+                    memoirePaires[charActuel][charSuivant]++;
+
+                    if (iterationsTotales % 1000 === 0) {
+                        majAffichage();
+                    }
+                    if (i % 500 === 0) {
+                        await new Promise(r => setTimeout(r, 1));
+                    }
+                }
+                
+                if (enCoursDApprentissage) {
+                    document.getElementById("status").innerHTML = `💾 <b>Fin du Cycle n° ${cycleActuel} !</b> Sauvegarde...`;
+                    await ecrireFichierDirect();
+                    majAffichage();
+                    document.getElementById("btn-fichier").innerText = "✔ Fichier mis à jour (Cycle " + cycleActuel + " | Iter: " + iterationsTotales + ")";
+                    await new Promise(r => setTimeout(r, 1000));
+                }
+            }
+            document.getElementById("status").innerText = "Entraînement en pause. Fichier JSON sauvegardé.";
+        }
+
+        async function arreterEntrainement() {
+            enCoursDApprentissage = false;
+            await ecrireFichierDirect();
+            document.getElementById("status").innerText = "Arrêté. Fichier JSON sauvegardé.";
+        }
+
+        function majAffichage() {
+            let html = "";
+            let keys = Object.keys(memoirePaires).slice(0, 8);
+            keys.forEach(char => {
+                let displayChar = char === ' ' ? '[espace]' : char;
+                let totalSuivantes = Object.values(memoirePaires[char]).reduce((a, b) => a + b, 0);
+                html += `<div class="bar-row">
+                    <div class="bar-label">${displayChar}</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+                    <div class="bar-stats">${totalSuivantes} liens</div>
+                </div>`;
+            });
+            document.getElementById("chart").innerHTML = html || "Apprentissage des paires en cours...";
+        }
+
+        function genererTexteIA() {
+            const lettresDisponibles = Object.keys(memoirePaires);
+            if (lettresDisponibles.length === 0) {
+                document.getElementById("resultat-generation").innerText = "لا توجد بيانات كافية بعد. ابدأ التدريب قليلاً!";
+                return;
+            }
+
+            let lettreCourante = lettresDisponibles[Math.floor(Math.random() * lettresDisponibles.length)];
+            let texteGenere = lettreCourante;
+            let dernieresLettres = [lettreCourante];
+
+            for (let i = 0; i < 200; i++) {
+                let suivantes = memoirePaires[lettreCourante];
+                
+                if (!suivantes || Object.keys(suivantes).length === 0) {
+                    lettreCourante = lettresDisponibles[Math.floor(Math.random() * lettresDisponibles.length)];
+                } else {
+                    let options = Object.entries(suivantes);
+                    
+                    let optionsFiltrees = options.filter(([suiv]) => {
+                        let occurrencesRecentes = dernieresLettres.slice(-3).filter(l => l === suiv).length;
+                        return occurrencesRecentes < 2;
+                    });
+
+                    if (optionsFiltrees.length === 0) optionsFiltrees = options;
+
+                    optionsFiltrees.sort((a, b) => b[1] - a[1]);
+                    
+                    let choixPool = optionsFiltrees.slice(0, Math.min(3, optionsFiltrees.length));
+                    let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
+                    
+                    lettreCourante = choixAleatoire[0];
+                }
+
+                texteGenere += lettreCourante;
+                dernieresLettres.push(lettreCourante);
+                if (dernieresLettres.length > 5) dernieresLettres.shift();
+            }
+            
+            document.getElementById("resultat-generation").innerText = texteGenere;
+        }
+    </script>
+</body>
+</html>
