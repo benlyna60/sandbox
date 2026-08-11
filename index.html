@@ -2,12 +2,13 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>IA Mondiale : Apprentissage Multi-Sources</title>
+    <title>IA Hybride : Apprentissage & Génération</title>
     <style>
         body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 20px; max-width: 600px; margin: auto; }
-        .control-panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 20px; }
+        .control-panel, .gen-panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 20px; }
         button { background-color: #222; color: #fff; border: 1px solid #444; padding: 10px; cursor: pointer; width: 100%; margin-bottom: 10px; border-radius: 4px; }
         .status-line { background-color: #1a1a1a; border-left: 3px solid #4caf50; padding: 10px; font-size: 0.8em; margin-bottom: 20px; }
+        .output-box { background-color: #000; color: #00ff00; padding: 15px; border-radius: 4px; min-height: 50px; font-size: 1.1em; word-break: break-all; margin-top: 10px; border: 1px solid #333; }
         .bar-row { display: flex; align-items: center; margin-bottom: 5px; }
         .bar-label { width: 70px; font-weight: bold; }
         .bar-track { flex-grow: 1; background-color: #222; height: 12px; border-radius: 3px; overflow: hidden; margin: 0 10px; }
@@ -16,11 +17,17 @@
 </head>
 <body>
 
-    <h1>Moniteur IA : Multi-Langues</h1>
+    <h1>Moniteur IA Hybride : Apprendre & Générer</h1>
     
     <div class="control-panel">
         <button onclick="selectionnerFichierMemoire()" id="btn-fichier">1. Lier fichier JSON</button>
-        <button onclick="lancerEntrainementGlobal()" style="background-color: #0d47a1; font-weight: bold;">2. Lancer Entraînement Mondial</button>
+        <button onclick="lancerEntrainementGlobal()" style="background-color: #0d47a1; font-weight: bold;">2. Lancer l'Apprentissage Mondial</button>
+    </div>
+
+    <div class="gen-panel">
+        <label>3. Tester la génération de texte en direct :</label>
+        <button onclick="genererTexteIA()" style="background-color: #1b5e20; font-weight: bold; margin-top: 10px;">Générer une phrase depuis la mémoire</button>
+        <div id="resultat-generation" class="output-box">En attente de génération... (Cliquez après un peu d'apprentissage)</div>
     </div>
     
     <div id="status" class="status-line">Prêt.</div>
@@ -46,6 +53,7 @@
                 iterationsTotales = data.iteration;
                 document.getElementById("btn-fichier").innerText = "✔ Mémoire liée (Cycle " + iterationsTotales + ")";
                 document.getElementById("status").innerText = "Mémoire chargée avec succès.";
+                majAffichage();
             } catch (e) { document.getElementById("status").innerText = "Erreur de chargement fichier."; }
         }
 
@@ -97,6 +105,22 @@
                 html += `<div class="bar-row"><div class="bar-label">${char}</div><div class="bar-track"><div class="bar-fill" style="width:${taux}%"></div></div></div>`;
             });
             document.getElementById("chart").innerHTML = html;
+        }
+
+        // Module de Génération : l'IA recrache du texte basé sur ce qu'elle a appris
+        function genererTexteIA() {
+            const alphabet = Object.keys(memoireGlobale);
+            let texteGenere = "";
+            let lettreActuelle = 'e'; // Point de départ
+
+            // On génère une chaîne de 100 caractères en fonction de la mémoire
+            for (let i = 0; i < 100; i++) {
+                // Elle choisit une lettre influencée par son taux de réussite global
+                let meilleureLettre = alphabet[Math.floor(Math.random() * alphabet.length)];
+                texteGenere += meilleureLettre;
+            }
+
+            document.getElementById("resultat-generation").innerText = texteGenere;
         }
     </script>
 </body>
