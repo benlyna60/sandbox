@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Moniteur d'Apprentissage IA - Mémoire JSON</title>
+    <title>Moniteur d'Apprentissage IA - Mémoire Persistante & Turbo</title>
     <style>
         body {
             background-color: #121212;
@@ -13,15 +13,34 @@
             margin: auto;
         }
         h1 { color: #ffffff; font-size: 1.3em; margin-bottom: 15px; }
+        .control-panel {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        label { font-size: 0.85em; display: block; margin-bottom: 5px; color: #aaa; }
+        input, select {
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
         button {
             background-color: #222;
             color: #fff;
             border: 1px solid #444;
             padding: 10px 20px;
             cursor: pointer;
-            font-size: 1em;
-            margin-bottom: 20px;
+            font-size: 0.95em;
+            margin-bottom: 10px;
             border-radius: 4px;
+            width: 100%;
         }
         button:hover { background-color: #333; }
         
@@ -100,10 +119,24 @@
 </head>
 <body>
 
-    <h1>Moniteur d'Apprentissage IA (Mémoire JSON)</h1>
-    <button onclick="lancerApprentissageMemoire()">Lancer le cycle étendu (1200 itérations)</button>
+    <h1>Moniteur IA - Mémoire & Granularité</h1>
     
-    <div id="status" class="status-line">Statut : En attente du lancement...</div>
+    <div class="control-panel">
+        <button onclick="selectionnerDossier()" id="btn-dossier" style="background-color: #1b3b22; border-color: #2e7d32;">1. Choisir le dossier de sauvegarde</button>
+        
+        <label for="file-input">Importer une ancienne mémoire JSON (optionnel) :</label>
+        <input type="file" id="file-input" accept=".json" onchange="chargerMemoireJSON(event)">
+
+        <label for="input-iterations">Nombre d'itérations à lancer :</label>
+        <input type="number" id="input-iterations" value="5000" step="1000" min="1000">
+
+        <label for="input-frequence">Sauvegarder un JSON toutes les X itérations :</label>
+        <input type="number" id="input-frequence" value="1000" step="500" min="500">
+
+        <button onclick="lancerApprentissage()" style="background-color: #0d47a1; border-color: #1565c0; font-weight: bold;">2. Lancer la boucle d'apprentissage</button>
+    </div>
+    
+    <div id="status" class="status-line">Statut : Prêt. Configurez vos paramètres et lancez.</div>
 
     <div class="chart-container" id="chart">
         <div style="color: #666; text-align: center; font-size: 0.9em;">Le classement apparaîtra ici...</div>
@@ -120,14 +153,73 @@
     </div>
 
     <script>
-        // Fonction utilitaire pour déclencher le téléchargement automatique du fichier JSON
-        function sauvegarderMemoireJSON(stats, iterationActuelle) {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
+        let dossierHandle = null;
+        let memoireGlobale = {
+            'e': { succés: 0, total: 0 },
+            'a': { succés: 0, total: 0 },
+            's': { succés: 0, total: 0 },
+            'i': { succés: 0, total: 0 },
+            't': { succés: 0, total: 0 },
+            ' ': { succés: 0, total: 0 },
+            '.': { succés: 0, total: 0 }
+        };
+        let iterationsTotalesEffectuees = 0;
+
+        async function selectionnerDossier() {
+            try {
+                if (!window.showDirectoryPicker) {
+                    alert("Votre navigateur ne supporte pas la sélection de dossier. Le téléchargement classique sera utilisé.");
+                    return;
+                }
+                dossierHandle = await window.showDirectoryPicker();
+                document.getElementById("btn-dossier").style.backgroundColor = "#2e7d32";
+                document.getElementById("btn-dossier").innerText = "✔ Dossier de sauvegarde configuré";
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // Charger un ancien fichier JSON pour reprendre l'entraînement
+        function chargerMemoireJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.memoire_caracteres) {
+                        memoireGlobale = data.memoire_caracteres;
+                        iterationsTotalesEffectuees = data.iteration || 0;
+                        document.getElementById("status").innerHTML = `Statut : Ancienne mémoire chargée (Itération de départ : ${iterationsTotalesEffectuees})`;
+                    }
+                } catch (err) {
+                    alert("Erreur lors de la lecture du fichier JSON.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        async function sauvegarderMemoireJSONDirect(iterationActuelle) {
+            const contenuJSON = JSON.stringify({
                 iteration: iterationActuelle,
                 timestamp: new Date().toISOString(),
-                memoire_caracteres: stats
-            }, null, 2));
-            
+                memoire_caracteres: memoireGlobale
+            }, null, 2);
+
+            if (dossierHandle) {
+                try {
+                    const nomFichier = `memoire_ia_iteration_${iterationActuelle}.json`;
+                    const fichierHandle = await dossierHandle.getFileHandle(nomFichier, { create: true });
+                    const fluxEcriture = await fichierHandle.createWritable();
+                    await fluxEcriture.write(contenuJSON);
+                    await fluxEcriture.close();
+                    return;
+                } catch (err) {
+                    console.error("Erreur d'écriture directe, repli classique", err);
+                }
+            }
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(contenuJSON);
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
             downloadAnchor.setAttribute("download", `memoire_ia_iteration_${iterationActuelle}.json`);
@@ -136,13 +228,16 @@
             downloadAnchor.remove();
         }
 
-        async function lancerApprentissageMemoire() {
+        async function lancerApprentissage() {
             const statusDiv = document.getElementById("status");
             const chartDiv = document.getElementById("chart");
             const globalFill = document.getElementById("global-fill");
             const globalPercent = document.getElementById("global-percent");
             
-            statusDiv.innerHTML = "Statut : Connexion à Wikipédia en cours...";
+            const maxIterations = parseInt(document.getElementById("input-iterations").value) || 5000;
+            const frequenceSauvegarde = parseInt(document.getElementById("input-frequence").value) || 1000;
+
+            statusDiv.innerHTML = "Connexion à Wikipédia...";
 
             try {
                 const url = "https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Intelligence_artificielle&format=json&origin=*";
@@ -153,55 +248,42 @@
                 const pageId = Object.keys(pages)[0];
                 const texteBrut = pages[pageId].extract || "";
 
-                const statsCaracteres = {
-                    'e': { succés: 0, total: 0 },
-                    'a': { succés: 0, total: 0 },
-                    's': { succés: 0, total: 0 },
-                    'i': { succés: 0, total: 0 },
-                    't': { succés: 0, total: 0 },
-                    ' ': { succés: 0, total: 0 },
-                    '.': { succés: 0, total: 0 }
-                };
-
-                const alphabet = Object.keys(statsCaracteres);
+                const alphabet = Object.keys(memoireGlobale);
                 const totalArticlesWiki = 2770000;
-                let articlesConsommesSimules = 50;
-
-                // On pousse à 1200 itérations pour tester la sauvegarde à la 1000e
-                const maxIterations = 1200;
 
                 for (let i = 0; i < maxIterations; i++) {
+                    iterationsTotalesEffectuees++;
                     let charActuel = texteBrut[i % texteBrut.length] || ' ';
                     let prediction = alphabet[Math.floor(Math.random() * alphabet.length)];
 
-                    if (statsCaracteres[charActuel]) {
-                        statsCaracteres[charActuel].total++;
+                    if (memoireGlobale[charActuel]) {
+                        memoireGlobale[charActuel].total++;
                         if (prediction === charActuel) {
-                            statsCaracteres[charActuel].succés++;
+                            memoireGlobale[charActuel].succés++;
                         }
                     }
 
-                    // Déclenchement automatique d'un fichier JSON toutes les 1000 itérations
-                    if ((i + 1) % 1000 === 0) {
-                        sauvegarderMemoireJSON(statsCaracteres, i + 1);
+                    // Déclenchement de la sauvegarde selon la fréquence choisie
+                    if (iterationsTotalesEffectuees % frequenceSauvegarde === 0) {
+                        await sauvegarderMemoireJSONDirect(iterationsTotalesEffectuees);
                     }
 
-                    articlesConsommesSimules += 2;
+                    let articlesConsommesSimules = iterationsTotalesEffectuees * 2;
                     let ratioGlobal = (articlesConsommesSimules / totalArticlesWiki) * 100;
                     if (ratioGlobal > 100) ratioGlobal = 100;
 
                     globalFill.style.width = ratioGlobal.toFixed(4) + "%";
                     globalPercent.innerHTML = ratioGlobal.toFixed(4) + "%";
 
-                    let scores = Object.keys(statsCaracteres).map(char => {
-                        let dataChar = statsCaracteres[char];
+                    let scores = Object.keys(memoireGlobale).map(char => {
+                        let dataChar = memoireGlobale[char];
                         let taux = dataChar.total > 0 ? Math.round((dataChar.succés / dataChar.total) * 100) : 0;
                         return { char: char === ' ' ? '[espace]' : char, taux: taux };
                     });
 
                     scores.sort((a, b) => b.taux - a.taux);
 
-                    statusDiv.innerHTML = `Statut : Itération ${i+1}/${maxIterations} | Sauvegarde auto tous les 1000 cycles`;
+                    statusDiv.innerHTML = `Entraînement en cours | Total cumulé : ${iterationsTotalesEffectuees} cycles`;
 
                     let htmlBarres = "";
                     scores.forEach(item => {
@@ -218,13 +300,14 @@
                     });
                     chartDiv.innerHTML = htmlBarres;
 
-                    await new Promise(resolve => setTimeout(resolve, 3));
+                    // Pause ultra-courte (1ms) pour cracher un maximum de calculs si vous avez du temps
+                    await new Promise(resolve => setTimeout(resolve, 1));
                 }
 
-                statusDiv.innerHTML = "Statut : Cycle étendu terminé avec succès. Mémoire finale enregistrée.";
+                statusDiv.innerHTML = `Séquence terminée. Total cumulé atteint : ${iterationsTotalesEffectuees} cycles.`;
 
             } catch (error) {
-                statusDiv.innerHTML = `Statut : Erreur (${error.message})`;
+                statusDiv.innerHTML = `Erreur : ${error.message}`;
             }
         }
     </script>
