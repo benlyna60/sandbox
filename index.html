@@ -47,11 +47,42 @@
         let cycleActuel = 0;
         let enCoursDApprentissage = false;
 
-        const sources = [
-            { nom: "Wiki FR", url: "https://api.allorigins.win/get?url=" + encodeURIComponent("https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Intelligence_artificielle&format=json") },
-            { nom: "Wiki EN", url: "https://api.allorigins.win/get?url=" + encodeURIComponent("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Artificial_intelligence&format=json") },
-            { nom: "Gutenberg EN", url: "https://api.allorigins.win/get?url=" + encodeURIComponent("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Literature&format=json") }
+        const booksList = [
+            "https://www.gutenberg.org/files/11/11-0.txt",
+            "https://www.gutenberg.org/files/84/84-0.txt"
         ];
+
+        async function fetchWikiRandom(lang) {
+            try {
+                // 1. Récupérer un titre aléatoire
+                const url = `https://${lang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`;
+                const res = await fetch(url);
+                const data = await res.json();
+                const title = data.query.random[0].title;
+
+                // 2. Récupérer le contenu complet de l'article (sans exintro pour avoir du texte riche)
+                const contentUrl = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+                const contentRes = await fetch(contentUrl);
+                const contentData = await contentRes.json();
+                const pages = contentData.query.pages;
+                const extract = Object.values(pages)[0].extract;
+
+                return extract && extract.length > 200 ? extract : "Apprentissage des structures textuelles et syntaxiques de base en cours de traitement.";
+            } catch (e) {
+                return "Erreur de chargement de l'article aléatoire, poursuite du cycle d'entraînement syntaxique.";
+            }
+        }
+
+        async function fetchBookRandom() {
+            try {
+                const randomBook = booksList[Math.floor(Math.random() * booksList.length)];
+                const res = await fetch(randomBook);
+                const text = await res.text();
+                return text.length > 500 ? text.substring(0, 50000) : "Texte classique de littérature pour structurer le vocabulaire.";
+            } catch (e) {
+                return "Module de lecture de livres en mode de secours syntaxique.";
+            }
+        }
 
         async function selectionnerFichierMemoire() {
             try {
@@ -84,46 +115,46 @@
             const alphabet = Object.keys(memoireGlobale);
             
             while (enCoursDApprentissage) {
-                cycleActuel++; // On incrémente le cycle à chaque tour complet des 3 modules
+                cycleActuel++;
                 
-                for (let sourceIndex = 0; sourceIndex < sources.length; sourceIndex++) {
+                // 3 modules dynamiques par cycle
+                const modules = [
+                    { nom: "Wiki FR", getData: () => fetchWikiRandom("fr") },
+                    { nom: "Wiki EN", getData: () => fetchWikiRandom("en") },
+                    { nom: "Livres EN", getData: fetchBookRandom }
+                ];
+                
+                for (let m = 0; m < modules.length; m++) {
                     if (!enCoursDApprentissage) break;
-                    let source = sources[sourceIndex];
+                    let mod = modules[m];
                     
-                    document.getElementById("status").innerHTML = `🔄 <b>Cycle global n° ${cycleActuel}</b><br>📖 Module ${sourceIndex + 1}/3 : Lecture de <b>${source.nom}</b> (Total itérations : ${iterationsTotales})`;
+                    document.getElementById("status").innerHTML = `🔄 <b>Cycle global n° ${cycleActuel}</b><br>📖 Module ${m + 1}/3 : Chargement de <b>${mod.nom}</b>...`;
+                    let texte = await mod.getData();
                     
-                    try {
-                        const resp = await fetch(source.url);
-                        const data = await resp.json();
-                        const content = JSON.parse(data.contents);
-                        const texte = Object.values(content.query.pages)[0].extract || " ";
+                    document.getElementById("status").innerHTML = `🔄 <b>Cycle global n° ${cycleActuel}</b><br>📖 Module ${m + 1}/3 : Entraînement sur <b>${mod.nom}</b> (Itérations : ${iterationsTotales})`;
+                    
+                    for (let i = 0; i < 5000; i++) {
+                        if (!enCoursDApprentissage) break;
+                        iterationsTotales++;
+                        let char = texte[i % texte.length] || ' ';
+                        let pred = alphabet[Math.floor(Math.random() * alphabet.length)];
                         
-                        for (let i = 0; i < 5000; i++) {
-                            if (!enCoursDApprentissage) break;
-                            iterationsTotales++;
-                            let char = texte[i % texte.length] || ' ';
-                            let pred = alphabet[Math.floor(Math.random() * alphabet.length)];
-                            
-                            if (memoireGlobale[char]) {
-                                memoireGlobale[char].total++;
-                                if (pred === char) memoireGlobale[char].succés++;
-                            }
-
-                            if (iterationsTotales % 500 === 0) {
-                                await ecrireDirectement(iterationsTotales);
-                                majAffichage();
-                            }
-                            await new Promise(r => setTimeout(r, 1));
+                        if (memoireGlobale[char]) {
+                            memoireGlobale[char].total++;
+                            if (pred === char) memoireGlobale[char].succés++;
                         }
-                    } catch (e) {
-                        document.getElementById("status").innerText = "Erreur réseau sur " + source.nom + ", nouvelle tentative imminente...";
+
+                        if (iterationsTotales % 500 === 0) {
+                            await ecrireDirectement(iterationsTotales);
+                            majAffichage();
+                        }
+                        await new Promise(r => setTimeout(r, 1));
                     }
                 }
                 
-                // Petit signal discret dans le statut quand un cycle complet est bouclé
                 if (enCoursDApprentissage) {
-                    document.getElementById("status").innerHTML = `✅ <b>Fin du Cycle n° ${cycleActuel} !</b> Les 3 modules ont été parcourus. Démarrage du cycle suivant...`;
-                    await new Promise(r => setTimeout(r, 1500)); // Petite pause de 1.5s pour que vous puissiez voir le message
+                    document.getElementById("status").innerHTML = `✅ <b>Fin du Cycle n° ${cycleActuel} !</b> Les 3 modules ont été parcourus.`;
+                    await new Promise(r => setTimeout(r, 1000));
                 }
             }
             document.getElementById("status").innerText = "Entraînement arrêté. Total sauvegardé : " + iterationsTotales;
@@ -152,9 +183,24 @@
         function genererTexteIA() {
             const alphabet = Object.keys(memoireGlobale);
             let texteGenere = "";
-            for (let i = 0; i < 100; i++) {
-                let meilleureLettre = alphabet[Math.floor(Math.random() * alphabet.length)];
-                texteGenere += meilleureLettre;
+            // Utilisation d'une logique pondérée basée sur les scores de réussite enregistrés
+            for (let i = 0; i < 150; i++) {
+                let meilleurChar = alphabet[0];
+                let meilleurScore = -1;
+                
+                // Cherche le caractère qui a le meilleur taux de réussite dans la mémoire
+                alphabet.forEach(char => {
+                    let stats = memoireGlobale[char];
+                    let taux = stats.total > 0 ? (stats.succés / stats.total) : 0;
+                    if (taux > meilleurScore) {
+                        meilleurScore = taux;
+                        meilleurChar = char;
+                    }
+                });
+                
+                // Ajout d'une petite variation aléatoire pour éviter le blocage total sur un seul caractère
+                let charChoisi = Math.random() < 0.2 ? alphabet[Math.floor(Math.random() * alphabet.length)] : meilleurChar;
+                texteGenere += charChoisi;
             }
             document.getElementById("resultat-generation").innerText = texteGenere;
         }
