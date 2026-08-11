@@ -215,7 +215,7 @@
             document.getElementById("chart").innerHTML = html || "Apprentissage des paires en cours...";
         }
 
-        // Génération contextuelle : chaque lettre choisie dépend de la précédente !
+        // Génération contextuelle corrigée : anti-boucle et exploration intelligente
         function genererTexteIA() {
             const lettresDisponibles = Object.keys(memoirePaires);
             if (lettresDisponibles.length === 0) {
@@ -223,35 +223,48 @@
                 return;
             }
 
-            // Choisir une lettre de départ au hasard parmi celles connues
+            // Choisir une lettre de départ au hasard
             let lettreCourante = lettresDisponibles[Math.floor(Math.random() * lettresDisponibles.length)];
             let texteGenere = lettreCourante;
+            
+            // Historique récent pour empêcher de répéter les mêmes lettres en boucle
+            let dernieresLettres = [lettreCourante];
 
-            for (let i = 0; i < 150; i++) {
+            for (let i = 0; i < 200; i++) {
                 let suivantes = memoirePaires[lettreCourante];
+                
                 if (!suivantes || Object.keys(suivantes).length === 0) {
-                    // Si on est bloqué, on repart d'une lettre aléatoire
                     lettreCourante = lettresDisponibles[Math.floor(Math.random() * lettresDisponibles.length)];
                 } else {
-                    // Trouver la lettre la plus souvent associée après la lettre courante
-                    let meilleurSuivant = "";
-                    let maxScore = -1;
-                    for (let [suiv, score] of Object.entries(suivantes)) {
-                        if (score > maxScore) {
-                            maxScore = score;
-                            meilleurSuivant = suiv;
-                        }
-                    }
-                    // Petite tolérance aléatoire pour éviter les boucles fermées
-                    if (Math.random() < 0.15) {
-                        let keys = Object.keys(suivantes);
-                        lettreCourante = keys[Math.floor(Math.random() * keys.length)];
-                    } else {
-                        lettreCourante = meilleurSuivant || lettresDisponibles[0];
-                    }
+                    // Récupérer toutes les suites possibles avec leurs scores
+                    let options = Object.entries(suivantes);
+                    
+                    // FILTRE ANTI-BÉGAIEMENT : On évite les lettres qui viennent d'être répétées en boucle
+                    let optionsFiltrees = options.filter(([suiv]) => {
+                        let occurrencesRecentes = dernieresLettres.slice(-3).filter(l => l === suiv).length;
+                        return occurrencesRecentes < 2;
+                    });
+
+                    // Si le filtre est trop strict, on retombe sur les options de base
+                    if (optionsFiltrees.length === 0) optionsFiltrees = options;
+
+                    // Trier du plus fréquent au moins fréquent
+                    optionsFiltrees.sort((a, b) => b[1] - a[1]);
+                    
+                    // On pioche parmi les 3 meilleurs choix possibles au lieu de prendre TOUJOURS le premier
+                    let choixPool = optionsFiltrees.slice(0, Math.min(3, optionsFiltrees.length));
+                    let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
+                    
+                    lettreCourante = choixAleatoire[0];
                 }
+
                 texteGenere += lettreCourante;
+                
+                // Mettre à jour l'historique récent
+                dernieresLettres.push(lettreCourante);
+                if (dernieresLettres.length > 5) dernieresLettres.shift();
             }
+            
             document.getElementById("resultat-generation").innerText = texteGenere;
         }
     </script>
