@@ -2,312 +2,95 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Moniteur IA - Multi-Sources Automatisé</title>
+    <title>IA Mondiale : Apprentissage Multi-Sources</title>
     <style>
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: monospace;
-            padding: 30px;
-            max-width: 600px;
-            margin: auto;
-        }
-        h1 { color: #ffffff; font-size: 1.3em; margin-bottom: 15px; }
-        .control-panel {
-            background-color: #1a1a1a;
-            border: 1px solid #333;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-        label { font-size: 0.85em; display: block; margin-bottom: 5px; color: #aaa; }
-        input, select {
-            background-color: #222;
-            color: #fff;
-            border: 1px solid #444;
-            padding: 8px;
-            width: 100%;
-            margin-bottom: 12px;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-        button {
-            background-color: #222;
-            color: #fff;
-            border: 1px solid #444;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 0.95em;
-            margin-bottom: 10px;
-            border-radius: 4px;
-            width: 100%;
-        }
-        button:hover { background-color: #333; }
-        
-        .status-line {
-            background-color: #1a1a1a;
-            border-left: 3px solid #4caf50;
-            padding: 10px 15px;
-            font-size: 0.85em;
-            color: #cfcfcf;
-            border-radius: 0 4px 4px 0;
-            margin-bottom: 20px;
-        }
-
-        .chart-container {
-            background-color: #1a1a1a;
-            border: 1px solid #333;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 25px;
-        }
-        .bar-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .bar-label {
-            width: 70px;
-            font-weight: bold;
-            color: #fff;
-            font-size: 0.9em;
-        }
-        .bar-track {
-            flex-grow: 1;
-            background-color: #2a2a2a;
-            height: 12px;
-            border-radius: 3px;
-            overflow: hidden;
-            margin: 0 10px;
-        }
-        .bar-fill {
-            height: 100%;
-            background-color: #4caf50;
-        }
-        .bar-value {
-            width: 45px;
-            text-align: right;
-            font-size: 0.8em;
-            color: #888;
-        }
-
-        .global-progress-wrapper {
-            margin-top: 20px;
-            border-top: 1px solid #222;
-            padding-top: 15px;
-        }
-        .global-info {
-            font-size: 0.75em;
-            color: #777;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .global-track {
-            background-color: #181818;
-            height: 4px;
-            border-radius: 2px;
-            overflow: hidden;
-            width: 100%;
-        }
-        .global-fill {
-            height: 100%;
-            background-color: #333;
-            width: 0%;
-        }
+        body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 20px; max-width: 600px; margin: auto; }
+        .control-panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 20px; }
+        button { background-color: #222; color: #fff; border: 1px solid #444; padding: 10px; cursor: pointer; width: 100%; margin-bottom: 10px; border-radius: 4px; }
+        .status-line { background-color: #1a1a1a; border-left: 3px solid #4caf50; padding: 10px; font-size: 0.8em; margin-bottom: 20px; }
+        .bar-row { display: flex; align-items: center; margin-bottom: 5px; }
+        .bar-label { width: 70px; font-weight: bold; }
+        .bar-track { flex-grow: 1; background-color: #222; height: 12px; border-radius: 3px; overflow: hidden; margin: 0 10px; }
+        .bar-fill { height: 100%; background-color: #4caf50; }
     </style>
 </head>
 <body>
 
-    <h1>Moniteur IA - Multi-Sources Automatisé</h1>
+    <h1>Moniteur IA : Multi-Langues</h1>
     
     <div class="control-panel">
-        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #1b3b22; border-color: #2e7d32;">1. Sélectionner le fichier JSON existant</button>
-
-        <label for="input-iterations">Itérations totales pour ce cycle :</label>
-        <input type="number" id="input-iterations" value="15000" step="5000" min="1000">
-
-        <label for="input-frequence">Sauvegarder en direct dans le JSON toutes les X itérations :</label>
-        <input type="number" id="input-frequence" value="1000" step="500" min="500">
-
-        <button onclick="lancerEntrainementMultiSources()" style="background-color: #0d47a1; border-color: #1565c0; font-weight: bold;">2. Lancer l'entraînement multi-sources</button>
+        <button onclick="selectionnerFichierMemoire()" id="btn-fichier">1. Lier fichier JSON</button>
+        <button onclick="lancerEntrainementGlobal()" style="background-color: #0d47a1; font-weight: bold;">2. Lancer Entraînement Mondial</button>
     </div>
     
-    <div id="status" class="status-line">Statut : Sélectionnez votre fichier JSON pour lier la mémoire.</div>
-
-    <div class="chart-container" id="chart">
-        <div style="color: #666; text-align: center; font-size: 0.9em;">Le classement apparaîtra ici...</div>
-    </div>
-
-    <div class="global-progress-wrapper">
-        <div class="global-info">
-            <span id="global-text">Progression globale (Multi-sources)</span>
-            <span id="global-percent">0.0000%</span>
-        </div>
-        <div class="global-track">
-            <div id="global-fill" class="global-fill"></div>
-        </div>
-    </div>
+    <div id="status" class="status-line">Prêt.</div>
+    <div id="chart"></div>
 
     <script>
         let fichierHandle = null;
-        let memoireGlobale = {
-            'e': { succés: 0, total: 0 },
-            'a': { succés: 0, total: 0 },
-            's': { succés: 0, total: 0 },
-            'i': { succés: 0, total: 0 },
-            't': { succés: 0, total: 0 },
-            ' ': { succés: 0, total: 0 },
-            '.': { succés: 0, total: 0 }
-        };
-        let iterationsTotalesEffectuees = 0;
+        let memoireGlobale = { 'e': { succés: 0, total: 0 }, 'a': { succés: 0, total: 0 }, 's': { succés: 0, total: 0 }, 'i': { succés: 0, total: 0 }, 't': { succés: 0, total: 0 }, ' ': { succés: 0, total: 0 }, '.': { succés: 0, total: 0 } };
+        let iterationsTotales = 0;
 
-        // Liste des sources à enchaîner automatiquement
-        const sourcesTextuelles = [
-            { nom: "Wikipédia", url: "https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Intelligence_artificielle&format=json&origin=*" },
-            { nom: "Wiktionnaire", url: "https://fr.wiktionnaire.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Français&format=json&origin=*" },
-            { nom: "Gutenberg (Simulé/Littéraire)", url: "https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Littérature_française&format=json&origin=*" }
+        const sources = [
+            { nom: "Wiki FR", url: "https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Intelligence_artificielle&format=json&origin=*" },
+            { nom: "Wiki EN", url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Artificial_intelligence&format=json&origin=*" },
+            { nom: "Gutenberg EN", url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Literature&format=json&origin=*" }
         ];
 
         async function selectionnerFichierMemoire() {
-            try {
-                if (!window.showOpenFilePicker) {
-                    alert("Votre navigateur ne supporte pas l'écriture directe ciblée.");
-                    return;
-                }
-                const [handle] = await window.showOpenFilePicker({
-                    types: [{ description: 'Fichiers JSON', accept: { 'application/json': ['.json'] } }],
-                    multiple: false
-                });
-                fichierHandle = handle;
-
-                const file = await fichierHandle.getFile();
-                const contenuTexte = await file.text();
-                if (contenuTexte.trim() !== "") {
-                    const data = JSON.parse(contenuTexte);
-                    if (data.memoire_caracteres) {
-                        memoireGlobale = data.memoire_caracteres;
-                        iterationsTotalesEffectuees = data.iteration || 0;
-                    }
-                }
-
-                document.getElementById("btn-fichier").style.backgroundColor = "#2e7d32";
-                document.getElementById("btn-fichier").innerText = "✔ Fichier de mémoire lié";
-                document.getElementById("status").innerHTML = `Statut : Mémoire chargée (Reprise au cycle : ${iterationsTotalesEffectuees})`;
-            } catch (err) {
-                console.error(err);
-                document.getElementById("status").innerHTML = "Statut : Sélection annulée.";
-            }
+            const [handle] = await window.showOpenFilePicker({ types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }] });
+            fichierHandle = handle;
+            const file = await handle.getFile();
+            const data = JSON.parse(await file.text());
+            memoireGlobale = data.memoire_caracteres;
+            iterationsTotales = data.iteration;
+            document.getElementById("btn-fichier").innerText = "✔ Mémoire liée";
         }
 
-        async function ecrireDirectementDansFichier(iterationActuelle) {
-            if (!fichierHandle) return;
-            try {
-                const contenuJSON = JSON.stringify({
-                    iteration: iterationActuelle,
-                    timestamp: new Date().toISOString(),
-                    memoire_caracteres: memoireGlobale
-                }, null, 2);
-
-                const fluxEcriture = await fichierHandle.createWritable();
-                await fluxEcriture.write(contenuJSON);
-                await fluxEcriture.close();
-            } catch (err) {
-                console.error("Erreur d'écriture :", err);
-            }
+        async function ecrireDirectement(iter) {
+            const flux = await fichierHandle.createWritable();
+            await flux.write(JSON.stringify({ iteration: iter, memoire_caracteres: memoireGlobale }, null, 2));
+            await flux.close();
         }
 
-        async function lancerEntrainementMultiSources() {
-            if (!fichierHandle) {
-                alert("Veuillez d'abord lier votre fichier JSON de mémoire !");
-                return;
-            }
-
-            const statusDiv = document.getElementById("status");
-            const chartDiv = document.getElementById("chart");
-            const globalFill = document.getElementById("global-fill");
-            const globalPercent = document.getElementById("global-percent");
-            
-            const maxIterationsTotal = parseInt(document.getElementById("input-iterations").value) || 15000;
-            const frequenceSauvegarde = parseInt(document.getElementById("input-frequence").value) || 1000;
+        async function lancerEntrainementGlobal() {
             const alphabet = Object.keys(memoireGlobale);
-            const totalArticlesWiki = 2770000;
-
-            let iterationsParSource = Math.ceil(maxIterationsTotal / sourcesTextuelles.length);
-            let globalCounter = 0;
-
-            try {
-                for (let s = 0; s < sourcesTextuelles.length; s++) {
-                    let sourceActuelle = sourcesTextuelles[s];
-                    statusDiv.innerHTML = `Connexion à la source [${sourceActuelle.nom}]...`;
-
-                    const response = await fetch(sourceActuelle.url);
-                    const data = await response.json();
-                    const pages = data.query.pages;
-                    const pageId = Object.keys(pages)[0];
-                    const texteBrut = pages[pageId].extract || "texte par défaut";
-
-                    for (let i = 0; i < iterationsParSource && globalCounter < maxIterationsTotal; i++) {
-                        iterationsTotalesEffectuees++;
-                        globalCounter++;
-
-                        let charActuel = texteBrut[i % texteBrut.length] || ' ';
-                        let prediction = alphabet[Math.floor(Math.random() * alphabet.length)];
-
-                        if (memoireGlobale[charActuel]) {
-                            memoireGlobale[charActuel].total++;
-                            if (prediction === charActuel) {
-                                memoireGlobale[charActuel].succés++;
-                            }
-                        }
-
-                        if (iterationsTotalesEffectuees % frequenceSauvegarde === 0) {
-                            await ecrireDirectementDansFichier(iterationsTotalesEffectuees);
-                        }
-
-                        let ratioGlobal = ((iterationsTotalesEffectuees * 2) / totalArticlesWiki) * 100;
-                        if (ratioGlobal > 100) ratioGlobal = 100;
-
-                        globalFill.style.width = ratioGlobal.toFixed(4) + "%";
-                        globalPercent.innerHTML = ratioGlobal.toFixed(4) + "%";
-
-                        let scores = Object.keys(memoireGlobale).map(char => {
-                            let dataChar = memoireGlobale[char];
-                            let taux = dataChar.total > 0 ? Math.round((dataChar.succés / dataChar.total) * 100) : 0;
-                            return { char: char === ' ' ? '[espace]' : char, taux: taux };
-                        });
-
-                        scores.sort((a, b) => b.taux - a.taux);
-
-                        statusDiv.innerHTML = `Source : ${sourceActuelle.nom} | Cycle global : ${iterationsTotalesEffectuees}`;
-
-                        let htmlBarres = "";
-                        scores.forEach(item => {
-                            let labelAffichage = item.char === '.' ? '[point]' : item.char;
-                            htmlBarres += `
-                                <div class="bar-row">
-                                    <div class="bar-label">${labelAffichage}</div>
-                                    <div class="bar-track">
-                                        <div class="bar-fill" style="width: ${item.taux}%;"></div>
-                                    </div>
-                                    <div class="bar-value">${item.taux}%</div>
-                                </div>
-                            `;
-                        });
-                        chartDiv.innerHTML = htmlBarres;
-
-                        await new Promise(resolve => setTimeout(resolve, 1));
+            
+            for (let source of sources) {
+                document.getElementById("status").innerText = "Lecture de : " + source.nom;
+                const resp = await fetch(source.url);
+                const data = await resp.json();
+                const texte = Object.values(data.query.pages)[0].extract || " ";
+                
+                for (let i = 0; i < 5000; i++) {
+                    iterationsTotales++;
+                    let char = texte[i % texte.length] || ' ';
+                    let pred = alphabet[Math.floor(Math.random() * alphabet.length)];
+                    
+                    if (memoireGlobale[char]) {
+                        memoireGlobale[char].total++;
+                        if (pred === char) memoireGlobale[char].succés++;
                     }
+
+                    // Mise à jour visuelle et sauvegarde
+                    if (iterationsTotales % 500 === 0) {
+                        await ecrireDirectement(iterationsTotales);
+                        majAffichage();
+                    }
+                    await new Promise(r => setTimeout(r, 1));
                 }
-
-                await ecrireDirectementDansFichier(iterationsTotalesEffectuees);
-                statusDiv.innerHTML = `Cycle multi-sources terminé. Total cumulé : ${iterationsTotalesEffectuees} cycles enregistrés.`;
-
-            } catch (error) {
-                statusDiv.innerHTML = `Erreur : ${error.message}`;
             }
+            alert("Apprentissage Mondial terminé !");
+        }
+
+        function majAffichage() {
+            let html = "";
+            Object.keys(memoireGlobale).sort((a,b) => (memoireGlobale[b].succés/memoireGlobale[b].total) - (memoireGlobale[a].succés/memoireGlobale[a].total)).forEach(char => {
+                let taux = memoireGlobale[char].total > 0 ? Math.round((memoireGlobale[char].succés/memoireGlobale[char].total)*100) : 0;
+                html += `<div class="bar-row"><div class="bar-label">${char}</div><div class="bar-track"><div class="bar-fill" style="width:${taux}%"></div></div></div>`;
+            });
+            document.getElementById("chart").innerHTML = html;
         }
     </script>
-
 </body>
 </html>
