@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Moniteur de Confiance IA</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: monospace;
+            padding: 40px;
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 { color: #ffffff; font-size: 1.4em; margin-bottom: 20px; }
+        button {
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+        button:hover { background-color: #333; }
+        
+        .status-line {
+            background-color: #1a1a1a;
+            border-left: 3px solid #4caf50;
+            padding: 12px 15px;
+            font-size: 0.9em;
+            color: #cfcfcf;
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 25px;
+        }
+
+        /* Style des barres de progression */
+        .chart-container {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 6px;
+        }
+        .bar-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .bar-label {
+            width: 70px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .bar-track {
+            flex-grow: 1;
+            background-color: #2a2a2a;
+            height: 16px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0 10px;
+        }
+        .bar-fill {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0%;
+            transition: width 0.2s ease;
+        }
+        .bar-value {
+            width: 45px;
+            text-align: right;
+            font-size: 0.85em;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Classement des Caractères Apppris</h1>
+    <button onclick="lancerApprentissageGraphique()">Lancer la simulation</button>
+    
+    <div id="status" class="status-line">Statut : En attente du lancement...</div>
+
+    <!-- Graphique à barres -->
+    <div class="chart-container" id="chart">
+        <div style="color: #666; text-align: center;">Le classement apparaîtra ici...</div>
+    </div>
+
+    <script>
+        async function lancerApprentissageGraphique() {
+            const statusDiv = document.getElementById("status");
+            const chartDiv = document.getElementById("chart");
+            
+            statusDiv.innerHTML = "Statut : Connexion à Wikipédia en cours...";
+
+            try {
+                const url = "https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Intelligence_artificielle&format=json&origin=*";
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                const pages = data.query.pages;
+                const pageId = Object.keys(pages)[0];
+                const texteBrut = pages[pageId].extract || "";
+
+                // On cible quelques caractères clés pour suivre leur "score de confiance"
+                const statsCaracteres = {
+                    'e': { succés: 0, total: 0 },
+                    'a': { succés: 0, total: 0 },
+                    's': { succés: 0, total: 0 },
+                    'i': { succés: 0, total: 0 },
+                    't': { succés: 0, total: 0 },
+                    ' ': { succés: 0, total: 0 }
+                };
+
+                const alphabet = Object.keys(statsCaracteres);
+
+                for (let i = 0; i < 150; i++) {
+                    let charActuel = texteBrut[i] || ' ';
+                    let prediction = alphabet[Math.floor(Math.random() * alphabet.length)];
+
+                    if (statsCaracteres[charActuel]) {
+                        statsCaracteres[charActuel].total++;
+                        if (prediction === charActuel) {
+                            statsCaracteres[charActuel].succés++;
+                        }
+                    }
+
+                    // Calculer le taux de réussite pour chaque caractère tracké
+                    let scores = Object.keys(statsCaracteres).map(char => {
+                        let dataChar = statsCaracteres[char];
+                        let taux = dataChar.total > 0 ? Math.round((dataChar.succés / dataChar.total) * 100) : 0;
+                        return { char: char === ' ' ? '[espace]' : char, taux: taux };
+                    });
+
+                    // Trier du plus haut au plus bas niveau de confiance (le show visuel)
+                    scores.sort((a, b) => b.taux - a.taux);
+
+                    // Mettre à jour la ligne de statut
+                    statusDiv.innerHTML = `Statut : Itération ${i+1}/150 | Analyse du texte en direct...`;
+
+                    // Générer le HTML des barres de progression dynamiques
+                    let htmlBarres = "";
+                    scores.forEach(item => {
+                        let labelAffichage = item.char === '.' ? '[point]' : item.char;
+                        htmlBarres += `
+                            <div class="bar-row">
+                                <div class="bar-label">${labelAffichage}</div>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: ${item.taux}%;"></div>
+                                </div>
+                                <div class="bar-value">${item.taux}%</div>
+                            </div>
+                        `;
+                    });
+                    chartDiv.innerHTML = htmlBarres;
+
+                    await new Promise(resolve => setTimeout(resolve, 40));
+                }
+
+                statusDiv.innerHTML = "Statut : Simulation terminée. Classement final établi par l'IA.";
+
+            } catch (error) {
+                statusDiv.innerHTML = `Statut : Erreur (${error.message})`;
+            }
+        }
+    </script>
+
+</body>
+</html>
