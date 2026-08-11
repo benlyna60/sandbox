@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Hub Usine IA - Tableau de Bord</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #121212;
+            color: #00ff66;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 { color: #fff; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .card {
+            border: 1px solid #333;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .card h3 { margin-top: 0; color: #00ff66; }
+        button {
+            background: #00ff66;
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 5px;
+            margin-top: 10px;
+        }
+        button:hover { background: #00cc52; }
+        button.stop { background: #ff4d4d; color: #fff; }
+        button.stop:hover { background: #cc0000; }
+        .output {
+            background: #121212;
+            border: 1px solid #222;
+            padding: 10px;
+            margin-top: 10px;
+            height: 120px;
+            overflow-y: auto;
+            font-size: 12px;
+            color: #ccc;
+        }
+        .status { font-weight: bold; color: #ffcc00; }
+    </style>
+</head>
+<body>
+
+    <h1>🌐 Hub Central - Usine IA</h1>
+    <p>Pilotez tous vos modules d'apprentissage depuis un seul endroit, sans perturber vos fichiers.</p>
+
+    <div class="grid" id="modules-container">
+        <!-- Les modules s'afficheront ici automatiquement -->
+    </div>
+
+<script>
+    // Liste extensible à l'infini de vos cerveaux
+    const modulesConfig = [
+        { id: "francais", nom: "Français / Anglais (Base)", sourceWiki: "Langue française" },
+        { id: "arabe", nom: "Arabe", sourceWiki: "Langue arabe" },
+        { id: "python", nom: "Python (Programmation)", sourceWiki: "Python (langage)" }
+    ];
+
+    const etatsModules = {};
+
+    function initialiserHub() {
+        const container = document.getElementById('modules-container');
+        container.innerHTML = "";
+
+        modulesConfig.forEach(mod => {
+            etatsModules[mod.id] = {
+                handle: null,
+                memoire: {},
+                enCours: false
+            };
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <h3>Module : ${mod.nom}</h3>
+                <p>Statut : <span id="status-${mod.id}" class="status">JSON non lié</span></p>
+                <div>
+                    <button onclick="lierJSON('${mod.id}')">1. Lier JSON</button>
+                    <button onclick="lancerModule('${mod.id}', '${mod.sourceWiki}')">2. Lancer</button>
+                    <button class="stop" onclick="arreterModule('${mod.id}')">Stop</button>
+                </div>
+                <div class="output" id="output-${mod.id}">En attente de démarrage...</div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    async function lierJSON(id) {
+        try {
+            const [handle] = await window.showOpenFilePicker({
+                types: [{ description: 'Fichiers JSON', accept: {'application/json': ['.json']} }]
+            });
+            const fichier = await handle.getFile();
+            const contenu = await fichier.text();
+            etatsModules[id].handle = handle;
+            etatsModules[id].memoire = contenu ? JSON.parse(contenu) : {};
+            document.getElementById(`status-${id}`).innerText = "JSON lié & Prêt";
+            document.getElementById(`status-${id}`).style.color = "#00ff66";
+        } catch (err) {
+            document.getElementById(`status-${id}`).innerText = "Erreur de liaison";
+        }
+    }
+
+    async function sauvegarderJSON(id) {
+        const mod = etatsModules[id];
+        if (!mod.handle) return;
+        const writable = await mod.handle.createWritable();
+        await writable.write(JSON.stringify(mod.memoire, null, 2));
+        await writable.close();
+    }
+
+    async function fetchWiki(sujet) {
+        try {
+            const resPage = await fetch(`https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exexplaintext=1&titles=${encodeURIComponent(sujet)}&format=json&origin=*`);
+            const dataPage = await resPage.json();
+            const pages = dataPage.query.pages;
+            const pageId = Object.keys(pages)[0];
+            return pages[pageId].extract || "";
+        } catch (e) {
+            return "";
+        }
+    }
+
+    function ingererTexte(id, texte) {
+        let memoire = etatsModules[id].memoire;
+        for (let i = 0; i < texte.length - 1; i++) {
+            let c1 = texte[i];
+            let c2 = texte[i+1];
+            if (!memoire[c1]) memoire[c1] = {};
+            memoire[c1][c2] = (memoire[c1][c2] || 0) + 1;
+        }
+    }
+
+    function genererTexte(id) {
+        let memoire = etatsModules[id].memoire;
+        let keys = Object.keys(memoire);
+        if (keys.length === 0) return "Mémoire vide...";
+        let courant = keys[Math.floor(Math.random() * keys.length)];
+        let resultat = courant;
+        for (let i = 0; i < 150; i++) {
+            let suivants = memoire[courant];
+            if (!suivants) break;
+            let total = Object.values(suivants).reduce((a, b) => a + b, 0);
+            let rand = Math.random() * total;
+            let cumul = 0;
+            let prochain = "";
+            for (let [char, poids] of Object.entries(suivants)) {
+                cumul += poids;
+                if (rand <= cumul) {
+                    prochain = char;
+                    break;
+                }
+            }
+            if (!prochain) break;
+            resultat += prochain;
+            courant = prochain;
+        }
+        return resultat;
+    }
+
+    async function lancerModule(id, sujet) {
+        const mod = etatsModules[id];
+        if (!mod.handle) {
+            alert("Veuillez d'abord lier le fichier JSON correspondant !");
+            return;
+        }
+        mod.enCours = true;
+        document.getElementById(`status-${id}`).innerText = "En cours d'apprentissage...";
+        document.getElementById(`status-${id}`).style.color = "#00ff66";
+
+        while (mod.enCours) {
+            let texte = await fetchWiki(sujet);
+            if (texte) {
+                ingererTexte(id, texte);
+                await sauvegarderJSON(id);
+                let gen = genererTexte(id);
+                document.getElementById(`output-${id}`).innerHTML = "<b>Génération :</b><br>" + gen.replace(/\n/g, '<br>');
+            }
+            await new Promise(r => setTimeout(r, 6000));
+        }
+    }
+
+    function arreterModule(id) {
+        etatsModules[id].enCours = false;
+        document.getElementById(`status-${id}`).innerText = "En pause";
+        document.getElementById(`status-${id}`).style.color = "#ff4d4d";
+    }
+
+    // Lancer la construction du hub au chargement
+    window.onload = initialiserHub;
+</script>
+
+</body>
+</html>
