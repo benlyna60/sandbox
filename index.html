@@ -1,21 +1,163 @@
-// Fonction pour charger un article aléatoire de Wikipédia
-async function getWikiRandom(lang) {
-    const url = `https://${lang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`;
-    const response = await fetch(url);
-    const data = await response.json();
-    const title = data.query.random[0].title;
-    
-    // Une fois le titre obtenu, on récupère le contenu
-    const contentUrl = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=${encodeURIComponent(title)}&format=json&origin=*`;
-    const contentResponse = await fetch(contentUrl);
-    const contentData = await contentResponse.json();
-    const pages = contentData.query.pages;
-    return Object.values(pages)[0].extract;
-}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>IA Hybride : Apprentissage & Cycles</title>
+    <style>
+        body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 20px; max-width: 600px; margin: auto; }
+        .control-panel, .gen-panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 20px; }
+        button { background-color: #222; color: #fff; border: 1px solid #444; padding: 10px; cursor: pointer; width: 100%; margin-bottom: 10px; border-radius: 4px; font-weight: bold; }
+        .status-line { background-color: #1a1a1a; border-left: 3px solid #4caf50; padding: 10px; font-size: 0.85em; margin-bottom: 20px; line-height: 1.4; }
+        .output-box { background-color: #000; color: #00ff00; padding: 15px; border-radius: 4px; min-height: 50px; font-size: 1.1em; word-break: break-all; margin-top: 10px; border: 1px solid #333; }
+        .bar-row { display: flex; align-items: center; margin-bottom: 5px; }
+        .bar-label { width: 70px; font-weight: bold; font-size: 0.9em; }
+        .bar-track { flex-grow: 1; background-color: #222; height: 12px; border-radius: 3px; overflow: hidden; margin: 0 10px; }
+        .bar-fill { height: 100%; background-color: #4caf50; transition: width 0.2s; }
+        .bar-stats { width: 90px; text-align: right; font-size: 0.8em; color: #888; }
+        h2 { font-size: 1em; color: #fff; border-bottom: 1px solid #333; padding-bottom: 5px; margin-top: 0; }
+    </style>
+</head>
+<body>
 
-// Exemple pour Gutenberg (garder une liste de livres si vous voulez de la variété)
-const books = ["https://www.gutenberg.org/files/11/11-0.txt", "https://www.gutenberg.org/files/84/84-0.txt"];
-function getGutenbergRandom() {
-    const randomBook = books[Math.floor(Math.random() * books.length)];
-    return fetch(randomBook).then(res => res.text());
-}
+    <h1>Moniteur IA : Suivi des Cycles</h1>
+    
+    <div class="control-panel">
+        <button onclick="selectionnerFichierMemoire()" id="btn-fichier">1. Lier fichier JSON</button>
+        <button onclick="lancerEntrainementContinu()" style="background-color: #0d47a1;">2. Lancer l'Apprentissage en Boucle</button>
+        <button onclick="arreterEntrainement()" style="background-color: #b71c1c;">3. ⏹ Arrêter l'entraînement</button>
+    </div>
+
+    <div class="gen-panel">
+        <label>Tester la génération de texte en direct :</label>
+        <button onclick="genererTexteIA()" style="background-color: #1b5e20; margin-top: 10px;">Générer une phrase depuis la mémoire</button>
+        <div id="resultat-generation" class="output-box">En attente de génération...</div>
+    </div>
+    
+    <div id="status" class="status-line">Prêt.</div>
+    
+    <div class="control-panel">
+        <h2>Progression des Caractères</h2>
+        <div id="chart">Liez le fichier pour voir les statistiques...</div>
+    </div>
+
+    <script>
+        let fichierHandle = null;
+        let memoireGlobale = { 'e': { succés: 0, total: 0 }, 'a': { succés: 0, total: 0 }, 's': { succés: 0, total: 0 }, 'i': { succés: 0, total: 0 }, 't': { succés: 0, total: 0 }, ' ': { succés: 0, total: 0 }, '.': { succés: 0, total: 0 } };
+        let iterationsTotales = 0;
+        let cycleActuel = 0;
+        let enCoursDApprentissage = false;
+
+        const sources = [
+            { nom: "Wiki FR", url: "https://api.allorigins.win/get?url=" + encodeURIComponent("https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Intelligence_artificielle&format=json") },
+            { nom: "Wiki EN", url: "https://api.allorigins.win/get?url=" + encodeURIComponent("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Artificial_intelligence&format=json") },
+            { nom: "Gutenberg EN", url: "https://api.allorigins.win/get?url=" + encodeURIComponent("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Literature&format=json") }
+        ];
+
+        async function selectionnerFichierMemoire() {
+            try {
+                [fichierHandle] = await window.showOpenFilePicker({ types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }] });
+                const file = await fichierHandle.getFile();
+                const data = JSON.parse(await file.text());
+                memoireGlobale = data.memoire_caracteres;
+                iterationsTotales = data.iteration;
+                document.getElementById("btn-fichier").innerText = "✔ Mémoire liée (Cycle " + iterationsTotales + ")";
+                document.getElementById("status").innerText = "Mémoire chargée avec succès.";
+                majAffichage();
+            } catch (e) { document.getElementById("status").innerText = "Erreur de chargement fichier."; }
+        }
+
+        async function ecrireDirectement(iter) {
+            if (!fichierHandle) return;
+            const flux = await fichierHandle.createWritable();
+            await flux.write(JSON.stringify({ iteration: iter, memoire_caracteres: memoireGlobale }, null, 2));
+            await flux.close();
+        }
+
+        async function lancerEntrainementContinu() {
+            if (!fichierHandle) {
+                document.getElementById("status").innerText = "Erreur : Veuillez lier le fichier JSON d'abord !";
+                return;
+            }
+            if (enCoursDApprentissage) return;
+            
+            enCoursDApprentissage = true;
+            const alphabet = Object.keys(memoireGlobale);
+            
+            while (enCoursDApprentissage) {
+                cycleActuel++; // On incrémente le cycle à chaque tour complet des 3 modules
+                
+                for (let sourceIndex = 0; sourceIndex < sources.length; sourceIndex++) {
+                    if (!enCoursDApprentissage) break;
+                    let source = sources[sourceIndex];
+                    
+                    document.getElementById("status").innerHTML = `🔄 <b>Cycle global n° ${cycleActuel}</b><br>📖 Module ${sourceIndex + 1}/3 : Lecture de <b>${source.nom}</b> (Total itérations : ${iterationsTotales})`;
+                    
+                    try {
+                        const resp = await fetch(source.url);
+                        const data = await resp.json();
+                        const content = JSON.parse(data.contents);
+                        const texte = Object.values(content.query.pages)[0].extract || " ";
+                        
+                        for (let i = 0; i < 5000; i++) {
+                            if (!enCoursDApprentissage) break;
+                            iterationsTotales++;
+                            let char = texte[i % texte.length] || ' ';
+                            let pred = alphabet[Math.floor(Math.random() * alphabet.length)];
+                            
+                            if (memoireGlobale[char]) {
+                                memoireGlobale[char].total++;
+                                if (pred === char) memoireGlobale[char].succés++;
+                            }
+
+                            if (iterationsTotales % 500 === 0) {
+                                await ecrireDirectement(iterationsTotales);
+                                majAffichage();
+                            }
+                            await new Promise(r => setTimeout(r, 1));
+                        }
+                    } catch (e) {
+                        document.getElementById("status").innerText = "Erreur réseau sur " + source.nom + ", nouvelle tentative imminente...";
+                    }
+                }
+                
+                // Petit signal discret dans le statut quand un cycle complet est bouclé
+                if (enCoursDApprentissage) {
+                    document.getElementById("status").innerHTML = `✅ <b>Fin du Cycle n° ${cycleActuel} !</b> Les 3 modules ont été parcourus. Démarrage du cycle suivant...`;
+                    await new Promise(r => setTimeout(r, 1500)); // Petite pause de 1.5s pour que vous puissiez voir le message
+                }
+            }
+            document.getElementById("status").innerText = "Entraînement arrêté. Total sauvegardé : " + iterationsTotales;
+        }
+
+        function arreterEntrainement() {
+            enCoursDApprentissage = false;
+            document.getElementById("status").innerText = "Arrêt demandé... En attente de la fin du module en cours.";
+        }
+
+        function majAffichage() {
+            let html = "";
+            Object.keys(memoireGlobale).sort((a,b) => (memoireGlobale[b].succés/memoireGlobale[b].total) - (memoireGlobale[a].succés/memoireGlobale[a].total)).forEach(char => {
+                let stats = memoireGlobale[char];
+                let taux = stats.total > 0 ? Math.round((stats.succés / stats.total) * 100) : 0;
+                let displayChar = char === ' ' ? '[espace]' : char;
+                html += `<div class="bar-row">
+                    <div class="bar-label">${displayChar}</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:${taux}%"></div></div>
+                    <div class="bar-stats">${taux}% (${stats.total})</div>
+                </div>`;
+            });
+            document.getElementById("chart").innerHTML = html;
+        }
+
+        function genererTexteIA() {
+            const alphabet = Object.keys(memoireGlobale);
+            let texteGenere = "";
+            for (let i = 0; i < 100; i++) {
+                let meilleureLettre = alphabet[Math.floor(Math.random() * alphabet.length)];
+                texteGenere += meilleureLettre;
+            }
+            document.getElementById("resultat-generation").innerText = texteGenere;
+        }
+    </script>
+</body>
+</html>
