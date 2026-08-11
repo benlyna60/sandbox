@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Moniteur d'Apprentissage IA - Mémoire Persistante & Turbo</title>
+    <title>Moniteur IA - Mise à jour directe du fichier</title>
     <style>
         body {
             background-color: #121212;
@@ -119,24 +119,22 @@
 </head>
 <body>
 
-    <h1>Moniteur IA - Mémoire & Granularité</h1>
+    <h1>Moniteur IA - Mise à jour directe</h1>
     
     <div class="control-panel">
-        <button onclick="selectionnerDossier()" id="btn-dossier" style="background-color: #1b3b22; border-color: #2e7d32;">1. Choisir le dossier de sauvegarde</button>
-        
-        <label for="file-input">Importer une ancienne mémoire JSON (optionnel) :</label>
-        <input type="file" id="file-input" accept=".json" onchange="chargerMemoireJSON(event)">
+        <!-- Bouton pour cibler directement un fichier JSON existant sur l'appareil -->
+        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #1b3b22; border-color: #2e7d32;">1. Sélectionner le fichier JSON à mettre à jour</button>
 
         <label for="input-iterations">Nombre d'itérations à lancer :</label>
         <input type="number" id="input-iterations" value="5000" step="1000" min="1000">
 
-        <label for="input-frequence">Sauvegarder un JSON toutes les X itérations :</label>
+        <label for="input-frequence">Sauvegarder (écraser) dans le fichier toutes les X itérations :</label>
         <input type="number" id="input-frequence" value="1000" step="500" min="500">
 
-        <button onclick="lancerApprentissage()" style="background-color: #0d47a1; border-color: #1565c0; font-weight: bold;">2. Lancer la boucle d'apprentissage</button>
+        <button onclick="lancerApprentissage()" style="background-color: #0d47a1; border-color: #1565c0; font-weight: bold;">2. Lancer l'entraînement</button>
     </div>
     
-    <div id="status" class="status-line">Statut : Prêt. Configurez vos paramètres et lancez.</div>
+    <div id="status" class="status-line">Statut : Sélectionnez votre fichier JSON cible pour commencer.</div>
 
     <div class="chart-container" id="chart">
         <div style="color: #666; text-align: center; font-size: 0.9em;">Le classement apparaîtra ici...</div>
@@ -153,7 +151,7 @@
     </div>
 
     <script>
-        let dossierHandle = null;
+        let fichierHandle = null;
         let memoireGlobale = {
             'e': { succés: 0, total: 0 },
             'a': { succés: 0, total: 0 },
@@ -165,70 +163,66 @@
         };
         let iterationsTotalesEffectuees = 0;
 
-        async function selectionnerDossier() {
+        // Étape 1 : Sélectionner un fichier existant et charger son contenu initial
+        async function selectionnerFichierMemoire() {
             try {
-                if (!window.showDirectoryPicker) {
-                    alert("Votre navigateur ne supporte pas la sélection de dossier. Le téléchargement classique sera utilisé.");
+                if (!window.showOpenFilePicker) {
+                    alert("Votre navigateur ne supporte pas l'écriture directe dans un fichier ciblé.");
                     return;
                 }
-                dossierHandle = await window.showDirectoryPicker();
-                document.getElementById("btn-dossier").style.backgroundColor = "#2e7d32";
-                document.getElementById("btn-dossier").innerText = "✔ Dossier de sauvegarde configuré";
-            } catch (err) {
-                console.error(err);
-            }
-        }
+                const [handle] = await window.showOpenFilePicker({
+                    types: [{
+                        description: 'Fichiers JSON',
+                        accept: { 'application/json': ['.json'] }
+                    }],
+                    multiple: false
+                });
+                fichierHandle = handle;
 
-        // Charger un ancien fichier JSON pour reprendre l'entraînement
-        function chargerMemoireJSON(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
+                // Lire le contenu actuel du fichier pour récupérer la mémoire existante
+                const file = await fichierHandle.getFile();
+                const contenuTexte = await file.text();
+                if (contenuTexte.trim() !== "") {
+                    const data = JSON.parse(contenuTexte);
                     if (data.memoire_caracteres) {
                         memoireGlobale = data.memoire_caracteres;
                         iterationsTotalesEffectuees = data.iteration || 0;
-                        document.getElementById("status").innerHTML = `Statut : Ancienne mémoire chargée (Itération de départ : ${iterationsTotalesEffectuees})`;
                     }
-                } catch (err) {
-                    alert("Erreur lors de la lecture du fichier JSON.");
                 }
-            };
-            reader.readAsText(file);
+
+                document.getElementById("btn-fichier").style.backgroundColor = "#2e7d32";
+                document.getElementById("btn-fichier").innerText = "✔ Fichier lié (Prêt à être mis à jour)";
+                document.getElementById("status").innerHTML = `Statut : Fichier chargé. Cycle de départ : ${iterationsTotalesEffectuees}`;
+            } catch (err) {
+                console.error(err);
+                document.getElementById("status").innerHTML = "Statut : Sélection de fichier annulée.";
+            }
         }
 
-        async function sauvegarderMemoireJSONDirect(iterationActuelle) {
-            const contenuJSON = JSON.stringify({
-                iteration: iterationActuelle,
-                timestamp: new Date().toISOString(),
-                memoire_caracteres: memoireGlobale
-            }, null, 2);
+        // Étape 2 : Écrire (déposer) directement par-dessus le fichier lié
+        async function ecrireDirectementDansFichier(iterationActuelle) {
+            if (!fichierHandle) return;
+            try {
+                const contenuJSON = JSON.stringify({
+                    iteration: iterationActuelle,
+                    timestamp: new Date().toISOString(),
+                    memoire_caracteres: memoireGlobale
+                }, null, 2);
 
-            if (dossierHandle) {
-                try {
-                    const nomFichier = `memoire_ia_iteration_${iterationActuelle}.json`;
-                    const fichierHandle = await dossierHandle.getFileHandle(nomFichier, { create: true });
-                    const fluxEcriture = await fichierHandle.createWritable();
-                    await fluxEcriture.write(contenuJSON);
-                    await fluxEcriture.close();
-                    return;
-                } catch (err) {
-                    console.error("Erreur d'écriture directe, repli classique", err);
-                }
+                const fluxEcriture = await fichierHandle.createWritable();
+                await fluxEcriture.write(contenuJSON);
+                await fluxEcriture.close();
+            } catch (err) {
+                console.error("Erreur lors de l'écriture directe dans le fichier :", err);
             }
-
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(contenuJSON);
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `memoire_ia_iteration_${iterationActuelle}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
         }
 
         async function lancerApprentissage() {
+            if (!fichierHandle) {
+                alert("Veuillez d'abord sélectionner le fichier JSON à mettre à jour !");
+                return;
+            }
+
             const statusDiv = document.getElementById("status");
             const chartDiv = document.getElementById("chart");
             const globalFill = document.getElementById("global-fill");
@@ -263,9 +257,9 @@
                         }
                     }
 
-                    // Déclenchement de la sauvegarde selon la fréquence choisie
+                    // Mise à jour directe (écrasement propre) du même fichier toutes les X itérations
                     if (iterationsTotalesEffectuees % frequenceSauvegarde === 0) {
-                        await sauvegarderMemoireJSONDirect(iterationsTotalesEffectuees);
+                        await ecrireDirectementDansFichier(iterationsTotalesEffectuees);
                     }
 
                     let articlesConsommesSimules = iterationsTotalesEffectuees * 2;
@@ -283,7 +277,7 @@
 
                     scores.sort((a, b) => b.taux - a.taux);
 
-                    statusDiv.innerHTML = `Entraînement en cours | Total cumulé : ${iterationsTotalesEffectuees} cycles`;
+                    statusDiv.innerHTML = `Entraînement en cours | Total cumulé : ${iterationsTotalesEffectuees} cycles (Fichier mis à jour en direct)`;
 
                     let htmlBarres = "";
                     scores.forEach(item => {
@@ -300,11 +294,12 @@
                     });
                     chartDiv.innerHTML = htmlBarres;
 
-                    // Pause ultra-courte (1ms) pour cracher un maximum de calculs si vous avez du temps
                     await new Promise(resolve => setTimeout(resolve, 1));
                 }
 
-                statusDiv.innerHTML = `Séquence terminée. Total cumulé atteint : ${iterationsTotalesEffectuees} cycles.`;
+                // Sauvegarde finale à la fin de la séquence
+                await ecrireDirectementDansFichier(iterationsTotalesEffectuees);
+                statusDiv.innerHTML = `Séquence terminée. Fichier mis à jour avec succès (Total : ${iterationsTotalesEffectuees} cycles).`;
 
             } catch (error) {
                 statusDiv.innerHTML = `Erreur : ${error.message}`;
