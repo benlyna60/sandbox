@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Moniteur IA - Mise à jour directe du fichier</title>
+    <title>Moniteur IA - Multi-Sources Automatisé</title>
     <style>
         body {
             background-color: #121212;
@@ -119,22 +119,21 @@
 </head>
 <body>
 
-    <h1>Moniteur IA - Mise à jour directe</h1>
+    <h1>Moniteur IA - Multi-Sources Automatisé</h1>
     
     <div class="control-panel">
-        <!-- Bouton pour cibler directement un fichier JSON existant sur l'appareil -->
-        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #1b3b22; border-color: #2e7d32;">1. Sélectionner le fichier JSON à mettre à jour</button>
+        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #1b3b22; border-color: #2e7d32;">1. Sélectionner le fichier JSON existant</button>
 
-        <label for="input-iterations">Nombre d'itérations à lancer :</label>
-        <input type="number" id="input-iterations" value="5000" step="1000" min="1000">
+        <label for="input-iterations">Itérations totales pour ce cycle :</label>
+        <input type="number" id="input-iterations" value="15000" step="5000" min="1000">
 
-        <label for="input-frequence">Sauvegarder (écraser) dans le fichier toutes les X itérations :</label>
+        <label for="input-frequence">Sauvegarder en direct dans le JSON toutes les X itérations :</label>
         <input type="number" id="input-frequence" value="1000" step="500" min="500">
 
-        <button onclick="lancerApprentissage()" style="background-color: #0d47a1; border-color: #1565c0; font-weight: bold;">2. Lancer l'entraînement</button>
+        <button onclick="lancerEntrainementMultiSources()" style="background-color: #0d47a1; border-color: #1565c0; font-weight: bold;">2. Lancer l'entraînement multi-sources</button>
     </div>
     
-    <div id="status" class="status-line">Statut : Sélectionnez votre fichier JSON cible pour commencer.</div>
+    <div id="status" class="status-line">Statut : Sélectionnez votre fichier JSON pour lier la mémoire.</div>
 
     <div class="chart-container" id="chart">
         <div style="color: #666; text-align: center; font-size: 0.9em;">Le classement apparaîtra ici...</div>
@@ -142,7 +141,7 @@
 
     <div class="global-progress-wrapper">
         <div class="global-info">
-            <span id="global-text">Progression globale (Module FR : 2,77M articles)</span>
+            <span id="global-text">Progression globale (Multi-sources)</span>
             <span id="global-percent">0.0000%</span>
         </div>
         <div class="global-track">
@@ -163,23 +162,25 @@
         };
         let iterationsTotalesEffectuees = 0;
 
-        // Étape 1 : Sélectionner un fichier existant et charger son contenu initial
+        // Liste des sources à enchaîner automatiquement
+        const sourcesTextuelles = [
+            { nom: "Wikipédia", url: "https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Intelligence_artificielle&format=json&origin=*" },
+            { nom: "Wiktionnaire", url: "https://fr.wiktionnaire.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Français&format=json&origin=*" },
+            { nom: "Gutenberg (Simulé/Littéraire)", url: "https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Littérature_française&format=json&origin=*" }
+        ];
+
         async function selectionnerFichierMemoire() {
             try {
                 if (!window.showOpenFilePicker) {
-                    alert("Votre navigateur ne supporte pas l'écriture directe dans un fichier ciblé.");
+                    alert("Votre navigateur ne supporte pas l'écriture directe ciblée.");
                     return;
                 }
                 const [handle] = await window.showOpenFilePicker({
-                    types: [{
-                        description: 'Fichiers JSON',
-                        accept: { 'application/json': ['.json'] }
-                    }],
+                    types: [{ description: 'Fichiers JSON', accept: { 'application/json': ['.json'] } }],
                     multiple: false
                 });
                 fichierHandle = handle;
 
-                // Lire le contenu actuel du fichier pour récupérer la mémoire existante
                 const file = await fichierHandle.getFile();
                 const contenuTexte = await file.text();
                 if (contenuTexte.trim() !== "") {
@@ -191,15 +192,14 @@
                 }
 
                 document.getElementById("btn-fichier").style.backgroundColor = "#2e7d32";
-                document.getElementById("btn-fichier").innerText = "✔ Fichier lié (Prêt à être mis à jour)";
-                document.getElementById("status").innerHTML = `Statut : Fichier chargé. Cycle de départ : ${iterationsTotalesEffectuees}`;
+                document.getElementById("btn-fichier").innerText = "✔ Fichier de mémoire lié";
+                document.getElementById("status").innerHTML = `Statut : Mémoire chargée (Reprise au cycle : ${iterationsTotalesEffectuees})`;
             } catch (err) {
                 console.error(err);
-                document.getElementById("status").innerHTML = "Statut : Sélection de fichier annulée.";
+                document.getElementById("status").innerHTML = "Statut : Sélection annulée.";
             }
         }
 
-        // Étape 2 : Écrire (déposer) directement par-dessus le fichier lié
         async function ecrireDirectementDansFichier(iterationActuelle) {
             if (!fichierHandle) return;
             try {
@@ -213,13 +213,13 @@
                 await fluxEcriture.write(contenuJSON);
                 await fluxEcriture.close();
             } catch (err) {
-                console.error("Erreur lors de l'écriture directe dans le fichier :", err);
+                console.error("Erreur d'écriture :", err);
             }
         }
 
-        async function lancerApprentissage() {
+        async function lancerEntrainementMultiSources() {
             if (!fichierHandle) {
-                alert("Veuillez d'abord sélectionner le fichier JSON à mettre à jour !");
+                alert("Veuillez d'abord lier votre fichier JSON de mémoire !");
                 return;
             }
 
@@ -228,78 +228,80 @@
             const globalFill = document.getElementById("global-fill");
             const globalPercent = document.getElementById("global-percent");
             
-            const maxIterations = parseInt(document.getElementById("input-iterations").value) || 5000;
+            const maxIterationsTotal = parseInt(document.getElementById("input-iterations").value) || 15000;
             const frequenceSauvegarde = parseInt(document.getElementById("input-frequence").value) || 1000;
+            const alphabet = Object.keys(memoireGlobale);
+            const totalArticlesWiki = 2770000;
 
-            statusDiv.innerHTML = "Connexion à Wikipédia...";
+            let iterationsParSource = Math.ceil(maxIterationsTotal / sourcesTextuelles.length);
+            let globalCounter = 0;
 
             try {
-                const url = "https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&titles=Intelligence_artificielle&format=json&origin=*";
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                const pages = data.query.pages;
-                const pageId = Object.keys(pages)[0];
-                const texteBrut = pages[pageId].extract || "";
+                for (let s = 0; s < sourcesTextuelles.length; s++) {
+                    let sourceActuelle = sourcesTextuelles[s];
+                    statusDiv.innerHTML = `Connexion à la source [${sourceActuelle.nom}]...`;
 
-                const alphabet = Object.keys(memoireGlobale);
-                const totalArticlesWiki = 2770000;
+                    const response = await fetch(sourceActuelle.url);
+                    const data = await response.json();
+                    const pages = data.query.pages;
+                    const pageId = Object.keys(pages)[0];
+                    const texteBrut = pages[pageId].extract || "texte par défaut";
 
-                for (let i = 0; i < maxIterations; i++) {
-                    iterationsTotalesEffectuees++;
-                    let charActuel = texteBrut[i % texteBrut.length] || ' ';
-                    let prediction = alphabet[Math.floor(Math.random() * alphabet.length)];
+                    for (let i = 0; i < iterationsParSource && globalCounter < maxIterationsTotal; i++) {
+                        iterationsTotalesEffectuees++;
+                        globalCounter++;
 
-                    if (memoireGlobale[charActuel]) {
-                        memoireGlobale[charActuel].total++;
-                        if (prediction === charActuel) {
-                            memoireGlobale[charActuel].succés++;
+                        let charActuel = texteBrut[i % texteBrut.length] || ' ';
+                        let prediction = alphabet[Math.floor(Math.random() * alphabet.length)];
+
+                        if (memoireGlobale[charActuel]) {
+                            memoireGlobale[charActuel].total++;
+                            if (prediction === charActuel) {
+                                memoireGlobale[charActuel].succés++;
+                            }
                         }
-                    }
 
-                    // Mise à jour directe (écrasement propre) du même fichier toutes les X itérations
-                    if (iterationsTotalesEffectuees % frequenceSauvegarde === 0) {
-                        await ecrireDirectementDansFichier(iterationsTotalesEffectuees);
-                    }
+                        if (iterationsTotalesEffectuees % frequenceSauvegarde === 0) {
+                            await ecrireDirectementDansFichier(iterationsTotalesEffectuees);
+                        }
 
-                    let articlesConsommesSimules = iterationsTotalesEffectuees * 2;
-                    let ratioGlobal = (articlesConsommesSimules / totalArticlesWiki) * 100;
-                    if (ratioGlobal > 100) ratioGlobal = 100;
+                        let ratioGlobal = ((iterationsTotalesEffectuees * 2) / totalArticlesWiki) * 100;
+                        if (ratioGlobal > 100) ratioGlobal = 100;
 
-                    globalFill.style.width = ratioGlobal.toFixed(4) + "%";
-                    globalPercent.innerHTML = ratioGlobal.toFixed(4) + "%";
+                        globalFill.style.width = ratioGlobal.toFixed(4) + "%";
+                        globalPercent.innerHTML = ratioGlobal.toFixed(4) + "%";
 
-                    let scores = Object.keys(memoireGlobale).map(char => {
-                        let dataChar = memoireGlobale[char];
-                        let taux = dataChar.total > 0 ? Math.round((dataChar.succés / dataChar.total) * 100) : 0;
-                        return { char: char === ' ' ? '[espace]' : char, taux: taux };
-                    });
+                        let scores = Object.keys(memoireGlobale).map(char => {
+                            let dataChar = memoireGlobale[char];
+                            let taux = dataChar.total > 0 ? Math.round((dataChar.succés / dataChar.total) * 100) : 0;
+                            return { char: char === ' ' ? '[espace]' : char, taux: taux };
+                        });
 
-                    scores.sort((a, b) => b.taux - a.taux);
+                        scores.sort((a, b) => b.taux - a.taux);
 
-                    statusDiv.innerHTML = `Entraînement en cours | Total cumulé : ${iterationsTotalesEffectuees} cycles (Fichier mis à jour en direct)`;
+                        statusDiv.innerHTML = `Source : ${sourceActuelle.nom} | Cycle global : ${iterationsTotalesEffectuees}`;
 
-                    let htmlBarres = "";
-                    scores.forEach(item => {
-                        let labelAffichage = item.char === '.' ? '[point]' : item.char;
-                        htmlBarres += `
-                            <div class="bar-row">
-                                <div class="bar-label">${labelAffichage}</div>
-                                <div class="bar-track">
-                                    <div class="bar-fill" style="width: ${item.taux}%;"></div>
+                        let htmlBarres = "";
+                        scores.forEach(item => {
+                            let labelAffichage = item.char === '.' ? '[point]' : item.char;
+                            htmlBarres += `
+                                <div class="bar-row">
+                                    <div class="bar-label">${labelAffichage}</div>
+                                    <div class="bar-track">
+                                        <div class="bar-fill" style="width: ${item.taux}%;"></div>
+                                    </div>
+                                    <div class="bar-value">${item.taux}%</div>
                                 </div>
-                                <div class="bar-value">${item.taux}%</div>
-                            </div>
-                        `;
-                    });
-                    chartDiv.innerHTML = htmlBarres;
+                            `;
+                        });
+                        chartDiv.innerHTML = htmlBarres;
 
-                    await new Promise(resolve => setTimeout(resolve, 1));
+                        await new Promise(resolve => setTimeout(resolve, 1));
+                    }
                 }
 
-                // Sauvegarde finale à la fin de la séquence
                 await ecrireDirectementDansFichier(iterationsTotalesEffectuees);
-                statusDiv.innerHTML = `Séquence terminée. Fichier mis à jour avec succès (Total : ${iterationsTotalesEffectuees} cycles).`;
+                statusDiv.innerHTML = `Cycle multi-sources terminé. Total cumulé : ${iterationsTotalesEffectuees} cycles enregistrés.`;
 
             } catch (error) {
                 statusDiv.innerHTML = `Erreur : ${error.message}`;
