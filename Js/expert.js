@@ -2,53 +2,58 @@
  * Module Expert - Unité d'apprentissage autonome et décentralisée
  */
 export class Expert {
-    constructor(nom, domaine) {
-        this.nom = nom;                 // Ex: "Expert Langue", "Expert Code", "Expert Personnel"
-        this.domaine = domaine;         // Description de son domaine spécifique
-        this.poids = {};                // Matrice de probabilités et liaisons (PAS de texte brut)
-        this.timerApprentissage = null; // Pour gérer le mode veille
+    constructor(id, nom, domaine, cat, wikiLang, isRtl) {
+        this.id = id;
+        this.nom = nom;                 
+        this.domaine = domaine;         
+        this.cat = cat;
+        this.wikiLang = wikiLang || 'fr';
+        this.isRtl = isRtl || false;
+        this.poids = {};                
+        this.timerApprentissage = null; 
         this.enVeille = false;
+        this.handle = null;             // Handle pour l'API File System Access
+        this.dernierTexte = "En attente...";
+        this.chart = null;
     }
 
     /**
      * 1. LE MODE VEILLE (Apprentissage aléatoire autonome)
-     * Tourne en boucle tant que tu n'écris rien.
      */
-    lancerApprentissageAléatoire(sourceDonneesSimulee) {
+    lancerApprentissage() {
         if (this.enVeille) return;
         this.enVeille = true;
         
-        console.log(`[${this.nom}] Entre en mode veille : début de l'apprentissage autonome.`);
+        const dot = document.getElementById(`dot-${this.id}`);
+        if (dot) dot.className = "status-dot active";
 
-        // Simule une boucle d'entraînement en arrière-plan (toutes les 4 secondes)
         this.timerApprentissage = setInterval(() => {
-            // Dans la vraie vie, il va chercher un mot/concept dans sa source (ex: Wikipédia ou tes notes)
-            let conceptAleatoire = this.genererConceptAleatoire(sourceDonneesSimulee);
+            let conceptAleatoire = this.genererConceptAleatoire();
             this.mettreAJourPoids(conceptAleatoire, 1);
+            this.mettreAJourUI();
         }, 4000);
     }
 
     /**
-     * 2. L'INTERRUPTION INSTANTANÉÉ (Dès que tu tapes une lettre)
+     * 2. ARRÊT DE L'APPRENTISSAGE
      */
-    stopApprentissage() {
+    arreterApprentissage() {
         if (!this.enVeille) return;
         this.enVeille = false;
         clearInterval(this.timerApprentissage);
-        console.log(`[${this.nom}] Interruption immédiate : Prêt pour l'analyse.`);
+        
+        const dot = document.getElementById(`dot-${this.id}`);
+        if (dot) dot.className = "status-dot paused";
     }
 
     /**
-     * 3. L'ANALYSE DE TA REQUÊTE
-     * Confronte ton texte à sa matrice de poids (sans stocker ton texte)
+     * 3. L'ANALYSE DE LA REQUÊTE
      */
     analyser(texteUtilisateur) {
-        // Découpe ton texte en mots clés
         let mots = texteUtilisateur.toLowerCase().split(/\s+/);
         let scorePertinence = 0;
         let associationTrouvee = "";
 
-        // Utilise ses "poids" mathématiques pour évaluer sa réponse dans son domaine
         mots.forEach(mot => {
             if (this.poids[mot]) {
                 scorePertinence += this.poids[mot];
@@ -56,7 +61,6 @@ export class Expert {
             }
         });
 
-        // Retourne une brique de réflexion propre à son domaine
         return {
             expert: this.nom,
             domaine: this.domaine,
@@ -68,12 +72,46 @@ export class Expert {
     }
 
     /**
-     * 4. LA CORRECTION (RLHF Maison)
-     * Quand tu corriges une réponse, on met à jour les poids, jamais le texte brut.
+     * Génère un texte de simulation pour le zoom / génération
      */
-    integrerCorrection(motCle, forceLiaison) {
-        this.mettreAJourPoids(motCle, forceLiaison);
-        console.log(`[${this.nom}] Poids mis à jour suite à votre correction.`);
+    genererTexte() {
+        const concepts = Object.keys(this.poids);
+        if (concepts.length === 0) {
+            this.dernierTexte = `[${this.nom}] Aucune donnée en mémoire. Lancez l'apprentissage ou liez un fichier JSON.`;
+        } else {
+            let sample = concepts[Math.floor(Math.random() * concepts.length)];
+            this.dernierTexte = `[${this.nom}] Analyse active sur le vecteur central : "${sample}" (Poids cumulé : ${this.poids[sample]}).`;
+        }
+        
+        const out = document.getElementById(`out-${this.id}`);
+        if (out) out.textContent = this.dernierTexte;
+    }
+
+    /**
+     * 4. LIAISON FICHIER LOCAL (File System Access API)
+     */
+    async lierFichier() {
+        try {
+            // Si le dossier global n'a pas été choisi, on permet de lier un fichier unique
+            const [fileHandle] = await window.showOpenFilePicker({
+                types: [{ description: 'Fichiers JSON', accept: { 'application/json': ['.json'] } }]
+            });
+            this.handle = fileHandle;
+            const file = await fileHandle.getFile();
+            const text = await file.text();
+            if (text) {
+                const json = JSON.parse(text);
+                this.poids = json.memoire_paires || json.poids || {};
+                this.mettreAJourUI();
+            }
+            
+            const btn = document.getElementById(`btn-file-${this.id}`);
+            if (btn) btn.innerText = "✔ Lié";
+            const dot = document.getElementById(`dot-${this.id}`);
+            if (dot) dot.className = "status-dot ready";
+        } catch (err) {
+            console.log("Liaison fichier annulée", err);
+        }
     }
 
     // --- Fonctions utilitaires internes ---
@@ -81,23 +119,100 @@ export class Expert {
         if (!this.poids[cle]) {
             this.poids[cle] = 0;
         }
-        this.poids[cle] += valeur; // Renforce la connexion neuronale statistique
+        this.poids[cle] += valeur;
+        
+        // Sauvegarde automatique si un handle de fichier existe
+        this.sauvegarderFichier();
     }
 
-    genererConceptAleatoire(source) {
-        // Simulation d'extraction d'un terme du domaine
-        const exemples = ["structure", "logique", "flux", "donnée", "syntaxe", "optimisation"];
+    async sauvegarderFichier() {
+        if (!this.handle) return;
+        try {
+            const writable = await this.handle.createWritable();
+            await writable.write(this.exporterPoidsJSON());
+            await writable.close();
+        } catch (err) {
+            console.error("Erreur lors de l'écriture automatique du fichier :", err);
+        }
+    }
+
+    genererConceptAleatoire() {
+        const exemples = ["structure", "logique", "flux", "donnée", "syntaxe", "optimisation", "matrice", "réseau", "index"];
         return exemples[Math.floor(Math.random() * exemples.length)];
     }
 
-    /**
-     * Exporte les poids au format JSON pour les sauvegarder sur ton disque/GitHub
-     */
+    mettreAJourUI() {
+        const totalRacines = Object.keys(this.poids).length;
+        let totalConnexions = Object.values(this.poids).reduce((a, b) => a + b, 0);
+
+        const badge = document.getElementById(`badge-${this.id}`);
+        if (badge) badge.innerText = `${totalRacines} racines`;
+
+        const metricTxt = document.getElementById(`metric-txt-${this.id}`);
+        if (metricTxt) metricTxt.innerText = totalConnexions;
+
+        const ringValue = document.getElementById(`ring-value-${this.id}`);
+        const ring = document.getElementById(`ring-${this.id}`);
+        if (ringValue && ring) {
+            let pct = Math.min(totalConnexions * 2, 100);
+            ringValue.innerText = `${pct}%`;
+            ring.style.setProperty('--pct', pct);
+        }
+
+        const densite = document.getElementById(`densite-${this.id}`);
+        if (densite) densite.innerText = totalRacines > 0 ? (totalConnexions / totalRacines).toFixed(1) : 0;
+
+        const entropie = document.getElementById(`entropie-${this.id}`);
+        if (entropie) entropie.innerText = totalRacines;
+
+        // Mise à jour du graphique Chart.js s'il existe
+        this.mettreAJourGraphique();
+    }
+
+    mettreAJourGraphique() {
+        const canvas = document.getElementById(`chart-${this.id}`);
+        if (!canvas) return;
+
+        const labels = Object.keys(this.poids).slice(-6);
+        const dataValues = Object.values(this.poids).slice(-6);
+
+        if (this.chart) {
+            this.chart.data.labels = labels;
+            this.chart.data.datasets[0].data = dataValues;
+            this.chart.update('none');
+        } else {
+            this.chart = new Chart(canvas, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dataValues,
+                        borderColor: '#00d9ff',
+                        borderWidth: 1.5,
+                        pointRadius: 2,
+                        tension: 0.3,
+                        fill: true,
+                        backgroundColor: 'rgba(0, 217, 255, 0.05)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { display: false },
+                        y: { display: false }
+                    }
+                }
+            });
+        }
+    }
+
     exporterPoidsJSON() {
         return JSON.stringify({
             nom: this.nom,
             domaine: this.domaine,
-            poids: this.poids
+            memoire_paires: this.poids
         }, null, 2);
     }
 }
