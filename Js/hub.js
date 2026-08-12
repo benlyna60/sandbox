@@ -1,7 +1,7 @@
 /**
  * Hub Central - Le chef d'orchestre
  */
-class HubCentral {
+export class HubCentral {
     constructor() {
         this.experts = [];
         this.estEnVeille = true;
@@ -36,17 +36,27 @@ class HubCentral {
         }
     }
 
+    // Méthodes alias pour correspondre aux appels de l'interface graphique index.html
+    interrompreVeille() {
+        this.surFrappeClavier();
+    }
+
+    reprendreVeille() {
+        this.surChampVide();
+    }
+
     // Le cœur du traitement
     processerMessage(texte) {
-        // 1. Demande à chaque expert d'analyser le texte selon ses poids
         let resultats = this.experts.map(expert => expert.analyser(texte));
-
-        // 2. Synthèse (Le Hub rassemble les briques pour formuler la réponse)
         return this.synthetiserReponses(resultats);
     }
 
+    // Alias pour correspondre aux appels de l'interface index.html
+    processerRequete(texte) {
+        return this.processerMessage(texte);
+    }
+
     synthetiserReponses(resultats) {
-        // Pour l'instant, on crée une réponse structurée à partir des réflexions
         let reponse = "Réflexion du système : \n";
         resultats.forEach(res => {
             reponse += `- [${res.expert}] : ${res.reflexion}\n`;
