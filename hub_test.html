@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hub Central Ultime — Usine IA &amp; Langues</title>
+    <title>Hub Central Ultime — Usine IA &amp; Langues (15 Experts)</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -174,7 +174,7 @@
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 14px;
             margin-bottom: 16px;
-            max-height: 280px;
+            max-height: 300px;
             overflow-y: auto;
             padding-right: 4px;
         }
@@ -331,7 +331,7 @@
 <body onload="initAllModules()">
 
     <div class="hero">
-        <div class="hero-eyebrow">Système en écoute · apprentissage continu</div>
+        <div class="hero-eyebrow">Système en écoute · apprentissage continu (15 Experts)</div>
         <h1>Hub Central Ultime — Usine IA &amp; Langues</h1>
     </div>
 
@@ -378,10 +378,10 @@
 
     <!-- Barre de filtrage -->
     <div class="filter-bar">
-        <button class="filter-btn active" onclick="filtrerModules('tous', this)">📁 Tous les modules</button>
+        <button class="filter-btn active" onclick="filtrerModules('tous', this)">📁 Tous les modules (15)</button>
         <button class="filter-btn" onclick="filtrerModules('code', this)">💻 Langages de Code</button>
-        <button class="filter-btn" onclick="filtrerModules('langue', this)">🌍 Arabe, Français & Livres</button>
-        <button class="filter-btn" onclick="filtrerModules('archives', this)">📚 Archives Publiques</button>
+        <button class="filter-btn" onclick="filtrerModules('langue', this)">🌍 Langues, Littérature & Poésie</button>
+        <button class="filter-btn" onclick="filtrerModules('archives', this)">📚 Archives, Sciences & Domaines</button>
     </div>
 
     <div class="grid" id="hub-container"></div>
@@ -396,7 +396,7 @@
 
 <script>
     const modulesConfig = [
-        // Langages de Code
+        // --- Langages de Code ---
         { id: "python", nom: "Python", cat: "code", dbName: "HubDB_Python", keyName: "pyKey", type: "wiki", wikiLang: "en" },
         { id: "javascript", nom: "JavaScript", cat: "code", dbName: "HubDB_JS", keyName: "jsKey", type: "wiki", wikiLang: "en" },
         { id: "cpp", nom: "C++", cat: "code", dbName: "HubDB_CPP", keyName: "cppKey", type: "wiki", wikiLang: "en" },
@@ -405,7 +405,7 @@
         { id: "java", nom: "Java", cat: "code", dbName: "HubDB_Java", keyName: "javaKey", type: "wiki", wikiLang: "en" },
         { id: "php", nom: "PHP", cat: "code", dbName: "HubDB_PHP", keyName: "phpKey", type: "wiki", wikiLang: "en" },
         
-        // Modules Langues & Livres
+        // --- Langues, Littérature & Poésie ---
         { 
             id: "arabe", 
             nom: "Arabe (V2)", 
@@ -425,8 +425,35 @@
             type: "wiki", 
             wikiLang: "fr"
         },
+        { 
+            id: "poesie", 
+            nom: "Poésie Métrique", 
+            cat: "langue", 
+            dbName: "HubDB_Poesie", 
+            keyName: "poesieKey", 
+            type: "wiki", 
+            wikiLang: "fr" 
+        },
 
-        // Modules Archives Publiques
+        // --- Archives, Sciences & Domaines Spécifiques ---
+        { 
+            id: "maths", 
+            nom: "Mathématiques", 
+            cat: "archives", 
+            dbName: "HubDB_Maths", 
+            keyName: "mathsKey", 
+            type: "wiki", 
+            wikiLang: "en" 
+        },
+        { 
+            id: "droit", 
+            nom: "Droit & Réglementation", 
+            cat: "archives", 
+            dbName: "HubDB_Droit", 
+            keyName: "droitKey", 
+            type: "wiki", 
+            wikiLang: "fr" 
+        },
         { 
             id: "gutenberg", 
             nom: "Project Gutenberg (Classiques)", 
@@ -448,7 +475,7 @@
         },
         { 
             id: "philo", 
-            nom: "Philosophie & Essais", 
+            nom: "Philosophie & Essais (Filo)", 
             cat: "archives", 
             dbName: "HubDB_Philo", 
             keyName: "philoKey", 
@@ -461,7 +488,7 @@
     const appState = {};
     let categorieActuelle = 'tous';
     const catColors = { code: '#00d9ff', langue: '#ffb000', archives: '#b47cff' };
-    const catLabels = { code: 'Code', langue: 'Langue', archives: 'Archives' };
+    const catLabels = { code: 'Code', langue: 'Langue & Poésie', archives: 'Archives & Sciences' };
     const chartInstances = {};
 
     function calculerEntropie(memoire) {
@@ -678,7 +705,7 @@
         let globalIterations = 0;
         let globalActifs = 0;
         let parCategorie = { code: 0, langue: 0, archives: 0 };
-        let maxCibleGlobal = 100000;
+        let maxCibleGlobal = 150000;
 
         modulesConfig.forEach(mod => {
             let state = appState[mod.id];
