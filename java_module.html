@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>IA Mobile : Module Java</title>
+    <style>
+        body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 15px; max-width: 700px; margin: auto; }
+        .panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 15px; }
+        button { background-color: #333; color: #fff; border: 1px solid #555; padding: 12px; cursor: pointer; width: 100%; margin-bottom: 8px; border-radius: 4px; font-weight: bold; }
+        .output-box { background-color: #000; color: #ff9800; padding: 15px; border-radius: 4px; font-size: 1.1em; min-height: 100px; border: 1px solid #444; white-space: pre-wrap; }
+    </style>
+</head>
+<body onload="initApp()">
+    <h1>IA Mobile : Module Java</h1>
+    <div class="panel">
+        <button onclick="selectionnerFichier()" id="btn-fichier">Lier fichier (java.json)</button>
+        <button onclick="lancerEntrainement()" style="background-color: #ff9800; color: #000;">Lancer Apprentissage Java</button>
+        <button onclick="arreterEntrainement()" style="background-color: #b71c1c; color: #fff;">Pause</button>
+    </div>
+    <div class="output-box" id="resultat">En attente...</div>
+
+    <script>
+        let fichierHandle = null;
+        let memoirePaires = {};
+        let enCours = false;
+        const sujets = ["Java (programming language)", "Java Virtual Machine", "Object-oriented programming", "Java Class Library"];
+
+        async function ouvrirBDD() {
+            return new Promise(res => {
+                const req = indexedDB.open("MonAppDB_Java", 1);
+                req.onupgradeneeded = () => req.result.createObjectStore("handles");
+                req.onsuccess = () => res(req.result);
+            });
+        }
+        
+        async function selectionnerFichier() {
+            [fichierHandle] = await window.showOpenFilePicker();
+            const db = await ouvrirBDD();
+            db.transaction("handles", "readwrite").objectStore("handles").put(fichierHandle, "javaKey");
+            document.getElementById("btn-fichier").innerText = "Fichier lié.";
+        }
+
+        async function initApp() {
+            const db = await ouvrirBDD();
+            fichierHandle = await new Promise(res => {
+                const req = db.transaction("handles").objectStore("handles").get("javaKey");
+                req.onsuccess = () => res(req.result);
+            });
+        }
+        
+        async function lancerEntrainement() {
+            enCours = true;
+            while(enCours) {
+                let sujet = sujets[Math.floor(Math.random() * sujets.length)];
+                const res = await fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=${encodeURIComponent(sujet)}&format=json&origin=*`).then(r => r.json());
+                const texte = Object.values(res.query.pages)[0].extract || "";
+                
+                for (let i = 0; i < texte.length - 1; i++) {
+                    let a = texte[i], b = texte[i+1];
+                    if (!memoirePaires[a]) memoirePaires[a] = {};
+                    memoirePaires[a][b] = (memoirePaires[a][b] || 0) + 1;
+                }
+                
+                if(fichierHandle) {
+                    const writable = await fichierHandle.createWritable();
+                    await writable.write(JSON.stringify(memoirePaires, null, 2));
+                    await writable.close();
+                }
+                await new Promise(r => setTimeout(r, 4000));
+            }
+        }
+        function arreterEntrainement() { enCours = false; }
+    </script>
+</body>
+</html>
