@@ -1,7 +1,8 @@
 /**
  * Module Expert - Unité d'apprentissage autonome et décentralisée
  */
-class Expert {
+export class Expert {
+
     constructor(nom, domaine) {
         this.nom = nom;                 // Ex: "Expert Langue", "Expert Code", "Expert Personnel"
         this.domaine = domaine;         // Description de son domaine spécifique
