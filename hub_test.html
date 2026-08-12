@@ -56,7 +56,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .mode-btn-group { display: flex; gap: 10px; }
+        .mode-btn-group { display: flex; gap: 10px; align-items: center; }
         .mode-btn {
             background: var(--panel-alt);
             color: var(--text-dim);
@@ -203,8 +203,9 @@
     <div class="mode-switcher">
         <h1>Hub Central Unifié</h1>
         <div class="mode-btn-group">
-            <button class="mode-btn active" id="btn-view-modules" onclick="basculerVue('modules')">⚙️ Vue Modules (Experts)</button>
-            <button class="mode-btn" id="btn-view-chat" onclick="basculerVue('chat')">💬 Interface Système & Chat</button>
+            <button class="mode-btn" onclick="selectionnerDossierRacine()" style="border-color: var(--cyan); color: var(--cyan);">📂 Dossier JSON</button>
+            <button class="mode-btn active" id="btn-view-modules" onclick="basculerVue('modules')">⚙️ Vue Modules</button>
+            <button class="mode-btn" id="btn-view-chat" onclick="basculerVue('chat')">💬 Chat Système</button>
         </div>
     </div>
 
@@ -212,8 +213,8 @@
         <div class="filter-bar">
             <button class="filter-btn active" onclick="filtrerModules('tous', this)">📁 Tous</button>
             <button class="filter-btn" onclick="filtrerModules('code', this)">💻 Code</button>
-            <button class="filter-btn" onclick="filtrerModules('langue', this)">🌍 Langues & Poésie</button>
-            <button class="filter-btn" onclick="filtrerModules('archives', this)">📚 Archives & Sciences</button>
+            <button class="filter-btn" onclick="filtrerModules('langue', this)">🌍 Langues</button>
+            <button class="filter-btn" onclick="filtrerModules('archives', this)">📚 Archives</button>
         </div>
         <div class="grid" id="hub-container"></div>
     </div>
@@ -229,7 +230,7 @@
             <div id="main-chat-content">
                 <div class="chat-messages" id="chat-output">
                     <div style="color: var(--text-dim); text-align: center; margin-top: 30px; font-size: 12px;">
-                        Système prêt. Posez votre question ou interrogez les bases de données connectées.
+                        Système prêt. Posez votre question ou interrogez les modules connectés.
                     </div>
                 </div>
                 <div class="chat-input-area">
@@ -244,24 +245,51 @@
         <div class="modal-content" id="modal-inner-content" onclick="event.stopPropagation()"></div>
     </div>
 
-    <!-- Import de ton registre séparé -->
     <script type="module">
+        import { HubCentral } from './hub.js';
+        import { Expert } from './expert.js';
         import { MODULES_REGISTRY, CATEGORIES_CONFIG } from './modules.registry.js';
 
-        window.modulesConfig = MODULES_REGISTRY;
-        window.catColors = { code: '#00d9ff', langue: '#ffb000', archives: '#b47cff' };
-
+        const hub = new HubCentral();
         window.appState = {};
         window.categorieActuelle = 'tous';
+        let dossierRacineHandle = null;
 
-        // Initialisation globale
         window.initHub = function() {
-            window.modulesConfig.forEach(mod => {
-                window.appState[mod.id] = { handle: null, memoire: {}, iterations: 0, enCours: false, dernierTexte: "Aucun test." };
-                window.restaurerHandle(mod);
+            MODULES_REGISTRY.forEach(modData => {
+                const expert = new Expert(modData.id, modData.nom, modData.domaine, modData.cat, modData.wikiLang, modData.isRtl);
+                hub.ajouterExpert(expert);
+                window.appState[modData.id] = expert;
             });
             window.renderGrilleModules();
             window.renderSidebarModules();
+        };
+
+        window.selectionnerDossierRacine = async function() {
+            try {
+                dossierRacineHandle = await window.showDirectoryPicker();
+                alert("Dossier des experts sélectionné avec succès !");
+
+                for (const [id, exp] of Object.entries(window.appState)) {
+                    const nomFichier = `${id}-memoire.json`;
+                    const fichierHandle = await dossierRacineHandle.getFileHandle(nomFichier, { create: true });
+                    exp.handle = fichierHandle;
+                    
+                    const file = await fichierHandle.getFile();
+                    const text = await file.text();
+                    if (text) {
+                        const json = JSON.parse(text);
+                        exp.poids = json.memoire_paires || {};
+                        exp.mettreAJourUI();
+                    }
+                    const btn = document.getElementById(`btn-file-${id}`);
+                    if(btn) btn.innerText = "✔ Lié";
+                    const dot = document.getElementById(`dot-${id}`);
+                    if(dot) dot.className = "status-dot ready";
+                }
+            } catch (err) {
+                console.log("Sélection de dossier annulée :", err);
+            }
         };
 
         window.basculerVue = function(vue) {
@@ -274,24 +302,14 @@
         window.renderSidebarModules = function() {
             const list = document.getElementById('sidebar-modules-list');
             list.innerHTML = "";
-            window.modulesConfig.forEach(mod => {
+            hub.experts.forEach(exp => {
                 const item = document.createElement('div');
-                item.style.padding = '8px 10px';
-                item.style.margin = '3px 0';
-                item.style.borderRadius = '6px';
-                item.style.cursor = 'pointer';
-                item.style.fontSize = '11px';
-                item.style.display = 'flex';
-                item.style.justifyContent = 'space-between';
-                item.style.alignItems = 'center';
-                item.style.background = 'var(--panel)';
-                item.style.border = '1px solid var(--hair-soft)';
-                
-                const color = CATEGORIES_CONFIG[mod.cat]?.color || '#fff';
-                item.innerHTML = `<span>${mod.nom}</span> <span style="font-size:8px; background:${color}; color:#000; padding:2px 5px; border-radius:4px; font-weight:bold;">${mod.cat}</span>`;
+                item.style.cssText = "padding:8px 10px; margin:3px 0; border-radius:6px; cursor:pointer; font-size:11px; display:flex; justify-content:space-between; align-items:center; background:var(--panel); border:1px solid var(--hair-soft);";
+                const color = CATEGORIES_CONFIG[exp.cat]?.color || '#fff';
+                item.innerHTML = `<span>${exp.nom}</span> <span style="font-size:8px; background:${color}; color:#000; padding:2px 5px; border-radius:4px; font-weight:bold;">${exp.cat}</span>`;
                 
                 item.onclick = () => {
-                    document.getElementById('user-input').value = `Interroger le module ${mod.nom} : `;
+                    document.getElementById('user-input').value = `Interroger le module ${exp.nom} : `;
                     document.getElementById('user-input').focus();
                 };
                 list.appendChild(item);
@@ -301,42 +319,42 @@
         window.renderGrilleModules = function() {
             const container = document.getElementById('hub-container');
             container.innerHTML = "";
-            let filtres = window.categorieActuelle === 'tous' ? window.modulesConfig : window.modulesConfig.filter(m => m.cat === window.categorieActuelle);
+            let filtres = window.categorieActuelle === 'tous' ? hub.experts : hub.experts.filter(m => m.cat === window.categorieActuelle);
 
-            filtres.forEach(mod => {
-                let rtl = mod.isRtl ? "rtl" : "";
+            filtres.forEach(exp => {
+                let rtl = exp.isRtl ? "rtl" : "";
                 container.innerHTML += `
-                    <div class="card" id="card-${mod.id}">
+                    <div class="card" id="card-${exp.id}">
                         <div class="card-top">
                             <div class="card-title">
-                                <span class="status-dot" id="dot-${mod.id}"></span>
-                                <h3>${mod.nom}</h3>
+                                <span class="status-dot" id="dot-${exp.id}"></span>
+                                <h3>${exp.nom}</h3>
                             </div>
                             <div style="display:flex; gap:6px; align-items:center;">
-                                <span class="badge" id="badge-${mod.id}">0 racines</span>
-                                <button class="action-btn" onclick="ouvrirZoom('${mod.id}')">🔍 Zoom</button>
+                                <span class="badge" id="badge-${exp.id}">0 racines</span>
+                                <button class="action-btn" onclick="ouvrirZoom('${exp.id}')">🔍 Zoom</button>
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="ring" id="ring-${mod.id}"><span class="ring-value" id="ring-value-${mod.id}">0%</span></div>
+                            <div class="ring" id="ring-${exp.id}"><span class="ring-value" id="ring-value-${exp.id}">0%</span></div>
                             <div class="stats-row">
-                                <div class="mini-stat"><div class="v" id="metric-txt-${mod.id}">0</div><div class="k">Connexions</div></div>
-                                <div class="mini-stat"><div class="v" id="densite-${mod.id}">0</div><div class="k">Densité</div></div>
-                                <div class="mini-stat"><div class="v" id="entropie-${mod.id}">0</div><div class="k">Diversité</div></div>
+                                <div class="mini-stat"><div class="v" id="metric-txt-${exp.id}">0</div><div class="k">Connexions</div></div>
+                                <div class="mini-stat"><div class="v" id="densite-${exp.id}">0</div><div class="k">Densité</div></div>
+                                <div class="mini-stat"><div class="v" id="entropie-${exp.id}">0</div><div class="k">Diversité</div></div>
                             </div>
                         </div>
-                        <div class="chart-box"><canvas id="chart-${mod.id}"></canvas></div>
+                        <div class="chart-box"><canvas id="chart-${exp.id}"></canvas></div>
                         <div class="btn-row">
-                            <button class="action-btn" onclick="lierFichier('${mod.id}')" id="btn-file-${mod.id}">Lier</button>
-                            <button class="action-btn start" onclick="lancerApprentissage('${mod.id}')">Lancer</button>
-                            <button class="action-btn stop" onclick="arreterApprentissage('${mod.id}')">Pause</button>
-                            <button class="action-btn" onclick="genererTexte('${mod.id}')" style="color:var(--cyan)">Générer</button>
+                            <button class="action-btn" onclick="appState['${exp.id}'].lierFichierUnique()" id="btn-file-${exp.id}">Lier</button>
+                            <button class="action-btn start" onclick="appState['${exp.id}'].lancerApprentissage()">Lancer</button>
+                            <button class="action-btn stop" onclick="appState['${exp.id}'].arreterApprentissage()">Pause</button>
+                            <button class="action-btn" onclick="appState['${exp.id}'].genererTexte()" style="color:var(--cyan)">Générer</button>
                         </div>
-                        <div class="output ${rtl}" id="out-${mod.id}">En attente...</div>
+                        <div class="output ${rtl}" id="out-${exp.id}">En attente...</div>
                     </div>
                 `;
+                exp.mettreAJourUI();
             });
-            window.mettreAJourMetriques();
         };
 
         window.filtrerModules = function(cat, btn) {
@@ -346,142 +364,12 @@
             window.renderGrilleModules();
         };
 
-        window.ouvrirBDD = function(dbName) {
-            return new Promise(res => {
-                const req = indexedDB.open(dbName, 1);
-                req.onupgradeneeded = () => req.result.createObjectStore("handles");
-                req.onsuccess = () => res(req.result);
-            });
-        };
-
-        window.restaurerHandle = async function(mod) {
-            const db = await window.ouvrirBDD(mod.dbName);
-            const req = db.transaction("handles").objectStore("handles").get(mod.keyName);
-            req.onsuccess = async () => {
-                if (req.result) {
-                    window.appState[mod.id].handle = req.result;
-                    try {
-                        const file = await req.result.getFile();
-                        const text = await file.text();
-                        const json = text ? JSON.parse(text) : {};
-                        window.appState[mod.id].memoire = json.memoire_paires || {};
-                        window.mettreAJourMetriques();
-                        const btn = document.getElementById(`btn-file-${mod.id}`);
-                        if(btn) btn.innerText = "✔ Lié";
-                        const dot = document.getElementById(`dot-${mod.id}`);
-                        if(dot) dot.className = "status-dot ready";
-                    } catch(e) {}
-                }
-            };
-        };
-
-        window.lierFichier = async function(id) {
-            const mod = window.modulesConfig.find(m => m.id === id);
-            try {
-                [window.appState[id].handle] = await window.showOpenFilePicker();
-                const db = await window.ouvrirBDD(mod.dbName);
-                db.transaction("handles", "readwrite").objectStore("handles").put(window.appState[id].handle, mod.keyName);
-                const file = await window.appState[id].handle.getFile();
-                const json = JSON.parse(await file.text() || "{}");
-                window.appState[id].memoire = json.memoire_paires || {};
-                window.mettreAJourMetriques();
-                document.getElementById(`btn-file-${id}`).innerText = "✔ Lié";
-                document.getElementById(`dot-${id}`).className = "status-dot ready";
-            } catch(e) {}
-        };
-
-        window.mettreAJourMetriques = function() {
-            window.modulesConfig.forEach(mod => {
-                let state = window.appState[mod.id];
-                let total = 0;
-                for (let k in state.memoire) for (let sk in state.memoire[k]) total += state.memoire[k][sk];
-                let racines = Object.keys(state.memoire).length;
-
-                let badge = document.getElementById(`badge-${mod.id}`);
-                if (badge) badge.innerText = `${racines} racines`;
-                let ring = document.getElementById(`ring-${mod.id}`);
-                if (ring) ring.style.setProperty('--pct', Math.min(100, (total/5000)*100));
-                let ringVal = document.getElementById(`ring-value-${mod.id}`);
-                if (ringVal) ringVal.innerText = Math.min(100, Math.round((total/5000)*100)) + '%';
-                
-                let mTxt = document.getElementById(`metric-txt-${mod.id}`);
-                if (mTxt) mTxt.innerText = total;
-                let dens = document.getElementById(`densite-${mod.id}`);
-                if (dens) dens.innerText = racines > 0 ? (total/racines).toFixed(1) : 0;
-            });
-        };
-
-        window.genererTexte = function(id) {
-            let state = window.appState[id];
-            let keys = Object.keys(state.memoire);
-            if (keys.length === 0) { document.getElementById(`out-${id}`).innerText = "Mémoire vide !"; return; }
-            let cur = keys[Math.floor(Math.random() * keys.length)];
-            let res = cur;
-            for(let i=0; i<100; i++) {
-                let suiv = state.memoire[cur];
-                if(!suiv) break;
-                let opts = Object.entries(suiv);
-                if(opts.length === 0) break;
-                opts.sort((a,b)=>b[1]-a[1]);
-                cur = opts[0][0];
-                res += cur;
-            }
-            state.dernierTexte = res;
-            document.getElementById(`out-${id}`).innerText = res;
-        };
-
-        window.lancerApprentissage = async function(id) {
-            const mod = window.modulesConfig.find(m => m.id === id);
-            let state = window.appState[id];
-            if(!state.handle) { alert("Liez d'abord un fichier !"); return; }
-            
-            if ((await state.handle.queryPermission({ mode: 'readwrite' })) !== 'granted') {
-                if ((await state.handle.requestPermission({ mode: 'readwrite' })) !== 'granted') {
-                    alert("Permission refusée pour accéder au fichier.");
-                    return;
-                }
-            }
-
-            state.enCours = true;
-            document.getElementById(`dot-${id}`).className = "status-dot active";
-
-            while(state.enCours) {
-                try {
-                    let url = `https://${mod.wikiLang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`;
-                    let res = await fetch(url).then(r=>r.json());
-                    let title = res.query.random[0].title;
-                    let cUrl = `https://${mod.wikiLang}.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext&titles=${encodeURIComponent(title)}&format=json&origin=*`;
-                    let cRes = await fetch(cUrl).then(r=>r.json());
-                    let pages = cRes.query.pages;
-                    let txt = pages[Object.keys(pages)[0]].extract || "";
-
-                    for(let i=0; i<txt.length-1; i++) {
-                        if(!state.enCours) break;
-                        let a=txt[i], b=txt[i+1];
-                        if(!state.memoire[a]) state.memoire[a]={};
-                        state.memoire[a][b] = (state.memoire[a][b]||0)+1;
-                    }
-                    const w = await state.handle.createWritable();
-                    await w.write(JSON.stringify({memoire_paires: state.memoire}, null, 2));
-                    await w.close();
-                    window.mettreAJourMetriques();
-                } catch(e) {}
-                await new Promise(r=>setTimeout(r, 4000));
-            }
-        };
-
-        window.arreterApprentissage = function(id) {
-            window.appState[id].enCours = false;
-            document.getElementById(`dot-${id}`).className = "status-dot paused";
-        };
-
         window.ouvrirZoom = function(id) {
-            const mod = window.modulesConfig.find(m => m.id === id);
-            const state = window.appState[id];
+            const exp = window.appState[id];
             document.getElementById('modal-inner-content').innerHTML = `
-                <h2 style="color:#fff; margin-top:0;">🔍 Détails : ${mod.nom}</h2>
+                <h2 style="color:#fff; margin-top:0;">🔍 Détails : ${exp.nom}</h2>
                 <p style="font-size:11px; color:var(--text-dim);">Dernier texte généré :</p>
-                <div style="background:#000; padding:10px; color:var(--cyan); font-size:11px; border-radius:6px; max-height:150px; overflow-y:auto;">${state.dernierTexte}</div>
+                <div style="background:#000; padding:10px; color:var(--cyan); font-size:11px; border-radius:6px; max-height:150px; overflow-y:auto;">${exp.dernierTexte}</div>
                 <button onclick="fermerZoom()" style="margin-top:15px; background:var(--panel-alt); color:#fff; border:1px solid var(--hair); padding:6px 12px; cursor:pointer;">Fermer</button>
             `;
             document.getElementById('modal-overlay').style.display = 'flex';
@@ -490,6 +378,15 @@
         window.fermerZoom = function() {
             document.getElementById('modal-overlay').style.display = 'none';
         };
+
+        const userInput = document.getElementById('user-input');
+        userInput.addEventListener('input', () => {
+            if (userInput.value.length > 0) {
+                hub.interrompreVeille();
+            } else {
+                hub.reprendreVeille();
+            }
+        });
 
         window.envoyerMessageSysteme = function() {
             const input = document.getElementById('user-input');
@@ -503,19 +400,19 @@
 
             const q = input.value;
             input.value = "";
+            hub.reprendreVeille();
 
             setTimeout(() => {
+                const reponseHub = hub.processerRequete(q);
                 const sMsg = document.createElement('div');
-                sMsg.style.cssText = "align-self:flex-start; background:var(--panel-alt); border:1px solid var(--hair); padding:8px 12px; border-radius:6px; font-size:11px; max-width:70%; color:var(--cyan);";
-                sMsg.textContent = `Analyse système de la requête : "${q}". (Modules en arrière-plan opérationnels)`;
+                sMsg.style.cssText = "align-self:flex-start; background:var(--panel-alt); border:1px solid var(--hair); padding:8px 12px; border-radius:6px; font-size:11px; max-width:70%; color:var(--cyan); white-space: pre-line;";
+                sMsg.textContent = reponseHub;
                 output.appendChild(sMsg);
                 output.scrollTop = output.scrollHeight;
             }, 400);
         };
 
-        // Lancement au chargement
         window.initHub();
     </script>
-
 </body>
 </html>
