@@ -22,7 +22,8 @@
     <h1>IA Mobile : Mémoire Contextuelle (Paires)</h1>
     
     <div class="control-panel">
-        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #333;">1. Choisir ton fichier JSON</button>
+        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #333;">1. Choisir ton fichier JSON principal</button>
+        <button onclick="importerSavoirExterieur()" style="background-color: #6a1b9a;">📥 Importer un savoir extérieur (Coup de pouce)</button>
         <button onclick="lancerEntrainementContinu()" style="background-color: #0d47a1;">2. Lancer l'Apprentissage Contextuel</button>
         <button onclick="arreterEntrainement()" style="background-color: #b71c1c;">3. ⏹ Mettre en pause et Sauvegarder</button>
     </div>
@@ -42,7 +43,7 @@
 
     <script>
         let fichierHandle = null;
-        let memoirePaires = {}; // Structure : { "lettreActuelle": { "lettreSuivante": compteur } }
+        let memoirePaires = {}; 
         let iterationsTotales = 0;
         let cycleActuel = 0;
         let enCoursDApprentissage = false;
@@ -52,7 +53,6 @@
             "https://www.gutenberg.org/files/84/84-0.txt"
         ];
 
-        // Étape 1 : Chargement et compatibilité avec l'ancien format JSON si nécessaire
         async function selectionnerFichierMemoire() {
             try {
                 [fichierHandle] = await window.showOpenFilePicker({ 
@@ -65,12 +65,8 @@
                 iterationsTotales = data.iteration || 0;
                 cycleActuel = Math.floor(iterationsTotales / 15000);
 
-                // Conversion ou chargement de la mémoire des paires
                 if (data.memoire_paires) {
                     memoirePaires = data.memoire_paires;
-                } else if (data.memoire_caracteres) {
-                    // Si le fichier vient de l'ancienne version, on initialise une base vide propre pour les paires
-                    memoirePaires = {};
                 } else {
                     memoirePaires = {};
                 }
@@ -83,7 +79,50 @@
             }
         }
 
-        // Sauvegarde complète au nouveau format incluant les paires de lettres
+        // Fonction pour injecter le savoir extérieur et le fusionner
+        async function importerSavoirExterieur() {
+            if (!fichierHandle) {
+                alert("Veuillez d'abord lier votre fichier JSON principal (Bouton 1) !");
+                return;
+            }
+            try {
+                const [savoirHandle] = await window.showOpenFilePicker({ 
+                    types: [{ description: 'Fichiers JSON de savoir', accept: { 'application/json': ['.json'] } }] 
+                });
+                const file = await savoirHandle.getFile();
+                const textData = await file.text();
+                const dataSavoir = JSON.parse(textData);
+
+                // Extraction de la mémoire du fichier de savoir (gère les deux formats)
+                const pairesAjoutees = dataSavoir.memoire_paires || dataSavoir;
+
+                let ajoutsCount = 0;
+                // Fusion intelligente dans la mémoire active
+                for (let charActuel in pairesAjoutees) {
+                    if (!memoirePaires[charActuel]) {
+                        memoirePaires[charActuel] = {};
+                    }
+                    for (let charSuivant in pairesAjoutees[charActuel]) {
+                        let poids = pairesAjoutees[charActuel][charSuivant];
+                        if (!memoirePaires[charActuel][charSuivant]) {
+                            memoirePaires[charActuel][charSuivant] = 0;
+                        }
+                        memoirePaires[charActuel][charSuivant] += poids;
+                        ajoutsCount++;
+                    }
+                }
+
+                // Sauvegarde immédiate dans le fichier principal
+                await ecrireFichierDirect();
+                majAffichage();
+                document.getElementById("status").innerText = `✔ Savoir extérieur importé avec succès (${ajoutsCount} transitions fusionnées) !`;
+                alert("Coup de pouce appliqué ! Le savoir a été fusionné et sauvegardé.");
+            } catch (e) {
+                console.error(e);
+                document.getElementById("status").innerText = "Importation du savoir annulée ou erreur de format.";
+            }
+        }
+
         async function ecrireFichierDirect() {
             if (!fichierHandle) return;
             try {
@@ -129,7 +168,6 @@
             }
         }
 
-        // Boucle d'apprentissage basée sur les enchaînements (Bigrammes)
         async function lancerEntrainementContinu() {
             if (!fichierHandle) {
                 document.getElementById("status").innerText = "Erreur : Tu dois d'abord sélectionner ton fichier JSON avec le bouton 1 !";
@@ -163,7 +201,6 @@
                         let charActuel = texte[i];
                         let charSuivant = texte[i + 1];
 
-                        // Enregistrement de la transition (quelle lettre suit quelle lettre)
                         if (!memoirePaires[charActuel]) {
                             memoirePaires[charActuel] = {};
                         }
@@ -175,14 +212,12 @@
                         if (iterationsTotales % 1000 === 0) {
                             majAffichage();
                         }
-                        // Pause légère pour laisser respirer le processeur du téléphone
                         if (i % 500 === 0) {
                             await new Promise(r => setTimeout(r, 1));
                         }
                     }
                 }
                 
-                // Sauvegarde automatique à la fin de chaque cycle complet
                 if (enCoursDApprentissage) {
                     document.getElementById("status").innerHTML = `💾 <b>Fin du Cycle n° ${cycleActuel} !</b> Sauvegarde dans le fichier JSON...`;
                     await ecrireFichierDirect();
@@ -202,7 +237,7 @@
 
         function majAffichage() {
             let html = "";
-            let keys = Object.keys(memoirePaires).slice(0, 8); // Afficher un aperçu des premières lettres mémorisées
+            let keys = Object.keys(memoirePaires).slice(0, 8);
             keys.forEach(char => {
                 let displayChar = char === ' ' ? '[espace]' : char;
                 let totalSuivantes = Object.values(memoirePaires[char]).reduce((a, b) => a + b, 0);
@@ -215,7 +250,6 @@
             document.getElementById("chart").innerHTML = html || "Apprentissage des paires en cours...";
         }
 
-        // Génération contextuelle corrigée : anti-boucle et exploration intelligente
         function genererTexteIA() {
             const lettresDisponibles = Object.keys(memoirePaires);
             if (lettresDisponibles.length === 0) {
@@ -223,11 +257,8 @@
                 return;
             }
 
-            // Choisir une lettre de départ au hasard
             let lettreCourante = lettresDisponibles[Math.floor(Math.random() * lettresDisponibles.length)];
             let texteGenere = lettreCourante;
-            
-            // Historique récent pour empêcher de répéter les mêmes lettres en boucle
             let dernieresLettres = [lettreCourante];
 
             for (let i = 0; i < 200; i++) {
@@ -236,22 +267,16 @@
                 if (!suivantes || Object.keys(suivantes).length === 0) {
                     lettreCourante = lettresDisponibles[Math.floor(Math.random() * lettresDisponibles.length)];
                 } else {
-                    // Récupérer toutes les suites possibles avec leurs scores
                     let options = Object.entries(suivantes);
-                    
-                    // FILTRE ANTI-BÉGAIEMENT : On évite les lettres qui viennent d'être répétées en boucle
                     let optionsFiltrees = options.filter(([suiv]) => {
                         let occurrencesRecentes = dernieresLettres.slice(-3).filter(l => l === suiv).length;
                         return occurrencesRecentes < 2;
                     });
 
-                    // Si le filtre est trop strict, on retombe sur les options de base
                     if (optionsFiltrees.length === 0) optionsFiltrees = options;
 
-                    // Trier du plus fréquent au moins fréquent
                     optionsFiltrees.sort((a, b) => b[1] - a[1]);
                     
-                    // On pioche parmi les 3 meilleurs choix possibles au lieu de prendre TOUJOURS le premier
                     let choixPool = optionsFiltrees.slice(0, Math.min(3, optionsFiltrees.length));
                     let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
                     
@@ -259,8 +284,6 @@
                 }
 
                 texteGenere += lettreCourante;
-                
-                // Mettre à jour l'historique récent
                 dernieresLettres.push(lettreCourante);
                 if (dernieresLettres.length > 5) dernieresLettres.shift();
             }
