@@ -58,9 +58,9 @@
 
 <script>
     const modulesConfig = [
-        { id: "francais", nom: "Français / Anglais", sourceWiki: "Langue française" },
-        { id: "arabe", nom: "Arabe", sourceWiki: "Langue arabe" },
-        { id: "python", nom: "Python (Programmation)", sourceWiki: "Python (langage)" }
+        { id: "francais", nom: "Français / Anglais", apiLang: "fr", sujetDefaut: "Langue française" },
+        { id: "arabe", nom: "Arabe", apiLang: "ar", sujetDefaut: "اللغة العربية" },
+        { id: "python", nom: "Python (Programmation)", apiLang: "en", sujetDefaut: "Python (programming language)" }
     ];
 
     const etatsModules = {};
@@ -82,11 +82,11 @@
                 <p style="font-size:11px; margin:5px 0;">Statut : <span id="status-${mod.id}" class="status">JSON non lié</span></p>
                 <div>
                     <button onclick="lierJSON('${mod.id}')">1. Lier JSON</button>
-                    <button onclick="lancerModule('${mod.id}', '${mod.sourceWiki}')">2. Lancer</button>
+                    <button onclick="lancerModule('${mod.id}')">2. Lancer</button>
                     <button class="stop" onclick="arreterModule('${mod.id}')">Stop</button>
                     <button class="inspect" onclick="ouvrirInspection('${mod.id}', '${mod.nom}')">🔍 Entrer / Tester</button>
                 </div>
-                <div class="output" id="output-${mod.id}">En attente de démarrage...</div>
+                <div class="output" id="output-${mod.id}" ${mod.id === 'arabe' ? 'style="direction: rtl;"' : ''}>En attente de démarrage...</div>
             `;
             container.appendChild(card);
 
@@ -108,7 +108,10 @@
             const fichier = await handle.getFile();
             const contenu = await fichier.text();
             etatsModules[id].handle = handle;
-            etatsModules[id].memoire = contenu ? JSON.parse(contenu) : {};
+            
+            const jsonParsed = contenu ? JSON.parse(contenu) : {};
+            etatsModules[id].memoire = jsonParsed.memoire_paires || jsonParsed;
+
             document.getElementById(`status-${id}`).innerText = "Lié & Prêt";
             document.getElementById(`status-${id}`).style.color = "#00ff66";
             document.getElementById(`output-${id}`).innerText = "Fichier JSON chargé avec succès !";
@@ -123,7 +126,7 @@
         if (!mod.handle) return;
         try {
             const writable = await mod.handle.createWritable();
-            await writable.write(JSON.stringify(mod.memoire, null, 2));
+            await writable.write(JSON.stringify({ memoire_paires: mod.memoire }, null, 2));
             await writable.close();
         } catch (e) {
             console.error("Erreur de sauvegarde :", e);
@@ -144,14 +147,18 @@
         document.getElementById(`bar-${id}`).style.width = percent + "%";
     }
 
-    async function fetchWiki(sujet) {
+    async function fetchWiki(lang) {
         try {
-            const resPage = await fetch(`https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exexplaintext=1&titles=${encodeURIComponent(sujet)}&format=json&origin=*`);
-            const dataPage = await resPage.json();
-            const pages = dataPage.query.pages;
+            const urlRandom = `https://${lang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`;
+            const resRand = await fetch(urlRandom).then(r => r.json());
+            const title = resRand.query.random[0].title;
+
+            const urlContent = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+            const resContent = await fetch(urlContent).then(r => r.json());
+            const pages = resContent.query.pages;
             const pageId = Object.keys(pages)[0];
-            return pages[pageId].extract || "";
-        } catch (e) { return ""; }
+            return { title: title, extract: pages[pageId].extract || "" };
+        } catch (e) { return { title: "", extract: "" }; }
     }
 
     function ingererTexte(id, texte) {
@@ -190,31 +197,31 @@
         return resultat;
     }
 
-    async function lancerModule(id, sujet) {
+    async function lancerModule(id) {
         const mod = etatsModules[id];
+        const config = modulesConfig.find(m => m.id === id);
         if (!mod.handle) { alert("Liez d'abord le fichier JSON !"); return; }
         mod.enCours = true;
         document.getElementById(`status-${id}`).innerText = "Apprentissage actif...";
         document.getElementById(`status-${id}`).style.color = "#00ff66";
 
-        // Génération immédiate dès le lancement pour débloquer l'affichage
         try {
             let initGen = genererTexte(id, 80);
             document.getElementById(`output-${id}`).innerText = initGen;
         } catch(e) {}
 
         while (mod.enCours) {
-            let texte = await fetchWiki(sujet);
-            if (texte && texte.length > 0) {
-                ingererTexte(id, texte);
+            let wikiData = await fetchWiki(config.apiLang);
+            if (wikiData.extract && wikiData.extract.length > 0) {
+                ingererTexte(id, wikiData.extract);
                 await sauvegarderJSON(id);
                 mettreAJourStats(id);
                 try {
                     let gen = genererTexte(id, 80);
-                    document.getElementById(`output-${id}`).innerText = gen;
+                    document.getElementById(`output-${id}`).innerText = `[${wikiData.title}] \n` + gen;
                 } catch(e) {}
             }
-            await new Promise(r => setTimeout(r, 6000));
+            await new Promise(r => setTimeout(r, 4000));
         }
     }
 
@@ -242,7 +249,7 @@
             <h3>🧪 Zone de Test de Cohérence</h3>
             <p>Générez du texte à la demande pour analyser la production de ce cerveau :</p>
             <button onclick="testerDepuisModal('${id}')">🔄 Générer une phrase de test</button>
-            <div class="test-box" id="modal-test-output">Cliquez sur le bouton pour tester la génération...</div>
+            <div class="test-box" id="modal-test-output" ${id === 'arabe' ? 'style="direction: rtl;"' : ''}>Cliquez sur le bouton pour tester la génération...</div>
         `;
         modal.style.display = 'flex';
     }
