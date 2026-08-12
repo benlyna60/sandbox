@@ -194,7 +194,8 @@
         }
         .output.rtl { direction: rtl; text-align: right; }
 
-        #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(4,4,6,0.85); backdrop-filter: blur(2px); z-index: 1000; justify-content: center; align-items: center; }
+        #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(4,4,6,0.85); backdrop-filter: blur(2px); z-index: 1000; justify-content: center; align-items: center; pointer-events: none; }
+        #modal-overlay.active { display: flex; pointer-events: auto; }
         .modal-content { background: var(--panel); border: 1px solid var(--hair); width: 85%; max-width: 600px; padding: 20px; border-radius: 10px; max-height: 80vh; overflow-y: auto; }
     </style>
 </head>
@@ -345,7 +346,7 @@
                         </div>
                         <div class="chart-box"><canvas id="chart-${exp.id}"></canvas></div>
                         <div class="btn-row">
-                            <button class="action-btn" onclick="appState['${exp.id}'].lierFichierUnique()" id="btn-file-${exp.id}">Lier</button>
+                            <button class="action-btn" onclick="appState['${exp.id}'].lierFichier ? appState['${exp.id}'].lierFichier() : appState['${exp.id}'].lierFichierUnique()" id="btn-file-${exp.id}">Lier</button>
                             <button class="action-btn start" onclick="appState['${exp.id}'].lancerApprentissage()">Lancer</button>
                             <button class="action-btn stop" onclick="appState['${exp.id}'].arreterApprentissage()">Pause</button>
                             <button class="action-btn" onclick="appState['${exp.id}'].genererTexte()" style="color:var(--cyan)">Générer</button>
@@ -372,11 +373,11 @@
                 <div style="background:#000; padding:10px; color:var(--cyan); font-size:11px; border-radius:6px; max-height:150px; overflow-y:auto;">${exp.dernierTexte}</div>
                 <button onclick="fermerZoom()" style="margin-top:15px; background:var(--panel-alt); color:#fff; border:1px solid var(--hair); padding:6px 12px; cursor:pointer;">Fermer</button>
             `;
-            document.getElementById('modal-overlay').style.display = 'flex';
+            document.getElementById('modal-overlay').classList.add('active');
         };
 
         window.fermerZoom = function() {
-            document.getElementById('modal-overlay').style.display = 'none';
+            document.getElementById('modal-overlay').classList.remove('active');
         };
 
         const userInput = document.getElementById('user-input');
