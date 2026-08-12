@@ -2,7 +2,7 @@
 <html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <title>IA Mobile : Module JavaScript</title>
+    <title>IA Mobile : Module JavaScript (Spécialisé)</title>
     <style>
         body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 15px; max-width: 700px; margin: auto; text-align: left; }
         .panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 15px; }
@@ -17,7 +17,7 @@
     
     <div class="panel">
         <button onclick="selectionnerFichier()" id="btn-fichier">1. Lier fichier JSON (javascript.json)</button>
-        <button onclick="lancerEntrainement()" style="background-color: #d1a100; color: #000;">2. Lancer Apprentissage (JS & Web)</button>
+        <button onclick="lancerEntrainement()" style="background-color: #d1a100; color: #000;">2. Lancer Apprentissage JS Ciblé</button>
         <button onclick="arreterEntrainement()" style="background-color: #b71c1c; color: #fff;">3. Pause & Sauvegarder</button>
     </div>
 
@@ -33,14 +33,16 @@
         let memoirePaires = {}; 
         let enCours = false;
 
-        // Sujets ciblés orientés JavaScript et écosystème Web
-        const sujetsJS = [
-            "JavaScript", 
-            "ECMAScript", 
-            "Closure (computer programming)", 
-            "Asynchronous JavaScript", 
-            "DOM event",
-            "Node.js"
+        // Mots-clés ciblés pour explorer tout l'écosystème JS et asynchrone en profondeur
+        const motsClefsJS = [
+            "JavaScript programming language",
+            "ECMAScript specification",
+            "Closure computer programming",
+            "Asynchronous JavaScript async await",
+            "Document Object Model DOM event",
+            "Node.js runtime environment",
+            "JavaScript prototype-based inheritance",
+            "Promise JavaScript object"
         ];
 
         async function initApp() {
@@ -53,12 +55,16 @@
         }
 
         async function selectionnerFichier() {
-            [fichierHandle] = await window.showOpenFilePicker();
-            const db = await ouvrirBDD();
-            const tx = db.transaction("handles", "readwrite");
-            tx.objectStore("handles").put(fichierHandle, "javascriptKey");
-            await chargerDonnees();
-            document.getElementById("status").innerText = "✔ Fichier lié avec succès.";
+            try {
+                [fichierHandle] = await window.showOpenFilePicker();
+                const db = await ouvrirBDD();
+                const tx = db.transaction("handles", "readwrite");
+                tx.objectStore("handles").put(fichierHandle, "javascriptKey");
+                await chargerDonnees();
+                document.getElementById("status").innerText = "✔ Fichier lié avec succès.";
+            } catch (err) {
+                console.error(err);
+            }
         }
 
         async function chargerDonnees() {
@@ -77,31 +83,44 @@
         async function lancerEntrainement() {
             if (!fichierHandle) return alert("Lie le fichier d'abord !");
             enCours = true;
-            document.getElementById("status").innerText = "Apprentissage actif sur la logique JavaScript...";
+            document.getElementById("status").innerText = "Apprentissage ciblé actif sur la logique JavaScript...";
             
             while (enCours) {
                 try {
-                    let sujetChoisi = sujetsJS[Math.floor(Math.random() * sujetsJS.length)];
+                    // 1. Choix d'un mot-clé technique
+                    let query = motsClefsJS[Math.floor(Math.random() * motsClefsJS.length)];
                     
-                    const urlContent = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=${encodeURIComponent(sujetChoisi)}&format=json&origin=*`;
-                    const resContent = await fetch(urlContent).then(r => r.json());
-                    const pages = resContent.query.pages;
-                    const pageId = Object.keys(pages)[0];
-                    const texte = pages[pageId].extract || "";
+                    // 2. Recherche ciblée sur l'API Wikipédia pour trouver des articles pertinents
+                    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srlimit=10&format=json&origin=*`;
+                    const searchRes = await fetch(searchUrl).then(r => r.json());
+                    const results = searchRes.query?.search || [];
+                    
+                    if (results.length > 0) {
+                        let hit = results[Math.floor(Math.random() * results.length)];
+                        let title = hit.title;
 
-                    if (texte.length > 0) {
-                        for (let i = 0; i < texte.length - 1; i++) {
-                            if (!enCours) break;
-                            let a = texte[i], b = texte[i+1];
-                            if (!memoirePaires[a]) memoirePaires[a] = {};
-                            memoirePaires[a][b] = (memoirePaires[a][b] || 0) + 1;
+                        // 3. Récupération du texte brut de l'article trouvé
+                        const contentUrl = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+                        const resContent = await fetch(contentUrl).then(r => r.json());
+                        const pages = resContent.query.pages;
+                        const pageId = Object.keys(pages)[0];
+                        const texte = pages[pageId].extract || "";
+
+                        if (texte.length > 0) {
+                            for (let i = 0; i < texte.length - 1; i++) {
+                                if (!enCours) break;
+                                let a = texte[i], b = texte[i+1];
+                                if (!memoirePaires[a]) memoirePaires[a] = {};
+                                memoirePaires[a][b] = (memoirePaires[a][b] || 0) + 1;
+                            }
+                            
+                            const writable = await fichierHandle.createWritable();
+                            await writable.write(JSON.stringify({memoire_paires: memoirePaires}, null, 2));
+                            await writable.close();
+                            
+                            let nb = Object.keys(memoirePaires).length;
+                            document.getElementById("status").innerText = `✔ Analyse JS : "${title}" (${nb} racines)`;
                         }
-                        
-                        const writable = await fichierHandle.createWritable();
-                        await writable.write(JSON.stringify({memoire_paires: memoirePaires}, null, 2));
-                        await writable.close();
-                        
-                        document.getElementById("status").innerText = "✔ Analyse JS : " + sujetChoisi;
                     }
                 } catch (e) {
                     console.error("Erreur réseau :", e);
