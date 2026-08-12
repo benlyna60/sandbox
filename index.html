@@ -276,7 +276,7 @@
                     optionsFiltrees.sort((a, b) => b[1] - a[1]);
                     
                     // CHOIX ÉLARGI : On pioche parmi les 8 meilleurs choix pour plus de diversité
-                    let choixPool = optionsFiltrees.slice(0, Math.min(8, optionsFiltrees.length));
+                    let choixPool = optionsFiltrees.slice(0, Math.min(6, optionsFiltrees.length));
                     let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
                     
                     lettreCourante = choixAleatoire[0];
