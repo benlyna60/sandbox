@@ -22,8 +22,9 @@
         /* Grille des modules */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 15px; }
         .card { background: #121212; border: 1px solid #2a2a2a; padding: 15px; border-radius: 4px; position: relative; }
-        .card h3 { margin-top: 0; color: #fff; border-bottom: 1px solid #222; padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; font-size: 1.1em; }
+        .card.hidden { display: none !important; } /* Classe pour masquer dynamiquement sans détruire l'état */
         
+        .card h3 { margin-top: 0; color: #fff; border-bottom: 1px solid #222; padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; font-size: 1.1em; }
         .badge { font-size: 10px; background: #222; padding: 2px 6px; border-radius: 3px; color: #aaa; }
 
         button { background: #1a1a1a; color: #ccc; border: 1px solid #444; padding: 6px 8px; cursor: pointer; font-size: 10px; margin-right: 3px; margin-top: 6px; font-family: monospace; }
@@ -80,9 +81,7 @@
     </div>
 
 <script>
-    // Configuration complète intégrant les codes, les langues et les nouvelles archives publiques
     const modulesConfig = [
-        // Langages de Code
         { id: "python", nom: "Python", cat: "code", dbName: "HubDB_Python", keyName: "pyKey", type: "wiki", wikiLang: "en" },
         { id: "javascript", nom: "JavaScript", cat: "code", dbName: "HubDB_JS", keyName: "jsKey", type: "wiki", wikiLang: "en" },
         { id: "cpp", nom: "C++", cat: "code", dbName: "HubDB_CPP", keyName: "cppKey", type: "wiki", wikiLang: "en" },
@@ -91,90 +90,34 @@
         { id: "java", nom: "Java", cat: "code", dbName: "HubDB_Java", keyName: "javaKey", type: "wiki", wikiLang: "en" },
         { id: "php", nom: "PHP", cat: "code", dbName: "HubDB_PHP", keyName: "phpKey", type: "wiki", wikiLang: "en" },
         
-        // Modules Langues & Livres
-        { 
-            id: "arabe", 
-            nom: "Arabe (V2)", 
-            cat: "langue", 
-            dbName: "HubDB_Arabe", 
-            keyName: "arKey", 
-            type: "wiki", 
-            wikiLang: "ar", 
-            isRtl: true 
-        },
-        { 
-            id: "fr_en_livres", 
-            nom: "Français / Anglais & Livres", 
-            cat: "langue", 
-            dbName: "HubDB_FrEnLivres", 
-            keyName: "frEnLivresKey", 
-            type: "mixte", 
-            books: [
-                "https://www.gutenberg.org/files/11/11-0.txt",
-                "https://www.gutenberg.org/files/84/84-0.txt"
-            ]
-        },
+        { id: "arabe", nom: "Arabe (V2)", cat: "langue", dbName: "HubDB_Arabe", keyName: "arKey", type: "wiki", wikiLang: "ar", isRtl: true },
+        { id: "fr_en_livres", nom: "Français / Anglais & Livres", cat: "langue", dbName: "HubDB_FrEnLivres", keyName: "frEnLivresKey", type: "mixte", books: [
+            "https://www.gutenberg.org/files/11/11-0.txt",
+            "https://www.gutenberg.org/files/84/84-0.txt"
+        ]},
 
-        // Nouveaux Modules : Archives Publiques & Littérature Intégrée
-        { 
-            id: "gutenberg", 
-            nom: "Project Gutenberg (Classiques)", 
-            cat: "archives", 
-            dbName: "HubDB_Gutenberg", 
-            keyName: "gutKey", 
-            type: "mixte", 
-            books: [
-                "https://www.gutenberg.org/files/1342/1342-0.txt", // Orgueil et Préjugés
-                "https://www.gutenberg.org/files/2600/2600-0.txt", // Guerre et Paix
-                "https://www.gutenberg.org/files/1661/1661-0.txt"  // Sherlock Holmes
-            ]
-        },
-        { 
-            id: "wikisource", 
-            nom: "Wikisource (Patrimoine)", 
-            cat: "archives", 
-            dbName: "HubDB_Wikisource", 
-            keyName: "wsKey", 
-            type: "wikisource", 
-            wikiLang: "fr", 
-            wikiDomain: "wikisource.org" 
-        },
-        { 
-            id: "philo", 
-            nom: "Philosophie & Essais", 
-            cat: "archives", 
-            dbName: "HubDB_Philo", 
-            keyName: "philoKey", 
-            type: "wikisource", 
-            wikiLang: "fr", 
-            wikiDomain: "wikiquote.org" 
-        }
+        { id: "gutenberg", nom: "Project Gutenberg (Classiques)", cat: "archives", dbName: "HubDB_Gutenberg", keyName: "gutKey", type: "mixte", books: [
+            "https://www.gutenberg.org/files/1342/1342-0.txt",
+            "https://www.gutenberg.org/files/2600/2600-0.txt",
+            "https://www.gutenberg.org/files/1661/1661-0.txt"
+        ]},
+        { id: "wikisource", nom: "Wikisource (Patrimoine)", cat: "archives", dbName: "HubDB_Wikisource", keyName: "wsKey", type: "wikisource", wikiLang: "fr", wikiDomain: "wikisource.org" },
+        { id: "philo", nom: "Philosophie & Essais", cat: "archives", dbName: "HubDB_Philo", keyName: "philoKey", type: "wikisource", wikiLang: "fr", wikiDomain: "wikiquote.org" }
     ];
 
     const appState = {};
-    let categorieActuelle = 'tous';
 
     function initAllModules() {
-        modulesConfig.forEach(mod => {
-            appState[mod.id] = { handle: null, memoire: {}, iterations: 0, enCours: false, totalPaires: 0, dernierTexte: "Aucun test effectué." };
-            restaurerHandle(mod);
-        });
-        renderGrille();
-    }
-
-    function renderGrille() {
         const container = document.getElementById('hub-container');
         container.innerHTML = "";
 
-        let modulesFiltres = modulesConfig;
-        if (categorieActuelle !== 'tous') {
-            modulesFiltres = modulesConfig.filter(m => m.cat === categorieActuelle);
-        }
-
-        modulesFiltres.forEach(mod => {
+        // Génération unique de toutes les cartes dans le DOM
+        modulesConfig.forEach(mod => {
+            appState[mod.id] = { handle: null, memoire: {}, iterations: 0, enCours: false, totalPaires: 0, dernierTexte: "Aucun test effectué." };
             let rtlClass = mod.isRtl ? "rtl" : "";
+            
             container.innerHTML += `
-                <div class="card" id="card-${mod.id}">
+                <div class="card" id="card-${mod.id}" data-cat="${mod.cat}">
                     <h3>
                         <span>${mod.nom}</span>
                         <div>
@@ -201,15 +144,23 @@
                     <div class="output ${rtlClass}" id="out-${mod.id}">Clique sur "Générer Texte" pour tester...</div>
                 </div>
             `;
+            restaurerHandle(mod);
         });
-        mettreAJourToutesMetriques();
     }
 
+    // Filtrage instantané via CSS : les cartes ne sont plus détruites, elles sont juste masquées/affichées
     function filtrerModules(cat, btnElement) {
-        categorieActuelle = cat;
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btnElement.classList.add('active');
-        renderGrille();
+
+        modulesConfig.forEach(mod => {
+            const card = document.getElementById(`card-${mod.id}`);
+            if (cat === 'tous' || mod.cat === cat) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
     }
 
     function ouvrirBDD(dbName) {
@@ -280,7 +231,7 @@
                     mettreAJourToutesMetriques();
                     let statusEl = document.getElementById(`status-${mod.id}`);
                     let btnEl = document.getElementById(`btn-file-${mod.id}`);
-                    if (statusEl) statusEl.innerText = "Prêt";
+                    if (statusEl) statusEl.innerText = `Prêt (${appState[mod.id].iterations} itérations)`;
                     if (btnEl) btnEl.innerText = "✔ Fichier lié";
                 } catch(e) {
                     let statusEl = document.getElementById(`status-${mod.id}`);
@@ -304,7 +255,7 @@
             appState[id].iterations = json.iteration || 0;
             
             mettreAJourToutesMetriques();
-            document.getElementById(`status-${id}`).innerText = "Prêt";
+            document.getElementById(`status-${id}`).innerText = "Prêt et lié";
             document.getElementById(`btn-file-${id}`).innerText = "✔ Fichier lié";
         } catch (err) {
             console.error(err);
@@ -358,7 +309,7 @@
         }
         
         state.enCours = true;
-        document.getElementById(`status-${id}`).innerText = "Apprentissage...";
+        document.getElementById(`status-${id}`).innerText = "Apprentissage en cours...";
 
         while (state.enCours) {
             try {
@@ -401,18 +352,20 @@
                     await writable.close();
 
                     mettreAJourToutesMetriques();
+                    if(state.enCours) {
+                        document.getElementById(`status-${id}`).innerText = `Apprentissage... (${state.iterations})`;
+                    }
                 }
             } catch (e) {
                 console.error(e);
             }
-            // Petite pause entre chaque requête pour laisser souffler le vieux laptop et l'API
             await new Promise(r => setTimeout(r, 4000));
         }
     }
 
     function arreterApprentissage(id) {
         appState[id].enCours = false;
-        document.getElementById(`status-${id}`).innerText = "Pause & Sauvegardé";
+        document.getElementById(`status-${id}`).innerText = `Pause & Sauvegardé (${appState[id].iterations})`;
     }
 
     function ouvrirZoom(id) {
