@@ -246,9 +246,9 @@
     </div>
 
     <script type="module">
-        import { HubCentral } from './hub.js';
-        import { Expert } from './expert.js';
-        import { MODULES_REGISTRY, CATEGORIES_CONFIG } from './modules.registry.js';
+        import { HubCentral } from './JS/hub.js';
+        import { Expert } from './JS/expert.js';
+        import { MODULES_REGISTRY, CATEGORIES_CONFIG } from './JS/modules.registry.js';
 
         const hub = new HubCentral();
         window.appState = {};
@@ -358,7 +358,6 @@
                 exp.mettreAJourUI();
             });
 
-            // Attache les événements propres aux cartes générées dynamiquement
             document.querySelectorAll('.btn-zoom').forEach(btn => {
                 btn.onclick = () => ouvrirZoom(btn.dataset.id);
             });
@@ -403,7 +402,6 @@
             document.getElementById('modal-overlay').style.display = 'none';
         }
 
-        // Écouteurs globaux propres
         document.getElementById('btn-dossier').onclick = selectionnerDossierRacine;
         document.getElementById('btn-view-modules').onclick = () => basculerVue('modules');
         document.getElementById('btn-view-chat').onclick = () => basculerVue('chat');
