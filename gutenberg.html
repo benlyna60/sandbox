@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Module : Project Gutenberg</title>
+    <style>
+        body { background-color: #050505; color: #d1d1d1; font-family: monospace; padding: 20px; }
+        .card { background: #121212; border: 1px solid #2a2a2a; padding: 20px; border-radius: 4px; max-width: 600px; margin: auto; }
+        h3 { color: #fff; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        button { background: #1a1a1a; color: #ccc; border: 1px solid #444; padding: 8px 12px; cursor: pointer; font-size: 11px; margin-top: 6px; font-family: monospace; }
+        button:hover { background: #333; color: #fff; }
+        button.start { background: #1b5e20; color: #fff; border-color: #2e7d32; }
+        button.stop { background: #b71c1c; color: #fff; border-color: #c62828; }
+        .output { background: #000; border: 1px solid #222; padding: 10px; height: 100px; overflow-y: auto; font-size: 11px; margin-top: 10px; color: #00ff66; white-space: pre-wrap; }
+        .status { font-size: 11px; color: #ffcc00; margin-top: 6px; }
+    </style>
+</head>
+<body onload="initModule()">
+    <div class="card">
+        <h3>Project Gutenberg (Classiques)</h3>
+        <div class="status" id="status">Statut : Non lié</div>
+        <div>
+            <button onclick="lierFichier()">1. Lier Fichier JSON</button>
+            <button class="start" onclick="lancerApprentissage()">2. Lancer</button>
+            <button class="stop" onclick="arreterApprentissage()">Pause</button>
+            <button onclick="genererTexte()" style="background:#004d40; color:#fff;">✨ Générer</button>
+        </div>
+        <div class="output" id="output">En attente...</div>
+    </div>
+
+<script>
+    const dbName = "HubDB_Gutenberg";
+    const keyName = "gutKey";
+    const books = [
+        "https://www.gutenberg.org/files/1342/1342-0.txt",
+        "https://www.gutenberg.org/files/2600/2600-0.txt",
+        "https://www.gutenberg.org/files/1661/1661-0.txt"
+    ];
+
+    let handle = null;
+    let memoire = {};
+    let iterations = 0;
+    let enCours = false;
+
+    function ouvrirBDD() {
+        return new Promise(res => {
+            const req = indexedDB.open(dbName, 1);
+            req.onupgradeneeded = () => req.result.createObjectStore("handles");
+            req.onsuccess = () => res(req.result);
+        });
+    }
+
+    async function initModule() {
+        const db = await ouvrirBDD();
+        const req = db.transaction("handles").objectStore("handles").get(keyName);
+        req.onsuccess = async () => {
+            if (req.result) {
+                handle = req.result;
+                try {
+                    const file = await handle.getFile();
+                    const text = await file.text();
+                    const json = text ? JSON.parse(text) : {};
+                    memoire = json.memoire_paires || {};
+                    iterations = json.iteration || 0;
+                    document.getElementById('status').innerText = "Prêt (" + iterations + " itérations)";
+                } catch(e) {
+                    document.getElementById('status').innerText = "Erreur lecture fichier";
+                }
+            }
+        };
+    }
+
+    async function lierFichier() {
+        try {
+            [handle] = await window.showOpenFilePicker();
+            const db = await ouvrirBDD();
+            db.transaction("handles", "readwrite").objectStore("handles").put(handle, keyName);
+            const file = await handle.getFile();
+            const text = await file.text();
+            const json = text ? JSON.parse(text) : {};
+            memoire = json.memoire_paires || {};
+            iterations = json.iteration || 0;
+            document.getElementById('status').innerText = "Prêt et lié";
+        } catch (err) { console.error(err); }
+    }
+
+    async function lancerApprentissage() {
+        if (!handle) { alert("Liez un fichier JSON d'abord !"); return; }
+        enCours = true;
+        document.getElementById('status').innerText = "Apprentissage en cours...";
+
+        while (enCours) {
+            try {
+                let bookUrl = books[Math.floor(Math.random() * books.length)];
+                let texte = await fetch(bookUrl).then(res => res.text());
+                texte = texte.substring(0, 5000);
+
+                if (texte.length > 0) {
+                    for (let i = 0; i < texte.length - 1; i++) {
+                        if (!enCours) break;
+                        iterations++;
+                        let a = texte[i], b = texte[i+1];
+                        if (!memoire[a]) memoire[a] = {};
+                        memoire[a][b] = (memoire[a][b] || 0) + 1;
+                    }
+                    const writable = await handle.createWritable();
+                    await writable.write(JSON.stringify({ iteration: iterations, memoire_paires: memoire }, null, 2));
+                    await writable.close();
+                    document.getElementById('status').innerText = "Apprentissage... (" + iterations + ")";
+                }
+            } catch(e) { console.error(e); }
+            await new Promise(r => setTimeout(r, 4000));
+        }
+    }
+
+    function arreterApprentissage() {
+        enCours = false;
+        document.getElementById('status').innerText = "Pause & Sauvegardé";
+    }
+
+    function genererTexte() {
+        let keys = Object.keys(memoire);
+        if (keys.length === 0) { document.getElementById('output').innerText = "Mémoire vide !"; return; }
+        let curr = keys[Math.floor(Math.random() * keys.length)];
+        let res = curr;
+        for (let i = 0; i < 150; i++) {
+            let nexts = memoire[curr];
+            if (!nexts || Object.keys(nexts).length === 0) {
+                curr = keys[Math.floor(Math.random() * keys.length)];
+            } else {
+                let opts = Object.entries(nexts).sort((a,b) => b[1] - a[1]);
+                curr = opts[Math.floor(Math.random() * Math.min(3, opts.length))][0];
+            }
+            res += curr;
+        }
+        document.getElementById('output').innerText = res;
+    }
+</script>
+</body>
+</html>
