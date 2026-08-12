@@ -148,10 +148,6 @@
         .global-chart-wrap { width: 190px; }
         .global-chart-wrap canvas { max-height: 140px; }
 
-        #global-metric-txt { display: none; }
-        #global-prog-fill { display: none; }
-        .global-track { display: none; }
-
         /* ---------- Mixer / Collaborative Hub Panel ---------- */
         .mixer-panel {
             background: linear-gradient(180deg, var(--panel), var(--panel-alt));
@@ -178,6 +174,9 @@
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 14px;
             margin-bottom: 16px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 4px;
         }
         .slider-group {
             background: var(--void);
@@ -834,7 +833,6 @@
         modulesConfig.forEach(mod => {
             let p = 0;
             if (isAuto) {
-                // En mode automatique, on pondère par défaut selon le volume de connexions (densité de savoir)
                 p = Math.max(1, appState[mod.id].totalPaires || 1);
             } else {
                 const slider = document.getElementById(`weight-${mod.id}`);
@@ -844,14 +842,12 @@
             totalPoids += p;
         });
 
-        // Normalisation des pourcentages
         if (totalPoids > 0) {
             for (let id in poidsModules) {
                 poidsModules[id] /= totalPoids;
             }
         }
 
-        // Récupérer toutes les clés (racines) disponibles à travers les modules actifs
         let toutesLesRacinesSet = new Set();
         modulesConfig.forEach(mod => {
             Object.keys(appState[mod.id].memoire || {}).forEach(k => toutesLesRacinesSet.add(k));
@@ -868,7 +864,6 @@
         let dernieresLettres = [lettreCourante];
 
         for (let i = 0; i < 150; i++) {
-            // Fusion des votes de tous les modules pondérés
             let votesFinaux = {};
 
             modulesConfig.forEach(mod => {
@@ -895,10 +890,7 @@
                 });
                 if (optionsFiltrees.length === 0) optionsFiltrees = options;
                 
-                // Tri par score combiné décroissant
                 optionsFiltrees.sort((a, b) => b[1] - a[1]);
-                
-                // Application stricte du pool de 4
                 let choixPool = optionsFiltrees.slice(0, Math.min(4, optionsFiltrees.length));
                 let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
                 lettreCourante = choixAleatoire[0];
