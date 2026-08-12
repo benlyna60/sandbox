@@ -2,17 +2,15 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Hub Usine IA - Multi-Niveaux</title>
+    <title>Hub Usine IA - Multi-Niveaux Corrigé</title>
     <style>
         body { font-family: monospace; background-color: #0d0d0d; color: #00ff66; padding: 20px; max-width: 1400px; margin: 0 auto; }
         h1, h2 { color: #fff; border-bottom: 1px solid #333; padding-bottom: 5px; }
         
-        /* Panel Global Stats */
         .stats-panel { background: #161616; padding: 15px; border-radius: 8px; border: 1px solid #333; margin-bottom: 25px; }
         .stat-bar { height: 8px; background: #222; margin: 4px 0 12px 0; border-radius: 4px; overflow: hidden; }
         .stat-fill { height: 100%; background: #00ff66; width: 0%; transition: width 0.4s; }
 
-        /* Grille des modules */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
         .card { border: 1px solid #333; background: #181818; padding: 15px; border-radius: 8px; position: relative; }
         .card h3 { margin-top: 0; color: #00ff66; }
@@ -24,10 +22,9 @@
         button.inspect { background: #3399ff; color: #fff; }
         button.inspect:hover { background: #0073e6; }
 
-        .output { background: #111; border: 1px solid #222; padding: 8px; height: 90px; overflow-y: auto; font-size: 10px; margin-top: 8px; color: #ccc; }
+        .output { background: #111; border: 1px solid #222; padding: 8px; height: 90px; overflow-y: auto; font-size: 10px; margin-top: 8px; color: #ccc; word-break: break-all; }
         .status { font-weight: bold; color: #ffcc00; }
 
-        /* Fenêtre modale / Vue détaillée (Détachée pour chaque module) */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000;
@@ -37,24 +34,21 @@
             border-radius: 10px; overflow-y: auto; color: #fff; position: relative;
         }
         .close-btn { position: absolute; top: 10px; right: 15px; background: #ff4d4d; color: #fff; border: none; padding: 5px 10px; cursor: pointer; font-weight: bold; }
-        .test-box { background: #0d0d0d; border: 1px solid #444; padding: 12px; margin-top: 15px; min-height: 120px; color: #00ff66; font-size: 12px; }
+        .test-box { background: #0d0d0d; border: 1px solid #444; padding: 12px; margin-top: 15px; min-height: 120px; color: #00ff66; font-size: 12px; word-break: break-all; }
     </style>
 </head>
 <body>
 
     <h1>🌐 Hub Central - Usine IA (Multi-Niveaux)</h1>
     
-    <!-- Niveau 1 : Vue Globale -->
     <div class="stats-panel">
         <h2>📊 Progression Globale de l'Usine</h2>
         <div id="stats-bars"></div>
     </div>
 
-    <!-- Niveau 2 : Cartes de pilotage rapide -->
     <h2>⚙️ Modules Actifs</h2>
     <div class="grid" id="modules-container"></div>
 
-    <!-- Niveau 3 : Fenêtre d'Inspection / Test Avancé (Modale dynamique) -->
     <div class="modal-overlay" id="modal-inspect">
         <div class="modal-content" id="modal-body">
             <button class="close-btn" onclick="fermerInspection()">Fermer</button>
@@ -63,7 +57,6 @@
     </div>
 
 <script>
-    // Liste extensible à l'infini : ajoute un objet ici et tout se crée tout seul !
     const modulesConfig = [
         { id: "francais", nom: "Français / Anglais", sourceWiki: "Langue française" },
         { id: "arabe", nom: "Arabe", sourceWiki: "Langue arabe" },
@@ -82,7 +75,6 @@
         modulesConfig.forEach(mod => {
             etatsModules[mod.id] = { handle: null, memoire: {}, enCours: false };
 
-            // Création de la carte du module
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
@@ -98,11 +90,10 @@
             `;
             container.appendChild(card);
 
-            // Création de la barre de stats globale
             stats.innerHTML += `
                 <div style="font-size: 12px; display:flex; justify-content:space-between;">
                     <span><b>${mod.nom}</b></span>
-                    <span id="count-${mod.id}">0 liaisons neuronales</span>
+                    <span id="count-${mod.id}">0 liaisons</span>
                 </div>
                 <div class="stat-bar"><div class="stat-fill" id="bar-${mod.id}"></div></div>
             `;
@@ -120,6 +111,7 @@
             etatsModules[id].memoire = contenu ? JSON.parse(contenu) : {};
             document.getElementById(`status-${id}`).innerText = "Lié & Prêt";
             document.getElementById(`status-${id}`).style.color = "#00ff66";
+            document.getElementById(`output-${id}`).innerText = "JSON lié avec succès. Prêt.";
             mettreAJourStats(id);
         } catch (err) {
             document.getElementById(`status-${id}`).innerText = "Erreur liaison";
@@ -140,7 +132,7 @@
         for (let char in memoire) count += Object.keys(memoire[char]).length;
         
         document.getElementById(`count-${id}`).innerText = count + " liaisons";
-        let percent = Math.min((count / 10000) * 100, 100); // Échelle indicative
+        let percent = Math.min((count / 5000) * 100, 100);
         document.getElementById(`bar-${id}`).style.width = percent + "%";
     }
 
@@ -167,7 +159,7 @@
     function genererTexte(id, longueur = 150) {
         let memoire = etatsModules[id].memoire;
         let keys = Object.keys(memoire);
-        if (keys.length === 0) return "Mémoire vide... Lance d'abord l'apprentissage !";
+        if (keys.length === 0) return "Mémoire vide... Aucune liaison enregistrée pour l'instant.";
         let courant = keys[Math.floor(Math.random() * keys.length)];
         let resultat = courant;
         for (let i = 0; i < longueur; i++) {
@@ -193,16 +185,20 @@
         if (!mod.handle) { alert("Liez d'abord le fichier JSON !"); return; }
         mod.enCours = true;
         document.getElementById(`status-${id}`).innerText = "Apprentissage actif...";
-        
+        document.getElementById(`status-${id}`).style.color = "#00ff66";
+
         while (mod.enCours) {
             let texte = await fetchWiki(sujet);
-            if (texte) {
+            if (texte && texte.length > 0) {
                 ingererTexte(id, texte);
                 await sauvegarderJSON(id);
                 mettreAJourStats(id);
                 let gen = genererTexte(id, 100);
                 document.getElementById(`output-${id}`).innerHTML = gen.replace(/\n/g, '<br>');
+            } else {
+                document.getElementById(`output-${id}`).innerText = "Attention : Wikipedia n'a renvoyé aucun texte pour ce sujet.";
             }
+            // Petite pause de 6 secondes avant le prochain cycle
             await new Promise(r => setTimeout(r, 6000));
         }
     }
@@ -213,7 +209,6 @@
         document.getElementById(`status-${id}`).style.color = "#ff4d4d";
     }
 
-    // Gestion de la vue détaillée (Niveau 3)
     function ouvrirInspection(id, nom) {
         const modal = document.getElementById('modal-inspect');
         const content = document.getElementById('inspect-content');
@@ -229,15 +224,15 @@
             <hr style="border-color:#444; margin:15px 0;">
             
             <h3>🧪 Zone de Test de Cohérence</h3>
-            <p>Générez du texte à la demande pour analyser la qualité de la production de ce cerveau :</p>
+            <p>Générez du texte à la demande pour analyser la production de ce cerveau :</p>
             <button onclick="testerDepuisModal('${id}')">🔄 Générer une phrase de test</button>
-            <div class="test-box" id="modal-test-output">Cliquez sur le bouton ci-dessus pour tester la génération...</div>
+            <div class="test-box" id="modal-test-output">Cliquez sur le bouton pour tester la génération...</div>
         `;
         modal.style.display = 'flex';
     }
 
     function testerDepuisModal(id) {
-        let resultat = genererTexte(id, 300); // Génère un texte plus long pour les tests
+        let resultat = genererTexte(id, 300);
         document.getElementById('modal-test-output').innerHTML = resultat.replace(/\n/g, '<br>');
     }
 
