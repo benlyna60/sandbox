@@ -2,16 +2,22 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Hub Central Ultime — Usine IA</title>
+    <title>Hub Central Ultime — Usine IA & Langues</title>
     <style>
         body { background-color: #050505; color: #d1d1d1; font-family: monospace; padding: 20px; margin: 0; }
         h1 { color: #ffffff; border-bottom: 1px solid #333; padding-bottom: 10px; font-weight: 300; font-size: 1.4em; }
 
-        /* Panneau de progression globale en haut */
-        .global-dashboard { background: #0c0c0c; border: 1px solid #222; padding: 15px; border-radius: 4px; margin-bottom: 25px; }
+        /* Tableau de bord global */
+        .global-dashboard { background: #0c0c0c; border: 1px solid #222; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
         .global-stats { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; color: #aaa; }
         .global-track { background: #1a1a1a; border: 1px solid #333; height: 12px; border-radius: 6px; overflow: hidden; }
         .global-fill { background: linear-gradient(90deg, #00aa55, #00ff66); height: 100%; width: 0%; transition: width 0.5s ease; }
+
+        /* Barre de filtrage (Dossiers) */
+        .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filter-btn { background: #121212; color: #aaa; border: 1px solid #333; padding: 8px 14px; cursor: pointer; font-size: 11px; font-family: monospace; border-radius: 4px; }
+        .filter-btn:hover { background: #222; color: #fff; }
+        .filter-btn.active { background: #333; color: #fff; border-color: #555; font-weight: bold; }
 
         /* Grille des modules */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 15px; }
@@ -31,9 +37,10 @@
         .progress-fill { background: linear-gradient(90deg, #1b5e20, #00ff66); height: 100%; width: 0%; transition: width 0.4s ease; }
 
         .output { background: #000; border: 1px solid #222; padding: 8px; height: 50px; overflow-y: auto; font-size: 10px; margin-top: 8px; color: #00ff66; word-break: break-all; white-space: pre-wrap; }
+        .output.rtl { direction: rtl; text-align: right; font-size: 12px; }
         .status { font-size: 11px; color: #ffcc00; margin-top: 4px; }
 
-        /* Fenêtre Modale (Zoom Module Agrandit) */
+        /* Fenêtre Modale (Zoom) */
         #modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; }
         .modal-content { background: #121212; border: 1px solid #444; width: 80%; max-width: 600px; padding: 25px; border-radius: 6px; position: relative; }
         .modal-close { position: absolute; top: 15px; right: 15px; background: #b71c1c; color: #fff; border: none; padding: 5px 10px; cursor: pointer; }
@@ -41,22 +48,29 @@
 </head>
 <body onload="initAllModules()">
 
-    <h1>🌐 Hub Central Ultime — Usine IA</h1>
+    <h1>🌐 Hub Central Ultime — Usine IA & Langues</h1>
 
-    <!-- Tableau de bord global en haut -->
+    <!-- Tableau de bord global -->
     <div class="global-dashboard">
         <div class="global-stats">
             <span><strong>PROGRESSION GLOBALE DE L'USINE</strong></span>
-            <span id="global-metric-txt">0 / 35,000 connexions totales</span>
+            <span id="global-metric-txt">0 connexions totales</span>
         </div>
         <div class="global-track">
             <div class="global-fill" id="global-prog-fill"></div>
         </div>
     </div>
 
+    <!-- Filtres / Groupage de dossiers -->
+    <div class="filter-bar">
+        <button class="filter-btn active" onclick="filtrerModules('tous', this)">📁 Tous les modules</button>
+        <button class="filter-btn" onclick="filtrerModules('code', this)">💻 Langages de Code</button>
+        <button class="filter-btn" onclick="filtrerModules('langue', this)">🌍 Langues & Livres</button>
+    </div>
+
     <div class="grid" id="hub-container"></div>
 
-    <!-- Modale pour l'affichage agrandi d'un module -->
+    <!-- Modale de Zoom -->
     <div id="modal-overlay">
         <div class="modal-content" id="modal-body">
             <button class="modal-close" onclick="fermerZoom()">Fermer [X]</button>
@@ -65,25 +79,52 @@
     </div>
 
 <script>
+    // Configuration centralisée de tous les modules (Code + tes 2 modules spécifiques intégrés)
     const modulesConfig = [
-        { id: "python", nom: "Python", dbName: "HubDB_Python", keyName: "pyKey", sujets: ["Python (programming language)", "Guido van Rossum", "Django (web framework)", "NumPy"] },
-        { id: "javascript", nom: "JavaScript", dbName: "HubDB_JS", keyName: "jsKey", sujets: ["JavaScript", "ECMAScript", "Node.js", "DOM"] },
-        { id: "cpp", nom: "C++", dbName: "HubDB_CPP", keyName: "cppKey", sujets: ["C++ (programming language)", "Standard Template Library", "Pointer (computer programming)", "Memory management"] },
-        { id: "htmlcss", nom: "HTML / CSS", dbName: "HubDB_HTMLCSS", keyName: "htmlKey", sujets: ["HTML", "Cascading Style Sheets", "Web design", "Document Object Model"] },
-        { id: "sql", nom: "SQL", dbName: "HubDB_SQL", keyName: "sqlKey", sujets: ["SQL", "Relational database", "Database management system", "Query language"] },
-        { id: "java", nom: "Java", dbName: "HubDB_Java", keyName: "javaKey", sujets: ["Java (programming language)", "Java Virtual Machine", "Object-oriented programming"] },
-        { id: "php", nom: "PHP", dbName: "HubDB_PHP", keyName: "phpKey", sujets: ["PHP", "Server-side scripting", "Web development", "Hypertext Preprocessor"] }
+        // Dossier Code
+        { id: "python", nom: "Python", cat: "code", dbName: "HubDB_Python", keyName: "pyKey", type: "wiki", wikiLang: "en", sujets: ["Python (programming language)", "Guido van Rossum", "NumPy"] },
+        { id: "javascript", nom: "JavaScript", cat: "code", dbName: "HubDB_JS", keyName: "jsKey", type: "wiki", wikiLang: "en", sujets: ["JavaScript", "ECMAScript", "Node.js"] },
+        { id: "cpp", nom: "C++", cat: "code", dbName: "HubDB_CPP", keyName: "cppKey", type: "wiki", wikiLang: "en", sujets: ["C++ (programming language)", "Standard Template Library"] },
+        { id: "htmlcss", nom: "HTML / CSS", cat: "code", dbName: "HubDB_HTMLCSS", keyName: "htmlKey", type: "wiki", wikiLang: "en", sujets: ["HTML", "Cascading Style Sheets", "Web design"] },
+        { id: "sql", nom: "SQL", cat: "code", dbName: "HubDB_SQL", keyName: "sqlKey", type: "wiki", wikiLang: "en", sujets: ["SQL", "Relational database"] },
+        { id: "java", nom: "Java", cat: "code", dbName: "HubDB_Java", keyName: "javaKey", type: "wiki", wikiLang: "en", sujets: ["Java (programming language)", "Java Virtual Machine"] },
+        { id: "php", nom: "PHP", cat: "code", dbName: "HubDB_PHP", keyName: "phpKey", type: "wiki", wikiLang: "en", sujets: ["PHP", "Server-side scripting"] },
+        
+        // Dossier Langues & Livres (Intégration exacte de tes scripts)
+        { 
+            id: "arabe", nom: "Module Arabe", cat: "langue", dbName: "HubDB_Arabe", keyName: "arKey", 
+            type: "wiki", wikiLang: "ar", isRtl: true, 
+            sujets: ["اللغة العربية", "أدب عربي", "تاريخ العرب", "القاهرة"] 
+        },
+        { 
+            id: "fr_en_livres", nom: "Français, Anglais & Livres", cat: "langue", dbName: "HubDB_FrEnLivres", keyName: "frEnLivresKey", 
+            type: "mixte", 
+            books: ["https://www.gutenberg.org/files/11/11-0.txt", "https://www.gutenberg.org/files/84/84-0.txt"]
+        }
     ];
 
     const appState = {};
+    let categorieActuelle = 'tous';
 
     function initAllModules() {
+        renderGrille();
+        modulesConfig.forEach(mod => {
+            appState[mod.id] = { handle: null, memoire: {}, iterations: 0, enCours: false, totalPaires: 0, dernierTexte: "Aucun test effectué." };
+            restaurerHandle(mod);
+        });
+    }
+
+    function renderGrille() {
         const container = document.getElementById('hub-container');
         container.innerHTML = "";
 
-        modulesConfig.forEach(mod => {
-            appState[mod.id] = { handle: null, memoire: {}, enCours: false, totalPaires: 0, dernierTexte: "Aucun test effectué." };
+        let modulesFiltres = modulesConfig;
+        if (categorieActuelle !== 'tous') {
+            modulesFiltres = modulesConfig.filter(m => m.cat === categorieActuelle);
+        }
 
+        modulesFiltres.forEach(mod => {
+            let rtlClass = mod.isRtl ? "rtl" : "";
             container.innerHTML += `
                 <div class="card" id="card-${mod.id}">
                     <h3>
@@ -109,11 +150,18 @@
                         <button class="stop" onclick="arreterApprentissage('${mod.id}')">Pause</button>
                         <button onclick="genererTexteManuel('${mod.id}')" style="background:#004d40; color:#fff;">✨ Générer Texte</button>
                     </div>
-                    <div class="output" id="out-${mod.id}">Clique sur "Générer Texte" pour tester...</div>
+                    <div class="output ${rtlClass}" id="out-${mod.id}">Clique sur "Générer Texte" pour tester...</div>
                 </div>
             `;
-            restaurerHandle(mod);
         });
+        mettreAJourToutesMetriques();
+    }
+
+    function filtrerModules(cat, btnElement) {
+        categorieActuelle = cat;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btnElement.classList.add('active');
+        renderGrille();
     }
 
     function ouvrirBDD(dbName) {
@@ -137,17 +185,18 @@
     function mettreAJourToutesMetriques() {
         let globalTotal = 0;
         let globalRacines = 0;
-        let maxCibleGlobal = 35000; // 5000 connexions par module en moyenne max
+        let maxCibleGlobal = 50000;
 
         modulesConfig.forEach(mod => {
-            let memoire = appState[mod.id].memoire;
+            let state = appState[mod.id];
+            if (!state) return;
+            let memoire = state.memoire;
             let total = calculerPaires(memoire);
             let racines = Object.keys(memoire).length;
-            appState[mod.id].totalPaires = total;
+            state.totalPaires = total;
             globalTotal += total;
             globalRacines += racines;
 
-            // Mise à jour carte individuelle
             let badgeEl = document.getElementById(`badge-${mod.id}`);
             let metricTxtEl = document.getElementById(`metric-txt-${mod.id}`);
             let progEl = document.getElementById(`prog-${mod.id}`);
@@ -160,10 +209,11 @@
             }
         });
 
-        // Mise à jour de la barre globale en haut
         let globalPourcent = Math.min(100, (globalTotal / maxCibleGlobal) * 100);
-        document.getElementById('global-prog-fill').style.width = globalPourcent + "%";
-        document.getElementById('global-metric-txt').innerText = `${globalTotal} connexions globales (${globalRacines} racines au total)`;
+        const fillEl = document.getElementById('global-prog-fill');
+        const txtEl = document.getElementById('global-metric-txt');
+        if (fillEl) fillEl.style.width = globalPourcent + "%";
+        if (txtEl) txtEl.innerText = `${globalTotal} connexions globales (${globalRacines} racines au total)`;
     }
 
     async function restaurerHandle(mod) {
@@ -176,13 +226,17 @@
                     const file = await req.result.getFile();
                     const text = await file.text();
                     const json = text ? JSON.parse(text) : {};
-                    appState[mod.id].memoire = json.memoire_paires || json || {};
+                    appState[mod.id].memoire = json.memoire_paires || {};
+                    appState[mod.id].iterations = json.iteration || 0;
                     
                     mettreAJourToutesMetriques();
-                    document.getElementById(`status-${mod.id}`).innerText = "Prêt";
-                    document.getElementById(`btn-file-${mod.id}`).innerText = "✔ Lié";
+                    let statusEl = document.getElementById(`status-${mod.id}`);
+                    let btnEl = document.getElementById(`btn-file-${mod.id}`);
+                    if (statusEl) statusEl.innerText = "Prêt";
+                    if (btnEl) btnEl.innerText = "✔ Lié";
                 } catch(e) {
-                    document.getElementById(`status-${mod.id}`).innerText = "Erreur";
+                    let statusEl = document.getElementById(`status-${mod.id}`);
+                    if (statusEl) statusEl.innerText = "Erreur fichier";
                 }
             }
         };
@@ -198,64 +252,117 @@
             const file = await appState[id].handle.getFile();
             const text = await file.text();
             const json = text ? JSON.parse(text) : {};
-            appState[id].memoire = json.memoire_paires || json || {};
+            appState[id].memoire = json.memoire_paires || {};
+            appState[id].iterations = json.iteration || 0;
             
             mettreAJourToutesMetriques();
             document.getElementById(`status-${id}`).innerText = "Prêt";
-            document.getElementById(`btn-file-${mod.id}`).innerText = "✔ Lié";
+            document.getElementById(`btn-file-${id}`).innerText = "✔ Lié";
         } catch (err) {
             console.error(err);
         }
     }
 
+    // Moteur de génération intelligent (anti-bégaiement hérité de ton script mix)
     function genererTexteManuel(id) {
-        let memoire = appState[id].memoire;
+        const state = appState[id];
+        let memoire = state.memoire;
         let keys = Object.keys(memoire);
         if (keys.length === 0) {
             document.getElementById(`out-${id}`).innerText = "Mémoire vide, lance l'apprentissage d'abord !";
             return;
         }
-        let courant = keys[Math.floor(Math.random() * keys.length)];
-        let aperçu = courant;
-        for (let k = 0; k < 80; k++) {
-            let opts = memoire[courant];
-            if (!opts) break;
-            let choix = Object.keys(opts)[Math.floor(Math.random() * Object.keys(opts).length)];
-            aperçu += choix;
-            courant = choix;
+        
+        let lettreCourante = keys[Math.floor(Math.random() * keys.length)];
+        let texteGenere = lettreCourante;
+        let dernieresLettres = [lettreCourante];
+
+        for (let i = 0; i < 150; i++) {
+            let suivantes = memoire[lettreCourante];
+            if (!suivantes || Object.keys(suivantes).length === 0) {
+                lettreCourante = keys[Math.floor(Math.random() * keys.length)];
+            } else {
+                let options = Object.entries(suivantes);
+                let optionsFiltrees = options.filter(([suiv]) => {
+                    let occurrencesRecentes = dernieresLettres.slice(-3).filter(l => l === suiv).length;
+                    return occurrencesRecentes < 2;
+                });
+                if (optionsFiltrees.length === 0) optionsFiltrees = options;
+                optionsFiltrees.sort((a, b) => b[1] - a[1]);
+                let choixPool = optionsFiltrees.slice(0, Math.min(3, optionsFiltrees.length));
+                let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
+                lettreCourante = choixAleatoire[0];
+            }
+            texteGenere += lettreCourante;
+            dernieresLettres.push(lettreCourante);
+            if (dernieresLettres.length > 5) dernieresLettres.shift();
         }
-        appState[id].dernierTexte = aperçu;
-        document.getElementById(`out-${id}`).innerText = aperçu;
+
+        state.dernierTexte = texteGenere;
+        document.getElementById(`out-${id}`).innerText = texteGenere;
     }
 
     async function lancerApprentissage(id) {
         const mod = modulesConfig.find(m => m.id === id);
-        if (!appState[id].handle) {
+        const state = appState[id];
+        if (!state.handle) {
             alert("Veuillez d'abord lier un fichier JSON !");
             return;
         }
         
-        appState[id].enCours = true;
+        state.enCours = true;
         document.getElementById(`status-${id}`).innerText = "Apprentissage...";
 
-        while (appState[id].enCours) {
+        while (state.enCours) {
             try {
-                let sujet = mod.sujets[Math.floor(Math.random() * mod.sujets.length)];
-                const res = await fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=${encodeURIComponent(sujet)}&format=json&origin=*`).then(r => r.json());
-                const pages = res.query.pages;
-                const texte = pages[Object.keys(pages)[0]].extract || "";
+                let texte = "";
+                if (mod.type === "mixte") {
+                    // Logique mixte FR / EN / Livres
+                    const sources = [
+                        async () => {
+                            let r = await fetch(`https://fr.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`).then(res => res.json());
+                            let t = r.query.random[0].title;
+                            let c = await fetch(`https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext&titles=${encodeURIComponent(t)}&format=json&origin=*`).then(res => res.json());
+                            return Object.values(c.query.pages)[0].extract || "";
+                        },
+                        async () => {
+                            let r = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`).then(res => res.json());
+                            let t = r.query.random[0].title;
+                            let c = await fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext&titles=${encodeURIComponent(t)}&format=json&origin=*`).then(res => res.json());
+                            return Object.values(c.query.pages)[0].extract || "";
+                        },
+                        async () => {
+                            let bookUrl = mod.books[Math.floor(Math.random() * mod.books.length)];
+                            let bText = await fetch(bookUrl).then(res => res.text());
+                            return bText.substring(0, 5000);
+                        }
+                    ];
+                    let chosenSource = sources[Math.floor(Math.random() * sources.length)];
+                    texte = await chosenSource();
+                } else {
+                    // Logique Wikipédia par langue (Arabe, Python, etc.)
+                    const randomUrl = `https://${mod.wikiLang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`;
+                    const res = await fetch(randomUrl).then(r => r.json());
+                    const title = res.query.random[0].title;
+                    
+                    const contentUrl = `https://${mod.wikiLang}.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+                    const content = await fetch(contentUrl).then(r => r.json());
+                    const pages = content.query.pages;
+                    texte = pages[Object.keys(pages)[0]].extract || "";
+                }
 
                 if (texte.length > 0) {
-                    let memoire = appState[id].memoire;
                     for (let i = 0; i < texte.length - 1; i++) {
-                        if (!appState[id].enCours) break;
+                        if (!state.enCours) break;
+                        state.iterations++;
                         let a = texte[i], b = texte[i+1];
-                        if (!memoire[a]) memoire[a] = {};
-                        memoire[a][b] = (memoire[a][b] || 0) + 1;
+                        if (!state.memoire[a]) state.memoire[a] = {};
+                        state.memoire[a][b] = (state.memoire[a][b] || 0) + 1;
                     }
 
-                    const writable = await appState[id].handle.createWritable();
-                    await writable.write(JSON.stringify({ memoire_paires: memoire }, null, 2));
+                    // Sauvegarde dans le fichier lié
+                    const writable = await state.handle.createWritable();
+                    await writable.write(JSON.stringify({ iteration: state.iterations, memoire_paires: state.memoire }, null, 2));
                     await writable.close();
 
                     mettreAJourToutesMetriques();
@@ -263,32 +370,31 @@
             } catch (e) {
                 console.error(e);
             }
-            await new Promise(r => setTimeout(r, 6000)); // Pause de 6s pour ménager le vieux processeur
+            await new Promise(r => setTimeout(r, 5000)); // Pause pour protéger ton vieux laptop
         }
     }
 
     function arreterApprentissage(id) {
         appState[id].enCours = false;
-        document.getElementById(`status-${id}`).innerText = "Pause";
+        document.getElementById(`status-${id}`).innerText = "Pause & Sauvegardé";
     }
 
-    // Gestion de la vue Agrandie (Zoom)
     function ouvrirZoom(id) {
         const mod = modulesConfig.find(m => m.id === id);
         const state = appState[id];
         const modal = document.getElementById('modal-overlay');
         const content = document.getElementById('modal-inner-content');
+        let rtlClass = mod.isRtl ? "rtl" : "";
 
         content.innerHTML = `
             <h2 style="color:#fff; margin-top:0; border-bottom:1px solid #333; padding-bottom:10px;">🔍 Vue détaillée : ${mod.nom}</h2>
-            <p style="font-size:12px; color:#aaa;">Statistiques approfondies du module d'apprentissage :</p>
+            <p style="font-size:12px; color:#aaa;">Catégorie : <strong>${mod.cat.toUpperCase()}</strong> | Itérations : <strong>${state.iterations}</strong></p>
             <ul style="font-size:12px; line-height: 1.6; color:#ccc;">
-                <li><strong>Nombre de racines uniques (caractères de départ) :</strong> ${Object.keys(state.memoire).length}</li>
-                <li><strong>Volume total de connexions synaptiques :</strong> ${state.totalPaires}</li>
-                <li><strong>Sujets Wikipédia associés :</strong> ${mod.sujets.join(", ")}</li>
+                <li><strong>Nombre de racines uniques :</strong> ${Object.keys(state.memoire).length}</li>
+                <li><strong>Volume total de connexions :</strong> ${state.totalPaires}</li>
             </ul>
             <p style="font-size:12px; color:#aaa; margin-top:15px;"><strong>Dernier texte généré :</strong></p>
-            <div style="background:#000; border:1px solid #333; padding:10px; height:100px; overflow-y:auto; color:#00ff66; font-size:11px; white-space:pre-wrap;">${state.dernierTexte}</div>
+            <div class="${rtlClass}" style="background:#000; border:1px solid #333; padding:10px; height:100px; overflow-y:auto; color:#00ff66; font-size:11px; white-space:pre-wrap;">${state.dernierTexte}</div>
             <button onclick="genererTexteManuel('${id}'); ouvrirZoom('${id}');" style="margin-top:15px; background:#004d40; color:#fff; padding:8px 12px; cursor:pointer;">✨ Relancer une génération test ici</button>
         `;
         modal.style.display = 'flex';
