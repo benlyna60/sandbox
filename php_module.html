@@ -2,7 +2,7 @@
 <html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <title>IA Mobile : Module PHP</title>
+    <title>IA Mobile : Module PHP (Spécialisé)</title>
     <style>
         body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 15px; max-width: 700px; margin: auto; }
         .panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 15px; }
@@ -14,7 +14,7 @@
     <h1>IA Mobile : Module PHP</h1>
     <div class="panel">
         <button onclick="selectionnerFichier()" id="btn-fichier">Lier fichier (php.json)</button>
-        <button onclick="lancerEntrainement()" style="background-color: #777bb3; color: #fff;">Lancer Apprentissage PHP</button>
+        <button onclick="lancerEntrainement()" style="background-color: #777bb3; color: #fff;">Lancer Apprentissage PHP Ciblé</button>
         <button onclick="arreterEntrainement()" style="background-color: #b71c1c; color: #fff;">Pause</button>
     </div>
     <div class="output-box" id="resultat">En attente...</div>
@@ -23,7 +23,17 @@
         let fichierHandle = null;
         let memoirePaires = {};
         let enCours = false;
-        const sujets = ["PHP", "Server-side scripting", "Web development", "Hypertext Preprocessor"];
+        
+        // Mots-clés ciblés pour explorer la programmation côté serveur et l'écosystème PHP
+        const motsClefsPHP = [
+            "PHP programming language",
+            "Server-side scripting web",
+            "Hypertext Preprocessor syntax",
+            "PHP frameworks web development",
+            "PDO PHP Data Objects database",
+            "Composer dependency manager PHP",
+            "Session management PHP"
+        ];
 
         async function ouvrirBDD() {
             return new Promise(res => {
@@ -34,10 +44,14 @@
         }
         
         async function selectionnerFichier() {
-            [fichierHandle] = await window.showOpenFilePicker();
-            const db = await ouvrirBDD();
-            db.transaction("handles", "readwrite").objectStore("handles").put(fichierHandle, "phpKey");
-            document.getElementById("btn-fichier").innerText = "Fichier lié.";
+            try {
+                [fichierHandle] = await window.showOpenFilePicker();
+                const db = await ouvrirBDD();
+                db.transaction("handles", "readwrite").objectStore("handles").put(fichierHandle, "phpKey");
+                document.getElementById("btn-fichier").innerText = "✔ Fichier lié (php.json)";
+            } catch (err) {
+                console.error(err);
+            }
         }
 
         async function initApp() {
@@ -46,30 +60,73 @@
                 const req = db.transaction("handles").objectStore("handles").get("phpKey");
                 req.onsuccess = () => res(req.result);
             });
+            if (fichierHandle) {
+                try {
+                    const file = await fichierHandle.getFile();
+                    const text = await file.text();
+                    const json = text ? JSON.parse(text) : {};
+                    memoirePaires = json.memoire_paires || json; // Rétrocompatibilité
+                    document.getElementById("btn-fichier").innerText = "✔ Fichier lié (php.json)";
+                    document.getElementById("resultat").innerText = "Prêt. Mémoire chargée (" + Object.keys(memoirePaires).length + " racines).";
+                } catch(e) {
+                    document.getElementById("resultat").innerText = "Erreur de lecture du fichier lié.";
+                }
+            }
         }
         
         async function lancerEntrainement() {
+            if (!fichierHandle) {
+                alert("Veuillez d'abord lier un fichier JSON !");
+                return;
+            }
             enCours = true;
+            document.getElementById("resultat").innerText = "Apprentissage PHP en cours...";
+
             while(enCours) {
-                let sujet = sujets[Math.floor(Math.random() * sujets.length)];
-                const res = await fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=${encodeURIComponent(sujet)}&format=json&origin=*`).then(r => r.json());
-                const texte = Object.values(res.query.pages)[0].extract || "";
-                
-                for (let i = 0; i < texte.length - 1; i++) {
-                    let a = texte[i], b = texte[i+1];
-                    if (!memoirePaires[a]) memoirePaires[a] = {};
-                    memoirePaires[a][b] = (memoirePaires[a][b] || 0) + 1;
-                }
-                
-                if(fichierHandle) {
-                    const writable = await fichierHandle.createWritable();
-                    await writable.write(JSON.stringify(memoirePaires, null, 2));
-                    await writable.close();
+                try {
+                    // 1. Choix d'un mot-clé technique
+                    let query = motsClefsPHP[Math.floor(Math.random() * motsClefsPHP.length)];
+                    
+                    // 2. Recherche ciblée sur Wikipédia
+                    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srlimit=10&format=json&origin=*`;
+                    const searchRes = await fetch(searchUrl).then(r => r.json());
+                    const results = searchRes.query?.search || [];
+                    
+                    if (results.length > 0) {
+                        let hit = results[Math.floor(Math.random() * results.length)];
+                        let title = hit.title;
+
+                        // 3. Récupération du texte brut
+                        const contentUrl = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+                        const res = await fetch(contentUrl).then(r => r.json());
+                        const texte = Object.values(res.query.pages)[0].extract || "";
+                        
+                        // 4. Analyse et apprentissage des paires
+                        for (let i = 0; i < texte.length - 1; i++) {
+                            if (!enCours) break;
+                            let a = texte[i], b = texte[i+1];
+                            if (!memoirePaires[a]) memoirePaires[a] = {};
+                            memoirePaires[a][b] = (memoirePaires[a][b] || 0) + 1;
+                        }
+                        
+                        // 5. Sauvegarde propre dans le fichier JSON
+                        const writable = await fichierHandle.createWritable();
+                        await writable.write(JSON.stringify({ memoire_paires: memoirePaires }, null, 2));
+                        await writable.close();
+
+                        document.getElementById("resultat").innerText = `Dernier sujet exploré : "${title}"\nRacines en mémoire : ${Object.keys(memoirePaires).length}`;
+                    }
+                } catch (e) {
+                    console.error(e);
                 }
                 await new Promise(r => setTimeout(r, 4000));
             }
         }
-        function arreterEntrainement() { enCours = false; }
+        
+        function arreterEntrainement() { 
+            enCours = false; 
+            document.getElementById("resultat").innerText = "En pause. Données sauvegardées.";
+        }
     </script>
 </body>
 </html>
