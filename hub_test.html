@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Hub Usine IA - Multi-Niveaux Corrigé</title>
+    <title>Hub Usine IA - Ultra Robuste</title>
     <style>
         body { font-family: monospace; background-color: #0d0d0d; color: #00ff66; padding: 20px; max-width: 1400px; margin: 0 auto; }
         h1, h2 { color: #fff; border-bottom: 1px solid #333; padding-bottom: 5px; }
@@ -22,7 +22,7 @@
         button.inspect { background: #3399ff; color: #fff; }
         button.inspect:hover { background: #0073e6; }
 
-        .output { background: #111; border: 1px solid #222; padding: 8px; height: 90px; overflow-y: auto; font-size: 10px; margin-top: 8px; color: #ccc; word-break: break-all; }
+        .output { background: #111; border: 1px solid #222; padding: 8px; height: 90px; overflow-y: auto; font-size: 10px; margin-top: 8px; color: #ccc; word-break: break-all; direction: ltr; }
         .status { font-weight: bold; color: #ffcc00; }
 
         .modal-overlay {
@@ -39,7 +39,7 @@
 </head>
 <body>
 
-    <h1>🌐 Hub Central - Usine IA (Multi-Niveaux)</h1>
+    <h1>🌐 Hub Central - Usine IA</h1>
     
     <div class="stats-panel">
         <h2>📊 Progression Globale de l'Usine</h2>
@@ -111,7 +111,7 @@
             etatsModules[id].memoire = contenu ? JSON.parse(contenu) : {};
             document.getElementById(`status-${id}`).innerText = "Lié & Prêt";
             document.getElementById(`status-${id}`).style.color = "#00ff66";
-            document.getElementById(`output-${id}`).innerText = "JSON lié avec succès. Prêt.";
+            document.getElementById(`output-${id}`).innerText = "Fichier JSON chargé avec succès !";
             mettreAJourStats(id);
         } catch (err) {
             document.getElementById(`status-${id}`).innerText = "Erreur liaison";
@@ -121,18 +121,26 @@
     async function sauvegarderJSON(id) {
         const mod = etatsModules[id];
         if (!mod.handle) return;
-        const writable = await mod.handle.createWritable();
-        await writable.write(JSON.stringify(mod.memoire, null, 2));
-        await writable.close();
+        try {
+            const writable = await mod.handle.createWritable();
+            await writable.write(JSON.stringify(mod.memoire, null, 2));
+            await writable.close();
+        } catch (e) {
+            console.error("Erreur de sauvegarde :", e);
+        }
     }
 
     function mettreAJourStats(id) {
         const memoire = etatsModules[id].memoire;
         let count = 0;
-        for (let char in memoire) count += Object.keys(memoire[char]).length;
+        try {
+            for (let char in memoire) {
+                if (memoire[char]) count += Object.keys(memoire[char]).length;
+            }
+        } catch(e) {}
         
         document.getElementById(`count-${id}`).innerText = count + " liaisons";
-        let percent = Math.min((count / 5000) * 100, 100);
+        let percent = Math.min((count / 10000) * 100, 100);
         document.getElementById(`bar-${id}`).style.width = percent + "%";
     }
 
@@ -159,12 +167,14 @@
     function genererTexte(id, longueur = 150) {
         let memoire = etatsModules[id].memoire;
         let keys = Object.keys(memoire);
-        if (keys.length === 0) return "Mémoire vide... Aucune liaison enregistrée pour l'instant.";
+        if (keys.length === 0) return "Mémoire vide...";
         let courant = keys[Math.floor(Math.random() * keys.length)];
         let resultat = courant;
         for (let i = 0; i < longueur; i++) {
             let suivants = memoire[courant];
             if (!suivants) break;
+            let keysSuivantes = Object.keys(suivants);
+            if (keysSuivantes.length === 0) break;
             let total = Object.values(suivants).reduce((a, b) => a + b, 0);
             let rand = Math.random() * total;
             let cumul = 0;
@@ -187,18 +197,23 @@
         document.getElementById(`status-${id}`).innerText = "Apprentissage actif...";
         document.getElementById(`status-${id}`).style.color = "#00ff66";
 
+        // Génération immédiate dès le lancement pour débloquer l'affichage
+        try {
+            let initGen = genererTexte(id, 80);
+            document.getElementById(`output-${id}`).innerText = initGen;
+        } catch(e) {}
+
         while (mod.enCours) {
             let texte = await fetchWiki(sujet);
             if (texte && texte.length > 0) {
                 ingererTexte(id, texte);
                 await sauvegarderJSON(id);
                 mettreAJourStats(id);
-                let gen = genererTexte(id, 100);
-                document.getElementById(`output-${id}`).innerHTML = gen.replace(/\n/g, '<br>');
-            } else {
-                document.getElementById(`output-${id}`).innerText = "Attention : Wikipedia n'a renvoyé aucun texte pour ce sujet.";
+                try {
+                    let gen = genererTexte(id, 80);
+                    document.getElementById(`output-${id}`).innerText = gen;
+                } catch(e) {}
             }
-            // Petite pause de 6 secondes avant le prochain cycle
             await new Promise(r => setTimeout(r, 6000));
         }
     }
@@ -214,7 +229,8 @@
         const content = document.getElementById('inspect-content');
         
         const memoire = etatsModules[id].memoire;
-        let nbCaracteres = Object.keys(memoire).length;
+        let nbCaracteres = 0;
+        try { nbCaracteres = Object.keys(memoire).length; } catch(e){}
 
         content.innerHTML = `
             <h2>🧠 Salle de Contrôle : ${nom}</h2>
@@ -232,8 +248,12 @@
     }
 
     function testerDepuisModal(id) {
-        let resultat = genererTexte(id, 300);
-        document.getElementById('modal-test-output').innerHTML = resultat.replace(/\n/g, '<br>');
+        try {
+            let resultat = genererTexte(id, 250);
+            document.getElementById('modal-test-output').innerText = resultat;
+        } catch(e) {
+            document.getElementById('modal-test-output').innerText = "Erreur lors de la génération.";
+        }
     }
 
     function fermerInspection() {
