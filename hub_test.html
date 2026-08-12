@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hub Central Ultime — Usine IA & Langues</title>
+    <title>Hub Central Ultime — Usine IA &amp; Langues</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -152,6 +152,71 @@
         #global-prog-fill { display: none; }
         .global-track { display: none; }
 
+        /* ---------- Mixer / Collaborative Hub Panel ---------- */
+        .mixer-panel {
+            background: linear-gradient(180deg, var(--panel), var(--panel-alt));
+            border: 1px solid var(--hair);
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 24px;
+        }
+        .mixer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--hair-soft);
+            padding-bottom: 10px;
+        }
+        .mixer-header h3 {
+            margin: 0;
+            color: #fff;
+            font-size: 1.1em;
+        }
+        .mixer-controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .slider-group {
+            background: var(--void);
+            border: 1px solid var(--hair-soft);
+            padding: 10px 14px;
+            border-radius: 8px;
+        }
+        .slider-group label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+        }
+        .slider-group label span { color: #fff; font-weight: 700; }
+        .slider-group input[type="range"] {
+            width: 100%;
+            accent-color: var(--cyan);
+            cursor: pointer;
+        }
+        .mixer-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            border-top: 1px solid var(--hair-soft);
+            padding-top: 14px;
+        }
+        .switch-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--text);
+            cursor: pointer;
+        }
+        .switch-container input { cursor: pointer; accent-color: var(--amber); }
+
         /* ---------- Filter bar ---------- */
         .filter-bar { display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap; }
         .filter-btn {
@@ -292,6 +357,26 @@
         </div>
     </div>
 
+    <!-- Panneau de Mixage Collaboratif (Hub Central) -->
+    <div class="mixer-panel">
+        <div class="mixer-header">
+            <h3>🎛️ Panneau de Génération Collaborative (Multi-Experts)</h3>
+            <label class="switch-container">
+                <input type="checkbox" id="mode-auto-toggle" onchange="toggleModeAuto()"> Mode Automatique
+            </label>
+        </div>
+        <div class="mixer-controls-grid" id="mixer-sliders-container">
+            <!-- Injecté dynamiquement par JS -->
+        </div>
+        <div class="mixer-footer">
+            <div style="display: flex; align-items: center; gap: 12px; font-size: 11px;">
+                <span>Pool de lettres max : <strong>4</strong></span>
+            </div>
+            <button onclick="genererTexteGlobalCollaboratif()" style="background: rgba(0,217,255,0.15); color: var(--cyan); border-color: rgba(0,217,255,0.4); padding: 9px 18px; font-weight: 700;">✨ Générer Texte Global (Multi-Experts)</button>
+        </div>
+        <div class="output" id="out-global" style="height: 70px; margin-top: 14px;">Le texte généré collaborativement apparaîtra ici...</div>
+    </div>
+
     <!-- Barre de filtrage -->
     <div class="filter-bar">
         <button class="filter-btn active" onclick="filtrerModules('tous', this)">📁 Tous les modules</button>
@@ -342,7 +427,7 @@
             wikiLang: "fr"
         },
 
-        // Modules Archives Publiques (Corrigé pour éviter les blocages CORS de Gutenberg)
+        // Modules Archives Publiques
         { 
             id: "gutenberg", 
             nom: "Project Gutenberg (Classiques)", 
@@ -475,6 +560,35 @@
             restaurerHandle(mod);
         });
         renderGrille();
+        renderMixerSliders();
+    }
+
+    function renderMixerSliders() {
+        const container = document.getElementById('mixer-sliders-container');
+        if (!container) return;
+        container.innerHTML = "";
+        const defaultWeight = Math.round(100 / modulesConfig.length);
+        modulesConfig.forEach(mod => {
+            container.innerHTML += `
+                <div class="slider-group">
+                    <label>${mod.nom} <span id="val-weight-${mod.id}">${defaultWeight}%</span></label>
+                    <input type="range" id="weight-${mod.id}" min="0" max="100" value="${defaultWeight}" oninput="updateWeightLabel('${mod.id}')">
+                </div>
+            `;
+        });
+    }
+
+    function updateWeightLabel(id) {
+        const val = document.getElementById(`weight-${id}`).value;
+        document.getElementById(`val-weight-${id}`).innerText = val + '%';
+    }
+
+    function toggleModeAuto() {
+        const isAuto = document.getElementById('mode-auto-toggle').checked;
+        modulesConfig.forEach(mod => {
+            const slider = document.getElementById(`weight-${mod.id}`);
+            if (slider) slider.disabled = isAuto;
+        });
     }
 
     function renderGrille() {
@@ -699,7 +813,7 @@
                 });
                 if (optionsFiltrees.length === 0) optionsFiltrees = options;
                 optionsFiltrees.sort((a, b) => b[1] - a[1]);
-                let choixPool = optionsFiltrees.slice(0, Math.min(3, optionsFiltrees.length));
+                let choixPool = optionsFiltrees.slice(0, Math.min(4, optionsFiltrees.length));
                 let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
                 lettreCourante = choixAleatoire[0];
             }
@@ -710,6 +824,92 @@
 
         state.dernierTexte = texteGenere;
         document.getElementById(`out-${id}`).innerText = texteGenere;
+    }
+
+    function genererTexteGlobalCollaboratif() {
+        const isAuto = document.getElementById('mode-auto-toggle').checked;
+        let poidsModules = {};
+        let totalPoids = 0;
+
+        modulesConfig.forEach(mod => {
+            let p = 0;
+            if (isAuto) {
+                // En mode automatique, on pondère par défaut selon le volume de connexions (densité de savoir)
+                p = Math.max(1, appState[mod.id].totalPaires || 1);
+            } else {
+                const slider = document.getElementById(`weight-${mod.id}`);
+                p = slider ? parseFloat(slider.value) : 0;
+            }
+            poidsModules[mod.id] = p;
+            totalPoids += p;
+        });
+
+        // Normalisation des pourcentages
+        if (totalPoids > 0) {
+            for (let id in poidsModules) {
+                poidsModules[id] /= totalPoids;
+            }
+        }
+
+        // Récupérer toutes les clés (racines) disponibles à travers les modules actifs
+        let toutesLesRacinesSet = new Set();
+        modulesConfig.forEach(mod => {
+            Object.keys(appState[mod.id].memoire || {}).forEach(k => toutesLesRacinesSet.add(k));
+        });
+        let keysGlobal = Array.from(toutesLesRacinesSet);
+
+        if (keysGlobal.length === 0) {
+            document.getElementById('out-global').innerText = "Aucune mémoire chargée dans les modules pour collaborer !";
+            return;
+        }
+
+        let lettreCourante = keysGlobal[Math.floor(Math.random() * keysGlobal.length)];
+        let texteGenere = lettreCourante;
+        let dernieresLettres = [lettreCourante];
+
+        for (let i = 0; i < 150; i++) {
+            // Fusion des votes de tous les modules pondérés
+            let votesFinaux = {};
+
+            modulesConfig.forEach(mod => {
+                let poidsMod = poidsModules[mod.id] || 0;
+                if (poidsMod <= 0) return;
+
+                let memoireMod = appState[mod.id].memoire || {};
+                let suivantes = memoireMod[lettreCourante];
+                if (suivantes) {
+                    for (let suiv in suivantes) {
+                        let score = suivantes[suiv] * poidsMod;
+                        votesFinaux[suiv] = (votesFinaux[suiv] || 0) + score;
+                    }
+                }
+            });
+
+            let options = Object.entries(votesFinaux);
+            if (options.length === 0) {
+                lettreCourante = keysGlobal[Math.floor(Math.random() * keysGlobal.length)];
+            } else {
+                let optionsFiltrees = options.filter(([suiv]) => {
+                    let occurrencesRecentes = dernieresLettres.slice(-3).filter(l => l === suiv).length;
+                    return occurrencesRecentes < 2;
+                });
+                if (optionsFiltrees.length === 0) optionsFiltrees = options;
+                
+                // Tri par score combiné décroissant
+                optionsFiltrees.sort((a, b) => b[1] - a[1]);
+                
+                // Application stricte du pool de 4
+                let choixPool = optionsFiltrees.slice(0, Math.min(4, optionsFiltrees.length));
+                let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
+                lettreCourante = choixAleatoire[0];
+            }
+
+            texteGenere += lettreCourante;
+            dernieresLettres.push(lettreCourante);
+            if (dernieresLettres.length > 5) dernieresLettres.shift();
+        }
+
+        document.getElementById('out-global').innerText = texteGenere;
     }
 
     async function lancerApprentissage(id) {
