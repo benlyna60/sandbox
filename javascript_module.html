@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>IA Mobile : Module JavaScript</title>
+    <style>
+        body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 15px; max-width: 700px; margin: auto; text-align: left; }
+        .panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 15px; }
+        button { background-color: #333; color: #fff; border: 1px solid #555; padding: 12px; cursor: pointer; width: 100%; margin-bottom: 8px; border-radius: 4px; font-weight: bold; }
+        .output-box { background-color: #000; color: #00ff66; padding: 15px; border-radius: 4px; font-size: 1.1em; min-height: 100px; border: 1px solid #444; white-space: pre-wrap; word-break: break-all; }
+        .status-line { background-color: #222; padding: 10px; border-left: 4px solid #f7df1e; margin-bottom: 15px; font-size: 0.9em; }
+    </style>
+</head>
+<body onload="initApp()">
+
+    <h1>IA Mobile : Module JavaScript</h1>
+    
+    <div class="panel">
+        <button onclick="selectionnerFichier()" id="btn-fichier">1. Lier fichier JSON (javascript.json)</button>
+        <button onclick="lancerEntrainement()" style="background-color: #d1a100; color: #000;">2. Lancer Apprentissage (JS & Web)</button>
+        <button onclick="arreterEntrainement()" style="background-color: #b71c1c; color: #fff;">3. Pause & Sauvegarder</button>
+    </div>
+
+    <div class="panel">
+        <button onclick="genererCode()" style="background-color: #1b5e20;">Générer du code JavaScript</button>
+        <div id="resultat" class="output-box">En attente...</div>
+    </div>
+    
+    <div id="status" class="status-line">Prêt à initialiser.</div>
+
+    <script>
+        let fichierHandle = null;
+        let memoirePaires = {}; 
+        let enCours = false;
+
+        // Sujets ciblés orientés JavaScript et écosystème Web
+        const sujetsJS = [
+            "JavaScript", 
+            "ECMAScript", 
+            "Closure (computer programming)", 
+            "Asynchronous JavaScript", 
+            "DOM event",
+            "Node.js"
+        ];
+
+        async function initApp() {
+            const db = await ouvrirBDD();
+            fichierHandle = await recupererHandleDB(db);
+            if (fichierHandle) {
+                await chargerDonnees();
+                document.getElementById("status").innerText = "✔ Fichier chargé depuis la mémoire.";
+            }
+        }
+
+        async function selectionnerFichier() {
+            [fichierHandle] = await window.showOpenFilePicker();
+            const db = await ouvrirBDD();
+            const tx = db.transaction("handles", "readwrite");
+            tx.objectStore("handles").put(fichierHandle, "javascriptKey");
+            await chargerDonnees();
+            document.getElementById("status").innerText = "✔ Fichier lié avec succès.";
+        }
+
+        async function chargerDonnees() {
+            try {
+                const file = await fichierHandle.getFile();
+                const text = await file.text();
+                const json = text ? JSON.parse(text) : {};
+                memoirePaires = json.memoire_paires || json || {};
+                let nb = Object.keys(memoirePaires).length;
+                document.getElementById("btn-fichier").innerText = "✔ Fichier chargé (" + nb + " racines)";
+            } catch (e) {
+                document.getElementById("status").innerText = "Erreur de chargement du JSON.";
+            }
+        }
+
+        async function lancerEntrainement() {
+            if (!fichierHandle) return alert("Lie le fichier d'abord !");
+            enCours = true;
+            document.getElementById("status").innerText = "Apprentissage actif sur la logique JavaScript...";
+            
+            while (enCours) {
+                try {
+                    let sujetChoisi = sujetsJS[Math.floor(Math.random() * sujetsJS.length)];
+                    
+                    const urlContent = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=${encodeURIComponent(sujetChoisi)}&format=json&origin=*`;
+                    const resContent = await fetch(urlContent).then(r => r.json());
+                    const pages = resContent.query.pages;
+                    const pageId = Object.keys(pages)[0];
+                    const texte = pages[pageId].extract || "";
+
+                    if (texte.length > 0) {
+                        for (let i = 0; i < texte.length - 1; i++) {
+                            if (!enCours) break;
+                            let a = texte[i], b = texte[i+1];
+                            if (!memoirePaires[a]) memoirePaires[a] = {};
+                            memoirePaires[a][b] = (memoirePaires[a][b] || 0) + 1;
+                        }
+                        
+                        const writable = await fichierHandle.createWritable();
+                        await writable.write(JSON.stringify({memoire_paires: memoirePaires}, null, 2));
+                        await writable.close();
+                        
+                        document.getElementById("status").innerText = "✔ Analyse JS : " + sujetChoisi;
+                    }
+                } catch (e) {
+                    console.error("Erreur réseau :", e);
+                }
+                await new Promise(r => setTimeout(r, 4000));
+            }
+        }
+
+        function arreterEntrainement() { 
+            enCours = false; 
+            document.getElementById("status").innerText = "En pause."; 
+        }
+
+        function genererCode() {
+            const keys = Object.keys(memoirePaires);
+            if (keys.length === 0) return document.getElementById("resultat").innerText = "Mémoire vide !";
+            
+            let courant = keys[Math.floor(Math.random() * keys.length)];
+            let resultat = courant;
+            for (let i = 0; i < 300; i++) {
+                let options = memoirePaires[courant];
+                if (!options) break;
+                let choix = Object.keys(options)[Math.floor(Math.random() * Object.keys(options).length)];
+                resultat += choix;
+                courant = choix;
+            }
+            document.getElementById("resultat").innerText = resultat;
+        }
+
+        function ouvrirBDD() {
+            return new Promise(res => {
+                const req = indexedDB.open("MonAppDB_JS", 1);
+                req.onupgradeneeded = () => req.result.createObjectStore("handles");
+                req.onsuccess = () => res(req.result);
+            });
+        }
+        
+        async function recupererHandleDB(db) {
+            return new Promise(res => {
+                const req = db.transaction("handles").objectStore("handles").get("javascriptKey");
+                req.onsuccess = () => res(req.result);
+            });
+        }
+    </script>
+</body>
+</html>
