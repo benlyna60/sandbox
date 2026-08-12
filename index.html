@@ -79,7 +79,6 @@
             }
         }
 
-        // Fonction pour injecter le savoir extérieur et le fusionner
         async function importerSavoirExterieur() {
             if (!fichierHandle) {
                 alert("Veuillez d'abord lier votre fichier JSON principal (Bouton 1) !");
@@ -93,11 +92,9 @@
                 const textData = await file.text();
                 const dataSavoir = JSON.parse(textData);
 
-                // Extraction de la mémoire du fichier de savoir (gère les deux formats)
                 const pairesAjoutees = dataSavoir.memoire_paires || dataSavoir;
 
                 let ajoutsCount = 0;
-                // Fusion intelligente dans la mémoire active
                 for (let charActuel in pairesAjoutees) {
                     if (!memoirePaires[charActuel]) {
                         memoirePaires[charActuel] = {};
@@ -112,7 +109,6 @@
                     }
                 }
 
-                // Sauvegarde immédiate dans le fichier principal
                 await ecrireFichierDirect();
                 majAffichage();
                 document.getElementById("status").innerText = `✔ Savoir extérieur importé avec succès (${ajoutsCount} transitions fusionnées) !`;
@@ -268,8 +264,10 @@
                     lettreCourante = lettresDisponibles[Math.floor(Math.random() * lettresDisponibles.length)];
                 } else {
                     let options = Object.entries(suivantes);
+                    
+                    // ANTI-BÉGAIEMENT ÉTENDU : On vérifie les 6 dernières lettres
                     let optionsFiltrees = options.filter(([suiv]) => {
-                        let occurrencesRecentes = dernieresLettres.slice(-3).filter(l => l === suiv).length;
+                        let occurrencesRecentes = dernieresLettres.slice(-6).filter(l => l === suiv).length;
                         return occurrencesRecentes < 2;
                     });
 
@@ -277,7 +275,8 @@
 
                     optionsFiltrees.sort((a, b) => b[1] - a[1]);
                     
-                    let choixPool = optionsFiltrees.slice(0, Math.min(3, optionsFiltrees.length));
+                    // CHOIX ÉLARGI : On pioche parmi les 8 meilleurs choix pour plus de diversité
+                    let choixPool = optionsFiltrees.slice(0, Math.min(8, optionsFiltrees.length));
                     let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
                     
                     lettreCourante = choixAleatoire[0];
@@ -285,7 +284,7 @@
 
                 texteGenere += lettreCourante;
                 dernieresLettres.push(lettreCourante);
-                if (dernieresLettres.length > 5) dernieresLettres.shift();
+                if (dernieresLettres.length > 10) dernieresLettres.shift();
             }
             
             document.getElementById("resultat-generation").innerText = texteGenere;
