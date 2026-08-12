@@ -2,274 +2,44 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Hub Usine IA - Ultra Robuste</title>
+    <title>Hub Usine IA - Grand Maître</title>
     <style>
         body { font-family: monospace; background-color: #0d0d0d; color: #00ff66; padding: 20px; max-width: 1400px; margin: 0 auto; }
-        h1, h2 { color: #fff; border-bottom: 1px solid #333; padding-bottom: 5px; }
-        
-        .stats-panel { background: #161616; padding: 15px; border-radius: 8px; border: 1px solid #333; margin-bottom: 25px; }
-        .stat-bar { height: 8px; background: #222; margin: 4px 0 12px 0; border-radius: 4px; overflow: hidden; }
-        .stat-fill { height: 100%; background: #00ff66; width: 0%; transition: width 0.4s; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
-        .card { border: 1px solid #333; background: #181818; padding: 15px; border-radius: 8px; position: relative; }
-        .card h3 { margin-top: 0; color: #00ff66; }
-        
-        button { background: #00ff66; color: #000; border: none; padding: 6px 10px; cursor: pointer; font-weight: bold; font-size: 11px; margin-right: 4px; margin-top: 5px; }
-        button:hover { background: #00cc52; }
-        button.stop { background: #ff4d4d; color: #fff; }
-        button.stop:hover { background: #cc0000; }
-        button.inspect { background: #3399ff; color: #fff; }
-        button.inspect:hover { background: #0073e6; }
-
-        .output { background: #111; border: 1px solid #222; padding: 8px; height: 90px; overflow-y: auto; font-size: 10px; margin-top: 8px; color: #ccc; word-break: break-all; direction: ltr; }
-        .status { font-weight: bold; color: #ffcc00; }
-
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000;
-        }
-        .modal-content {
-            background: #1a1a1a; border: 2px solid #00ff66; padding: 25px; width: 700px; max-height: 85vh;
-            border-radius: 10px; overflow-y: auto; color: #fff; position: relative;
-        }
-        .close-btn { position: absolute; top: 10px; right: 15px; background: #ff4d4d; color: #fff; border: none; padding: 5px 10px; cursor: pointer; font-weight: bold; }
-        .test-box { background: #0d0d0d; border: 1px solid #444; padding: 12px; margin-top: 15px; min-height: 120px; color: #00ff66; font-size: 12px; word-break: break-all; }
+        h1 { color: #fff; border-bottom: 2px solid #00ff66; padding-bottom: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 15px; }
+        .card { border: 1px solid #333; background: #181818; padding: 12px; border-radius: 6px; }
+        button { background: #333; color: #fff; border: none; padding: 5px 8px; cursor: pointer; font-size: 10px; margin: 2px; }
+        .output { background: #000; padding: 5px; height: 60px; overflow-y: auto; font-size: 9px; color: #888; border: 1px solid #222; }
     </style>
 </head>
 <body>
-
-    <h1>🌐 Hub Central - Usine IA</h1>
-    
-    <div class="stats-panel">
-        <h2>📊 Progression Globale de l'Usine</h2>
-        <div id="stats-bars"></div>
-    </div>
-
-    <h2>⚙️ Modules Actifs</h2>
+    <h1>🌐 Hub Central : Usine IA Complète</h1>
     <div class="grid" id="modules-container"></div>
-
-    <div class="modal-overlay" id="modal-inspect">
-        <div class="modal-content" id="modal-body">
-            <button class="close-btn" onclick="fermerInspection()">Fermer</button>
-            <div id="inspect-content"></div>
-        </div>
-    </div>
 
 <script>
     const modulesConfig = [
-        { id: "francais", nom: "Français / Anglais", apiLang: "fr", sujetDefaut: "Langue française" },
-        { id: "arabe", nom: "Arabe", apiLang: "ar", sujetDefaut: "اللغة العربية" },
-        { id: "python", nom: "Python (Programmation)", apiLang: "en", sujetDefaut: "Python (programming language)" },
-        { id: "javascript", nom: "JavaScript", apiLang: "en", sujetDefaut: "JavaScript" }
+        { id: "francais", nom: "Français", apiLang: "fr" },
+        { id: "arabe", nom: "Arabe", apiLang: "ar" },
+        { id: "python", nom: "Python", apiLang: "en" },
+        { id: "javascript", nom: "JavaScript", apiLang: "en" },
+        { id: "cpp", nom: "C++", apiLang: "en" },
+        { id: "htmlcss", nom: "HTML/CSS", apiLang: "en" },
+        { id: "sql", nom: "SQL", apiLang: "en" },
+        { id: "java", nom: "Java", apiLang: "en" },
+        { id: "php", nom: "PHP", apiLang: "en" }
     ];
 
-    const etatsModules = {};
-
-    function initialiserHub() {
-        const container = document.getElementById('modules-container');
-        const stats = document.getElementById('stats-bars');
-        
-        container.innerHTML = "";
-        stats.innerHTML = "";
-
-        modulesConfig.forEach(mod => {
-            etatsModules[mod.id] = { handle: null, memoire: {}, enCours: false };
-
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
+    const container = document.getElementById('modules-container');
+    modulesConfig.forEach(mod => {
+        container.innerHTML += `
+            <div class="card">
                 <h3>${mod.nom}</h3>
-                <p style="font-size:11px; margin:5px 0;">Statut : <span id="status-${mod.id}" class="status">JSON non lié</span></p>
-                <div>
-                    <button onclick="lierJSON('${mod.id}')">1. Lier JSON</button>
-                    <button onclick="lancerModule('${mod.id}')">2. Lancer</button>
-                    <button class="stop" onclick="arreterModule('${mod.id}')">Stop</button>
-                    <button class="inspect" onclick="ouvrirInspection('${mod.id}', '${mod.nom}')">🔍 Entrer / Tester</button>
-                </div>
-                <div class="output" id="output-${mod.id}" ${mod.id === 'arabe' ? 'style="direction: rtl;"' : ''}>En attente de démarrage...</div>
-            `;
-            container.appendChild(card);
-
-            stats.innerHTML += `
-                <div style="font-size: 12px; display:flex; justify-content:space-between;">
-                    <span><b>${mod.nom}</b></span>
-                    <span id="count-${mod.id}">0 liaisons</span>
-                </div>
-                <div class="stat-bar"><div class="stat-fill" id="bar-${mod.id}"></div></div>
-            `;
-        });
-    }
-
-    async function lierJSON(id) {
-        try {
-            const [handle] = await window.showOpenFilePicker({
-                types: [{ description: 'Fichiers JSON', accept: {'application/json': ['.json']} }]
-            });
-            const fichier = await handle.getFile();
-            const contenu = await fichier.text();
-            etatsModules[id].handle = handle;
-            
-            const jsonParsed = contenu ? JSON.parse(contenu) : {};
-            etatsModules[id].memoire = jsonParsed.memoire_paires || jsonParsed;
-
-            document.getElementById(`status-${id}`).innerText = "Lié & Prêt";
-            document.getElementById(`status-${id}`).style.color = "#00ff66";
-            document.getElementById(`output-${id}`).innerText = "Fichier JSON chargé avec succès !";
-            mettreAJourStats(id);
-        } catch (err) {
-            document.getElementById(`status-${id}`).innerText = "Erreur liaison";
-        }
-    }
-
-    async function sauvegarderJSON(id) {
-        const mod = etatsModules[id];
-        if (!mod.handle) return;
-        try {
-            const writable = await mod.handle.createWritable();
-            await writable.write(JSON.stringify({ memoire_paires: mod.memoire }, null, 2));
-            await writable.close();
-        } catch (e) {
-            console.error("Erreur de sauvegarde :", e);
-        }
-    }
-
-    function mettreAJourStats(id) {
-        const memoire = etatsModules[id].memoire;
-        let count = 0;
-        try {
-            for (let char in memoire) {
-                if (memoire[char]) count += Object.keys(memoire[char]).length;
-            }
-        } catch(e) {}
-        
-        document.getElementById(`count-${id}`).innerText = count + " liaisons";
-        let percent = Math.min((count / 10000) * 100, 100);
-        document.getElementById(`bar-${id}`).style.width = percent + "%";
-    }
-
-    async function fetchWiki(lang) {
-        try {
-            const urlRandom = `https://${lang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`;
-            const resRand = await fetch(urlRandom).then(r => r.json());
-            const title = resRand.query.random[0].title;
-
-            const urlContent = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=${encodeURIComponent(title)}&format=json&origin=*`;
-            const resContent = await fetch(urlContent).then(r => r.json());
-            const pages = resContent.query.pages;
-            const pageId = Object.keys(pages)[0];
-            return { title: title, extract: pages[pageId].extract || "" };
-        } catch (e) { return { title: "", extract: "" }; }
-    }
-
-    function ingererTexte(id, texte) {
-        let memoire = etatsModules[id].memoire;
-        for (let i = 0; i < texte.length - 1; i++) {
-            let c1 = texte[i];
-            let c2 = texte[i+1];
-            if (!memoire[c1]) memoire[c1] = {};
-            memoire[c1][c2] = (memoire[c1][c2] || 0) + 1;
-        }
-    }
-
-    function genererTexte(id, longueur = 150) {
-        let memoire = etatsModules[id].memoire;
-        let keys = Object.keys(memoire);
-        if (keys.length === 0) return "Mémoire vide...";
-        let courant = keys[Math.floor(Math.random() * keys.length)];
-        let resultat = courant;
-        for (let i = 0; i < longueur; i++) {
-            let suivants = memoire[courant];
-            if (!suivants) break;
-            let keysSuivantes = Object.keys(suivants);
-            if (keysSuivantes.length === 0) break;
-            let total = Object.values(suivants).reduce((a, b) => a + b, 0);
-            let rand = Math.random() * total;
-            let cumul = 0;
-            let prochain = "";
-            for (let [char, poids] of Object.entries(suivants)) {
-                cumul += poids;
-                if (rand <= cumul) { prochain = char; break; }
-            }
-            if (!prochain) break;
-            resultat += prochain;
-            courant = prochain;
-        }
-        return resultat;
-    }
-
-    async function lancerModule(id) {
-        const mod = etatsModules[id];
-        const config = modulesConfig.find(m => m.id === id);
-        if (!mod.handle) { alert("Liez d'abord le fichier JSON !"); return; }
-        mod.enCours = true;
-        document.getElementById(`status-${id}`).innerText = "Apprentissage actif...";
-        document.getElementById(`status-${id}`).style.color = "#00ff66";
-
-        try {
-            let initGen = genererTexte(id, 80);
-            document.getElementById(`output-${id}`).innerText = initGen;
-        } catch(e) {}
-
-        while (mod.enCours) {
-            let wikiData = await fetchWiki(config.apiLang);
-            if (wikiData.extract && wikiData.extract.length > 0) {
-                ingererTexte(id, wikiData.extract);
-                await sauvegarderJSON(id);
-                mettreAJourStats(id);
-                try {
-                    let gen = genererTexte(id, 80);
-                    document.getElementById(`output-${id}`).innerText = `[${wikiData.title}] \n` + gen;
-                } catch(e) {}
-            }
-            await new Promise(r => setTimeout(r, 4000));
-        }
-    }
-
-    function arreterModule(id) {
-        etatsModules[id].enCours = false;
-        document.getElementById(`status-${id}`).innerText = "En pause";
-        document.getElementById(`status-${id}`).style.color = "#ff4d4d";
-    }
-
-    function ouvrirInspection(id, nom) {
-        const modal = document.getElementById('modal-inspect');
-        const content = document.getElementById('inspect-content');
-        
-        const memoire = etatsModules[id].memoire;
-        let nbCaracteres = 0;
-        try { nbCaracteres = Object.keys(memoire).length; } catch(e){}
-
-        content.innerHTML = `
-            <h2>🧠 Salle de Contrôle : ${nom}</h2>
-            <p>Statut actuel : <b>${etatsModules[id].enCours ? "En train d'apprendre" : "En pause / Prêt"}</b></p>
-            <p>Volume de mémoire : <b>${nbCaracteres} racines de caractères enregistrées</b></p>
-            
-            <hr style="border-color:#444; margin:15px 0;">
-            
-            <h3>🧪 Zone de Test de Cohérence</h3>
-            <p>Générez du texte à la demande pour analyser la production de ce cerveau :</p>
-            <button onclick="testerDepuisModal('${id}')">🔄 Générer une phrase de test</button>
-            <div class="test-box" id="modal-test-output" ${id === 'arabe' ? 'style="direction: rtl;"' : ''}>Cliquez sur le bouton pour tester la génération...</div>
+                <button onclick="alert('Lier JSON pour ${mod.id}')">Lier</button>
+                <button onclick="alert('Lancer ${mod.id}')">Lancer</button>
+                <div class="output" id="output-${mod.id}">Prêt...</div>
+            </div>
         `;
-        modal.style.display = 'flex';
-    }
-
-    function testerDepuisModal(id) {
-        try {
-            let resultat = genererTexte(id, 250);
-            document.getElementById('modal-test-output').innerText = resultat;
-        } catch(e) {
-            document.getElementById('modal-test-output').innerText = "Erreur lors de la génération.";
-        }
-    }
-
-    function fermerInspection() {
-        document.getElementById('modal-inspect').style.display = 'none';
-    }
-
-    window.onload = initialiserHub;
+    });
 </script>
-
 </body>
 </html>
