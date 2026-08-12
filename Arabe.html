@@ -47,7 +47,6 @@
         let cycleActuel = 0;
         let enCoursDApprentissage = false;
 
-        // Fonction utilitaire pour sauvegarder la "permission" d'accès au fichier dans le navigateur
         async function verifierPermission(fileHandle, readWrite) {
             const options = {};
             if (readWrite) {
@@ -62,10 +61,8 @@
             return false;
         }
 
-        // Au chargement de la page, essaie de récupérer le fichier si l'autorisation est mémorisée
         async function verifierConnexionPrecedente() {
             try {
-                // On utilise IndexedDB pour stocker la poignée (handle) du fichier de façon sécurisée
                 const db = await ouvrirBDD();
                 const stockHandle = await recupererHandleDB(db);
                 
@@ -85,14 +82,12 @@
             }
         }
 
-        // Sélection manuelle et enregistrement permanent de la référence du fichier
         async function selectionnerFichierMemoire() {
             try {
                 [fichierHandle] = await window.showOpenFilePicker({ 
                     types: [{ description: 'Fichiers JSON', accept: { 'application/json': ['.json'] } }] 
                 });
                 
-                // Sauvegarder la référence dans IndexedDB pour les prochaines ouvertures
                 const db = await ouvrirBDD();
                 await sauvegarderHandleDB(db, fichierHandle);
 
@@ -136,7 +131,6 @@
             }
         }
 
-        // --- Gestion de la base de données interne du navigateur pour retenir le fichier ---
         function ouvrirBDD() {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open("IAMobileDB", 1);
@@ -169,7 +163,6 @@
             });
         }
 
-        // Récupération de textes aléatoires sur Wikipédia en Arabe
         async function fetchWikiArabe() {
             try {
                 const url = `https://ar.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`;
