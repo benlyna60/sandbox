@@ -2,83 +2,216 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Usine IA - Hub Central</title>
+    <title>Hub Central Visuel — Usine IA</title>
     <style>
-        /* Thème minimaliste : Noir dominant, gris foncé structurant */
-        body { background-color: #050505; color: #d1d1d1; font-family: 'Segoe UI', monospace; padding: 20px; margin: 0; }
+        body { background-color: #050505; color: #d1d1d1; font-family: monospace; padding: 20px; margin: 0; }
         h1 { color: #ffffff; border-bottom: 1px solid #333; padding-bottom: 10px; font-weight: 300; }
         
-        .dashboard-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 20px; 
-            margin-top: 20px; 
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; margin-top: 20px; }
+        .card { background: #121212; border: 1px solid #2a2a2a; padding: 15px; border-radius: 4px; }
+        .card h3 { margin-top: 0; color: #fff; border-bottom: 1px solid #222; padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
         
-        .module-card { 
-            background: #121212; 
-            border: 1px solid #2a2a2a; 
-            padding: 20px; 
-            border-radius: 4px; 
-            transition: border 0.3s;
-        }
-        .module-card:hover { border-color: #555; }
-        
-        h3 { margin-top: 0; color: #888; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9em; }
-        
-        button { 
-            background: #1a1a1a; 
-            color: #ccc; 
-            border: 1px solid #333; 
-            padding: 10px 15px; 
-            cursor: pointer; 
-            width: 100%; 
-            margin-bottom: 5px;
-            font-size: 0.9em;
-        }
+        .badge { font-size: 10px; background: #222; padding: 2px 6px; border-radius: 3px; color: #aaa; }
+
+        button { background: #1a1a1a; color: #ccc; border: 1px solid #444; padding: 6px 10px; cursor: pointer; font-size: 11px; margin-right: 4px; margin-top: 8px; font-family: monospace; }
         button:hover { background: #333; color: #fff; }
-        
-        .status-bar { 
-            height: 4px; 
-            background: #222; 
-            margin-top: 15px; 
-            overflow: hidden; 
-        }
-        .progress { height: 100%; background: #444; width: 0%; transition: width 0.5s; }
+        button.start { background: #1b5e20; color: #fff; border-color: #2e7d32; }
+        button.stop { background: #b71c1c; color: #fff; border-color: #c62828; }
+
+        /* Styles visuels pour les graphiques de progression */
+        .metrics { margin-top: 10px; font-size: 11px; color: #888; display: flex; justify-content: space-between; }
+        .progress-track { background: #1a1a1a; border: 1px solid #333; height: 8px; border-radius: 4px; margin-top: 5px; overflow: hidden; }
+        .progress-fill { background: linear-gradient(90deg, #1b5e20, #00ff66); height: 100%; width: 0%; transition: width 0.4s ease; }
+
+        .output { background: #000; border: 1px solid #222; padding: 8px; height: 60px; overflow-y: auto; font-size: 10px; margin-top: 10px; color: #00ff66; word-break: break-all; white-space: pre-wrap; }
+        .status { font-size: 11px; color: #ffcc00; margin-top: 5px; }
     </style>
 </head>
-<body>
+<body onload="initAllModules()">
 
-    <h1>HUB CENTRAL — USINE IA</h1>
-    <div class="dashboard-grid" id="main-grid"></div>
+    <h1>📊 Hub Central Visuel — Usine IA</h1>
+    <div class="grid" id="hub-container"></div>
 
-    <script>
-        const modules = [
-            { id: "python", nom: "Python" },
-            { id: "javascript", nom: "JavaScript" },
-            { id: "cpp", nom: "C++" },
-            { id: "htmlcss", nom: "HTML / CSS" },
-            { id: "sql", nom: "SQL" },
-            { id: "java", nom: "Java" },
-            { id: "php", nom: "PHP" }
-        ];
+<script>
+    const modulesConfig = [
+        { id: "python", nom: "Python", dbName: "HubDB_Python", keyName: "pyKey", sujets: ["Python (programming language)", "Guido van Rossum", "Django (web framework)", "NumPy"] },
+        { id: "javascript", nom: "JavaScript", dbName: "HubDB_JS", keyName: "jsKey", sujets: ["JavaScript", "ECMAScript", "Node.js", "DOM"] },
+        { id: "cpp", nom: "C++", dbName: "HubDB_CPP", keyName: "cppKey", sujets: ["C++ (programming language)", "Standard Template Library", "Pointer (computer programming)", "Memory management"] },
+        { id: "htmlcss", nom: "HTML / CSS", dbName: "HubDB_HTMLCSS", keyName: "htmlKey", sujets: ["HTML", "Cascading Style Sheets", "Web design", "Document Object Model"] },
+        { id: "sql", nom: "SQL", dbName: "HubDB_SQL", keyName: "sqlKey", sujets: ["SQL", "Relational database", "Database management system", "Query language"] },
+        { id: "java", nom: "Java", dbName: "HubDB_Java", keyName: "javaKey", sujets: ["Java (programming language)", "Java Virtual Machine", "Object-oriented programming"] },
+        { id: "php", nom: "PHP", dbName: "HubDB_PHP", keyName: "phpKey", sujets: ["PHP", "Server-side scripting", "Web development", "Hypertext Preprocessor"] }
+    ];
 
-        function renderHub() {
-            const grid = document.getElementById('main-grid');
-            modules.forEach(mod => {
-                grid.innerHTML += `
-                    <div class="module-card">
-                        <h3>${mod.nom}</h3>
-                        <button onclick="window.open('${mod.id}_module.html', '_blank')">Accéder au Module</button>
-                        <div class="status-bar">
-                            <div class="progress" id="prog-${mod.id}"></div>
-                        </div>
+    const appState = {};
+
+    function initAllModules() {
+        const container = document.getElementById('hub-container');
+        container.innerHTML = "";
+
+        modulesConfig.forEach(mod => {
+            appState[mod.id] = { handle: null, memoire: {}, enCours: false, totalPaires: 0 };
+
+            container.innerHTML += `
+                <div class="card">
+                    <h3>${mod.nom} <span class="badge" id="badge-${mod.id}">0 paires</span></h3>
+                    <div class="status" id="status-${mod.id}">Statut : Non lié</div>
+                    
+                    <!-- Graphique visuel : Barre de progression de la mémoire -->
+                    <div class="metrics">
+                        <span>Volume de données</span>
+                        <span id="metric-txt-${mod.id}">0 connexions</span>
                     </div>
-                `;
-            });
-        }
+                    <div class="progress-track">
+                        <div class="progress-fill" id="prog-${mod.id}"></div>
+                    </div>
 
-        renderHub();
-    </script>
+                    <div>
+                        <button onclick="lierFichier('${mod.id}')" id="btn-file-${mod.id}">1. Lier JSON</button>
+                        <button class="start" onclick="lancerApprentissage('${mod.id}')">2. Lancer</button>
+                        <button class="stop" onclick="arreterApprentissage('${mod.id}')">Pause</button>
+                    </div>
+                    <div class="output" id="out-${mod.id}">En attente...</div>
+                </div>
+            `;
+            restaurerHandle(mod);
+        });
+    }
+
+    function ouvrirBDD(dbName) {
+        return new Promise(res => {
+            const req = indexedDB.open(dbName, 1);
+            req.onupgradeneeded = () => req.result.createObjectStore("handles");
+            req.onsuccess = () => res(req.result);
+        });
+    }
+
+    // Calcul visuel du nombre total de paires enregistrées dans la mémoire
+    function calculerPaires(memoire) {
+        let total = 0;
+        for (let k in memoire) {
+            for (let subK in memoire[k]) {
+                total += memoire[k][subK];
+            }
+        }
+        return total;
+    }
+
+    function mettreAJourGraphique(id) {
+        let memoire = appState[id].memoire;
+        let total = calculerPaires(memoire);
+        appState[id].totalPaires = total;
+
+        // Mise à jour du texte et du badge
+        document.getElementById(`badge-${id}`).innerText = `${Object.keys(memoire).length} racines`;
+        document.getElementById(`metric-txt-${id}`).innerText = `${total} connexions`;
+
+        // Calcul dynamique de la barre de progression (maximum visuel arbitraire fixé à 5000 connexions pour l'effet visuel)
+        let pourcentage = Math.min(100, (total / 5000) * 100);
+        document.getElementById(`prog-${id}`).style.width = pourcentage + "%";
+    }
+
+    async function restaurerHandle(mod) {
+        const db = await ouvrirBDD(mod.dbName);
+        const req = db.transaction("handles").objectStore("handles").get(mod.keyName);
+        req.onsuccess = async () => {
+            if (req.result) {
+                appState[mod.id].handle = req.result;
+                try {
+                    const file = await req.result.getFile();
+                    const text = await file.text();
+                    const json = text ? JSON.parse(text) : {};
+                    appState[mod.id].memoire = json.memoire_paires || json || {};
+                    
+                    mettreAJourGraphique(mod.id);
+                    document.getElementById(`status-${mod.id}`).innerText = "Prêt";
+                    document.getElementById(`btn-file-${mod.id}`).innerText = "✔ Fichier lié";
+                } catch(e) {
+                    document.getElementById(`status-${mod.id}`).innerText = "Erreur lecture";
+                }
+            }
+        };
+    }
+
+    async function lierFichier(id) {
+        const mod = modulesConfig.find(m => m.id === id);
+        try {
+            [appState[id].handle] = await window.showOpenFilePicker();
+            const db = await ouvrirBDD(mod.dbName);
+            db.transaction("handles", "readwrite").objectStore("handles").put(appState[id].handle, mod.keyName);
+            
+            const file = await appState[id].handle.getFile();
+            const text = await file.text();
+            const json = text ? JSON.parse(text) : {};
+            appState[id].memoire = json.memoire_paires || json || {};
+            
+            mettreAJourGraphique(id);
+            document.getElementById(`status-${id}`).innerText = "Prêt";
+            document.getElementById(`btn-file-${mod.id}`).innerText = "✔ Fichier lié";
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function lancerApprentissage(id) {
+        const mod = modulesConfig.find(m => m.id === id);
+        if (!appState[id].handle) {
+            alert("Veuillez d'abord lier un fichier JSON !");
+            return;
+        }
+        
+        appState[id].enCours = true;
+        document.getElementById(`status-${id}`).innerText = "En cours...";
+
+        while (appState[id].enCours) {
+            try {
+                let sujet = mod.sujets[Math.floor(Math.random() * mod.sujets.length)];
+                const res = await fetch(`https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=${encodeURIComponent(sujet)}&format=json&origin=*`).then(r => r.json());
+                const pages = res.query.pages;
+                const texte = pages[Object.keys(pages)[0]].extract || "";
+
+                if (texte.length > 0) {
+                    let memoire = appState[id].memoire;
+                    for (let i = 0; i < texte.length - 1; i++) {
+                        if (!appState[id].enCours) break;
+                        let a = texte[i], b = texte[i+1];
+                        if (!memoire[a]) memoire[a] = {};
+                        memoire[a][b] = (memoire[a][b] || 0) + 1;
+                    }
+
+                    const writable = await appState[id].handle.createWritable();
+                    await writable.write(JSON.stringify({ memoire_paires: memoire }, null, 2));
+                    await writable.close();
+
+                    // Actualiser les graphiques visuels en direct
+                    mettreAJourGraphique(id);
+
+                    let keys = Object.keys(memoire);
+                    if (keys.length > 0) {
+                        let courant = keys[Math.floor(Math.random() * keys.length)];
+                        let aperçu = courant;
+                        for (let k = 0; k < 50; k++) {
+                            let opts = memoire[courant];
+                            if (!opts) break;
+                            let choix = Object.keys(opts)[Math.floor(Math.random() * Object.keys(opts).length)];
+                            aperçu += choix;
+                            courant = choix;
+                        }
+                        document.getElementById(`out-${id}`).innerText = `[${sujet}]\n` + aperçu;
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+            }
+            await new Promise(r => setTimeout(r, 5000));
+        }
+    }
+
+    function arreterApprentissage(id) {
+        appState[id], (appState[id].enCours = false);
+        document.getElementById(`status-${id}`).innerText = "En pause";
+    }
+</script>
+
 </body>
 </html>
