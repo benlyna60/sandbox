@@ -5,62 +5,73 @@ export class HubCentral {
     constructor() {
         this.experts = [];
         this.estEnVeille = true;
+        this.timerVeilleGlobale = null;
     }
 
-    // Ajouter un expert au Hub
     ajouterExpert(expert) {
         this.experts.push(expert);
     }
 
-    // Initialisation : Tous les experts commencent leur apprentissage
     demarrerSysteme() {
-        this.experts.forEach(expert => expert.lancerApprentissageAléatoire());
+        this.experts.forEach(expert => {
+            if (typeof expert.lancerApprentissage === 'function') {
+                expert.lancerApprentissage();
+            } else if (typeof expert.lancerApprentissageAléatoire === 'function') {
+                expert.lancerApprentissageAléatoire();
+            }
+        });
         console.log("Hub Central : Système opérationnel, apprentissage actif.");
     }
 
-    // Appelé dès qu'une touche est pressée dans l'interface
-    surFrappeClavier() {
+    interrompreVeille() {
         if (this.estEnVeille) {
             this.estEnVeille = false;
-            this.experts.forEach(expert => expert.stopApprentissage());
+            this.experts.forEach(expert => {
+                if (typeof expert.arreterApprentissage === 'function') {
+                    expert.arreterApprentissage();
+                } else if (typeof expert.stopApprentissage === 'function') {
+                    expert.stopApprentissage();
+                }
+            });
             console.log("Hub Central : Interruption activée, mode Focus.");
         }
     }
 
-    // Appelé quand le message est envoyé ou le champ vidé
-    surChampVide() {
-        if (!this.estEnVeille) {
-            this.estEnVeille = true;
-            this.experts.forEach(expert => expert.lancerApprentissageAléatoire());
-            console.log("Hub Central : Reprise de l'apprentissage.");
-        }
-    }
-
-    // Méthodes alias pour correspondre aux appels de l'interface graphique index.html
-    interrompreVeille() {
-        this.surFrappeClavier();
-    }
-
     reprendreVeille() {
-        this.surChampVide();
+        if (this.timerVeilleGlobale) clearTimeout(this.timerVeilleGlobale);
+        
+        this.timerVeilleGlobale = setTimeout(() => {
+            this.estEnVeille = true;
+            this.experts.forEach(expert => {
+                if (typeof expert.lancerApprentissage === 'function') {
+                    expert.lancerApprentissage();
+                } else if (typeof expert.lancerApprentissageAléatoire === 'function') {
+                    expert.lancerApprentissageAléatoire();
+                }
+            });
+            console.log("Hub Central : Reprise de l'apprentissage.");
+        }, 5000);
     }
 
-    // Le cœur du traitement
-    processerMessage(texte) {
-        let resultats = this.experts.map(expert => expert.analyser(texte));
-        return this.synthetiserReponses(resultats);
-    }
-
-    // Alias pour correspondre aux appels de l'interface index.html
     processerRequete(texte) {
-        return this.processerMessage(texte);
-    }
+        let resultats = this.experts.map(expert => expert.analyser(texte));
+        resultats.sort((a, b) => b.score - a.score);
 
-    synthetiserReponses(resultats) {
-        let reponse = "Réflexion du système : \n";
-        resultats.forEach(res => {
-            reponse += `- [${res.expert}] : ${res.reflexion}\n`;
+        let meilleur = resultats[0];
+        let reponse = `=== ANALYSE DU HUB CENTRAL ===\n\n`;
+        
+        if (meilleur && meilleur.score > 0) {
+            reponse += `🎯 Expert Principal retenu : ${meilleur.expert} (${meilleur.domaine || 'Domaine spécifique'})\n`;
+            reponse += `💬 Réflexion : ${meilleur.reflexion}\n\n`;
+        } else {
+            reponse += `🌐 Requête distribuée en mode exploratoire neutre.\n\n`;
+        }
+
+        reponse += `--- Synthèse des autres modules ---\n`;
+        resultats.slice(1).forEach(res => {
+            reponse += `• ${res.expert} : ${res.reflexion}\n`;
         });
+
         return reponse;
     }
 }
