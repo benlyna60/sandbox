@@ -199,7 +199,6 @@
     <header>
         <h2>Hub IA Central</h2>
         <div class="btn-group">
-            <button id="btn-dossier">📁 Lier Dossier Mémoire</button>
             <button id="btn-view-modules" class="active">Modules</button>
             <button id="btn-view-chat">Chat Global</button>
         </div>
@@ -254,9 +253,8 @@
         const hub = new HubCentral();
         window.appState = {};
         window.categorieActuelle = 'tous';
-        let dossierRacineHandle = null;
 
-        // 1. Initialisation du Hub : On crée les experts à partir de ton registre
+        // 1. Initialisation du Hub : On crée les experts à partir du registre
         function initHub() {
             MODULES_REGISTRY.forEach(modData => {
                 const expert = new Expert(
@@ -275,41 +273,7 @@
             renderSidebarModules();
         }
 
-        // 2. Sélection du dossier racine (Fichiers mémoires JSON)
-        async function selectionnerDossierRacine() {
-            try {
-                dossierRacineHandle = await window.showDirectoryPicker();
-                alert("Dossier des experts sélectionné avec succès !");
-
-                for (const [id, exp] of Object.entries(window.appState)) {
-                    const nomFichier = `${id}-memoire.json`;
-                    try {
-                        const fichierHandle = await dossierRacineHandle.getFileHandle(nomFichier, { create: true });
-                        exp.handle = fichierHandle;
-                        
-                        const file = await fichierHandle.getFile();
-                        const text = await file.text();
-                        if (text) {
-                            const json = JSON.parse(text);
-                            exp.poids = json.memoire_paires || {};
-                            if (typeof exp.mettreAJourUI === 'function') exp.mettreAJourUI();
-                        }
-                    } catch(e) {
-                        console.warn(`Fichier ${nomFichier} non accessible.`, e);
-                    }
-                    
-                    // Mettre à jour l'UI de la carte si elle existe
-                    const btn = document.getElementById(`btn-file-${id}`);
-                    if(btn) btn.innerText = "✔ Lié";
-                    const dot = document.getElementById(`dot-${id}`);
-                    if(dot) dot.className = "status-dot ready";
-                }
-            } catch (err) {
-                console.log("Sélection de dossier annulée :", err);
-            }
-        }
-
-        // 3. Basculer entre la vue Modules et la vue Chat
+        // 2. Basculer entre la vue Modules et la vue Chat
         function basculerVue(vue) {
             document.getElementById('section-modules').classList.toggle('active', vue === 'modules');
             document.getElementById('section-chat').classList.toggle('active', vue === 'chat');
@@ -317,7 +281,7 @@
             document.getElementById('btn-view-chat').classList.toggle('active', vue === 'chat');
         }
 
-        // 4. Remplir la barre latérale
+        // 3. Remplir la barre latérale
         function renderSidebarModules() {
             const list = document.getElementById('sidebar-modules-list');
             list.innerHTML = "";
@@ -336,7 +300,7 @@
             });
         }
 
-        // 5. Générer dynamiquement la grille des cartes sur l'écran
+        // 4. Générer dynamiquement la grille des cartes sur l'écran
         function renderGrilleModules() {
             const container = document.getElementById('hub-container');
             container.innerHTML = "";
@@ -367,7 +331,7 @@
                         <div class="mini-stat"><div class="v" id="entropie-${exp.id}">0</div><div class="k">Diversité</div></div>
                     </div>
                     <div class="btn-row">
-                        <button class="action-btn btn-lier" id="btn-file-${exp.id}">Lier</button>
+                        <button class="action-btn btn-lier" id="btn-file-${exp.id}">Lier Fichier</button>
                         <button class="action-btn btn-lancer">Lancer</button>
                         <button class="action-btn btn-pause">Pause</button>
                         <button class="action-btn btn-generer" style="color:var(--cyan)">Générer</button>
@@ -379,18 +343,37 @@
                 // --- Attachement des actions sur les boutons de cette carte ---
                 card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
                 
+                // Liaison individuelle d'un fichier JSON précis peu importe son nom
                 card.querySelector('.btn-lier').onclick = async () => {
-                    if (!dossierRacineHandle) {
-                        await selectionnerDossierRacine();
-                    } else {
-                        try {
-                            const handle = await dossierRacineHandle.getFileHandle(`${exp.id}-memoire.json`, { create: true });
-                            exp.handle = handle;
+                    try {
+                        const [fileHandle] = await window.showOpenFilePicker({
+                            types: [{
+                                description: 'Fichiers JSON de mémoire',
+                                accept: { 'application/json': ['.json'] }
+                            }],
+                            multiple: false
+                        });
+
+                        if (fileHandle) {
+                            exp.handle = fileHandle;
+                            const file = await fileHandle.getFile();
+                            const text = await file.text();
+                            
+                            if (text) {
+                                const json = JSON.parse(text);
+                                exp.poids = json.memoire_paires || json; // S'adapte si la structure change
+                            }
+
                             card.querySelector('.btn-lier').innerText = "✔ Lié";
                             document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                        } catch (err) {
-                            console.error(err);
+                            
+                            if (typeof exp.mettreAJourUI === 'function') {
+                                exp.mettreAJourUI();
+                            }
+                            alert(`Module ${exp.nom} lié avec succès au fichier : ${file.name}`);
                         }
+                    } catch (err) {
+                        console.log("Sélection de fichier annulée :", err);
                     }
                 };
 
@@ -410,7 +393,7 @@
             });
         }
 
-        // 6. Gestion des filtres par catégorie
+        // 5. Gestion des filtres par catégorie
         function filtrerModules(cat, btn) {
             window.categorieActuelle = cat;
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -418,7 +401,7 @@
             renderGrilleModules();
         }
 
-        // 7. Fenêtre de Zoom (Détails)
+        // 6. Fenêtre de Zoom (Détails)
         function ouvrirZoom(id) {
             const exp = window.appState[id];
             const texteActuel = exp.dernierTexte || "Aucun texte généré pour le moment.";
@@ -435,7 +418,6 @@
         }
 
         // Événements globaux
-        document.getElementById('btn-dossier').onclick = selectionnerDossierRacine;
         document.getElementById('btn-view-modules').onclick = () => basculerVue('modules');
         document.getElementById('btn-view-chat').onclick = () => basculerVue('chat');
 
