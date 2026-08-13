@@ -81,17 +81,17 @@ export class Expert {
         // C. Recherche directe en temps réel dans son domaine
         const rechercheDirecte = await this.rechercherDansSonDomaine(mots);
 
-        // D. Synthèse : Fusion de la recherche en temps réel et de la mémoire
+        // D. Synthèse : Fusion de la recherche en temps réel et d'une réponse claire et rédigée
         let reflexionFinale = "";
 
         if (rechercheDirecte) {
-            reflexionFinale = `📌 **${rechercheDirecte.titre}** : ${rechercheDirecte.extrait}...`;
+            reflexionFinale = `Concernant ${rechercheDirecte.titre}, les principes appliqués démontrent que ${rechercheDirecte.extrait.toLowerCase()}...`;
         } else {
-            reflexionFinale = `Analyse basée sur les matrices fondamentales de ${this.domaine}.`;
+            reflexionFinale = `Dans le domaine de ${this.nom}, l'optimisation et la structure logique permettent de structurer efficacement les flux de données et de automatiser les processus complexes.`;
         }
 
         if (conceptsMemoire.length > 0) {
-            reflexionFinale += `\n*(Ancrage mémoire interne : ${conceptsMemoire.slice(0, 3).join(', ')})*`;
+            reflexionFinale += ` (Concepts clés mobilisés : ${conceptsMemoire.slice(0, 3).join(', ')})`;
         }
 
         this.dernierTexte = reflexionFinale;
