@@ -1,5 +1,5 @@
 /**
- * Hub Central - Orchestrateur (Optimisé pour ton interface)
+ * Hub Central - Orchestrateur (Version Filtrée et Collaborative)
  */
 export class HubCentral {
     constructor() {
@@ -12,32 +12,60 @@ export class HubCentral {
     }
 
     /**
-     * Traite la requête et orchestre la collaboration
-     * Cette méthode remplace/enrichit ton ancienne logique de processus
+     * Traite la requête en faisant travailler les 14 modules,
+     * puis filtre et ne remonte que l'information pertinente.
      */
     traiterRequete(texte) {
         this.estEnModeFocus = true;
 
-        // 1. Mise en pause de l'apprentissage de tous les modules
+        // 1. Pause de l'errance pour tous les modules
         this.experts.forEach(exp => exp.arreterApprentissage());
 
-        // 2. Mobilisation : chaque expert analyse dans son domaine
-        // On récupère les réflexions de tout le monde
-        const resultats = this.experts.map(exp => exp.analyser(texte));
+        const texteMin = texte.toLowerCase();
+        const motsClesRequete = texteMin.split(/\s+/);
 
-        // 3. Synthèse structurée (Épurée mais transparente)
-        let rapport = `=== ANALYSE COLLABORATIVE (Focus) ===\n\n`;
-        
-        // Bloc 1 : Synthèse globale (la réponse épurée)
-        rapport += `[SYNTHÈSE] : Système opérationnel. Tous les modules ont analysé la requête "${texte}".\n\n`;
+        // 2. Les 14 modules analysent chacun dans leur spécialité
+        const resultatsAnalyses = this.experts.map(exp => {
+            const resultatBrut = exp.analyser(texte);
+            
+            // Calcul d'un score de pertinence basé sur le domaine ou la catégorie
+            let score = 0;
+            const domaineExp = (exp.domaine || exp.cat || "").toLowerCase();
+            const nomExp = (exp.nom || "").toLowerCase();
+            
+            motsClesRequete.forEach(mot => {
+                if (mot.length > 2 && (domaineExp.includes(mot) || nomExp.includes(mot))) {
+                    score += 5; // Plus le mot correspond à sa spécialité, plus le score monte
+                }
+            });
 
-        // Bloc 2 : Détail des travaux (Transparence totale)
-        rapport += `--- Détails des travaux par module ---\n`;
-        resultats.forEach(res => {
-            rapport += `• ${res.expert} [${res.domaine}] : ${res.reflexion}\n`;
+            return {
+                expert: exp.nom,
+                domaine: exp.cat,
+                reflexion: resultatBrut.reflexion || "Analyse en cours...",
+                score: score
+            };
         });
 
-        // 4. Reprise de l'apprentissage automatique (Errance)
+        // 3. LE FILTRAGE : On ne garde que les modules dont le score est pertinent (> 0)
+        let modulesPertinents = resultatsAnalyses.filter(res => res.score > 0);
+        
+        // Fallback : Si aucun mot-clé direct ne correspond, on sélectionne les 2 modules les plus actifs pour garder du répondant
+        if (modulesPertinents.length === 0) {
+            modulesPertinents = resultatsAnalyses.slice(0, 2);
+        }
+
+        // 4. Construction d'un rapport propre, structuré et épuré
+        let rapport = `=== SYNTHÈSE DU HUB CENTRAL ===\n`;
+        rapport += `Requête : "${texte}"\n`;
+        rapport += `Modules consultés : 14 | Pertinents retenus : ${modulesPertinents.length}\n\n`;
+
+        modulesPertinents.forEach(res => {
+            rapport += `[✔ Recommandation | ${res.expert} (${res.domaine})] :\n`;
+            rapport += `  └─ ${res.reflexion}\n\n`;
+        });
+
+        // 5. Reprise immédiate de l'errance pour tout le monde
         this.estEnModeFocus = false;
         this.experts.forEach(exp => exp.lancerApprentissage());
 
