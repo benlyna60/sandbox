@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub IA - Interface (démo + Analytics)</title>
+    <title>Hub IA - Interface</title>
     <style>
+        /* --- Styles de base (Design minimaliste sombre) --- */
         :root {
             --bg: #0b0c10;
             --panel: #1f2833;
@@ -15,27 +16,14 @@
             --orange: #ffb000;
             --purple: #b47cff;
             --hair: rgba(255, 255, 255, 0.1);
-            --mono: ui-monospace, "SFMono-Regular", "Cascadia Code", Consolas, monospace;
         }
-
-        @property --pct {
-            syntax: '<percentage>';
-            inherits: true;
-            initial-value: 0%;
-        }
-
-        * { box-sizing: border-box; }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
         }
 
         header {
@@ -45,11 +33,13 @@
             margin-bottom: 20px;
             border-bottom: 1px solid var(--hair);
             padding-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
         }
 
-        .btn-group, .filters-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        /* Boutons de navigation et filtres */
+        .btn-group, .filters-group {
+            display: flex;
+            gap: 10px;
+        }
 
         button {
             background: var(--panel);
@@ -61,316 +51,232 @@
             font-size: 12px;
             transition: 0.2s;
         }
-        button:hover { border-color: var(--cyan); color: var(--cyan); }
-        button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
-        button.active { background: var(--cyan); color: #000; font-weight: bold; }
 
-        .main-layout { display: grid; grid-template-columns: 250px 1fr; gap: 20px; }
-        @media (max-width: 720px) {
-            .main-layout { grid-template-columns: 1fr; }
-            aside { order: 2; }
-            .instrument-row { grid-template-columns: repeat(2, 1fr) !important; }
+        button:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
         }
 
-        aside { background: var(--panel); border: 1px solid var(--hair); border-radius: 8px; padding: 15px; height: fit-content; }
-        .hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
+        button.active {
+            background: var(--cyan);
+            color: #000;
+            font-weight: bold;
+        }
 
-        .card { background: var(--panel); border: 1px solid var(--hair); border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-        .card.rtl { direction: rtl; text-align: right; }
-        .card.rtl .card-top { flex-direction: row-reverse; }
-        .card.rtl .btn-row { flex-direction: row-reverse; }
-        .card.rtl .stats-row { flex-direction: row-reverse; }
+        /* Layout Principal */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
 
-        .card-top { display: flex; justify-content: space-between; align-items: center; }
-        .card-title { display: flex; align-items: center; gap: 8px; }
-        .card-title h3 { margin: 0; font-size: 14px; color: #fff; }
+        /* Sidebar */
+        aside {
+            background: var(--panel);
+            border: 1px solid var(--hair);
+            border-radius: 8px;
+            padding: 15px;
+            height: fit-content;
+        }
 
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #555; display: inline-block; }
+        /* Grille des modules */
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        /* Carte d'un module */
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--hair);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        /* Indicateur d'état (Point lumineux) */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #555;
+            display: inline-block;
+        }
         .status-dot.ready { background: #00ff66; }
         .status-dot.active { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+        .status-dot.paused { background: var(--orange); }
 
-        .badge { font-size: 10px; background: var(--hair); padding: 2px 6px; border-radius: 4px; color: var(--text-dim); }
+        .badge {
+            font-size: 10px;
+            background: var(--hair);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-dim);
+        }
 
-        .stats-row { display: flex; justify-content: space-between; text-align: center; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; }
-        .mini-stat .v { font-weight: bold; color: #fff; font-size: 12px; font-family: var(--mono); }
+        /* Statistiques de la carte */
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .mini-stat .v { font-weight: bold; color: #fff; font-size: 12px; }
         .mini-stat .k { font-size: 9px; color: var(--text-dim); }
 
-        .btn-row { display: flex; gap: 5px; flex-wrap: wrap; }
-        .action-btn { flex: 1; min-width: 70px; padding: 6px; font-size: 11px; text-align: center; }
+        /* Ligne de boutons d'action */
+        .btn-row {
+            display: flex;
+            gap: 5px;
+        }
 
-        .output { background: #000; padding: 8px; font-size: 10px; font-family: var(--mono); color: var(--cyan); border-radius: 4px; min-height: 25px; }
+        .action-btn {
+            flex: 1;
+            padding: 6px;
+            font-size: 11px;
+            text-align: center;
+        }
 
+        .output {
+            background: #000;
+            padding: 8px;
+            font-size: 10px;
+            color: var(--cyan);
+            border-radius: 4px;
+            min-height: 25px;
+        }
+        .output.rtl { direction: rtl; text-align: right; }
+
+        /* Vues (Modules vs Chat) */
         .view-section { display: none; }
         .view-section.active { display: block; }
 
-        #modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        #modal-content { background: var(--panel); border: 1px solid var(--hair); padding: 20px; border-radius: 8px; width: 420px; max-width: 90vw; }
-
-        #toast {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(20px);
-            background: var(--panel-alt); border: 1px solid var(--cyan); color: #fff; padding: 10px 18px;
-            border-radius: 8px; font-size: 12px; opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; z-index: 2000;
+        /* Fenêtre Modale (Zoom / Injection) */
+        #modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
-        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-        .demo-note { background: var(--panel-alt); border: 1px solid var(--orange); border-radius: 8px; padding: 10px 14px; font-size: 11px; color: var(--text-dim); margin-bottom: 18px; }
-        .demo-note b { color: var(--orange); }
-
-        /* ====================== ANALYTICS ====================== */
-
-        .analytics-hero { margin-bottom: 18px; }
-        .analytics-hero h2 { margin: 0 0 4px 0; font-size: 20px; color: #fff; letter-spacing: 0.3px; }
-        .analytics-hero p { margin: 0; font-size: 12px; color: var(--text-dim); font-family: var(--mono); }
-
-        .instrument-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-            margin-bottom: 22px;
-        }
-        .instrument {
+        #modal-content {
             background: var(--panel);
             border: 1px solid var(--hair);
-            border-radius: 10px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
+            padding: 20px;
+            border-radius: 8px;
+            width: 420px;
         }
-        .gauge {
-            --pct: 0%;
-            --color: var(--cyan);
-            width: 58px; height: 58px; min-width: 58px;
-            border-radius: 50%;
-            background: conic-gradient(var(--color) var(--pct), rgba(255,255,255,0.08) 0);
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
-            transition: --pct 0.8s ease;
-        }
-        .gauge::before {
-            content: ''; position: absolute; inset: 6px;
-            background: var(--panel); border-radius: 50%;
-        }
-        .gauge span {
-            position: relative; z-index: 1;
-            font-family: var(--mono); font-size: 12px; font-weight: bold; color: #fff;
-        }
-        .instrument-body .num {
-            font-family: var(--mono); font-size: 20px; font-weight: bold; color: #fff; line-height: 1;
-        }
-        .instrument-body .lbl {
-            font-size: 10px; color: var(--text-dim); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .instrument-body .trend {
-            font-size: 10px; font-family: var(--mono); margin-top: 3px;
-        }
-        .trend.up { color: #00ff66; }
-        .trend.flat { color: var(--text-dim); }
-
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.3fr;
-            gap: 16px;
-        }
-        @media (max-width: 900px) { .analytics-grid { grid-template-columns: 1fr; } }
-
-        .panel {
-            background: var(--panel);
-            border: 1px solid var(--hair);
-            border-radius: 10px;
-            padding: 16px;
-        }
-        .panel h4 {
-            margin: 0 0 14px 0; font-size: 12px; color: #fff; text-transform: uppercase;
-            letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;
-        }
-        .panel h4::before {
-            content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan);
-            box-shadow: 0 0 6px var(--cyan);
-        }
-
-        .cat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 11px; }
-        .cat-row .cat-label { width: 90px; color: var(--text-dim); flex-shrink: 0; }
-        .cat-row .cat-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
-        .cat-row .cat-fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-        .cat-row .cat-count { width: 22px; text-align: right; font-family: var(--mono); color: #fff; flex-shrink: 0; }
-
-        .module-row {
-            display: grid;
-            grid-template-columns: 16px 1fr 70px 90px 46px;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--hair);
-            font-size: 11px;
-        }
-        .module-row:last-child { border-bottom: none; }
-        .module-row .m-name { color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .module-row .m-bar-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-        .module-row .m-bar-fill { height: 100%; border-radius: 3px; background: var(--cyan); transition: width 0.8s ease; }
-        .module-row .m-div { font-family: var(--mono); color: var(--purple); text-align: right; }
-        .module-row svg.spark { display: block; overflow: visible; }
     </style>
 </head>
 <body>
-
-    <div class="demo-note">
-        <b>Démo autonome</b> — données et modules fictifs. L'onglet <b>Sous le capot</b> est interactif : charger un fichier ou injecter du savoir met instantanément le tableau de bord à jour.
-    </div>
 
     <header>
         <h2>Hub IA Central</h2>
         <div class="btn-group">
             <button id="btn-view-modules" class="active">Modules</button>
             <button id="btn-view-chat">Chat Global</button>
-            <button id="btn-view-analytics">Sous le capot</button>
         </div>
     </header>
 
+    <!-- SECTION MODULES -->
     <div id="section-modules" class="view-section active">
-        <div class="filters-group" style="margin-bottom: 15px;" role="group" aria-label="Filtrer les modules par catégorie">
-            <button class="filter-btn active" data-cat="tous" aria-pressed="true">Tous</button>
-            <button class="filter-btn" data-cat="code" aria-pressed="false">Code</button>
-            <button class="filter-btn" data-cat="langue" aria-pressed="false">Langue &amp; Poésie</button>
-            <button class="filter-btn" data-cat="archives" aria-pressed="false">Archives &amp; Sciences</button>
+        <!-- Filtres par catégorie -->
+        <div class="filters-group" style="margin-bottom: 15px;">
+            <button class="filter-btn active" data-cat="tous">Tous</button>
+            <button class="filter-btn" data-cat="code">Code</button>
+            <button class="filter-btn" data-cat="langue">Langue & Poésie</button>
+            <button class="filter-btn" data-cat="archives">Archives & Sciences</button>
         </div>
+
         <div class="main-layout">
+            <!-- Sidebar listant les modules rapidement -->
             <aside>
                 <h4 style="margin-top:0; font-size:12px; color:var(--text-dim);">Accès Rapide</h4>
                 <div id="sidebar-modules-list"></div>
             </aside>
+
+            <!-- Grille dynamique générée par JavaScript -->
             <div class="hub-grid" id="hub-container"></div>
         </div>
     </div>
 
+    <!-- SECTION CHAT -->
     <div id="section-chat" class="view-section">
         <div style="background:var(--panel); border:1px solid var(--hair); border-radius:8px; padding:20px; max-width:800px; margin:0 auto; display:flex; flex-direction:column; height:400px;">
             <div id="chat-output" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px; margin-bottom:15px; padding-right:5px;"></div>
             <div style="display:flex; gap:10px;">
-                <label for="user-input" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Message à envoyer au Hub</label>
-                <input type="text" id="user-input" placeholder="Posez une question au Hub..." aria-label="Message à envoyer au Hub" style="flex:1; background:var(--bg); border:1px solid var(--hair); color:#fff; padding:10px; border-radius:6px; outline:none;">
+                <input type="text" id="user-input" placeholder="Posez une question au Hub..." style="flex:1; background:var(--bg); border:1px solid var(--hair); color:#fff; padding:10px; border-radius:6px; outline:none;">
                 <button id="btn-envoyer">Envoyer</button>
             </div>
         </div>
     </div>
 
-    <div id="section-analytics" class="view-section">
-        <div class="analytics-hero">
-            <h2>Sous le capot</h2>
-            <p>Instantané en direct de l'état du Hub — mis à jour à chaque action</p>
-        </div>
-
-        <div class="instrument-row" id="instrument-row"></div>
-
-        <div class="analytics-grid">
-            <div class="panel">
-                <h4>Répartition par catégorie</h4>
-                <div id="cat-breakdown"></div>
-            </div>
-            <div class="panel">
-                <h4>Détail par module</h4>
-                <div id="module-detail"></div>
-            </div>
-        </div>
-    </div>
-
+    <!-- MODALE UNIVERSELLE -->
     <div id="modal-overlay">
-        <div id="modal-content" role="dialog" aria-modal="true">
+        <div id="modal-content">
             <div id="modal-inner-content"></div>
         </div>
     </div>
 
-    <div id="toast" role="status" aria-live="polite"></div>
-
+    <!-- SCRIPT PRINCIPAL (LOGIQUE JS) -->
     <script type="module">
-        class Expert {
-            constructor(id, nom, desc, cat, wikiLang, isRtl) {
-                this.id = id; this.nom = nom; this.desc = desc;
-                this.cat = cat; this.wikiLang = wikiLang; this.isRtl = isRtl;
-                this.texteIngere = "";
-                this.statut = "prêt";
-                this.historique = [];
-            }
-            chargerMemoire(t) { this.texteIngere = t; }
-            ingererTexte(t) { this.texteIngere = t; }
-            lancerApprentissage() { return true; }
-            genererTexte() { return "Texte généré (démo)."; }
-        }
-        class HubCentral {
-            constructor() { this.experts = []; }
-            ajouterExpert(e) { this.experts.push(e); }
-            traiterRequete(t) { return `Hub IA : requête "${t}" traitée (démo).`; }
-        }
-        const MODULES_REGISTRY = [
-            { id: "js-tips", nom: "Astuces JavaScript", cat: "code" },
-            { id: "python-doc", nom: "Documentation Python", cat: "code" },
-            { id: "poesie-fr", nom: "Poésie Française", cat: "langue" },
-            { id: "arabe-debutant", nom: "Arabe - Débutant", cat: "langue", wikiLang: "ar", isRtl: true },
-            { id: "histoire-antique", nom: "Archives Antiquité", cat: "archives" },
-            { id: "physique-quantique", nom: "Physique Quantique", cat: "archives" },
-        ];
-        const CATEGORIES_CONFIG = {
-            code: { color: "#00d9ff" },
-            langue: { color: "#ffb000" },
-            archives: { color: "#b47cff" },
-        };
-        const SEED_HISTORIQUE = {
-            "js-tips": [40, 55, 90, 120],
-            "python-doc": [20, 20, 65],
-            "poesie-fr": [10, 30, 30, 48, 70],
-            "arabe-debutant": [8, 15],
-            "histoire-antique": [60, 60, 60],
-            "physique-quantique": [15, 40, 110, 130, 155],
-        };
+        import { HubCentral } from './Js/hub.js';
+        import { Expert } from './Js/expert.js';
+        import { MODULES_REGISTRY, CATEGORIES_CONFIG } from './Js/modules.registry.js';
 
         const hub = new HubCentral();
-        let appState = {};
-        let categorieActuelle = 'tous';
-
-        function afficherToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            clearTimeout(afficherToast._t);
-            afficherToast._t = setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-
-        function calculerDiversite(texte) {
-            const mots = texte.trim().split(/\s+/).filter(Boolean);
-            if (mots.length === 0) return 0;
-            const uniques = new Set(mots.map(m => m.toLowerCase()));
-            return Math.round((uniques.size / mots.length) * 100);
-        }
+        window.appState = {};
+        window.categorieActuelle = 'tous';
 
         function initHub() {
             MODULES_REGISTRY.forEach(modData => {
                 const expert = new Expert(
-                    modData.id, modData.nom, `Domaine : ${modData.nom} (${modData.cat})`,
-                    modData.cat, modData.wikiLang, modData.isRtl || false
+                    modData.id, 
+                    modData.nom, 
+                    `Domaine : ${modData.nom} (${modData.cat})`, 
+                    modData.cat, 
+                    modData.wikiLang, 
+                    modData.isRtl || false
                 );
-                (SEED_HISTORIQUE[modData.id] || []).forEach(mots => {
-                    expert.historique.push({ mots, diversite: 55 + Math.round(Math.random() * 35) });
-                });
-                if (expert.historique.length) {
-                    expert.texteIngere = "x ".repeat(expert.historique.at(-1).mots);
-                    expert.statut = "prêt";
-                }
                 hub.ajouterExpert(expert);
-                appState[modData.id] = expert;
+                window.appState[modData.id] = expert;
             });
+
             renderGrilleModules();
             renderSidebarModules();
-            renderAnalytics();
         }
 
         function basculerVue(vue) {
             document.getElementById('section-modules').classList.toggle('active', vue === 'modules');
             document.getElementById('section-chat').classList.toggle('active', vue === 'chat');
-            document.getElementById('section-analytics').classList.toggle('active', vue === 'analytics');
             document.getElementById('btn-view-modules').classList.toggle('active', vue === 'modules');
             document.getElementById('btn-view-chat').classList.toggle('active', vue === 'chat');
-            document.getElementById('btn-view-analytics').classList.toggle('active', vue === 'analytics');
-            if (vue === 'analytics') renderAnalytics();
         }
 
         function renderSidebarModules() {
@@ -380,21 +286,13 @@
                 const item = document.createElement('div');
                 item.style.cssText = "padding:8px 10px; margin:3px 0; border-radius:6px; cursor:pointer; font-size:11px; display:flex; justify-content:space-between; align-items:center; background:var(--bg); border:1px solid var(--hair);";
                 const color = CATEGORIES_CONFIG[exp.cat]?.color || '#00d9ff';
-                const nomSpan = document.createElement('span');
-                nomSpan.textContent = exp.nom;
-                const catSpan = document.createElement('span');
-                catSpan.textContent = exp.cat;
-                catSpan.style.cssText = `font-size:8px; background:${color}; color:#000; padding:2px 5px; border-radius:4px; font-weight:bold;`;
-                item.append(nomSpan, catSpan);
-                item.tabIndex = 0;
-                item.setAttribute('role', 'button');
-                const ouvrir = () => {
+                item.innerHTML = `<span>${exp.nom}</span> <span style="font-size:8px; background:${color}; color:#000; padding:2px 5px; border-radius:4px; font-weight:bold;">${exp.cat}</span>`;
+                
+                item.onclick = () => {
                     document.getElementById('user-input').value = `Interroger le module ${exp.nom} : `;
                     document.getElementById('user-input').focus();
                     basculerVue('chat');
                 };
-                item.onclick = ouvrir;
-                item.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ouvrir(); } };
                 list.appendChild(item);
             });
         }
@@ -402,295 +300,178 @@
         function renderGrilleModules() {
             const container = document.getElementById('hub-container');
             container.innerHTML = "";
-            let filtres = (categorieActuelle === 'tous' || !categorieActuelle)
-                ? hub.experts
-                : hub.experts.filter(m => m.cat === categorieActuelle);
+            
+            let filtres = (window.categorieActuelle === 'tous' || !window.categorieActuelle) 
+                ? hub.experts 
+                : hub.experts.filter(m => m.cat === window.categorieActuelle);
 
             filtres.forEach(exp => {
+                let rtl = exp.isRtl ? "rtl" : "";
                 const card = document.createElement('div');
-                card.className = "card" + (exp.isRtl ? " rtl" : "");
+                card.className = "card";
                 card.id = `card-${exp.id}`;
-                const div = exp.historique.length ? exp.historique.at(-1).diversite : 0;
                 card.innerHTML = `
                     <div class="card-top">
                         <div class="card-title">
-                            <span class="status-dot ${exp.statut === 'actif' ? 'active' : 'ready'}" id="dot-${exp.id}" title="Statut : ${exp.statut}"></span>
+                            <span class="status-dot" id="dot-${exp.id}"></span>
                             <h3>${exp.nom}</h3>
                         </div>
                         <div style="display:flex; gap:6px; align-items:center;">
-                            <span class="badge" id="badge-${exp.id}">${exp.statut === 'actif' ? 'Actif' : 'Prêt'}</span>
-                            <button class="action-btn btn-zoom" aria-label="Zoomer sur la mémoire de ${exp.nom}">🔍 Zoom</button>
+                            <span class="badge" id="badge-${exp.id}">Prêt</span>
+                            <button class="action-btn btn-zoom" data-id="${exp.id}">🔍 Zoom</button>
                         </div>
                     </div>
                     <div class="stats-row">
-                        <div class="mini-stat"><div class="v" id="metric-txt-${exp.id}">${exp.historique.length ? exp.historique.at(-1).mots : 0}</div><div class="k">Connexions</div></div>
-                        <div class="mini-stat"><div class="v" id="densite-${exp.id}">${exp.historique.length ? Math.min(exp.historique.at(-1).mots / 100, 1).toFixed(2) : "0.00"}</div><div class="k">Densité</div></div>
-                        <div class="mini-stat"><div class="v" id="entropie-${exp.id}">${div}%</div><div class="k">Diversité</div></div>
+                        <div class="mini-stat"><div class="v" id="metric-txt-${exp.id}">0</div><div class="k">Connexions</div></div>
+                        <div class="mini-stat"><div class="v" id="densite-${exp.id}">0</div><div class="k">Densité</div></div>
+                        <div class="mini-stat"><div class="v" id="entropie-${exp.id}">0</div><div class="k">Diversité</div></div>
                     </div>
                     <div class="btn-row">
-                        <button class="action-btn btn-lier">📂 Charger</button>
+                        <button class="action-btn btn-lier" id="btn-file-${exp.id}">📂 Charger</button>
                         <button class="action-btn btn-injecter" style="color:var(--orange)">💉 Injecter</button>
                         <button class="action-btn btn-lancer">Lancer</button>
                         <button class="action-btn btn-generer" style="color:var(--cyan)">Générer</button>
                     </div>
-                    <div class="output" id="out-${exp.id}">${exp.historique.length ? 'Mémoire chargée (' + exp.historique.at(-1).mots + ' mots).' : 'En attente de la mémoire...'}</div>
+                    <div class="output ${rtl}" id="out-${exp.id}">En attente de la mémoire...</div>
                 `;
                 container.appendChild(card);
 
+                // Zoom sur la mémoire
                 card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
+
+                // Option : Ajouter du savoir / Injecter de la mémoire
                 card.querySelector('.btn-injecter').onclick = () => ouvrirModalInjection(exp.id);
-
-                function enregistrerPoint(memoireTexte) {
-                    const mots = memoireTexte.trim().split(/\s+/).filter(Boolean).length;
-                    exp.historique.push({ mots, diversite: calculerDiversite(memoireTexte) });
-                }
-
-                function appliquerMemoire(memoireTexte, boutonLabel) {
-                    exp.texteIngere = memoireTexte;
-                    if (typeof exp.chargerMemoire === 'function') exp.chargerMemoire(memoireTexte);
-                    else if (typeof exp.ingererTexte === 'function') exp.ingererTexte(memoireTexte);
-                    enregistrerPoint(memoireTexte);
-
-                    card.querySelector('.btn-lier').innerText = boutonLabel;
-                    exp.statut = "prêt";
-                    document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                    document.getElementById(`dot-${exp.id}`).title = "Statut : mémoire chargée";
-                    document.getElementById(`out-${exp.id}`).innerText = `Mémoire restaurée (${memoireTexte.length} carac).`;
-
-                    const mots = memoireTexte.trim().split(/\s+/).filter(Boolean);
-                    document.getElementById(`metric-txt-${exp.id}`).innerText = mots.length;
-                    document.getElementById(`densite-${exp.id}`).innerText = (Math.min(mots.length / 100, 1)).toFixed(2);
-                    document.getElementById(`entropie-${exp.id}`).innerText = calculerDiversite(memoireTexte) + "%";
-                    renderAnalytics();
-                }
-
+                
+                // CHARGEMENT DE LA MÉMOIRE DEPUIS LE FICHIER TEXTE
                 card.querySelector('.btn-lier').onclick = async () => {
-                    if (window.showOpenFilePicker) {
-                        try {
-                            const [fileHandle] = await window.showOpenFilePicker({
-                                types: [{ description: 'Fichiers de mémoire texte', accept: { 'text/plain': ['.txt', '.text'] } }],
-                                multiple: false
-                            });
-                            if (fileHandle) {
-                                exp.fileHandle = fileHandle;
-                                const file = await fileHandle.getFile();
-                                appliquerMemoire(await file.text(), "✔ Chargé");
+                    try {
+                        const [fileHandle] = await window.showOpenFilePicker({
+                            types: [{
+                                description: 'Fichiers de mémoire texte',
+                                accept: { 'text/plain': ['.txt', '.text'] }
+                            }],
+                            multiple: false
+                        });
+
+                        if (fileHandle) {
+                            exp.fileHandle = fileHandle;
+                            const file = await fileHandle.getFile();
+                            const memoireTexte = await file.text();
+                            
+                            exp.texteIngere = memoireTexte;
+                            if (typeof exp.chargerMemoire === 'function') {
+                                exp.chargerMemoire(memoireTexte);
+                            } else if (typeof exp.ingererTexte === 'function') {
+                                exp.ingererTexte(memoireTexte);
                             }
-                        } catch (err) {
-                            if (err.name !== 'AbortError') console.log("Chargement annulé ou non supporté :", err);
+
+                            card.querySelector('.btn-lier').innerText = "✔ Chargé";
+                            document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
+                            document.getElementById(`out-${exp.id}`).innerText = `Mémoire restaurée (${memoireTexte.length} carac).`;
+                            
+                            const mots = memoireTexte.trim().split(/\s+/);
+                            document.getElementById(`metric-txt-${exp.id}`).innerText = mots.length;
+                            document.getElementById(`densite-${exp.id}`).innerText = (Math.min(mots.length / 100, 1)).toFixed(2);
+                            document.getElementById(`entropie-${exp.id}`).innerText = "100%";
                         }
-                    } else {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = '.txt,.text,text/plain';
-                        input.onchange = async () => {
-                            const file = input.files[0];
-                            if (!file) return;
-                            exp.fileHandle = null;
-                            appliquerMemoire(await file.text(), "✔ Chargé (lecture seule)");
-                        };
-                        input.click();
+                    } catch (err) {
+                        console.log("Chargement annulé :", err);
                     }
                 };
 
-                card.querySelector('.btn-lancer').onclick = () => {
+                card.querySelector('.btn-lancer').onclick = async () => {
                     if (typeof exp.lancerApprentissage === 'function') exp.lancerApprentissage();
-                    exp.statut = "actif";
                     document.getElementById(`dot-${exp.id}`).className = "status-dot active";
-                    document.getElementById(`badge-${exp.id}`).innerText = "Actif";
-                    renderAnalytics();
                 };
 
                 card.querySelector('.btn-generer').onclick = () => {
-                    if (typeof exp.genererTexte === 'function') {
-                        document.getElementById(`out-${exp.id}`).innerText = exp.genererTexte() || "Génération effectuée.";
-                    }
+                    if (typeof exp.genererTexte === 'function') exp.genererTexte();
                 };
             });
         }
 
         function filtrerModules(cat, btn) {
-            categorieActuelle = cat;
-            document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+            window.categorieActuelle = cat;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            btn.setAttribute('aria-pressed', 'true');
             renderGrilleModules();
         }
 
         function ouvrirZoom(id) {
-            const exp = appState[id];
-            const inner = document.getElementById('modal-inner-content');
-            inner.innerHTML = `<h3 style="color:#fff; margin-top:0;">🔍 Mémoire active : ${exp.nom}</h3><p style="font-size:11px; color:var(--text-dim);">Aperçu du contenu chargé :</p>`;
-            const pre = document.createElement('div');
-            pre.style.cssText = "background:#000; padding:10px; color:var(--cyan); font-family:var(--mono); font-size:11px; border-radius:6px; max-height:250px; overflow-y:auto; white-space:pre-wrap;";
-            pre.textContent = exp.texteIngere || "Aucune mémoire chargée pour le moment.";
-            inner.appendChild(pre);
-            const btnFermer = document.createElement('button');
-            btnFermer.textContent = "Fermer";
-            btnFermer.style.cssText = "margin-top:15px; width:100%;";
-            btnFermer.onclick = () => { document.getElementById('modal-overlay').style.display = 'none'; };
-            inner.appendChild(btnFermer);
+            const exp = window.appState[id];
+            const texteActuel = exp.texteIngere || "Aucune mémoire chargée pour le moment.";
+            document.getElementById('modal-inner-content').innerHTML = `
+                <h3 style="color:#fff; margin-top:0;">🔍 Mémoire active : ${exp.nom}</h3>
+                <p style="font-size:11px; color:var(--text-dim);">Aperçu du contenu chargé :</p>
+                <div style="background:#000; padding:10px; color:var(--cyan); font-size:11px; border-radius:6px; max-height:250px; overflow-y:auto; white-space:pre-wrap;">${texteActuel}</div>
+                <button id="btn-fermer-modal" style="margin-top:15px; width:100%;">Fermer</button>
+            `;
             document.getElementById('modal-overlay').style.display = 'flex';
-            btnFermer.focus();
+            document.getElementById('btn-fermer-modal').onclick = () => {
+                document.getElementById('modal-overlay').style.display = 'none';
+            };
         }
 
         function ouvrirModalInjection(id) {
-            const exp = appState[id];
+            const exp = window.appState[id];
             document.getElementById('modal-inner-content').innerHTML = `
                 <h3 style="color:#fff; margin-top:0;">💉 Ajouter du Savoir : ${exp.nom}</h3>
                 <p style="font-size:11px; color:var(--text-dim);">Écrivez ou collez de nouvelles connaissances à injecter dans la mémoire de ce module :</p>
-                <label for="input-nouveau-savoir" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Nouveau savoir à injecter</label>
-                <textarea id="input-nouveau-savoir" maxlength="20000" placeholder="Entrez le savoir à ajouter..." style="width:100%; height:120px; background:#000; color:var(--cyan); border:1px solid var(--hair); padding:8px; border-radius:6px; font-size:11px; resize:none; outline:none; box-sizing:border-box;"></textarea>
+                <textarea id="input-nouveau-savoir" placeholder="Entrez le savoir à ajouter..." style="width:100%; height:120px; background:#000; color:var(--cyan); border:1px solid var(--hair); padding:8px; border-radius:6px; font-size:11px; resize:none; outline:none; box-sizing:border-box;"></textarea>
                 <div style="display:flex; gap:10px; margin-top:15px;">
                     <button id="btn-valider-injection" style="flex:1; background:var(--cyan); color:#000; font-weight:bold;">Injecter</button>
                     <button id="btn-annuler-injection" style="flex:1;">Annuler</button>
                 </div>
             `;
             document.getElementById('modal-overlay').style.display = 'flex';
-            document.getElementById('input-nouveau-savoir').focus();
-            document.getElementById('btn-annuler-injection').onclick = () => { document.getElementById('modal-overlay').style.display = 'none'; };
+
+            document.getElementById('btn-annuler-injection').onclick = () => {
+                document.getElementById('modal-overlay').style.display = 'none';
+            };
 
             document.getElementById('btn-valider-injection').onclick = async () => {
                 const texteAjoute = document.getElementById('input-nouveau-savoir').value.trim();
                 if (!texteAjoute) return;
-                exp.texteIngere = (exp.texteIngere || "") + "\n\n[SAVOIR INJECTÉ] : " + texteAjoute;
-                if (typeof exp.ingererTexte === 'function') exp.ingererTexte(exp.texteIngere);
 
+                // Concaténer le savoir
+                exp.texteIngere = (exp.texteIngere || "") + "\n\n[SAVOIR INJECTÉ] : " + texteAjoute;
+
+                if (typeof exp.ingererTexte === 'function') {
+                    exp.ingererTexte(exp.texteIngere);
+                }
+
+                // Sauvegarder automatiquement dans le fichier .txt lié s'il existe
                 if (exp.fileHandle) {
                     try {
                         const writable = await exp.fileHandle.createWritable();
                         await writable.write(exp.texteIngere);
                         await writable.close();
-                    } catch (e) { afficherToast("Savoir ajouté en mémoire, mais l'écriture du fichier a échoué."); }
+                    } catch (e) {
+                        console.log("Erreur d'écriture dans le fichier :", e);
+                    }
                 }
 
-                const mots = exp.texteIngere.trim().split(/\s+/).filter(Boolean);
-                exp.historique.push({ mots: mots.length, diversite: calculerDiversite(exp.texteIngere) });
-                
-                const metricTxt = document.getElementById(`metric-txt-${exp.id}`);
-                const densite = document.getElementById(`densite-${exp.id}`);
-                const entropie = document.getElementById(`entropie-${exp.id}`);
-                const output = document.getElementById(`out-${exp.id}`);
-
-                if (metricTxt) metricTxt.innerText = mots.length;
-                if (densite) densite.innerText = (Math.min(mots.length / 100, 1)).toFixed(2);
-                if (entropie) entropie.innerText = calculerDiversite(exp.texteIngere) + "%";
-                if (output) output.innerText = `Savoir injecté avec succès (${mots.length} mots totaux).`;
+                // Mettre à jour l'affichage des stats
+                const mots = exp.texteIngere.trim().split(/\s+/);
+                document.getElementById(`metric-txt-${exp.id}`).innerText = mots.length;
+                document.getElementById(`densite-${exp.id}`).innerText = (Math.min(mots.length / 100, 1)).toFixed(2);
+                document.getElementById(`out-${exp.id}`).innerText = `Savoir injecté avec succès (${mots.length} mots totaux).`;
 
                 document.getElementById('modal-overlay').style.display = 'none';
-                afficherToast(`Savoir ajouté pour ${exp.nom}.`);
-                renderAnalytics();
+                alert(`Savoir ajouté et sauvegardé pour ${exp.nom} !`);
             };
-        }
-
-        function svgSparkline(valeurs, couleur) {
-            if (!valeurs.length) return '<span style="color:var(--text-dim); font-size:10px;">—</span>';
-            const w = 80, h = 24, pad = 2;
-            const max = Math.max(...valeurs, 1);
-            const min = Math.min(...valeurs, 0);
-            const range = (max - min) || 1;
-            const pts = valeurs.map((v, i) => {
-                const x = pad + (i / Math.max(valeurs.length - 1, 1)) * (w - pad * 2);
-                const y = h - pad - ((v - min) / range) * (h - pad * 2);
-                return `${x.toFixed(1)},${y.toFixed(1)}`;
-            }).join(' ');
-            const dernierX = pad + (w - pad * 2);
-            const dernierY = h - pad - ((valeurs.at(-1) - min) / range) * (h - pad * 2);
-            return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
-                <polyline points="${pts}" fill="none" stroke="${couleur}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.85"/>
-                <circle cx="${dernierX.toFixed(1)}" cy="${dernierY.toFixed(1)}" r="2.2" fill="${couleur}"/>
-            </svg>`;
-        }
-
-        function renderAnalytics() {
-            const experts = hub.experts;
-            const totalModules = experts.length;
-            const actifs = experts.filter(e => e.statut === 'actif').length;
-            const totalMots = experts.reduce((s, e) => s + (e.historique.length ? e.historique.at(-1).mots : 0), 0);
-            const diversites = experts.filter(e => e.historique.length).map(e => e.historique.at(-1).diversite);
-            const diversiteMoy = diversites.length ? Math.round(diversites.reduce((a, b) => a + b, 0) / diversites.length) : 0;
-            const pctActifs = totalModules ? Math.round((actifs / totalModules) * 100) : 0;
-            const totalConnexions = totalMots;
-
-            const row = document.getElementById('instrument-row');
-            row.innerHTML = `
-                ${instrument('Modules actifs', `${actifs}/${totalModules}`, pctActifs, 'var(--cyan)', pctActifs + '% en ligne')}
-                ${instrument('Diversité moyenne', diversiteMoy + '%', diversiteMoy, 'var(--purple)', 'sur mémoire chargée')}
-                ${instrumentCompact('Mots ingérés (total)', totalConnexions.toLocaleString('fr-FR'), 'var(--orange)')}
-                ${instrumentCompact('Catégorie dominante', categorieDominante(experts), 'var(--cyan)')}
-            `;
-
-            const parCat = {};
-            experts.forEach(e => { parCat[e.cat] = (parCat[e.cat] || 0) + 1; });
-            const maxCat = Math.max(...Object.values(parCat), 1);
-            const catDiv = document.getElementById('cat-breakdown');
-            catDiv.innerHTML = Object.entries(parCat).sort((a,b) => b[1]-a[1]).map(([cat, n]) => {
-                const color = CATEGORIES_CONFIG[cat]?.color || '#00d9ff';
-                const pct = Math.round((n / maxCat) * 100);
-                return `<div class="cat-row">
-                    <div class="cat-label">${cat}</div>
-                    <div class="cat-track"><div class="cat-fill" style="width:${pct}%; background:${color};"></div></div>
-                    <div class="cat-count">${n}</div>
-                </div>`;
-            }).join('');
-
-            const maxMots = Math.max(...experts.map(e => e.historique.length ? e.historique.at(-1).mots : 0), 1);
-            const detail = document.getElementById('module-detail');
-            detail.innerHTML = experts.map(e => {
-                const mots = e.historique.length ? e.historique.at(-1).mots : 0;
-                const pctBar = Math.round((mots / maxMots) * 100);
-                const sparkVals = e.historique.map(h => h.mots);
-                return `<div class="module-row">
-                    <span class="status-dot ${e.statut === 'actif' ? 'active' : 'ready'}"></span>
-                    <span class="m-name">${e.nom}</span>
-                    <span class="m-bar-track"><span class="m-bar-fill" style="width:${pctBar}%;"></span></span>
-                    ${svgSparkline(sparkVals, '#00d9ff')}
-                    <span class="m-div">${e.historique.length ? e.historique.at(-1).diversite + '%' : '—'}</span>
-                </div>`;
-            }).join('');
-        }
-
-        function categorieDominante(experts) {
-            const parCat = {};
-            experts.forEach(e => { parCat[e.cat] = (parCat[e.cat] || 0) + 1; });
-            const entries = Object.entries(parCat).sort((a, b) => b[1] - a[1]);
-            return entries.length ? entries[0][0] : '—';
-        }
-
-        function instrument(label, num, pct, color, trendTxt) {
-            return `<div class="instrument">
-                <div class="gauge" style="--pct:${pct}%; --color:${color};"><span>${pct}%</span></div>
-                <div class="instrument-body">
-                    <div class="num">${num}</div>
-                    <div class="lbl">${label}</div>
-                    <div class="trend flat">${trendTxt}</div>
-                </div>
-            </div>`;
-        }
-
-        function instrumentCompact(label, num, color) {
-            return `<div class="instrument">
-                <div class="gauge" style="--pct:100%; --color:${color};"><span style="font-size:9px;">●</span></div>
-                <div class="instrument-body">
-                    <div class="num" style="font-size:16px;">${num}</div>
-                    <div class="lbl">${label}</div>
-                </div>
-            </div>`;
         }
 
         document.getElementById('btn-view-modules').onclick = () => basculerVue('modules');
         document.getElementById('btn-view-chat').onclick = () => basculerVue('chat');
-        document.getElementById('btn-view-analytics').onclick = () => basculerVue('analytics');
-        document.getElementById('modal-overlay').addEventListener('click', (e) => { if (e.target.id === 'modal-overlay') e.target.style.display = 'none'; });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.getElementById('modal-overlay').style.display = 'none'; });
-        document.querySelectorAll('.filter-btn').forEach(btn => { btn.onclick = () => filtrerModules(btn.dataset.cat, btn); });
 
-        try {
-            initHub();
-        } catch (err) {
-            document.getElementById('hub-container').innerHTML = `<p style="color:var(--orange); font-size:12px;">Erreur au chargement des modules : ${err.message}</p>`;
-        }
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.onclick = () => filtrerModules(btn.dataset.cat, btn);
+        });
 
+        initHub();
+
+        // --- GESTION DU CHAT GLOBAL ---
         const inputChat = document.getElementById('user-input');
         const btnEnvoyer = document.getElementById('btn-envoyer');
         const chatOutput = document.getElementById('chat-output');
@@ -698,25 +479,36 @@
         function envoyerMessage() {
             const texte = inputChat.value.trim();
             if (!texte) return;
+
             const msgUser = document.createElement('div');
             msgUser.style.cssText = "background: var(--panel-alt); padding: 10px; border-radius: 6px; align-self: flex-end; max-width: 80%; font-size: 11px; border: 1px solid var(--hair); color: #fff;";
-            msgUser.textContent = texte;
+            msgUser.innerText = texte;
             chatOutput.appendChild(msgUser);
+
             inputChat.value = "";
             chatOutput.scrollTop = chatOutput.scrollHeight;
+
             setTimeout(() => {
                 const msgHub = document.createElement('div');
                 msgHub.style.cssText = "background: #000; padding: 10px; border-radius: 6px; align-self: flex-start; max-width: 80%; font-size: 11px; border: 1px solid var(--cyan); color: var(--cyan);";
+                
                 let reponseTexte = `Hub IA : Requête "${texte}" analysée par le système central.`;
-                if (typeof hub.traiterRequete === 'function') reponseTexte = hub.traiterRequete(texte);
-                msgHub.textContent = reponseTexte;
+                if (typeof hub.traiterRequete === 'function') {
+                    reponseTexte = hub.traiterRequete(texte);
+                }
+
+                msgHub.innerText = reponseTexte;
                 chatOutput.appendChild(msgHub);
                 chatOutput.scrollTop = chatOutput.scrollHeight;
             }, 500);
         }
 
         btnEnvoyer.onclick = envoyerMessage;
-        inputChat.onkeydown = (e) => { if (e.key === 'Enter' && !e.isComposing) envoyerMessage(); };
+        inputChat.onkeydown = (e) => {
+            if (e.key === 'Enter') {
+                envoyerMessage();
+            }
+        };
     </script>
 </body>
 </html>
