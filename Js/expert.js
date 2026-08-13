@@ -1,5 +1,5 @@
 /**
- * Module Expert - Unité d'apprentissage autonome (Mémoire + Recherche temps réel)
+ * Module Expert - Unité d'apprentissage autonome (Mémoire + Recherche temps réel + LocalStorage)
  */
 export class Expert {
     constructor(id, nom, domaine, cat, wikiLang, isRtl) {
@@ -14,6 +14,16 @@ export class Expert {
         this.enVeille = false;
         this.handle = null;             
         this.dernierTexte = "En attente...";
+
+        // CHARGEMENT AUTOMATIQUE DU LOCALSTORAGE (Persistance malgré le F5 sur Windows)
+        try {
+            const memoireSauvee = localStorage.getItem(`expert_memoire_${this.id}`);
+            if (memoireSauvee) {
+                this.poids = JSON.parse(memoireSauvee);
+            }
+        } catch (err) {
+            console.warn(`[${this.nom}] Impossible de charger le localStorage :`, err);
+        }
     }
 
     /**
@@ -21,7 +31,6 @@ export class Expert {
      */
     async rechercherDansSonDomaine(motsCles) {
         try {
-            // On prend les mots importants de la requête
             const requete = encodeURIComponent(motsCles.join(' '));
             const url = `https://${this.wikiLang}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${requete}&format=json&origin=*`;
             
@@ -29,7 +38,6 @@ export class Expert {
             const data = await reponse.json();
 
             if (data.query && data.query.search && data.query.search.length > 0) {
-                // On extrait le meilleur résultat et on nettoie le texte
                 const meilleurResultat = data.query.search[0];
                 const extraitPropre = meilleurResultat.snippet.replace(/<[^>]*>?/gm, ''); 
                 return {
@@ -81,7 +89,6 @@ export class Expert {
         this.dernierTexte = reflexionFinale;
         this.mettreAJourUI();
 
-        // Le score prend en compte s'il a trouvé une vraie recherche directe + ses poids
         const scoreTotal = (rechercheDirecte ? 15 : 0) + scoreMemoire;
 
         return {
@@ -119,7 +126,7 @@ export class Expert {
     }
 
     /**
-     * 4. GESTION DES FICHIERS ET SAUVEGARDE JSON
+     * 4. GESTION DES FICHIERS ET SAUVEGARDE (Local + Fichier Physique)
      */
     async lierFichierMemoire(fileHandle) {
         try {
@@ -128,7 +135,13 @@ export class Expert {
             const text = await file.text();
             if (text) {
                 const json = JSON.parse(text);
-                this.poids = json.memoire_paires || json.poids || {};
+                const memoireFichier = json.memoire_paires || json.poids || {};
+                
+                // Fusion de la mémoire du fichier avec celle déjà en cache dans le navigateur
+                this.poids = { ...this.poids, ...memoireFichier };
+                
+                // Sauvegarde de la fusion dans le LocalStorage
+                localStorage.setItem(`expert_memoire_${this.id}`, JSON.stringify(this.poids));
                 this.mettreAJourUI();
             }
             
@@ -144,6 +157,15 @@ export class Expert {
     mettreAJourPoids(cle, valeur) {
         if (!this.poids[cle]) this.poids[cle] = 0;
         this.poids[cle] += valeur;
+
+        // 1. Sauvegarde instantanée dans le LocalStorage du navigateur (Résiste au F5)
+        try {
+            localStorage.setItem(`expert_memoire_${this.id}`, JSON.stringify(this.poids));
+        } catch (err) {
+            console.error("Erreur d'écriture localStorage :", err);
+        }
+
+        // 2. Sauvegarde automatique dans le fichier physique (si un fichier a été lié)
         this.sauvegarderFichierJSON();
     }
 
@@ -159,7 +181,7 @@ export class Expert {
             }, null, 2));
             await writable.close();
         } catch (err) {
-            console.error("Erreur d'écriture JSON :", err);
+            console.error("Erreur d'écriture JSON physique :", err);
         }
     }
 
