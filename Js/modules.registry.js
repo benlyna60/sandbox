@@ -1,8 +1,9 @@
 // modules.registry.js
 
 export const MODULES_REGISTRY = [
-    // --- Communication & Style (1) ---
+    // --- Communication & Style (2) ---
     { id: "redacteur", nom: "Rédacteur & Clarté", cat: "communication", dbName: "HubDB_Redacteur", keyName: "redacKey", type: "wiki", wikiLang: "fr", file: "redacteur.html" },
+    { id: "synthetiseur", nom: "Synthétiseur & Structure", cat: "communication", dbName: "HubDB_Synthetiseur", keyName: "synthKey", type: "wiki", wikiLang: "fr", file: "synthetiseur.html" },
 
     // --- Langages de Code (7) ---
     { id: "python", nom: "Python", cat: "code", dbName: "HubDB_Python", keyName: "pyKey", type: "wiki", wikiLang: "en", file: "python.html" },
