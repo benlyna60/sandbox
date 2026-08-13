@@ -256,8 +256,18 @@
         let dossierRacineHandle = null;
 
         function initHub() {
-            // Parcours direct et intégral des 14 modules du registre
-            MODULES_REGISTRY.forEach(modData => {
+            // Normalisation blindée pour s'assurer qu'on traite un tableau plat d'objets uniques
+            let listeBrute = Array.isArray(MODULES_REGISTRY) ? MODULES_REGISTRY : Object.values(MODULES_REGISTRY).flat();
+            
+            // Dédoublonnage strict par ID pour éviter tout écrasement accidentel
+            const mapUnik = new Map();
+            listeBrute.forEach(mod => {
+                if (mod && mod.id) {
+                    mapUnik.set(mod.id, mod);
+                }
+            });
+
+            mapUnik.forEach((modData) => {
                 const expert = new Expert(
                     modData.id, 
                     modData.nom, 
@@ -333,7 +343,6 @@
             const container = document.getElementById('hub-container');
             container.innerHTML = "";
             
-            // Filtre exact basé sur les catégories du registre ('code', 'langue', 'archives')
             let filtres = (window.categorieActuelle === 'tous' || !window.categorieActuelle) 
                 ? hub.experts 
                 : hub.experts.filter(m => m.cat === window.categorieActuelle);
