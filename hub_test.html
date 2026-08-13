@@ -168,6 +168,7 @@
             color: var(--cyan);
             border-radius: 4px;
             min-height: 25px;
+            white-space: pre-wrap;
         }
         .output.rtl { direction: rtl; text-align: right; }
 
@@ -336,43 +337,35 @@
                 `;
                 container.appendChild(card);
 
+                // Si la mémoire est déjà présente (LocalStorage), on met à jour l'UI direct
+                setTimeout(() => {
+                    if (Object.keys(exp.poids || {}).length > 0) {
+                        document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
+                        document.getElementById(`out-${exp.id}`).innerText = `Mémoire chargée (${Object.keys(exp.poids).length} racines).`;
+                        exp.mettreAJourUI();
+                    }
+                }, 50);
+
                 // Zoom sur la mémoire
                 card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
 
                 // Option : Ajouter du savoir / Injecter de la mémoire
                 card.querySelector('.btn-injecter').onclick = () => ouvrirModalInjection(exp.id);
                 
-                // CHARGEMENT DE LA MÉMOIRE DEPUIS LE FICHIER TEXTE
+                // CHARGEMENT DE LA MÉMOIRE DEPUIS LE FICHIER TEXTE / JSON
                 card.querySelector('.btn-lier').onclick = async () => {
                     try {
                         const [fileHandle] = await window.showOpenFilePicker({
                             types: [{
-                                description: 'Fichiers de mémoire texte',
-                                accept: { 'text/plain': ['.txt', '.text'] }
+                                description: 'Fichiers de mémoire (JSON / TXT)',
+                                accept: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
                             }],
                             multiple: false
                         });
 
                         if (fileHandle) {
-                            exp.fileHandle = fileHandle;
-                            const file = await fileHandle.getFile();
-                            const memoireTexte = await file.text();
-                            
-                            exp.texteIngere = memoireTexte;
-                            if (typeof exp.chargerMemoire === 'function') {
-                                exp.chargerMemoire(memoireTexte);
-                            } else if (typeof exp.ingererTexte === 'function') {
-                                exp.ingererTexte(memoireTexte);
-                            }
-
-                            card.querySelector('.btn-lier').innerText = "✔ Chargé";
-                            document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                            document.getElementById(`out-${exp.id}`).innerText = `Mémoire restaurée (${memoireTexte.length} carac).`;
-                            
-                            const mots = memoireTexte.trim().split(/\s+/);
-                            document.getElementById(`metric-txt-${exp.id}`).innerText = mots.length;
-                            document.getElementById(`densite-${exp.id}`).innerText = (Math.min(mots.length / 100, 1)).toFixed(2);
-                            document.getElementById(`entropie-${exp.id}`).innerText = "100%";
+                            await exp.lierFichierMemoire(fileHandle);
+                            document.getElementById(`out-${exp.id}`).innerText = `Fichier lié et synchronisé.`;
                         }
                     } catch (err) {
                         console.log("Chargement annulé :", err);
@@ -381,11 +374,12 @@
 
                 card.querySelector('.btn-lancer').onclick = async () => {
                     if (typeof exp.lancerApprentissage === 'function') exp.lancerApprentissage();
-                    document.getElementById(`dot-${exp.id}`).className = "status-dot active";
                 };
 
                 card.querySelector('.btn-generer').onclick = () => {
-                    if (typeof exp.genererTexte === 'function') exp.genererTexte();
+                    if (typeof exp.dernierTexte === 'string') {
+                        document.getElementById(`out-${exp.id}`).innerText = exp.dernierTexte;
+                    }
                 };
             });
         }
@@ -399,10 +393,10 @@
 
         function ouvrirZoom(id) {
             const exp = window.appState[id];
-            const texteActuel = exp.texteIngere || "Aucune mémoire chargée pour le moment.";
+            const texteActuel = JSON.stringify(exp.poids, null, 2) || "Aucune mémoire chargée pour le moment.";
             document.getElementById('modal-inner-content').innerHTML = `
                 <h3 style="color:#fff; margin-top:0;">🔍 Mémoire active : ${exp.nom}</h3>
-                <p style="font-size:11px; color:var(--text-dim);">Aperçu du contenu chargé :</p>
+                <p style="font-size:11px; color:var(--text-dim);">Aperçu des poids enregistrés :</p>
                 <div style="background:#000; padding:10px; color:var(--cyan); font-size:11px; border-radius:6px; max-height:250px; overflow-y:auto; white-space:pre-wrap;">${texteActuel}</div>
                 <button id="btn-fermer-modal" style="margin-top:15px; width:100%;">Fermer</button>
             `;
@@ -416,8 +410,8 @@
             const exp = window.appState[id];
             document.getElementById('modal-inner-content').innerHTML = `
                 <h3 style="color:#fff; margin-top:0;">💉 Ajouter du Savoir : ${exp.nom}</h3>
-                <p style="font-size:11px; color:var(--text-dim);">Écrivez ou collez de nouvelles connaissances à injecter dans la mémoire de ce module :</p>
-                <textarea id="input-nouveau-savoir" placeholder="Entrez le savoir à ajouter..." style="width:100%; height:120px; background:#000; color:var(--cyan); border:1px solid var(--hair); padding:8px; border-radius:6px; font-size:11px; resize:none; outline:none; box-sizing:border-box;"></textarea>
+                <p style="font-size:11px; color:var(--text-dim);">Écrivez ou collez de nouvelles connaissances à injecter :</p>
+                <textarea id="input-nouveau-savoir" placeholder="Entrez les mots-clés ou le texte..." style="width:100%; height:120px; background:#000; color:var(--cyan); border:1px solid var(--hair); padding:8px; border-radius:6px; font-size:11px; resize:none; outline:none; box-sizing:border-box;"></textarea>
                 <div style="display:flex; gap:10px; margin-top:15px;">
                     <button id="btn-valider-injection" style="flex:1; background:var(--cyan); color:#000; font-weight:bold;">Injecter</button>
                     <button id="btn-annuler-injection" style="flex:1;">Annuler</button>
@@ -429,36 +423,16 @@
                 document.getElementById('modal-overlay').style.display = 'none';
             };
 
-            document.getElementById('btn-valider-injection').onclick = async () => {
+            document.getElementById('btn-valider-injection').onclick = () => {
                 const texteAjoute = document.getElementById('input-nouveau-savoir').value.trim();
                 if (!texteAjoute) return;
 
-                // Concaténer le savoir
-                exp.texteIngere = (exp.texteIngere || "") + "\n\n[SAVOIR INJECTÉ] : " + texteAjoute;
+                const mots = texteAjoute.toLowerCase().split(/[\s,.;!?]+/).filter(m => m.length > 2);
+                mots.forEach(mot => exp.mettreAJourPoids(mot, 3));
 
-                if (typeof exp.ingererTexte === 'function') {
-                    exp.ingererTexte(exp.texteIngere);
-                }
-
-                // Sauvegarder automatiquement dans le fichier .txt lié s'il existe
-                if (exp.fileHandle) {
-                    try {
-                        const writable = await exp.fileHandle.createWritable();
-                        await writable.write(exp.texteIngere);
-                        await writable.close();
-                    } catch (e) {
-                        console.log("Erreur d'écriture dans le fichier :", e);
-                    }
-                }
-
-                // Mettre à jour l'affichage des stats
-                const mots = exp.texteIngere.trim().split(/\s+/);
-                document.getElementById(`metric-txt-${exp.id}`).innerText = mots.length;
-                document.getElementById(`densite-${exp.id}`).innerText = (Math.min(mots.length / 100, 1)).toFixed(2);
-                document.getElementById(`out-${exp.id}`).innerText = `Savoir injecté avec succès (${mots.length} mots totaux).`;
-
+                document.getElementById(`out-${exp.id}`).innerText = `Savoir injecté (${mots.length} nouveaux mots).`;
                 document.getElementById('modal-overlay').style.display = 'none';
-                alert(`Savoir ajouté et sauvegardé pour ${exp.nom} !`);
+                alert(`Savoir ajouté pour ${exp.nom} !`);
             };
         }
 
@@ -471,12 +445,12 @@
 
         initHub();
 
-        // --- GESTION DU CHAT GLOBAL ---
+        // --- GESTION DU CHAT GLOBAL (ASYNC) ---
         const inputChat = document.getElementById('user-input');
         const btnEnvoyer = document.getElementById('btn-envoyer');
         const chatOutput = document.getElementById('chat-output');
 
-        function envoyerMessage() {
+        async function envoyerMessage() {
             const texte = inputChat.value.trim();
             if (!texte) return;
 
@@ -488,19 +462,24 @@
             inputChat.value = "";
             chatOutput.scrollTop = chatOutput.scrollHeight;
 
-            setTimeout(() => {
-                const msgHub = document.createElement('div');
-                msgHub.style.cssText = "background: #000; padding: 10px; border-radius: 6px; align-self: flex-start; max-width: 80%; font-size: 11px; border: 1px solid var(--cyan); color: var(--cyan);";
-                
-                let reponseTexte = `Hub IA : Requête "${texte}" analysée par le système central.`;
-                if (typeof hub.traiterRequete === 'function') {
-                    reponseTexte = hub.traiterRequete(texte);
-                }
+            // Indicateur de chargement
+            const msgHub = document.createElement('div');
+            msgHub.style.cssText = "background: #000; padding: 10px; border-radius: 6px; align-self: flex-start; max-width: 80%; font-size: 11px; border: 1px solid var(--cyan); color: var(--cyan);";
+            msgHub.innerText = "Analyse en cours par les experts (mémoire + recherche)...";
+            chatOutput.appendChild(msgHub);
+            chatOutput.scrollTop = chatOutput.scrollHeight;
 
+            try {
+                let reponseTexte = `Hub IA : Requête "${texte}" analysée.`;
+                if (typeof hub.traiterRequete === 'function') {
+                    reponseTexte = await hub.traiterRequete(texte);
+                }
                 msgHub.innerText = reponseTexte;
-                chatOutput.appendChild(msgHub);
-                chatOutput.scrollTop = chatOutput.scrollHeight;
-            }, 500);
+            } catch (err) {
+                msgHub.innerText = "Erreur lors du traitement par le Hub.";
+                console.error(err);
+            }
+            chatOutput.scrollTop = chatOutput.scrollHeight;
         }
 
         btnEnvoyer.onclick = envoyerMessage;
