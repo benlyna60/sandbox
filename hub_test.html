@@ -211,10 +211,10 @@
 
     <div class="view-section active" id="section-modules">
         <div class="filter-bar">
-            <button class="filter-btn active" data-cat="tous">📁 Tous</button>
-            <button class="filter-btn" data-cat="code">💻 Code</button>
-            <button class="filter-btn" data-cat="langue">🌍 Langues</button>
-            <button class="filter-btn" data-cat="archives">📚 Archives</button>
+            <button class="filter-btn active" data-cat="tous">📁 Tous (14)</button>
+            <button class="filter-btn" data-cat="code">💻 Code (7)</button>
+            <button class="filter-btn" data-cat="langue">🌍 Langues &amp; Poésie (2)</button>
+            <button class="filter-btn" data-cat="archives">📚 Archives &amp; Sciences (5)</button>
         </div>
         <div class="grid" id="hub-container"></div>
     </div>
@@ -256,35 +256,14 @@
         let dossierRacineHandle = null;
 
         function initHub() {
-            // Normalisation robuste : transforme le registre en tableau plat peu importe sa structure initiale
-            let modulesList = [];
-            if (Array.isArray(MODULES_REGISTRY)) {
-                modulesList = MODULES_REGISTRY;
-            } else if (typeof MODULES_REGISTRY === 'object' && MODULES_REGISTRY !== null) {
-                // Si c'est un objet groupé par catégories ou clés
-                Object.values(MODULES_REGISTRY).forEach(val => {
-                    if (Array.isArray(val)) {
-                        modulesList.push(...val);
-                    } else if (typeof val === 'object' && val !== null) {
-                        // S'il y a des sous-objets
-                        modulesList.push(val);
-                    }
-                });
-            }
-
-            // Fallback de sécurité si le registre est vide ou introuvable
-            if (modulesList.length === 0) {
-                console.warn("MODULES_REGISTRY est vide ou mal formaté.");
-            }
-
-            modulesList.forEach(modData => {
-                if (!modData || !modData.id) return;
+            // Parcours direct et intégral des 14 modules du registre
+            MODULES_REGISTRY.forEach(modData => {
                 const expert = new Expert(
                     modData.id, 
-                    modData.nom || modData.id, 
-                    `Domaine : ${modData.nom || modData.id} (${modData.cat || 'general'})`, 
-                    modData.cat || 'archives', 
-                    modData.wikiLang || 'fr', 
+                    modData.nom, 
+                    `Domaine : ${modData.nom} (${modData.cat})`, 
+                    modData.cat, 
+                    modData.wikiLang, 
                     modData.isRtl || false
                 );
                 hub.ajouterExpert(expert);
@@ -339,9 +318,8 @@
             hub.experts.forEach(exp => {
                 const item = document.createElement('div');
                 item.style.cssText = "padding:8px 10px; margin:3px 0; border-radius:6px; cursor:pointer; font-size:11px; display:flex; justify-content:space-between; align-items:center; background:var(--panel); border:1px solid var(--hair-soft);";
-                const catKey = exp.cat || 'tous';
-                const color = (CATEGORIES_CONFIG && CATEGORIES_CONFIG[catKey]) ? CATEGORIES_CONFIG[catKey].color : '#00d9ff';
-                item.innerHTML = `<span>${exp.nom}</span> <span style="font-size:8px; background:${color}; color:#000; padding:2px 5px; border-radius:4px; font-weight:bold;">${catKey}</span>`;
+                const color = CATEGORIES_CONFIG[exp.cat]?.color || '#00d9ff';
+                item.innerHTML = `<span>${exp.nom}</span> <span style="font-size:8px; background:${color}; color:#000; padding:2px 5px; border-radius:4px; font-weight:bold;">${exp.cat}</span>`;
                 
                 item.onclick = () => {
                     document.getElementById('user-input').value = `Interroger le module ${exp.nom} : `;
@@ -355,6 +333,7 @@
             const container = document.getElementById('hub-container');
             container.innerHTML = "";
             
+            // Filtre exact basé sur les catégories du registre ('code', 'langue', 'archives')
             let filtres = (window.categorieActuelle === 'tous' || !window.categorieActuelle) 
                 ? hub.experts 
                 : hub.experts.filter(m => m.cat === window.categorieActuelle);
