@@ -39,6 +39,7 @@
         .btn-group, .filters-group {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         button {
@@ -222,7 +223,9 @@
 
     <header>
         <h2>Hub IA Central</h2>
-        <div class="btn-group">
+        <div class="btn-group" style="align-items: center;">
+            <button id="btn-tout-lancer" style="background: rgba(0, 255, 102, 0.1); border-color: #00ff66; color: #00ff66;">🚀 Tout lancer</button>
+            <div style="width: 1px; height: 20px; background: var(--hair); margin: 0 5px;"></div>
             <button id="btn-view-modules" class="active">Modules</button>
             <button id="btn-view-chat">Chat Global</button>
         </div>
@@ -233,7 +236,9 @@
         <!-- Filtres par catégorie -->
         <div class="filters-group" style="margin-bottom: 15px;">
             <button class="filter-btn active" data-cat="tous">Tous</button>
+            <button class="filter-btn" data-cat="non-relies" style="border-color: var(--orange); color: var(--orange);">⚠️ Non reliés</button>
             <button class="filter-btn" data-cat="communication">Communication</button>
+            <button class="filter-btn" data-cat="qualite">Contrôle & Qualité</button>
             <button class="filter-btn" data-cat="code">Code</button>
             <button class="filter-btn" data-cat="langue">Langue & Poésie</button>
             <button class="filter-btn" data-cat="archives">Archives & Sciences</button>
@@ -326,9 +331,20 @@
             const container = document.getElementById('hub-container');
             container.innerHTML = "";
             
-            let filtres = (window.categorieActuelle === 'tous' || !window.categorieActuelle) 
-                ? hub.experts 
-                : hub.experts.filter(m => m.cat === window.categorieActuelle);
+            let filtres = [];
+            if (window.categorieActuelle === 'tous' || !window.categorieActuelle) {
+                filtres = hub.experts;
+            } else if (window.categorieActuelle === 'non-relies') {
+                // Filtre dynamique : modules n'ayant pas de fichier lié et dont la mémoire (poids) est vide
+                filtres = hub.experts.filter(exp => !exp.handle && Object.keys(exp.poids || {}).length === 0);
+            } else {
+                filtres = hub.experts.filter(m => m.cat === window.categorieActuelle);
+            }
+
+            if (filtres.length === 0 && window.categorieActuelle === 'non-relies') {
+                container.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 30px; color: var(--text-dim); background: var(--panel); border-radius: 8px; border: 1px solid var(--hair);">✔ Excellent ! Tous les modules sont actuellement reliés et actifs.</div>`;
+                return;
+            }
 
             filtres.forEach(exp => {
                 let rtl = exp.isRtl ? "rtl" : "";
@@ -472,6 +488,19 @@
 
         document.getElementById('btn-view-modules').onclick = () => basculerVue('modules');
         document.getElementById('btn-view-chat').onclick = () => basculerVue('chat');
+
+        // Gestion du bouton "Tout lancer" pour démarrer l'errance de tous les modules actifs d'un coup
+        document.getElementById('btn-tout-lancer').onclick = () => {
+            hub.experts.forEach(exp => {
+                if (exp.handle || Object.keys(exp.poids || {}).length > 0) {
+                    if (typeof exp.lancerApprentissage === 'function') {
+                        exp.lancerApprentissage();
+                        const dot = document.getElementById(`dot-${exp.id}`);
+                        if (dot) dot.className = "status-dot active";
+                    }
+                }
+            });
+        };
 
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.onclick = () => filtrerModules(btn.dataset.cat, btn);
