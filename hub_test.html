@@ -252,22 +252,45 @@
 
         const hub = new HubCentral();
         window.appState = {};
-        window.categorieActuelle = 'tous'; // Forcé explicitement sur 'tous' dès le début
+        window.categorieActuelle = 'tous';
         let dossierRacineHandle = null;
 
         function initHub() {
-            MODULES_REGISTRY.forEach(modData => {
+            // Normalisation robuste : transforme le registre en tableau plat peu importe sa structure initiale
+            let modulesList = [];
+            if (Array.isArray(MODULES_REGISTRY)) {
+                modulesList = MODULES_REGISTRY;
+            } else if (typeof MODULES_REGISTRY === 'object' && MODULES_REGISTRY !== null) {
+                // Si c'est un objet groupé par catégories ou clés
+                Object.values(MODULES_REGISTRY).forEach(val => {
+                    if (Array.isArray(val)) {
+                        modulesList.push(...val);
+                    } else if (typeof val === 'object' && val !== null) {
+                        // S'il y a des sous-objets
+                        modulesList.push(val);
+                    }
+                });
+            }
+
+            // Fallback de sécurité si le registre est vide ou introuvable
+            if (modulesList.length === 0) {
+                console.warn("MODULES_REGISTRY est vide ou mal formaté.");
+            }
+
+            modulesList.forEach(modData => {
+                if (!modData || !modData.id) return;
                 const expert = new Expert(
                     modData.id, 
-                    modData.nom, 
-                    `Domaine : ${modData.nom} (${modData.cat})`, 
-                    modData.cat, 
-                    modData.wikiLang, 
-                    modData.isRtl
+                    modData.nom || modData.id, 
+                    `Domaine : ${modData.nom || modData.id} (${modData.cat || 'general'})`, 
+                    modData.cat || 'archives', 
+                    modData.wikiLang || 'fr', 
+                    modData.isRtl || false
                 );
                 hub.ajouterExpert(expert);
                 window.appState[modData.id] = expert;
             });
+
             renderGrilleModules();
             renderSidebarModules();
         }
@@ -316,8 +339,9 @@
             hub.experts.forEach(exp => {
                 const item = document.createElement('div');
                 item.style.cssText = "padding:8px 10px; margin:3px 0; border-radius:6px; cursor:pointer; font-size:11px; display:flex; justify-content:space-between; align-items:center; background:var(--panel); border:1px solid var(--hair-soft);";
-                const color = CATEGORIES_CONFIG[exp.cat]?.color || '#fff';
-                item.innerHTML = `<span>${exp.nom}</span> <span style="font-size:8px; background:${color}; color:#000; padding:2px 5px; border-radius:4px; font-weight:bold;">${exp.cat}</span>`;
+                const catKey = exp.cat || 'tous';
+                const color = (CATEGORIES_CONFIG && CATEGORIES_CONFIG[catKey]) ? CATEGORIES_CONFIG[catKey].color : '#00d9ff';
+                item.innerHTML = `<span>${exp.nom}</span> <span style="font-size:8px; background:${color}; color:#000; padding:2px 5px; border-radius:4px; font-weight:bold;">${catKey}</span>`;
                 
                 item.onclick = () => {
                     document.getElementById('user-input').value = `Interroger le module ${exp.nom} : `;
@@ -331,7 +355,6 @@
             const container = document.getElementById('hub-container');
             container.innerHTML = "";
             
-            // S'assure de récupérer tous les experts si 'tous' est actif, ou filtre par catégorie exacte
             let filtres = (window.categorieActuelle === 'tous' || !window.categorieActuelle) 
                 ? hub.experts 
                 : hub.experts.filter(m => m.cat === window.categorieActuelle);
