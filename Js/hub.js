@@ -1,5 +1,5 @@
 /**
- * Hub Central - Orchestrateur (Version Asynchrone - Mémoire & Recherche Directe)
+ * Hub Central - Orchestrateur (Version Asynchrone - Mémoire & Recherche Directe avec Synchronisation)
  */
 export class HubCentral {
     constructor() {
@@ -20,7 +20,10 @@ export class HubCentral {
         const texteMin = texte.toLowerCase();
         const motsClesRequete = texteMin.split(/\s+/).filter(m => m.length > 2);
 
-        // 2. Les modules analysent la requête en parallèle (mémoire + recherche temps réel)
+        // 2. ÉTAPE DE SYNCHRONISATION CROISÉE : Les modules s'influencent mutuellement avant l'analyse
+        this.propagerInfluencesEntreExperts();
+
+        // 3. Les modules analysent la requête en parallèle (mémoire + recherche temps réel)
         const resultatsAnalyses = await Promise.all(
             this.experts.map(async (exp) => {
                 const resultatBrut = await exp.analyser(texte);
@@ -49,7 +52,7 @@ export class HubCentral {
             })
         );
 
-        // 3. LE FILTRAGE : On trie par score décroissant et on ne garde que les plus pertinents
+        // 4. LE FILTRAGE : On trie par score décroissant et on ne garde que les plus pertinents
         resultatsAnalyses.sort((a, b) => b.score - a.score);
         
         let modulesPertinents = resultatsAnalyses.filter(res => res.score > 0 && res.reflexion.length > 10);
@@ -62,7 +65,7 @@ export class HubCentral {
             modulesPertinents = modulesPertinents.slice(0, 2);
         }
 
-        // 4. Construction d'une réponse claire, fluide, unifiée et rédigée (façon assistant textuel)
+        // 5. Construction d'une réponse claire, fluide, unifiée et rédigée (façon assistant textuel)
         let rapport = "";
         const reflexionsVues = new Set();
 
@@ -93,11 +96,30 @@ export class HubCentral {
             rapport += `<br><small>[Module : ${res.expert} - ${res.domaine}] : ${res.reflexion}</small>`;
         });
 
-        // 5. Reprise immédiate de l'errance pour tous les modules
+        // 6. Reprise immédiate de l'errance pour tous les modules
         this.estEnModeFocus = false;
         this.experts.forEach(exp => exp.lancerApprentissage());
 
         return rapport;
+    }
+
+    // Mécanisme de synchronisation croisée : un module partage ses poids forts avec son voisin
+    propagerInfluencesEntreExperts() {
+        if (this.experts.length < 2) return;
+
+        const sourceIndex = Math.floor(Math.random() * this.experts.length);
+        const cibleIndex = (sourceIndex + 1) % this.experts.length;
+
+        const source = this.experts[sourceIndex];
+        const cible = this.experts[cibleIndex];
+
+        if (typeof source.analyser === 'function' && typeof cible.recevoirInfluence === 'function') {
+            const poidsImportants = {};
+            for (let [mot, val] of Object.entries(source.poids || {})) {
+                if (val > 2) poidsImportants[mot] = val;
+            }
+            cible.recevoirInfluence(source.id, poidsImportants);
+        }
     }
 
     reinitialiserSysteme() {
