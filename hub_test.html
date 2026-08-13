@@ -1,243 +1,450 @@
-<script type="module">
-    import { HubCentral } from './Js/hub.js';
-    import { Expert } from './Js/expert.js';
-    import { MODULES_REGISTRY, CATEGORIES_CONFIG } from './Js/modules.registry.js';
-
-    const hub = new HubCentral();
-    window.appState = {};
-    window.categorieActuelle = 'tous';
-    let dossierRacineHandle = null;
-
-    function initHub() {
-        // Le registre est un tableau plat parfait, on l'injecte directement sans transformation louche
-        MODULES_REGISTRY.forEach(modData => {
-            const expert = new Expert(
-                modData.id, 
-                modData.nom, 
-                `Domaine : ${modData.nom} (${modData.cat})`, 
-                modData.cat, 
-                modData.wikiLang, 
-                modData.isRtl || false
-            );
-            hub.ajouterExpert(expert);
-            window.appState[modData.id] = expert;
-        });
-
-        renderGrilleModules();
-        renderSidebarModules();
-    }
-
-    async function selectionnerDossierRacine() {
-        try {
-            dossierRacineHandle = await window.showDirectoryPicker();
-            alert("Dossier des experts sélectionné avec succès !");
-
-            for (const [id, exp] of Object.entries(window.appState)) {
-                const nomFichier = `${id}-memoire.json`;
-                try {
-                    const fichierHandle = await dossierRacineHandle.getFileHandle(nomFichier, { create: true });
-                    exp.handle = fichierHandle;
-                    
-                    const file = await fichierHandle.getFile();
-                    const text = await file.text();
-                    if (text) {
-                        const json = JSON.parse(text);
-                        exp.poids = json.memoire_paires || {};
-                        if (typeof exp.mettreAJourUI === 'function') exp.mettreAJourUI();
-                    }
-                } catch(e) {
-                    console.warn(`Fichier ${nomFichier} non accessible individuellement.`, e);
-                }
-                const btn = document.getElementById(`btn-file-${id}`);
-                if(btn) btn.innerText = "✔ Lié";
-                const dot = document.getElementById(`dot-${id}`);
-                if(dot) dot.className = "status-dot ready";
-            }
-        } catch (err) {
-            console.log("Sélection de dossier annulée :", err);
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub IA - Interface</title>
+    <style>
+        /* --- Styles de base (Design minimaliste sombre) --- */
+        :root {
+            --bg: #0b0c10;
+            --panel: #1f2833;
+            --panel-alt: #2b3847;
+            --text: #c5c6c7;
+            --text-dim: #8892b0;
+            --cyan: #00d9ff;
+            --orange: #ffb000;
+            --purple: #b47cff;
+            --hair: rgba(255, 255, 255, 0.1);
         }
-    }
 
-    function basculerVue(vue) {
-        document.getElementById('section-modules').classList.toggle('active', vue === 'modules');
-        document.getElementById('section-chat').classList.toggle('active', vue === 'chat');
-        document.getElementById('btn-view-modules').classList.toggle('active', vue === 'modules');
-        document.getElementById('btn-view-chat').classList.toggle('active', vue === 'chat');
-    }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
 
-    function renderSidebarModules() {
-        const list = document.getElementById('sidebar-modules-list');
-        list.innerHTML = "";
-        hub.experts.forEach(exp => {
-            const item = document.createElement('div');
-            item.style.cssText = "padding:8px 10px; margin:3px 0; border-radius:6px; cursor:pointer; font-size:11px; display:flex; justify-content:space-between; align-items:center; background:var(--panel); border:1px solid var(--hair-soft);";
-            const color = CATEGORIES_CONFIG[exp.cat]?.color || '#00d9ff';
-            item.innerHTML = `<span>${exp.nom}</span> <span style="font-size:8px; background:${color}; color:#000; padding:2px 5px; border-radius:4px; font-weight:bold;">${exp.cat}</span>`;
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--hair);
+            padding-bottom: 15px;
+        }
+
+        /* Boutons de navigation et filtres */
+        .btn-group, .filters-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background: var(--panel);
+            color: var(--text);
+            border: 1px solid var(--hair);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        button.active {
+            background: var(--cyan);
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Layout Principal */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        /* Sidebar */
+        aside {
+            background: var(--panel);
+            border: 1px solid var(--hair);
+            border-radius: 8px;
+            padding: 15px;
+            height: fit-content;
+        }
+
+        /* Grille des modules */
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        /* Carte d'un module */
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--hair);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        /* Indicateur d'état (Point lumineux) */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #555;
+            display: inline-block;
+        }
+        .status-dot.ready { background: #00ff66; }
+        .status-dot.active { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+        .status-dot.paused { background: var(--orange); }
+
+        .badge {
+            font-size: 10px;
+            background: var(--hair);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-dim);
+        }
+
+        /* Statistiques de la carte */
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .mini-stat .v { font-weight: bold; color: #fff; font-size: 12px; }
+        .mini-stat .k { font-size: 9px; color: var(--text-dim); }
+
+        /* Ligne de boutons d'action */
+        .btn-row {
+            display: flex;
+            gap: 5px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 6px;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .output {
+            background: #000;
+            padding: 8px;
+            font-size: 10px;
+            color: var(--cyan);
+            border-radius: 4px;
+            min-height: 25px;
+        }
+        .output.rtl { direction: rtl; text-align: right; }
+
+        /* Vues (Modules vs Chat) */
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        /* Fenêtre Modale (Zoom) */
+        #modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #modal-content {
+            background: var(--panel);
+            border: 1px solid var(--hair);
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>Hub IA Central</h2>
+        <div class="btn-group">
+            <button id="btn-dossier">📁 Lier Dossier Mémoire</button>
+            <button id="btn-view-modules" class="active">Modules</button>
+            <button id="btn-view-chat">Chat Global</button>
+        </div>
+    </header>
+
+    <!-- SECTION MODULES -->
+    <div id="section-modules" class="view-section active">
+        <!-- Filtres par catégorie -->
+        <div class="filters-group" style="margin-bottom: 15px;">
+            <button class="filter-btn active" data-cat="tous">Tous</button>
+            <button class="filter-btn" data-cat="code">Code</button>
+            <button class="filter-btn" data-cat="langue">Langue & Poésie</button>
+            <button class="filter-btn" data-cat="archives">Archives & Sciences</button>
+        </div>
+
+        <div class="main-layout">
+            <!-- Sidebar listant les modules rapidement -->
+            <aside>
+                <h4 style="margin-top:0; font-size:12px; color:var(--text-dim);">Accès Rapide</h4>
+                <div id="sidebar-modules-list"></div>
+            </aside>
+
+            <!-- Grille dynamique générée par JavaScript -->
+            <div class="hub-grid" id="hub-container"></div>
+        </div>
+    </div>
+
+    <!-- SECTION CHAT -->
+    <div id="section-chat" class="view-section">
+        <div style="background:var(--panel); border:1px solid var(--hair); border-radius:8px; padding:20px; max-width:800px; margin:0 auto; display:flex; flex-direction:column; height:400px;">
+            <div id="chat-output" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px; margin-bottom:15px; padding-right:5px;"></div>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="user-input" placeholder="Posez une question au Hub..." style="flex:1; background:var(--bg); border:1px solid var(--hair); color:#fff; padding:10px; border-radius:6px; outline:none;">
+                <button id="btn-envoyer">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE ZOOM -->
+    <div id="modal-overlay">
+        <div id="modal-content">
+            <div id="modal-inner-content"></div>
+        </div>
+    </div>
+
+    <!-- SCRIPT PRINCIPAL (LOGIQUE JS) -->
+    <script type="module">
+        import { HubCentral } from './Js/hub.js';
+        import { Expert } from './Js/expert.js';
+        import { MODULES_REGISTRY, CATEGORIES_CONFIG } from './Js/modules.registry.js';
+
+        const hub = new HubCentral();
+        window.appState = {};
+        window.categorieActuelle = 'tous';
+        let dossierRacineHandle = null;
+
+        // 1. Initialisation du Hub : On crée les experts à partir de ton registre
+        function initHub() {
+            MODULES_REGISTRY.forEach(modData => {
+                const expert = new Expert(
+                    modData.id, 
+                    modData.nom, 
+                    `Domaine : ${modData.nom} (${modData.cat})`, 
+                    modData.cat, 
+                    modData.wikiLang, 
+                    modData.isRtl || false
+                );
+                hub.ajouterExpert(expert);
+                window.appState[modData.id] = expert;
+            });
+
+            renderGrilleModules();
+            renderSidebarModules();
+        }
+
+        // 2. Sélection du dossier racine (Fichiers mémoires JSON)
+        async function selectionnerDossierRacine() {
+            try {
+                dossierRacineHandle = await window.showDirectoryPicker();
+                alert("Dossier des experts sélectionné avec succès !");
+
+                for (const [id, exp] of Object.entries(window.appState)) {
+                    const nomFichier = `${id}-memoire.json`;
+                    try {
+                        const fichierHandle = await dossierRacineHandle.getFileHandle(nomFichier, { create: true });
+                        exp.handle = fichierHandle;
+                        
+                        const file = await fichierHandle.getFile();
+                        const text = await file.text();
+                        if (text) {
+                            const json = JSON.parse(text);
+                            exp.poids = json.memoire_paires || {};
+                            if (typeof exp.mettreAJourUI === 'function') exp.mettreAJourUI();
+                        }
+                    } catch(e) {
+                        console.warn(`Fichier ${nomFichier} non accessible.`, e);
+                    }
+                    
+                    // Mettre à jour l'UI de la carte si elle existe
+                    const btn = document.getElementById(`btn-file-${id}`);
+                    if(btn) btn.innerText = "✔ Lié";
+                    const dot = document.getElementById(`dot-${id}`);
+                    if(dot) dot.className = "status-dot ready";
+                }
+            } catch (err) {
+                console.log("Sélection de dossier annulée :", err);
+            }
+        }
+
+        // 3. Basculer entre la vue Modules et la vue Chat
+        function basculerVue(vue) {
+            document.getElementById('section-modules').classList.toggle('active', vue === 'modules');
+            document.getElementById('section-chat').classList.toggle('active', vue === 'chat');
+            document.getElementById('btn-view-modules').classList.toggle('active', vue === 'modules');
+            document.getElementById('btn-view-chat').classList.toggle('active', vue === 'chat');
+        }
+
+        // 4. Remplir la barre latérale
+        function renderSidebarModules() {
+            const list = document.getElementById('sidebar-modules-list');
+            list.innerHTML = "";
+            hub.experts.forEach(exp => {
+                const item = document.createElement('div');
+                item.style.cssText = "padding:8px 10px; margin:3px 0; border-radius:6px; cursor:pointer; font-size:11px; display:flex; justify-content:space-between; align-items:center; background:var(--bg); border:1px solid var(--hair);";
+                const color = CATEGORIES_CONFIG[exp.cat]?.color || '#00d9ff';
+                item.innerHTML = `<span>${exp.nom}</span> <span style="font-size:8px; background:${color}; color:#000; padding:2px 5px; border-radius:4px; font-weight:bold;">${exp.cat}</span>`;
+                
+                item.onclick = () => {
+                    document.getElementById('user-input').value = `Interroger le module ${exp.nom} : `;
+                    document.getElementById('user-input').focus();
+                    basculerVue('chat');
+                };
+                list.appendChild(item);
+            });
+        }
+
+        // 5. Générer dynamiquement la grille des cartes sur l'écran
+        function renderGrilleModules() {
+            const container = document.getElementById('hub-container');
+            container.innerHTML = "";
             
-            item.onclick = () => {
-                document.getElementById('user-input').value = `Interroger le module ${exp.nom} : `;
-                document.getElementById('user-input').focus();
-                basculerVue('chat');
-            };
-            list.appendChild(item);
-        });
-    }
+            let filtres = (window.categorieActuelle === 'tous' || !window.categorieActuelle) 
+                ? hub.experts 
+                : hub.experts.filter(m => m.cat === window.categorieActuelle);
 
-    function renderGrilleModules() {
-        const container = document.getElementById('hub-container');
-        container.innerHTML = "";
-        
-        // Filtrage direct selon la catégorie active ("tous", "code", "langue", "archives")
-        let filtres = (window.categorieActuelle === 'tous' || !window.categorieActuelle) 
-            ? hub.experts 
-            : hub.experts.filter(m => m.cat === window.categorieActuelle);
-
-        filtres.forEach(exp => {
-            let rtl = exp.isRtl ? "rtl" : "";
-            const card = document.createElement('div');
-            card.className = "card";
-            card.id = `card-${exp.id}`;
-            card.innerHTML = `
-                <div class="card-top">
-                    <div class="card-title">
-                        <span class="status-dot" id="dot-${exp.id}"></span>
-                        <h3>${exp.nom}</h3>
+            filtres.forEach(exp => {
+                let rtl = exp.isRtl ? "rtl" : "";
+                const card = document.createElement('div');
+                card.className = "card";
+                card.id = `card-${exp.id}`;
+                card.innerHTML = `
+                    <div class="card-top">
+                        <div class="card-title">
+                            <span class="status-dot" id="dot-${exp.id}"></span>
+                            <h3>${exp.nom}</h3>
+                        </div>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                            <span class="badge" id="badge-${exp.id}">0 racines</span>
+                            <button class="action-btn btn-zoom" data-id="${exp.id}">🔍 Zoom</button>
+                        </div>
                     </div>
-                    <div style="display:flex; gap:6px; align-items:center;">
-                        <span class="badge" id="badge-${exp.id}">0 racines</span>
-                        <button class="action-btn btn-zoom" data-id="${exp.id}">🔍 Zoom</button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="ring" id="ring-${exp.id}"><span class="ring-value" id="ring-value-${exp.id}">0%</span></div>
                     <div class="stats-row">
                         <div class="mini-stat"><div class="v" id="metric-txt-${exp.id}">0</div><div class="k">Connexions</div></div>
                         <div class="mini-stat"><div class="v" id="densite-${exp.id}">0</div><div class="k">Densité</div></div>
                         <div class="mini-stat"><div class="v" id="entropie-${exp.id}">0</div><div class="k">Diversité</div></div>
                     </div>
-                </div>
-                <div class="chart-box"><canvas id="chart-${exp.id}"></canvas></div>
-                <div class="btn-row">
-                    <button class="action-btn btn-lier" data-id="${exp.id}" id="btn-file-${exp.id}">Lier</button>
-                    <button class="action-btn start btn-lancer" data-id="${exp.id}">Lancer</button>
-                    <button class="action-btn stop btn-pause" data-id="${exp.id}">Pause</button>
-                    <button class="action-btn btn-generer" data-id="${exp.id}" style="color:var(--cyan)">Générer</button>
-                </div>
-                <div class="output ${rtl}" id="out-${exp.id}">En attente...</div>
-            `;
-            container.appendChild(card);
+                    <div class="btn-row">
+                        <button class="action-btn btn-lier" id="btn-file-${exp.id}">Lier</button>
+                        <button class="action-btn btn-lancer">Lancer</button>
+                        <button class="action-btn btn-pause">Pause</button>
+                        <button class="action-btn btn-generer" style="color:var(--cyan)">Générer</button>
+                    </div>
+                    <div class="output ${rtl}" id="out-${exp.id}">En attente...</div>
+                `;
+                container.appendChild(card);
 
-            // Sécurisation de la mise à jour UI pour chaque carte individuellement
-            try {
-                if (typeof exp.mettreAJourUI === 'function') {
-                    exp.mettreAJourUI();
-                }
-            } catch(err) {
-                console.warn(`Erreur UI pour ${exp.id}:`, err);
-            }
-
-            // Attachement direct des événements sur les boutons de cette carte précise
-            card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
-            
-            card.querySelector('.btn-lier').onclick = async () => {
-                if (typeof exp.lierFichier === 'function') {
-                    await exp.lierFichier();
-                } else if (dossierRacineHandle) {
-                    try {
-                        const handle = await dossierRacineHandle.getFileHandle(`${exp.id}-memoire.json`, { create: true });
-                        exp.handle = handle;
-                        card.querySelector('.btn-lier').innerText = "✔ Lié";
-                        document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                    } catch (err) {
-                        console.error(err);
+                // --- Attachement des actions sur les boutons de cette carte ---
+                card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
+                
+                card.querySelector('.btn-lier').onclick = async () => {
+                    if (!dossierRacineHandle) {
+                        await selectionnerDossierRacine();
+                    } else {
+                        try {
+                            const handle = await dossierRacineHandle.getFileHandle(`${exp.id}-memoire.json`, { create: true });
+                            exp.handle = handle;
+                            card.querySelector('.btn-lier').innerText = "✔ Lié";
+                            document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
+                        } catch (err) {
+                            console.error(err);
+                        }
                     }
-                } else {
-                    selectionnerDossierRacine();
-                }
-            };
+                };
 
-            card.querySelector('.btn-lancer').onclick = () => {
-                if (typeof exp.lancerApprentissage === 'function') exp.lancerApprentissage();
-                else if (typeof exp.lancerApprentissageAléatoire === 'function') exp.lancerApprentissageAléatoire();
-                document.getElementById(`dot-${exp.id}`).className = "status-dot active";
-            };
+                card.querySelector('.btn-lancer').onclick = () => {
+                    if (typeof exp.lancerApprentissage === 'function') exp.lancerApprentissage();
+                    document.getElementById(`dot-${exp.id}`).className = "status-dot active";
+                };
 
-            card.querySelector('.btn-pause').onclick = () => {
-                if (typeof exp.arreterApprentissage === 'function') exp.arreterApprentissage();
-                else if (typeof exp.stopApprentissage === 'function') exp.stopApprentissage();
-                document.getElementById(`dot-${exp.id}`).className = "status-dot paused";
-            };
+                card.querySelector('.btn-pause').onclick = () => {
+                    if (typeof exp.arreterApprentissage === 'function') exp.arreterApprentissage();
+                    document.getElementById(`dot-${exp.id}`).className = "status-dot paused";
+                };
 
-            card.querySelector('.btn-generer').onclick = () => {
-                if (typeof exp.genererTexte === 'function') exp.genererTexte();
+                card.querySelector('.btn-generer').onclick = () => {
+                    if (typeof exp.genererTexte === 'function') exp.genererTexte();
+                };
+            });
+        }
+
+        // 6. Gestion des filtres par catégorie
+        function filtrerModules(cat, btn) {
+            window.categorieActuelle = cat;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderGrilleModules();
+        }
+
+        // 7. Fenêtre de Zoom (Détails)
+        function ouvrirZoom(id) {
+            const exp = window.appState[id];
+            const texteActuel = exp.dernierTexte || "Aucun texte généré pour le moment.";
+            document.getElementById('modal-inner-content').innerHTML = `
+                <h3 style="color:#fff; margin-top:0;">🔍 Détails : ${exp.nom}</h3>
+                <p style="font-size:11px; color:var(--text-dim);">Dernier texte généré :</p>
+                <div style="background:#000; padding:10px; color:var(--cyan); font-size:11px; border-radius:6px; max-height:150px; overflow-y:auto; white-space:pre-wrap;">${texteActuel}</div>
+                <button id="btn-fermer-modal" style="margin-top:15px; width:100%;">Fermer</button>
+            `;
+            document.getElementById('modal-overlay').style.display = 'flex';
+            document.getElementById('btn-fermer-modal').onclick = () => {
+                document.getElementById('modal-overlay').style.display = 'none';
             };
+        }
+
+        // Événements globaux
+        document.getElementById('btn-dossier').onclick = selectionnerDossierRacine;
+        document.getElementById('btn-view-modules').onclick = () => basculerVue('modules');
+        document.getElementById('btn-view-chat').onclick = () => basculerVue('chat');
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.onclick = () => filtrerModules(btn.dataset.cat, btn);
         });
-    }
 
-    function filtrerModules(cat, btn) {
-        window.categorieActuelle = cat;
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderGrilleModules();
-    }
-
-    function ouvrirZoom(id) {
-        const exp = window.appState[id];
-        const texteActuel = exp.dernierTexte || "Aucun texte généré pour le moment.";
-        document.getElementById('modal-inner-content').innerHTML = `
-            <h2 style="color:#fff; margin-top:0;">🔍 Détails : ${exp.nom}</h2>
-            <p style="font-size:11px; color:var(--text-dim);">Dernier texte généré :</p>
-            <div style="background:#000; padding:10px; color:var(--cyan); font-size:11px; border-radius:6px; max-height:150px; overflow-y:auto; white-space:pre-wrap;">${texteActuel}</div>
-            <button id="btn-fermer-modal" style="margin-top:15px; background:var(--panel-alt); color:#fff; border:1px solid var(--hair); padding:6px 12px; cursor:pointer;">Fermer</button>
-        `;
-        document.getElementById('modal-overlay').style.display = 'flex';
-        document.getElementById('btn-fermer-modal').onclick = fermerZoom;
-    }
-
-    function fermerZoom() {
-        document.getElementById('modal-overlay').style.display = 'none';
-    }
-
-    document.getElementById('btn-dossier').onclick = selectionnerDossierRacine;
-    document.getElementById('btn-view-modules').onclick = () => basculerVue('modules');
-    document.getElementById('btn-view-chat').onclick = () => basculerVue('chat');
-
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.onclick = () => filtrerModules(btn.dataset.cat, btn);
-    });
-
-    const userInput = document.getElementById('user-input');
-    userInput.addEventListener('input', () => {
-        if (userInput.value.length > 0) hub.interrompreVeille();
-        else hub.reprendreVeille();
-    });
-
-    document.getElementById('btn-envoyer').onclick = function() {
-        const output = document.getElementById('chat-output');
-        if(!userInput.value.trim()) return;
-
-        const uMsg = document.createElement('div');
-        uMsg.style.cssText = "align-self:flex-end; background:var(--hair); padding:8px 12px; border-radius:6px; font-size:11px; max-width:70%;";
-        uMsg.textContent = userInput.value;
-        output.appendChild(uMsg);
-
-        const q = userInput.value;
-        userInput.value = "";
-        hub.reprendreVeille();
-
-        setTimeout(() => {
-            const reponseHub = hub.processerRequete(q);
-            const sMsg = document.createElement('div');
-            sMsg.style.cssText = "align-self:flex-start; background:var(--panel-alt); border:1px solid var(--hair); padding:8px 12px; border-radius:6px; font-size:11px; max-width:70%; color:var(--cyan); white-space: pre-line;";
-            sMsg.textContent = reponseHub;
-            output.appendChild(sMsg);
-            output.scrollTop = output.scrollHeight;
-        }, 400);
-    };
-
-    document.getElementById('modal-overlay').onclick = (e) => {
-        if (e.target === document.getElementById('modal-overlay')) fermerZoom();
-    };
-
-    initHub();
-</script>
+        // Lancement initial au chargement de la page
+        initHub();
+    </script>
+</body>
+</html>
