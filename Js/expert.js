@@ -191,8 +191,25 @@ export class Expert {
     }
 
     mettreAJourUI() {
+        // Sécurité anti-corruption : filtration stricte pour éviter les [object Object]
+        let totalConnexions = 0;
+        const poidsPropre = {};
+        
+        for (let [cle, val] of Object.entries(this.poids)) {
+            if (typeof val === 'number' && !isNaN(val)) {
+                poidsPropre[cle] = val;
+                totalConnexions += val;
+            } else if (typeof val === 'object' && val !== null) {
+                const subVal = Number(val.valeur || val.poids || 0);
+                if (!isNaN(subVal) && subVal > 0) {
+                    poidsPropre[cle] = subVal;
+                    totalConnexions += subVal;
+                }
+            }
+        }
+        this.poids = poidsPropre;
+
         const totalRacines = Object.keys(this.poids).length;
-        let totalConnexions = Object.values(this.poids).reduce((a, b) => a + b, 0);
 
         const badge = document.getElementById(`badge-${this.id}`);
         if (badge) badge.innerText = `${totalRacines} racines`;
@@ -206,7 +223,6 @@ export class Expert {
         const entropie = document.getElementById(`entropie-${this.id}`);
         if (entropie) entropie.innerText = `${Math.min(totalRacines * 2, 100)}%`;
 
-        // CORRECTION : Affichage propre de la zone texte de la carte sans objets bruts
         const outputEl = document.getElementById(`out-${this.id}`);
         if (outputEl) {
             if (this.dernierTexte && typeof this.dernierTexte === 'string' && !this.dernierTexte.includes("[object Object]")) {
