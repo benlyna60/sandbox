@@ -20,7 +20,7 @@ export class HubCentral {
         const texteMin = texte.toLowerCase();
         const motsClesRequete = texteMin.split(/\s+/).filter(m => m.length > 2);
 
-        // 2. Les 14 modules analysent la requête en parallèle (mémoire + recherche temps réel)
+        // 2. Les modules analysent la requête en parallèle (mémoire + recherche temps réel)
         const resultatsAnalyses = await Promise.all(
             this.experts.map(async (exp) => {
                 const resultatBrut = await exp.analyser(texte);
@@ -62,10 +62,10 @@ export class HubCentral {
             modulesPertinents = modulesPertinents.slice(0, 2);
         }
 
-        // 4. Construction d'une réponse claire, fluide et unifiée
+        // 4. Construction d'une réponse claire, fluide et unifiée (avec déduplication propre)
         let rapport = "";
+        const reflexionsVues = new Set();
 
-        // On fusionne les idées principales des experts pour former une réponse claire
         modulesPertinents.forEach((res, index) => {
             let textePropre = res.reflexion
                 .replace(/<[^>]*>?/gm, '')
@@ -73,10 +73,14 @@ export class HubCentral {
                 .replace(/&quot;/g, '"')
                 .replace(/&amp;/g, '&');
 
-            if (index === 0) {
-                rapport += `${textePropre}\n\n`;
-            } else {
-                rapport += `Par ailleurs, ${textePropre}\n\n`;
+            // Évite d'afficher deux fois exactement la même réflexion si plusieurs modules renvoient la même chose
+            if (!reflexionsVues.has(textePropre)) {
+                reflexionsVues.add(textePropre);
+                if (index === 0 || rapport === "") {
+                    rapport += `${textePropre}\n\n`;
+                } else {
+                    rapport += `Par ailleurs, ${textePropre}\n\n`;
+                }
             }
         });
 
