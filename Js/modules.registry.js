@@ -1,6 +1,9 @@
 // modules.registry.js
 
 export const MODULES_REGISTRY = [
+    // --- Communication & Style (1) ---
+    { id: "redacteur", nom: "Rédacteur & Clarté", cat: "communication", dbName: "HubDB_Redacteur", keyName: "redacKey", type: "wiki", wikiLang: "fr", file: "redacteur.html" },
+
     // --- Langages de Code (7) ---
     { id: "python", nom: "Python", cat: "code", dbName: "HubDB_Python", keyName: "pyKey", type: "wiki", wikiLang: "en", file: "python.html" },
     { id: "javascript", nom: "JavaScript", cat: "code", dbName: "HubDB_JS", keyName: "jsKey", type: "wiki", wikiLang: "en", file: "javascript_module.html" },
@@ -23,6 +26,7 @@ export const MODULES_REGISTRY = [
 ];
 
 export const CATEGORIES_CONFIG = {
+    communication: { label: 'Communication & Style', color: '#ff5c5c' },
     code: { label: 'Code', color: '#00d9ff' },
     langue: { label: 'Langue & Poésie', color: '#ffb000' },
     archives: { label: 'Archives & Sciences', color: '#b47cff' }
