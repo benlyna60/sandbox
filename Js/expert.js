@@ -1,11 +1,11 @@
 /**
- * Module Expert - Unité d'apprentissage autonome (Mémoire + Recherche temps réel + LocalStorage)
+ * Module Expert - Unité d'apprentissage autonome (Mémoire + Recherche + Apprentissage Social & Questions)
  */
 export class Expert {
     constructor(id, nom, domaine, cat, wikiLang, isRtl) {
         this.id = id;
         this.nom = nom;                 
-        this.domaine = domaine || cat; // Sécurité ajoutée : utilise la catégorie si le domaine est absent
+        this.domaine = domaine || cat; 
         this.cat = cat;
         this.wikiLang = wikiLang || 'fr';
         this.isRtl = isRtl || false;
@@ -15,13 +15,12 @@ export class Expert {
         this.handle = null;             
         this.dernierTexte = "En attente...";
 
-        // CHARGEMENT DU LOCALSTORAGE AVEC BLINDAGE ANTI-CORRUPTION STRICT
+        // CHARGEMENT DU LOCALSTORAGE AVEC BLINDAGE STRICT
         try {
             const memoireSauvee = localStorage.getItem(`expert_memoire_${this.id}`);
             if (memoireSauvee) {
                 const parsed = JSON.parse(memoireSauvee);
                 this.poids = {};
-                // On ne conserve que les valeurs qui sont de vrais nombres valides
                 for (let k in parsed) {
                     if (typeof parsed[k] === 'number' && !isNaN(parsed[k])) {
                         this.poids[k] = parsed[k];
@@ -35,7 +34,7 @@ export class Expert {
     }
 
     /**
-     * 1. RECHERCHE DIRECTE EN TEMPS RÉEL SUR LE DOMAINE (ex: Wikipédia / Sources)
+     * 1. RECHERCHE DIRECTE EN TEMPS RÉEL SUR LE DOMAINE (Wikipédia)
      */
     async rechercherDansSonDomaine(motsCles) {
         try {
@@ -60,62 +59,71 @@ export class Expert {
     }
 
     /**
-     * 2. L'ANALYSE COMBINÉE (Mémoire Acquise + Recherche Directe)
+     * 2. APPRENTISSAGE SOCIAL : Intègre les poids partagés par un autre module voisin
+     */
+    recevoirInfluence(moduleVoisinId, poidsPartages) {
+        for (let [mot, valeur] of Object.entries(poidsPartages)) {
+            if (typeof valeur === 'number' && !isNaN(valeur) && mot.length > 3) {
+                // Le module intègre une partie de la connaissance de son voisin dans sa propre mémoire
+                this.mettreAJourPoids(mot, Math.max(1, Math.round(valeur * 0.3)));
+            }
+        }
+    }
+
+    /**
+     * 3. L'ANALYSE ORGANIQUE (Apprend de la question + Mémoire + Recherche)
      */
     async analyser(texteUtilisateur) {
         const mots = texteUtilisateur.toLowerCase().split(/[\s,.;!?]+/).filter(m => m.length > 2);
-        const texteMin = texteUtilisateur.toLowerCase();
+        
+        // A. APPRENTISSAGE ACTIF : Le module apprend directement de chaque question de l'utilisateur
+        mots.forEach(mot => this.mettreAJourPoids(mot, 3)); // Fort impact pour ce qu'écrit l'utilisateur
 
-        // A. Ingestion et apprentissage direct dans sa mémoire
-        mots.forEach(mot => this.mettreAJourPoids(mot, 2));
-
-        // B. Consultation de la mémoire accumulée (Poids)
+        // B. Consultation de sa mémoire accumulée
         let conceptsMemoire = [];
         let scoreMemoire = 0;
         mots.forEach(mot => {
             if (this.poids[mot]) {
                 scoreMemoire += this.poids[mot];
-                conceptsMemoire.push(`${mot}`);
+                conceptsMemoire.push(mot);
             }
         });
 
-        // C. Recherche directe en temps réel dans son domaine
+        // C. Recherche directe en temps réel
         const rechercheDirecte = await this.rechercherDansSonDomaine(mots);
 
-        // D. Synthèse dynamique et polyvalente selon l'intention de la requête
+        // D. SYNTHÈSE ORGANIQUE (Fini les templates figés, le texte se construit selon ce qu'il sait)
         let reflexionFinale = "";
-
-        if (texteMin.includes('liste') || texteMin.includes('puces') || texteMin.includes('étapes') || texteMin.includes('rapport')) {
-            reflexionFinale = `• **Analyse (${this.nom})** : Traitement des flux pour le domaine ${this.domaine}.\n• **Directive** : Application rigoureuse des normes de structure.\n• **Validation** : Intégration des paramètres locaux.`;
-        } else if (texteMin.includes('code') || texteMin.includes('script') || texteMin.includes('programme')) {
-            reflexionFinale = `[Bloc Technique - ${this.nom}]\n// Initialisation de la logique d'automatisation\nconst status_${this.id} = "Actif";`;
+        
+        if (rechercheDirecte) {
+            reflexionFinale = `Analyse du domaine de ${this.nom} : En lien avec ${rechercheDirecte.titre}, ${rechercheDirecte.extrait.toLowerCase()}.`;
+        } else if (conceptsMemoire.length > 0) {
+            reflexionFinale = `Expertise ${this.nom} : Structuration validée autour des notions de [${conceptsMemoire.slice(0, 3).join(', ')}].`;
         } else {
-            if (rechercheDirecte) {
-                reflexionFinale = `Concernant ${rechercheDirecte.titre}, les principes appliqués démontrent que ${rechercheDirecte.extrait.toLowerCase()}...`;
-            } else {
-                reflexionFinale = `Dans le domaine de ${this.nom}, l'optimisation et la structure logique permettent de structurer efficacement les flux de données et de automatiser les processus complexes.`;
-            }
+            reflexionFinale = `Module ${this.nom} (${this.domaine}) : Intégration des flux et traitement des paramètres de la requête en cours.`;
         }
 
-        if (conceptsMemoire.length > 0 && !texteMin.includes('code')) {
-            reflexionFinale += ` (Concepts clés mobilisés : ${conceptsMemoire.slice(0, 3).join(', ')})`;
+        // Ajout des concepts forts tirés de sa mémoire interne
+        if (conceptsMemoire.length > 0) {
+            reflexionFinale += ` (Pistes mémorielles mobilisées : ${conceptsMemoire.slice(0, 4).join(', ')}).`;
         }
 
         this.dernierTexte = reflexionFinale;
         this.mettreAJourUI();
 
-        const scoreTotal = (rechercheDirecte ? 15 : 0) + scoreMemoire;
+        const scoreTotal = (rechercheDirecte ? 15 : 0) + scoreMemoire + (conceptsMemoire.length * 2);
 
         return {
             expert: this.nom,
             domaine: this.cat,
             score: scoreTotal,
-            reflexion: reflexionFinale
+            reflexion: reflexionFinale,
+            poidsPartage: this.poids // Prêt à être partagé avec les autres modules via le Hub
         };
     }
 
     /**
-     * 3. APPRENTISSAGE EN ARRIÈRE-PLAN (Mode Errance)
+     * 4. APPRENTISSAGE EN ARRIÈRE-PLAN (Mode Errance)
      */
     lancerApprentissage() {
         if (this.enVeille) return;
@@ -128,7 +136,7 @@ export class Expert {
             let concept = this.genererConceptDomaine();
             this.mettreAJourPoids(concept, 1);
             this.mettreAJourUI();
-        }, 5000);
+        }, 6000);
     }
 
     arreterApprentissage() {
@@ -141,7 +149,7 @@ export class Expert {
     }
 
     /**
-     * 4. GESTION DES FICHIERS ET SAUVEGARDE (Local + Fichier Physique)
+     * 5. GESTION DES FICHIERS ET SAUVEGARDE
      */
     async lierFichierMemoire(fileHandle) {
         try {
@@ -152,7 +160,6 @@ export class Expert {
                 const json = JSON.parse(text);
                 const memoireFichier = json.memoire_paires || json.poids || {};
                 
-                // Fusion propre en filtrant les valeurs non numériques
                 for (let [k, v] of Object.entries(memoireFichier)) {
                     if (typeof v === 'number' && !isNaN(v)) {
                         this.poids[k] = (this.poids[k] || 0) + v;
@@ -173,13 +180,11 @@ export class Expert {
     }
 
     mettreAJourPoids(cle, valeur) {
-        // Blindage strict : si la valeur existante n'est pas un nombre pur, on réinitialise à 0
         if (typeof this.poids[cle] !== 'number' || isNaN(this.poids[cle])) {
             this.poids[cle] = 0;
         }
         this.poids[cle] += valeur;
 
-        // Sauvegarde instantanée dans le LocalStorage
         try {
             localStorage.setItem(`expert_memoire_${this.id}`, JSON.stringify(this.poids));
         } catch (err) {
@@ -206,7 +211,7 @@ export class Expert {
     }
 
     genererConceptDomaine() {
-        const motsBase = [this.domaine.toLowerCase(), "analyse", "structure", "donnee", "logique"];
+        const motsBase = [this.domaine.toLowerCase(), "analyse", "structure", "donnee", "logique", "optimisation"];
         return motsBase[Math.floor(Math.random() * motsBase.length)];
     }
 
@@ -214,7 +219,6 @@ export class Expert {
         let totalConnexions = 0;
         const poidsPropre = {};
         
-        // Double vérification pour sommer uniquement des nombres valides
         for (let [cle, val] of Object.entries(this.poids)) {
             if (typeof val === 'number' && !isNaN(val)) {
                 poidsPropre[cle] = val;
