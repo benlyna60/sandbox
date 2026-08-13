@@ -18,7 +18,6 @@
             --mono: ui-monospace, "SFMono-Regular", "Cascadia Code", Consolas, monospace;
         }
 
-        /* Permet une transition douce des jauges conic-gradient (dégrade proprement si non supporté) */
         @property --pct {
             syntax: '<percentage>';
             inherits: true;
@@ -123,9 +122,6 @@
         .analytics-hero h2 { margin: 0 0 4px 0; font-size: 20px; color: #fff; letter-spacing: 0.3px; }
         .analytics-hero p { margin: 0; font-size: 12px; color: var(--text-dim); font-family: var(--mono); }
 
-        /* Rangée d'instruments : chaque métrique-clé a sa jauge circulaire (conic-gradient),
-           un dégradé conique à la place d'un plugin de graphique — cohérent avec le style
-           "voyants de statut" déjà présent dans les cartes de modules. */
         .instrument-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -193,14 +189,12 @@
             box-shadow: 0 0 6px var(--cyan);
         }
 
-        /* Répartition par catégorie : barres horizontales pondérées */
         .cat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 11px; }
         .cat-row .cat-label { width: 90px; color: var(--text-dim); flex-shrink: 0; }
         .cat-row .cat-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
         .cat-row .cat-fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
         .cat-row .cat-count { width: 22px; text-align: right; font-family: var(--mono); color: #fff; flex-shrink: 0; }
 
-        /* Détail par module : ligne = statut + nom + barre de mots + sparkline d'évolution */
         .module-row {
             display: grid;
             grid-template-columns: 16px 1fr 70px 90px 46px;
@@ -221,7 +215,7 @@
 <body>
 
     <div class="demo-note">
-        <b>Démo autonome</b> — données et modules fictifs. L'onglet <b>Sous le capot</b> est nouveau : il affiche des indicateurs calculés en direct à partir de ce qui se passe dans les autres onglets (charger un fichier ou injecter du savoir met le tableau de bord à jour).
+        <b>Démo autonome</b> — données et modules fictifs. L'onglet <b>Sous le capot</b> est interactif : charger un fichier ou injecter du savoir met instantanément le tableau de bord à jour.
     </div>
 
     <header>
@@ -260,11 +254,10 @@
         </div>
     </div>
 
-    <!-- ============ NOUVEL ONGLET ANALYTICS ============ -->
     <div id="section-analytics" class="view-section">
         <div class="analytics-hero">
             <h2>Sous le capot</h2>
-            <p>Instantané en direct de l'état du Hub — se met à jour à chaque action sur un module</p>
+            <p>Instantané en direct de l'état du Hub — mis à jour à chaque action</p>
         </div>
 
         <div class="instrument-row" id="instrument-row"></div>
@@ -290,14 +283,13 @@
     <div id="toast" role="status" aria-live="polite"></div>
 
     <script type="module">
-        // --- MOCK : à remplacer par tes vrais imports dans ton fichier final ---
         class Expert {
             constructor(id, nom, desc, cat, wikiLang, isRtl) {
                 this.id = id; this.nom = nom; this.desc = desc;
                 this.cat = cat; this.wikiLang = wikiLang; this.isRtl = isRtl;
                 this.texteIngere = "";
-                this.statut = "prêt"; // prêt | actif
-                this.historique = []; // [{mots, diversite}] — alimente les mini-graphiques
+                this.statut = "prêt";
+                this.historique = [];
             }
             chargerMemoire(t) { this.texteIngere = t; }
             ingererTexte(t) { this.texteIngere = t; }
@@ -322,9 +314,6 @@
             langue: { color: "#ffb000" },
             archives: { color: "#b47cff" },
         };
-        // Historique de départ fictif, uniquement pour que le tableau de bord ne soit pas vide
-        // au premier affichage de cette démo (dans ton vrai Hub il partira de zéro et se remplira
-        // à mesure que tu charges/injectes de la mémoire).
         const SEED_HISTORIQUE = {
             "js-tips": [40, 55, 90, 120],
             "python-doc": [20, 20, 65],
@@ -333,7 +322,6 @@
             "histoire-antique": [60, 60, 60],
             "physique-quantique": [15, 40, 110, 130, 155],
         };
-        // --- FIN MOCK ---
 
         const hub = new HubCentral();
         let appState = {};
@@ -360,7 +348,6 @@
                     modData.id, modData.nom, `Domaine : ${modData.nom} (${modData.cat})`,
                     modData.cat, modData.wikiLang, modData.isRtl || false
                 );
-                // Seed pour la démo visuelle
                 (SEED_HISTORIQUE[modData.id] || []).forEach(mots => {
                     expert.historique.push({ mots, diversite: 55 + Math.round(Math.random() * 35) });
                 });
@@ -489,7 +476,9 @@
                                 const file = await fileHandle.getFile();
                                 appliquerMemoire(await file.text(), "✔ Chargé");
                             }
-                        } catch (err) { console.log("Chargement annulé :", err); }
+                        } catch (err) {
+                            if (err.name !== 'AbortError') console.log("Chargement annulé ou non supporté :", err);
+                        }
                     } else {
                         const input = document.createElement('input');
                         input.type = 'file';
@@ -517,8 +506,6 @@
                         document.getElementById(`out-${exp.id}`).innerText = exp.genererTexte() || "Génération effectuée.";
                     }
                 };
-
-                card._appliquerMemoire = appliquerMemoire; // exposé pour la modale d'injection
             });
         }
 
@@ -579,18 +566,22 @@
 
                 const mots = exp.texteIngere.trim().split(/\s+/).filter(Boolean);
                 exp.historique.push({ mots: mots.length, diversite: calculerDiversite(exp.texteIngere) });
-                document.getElementById(`metric-txt-${exp.id}`).innerText = mots.length;
-                document.getElementById(`densite-${exp.id}`).innerText = (Math.min(mots.length / 100, 1)).toFixed(2);
-                document.getElementById(`entropie-${exp.id}`).innerText = calculerDiversite(exp.texteIngere) + "%";
-                document.getElementById(`out-${exp.id}`).innerText = `Savoir injecté avec succès (${mots.length} mots totaux).`;
+                
+                const metricTxt = document.getElementById(`metric-txt-${exp.id}`);
+                const densite = document.getElementById(`densite-${exp.id}`);
+                const entropie = document.getElementById(`entropie-${exp.id}`);
+                const output = document.getElementById(`out-${exp.id}`);
+
+                if (metricTxt) metricTxt.innerText = mots.length;
+                if (densite) densite.innerText = (Math.min(mots.length / 100, 1)).toFixed(2);
+                if (entropie) entropie.innerText = calculerDiversite(exp.texteIngere) + "%";
+                if (output) output.innerText = `Savoir injecté avec succès (${mots.length} mots totaux).`;
 
                 document.getElementById('modal-overlay').style.display = 'none';
                 afficherToast(`Savoir ajouté pour ${exp.nom}.`);
                 renderAnalytics();
             };
         }
-
-        // ====================== RENDU ANALYTICS ======================
 
         function svgSparkline(valeurs, couleur) {
             if (!valeurs.length) return '<span style="color:var(--text-dim); font-size:10px;">—</span>';
@@ -619,9 +610,8 @@
             const diversites = experts.filter(e => e.historique.length).map(e => e.historique.at(-1).diversite);
             const diversiteMoy = diversites.length ? Math.round(diversites.reduce((a, b) => a + b, 0) / diversites.length) : 0;
             const pctActifs = totalModules ? Math.round((actifs / totalModules) * 100) : 0;
-            const totalConnexions = totalMots; // "connexions" = mots ingérés dans ce modèle
+            const totalConnexions = totalMots;
 
-            // --- Rangée d'instruments ---
             const row = document.getElementById('instrument-row');
             row.innerHTML = `
                 ${instrument('Modules actifs', `${actifs}/${totalModules}`, pctActifs, 'var(--cyan)', pctActifs + '% en ligne')}
@@ -630,7 +620,6 @@
                 ${instrumentCompact('Catégorie dominante', categorieDominante(experts), 'var(--cyan)')}
             `;
 
-            // --- Répartition par catégorie ---
             const parCat = {};
             experts.forEach(e => { parCat[e.cat] = (parCat[e.cat] || 0) + 1; });
             const maxCat = Math.max(...Object.values(parCat), 1);
@@ -645,7 +634,6 @@
                 </div>`;
             }).join('');
 
-            // --- Détail par module ---
             const maxMots = Math.max(...experts.map(e => e.historique.length ? e.historique.at(-1).mots : 0), 1);
             const detail = document.getElementById('module-detail');
             detail.innerHTML = experts.map(e => {
@@ -689,8 +677,6 @@
                 </div>
             </div>`;
         }
-
-        // ====================== EVENEMENTS GLOBAUX ======================
 
         document.getElementById('btn-view-modules').onclick = () => basculerVue('modules');
         document.getElementById('btn-view-chat').onclick = () => basculerVue('chat');
