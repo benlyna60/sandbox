@@ -64,6 +64,7 @@ export class Expert {
      */
     async analyser(texteUtilisateur) {
         const mots = texteUtilisateur.toLowerCase().split(/[\s,.;!?]+/).filter(m => m.length > 2);
+        const texteMin = texteUtilisateur.toLowerCase();
 
         // A. Ingestion et apprentissage direct dans sa mémoire
         mots.forEach(mot => this.mettreAJourPoids(mot, 2));
@@ -81,16 +82,22 @@ export class Expert {
         // C. Recherche directe en temps réel dans son domaine
         const rechercheDirecte = await this.rechercherDansSonDomaine(mots);
 
-        // D. Synthèse : Fusion de la recherche en temps réel et d'une réponse claire et rédigée
+        // D. Synthèse dynamique et polyvalente selon l'intention de la requête
         let reflexionFinale = "";
 
-        if (rechercheDirecte) {
-            reflexionFinale = `Concernant ${rechercheDirecte.titre}, les principes appliqués démontrent que ${rechercheDirecte.extrait.toLowerCase()}...`;
+        if (texteMin.includes('liste') || texteMin.includes('puces') || texteMin.includes('étapes') || texteMin.includes('rapport')) {
+            reflexionFinale = `• **Analyse (${this.nom})** : Traitement des flux pour le domaine ${this.domaine}.\n• **Directive** : Application rigoureuse des normes de structure.\n• **Validation** : Intégration des paramètres locaux.`;
+        } else if (texteMin.includes('code') || texteMin.includes('script') || texteMin.includes('programme')) {
+            reflexionFinale = `[Bloc Technique - ${this.nom}]\n// Initialisation de la logique d'automatisation\nconst status_${this.id} = "Actif";`;
         } else {
-            reflexionFinale = `Dans le domaine de ${this.nom}, l'optimisation et la structure logique permettent de structurer efficacement les flux de données et de automatiser les processus complexes.`;
+            if (rechercheDirecte) {
+                reflexionFinale = `Concernant ${rechercheDirecte.titre}, les principes appliqués démontrent que ${rechercheDirecte.extrait.toLowerCase()}...`;
+            } else {
+                reflexionFinale = `Dans le domaine de ${this.nom}, l'optimisation et la structure logique permettent de structurer efficacement les flux de données et de automatiser les processus complexes.`;
+            }
         }
 
-        if (conceptsMemoire.length > 0) {
+        if (conceptsMemoire.length > 0 && !texteMin.includes('code')) {
             reflexionFinale += ` (Concepts clés mobilisés : ${conceptsMemoire.slice(0, 3).join(', ')})`;
         }
 
