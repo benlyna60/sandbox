@@ -1,5 +1,5 @@
 /**
- * Hub Central - Orchestrateur (Version Filtrée et Collaborative)
+ * Hub Central - Orchestrateur (Version Intelligente et Dynamique)
  */
 export class HubCentral {
     constructor() {
@@ -11,10 +11,6 @@ export class HubCentral {
         this.experts.push(expert);
     }
 
-    /**
-     * Traite la requête en faisant travailler les 14 modules,
-     * puis filtre et ne remonte que l'information pertinente.
-     */
     traiterRequete(texte) {
         this.estEnModeFocus = true;
 
@@ -22,22 +18,25 @@ export class HubCentral {
         this.experts.forEach(exp => exp.arreterApprentissage());
 
         const texteMin = texte.toLowerCase();
-        const motsClesRequete = texteMin.split(/\s+/);
+        const motsClesRequete = texteMin.split(/\s+/).filter(m => m.length > 2);
 
-        // 2. Les 14 modules analysent chacun dans leur spécialité
+        // 2. Les 14 modules analysent la requête dans leur spécialité
         const resultatsAnalyses = this.experts.map(exp => {
             const resultatBrut = exp.analyser(texte);
+            const reflexionTexte = (resultatBrut.reflexion || "").toLowerCase();
             
-            // Calcul d'un score de pertinence basé sur le domaine ou la catégorie
+            // Calcul d'un score basé sur la correspondance entre les mots de la requête et la réflexion de l'expert
             let score = 0;
-            const domaineExp = (exp.domaine || exp.cat || "").toLowerCase();
-            const nomExp = (exp.nom || "").toLowerCase();
-            
             motsClesRequete.forEach(mot => {
-                if (mot.length > 2 && (domaineExp.includes(mot) || nomExp.includes(mot))) {
-                    score += 5; // Plus le mot correspond à sa spécialité, plus le score monte
+                if (reflexionTexte.includes(mot)) {
+                    score += 3; // Plus le module trouve de mots en lien avec la question dans sa mémoire, plus il monte
                 }
             });
+
+            // Bonus si le domaine ou le nom correspond directement à la question
+            if (texteMin.includes(exp.id) || texteMin.includes(exp.cat.toLowerCase())) {
+                score += 5;
+            }
 
             return {
                 expert: exp.nom,
@@ -47,34 +46,35 @@ export class HubCentral {
             };
         });
 
-        // 3. LE FILTRAGE : On ne garde que les modules dont le score est pertinent (> 0)
-        let modulesPertinents = resultatsAnalyses.filter(res => res.score > 0);
+        // 3. LE VRAI FILTRAGE : On trie par score et on ne garde que ceux qui ont un score > 0 et une vraie réflexion
+        resultatsAnalyses.sort((a, b) => b.score - a.score);
         
-        // Fallback : Si aucun mot-clé direct ne correspond, on sélectionne les 2 modules les plus actifs pour garder du répondant
+        let modulesPertinents = resultatsAnalyses.filter(res => res.score > 0 && res.reflexion.length > 10);
+
+        // Si vraiment rien ne matche, on prend le meilleur module disponible au lieu de bloquer
         if (modulesPertinents.length === 0) {
-            modulesPertinents = resultatsAnalyses.slice(0, 2);
+            modulesPertinents = [resultatsAnalyses[0]];
+        } else {
+            // On limite aux 2 ou 3 meilleurs max pour ne pas surcharger
+            modulesPertinents = modulesPertinents.slice(0, 2);
         }
 
-        // 4. Construction d'un rapport propre, structuré et épuré
-        let rapport = `=== SYNTHÈSE DU HUB CENTRAL ===\n`;
-        rapport += `Requête : "${texte}"\n`;
-        rapport += `Modules consultés : 14 | Pertinents retenus : ${modulesPertinents.length}\n\n`;
+        // 4. Construction d'une réponse claire et propre
+        let rapport = `=== RAPPORT DU HUB CENTRAL ===\n`;
+        rapport += `Requête : "${texte}"\n\n`;
 
         modulesPertinents.forEach(res => {
-            rapport += `[✔ Recommandation | ${res.expert} (${res.domaine})] :\n`;
-            rapport += `  └─ ${res.reflexion}\n\n`;
+            rapport += `[Module : ${res.expert} - ${res.domaine}] :\n`;
+            rapport += `${res.reflexion}\n\n`;
         });
 
-        // 5. Reprise immédiate de l'errance pour tout le monde
+        // 5. Reprise immédiate de l'errance
         this.estEnModeFocus = false;
         this.experts.forEach(exp => exp.lancerApprentissage());
 
         return rapport;
     }
 
-    /**
-     * Permet de forcer le redémarrage de tous les systèmes
-     */
     reinitialiserSysteme() {
         this.experts.forEach(exp => {
             exp.arreterApprentissage();
