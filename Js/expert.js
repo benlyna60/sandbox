@@ -205,5 +205,15 @@ export class Expert {
 
         const entropie = document.getElementById(`entropie-${this.id}`);
         if (entropie) entropie.innerText = `${Math.min(totalRacines * 2, 100)}%`;
+
+        // CORRECTION : Affichage propre de la zone texte de la carte sans objets bruts
+        const outputEl = document.getElementById(`out-${this.id}`);
+        if (outputEl) {
+            if (this.dernierTexte && typeof this.dernierTexte === 'string' && !this.dernierTexte.includes("[object Object]")) {
+                outputEl.innerText = this.dernierTexte;
+            } else {
+                outputEl.innerText = `✔ Mémoire active (${totalRacines} concepts enregistrés).`;
+            }
+        }
     }
 }
