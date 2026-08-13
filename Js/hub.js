@@ -20,7 +20,7 @@ export class HubCentral {
         const texteMin = texte.toLowerCase();
         const motsClesRequete = texteMin.split(/\s+/).filter(m => m.length > 2);
 
-        // 2. Les 14 modules analysent la requête en parallèle (mémoire + recherche temps réel)
+        // 2. Les modules analysent la requête en parallèle (mémoire + recherche temps réel)
         const resultatsAnalyses = await Promise.all(
             this.experts.map(async (exp) => {
                 const resultatBrut = await exp.analyser(texte);
@@ -62,15 +62,20 @@ export class HubCentral {
             modulesPertinents = modulesPertinents.slice(0, 2);
         }
 
-        // 4. Construction d'une réponse claire, fluide et unifiée (avec nettoyage et sauts de ligne HTML)
+        // 4. Construction d'une réponse claire, fluide, unifiée et rédigée (façon assistant textuel)
         let rapport = "";
         const reflexionsVues = new Set();
 
         modulesPertinents.forEach((res, index) => {
+            // Nettoyage intelligent pour enlever le jargon brut et fluidifier le texte principal
             let textePropre = res.reflexion
                 .replace(/&#039;/g, "'")
                 .replace(/&quot;/g, '"')
                 .replace(/&amp;/g, '&')
+                .replace(/\*\*Directive\*\*:\s*/gi, '')
+                .replace(/\*\*Validation\*\*:\s*/gi, '')
+                .replace(/Directive\s*:\s*/gi, '')
+                .replace(/Validation\s*:\s*/gi, '')
                 .replace(/\n/g, '<br>');
 
             if (!reflexionsVues.has(textePropre)) {
@@ -78,12 +83,12 @@ export class HubCentral {
                 if (index === 0 || rapport === "") {
                     rapport += `${textePropre}<br><br>`;
                 } else {
-                    rapport += `<b>Par ailleurs,</b> ${textePropre}<br><br>`;
+                    rapport += ` ${textePropre}<br><br>`;
                 }
             }
         });
 
-        // On conserve discrètement les balises à la fin pour alimenter ton menu déroulant dans l'interface
+        // On conserve discrètement les balises techniques à la fin pour alimenter le menu déroulant (détails)
         modulesPertinents.forEach(res => {
             rapport += `<br><small>[Module : ${res.expert} - ${res.domaine}] : ${res.reflexion}</small>`;
         });
