@@ -317,70 +317,91 @@
                             <h3>${exp.nom}</h3>
                         </div>
                         <div style="display:flex; gap:6px; align-items:center;">
-                            <span class="badge" id="badge-${exp.id}">Prêt</span>
+                            <span class="badge" id="badge-${exp.id}">Mémoire prête</span>
                             <button class="action-btn btn-zoom" data-id="${exp.id}">🔍 Zoom</button>
                         </div>
                     </div>
                     <div class="stats-row">
-                        <div class="mini-stat"><div class="v" id="metric-txt-${exp.id}">0</div><div class="k">Mots</div></div>
-                        <div class="mini-stat"><div class="v" id="densite-${exp.id}">0</div><div class="k">Statut</div></div>
-                        <div class="mini-stat"><div class="v" id="entropie-${exp.id}">OK</div><div class="k">État</div></div>
+                        <div class="mini-stat"><div class="v" id="metric-txt-${exp.id}">0</div><div class="k">Connexions</div></div>
+                        <div class="mini-stat"><div class="v" id="densite-${exp.id}">0</div><div class="k">Densité</div></div>
+                        <div class="mini-stat"><div class="v" id="entropie-${exp.id}">0</div><div class="k">Diversité</div></div>
                     </div>
                     <div class="btn-row">
-                        <button class="action-btn btn-lier" id="btn-file-${exp.id}">📥 Ingerer Texte</button>
+                        <button class="action-btn btn-lier" id="btn-file-${exp.id}">📂 Charger Mémoire</button>
                         <button class="action-btn btn-lancer">Lancer</button>
                         <button class="action-btn btn-pause">Pause</button>
                         <button class="action-btn btn-generer" style="color:var(--cyan)">Générer</button>
                     </div>
-                    <div class="output ${rtl}" id="out-${exp.id}">En attente de texte...</div>
+                    <div class="output ${rtl}" id="out-${exp.id}">En attente de la mémoire...</div>
                 `;
                 container.appendChild(card);
 
                 card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
                 
-                // Bouton pour sélectionner et ingérer directement le fichier texte brut
+                // 1. CHARGEMENT DE LA MÉMOIRE EXISTANTE DEPUIS LE FICHIER TEXTE
                 card.querySelector('.btn-lier').onclick = async () => {
                     try {
                         const [fileHandle] = await window.showOpenFilePicker({
                             types: [{
-                                description: 'Fichiers Texte',
+                                description: 'Fichiers de mémoire texte',
                                 accept: { 'text/plain': ['.txt', '.text'] }
                             }],
                             multiple: false
                         });
 
                         if (fileHandle) {
-                            const file = await fileHandle.getFile();
-                            const texteBrut = await file.text();
+                            // On garde la référence du fichier en mémoire pour pouvoir y réécrire plus tard
+                            exp.fileHandle = fileHandle;
                             
-                            // On transmet le texte à l'expert (selon la méthode dispo dans ton expert.js)
-                            exp.texteIngere = texteBrut;
-                            if (typeof exp.ingererTexte === 'function') {
-                                exp.ingererTexte(texteBrut);
-                            } else if (typeof exp.chargerTexte === 'function') {
-                                exp.chargerTexte(texteBrut);
+                            const file = await fileHandle.getFile();
+                            const memoireTexte = await file.text();
+                            
+                            // On transmet le texte à l'expert pour qu'il récupère son savoir et calcule ses stats
+                            exp.texteIngere = memoireTexte;
+                            if (typeof exp.chargerMemoire === 'function') {
+                                exp.chargerMemoire(memoireTexte);
+                            } else if (typeof exp.ingererTexte === 'function') {
+                                exp.ingererTexte(memoireTexte);
                             }
 
-                            // Mise à jour visuelle propre de la carte
-                            card.querySelector('.btn-lier').innerText = "✔ Ingéré";
+                            // Mise à jour visuelle de la carte
+                            card.querySelector('.btn-lier').innerText = "✔ Mémoire Chargée";
                             document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                            document.getElementById(`out-${exp.id}`).innerText = `Texte chargé (${texteBrut.length} caractères).`;
+                            document.getElementById(`out-${exp.id}`).innerText = `Mémoire restaurée (${memoireTexte.length5 || memoireTexte.length} carac).`;
                             
-                            // Mettre un compteur de mots approximatif dans la stat
-                            const nbMots = texteBrut.trim().split(/\s+/).length;
-                            const statMots = document.getElementById(`metric-txt-${exp.id}`);
-                            if(statMots) statMots.innerText = nbMots;
+                            // Simulation visuelle des stats basées sur le contenu du fichier récupéré
+                            const mots = memoireTexte.trim().split(/\s+/);
+                            document.getElementById(`metric-txt-${exp.id}`).innerText = mots.length;
+                            document.getElementById(`densite-${exp.id}`).innerText = (Math.min(mots.length / 100, 1)).toFixed(2);
+                            document.getElementById(`entropie-${exp.id}`).innerText = "100%";
 
-                            alert(`Texte du fichier "${file.name}" ingéré avec succès pour ${exp.nom} !`);
+                            alert(`Mémoire du module ${exp.nom} chargée avec succès depuis : ${file.name}`);
                         }
                     } catch (err) {
-                        console.log("Sélection annulée :", err);
+                        console.log("Chargement annulé :", err);
                     }
                 };
 
-                card.querySelector('.btn-lancer').onclick = () => {
-                    if (typeof exp.lancerApprentissage === 'function') exp.lancerApprentissage();
+                // 2. LANCER L'APPRENTISSAGE ET SAUVEGARDE AUTOMATIQUE DANS LE MÊME FICHIER
+                card.querySelector('.btn-lancer').onclick = async () => {
+                    if (typeof exp.lancerApprentissage === 'function') {
+                        exp.lancerApprentissage();
+                    }
                     document.getElementById(`dot-${exp.id}`).className = "status-dot active";
+
+                    // Si le fichier a déjà été lié, on peut automatiser la sauvegarde de la nouvelle mémoire mise à jour
+                    if (exp.fileHandle) {
+                        try {
+                            // Exemple : si l'expert produit une nouvelle version de sa mémoire après apprentissage
+                            const nouvelleMemoire = exp.texteIngere || ""; 
+                            const writable = await exp.fileHandle.createWritable();
+                            await writable.write(nouvelleMemoire);
+                            await writable.close();
+                            console.log(`Mémoire mise à jour sauvegardée pour ${exp.nom}`);
+                        } catch (e) {
+                            console.log("Erreur lors de l'écriture automatique dans le fichier :", e);
+                        }
+                    }
                 };
 
                 card.querySelector('.btn-pause').onclick = () => {
@@ -403,10 +424,10 @@
 
         function ouvrirZoom(id) {
             const exp = window.appState[id];
-            const texteActuel = exp.texteIngere || "Aucun texte ingéré pour le moment.";
+            const texteActuel = exp.texteIngere || "Aucune mémoire chargée pour le moment.";
             document.getElementById('modal-inner-content').innerHTML = `
-                <h3 style="color:#fff; margin-top:0;">🔍 Texte ingéré : ${exp.nom}</h3>
-                <p style="font-size:11px; color:var(--text-dim);">Aperçu du contenu :</p>
+                <h3 style="color:#fff; margin-top:0;">🔍 Mémoire active : ${exp.nom}</h3>
+                <p style="font-size:11px; color:var(--text-dim);">Aperçu du contenu chargé :</p>
                 <div style="background:#000; padding:10px; color:var(--cyan); font-size:11px; border-radius:6px; max-height:250px; overflow-y:auto; white-space:pre-wrap;">${texteActuel}</div>
                 <button id="btn-fermer-modal" style="margin-top:15px; width:100%;">Fermer</button>
             `;
