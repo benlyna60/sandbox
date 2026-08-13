@@ -15,14 +15,22 @@ export class Expert {
         this.handle = null;             
         this.dernierTexte = "En attente...";
 
-        // CHARGEMENT AUTOMATIQUE DU LOCALSTORAGE (Persistance malgré le F5 sur Windows)
+        // CHARGEMENT DU LOCALSTORAGE AVEC BLINDAGE ANTI-CORRUPTION STRICT
         try {
             const memoireSauvee = localStorage.getItem(`expert_memoire_${this.id}`);
             if (memoireSauvee) {
-                this.poids = JSON.parse(memoireSauvee);
+                const parsed = JSON.parse(memoireSauvee);
+                this.poids = {};
+                // On ne conserve que les valeurs qui sont de vrais nombres valides
+                for (let k in parsed) {
+                    if (typeof parsed[k] === 'number' && !isNaN(parsed[k])) {
+                        this.poids[k] = parsed[k];
+                    }
+                }
             }
         } catch (err) {
             console.warn(`[${this.nom}] Impossible de charger le localStorage :`, err);
+            this.poids = {};
         }
     }
 
@@ -137,10 +145,13 @@ export class Expert {
                 const json = JSON.parse(text);
                 const memoireFichier = json.memoire_paires || json.poids || {};
                 
-                // Fusion de la mémoire du fichier avec celle déjà en cache dans le navigateur
-                this.poids = { ...this.poids, ...memoireFichier };
+                // Fusion propre en filtrant les valeurs non numériques
+                for (let [k, v] of Object.entries(memoireFichier)) {
+                    if (typeof v === 'number' && !isNaN(v)) {
+                        this.poids[k] = (this.poids[k] || 0) + v;
+                    }
+                }
                 
-                // Sauvegarde de la fusion dans le LocalStorage
                 localStorage.setItem(`expert_memoire_${this.id}`, JSON.stringify(this.poids));
                 this.mettreAJourUI();
             }
@@ -155,17 +166,19 @@ export class Expert {
     }
 
     mettreAJourPoids(cle, valeur) {
-        if (!this.poids[cle]) this.poids[cle] = 0;
+        // Blindage strict : si la valeur existante n'est pas un nombre pur, on réinitialise à 0
+        if (typeof this.poids[cle] !== 'number' || isNaN(this.poids[cle])) {
+            this.poids[cle] = 0;
+        }
         this.poids[cle] += valeur;
 
-        // 1. Sauvegarde instantanée dans le LocalStorage du navigateur (Résiste au F5)
+        // Sauvegarde instantanée dans le LocalStorage
         try {
             localStorage.setItem(`expert_memoire_${this.id}`, JSON.stringify(this.poids));
         } catch (err) {
             console.error("Erreur d'écriture localStorage :", err);
         }
 
-        // 2. Sauvegarde automatique dans le fichier physique (si un fichier a été lié)
         this.sauvegarderFichierJSON();
     }
 
@@ -191,20 +204,14 @@ export class Expert {
     }
 
     mettreAJourUI() {
-        // Sécurité anti-corruption : filtration stricte pour éviter les [object Object]
         let totalConnexions = 0;
         const poidsPropre = {};
         
+        // Double vérification pour sommer uniquement des nombres valides
         for (let [cle, val] of Object.entries(this.poids)) {
             if (typeof val === 'number' && !isNaN(val)) {
                 poidsPropre[cle] = val;
                 totalConnexions += val;
-            } else if (typeof val === 'object' && val !== null) {
-                const subVal = Number(val.valeur || val.poids || 0);
-                if (!isNaN(subVal) && subVal > 0) {
-                    poidsPropre[cle] = subVal;
-                    totalConnexions += subVal;
-                }
             }
         }
         this.poids = poidsPropre;
