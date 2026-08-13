@@ -169,6 +169,7 @@
             border-radius: 4px;
             min-height: 25px;
             white-space: pre-wrap;
+            overflow-x: auto;
         }
         .output.rtl { direction: rtl; text-align: right; }
 
@@ -192,6 +193,7 @@
             padding: 20px;
             border-radius: 8px;
             width: 420px;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -337,22 +339,23 @@
                 `;
                 container.appendChild(card);
 
-                // Si la mémoire est déjà présente (LocalStorage), on met à jour l'UI direct
+                // Vérification initiale de la mémoire (LocalStorage)
                 setTimeout(() => {
-                    if (Object.keys(exp.poids || {}).length > 0) {
+                    const nbPoids = Object.keys(exp.poids || {}).length;
+                    if (nbPoids > 0) {
                         document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                        document.getElementById(`out-${exp.id}`).innerText = `Mémoire chargée (${Object.keys(exp.poids).length} racines).`;
-                        exp.mettreAJourUI();
+                        document.getElementById(`out-${exp.id}`).innerText = `✔ Mémoire active (${nbPoids} concepts).`;
+                        if (typeof exp.mettreAJourUI === 'function') exp.mettreAJourUI();
                     }
                 }, 50);
 
-                // Zoom sur la mémoire
+                // Zoom sur la mémoire (Modale propre)
                 card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
 
-                // Option : Ajouter du savoir / Injecter de la mémoire
+                // Ajouter du savoir / Injecter de la mémoire
                 card.querySelector('.btn-injecter').onclick = () => ouvrirModalInjection(exp.id);
                 
-                // CHARGEMENT DE LA MÉMOIRE DEPUIS LE FICHIER TEXTE / JSON
+                // CHARGEMENT PROPRE DE LA MÉMOIRE (Évite l'affichage brut du fichier/JSON)
                 card.querySelector('.btn-lier').onclick = async () => {
                     try {
                         const [fileHandle] = await window.showOpenFilePicker({
@@ -365,7 +368,10 @@
 
                         if (fileHandle) {
                             await exp.lierFichierMemoire(fileHandle);
-                            document.getElementById(`out-${exp.id}`).innerText = `Fichier lié et synchronisé.`;
+                            const nbPoids = Object.keys(exp.poids || {}).length;
+                            document.getElementById(`out-${exp.id}`).innerText = `✔ Fichier lié avec succès (${nbPoids} concepts).`;
+                            document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
+                            card.querySelector('.btn-lier').innerText = "✔ Lié";
                         }
                     } catch (err) {
                         console.log("Chargement annulé :", err);
@@ -377,8 +383,10 @@
                 };
 
                 card.querySelector('.btn-generer').onclick = () => {
-                    if (typeof exp.dernierTexte === 'string') {
+                    if (typeof exp.dernierTexte === 'string' && exp.dernierTexte.length > 0) {
                         document.getElementById(`out-${exp.id}`).innerText = exp.dernierTexte;
+                    } else {
+                        document.getElementById(`out-${exp.id}`).innerText = "Aucun texte généré récent. Utilisez Zoom pour voir la mémoire.";
                     }
                 };
             });
@@ -396,7 +404,7 @@
             const texteActuel = JSON.stringify(exp.poids, null, 2) || "Aucune mémoire chargée pour le moment.";
             document.getElementById('modal-inner-content').innerHTML = `
                 <h3 style="color:#fff; margin-top:0;">🔍 Mémoire active : ${exp.nom}</h3>
-                <p style="font-size:11px; color:var(--text-dim);">Aperçu des poids enregistrés :</p>
+                <p style="font-size:11px; color:var(--text-dim);">Aperçu structuré des poids enregistrés :</p>
                 <div style="background:#000; padding:10px; color:var(--cyan); font-size:11px; border-radius:6px; max-height:250px; overflow-y:auto; white-space:pre-wrap;">${texteActuel}</div>
                 <button id="btn-fermer-modal" style="margin-top:15px; width:100%;">Fermer</button>
             `;
@@ -428,11 +436,15 @@
                 if (!texteAjoute) return;
 
                 const mots = texteAjoute.toLowerCase().split(/[\s,.;!?]+/).filter(m => m.length > 2);
-                mots.forEach(mot => exp.mettreAJourPoids(mot, 3));
+                mots.forEach(mot => {
+                    if (typeof exp.mettreAJourPoids === 'function') {
+                        exp.mettreAJourPoids(mot, 3);
+                    }
+                });
 
-                document.getElementById(`out-${exp.id}`).innerText = `Savoir injecté (${mots.length} nouveaux mots).`;
+                const nbPoids = Object.keys(exp.poids || {}).length;
+                document.getElementById(`out-${exp.id}`).innerText = `✔ Savoir injecté (${mots.length} mots, ${nbPoids} total).`;
                 document.getElementById('modal-overlay').style.display = 'none';
-                alert(`Savoir ajouté pour ${exp.nom} !`);
             };
         }
 
