@@ -62,13 +62,27 @@ export class HubCentral {
             modulesPertinents = modulesPertinents.slice(0, 2);
         }
 
-        // 4. Construction du rapport final structuré
-        let rapport = `=== RAPPORT DU HUB CENTRAL ===\n`;
-        rapport += `Requête : "${texte}"\n\n`;
+        // 4. Construction d'une réponse claire, fluide et unifiée
+        let rapport = "";
 
+        // On fusionne les idées principales des experts pour former une réponse claire
+        modulesPertinents.forEach((res, index) => {
+            let textePropre = res.reflexion
+                .replace(/<[^>]*>?/gm, '')
+                .replace(/&#039;/g, "'")
+                .replace(/&quot;/g, '"')
+                .replace(/&amp;/g, '&');
+
+            if (index === 0) {
+                rapport += `${textePropre}\n\n`;
+            } else {
+                rapport += `Par ailleurs, ${textePropre}\n\n`;
+            }
+        });
+
+        // On conserve discrètement les balises à la fin pour alimenter ton menu déroulant dans l'interface
         modulesPertinents.forEach(res => {
-            rapport += `[Module : ${res.expert} - ${res.domaine}] :\n`;
-            rapport += `${res.reflexion}\n\n`;
+            rapport += `[Module : ${res.expert} - ${res.domaine}] : ${res.reflexion}\n`;
         });
 
         // 5. Reprise immédiate de l'errance pour tous les modules
