@@ -5,7 +5,7 @@ export class Expert {
     constructor(id, nom, domaine, cat, wikiLang, isRtl) {
         this.id = id;
         this.nom = nom;                 
-        this.domaine = domaine;         
+        this.domaine = domaine || cat; // Sécurité ajoutée : utilise la catégorie si le domaine est absent
         this.cat = cat;
         this.wikiLang = wikiLang || 'fr';
         this.isRtl = isRtl || false;
