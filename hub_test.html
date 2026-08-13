@@ -168,8 +168,6 @@
             color: var(--cyan);
             border-radius: 4px;
             min-height: 25px;
-            max-height: 80px;
-            overflow-y: auto;
         }
         .output.rtl { direction: rtl; text-align: right; }
 
@@ -319,57 +317,64 @@
                             <h3>${exp.nom}</h3>
                         </div>
                         <div style="display:flex; gap:6px; align-items:center;">
-                            <span class="badge" id="badge-${exp.id}">0 racines</span>
+                            <span class="badge" id="badge-${exp.id}">Prêt</span>
                             <button class="action-btn btn-zoom" data-id="${exp.id}">🔍 Zoom</button>
                         </div>
                     </div>
                     <div class="stats-row">
-                        <div class="mini-stat"><div class="v" id="metric-txt-${exp.id}">0</div><div class="k">Connexions</div></div>
-                        <div class="mini-stat"><div class="v" id="densite-${exp.id}">0</div><div class="k">Densité</div></div>
-                        <div class="mini-stat"><div class="v" id="entropie-${exp.id}">0</div><div class="k">Diversité</div></div>
+                        <div class="mini-stat"><div class="v" id="metric-txt-${exp.id}">0</div><div class="k">Mots</div></div>
+                        <div class="mini-stat"><div class="v" id="densite-${exp.id}">0</div><div class="k">Statut</div></div>
+                        <div class="mini-stat"><div class="v" id="entropie-${exp.id}">OK</div><div class="k">État</div></div>
                     </div>
                     <div class="btn-row">
-                        <button class="action-btn btn-lier" id="btn-file-${exp.id}">Lier Texte</button>
+                        <button class="action-btn btn-lier" id="btn-file-${exp.id}">📥 Ingerer Texte</button>
                         <button class="action-btn btn-lancer">Lancer</button>
                         <button class="action-btn btn-pause">Pause</button>
                         <button class="action-btn btn-generer" style="color:var(--cyan)">Générer</button>
                     </div>
-                    <div class="output ${rtl}" id="out-${exp.id}">En attente...</div>
+                    <div class="output ${rtl}" id="out-${exp.id}">En attente de texte...</div>
                 `;
                 container.appendChild(card);
 
                 card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
                 
-                // Liaison d'un fichier Texte (.txt)
+                // Bouton pour sélectionner et ingérer directement le fichier texte brut
                 card.querySelector('.btn-lier').onclick = async () => {
                     try {
                         const [fileHandle] = await window.showOpenFilePicker({
                             types: [{
-                                description: 'Fichiers Texte de mémoire',
-                                accept: { 'text/plain': ['.txt'] }
+                                description: 'Fichiers Texte',
+                                accept: { 'text/plain': ['.txt', '.text'] }
                             }],
                             multiple: false
                         });
 
                         if (fileHandle) {
-                            exp.handle = fileHandle;
                             const file = await fileHandle.getFile();
-                            const text = await file.text();
+                            const texteBrut = await file.text();
                             
-                            // On stocke le texte brut et on l'affiche proprement dans la zone de sortie
-                            exp.dernierTexte = text;
-                            const outDiv = document.getElementById(`out-${exp.id}`);
-                            if(outDiv) {
-                                outDiv.innerText = text.substring(0, 150) + "... (Chargé)";
+                            // On transmet le texte à l'expert (selon la méthode dispo dans ton expert.js)
+                            exp.texteIngere = texteBrut;
+                            if (typeof exp.ingererTexte === 'function') {
+                                exp.ingererTexte(texteBrut);
+                            } else if (typeof exp.chargerTexte === 'function') {
+                                exp.chargerTexte(texteBrut);
                             }
 
-                            card.querySelector('.btn-lier').innerText = "✔ Lié";
+                            // Mise à jour visuelle propre de la carte
+                            card.querySelector('.btn-lier').innerText = "✔ Ingéré";
                             document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
+                            document.getElementById(`out-${exp.id}`).innerText = `Texte chargé (${texteBrut.length} caractères).`;
                             
-                            alert(`Module ${exp.nom} lié au fichier texte : ${file.name}`);
+                            // Mettre un compteur de mots approximatif dans la stat
+                            const nbMots = texteBrut.trim().split(/\s+/).length;
+                            const statMots = document.getElementById(`metric-txt-${exp.id}`);
+                            if(statMots) statMots.innerText = nbMots;
+
+                            alert(`Texte du fichier "${file.name}" ingéré avec succès pour ${exp.nom} !`);
                         }
                     } catch (err) {
-                        console.log("Sélection de fichier annulée :", err);
+                        console.log("Sélection annulée :", err);
                     }
                 };
 
@@ -398,10 +403,10 @@
 
         function ouvrirZoom(id) {
             const exp = window.appState[id];
-            const texteActuel = exp.dernierTexte || "Aucun texte chargé pour le moment.";
+            const texteActuel = exp.texteIngere || "Aucun texte ingéré pour le moment.";
             document.getElementById('modal-inner-content').innerHTML = `
-                <h3 style="color:#fff; margin-top:0;">🔍 Détails : ${exp.nom}</h3>
-                <p style="font-size:11px; color:var(--text-dim);">Contenu complet du fichier texte :</p>
+                <h3 style="color:#fff; margin-top:0;">🔍 Texte ingéré : ${exp.nom}</h3>
+                <p style="font-size:11px; color:var(--text-dim);">Aperçu du contenu :</p>
                 <div style="background:#000; padding:10px; color:var(--cyan); font-size:11px; border-radius:6px; max-height:250px; overflow-y:auto; white-space:pre-wrap;">${texteActuel}</div>
                 <button id="btn-fermer-modal" style="margin-top:15px; width:100%;">Fermer</button>
             `;
