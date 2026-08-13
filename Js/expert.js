@@ -1,5 +1,5 @@
 /**
- * Module Expert - Unité d'apprentissage autonome et décentralisée
+ * Module Expert - Unité d'apprentissage autonome (Mémoire + Recherche temps réel)
  */
 export class Expert {
     constructor(id, nom, domaine, cat, wikiLang, isRtl) {
@@ -12,13 +12,88 @@ export class Expert {
         this.poids = {};                
         this.timerApprentissage = null; 
         this.enVeille = false;
-        this.handle = null;             // Handle pour l'API File System Access
+        this.handle = null;             
         this.dernierTexte = "En attente...";
-        this.chart = null;
     }
 
     /**
-     * 1. LE MODE VEILLE (Apprentissage aléatoire autonome)
+     * 1. RECHERCHE DIRECTE EN TEMPS RÉEL SUR LE DOMAINE (ex: Wikipédia / Sources)
+     */
+    async rechercherDansSonDomaine(motsCles) {
+        try {
+            // On prend les mots importants de la requête
+            const requete = encodeURIComponent(motsCles.join(' '));
+            const url = `https://${this.wikiLang}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${requete}&format=json&origin=*`;
+            
+            const reponse = await fetch(url);
+            const data = await reponse.json();
+
+            if (data.query && data.query.search && data.query.search.length > 0) {
+                // On extrait le meilleur résultat et on nettoie le texte
+                const meilleurResultat = data.query.search[0];
+                const extraitPropre = meilleurResultat.snippet.replace(/<[^>]*>?/gm, ''); 
+                return {
+                    titre: meilleurResultat.title,
+                    extrait: extraitPropre
+                };
+            }
+        } catch (err) {
+            console.warn(`[${this.nom}] Recherche directe indisponible :`, err);
+        }
+        return null;
+    }
+
+    /**
+     * 2. L'ANALYSE COMBINÉE (Mémoire Acquise + Recherche Directe)
+     */
+    async analyser(texteUtilisateur) {
+        const mots = texteUtilisateur.toLowerCase().split(/[\s,.;!?]+/).filter(m => m.length > 2);
+
+        // A. Ingestion et apprentissage direct dans sa mémoire
+        mots.forEach(mot => this.mettreAJourPoids(mot, 2));
+
+        // B. Consultation de la mémoire accumulée (Poids)
+        let conceptsMemoire = [];
+        let scoreMemoire = 0;
+        mots.forEach(mot => {
+            if (this.poids[mot]) {
+                scoreMemoire += this.poids[mot];
+                conceptsMemoire.push(`${mot}`);
+            }
+        });
+
+        // C. Recherche directe en temps réel dans son domaine
+        const rechercheDirecte = await this.rechercherDansSonDomaine(mots);
+
+        // D. Synthèse : Fusion de la recherche en temps réel et de la mémoire
+        let reflexionFinale = "";
+
+        if (rechercheDirecte) {
+            reflexionFinale = `📌 **${rechercheDirecte.titre}** : ${rechercheDirecte.extrait}...`;
+        } else {
+            reflexionFinale = `Analyse basée sur les matrices fondamentales de ${this.domaine}.`;
+        }
+
+        if (conceptsMemoire.length > 0) {
+            reflexionFinale += `\n*(Ancrage mémoire interne : ${conceptsMemoire.slice(0, 3).join(', ')})*`;
+        }
+
+        this.dernierTexte = reflexionFinale;
+        this.mettreAJourUI();
+
+        // Le score prend en compte s'il a trouvé une vraie recherche directe + ses poids
+        const scoreTotal = (rechercheDirecte ? 15 : 0) + scoreMemoire;
+
+        return {
+            expert: this.nom,
+            domaine: this.cat,
+            score: scoreTotal,
+            reflexion: reflexionFinale
+        };
+    }
+
+    /**
+     * 3. APPRENTISSAGE EN ARRIÈRE-PLAN (Mode Errance)
      */
     lancerApprentissage() {
         if (this.enVeille) return;
@@ -28,15 +103,12 @@ export class Expert {
         if (dot) dot.className = "status-dot active";
 
         this.timerApprentissage = setInterval(() => {
-            let conceptAleatoire = this.genererConceptAleatoire();
-            this.mettreAJourPoids(conceptAleatoire, 1);
+            let concept = this.genererConceptDomaine();
+            this.mettreAJourPoids(concept, 1);
             this.mettreAJourUI();
-        }, 4000);
+        }, 5000);
     }
 
-    /**
-     * 2. ARRÊT DE L'APPRENTISSAGE
-     */
     arreterApprentissage() {
         if (!this.enVeille) return;
         this.enVeille = false;
@@ -47,55 +119,10 @@ export class Expert {
     }
 
     /**
-     * 3. L'ANALYSE DE LA REQUÊTE
+     * 4. GESTION DES FICHIERS ET SAUVEGARDE JSON
      */
-    analyser(texteUtilisateur) {
-        let mots = texteUtilisateur.toLowerCase().split(/\s+/);
-        let scorePertinence = 0;
-        let associationTrouvee = "";
-
-        mots.forEach(mot => {
-            if (this.poids[mot]) {
-                scorePertinence += this.poids[mot];
-                associationTrouvee = mot;
-            }
-        });
-
-        return {
-            expert: this.nom,
-            domaine: this.domaine,
-            score: scorePertinence,
-            reflexion: scorePertinence > 0 
-                ? `Connexion trouvée dans mon domaine via le concept '${associationTrouvee}'.` 
-                : `Exploration neutre de la requête selon les matrices de ${this.domaine}.`
-        };
-    }
-
-    /**
-     * Génère un texte de simulation pour le zoom / génération
-     */
-    genererTexte() {
-        const concepts = Object.keys(this.poids);
-        if (concepts.length === 0) {
-            this.dernierTexte = `[${this.nom}] Aucune donnée en mémoire. Lancez l'apprentissage ou liez un fichier JSON.`;
-        } else {
-            let sample = concepts[Math.floor(Math.random() * concepts.length)];
-            this.dernierTexte = `[${this.nom}] Analyse active sur le vecteur central : "${sample}" (Poids cumulé : ${this.poids[sample]}).`;
-        }
-        
-        const out = document.getElementById(`out-${this.id}`);
-        if (out) out.textContent = this.dernierTexte;
-    }
-
-    /**
-     * 4. LIAISON FICHIER LOCAL (File System Access API)
-     */
-    async lierFichier() {
+    async lierFichierMemoire(fileHandle) {
         try {
-            // Si le dossier global n'a pas été choisi, on permet de lier un fichier unique
-            const [fileHandle] = await window.showOpenFilePicker({
-                types: [{ description: 'Fichiers JSON', accept: { 'application/json': ['.json'] } }]
-            });
             this.handle = fileHandle;
             const file = await fileHandle.getFile();
             const text = await file.text();
@@ -110,35 +137,35 @@ export class Expert {
             const dot = document.getElementById(`dot-${this.id}`);
             if (dot) dot.className = "status-dot ready";
         } catch (err) {
-            console.log("Liaison fichier annulée", err);
+            console.error("Erreur lors de la lecture de la mémoire :", err);
         }
     }
 
-    // --- Fonctions utilitaires internes ---
     mettreAJourPoids(cle, valeur) {
-        if (!this.poids[cle]) {
-            this.poids[cle] = 0;
-        }
+        if (!this.poids[cle]) this.poids[cle] = 0;
         this.poids[cle] += valeur;
-        
-        // Sauvegarde automatique si un handle de fichier existe
-        this.sauvegarderFichier();
+        this.sauvegarderFichierJSON();
     }
 
-    async sauvegarderFichier() {
+    async sauvegarderFichierJSON() {
         if (!this.handle) return;
         try {
             const writable = await this.handle.createWritable();
-            await writable.write(this.exporterPoidsJSON());
+            await writable.write(JSON.stringify({
+                nom: this.nom,
+                domaine: this.domaine,
+                categorie: this.cat,
+                memoire_paires: this.poids
+            }, null, 2));
             await writable.close();
         } catch (err) {
-            console.error("Erreur lors de l'écriture automatique du fichier :", err);
+            console.error("Erreur d'écriture JSON :", err);
         }
     }
 
-    genererConceptAleatoire() {
-        const exemples = ["structure", "logique", "flux", "donnée", "syntaxe", "optimisation", "matrice", "réseau", "index"];
-        return exemples[Math.floor(Math.random() * exemples.length)];
+    genererConceptDomaine() {
+        const motsBase = [this.domaine.toLowerCase(), "analyse", "structure", "donnee", "logique"];
+        return motsBase[Math.floor(Math.random() * motsBase.length)];
     }
 
     mettreAJourUI() {
@@ -151,68 +178,10 @@ export class Expert {
         const metricTxt = document.getElementById(`metric-txt-${this.id}`);
         if (metricTxt) metricTxt.innerText = totalConnexions;
 
-        const ringValue = document.getElementById(`ring-value-${this.id}`);
-        const ring = document.getElementById(`ring-${this.id}`);
-        if (ringValue && ring) {
-            let pct = Math.min(totalConnexions * 2, 100);
-            ringValue.innerText = `${pct}%`;
-            ring.style.setProperty('--pct', pct);
-        }
-
         const densite = document.getElementById(`densite-${this.id}`);
         if (densite) densite.innerText = totalRacines > 0 ? (totalConnexions / totalRacines).toFixed(1) : 0;
 
         const entropie = document.getElementById(`entropie-${this.id}`);
-        if (entropie) entropie.innerText = totalRacines;
-
-        // Mise à jour du graphique Chart.js s'il existe
-        this.mettreAJourGraphique();
-    }
-
-    mettreAJourGraphique() {
-        const canvas = document.getElementById(`chart-${this.id}`);
-        if (!canvas) return;
-
-        const labels = Object.keys(this.poids).slice(-6);
-        const dataValues = Object.values(this.poids).slice(-6);
-
-        if (this.chart) {
-            this.chart.data.labels = labels;
-            this.chart.data.datasets[0].data = dataValues;
-            this.chart.update('none');
-        } else {
-            this.chart = new Chart(canvas, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: dataValues,
-                        borderColor: '#00d9ff',
-                        borderWidth: 1.5,
-                        pointRadius: 2,
-                        tension: 0.3,
-                        fill: true,
-                        backgroundColor: 'rgba(0, 217, 255, 0.05)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { display: false },
-                        y: { display: false }
-                    }
-                }
-            });
-        }
-    }
-
-    exporterPoidsJSON() {
-        return JSON.stringify({
-            nom: this.nom,
-            domaine: this.domaine,
-            memoire_paires: this.poids
-        }, null, 2);
+        if (entropie) entropie.innerText = `${Math.min(totalRacines * 2, 100)}%`;
     }
 }
