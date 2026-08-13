@@ -4,9 +4,11 @@ export const MODULES_REGISTRY = [
     // --- Communication & Style (2) ---
     { id: "redacteur", nom: "Rédacteur & Clarté", cat: "communication", dbName: "HubDB_Redacteur", keyName: "redacKey", type: "wiki", wikiLang: "fr", file: "redacteur.html" },
     { id: "synthetiseur", nom: "Synthétiseur & Structure", cat: "communication", dbName: "HubDB_Synthetiseur", keyName: "synthKey", type: "wiki", wikiLang: "fr", file: "synthetiseur.html" },
+    { id: "lexique", nom: "Lexique & Rédaction", cat: "communication", dbName: "HubDB_Lexique", keyName: "lexKey", type: "wiki", wikiLang: "fr", file: "lexique.html" },
 
-    // --- Contrôle & Qualité (1) ---
+    // --- Contrôle & Qualité (2) ---
     { id: "nettoyeur", nom: "Contrôleur de Structure", cat: "qualite", dbName: "HubDB_Nettoyeur", keyName: "netKey", type: "wiki", wikiLang: "fr", file: "nettoyeur.html" },
+    { id: "critique", nom: "Contrôle & Analyse Critique", cat: "qualite", dbName: "HubDB_Critique", keyName: "critKey", type: "wiki", wikiLang: "fr", file: "critique.html" },
 
     // --- Langages de Code (7) ---
     { id: "python", nom: "Python", cat: "code", dbName: "HubDB_Python", keyName: "pyKey", type: "wiki", wikiLang: "en", file: "python.html" },
@@ -21,7 +23,8 @@ export const MODULES_REGISTRY = [
     { id: "arabe", nom: "Arabe (V2)", cat: "langue", dbName: "HubDB_Arabe", keyName: "arKey", type: "wiki", wikiLang: "ar", isRtl: true, file: "Arabe.html" },
     { id: "poesie", nom: "Poésie Métrique", cat: "langue", dbName: "HubDB_Poesie", keyName: "poesieKey", type: "wiki", wikiLang: "fr", file: "module-poesie-metrique.html" },
 
-    // --- Archives, Sciences & Domaines Spécifiques (5) ---
+    // --- Archives, Sciences & Domaines Spécifiques (6) ---
+    { id: "logique", nom: "Logique & Synthèse", cat: "archives", dbName: "HubDB_Logique", keyName: "logKey", type: "wiki", wikiLang: "fr", file: "logique.html" },
     { id: "maths", nom: "Mathématiques", cat: "archives", dbName: "HubDB_Maths", keyName: "mathsKey", type: "wiki", wikiLang: "en", file: "Mathématique.html" },
     { id: "droit", nom: "Droit & Réglementation", cat: "archives", dbName: "HubDB_Droit", keyName: "droitKey", type: "wiki", wikiLang: "fr", file: "Droit_ Normes_Réglementation.html" },
     { id: "gutenberg", nom: "Project Gutenberg (Classiques)", cat: "archives", dbName: "HubDB_Gutenberg", keyName: "gutKey", type: "wiki", wikiLang: "en", file: "gutenberg.html" },
