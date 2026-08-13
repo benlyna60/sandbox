@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hub IA - Chat Mobile</title>
+    <style>
+        :root {
+            --bg: #0b0c10;
+            --panel: #1f2833;
+            --panel-alt: #2b3847;
+            --text: #c5c6c7;
+            --text-dim: #8892b0;
+            --cyan: #00d9ff;
+            --hair: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* En-tête épuré avec configuration du lien distant */
+        header {
+            background: var(--panel);
+            border-bottom: 1px solid var(--hair);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h2 {
+            margin: 0;
+            font-size: 15px;
+            color: #fff;
+        }
+
+        .settings-toggle {
+            background: none;
+            border: 1px solid var(--hair);
+            color: var(--text-dim);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* Panneau de configuration de l'URL distant (escamotable) */
+        #config-panel {
+            background: var(--panel-alt);
+            border-bottom: 1px solid var(--hair);
+            padding: 10px 16px;
+            display: none;
+            gap: 8px;
+            align-items: center;
+        }
+
+        #config-panel input {
+            flex: 1;
+            background: var(--bg);
+            border: 1px solid var(--hair);
+            color: #fff;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        #config-panel button {
+            background: var(--cyan);
+            color: #000;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Zone de discussion centrale */
+        #chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .message.user {
+            background: var(--panel-alt);
+            color: #fff;
+            align-self: flex-end;
+            border: 1px solid var(--hair);
+            border-bottom-right-radius: 2px;
+        }
+
+        .message.hub {
+            background: #000;
+            color: #fff;
+            align-self: flex-start;
+            border: 1px solid var(--cyan);
+            border-bottom-left-radius: 2px;
+        }
+
+        .message.hub .reflexion-bloc {
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--text-dim);
+            border-top: 1px solid var(--hair);
+            padding-top: 6px;
+            white-space: pre-wrap;
+        }
+
+        /* Barre de saisie en bas */
+        footer {
+            background: var(--panel);
+            border-top: 1px solid var(--hair);
+            padding: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        textarea {
+            flex: 1;
+            background: var(--bg);
+            border: 1px solid var(--hair);
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            resize: none;
+            height: 22px;
+            max-height: 100px;
+            font-family: inherit;
+        }
+
+        #btn-envoyer {
+            background: var(--cyan);
+            color: #000;
+            border: none;
+            padding: 0 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>Chat Hub Mobile</h2>
+        <button class="settings-toggle" id="btn-toggle-config">⚙️ Connexion</button>
+    </header>
+
+    <div id="config-panel">
+        <input type="text" id="input-url" placeholder="URL du Hub (ex: https://xxx.trycloudflare.com)">
+        <button id="btn-save-url">OK</button>
+    </div>
+
+    <div id="chat-container">
+        <div class="message hub">Connexion mobile initialisée. Tapez une question pour interroger le Hub distant et entraîner les experts.</div>
+    </div>
+
+    <footer>
+        <textarea id="user-input" placeholder="Envoyer un message au Hub..."></textarea>
+        <button id="btn-envoyer">➤</button>
+    </footer>
+
+    <script>
+        const inputUrl = document.getElementById('input-url');
+        const btnSaveUrl = document.getElementById('btn-save-url');
+        const configPanel = document.getElementById('config-panel');
+        const btnToggleConfig = document.getElementById('btn-toggle-config');
+        const chatContainer = document.getElementById('chat-container');
+        const userInput = document.getElementById('user-input');
+        const btnEnvoyer = document.getElementById('btn-envoyer');
+
+        // Gestion de l'URL distante stockée sur le téléphone
+        let hubUrl = localStorage.getItem('hub_remote_url') || '';
+        inputUrl.value = hubUrl;
+
+        btnToggleConfig.onclick = () => {
+            configPanel.style.display = configPanel.style.display === 'flex' ? 'none' : 'flex';
+        };
+
+        btnSaveUrl.onclick = () => {
+            hubUrl = inputUrl.value.trim().replace(/\/$/, ''); // Supprime le slash de fin éventuel
+            localStorage.setItem('hub_remote_url', hubUrl);
+            configPanel.style.display = 'none';
+            ajouterMessageHub(`URL mise à jour : ${hubUrl}`);
+        };
+
+        // Chargement de l'historique de discussion local du téléphone
+        let historiqueChat = JSON.parse(localStorage.getItem('chat_history_mobile') || '[]');
+        historiqueChat.forEach(msg => afficherMessageUI(msg.texte, msg.expediteur, msg.reflexion));
+
+        function ajouterMessageHub(texte, reflexion = '') {
+            afficherMessageUI(texte, 'hub', reflexion);
+            sauvegarderHistorique(texte, 'hub', reflexion);
+        }
+
+        function ajouterMessageUser(texte) {
+            afficherMessageUI(texte, 'user');
+            sauvegarderHistorique(texte, 'user');
+        }
+
+        function afficherMessageUI(texte, expediteur, reflexion = '') {
+            const div = document.createElement('div');
+            div.className = `message ${expediteur}`;
+            
+            if (expediteur === 'hub' && reflexion) {
+                div.innerHTML = `<div>${texte}</div><div class="reflexion-bloc">🔍 ${reflexion}</div>`;
+            } else {
+                div.innerText = texte;
+            }
+
+            chatContainer.appendChild(div);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function sauvegarderHistorique(texte, expediteur, reflexion = '') {
+            historiqueChat.push({ texte, expediteur, reflexion });
+            if (historiqueChat.length > 50) historiqueChat.shift(); // Garde les 50 derniers messages
+            localStorage.setItem('chat_history_mobile', JSON.stringify(historiqueChat));
+        }
+
+        async function envoyerRequete() {
+            const texte = userInput.value.trim();
+            if (!texte) return;
+
+            if (!hubUrl) {
+                alert("Veuillez configurer l'URL distante de votre Hub via le bouton 'Connexion' en haut.");
+                configPanel.style.display = 'flex';
+                return;
+            }
+
+            ajouterMessageUser(texte);
+            userInput.value = "";
+            userInput.style.height = '22px';
+
+            // Message de chargement temporaire
+            const msgLoadId = 'load-' + Date.now();
+            const divLoad = document.createElement('div');
+            divLoad.className = 'message hub';
+            divLoad.id = msgLoadId;
+            divLoad.innerText = "Analyse en cours par les modules distants...";
+            chatContainer.appendChild(divLoad);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            try {
+                // Requête HTTP vers ton Hub central sur ton ordinateur via le tunnel
+                const reponse = await fetch(`${hubUrl}/api/requete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: texte })
+                });
+
+                document.getElementById(msgLoadId).remove();
+
+                if (!reponse.ok) throw new Error("Erreur de communication avec le Hub.");
+
+                const data = await reponse.json();
+                ajouterMessageHub(data.reponse || "Réponse reçue.", data.reflexion || "");
+
+            } catch (err) {
+                document.getElementById(msgLoadId).remove();
+                ajouterMessageHub("Impossible de joindre le Hub central. Vérifiez que votre ordinateur est allumé et que le tunnel est actif.");
+                console.error(err);
+            }
+        }
+
+        btnEnvoyer.onclick = envoyerRequete;
+        userInput.onkeydown = (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                envoyerRequete();
+            }
+        };
+
+        // Ajustement automatique de la hauteur du champ de texte
+        userInput.oninput = () => {
+            userInput.style.height = '22px';
+            userInput.style.height = (userInput.scrollHeight - 6) + 'px';
+        };
+    </script>
+</body>
+</html>
