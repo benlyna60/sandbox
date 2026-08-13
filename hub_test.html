@@ -252,7 +252,7 @@
 
         const hub = new HubCentral();
         window.appState = {};
-        window.categorieActuelle = 'tous';
+        window.categorieActuelle = 'tous'; // Forcé explicitement sur 'tous' dès le début
         let dossierRacineHandle = null;
 
         function initHub() {
@@ -330,7 +330,11 @@
         function renderGrilleModules() {
             const container = document.getElementById('hub-container');
             container.innerHTML = "";
-            let filtres = window.categorieActuelle === 'tous' ? hub.experts : hub.experts.filter(m => m.cat === window.categorieActuelle);
+            
+            // S'assure de récupérer tous les experts si 'tous' est actif, ou filtre par catégorie exacte
+            let filtres = (window.categorieActuelle === 'tous' || !window.categorieActuelle) 
+                ? hub.experts 
+                : hub.experts.filter(m => m.cat === window.categorieActuelle);
 
             filtres.forEach(exp => {
                 let rtl = exp.isRtl ? "rtl" : "";
@@ -369,7 +373,7 @@
                 if (typeof exp.mettreAJourUI === 'function') exp.mettreAJourUI();
             });
 
-            // Branchement des écouteurs d'événements pour les boutons de chaque carte
+            // Branchement des écouteurs d'événements
             document.querySelectorAll('.btn-zoom').forEach(btn => {
                 btn.onclick = () => ouvrirZoom(btn.dataset.id);
             });
