@@ -1,77 +1,56 @@
 /**
- * Hub Central - Le chef d'orchestre
+ * Hub Central - Orchestrateur (Optimisé pour ton interface)
  */
 export class HubCentral {
     constructor() {
         this.experts = [];
-        this.estEnVeille = true;
-        this.timerVeilleGlobale = null;
+        this.estEnModeFocus = false;
     }
 
     ajouterExpert(expert) {
         this.experts.push(expert);
     }
 
-    demarrerSysteme() {
-        this.experts.forEach(expert => {
-            if (typeof expert.lancerApprentissage === 'function') {
-                expert.lancerApprentissage();
-            } else if (typeof expert.lancerApprentissageAléatoire === 'function') {
-                expert.lancerApprentissageAléatoire();
-            }
-        });
-        console.log("Hub Central : Système opérationnel, apprentissage actif.");
-    }
+    /**
+     * Traite la requête et orchestre la collaboration
+     * Cette méthode remplace/enrichit ton ancienne logique de processus
+     */
+    traiterRequete(texte) {
+        this.estEnModeFocus = true;
 
-    interrompreVeille() {
-        if (this.estEnVeille) {
-            this.estEnVeille = false;
-            this.experts.forEach(expert => {
-                if (typeof expert.arreterApprentissage === 'function') {
-                    expert.arreterApprentissage();
-                } else if (typeof expert.stopApprentissage === 'function') {
-                    expert.stopApprentissage();
-                }
-            });
-            console.log("Hub Central : Interruption activée, mode Focus.");
-        }
-    }
+        // 1. Mise en pause de l'apprentissage de tous les modules
+        this.experts.forEach(exp => exp.arreterApprentissage());
 
-    reprendreVeille() {
-        if (this.timerVeilleGlobale) clearTimeout(this.timerVeilleGlobale);
+        // 2. Mobilisation : chaque expert analyse dans son domaine
+        // On récupère les réflexions de tout le monde
+        const resultats = this.experts.map(exp => exp.analyser(texte));
+
+        // 3. Synthèse structurée (Épurée mais transparente)
+        let rapport = `=== ANALYSE COLLABORATIVE (Focus) ===\n\n`;
         
-        this.timerVeilleGlobale = setTimeout(() => {
-            this.estEnVeille = true;
-            this.experts.forEach(expert => {
-                if (typeof expert.lancerApprentissage === 'function') {
-                    expert.lancerApprentissage();
-                } else if (typeof expert.lancerApprentissageAléatoire === 'function') {
-                    expert.lancerApprentissageAléatoire();
-                }
-            });
-            console.log("Hub Central : Reprise de l'apprentissage.");
-        }, 5000);
-    }
+        // Bloc 1 : Synthèse globale (la réponse épurée)
+        rapport += `[SYNTHÈSE] : Système opérationnel. Tous les modules ont analysé la requête "${texte}".\n\n`;
 
-    processerRequete(texte) {
-        let resultats = this.experts.map(expert => expert.analyser(texte));
-        resultats.sort((a, b) => b.score - a.score);
-
-        let meilleur = resultats[0];
-        let reponse = `=== ANALYSE DU HUB CENTRAL ===\n\n`;
-        
-        if (meilleur && meilleur.score > 0) {
-            reponse += `🎯 Expert Principal retenu : ${meilleur.expert} (${meilleur.domaine || 'Domaine spécifique'})\n`;
-            reponse += `💬 Réflexion : ${meilleur.reflexion}\n\n`;
-        } else {
-            reponse += `🌐 Requête distribuée en mode exploratoire neutre.\n\n`;
-        }
-
-        reponse += `--- Synthèse des autres modules ---\n`;
-        resultats.slice(1).forEach(res => {
-            reponse += `• ${res.expert} : ${res.reflexion}\n`;
+        // Bloc 2 : Détail des travaux (Transparence totale)
+        rapport += `--- Détails des travaux par module ---\n`;
+        resultats.forEach(res => {
+            rapport += `• ${res.expert} [${res.domaine}] : ${res.reflexion}\n`;
         });
 
-        return reponse;
+        // 4. Reprise de l'apprentissage automatique (Errance)
+        this.estEnModeFocus = false;
+        this.experts.forEach(exp => exp.lancerApprentissage());
+
+        return rapport;
+    }
+
+    /**
+     * Permet de forcer le redémarrage de tous les systèmes
+     */
+    reinitialiserSysteme() {
+        this.experts.forEach(exp => {
+            exp.arreterApprentissage();
+            exp.lancerApprentissage();
+        });
     }
 }
