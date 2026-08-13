@@ -177,6 +177,27 @@
         .view-section { display: none; }
         .view-section.active { display: block; }
 
+        /* Styles spécifiques pour agrandir et styliser le Chat Global */
+        #chat-output {
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        details.hub-reflexion {
+            background: rgba(0, 217, 255, 0.03);
+            border: 1px solid var(--hair);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 10px;
+        }
+
+        details.hub-reflexion summary {
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--cyan);
+        }
+
         /* Fenêtre Modale (Zoom / Injection) */
         #modal-overlay {
             position: fixed;
@@ -231,10 +252,10 @@
 
     <!-- SECTION CHAT -->
     <div id="section-chat" class="view-section">
-        <div style="background:var(--panel); border:1px solid var(--hair); border-radius:8px; padding:20px; max-width:800px; margin:0 auto; display:flex; flex-direction:column; height:400px;">
-            <div id="chat-output" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:10px; margin-bottom:15px; padding-right:5px;"></div>
+        <div style="background:var(--panel); border:1px solid var(--hair); border-radius:8px; padding:20px; max-width:800px; margin:0 auto; display:flex; flex-direction:column; height:450px;">
+            <div id="chat-output" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:12px; margin-bottom:15px; padding-right:5px;"></div>
             <div style="display:flex; gap:10px;">
-                <input type="text" id="user-input" placeholder="Posez une question au Hub..." style="flex:1; background:var(--bg); border:1px solid var(--hair); color:#fff; padding:10px; border-radius:6px; outline:none;">
+                <input type="text" id="user-input" placeholder="Posez une question au Hub..." style="flex:1; background:var(--bg); border:1px solid var(--hair); color:#fff; padding:12px; border-radius:6px; outline:none; font-size: 14px;">
                 <button id="btn-envoyer">Envoyer</button>
             </div>
         </div>
@@ -466,8 +487,9 @@
             const texte = inputChat.value.trim();
             if (!texte) return;
 
+            // Message utilisateur (agrandi)
             const msgUser = document.createElement('div');
-            msgUser.style.cssText = "background: var(--panel-alt); padding: 10px; border-radius: 6px; align-self: flex-end; max-width: 80%; font-size: 11px; border: 1px solid var(--hair); color: #fff;";
+            msgUser.style.cssText = "background: var(--panel-alt); padding: 12px 16px; border-radius: 8px; align-self: flex-end; max-width: 80%; font-size: 14px; border: 1px solid var(--hair); color: #fff;";
             msgUser.innerText = texte;
             chatOutput.appendChild(msgUser);
 
@@ -476,17 +498,32 @@
 
             // Indicateur de chargement
             const msgHub = document.createElement('div');
-            msgHub.style.cssText = "background: #000; padding: 10px; border-radius: 6px; align-self: flex-start; max-width: 80%; font-size: 11px; border: 1px solid var(--cyan); color: var(--cyan);";
-            msgHub.innerText = "Analyse en cours par les experts (mémoire + recherche)...";
+            msgHub.style.cssText = "background: #000; padding: 14px 18px; border-radius: 8px; align-self: flex-start; max-width: 85%; font-size: 15px; border: 1px solid var(--cyan); color: #fff;";
+            msgHub.innerHTML = "<em>Analyse en cours par les experts (mémoire + recherche)...</em>";
             chatOutput.appendChild(msgHub);
             chatOutput.scrollTop = chatOutput.scrollHeight;
 
             try {
-                let reponseTexte = `Hub IA : Requête "${texte}" analysée.`;
+                let rapportBrut = `Hub IA : Requête "${texte}" analysée.`;
                 if (typeof hub.traiterRequete === 'function') {
-                    reponseTexte = await hub.traiterRequete(texte);
+                    rapportBrut = await hub.traiterRequete(texte);
                 }
-                msgHub.innerText = reponseTexte;
+
+                // DÉCOUPAGE PROPRE : Réponse claire en haut, détails techniques masqués dans le menu déroulant
+                const lignes = rapportBrut.split('\n');
+                const syntheseLignes = lignes.filter(l => !l.includes('[Module :') && !l.includes('===') && !l.includes('Requête :'));
+                const syntheseTexte = syntheseLignes.join('<br>').trim() || rapportBrut;
+                const reflexionsTexte = lignes.filter(l => l.includes('[Module :') || l.includes('📌') || l.includes('Ancrage')).join('<br>');
+
+                msgHub.innerHTML = `
+                    <div style="font-size: 15px; line-height: 1.6; color: #fff; margin-bottom: 8px;">${syntheseTexte}</div>
+                    ${reflexionsTexte ? `
+                        <details class="hub-reflexion">
+                            <summary>🔍 Voir la réflexion détaillée des experts</summary>
+                            <div style="font-size: 12px; color: var(--text-dim); margin-top: 8px; white-space: pre-wrap;">${reflexionsTexte}</div>
+                        </details>
+                    ` : ''}
+                `;
             } catch (err) {
                 msgHub.innerText = "Erreur lors du traitement par le Hub.";
                 console.error(err);
