@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub IA - Interface</title>
+    <title>Hub IA - Moteur & Modules</title>
     <style>
-        /* --- Styles de base (Design minimaliste sombre) --- */
         :root {
             --bg: #0b0c10;
             --panel: #1f2833;
@@ -35,7 +34,6 @@
             padding-bottom: 15px;
         }
 
-        /* Boutons de navigation et filtres */
         .btn-group, .filters-group {
             display: flex;
             gap: 10px;
@@ -64,14 +62,12 @@
             font-weight: bold;
         }
 
-        /* Layout Principal */
         .main-layout {
             display: grid;
             grid-template-columns: 250px 1fr;
             gap: 20px;
         }
 
-        /* Sidebar */
         aside {
             background: var(--panel);
             border: 1px solid var(--hair);
@@ -80,14 +76,12 @@
             height: fit-content;
         }
 
-        /* Grille des modules */
         .hub-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 15px;
         }
 
-        /* Carte d'un module */
         .card {
             background: var(--panel);
             border: 1px solid var(--hair);
@@ -116,7 +110,6 @@
             color: #fff;
         }
 
-        /* Indicateur d'état (Point lumineux) */
         .status-dot {
             width: 8px;
             height: 8px;
@@ -136,7 +129,6 @@
             color: var(--text-dim);
         }
 
-        /* Statistiques de la carte */
         .stats-row {
             display: flex;
             justify-content: space-between;
@@ -149,7 +141,6 @@
         .mini-stat .v { font-weight: bold; color: #fff; font-size: 12px; }
         .mini-stat .k { font-size: 9px; color: var(--text-dim); }
 
-        /* Ligne de boutons d'action */
         .btn-row {
             display: flex;
             gap: 5px;
@@ -174,32 +165,6 @@
         }
         .output.rtl { direction: rtl; text-align: right; }
 
-        /* Vues (Modules vs Chat) */
-        .view-section { display: none; }
-        .view-section.active { display: block; }
-
-        /* Styles spécifiques pour agrandir et styliser le Chat Global */
-        #chat-output {
-            font-size: 15px;
-            line-height: 1.5;
-        }
-
-        details.hub-reflexion {
-            background: rgba(0, 217, 255, 0.03);
-            border: 1px solid var(--hair);
-            border-radius: 6px;
-            padding: 8px 12px;
-            margin-top: 10px;
-        }
-
-        details.hub-reflexion summary {
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-            color: var(--cyan);
-        }
-
-        /* Fenêtre Modale (Zoom / Injection) */
         #modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -222,59 +187,37 @@
 <body>
 
     <header>
-        <h2>Hub IA Central</h2>
+        <h2>Hub IA Central - Moteur & Modules</h2>
         <div class="btn-group" style="align-items: center;">
-            <button id="btn-tout-lancer" style="background: rgba(0, 255, 102, 0.1); border-color: #00ff66; color: #00ff66;">🚀 Tout lancer</button>
-            <div style="width: 1px; height: 20px; background: var(--hair); margin: 0 5px;"></div>
-            <button id="btn-view-modules" class="active">Modules</button>
-            <button id="btn-view-chat">Chat Global</button>
+            <button id="btn-tout-lancer" style="background: rgba(0, 255, 102, 0.1); border-color: #00ff66; color: #00ff66;">🚀 Tout lancer (Errance)</button>
         </div>
     </header>
 
-    <!-- SECTION MODULES -->
-    <div id="section-modules" class="view-section active">
-        <!-- Filtres par catégorie -->
-        <div class="filters-group" style="margin-bottom: 15px;">
-            <button class="filter-btn active" data-cat="tous">Tous</button>
-            <button class="filter-btn" data-cat="non-relies" style="border-color: var(--orange); color: var(--orange);">⚠️ Non reliés</button>
-            <button class="filter-btn" data-cat="communication">Communication</button>
-            <button class="filter-btn" data-cat="qualite">Contrôle & Qualité</button>
-            <button class="filter-btn" data-cat="code">Code</button>
-            <button class="filter-btn" data-cat="langue">Langue & Poésie</button>
-            <button class="filter-btn" data-cat="archives">Archives & Sciences</button>
-        </div>
-
-        <div class="main-layout">
-            <!-- Sidebar listant les modules rapidement -->
-            <aside>
-                <h4 style="margin-top:0; font-size:12px; color:var(--text-dim);">Accès Rapide</h4>
-                <div id="sidebar-modules-list"></div>
-            </aside>
-
-            <!-- Grille dynamique générée par JavaScript -->
-            <div class="hub-grid" id="hub-container"></div>
-        </div>
+    <div class="filters-group" style="margin-bottom: 15px;">
+        <button class="filter-btn active" data-cat="tous">Tous</button>
+        <button class="filter-btn" data-cat="non-relies" style="border-color: var(--orange); color: var(--orange);">⚠️ Non reliés</button>
+        <button class="filter-btn" data-cat="communication">Communication</button>
+        <button class="filter-btn" data-cat="qualite">Contrôle & Qualité</button>
+        <button class="filter-btn" data-cat="code">Code</button>
+        <button class="filter-btn" data-cat="langue">Langue & Poésie</button>
+        <button class="filter-btn" data-cat="archives">Archives & Sciences</button>
     </div>
 
-    <!-- SECTION CHAT -->
-    <div id="section-chat" class="view-section">
-        <div style="background:var(--panel); border:1px solid var(--hair); border-radius:8px; padding:20px; max-width:800px; margin:0 auto; display:flex; flex-direction:column; height:450px;">
-            <div id="chat-output" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:12px; margin-bottom:15px; padding-right:5px;"></div>
-            <div style="display:flex; gap:10px;">
-                <input type="text" id="user-input" placeholder="Posez une question au Hub..." style="flex:1; background:var(--bg); border:1px solid var(--hair); color:#fff; padding:12px; border-radius:6px; outline:none; font-size: 14px;">
-                <button id="btn-envoyer">Envoyer</button>
-            </div>
-        </div>
+    <div class="main-layout">
+        <aside>
+            <h4 style="margin-top:0; font-size:12px; color:var(--text-dim);">Modules Actifs</h4>
+            <div id="sidebar-modules-list"></div>
+        </aside>
+
+        <div class="hub-grid" id="hub-container"></div>
     </div>
 
-    <!-- MODALE UNIVERSELLE -->
     <div id="modal-overlay">
         <div id="modal-content">
             <div id="modal-inner-content"></div>
         </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL (LOGIQUE JS) -->
     <script type="module">
         import { HubCentral } from './Js/hub.js';
         import { Expert } from './Js/expert.js';
@@ -302,27 +245,14 @@
             renderSidebarModules();
         }
 
-        function basculerVue(vue) {
-            document.getElementById('section-modules').classList.toggle('active', vue === 'modules');
-            document.getElementById('section-chat').classList.toggle('active', vue === 'chat');
-            document.getElementById('btn-view-modules').classList.toggle('active', vue === 'modules');
-            document.getElementById('btn-view-chat').classList.toggle('active', vue === 'chat');
-        }
-
         function renderSidebarModules() {
             const list = document.getElementById('sidebar-modules-list');
             list.innerHTML = "";
             hub.experts.forEach(exp => {
                 const item = document.createElement('div');
-                item.style.cssText = "padding:8px 10px; margin:3px 0; border-radius:6px; cursor:pointer; font-size:11px; display:flex; justify-content:space-between; align-items:center; background:var(--bg); border:1px solid var(--hair);";
+                item.style.cssText = "padding:8px 10px; margin:3px 0; border-radius:6px; cursor:default; font-size:11px; display:flex; justify-content:space-between; align-items:center; background:var(--bg); border:1px solid var(--hair);";
                 const color = CATEGORIES_CONFIG[exp.cat]?.color || '#00d9ff';
                 item.innerHTML = `<span>${exp.nom}</span> <span style="font-size:8px; background:${color}; color:#000; padding:2px 5px; border-radius:4px; font-weight:bold;">${exp.cat}</span>`;
-                
-                item.onclick = () => {
-                    document.getElementById('user-input').value = `Interroger le module ${exp.nom} : `;
-                    document.getElementById('user-input').focus();
-                    basculerVue('chat');
-                };
                 list.appendChild(item);
             });
         }
@@ -335,7 +265,6 @@
             if (window.categorieActuelle === 'tous' || !window.categorieActuelle) {
                 filtres = hub.experts;
             } else if (window.categorieActuelle === 'non-relies') {
-                // Filtre dynamique : modules n'ayant pas de fichier lié et dont la mémoire (poids) est vide
                 filtres = hub.experts.filter(exp => !exp.handle && Object.keys(exp.poids || {}).length === 0);
             } else {
                 filtres = hub.experts.filter(m => m.cat === window.categorieActuelle);
@@ -377,7 +306,6 @@
                 `;
                 container.appendChild(card);
 
-                // Vérification initiale de la mémoire (LocalStorage)
                 setTimeout(() => {
                     const nbPoids = Object.keys(exp.poids || {}).length;
                     if (nbPoids > 0) {
@@ -387,13 +315,9 @@
                     }
                 }, 50);
 
-                // Zoom sur la mémoire (Modale propre)
                 card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
-
-                // Ajouter du savoir / Injecter de la mémoire
                 card.querySelector('.btn-injecter').onclick = () => ouvrirModalInjection(exp.id);
                 
-                // CHARGEMENT PROPRE DE LA MÉMOIRE (Évite l'affichage brut du fichier/JSON)
                 card.querySelector('.btn-lier').onclick = async () => {
                     try {
                         const [fileHandle] = await window.showOpenFilePicker({
@@ -486,10 +410,6 @@
             };
         }
 
-        document.getElementById('btn-view-modules').onclick = () => basculerVue('modules');
-        document.getElementById('btn-view-chat').onclick = () => basculerVue('chat');
-
-        // Gestion du bouton "Tout lancer" pour démarrer l'errance de tous les modules actifs d'un coup
         document.getElementById('btn-tout-lancer').onclick = () => {
             hub.experts.forEach(exp => {
                 if (exp.handle || Object.keys(exp.poids || {}).length > 0) {
@@ -507,66 +427,6 @@
         });
 
         initHub();
-
-        // --- GESTION DU CHAT GLOBAL (ASYNC) ---
-        const inputChat = document.getElementById('user-input');
-        const btnEnvoyer = document.getElementById('btn-envoyer');
-        const chatOutput = document.getElementById('chat-output');
-
-        async function envoyerMessage() {
-            const texte = inputChat.value.trim();
-            if (!texte) return;
-
-            // Message utilisateur (agrandi)
-            const msgUser = document.createElement('div');
-            msgUser.style.cssText = "background: var(--panel-alt); padding: 12px 16px; border-radius: 8px; align-self: flex-end; max-width: 80%; font-size: 14px; border: 1px solid var(--hair); color: #fff;";
-            msgUser.innerText = texte;
-            chatOutput.appendChild(msgUser);
-
-            inputChat.value = "";
-            chatOutput.scrollTop = chatOutput.scrollHeight;
-
-            // Indicateur de chargement
-            const msgHub = document.createElement('div');
-            msgHub.style.cssText = "background: #000; padding: 14px 18px; border-radius: 8px; align-self: flex-start; max-width: 85%; font-size: 15px; border: 1px solid var(--cyan); color: #fff;";
-            msgHub.innerHTML = "<em>Analyse en cours par les experts (mémoire + recherche)...</em>";
-            chatOutput.appendChild(msgHub);
-            chatOutput.scrollTop = chatOutput.scrollHeight;
-
-            try {
-                let rapportBrut = `Hub IA : Requête "${texte}" analysée.`;
-                if (typeof hub.traiterRequete === 'function') {
-                    rapportBrut = await hub.traiterRequete(texte);
-                }
-
-                // DÉCOUPAGE PROPRE : Réponse claire en haut, détails techniques masqués dans le menu déroulant
-                const lignes = rapportBrut.split('\n');
-                const syntheseLignes = lignes.filter(l => !l.includes('[Module :') && !l.includes('===') && !l.includes('Requête :'));
-                const syntheseTexte = syntheseLignes.join('<br>').trim() || rapportBrut;
-                const reflexionsTexte = lignes.filter(l => l.includes('[Module :') || l.includes('📌') || l.includes('Ancrage')).join('<br>');
-
-                msgHub.innerHTML = `
-                    <div style="font-size: 15px; line-height: 1.6; color: #fff; margin-bottom: 8px;">${syntheseTexte}</div>
-                    ${reflexionsTexte ? `
-                        <details class="hub-reflexion">
-                            <summary>🔍 Voir la réflexion détaillée des experts</summary>
-                            <div style="font-size: 12px; color: var(--text-dim); margin-top: 8px; white-space: pre-wrap;">${reflexionsTexte}</div>
-                        </details>
-                    ` : ''}
-                `;
-            } catch (err) {
-                msgHub.innerText = "Erreur lors du traitement par le Hub.";
-                console.error(err);
-            }
-            chatOutput.scrollTop = chatOutput.scrollHeight;
-        }
-
-        btnEnvoyer.onclick = envoyerMessage;
-        inputChat.onkeydown = (e) => {
-            if (e.key === 'Enter') {
-                envoyerMessage();
-            }
-        };
     </script>
 </body>
 </html>
