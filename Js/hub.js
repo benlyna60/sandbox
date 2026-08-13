@@ -20,7 +20,7 @@ export class HubCentral {
         const texteMin = texte.toLowerCase();
         const motsClesRequete = texteMin.split(/\s+/).filter(m => m.length > 2);
 
-        // 2. Les modules analysent la requête en parallèle (mémoire + recherche temps réel)
+        // 2. Les 14 modules analysent la requête en parallèle (mémoire + recherche temps réel)
         const resultatsAnalyses = await Promise.all(
             this.experts.map(async (exp) => {
                 const resultatBrut = await exp.analyser(texte);
@@ -62,31 +62,30 @@ export class HubCentral {
             modulesPertinents = modulesPertinents.slice(0, 2);
         }
 
-        // 4. Construction d'une réponse claire, fluide et unifiée (avec déduplication propre)
+        // 4. Construction d'une réponse claire, fluide et unifiée (avec nettoyage et sauts de ligne HTML)
         let rapport = "";
         const reflexionsVues = new Set();
 
         modulesPertinents.forEach((res, index) => {
             let textePropre = res.reflexion
-                .replace(/<[^>]*>?/gm, '')
                 .replace(/&#039;/g, "'")
                 .replace(/&quot;/g, '"')
-                .replace(/&amp;/g, '&');
+                .replace(/&amp;/g, '&')
+                .replace(/\n/g, '<br>');
 
-            // Évite d'afficher deux fois exactement la même réflexion si plusieurs modules renvoient la même chose
             if (!reflexionsVues.has(textePropre)) {
                 reflexionsVues.add(textePropre);
                 if (index === 0 || rapport === "") {
-                    rapport += `${textePropre}\n\n`;
+                    rapport += `${textePropre}<br><br>`;
                 } else {
-                    rapport += `Par ailleurs, ${textePropre}\n\n`;
+                    rapport += `<b>Par ailleurs,</b> ${textePropre}<br><br>`;
                 }
             }
         });
 
         // On conserve discrètement les balises à la fin pour alimenter ton menu déroulant dans l'interface
         modulesPertinents.forEach(res => {
-            rapport += `[Module : ${res.expert} - ${res.domaine}] : ${res.reflexion}\n`;
+            rapport += `<br><small>[Module : ${res.expert} - ${res.domaine}] : ${res.reflexion}</small>`;
         });
 
         // 5. Reprise immédiate de l'errance pour tous les modules
