@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub IA - Moteur & Modules</title>
+    <title>Hub IA - Moteur & Modules (Mode Statique JSON)</title>
     <style>
         :root {
             --bg: #0b0c10;
@@ -187,9 +187,9 @@
 <body>
 
     <header>
-        <h2>Hub IA Central - Moteur & Modules</h2>
+        <h2>Hub IA Central - Moteur & Modules (JSON Bridge)</h2>
         <div class="btn-group" style="align-items: center;">
-            <button id="btn-tout-lancer" style="background: rgba(0, 255, 102, 0.1); border-color: #00ff66; color: #00ff66;">🚀 Tout lancer (Errance)</button>
+            <button id="btn-tout-lancer" style="background: rgba(0, 255, 102, 0.1); border-color: #00ff66; color: #00ff66;">🚀 Tout synchroniser (Mode Boost)</button>
         </div>
     </header>
 
@@ -226,6 +226,9 @@
         const hub = new HubCentral();
         window.appState = {};
         window.categorieActuelle = 'tous';
+
+        // URL de base du fichier JSON partagé (peut être configurée ou pointée vers le stockage statique)
+        let jsonBridgeUrl = localStorage.getItem('hub_json_bridge_url') || '';
 
         function initHub() {
             MODULES_REGISTRY.forEach(modData => {
@@ -265,13 +268,13 @@
             if (window.categorieActuelle === 'tous' || !window.categorieActuelle) {
                 filtres = hub.experts;
             } else if (window.categorieActuelle === 'non-relies') {
-                filtres = hub.experts.filter(exp => !exp.handle && Object.keys(exp.poids || {}).length === 0);
+                filtres = hub.experts.filter(exp => Object.keys(exp.poids || {}).length === 0);
             } else {
                 filtres = hub.experts.filter(m => m.cat === window.categorieActuelle);
             }
 
             if (filtres.length === 0 && window.categorieActuelle === 'non-relies') {
-                container.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 30px; color: var(--text-dim); background: var(--panel); border-radius: 8px; border: 1px solid var(--hair);">✔ Excellent ! Tous les modules sont actuellement reliés et actifs.</div>`;
+                container.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 30px; color: var(--text-dim); background: var(--panel); border-radius: 8px; border: 1px solid var(--hair);">✔ Excellent ! Tous les modules ont leur mémoire JSON active.</div>`;
                 return;
             }
 
@@ -297,12 +300,12 @@
                         <div class="mini-stat"><div class="v" id="entropie-${exp.id}">0</div><div class="k">Diversité</div></div>
                     </div>
                     <div class="btn-row">
-                        <button class="action-btn btn-lier" id="btn-file-${exp.id}">📂 Charger</button>
+                        <button class="action-btn btn-lier" id="btn-file-${exp.id}">📂 Charger JSON</button>
                         <button class="action-btn btn-injecter" style="color:var(--orange)">💉 Injecter</button>
                         <button class="action-btn btn-lancer">Lancer</button>
                         <button class="action-btn btn-generer" style="color:var(--cyan)">Générer</button>
                     </div>
-                    <div class="output ${rtl}" id="out-${exp.id}">En attente de la mémoire...</div>
+                    <div class="output ${rtl}" id="out-${exp.id}">En attente de synchronisation JSON...</div>
                 `;
                 container.appendChild(card);
 
@@ -310,7 +313,7 @@
                     const nbPoids = Object.keys(exp.poids || {}).length;
                     if (nbPoids > 0) {
                         document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                        document.getElementById(`out-${exp.id}`).innerText = `✔ Mémoire active (${nbPoids} concepts).`;
+                        document.getElementById(`out-${exp.id}`).innerText = `✔ Mémoire JSON active (${nbPoids} concepts).`;
                         if (typeof exp.mettreAJourUI === 'function') exp.mettreAJourUI();
                     }
                 }, 50);
@@ -318,25 +321,31 @@
                 card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
                 card.querySelector('.btn-injecter').onclick = () => ouvrirModalInjection(exp.id);
                 
+                // Remplacement du sélecteur de fichier local par la lecture du pont JSON statique
                 card.querySelector('.btn-lier').onclick = async () => {
-                    try {
-                        const [fileHandle] = await window.showOpenFilePicker({
-                            types: [{
-                                description: 'Fichiers de mémoire (JSON / TXT)',
-                                accept: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
-                            }],
-                            multiple: false
-                        });
+                    const urlSaisie = prompt("Entrez l'URL du fichier JSON pour le module " + exp.nom + " :", jsonBridgeUrl);
+                    if (!urlSaisie) return;
 
-                        if (fileHandle) {
-                            await exp.lierFichierMemoire(fileHandle);
-                            const nbPoids = Object.keys(exp.poids || {}).length;
-                            document.getElementById(`out-${exp.id}`).innerText = `✔ Fichier lié avec succès (${nbPoids} concepts).`;
-                            document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                            card.querySelector('.btn-lier').innerText = "✔ Lié";
+                    try {
+                        const reponse = await fetch(urlSaisie + '?t=' + Date.now());
+                        if (!reponse.ok) throw new Error("Erreur de chargement du JSON");
+                        const data = await reponse.json();
+
+                        // Intégration des poids/données du JSON dans l'expert
+                        if (data.poids) {
+                            exp.poids = data.poids;
+                        } else {
+                            // Simulation de chargement de clés basées sur le contenu du JSON
+                            Object.keys(data).forEach(k => exp.mettreAJourPoids(k, 1));
                         }
+
+                        const nbPoids = Object.keys(exp.poids || {}).length;
+                        document.getElementById(`out-${exp.id}`).innerText = `✔ JSON chargé avec succès (${nbPoids} concepts).`;
+                        document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
+                        card.querySelector('.btn-lier').innerText = "✔ Lié JSON";
                     } catch (err) {
-                        console.log("Chargement annulé :", err);
+                        alert("Impossible de récupérer le fichier JSON distant. Vérifiez l'URL.");
+                        console.error(err);
                     }
                 };
 
@@ -412,7 +421,7 @@
 
         document.getElementById('btn-tout-lancer').onclick = () => {
             hub.experts.forEach(exp => {
-                if (exp.handle || Object.keys(exp.poids || {}).length > 0) {
+                if (Object.keys(exp.poids || {}).length > 0) {
                     if (typeof exp.lancerApprentissage === 'function') {
                         exp.lancerApprentissage();
                         const dot = document.getElementById(`dot-${exp.id}`);
