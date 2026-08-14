@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hub IA - Chat P2P Direct</title>
+    <!-- Intégration de LZ-String pour raccourcir les clés de liaison P2P -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
     <style>
         :root {
             --bg: #0b0c10;
@@ -207,19 +209,29 @@
             configPanel.style.display = 'flex';
         }
 
-        // Établissement de la connexion P2P en tant que Répondant (ou Initiateur)
+        // Établissement de la connexion P2P en tant que Répondant
         btnConnectRemote.onclick = async () => {
             try {
-                const offerB64 = inputOfferRemote.value.trim();
-                if (!offerB64) {
+                const offerInputText = inputOfferRemote.value.trim();
+                if (!offerInputText) {
                     alert("Veuillez coller l'offre valide.");
                     return;
                 }
 
                 p2pStatus.innerText = "Statut : Connexion en cours...";
                 
-                // Réception de l'offre distante
-                const offerDesc = JSON.parse(atob(offerB64));
+                // Décompression LZ-String (rétrocompatible avec le texte brut si besoin)
+                let decompressedOffer = offerInputText;
+                try {
+                    const maybeJson = LZString.decompressFromEncodedURIComponent(offerInputText);
+                    if (maybeJson) {
+                        decompressedOffer = maybeJson;
+                    }
+                } catch (e) {
+                    // Si ce n'est pas compressé, on garde le texte d'origine
+                }
+
+                const offerDesc = JSON.parse(atob(decompressedOffer));
                 await pc.setRemoteDescription(new RTCSessionDescription(offerDesc));
 
                 // Création de la réponse
@@ -227,9 +239,36 @@
                 await pc.setLocalDescription(answerDesc);
 
                 setTimeout(() => {
-                    const answerB64 = btoa(JSON.stringify(pc.localDescription));
+                    const rawAnswer = JSON.stringify(pc.localDescription);
+                    const answerB64 = btoa(rawAnswer);
+                    
+                    // Compression de la réponse pour l'alléger aussi
+                    const compressedAnswer = LZString.compressToEncodedURIComponent(answerB64);
+
                     p2pStatus.innerText = "Statut : Prêt ! Copiez la réponse ci-dessous :";
-                    outputAnswerContainer.innerHTML = `<textarea readonly style="height:40px; background:#000; color:#00d9ff;" onclick="this.select()">${answerB64}</textarea>`;
+                    outputAnswerContainer.innerHTML = `
+                        <div style="display:flex; gap:5px; align-items:center; margin-top:4px;">
+                            <textarea readonly style="height:40px; flex:1; background:#000; color:#00d9ff; font-size:10px; resize:none;" onclick="this.select()">${compressedAnswer}</textarea>
+                            <button type="button" id="btn-copy-ans" style="background:#2b3847; color:#00d9ff; border:1px solid #00d9ff; padding:8px; border-radius:6px; font-weight:bold; font-size:10px; cursor:pointer;">📋 Copier</button>
+                        </div>
+                    `;
+
+                    // Gestion du bouton copier pour la réponse mobile
+                    document.getElementById('btn-copy-ans').onclick = () => {
+                        const ta = outputAnswerContainer.querySelector('textarea');
+                        ta.select();
+                        navigator.clipboard.writeText(ta.value).then(() => {
+                            const btn = document.getElementById('btn-copy-ans');
+                            btn.innerText = "✔ Copié";
+                            btn.style.background = "#00ff66";
+                            btn.style.color = "#000";
+                            setTimeout(() => {
+                                btn.innerText = "📋 Copier";
+                                btn.style.background = "#2b3847";
+                                btn.style.color = "#00d9ff";
+                            }, 2000);
+                        });
+                    };
                 }, 1000);
 
             } catch (err) {
