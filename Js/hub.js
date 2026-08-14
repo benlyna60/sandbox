@@ -29,6 +29,13 @@ export class HubCentral {
             const texteMin = texte ? texte.toLowerCase() : '';
             const motsClesRequete = texteMin.split(/\s+/).filter(m => m.length > 2);
 
+            // --- 1. DÉTECTION DE L'INTENTION GLOBALE DE LA REQUÊTE ---
+            const motsTechniques = ["code", "script", "fonction", "python", "javascript", "sql", "bug", "erreur", "html", "css", "php", "java"];
+            const motsConversationnels = ["bonjour", "salut", "ça va", "coucou", "hello", "comment", "pourquoi", "merci", "aide", "dis-moi"];
+
+            const contientTechnique = motsTechniques.some(mot => texteMin.includes(mot));
+            const contientConversation = motsConversationnels.some(mot => texteMin.includes(mot));
+
             // 2. ÉTAPE DE SYNCHRONISATION CROISÉE : Les modules s'influencent mutuellement avant l'analyse
             this.propagerInfluencesEntreExperts();
 
@@ -62,11 +69,24 @@ export class HubCentral {
                             score += 5;
                         }
 
+                        // --- AJOUT DE L'ANALYSE D'INTENTION ---
+                        if (contientConversation && !contientTechnique) {
+                            if (catSecurisee === 'communication') {
+                                score += 15; // Gros boost pour le rédacteur
+                            } else if (catSecurisee === 'code') {
+                                score -= 10; // On écarte les modules de code en cas de conversation simple
+                            }
+                        } else if (contientTechnique) {
+                            if (catSecurisee === 'code') {
+                                score += 10; // Boost les experts du domaine code pour les requêtes techniques
+                            }
+                        }
+
                         return {
                             expert: exp.nom || 'Inconnu',
                             domaine: exp.cat || 'Général',
                             reflexion: resultatBrut.reflexion || "Analyse en cours...",
-                            score: score
+                            score: Math.max(0, score) // Évite les scores négatifs
                         };
                     } catch (erreurExpert) {
                         console.error(`Erreur interceptée pour l'expert ${exp?.id || 'inconnu'} :`, erreurExpert);
@@ -95,46 +115,34 @@ export class HubCentral {
                 modulesPertinents = modulesPertinents.slice(0, 2);
             }
 
-            // 5. SYNTHÈSE RÉDIGÉE INTELLIGENTE : Rapport structuré si la requête cible des éléments complexes, sinon affichage fluide
+            // 5. SYNTHÈSE RÉDIGÉE INTELLIGENTE
             let rapport = "";
-
             if (texteMin.includes("rapport") || texteMin.includes("deploiement") || texteMin.includes("flux") || texteMin.includes("script")) {
                 rapport = `<strong>Rapport d'analyse et de structuration technique</strong><br><br>`;
                 rapport += `<strong>1. Étapes de déploiement et de configuration :</strong><br>`;
                 rapport += `• Initialisation des modules de contrôle local et mise en place des registres d'exécution sur l'environnement de la machine.<br>`;
                 rapport += `• Validation séquentielle des flux de données et des points de raccordement des scripts.<br><br>`;
-                
                 rapport += `<strong>2. Architecture d'automatisation des flux :</strong><br>`;
                 rapport += `• Traitement asynchrone des flux textuels et structuration par les experts pour garantir l'efficacité opérationnelle.<br>`;
                 rapport += `• Exécution client-side intégrale pour la gestion sécurisée des données.<br><br>`;
-                
                 rapport += `<strong>3. Analyse de conformité et des normes applicables :</strong><br>`;
                 rapport += `• Vérification rigoureuse des critères de structure et de qualité. Le système respecte les exigences de traçabilité et de rigueur technique.<br><br>`;
             } else {
                 const reflexionsVues = new Set();
                 modulesPertinents.forEach((res, index) => {
                     let textePropre = res.reflexion
-                        .replace(/&#039;/g, "'")
-                        .replace(/&quot;/g, '"')
-                        .replace(/&amp;/g, '&')
-                        .replace(/\*\*Directive\*\*:\s*/gi, '')
-                        .replace(/\*\*Validation\*\*:\s*/gi, '')
-                        .replace(/Directive\s*:\s*/gi, '')
-                        .replace(/Validation\s*:\s*/gi, '')
+                        .replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')
+                        .replace(/\*\*Directive\*\*:\s*/gi, '').replace(/\*\*Validation\*\*:\s*/gi, '')
+                        .replace(/Directive\s*:\s*/gi, '').replace(/Validation\s*:\s*/gi, '')
                         .replace(/\n/g, '<br>');
 
                     if (!reflexionsVues.has(textePropre)) {
                         reflexionsVues.add(textePropre);
-                        if (index === 0 || rapport === "") {
-                            rapport += `${textePropre}<br><br>`;
-                        } else {
-                            rapport += ` ${textePropre}<br><br>`;
-                        }
+                        rapport += (index === 0 || rapport === "") ? `${textePropre}<br><br>` : ` ${textePropre}<br><br>`;
                     }
                 });
             }
 
-            // On conserve discrètement les balises techniques à la fin pour alimenter le menu déroulant (détails)
             modulesPertinents.forEach(res => {
                 rapport += `<br><small>[Module : ${res.expert} - ${res.domaine}] : ${res.reflexion}</small>`;
             });
@@ -145,7 +153,6 @@ export class HubCentral {
             console.error("Erreur critique dans traiterRequete :", erreurGlobale);
             throw erreurGlobale;
         } finally {
-            // 6. Reprise immédiate et garantie de l'errance pour tous les modules
             this.estEnModeFocus = false;
             if (Array.isArray(this.experts)) {
                 this.experts.forEach(exp => {
@@ -161,13 +168,10 @@ export class HubCentral {
         }
     }
 
-    // Mécanisme de synchronisation croisée : un module partage ses poids forts avec son voisin
     propagerInfluencesEntreExperts() {
         if (this.experts.length < 2) return;
-
         const sourceIndex = Math.floor(Math.random() * this.experts.length);
         const cibleIndex = (sourceIndex + 1) % this.experts.length;
-
         const source = this.experts[sourceIndex];
         const cible = this.experts[cibleIndex];
 
