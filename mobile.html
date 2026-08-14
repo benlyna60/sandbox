@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hub IA - Chat Formulaire Direct</title>
+    <title>Hub IA - Chat P2P Direct</title>
     <style>
         :root {
             --bg: #0b0c10;
@@ -57,19 +57,22 @@
             border-bottom: 1px solid var(--hair);
             padding: 10px 16px;
             display: none;
+            flex-direction: column;
             gap: 8px;
-            align-items: center;
         }
 
-        #config-panel input {
-            flex: 1;
+        #config-panel textarea, #config-panel input {
+            width: 100%;
             background: var(--bg);
             border: 1px solid var(--hair);
             color: #fff;
             padding: 8px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             outline: none;
+            box-sizing: border-box;
+            resize: none;
+            height: 40px;
         }
 
         #config-panel button {
@@ -118,7 +121,6 @@
             border-bottom-left-radius: 2px;
         }
 
-        /* Formulaire en bas */
         form {
             background: var(--panel);
             border-top: 1px solid var(--hair);
@@ -128,7 +130,7 @@
             margin: 0;
         }
 
-        textarea {
+        textarea#user-input {
             flex: 1;
             background: var(--bg);
             border: 1px solid var(--hair);
@@ -157,60 +159,123 @@
 <body>
 
     <header>
-        <h2>Chat Hub Mobile (Formulaire)</h2>
-        <button class="settings-toggle" id="btn-toggle-config" type="button">⚙️ Source URL</button>
+        <h2>Chat Hub Mobile (P2P Direct)</h2>
+        <button class="settings-toggle" id="btn-toggle-config" type="button">⚙️ Connexion P2P</button>
     </header>
 
     <div id="config-panel">
-        <input type="text" id="input-url" placeholder="URL du serveur (ex: http://192.168.0.35:8000/hub-state.json)">
-        <button id="btn-save-url" type="button">OK</button>
+        <div style="font-size: 12px; color: var(--cyan); font-weight: bold;" id="p2p-status">Statut : Non connecté</div>
+        <textarea id="input-offer-remote" placeholder="Coller l'offre du PC ici..."></textarea>
+        <button id="btn-connect-remote" type="button">1. Établir la connexion</button>
+        <div style="font-size: 11px; color: var(--text-dim); margin-top: 4px;" id="output-answer-container"></div>
     </div>
 
     <div id="chat-container">
-        <div class="message hub">Mode formulaire direct initialisé.</div>
+        <div class="message hub">Mode P2P initialisé. Ouvrez le panneau 'Connexion P2P' en haut à droite pour lier l'appareil.</div>
     </div>
 
-    <!-- On utilise un formulaire standard pour forcer l'envoi brut -->
     <form id="chat-form">
         <textarea id="user-input" placeholder="Écrire un message..."></textarea>
         <button id="btn-envoyer" type="submit">➤</button>
     </form>
 
     <script>
-        const inputUrl = document.getElementById('input-url');
-        const btnSaveUrl = document.getElementById('btn-save-url');
-        const configPanel = document.getElementById('config-panel');
         const btnToggleConfig = document.getElementById('btn-toggle-config');
+        const configPanel = document.getElementById('config-panel');
+        const p2pStatus = document.getElementById('p2p-status');
+        const inputOfferRemote = document.getElementById('input-offer-remote');
+        const btnConnectRemote = document.getElementById('btn-connect-remote');
+        const outputAnswerContainer = document.getElementById('output-answer-container');
+        
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input');
         const chatForm = document.getElementById('chat-form');
 
-        let serverUrl = localStorage.getItem('hub_server_url') || '';
-        inputUrl.value = serverUrl;
+        // Configuration WebRTC P2P
+        let pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+        let dataChannel = null;
 
         btnToggleConfig.onclick = () => {
             configPanel.style.display = configPanel.style.display === 'flex' ? 'none' : 'flex';
         };
 
-        btnSaveUrl.onclick = () => {
-            serverUrl = inputUrl.value.trim();
-            localStorage.setItem('hub_server_url', serverUrl);
-            configPanel.style.display = 'none';
-            alert("URL enregistrée : " + serverUrl);
+        // Si l'URL contient une offre directe (?offer=...), on la récupère automatiquement
+        const urlParams = new URLSearchParams(window.location.search);
+        const autoOffer = urlParams.get('offer');
+        if (autoOffer) {
+            inputOfferRemote.value = autoOffer;
+            configPanel.style.display = 'flex';
+        }
+
+        // Établissement de la connexion P2P en tant que Répondant (ou Initiateur)
+        btnConnectRemote.onclick = async () => {
+            try {
+                const offerB64 = inputOfferRemote.value.trim();
+                if (!offerB64) {
+                    alert("Veuillez coller l'offre valide.");
+                    return;
+                }
+
+                p2pStatus.innerText = "Statut : Connexion en cours...";
+                
+                // Réception de l'offre distante
+                const offerDesc = JSON.parse(atob(offerB64));
+                await pc.setRemoteDescription(new RTCSessionDescription(offerDesc));
+
+                // Création de la réponse
+                const answerDesc = await pc.createAnswer();
+                await pc.setLocalDescription(answerDesc);
+
+                setTimeout(() => {
+                    const answerB64 = btoa(JSON.stringify(pc.localDescription));
+                    p2pStatus.innerText = "Statut : Prêt ! Copiez la réponse ci-dessous :";
+                    outputAnswerContainer.innerHTML = `<textarea readonly style="height:40px; background:#000; color:#00d9ff;" onclick="this.select()">${answerB64}</textarea>`;
+                }, 1000);
+
+            } catch (err) {
+                p2pStatus.innerText = "Statut : Erreur de connexion";
+                alert("Erreur P2P : " + err.message);
+            }
         };
 
-        chatForm.onsubmit = async (e) => {
+        // Gestion du canal de données direct
+        pc.ondatachannel = (e) => {
+            dataChannel = e.channel;
+            setupDataChannel();
+        };
+
+        function setupDataChannel() {
+            dataChannel.onopen = () => {
+                p2pStatus.innerText = "Statut : Connecté en direct ! ✅";
+                configPanel.style.display = 'none';
+                const successDiv = document.createElement('div');
+                successDiv.className = 'message hub';
+                successDiv.innerText = "Liaison P2P établie avec succès !";
+                chatContainer.appendChild(successDiv);
+            };
+
+            dataChannel.onmessage = (e) => {
+                const hubDiv = document.createElement('div');
+                hubDiv.className = 'message hub';
+                hubDiv.innerText = e.data;
+                chatContainer.appendChild(hubDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            };
+        }
+
+        // Envoi du message en P2P direct
+        chatForm.onsubmit = (e) => {
             e.preventDefault();
             const texte = userInput.value.trim();
             if (!texte) return;
 
-            if (!serverUrl) {
-                alert("Veuillez configurer l'URL du serveur via 'Source URL'.");
+            if (!dataChannel || dataChannel.readyState !== 'open') {
+                alert("La connexion P2P n'est pas active. Ouvrez le panneau 'Connexion P2P'.");
                 configPanel.style.display = 'flex';
                 return;
             }
 
-            // Affiche immédiatement le message utilisateur à l'écran
+            // Affichage local du message utilisateur
             const userDiv = document.createElement('div');
             userDiv.className = 'message user';
             userDiv.innerText = texte;
@@ -218,30 +283,9 @@
 
             userInput.value = "";
 
-            try {
-                // Envoi direct via fetch basique
-                await fetch(serverUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        dernierMessageUser: texte,
-                        dernierMessageHub: "En attente...",
-                        reflexion: "Transmis via formulaire"
-                    })
-                });
-
-                const hubDiv = document.createElement('div');
-                hubDiv.className = 'message hub';
-                hubDiv.innerText = "Message envoyé au PC !";
-                chatContainer.appendChild(hubDiv);
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            } catch (err) {
-                const errDiv = document.createElement('div');
-                errDiv.className = 'message hub';
-                errDiv.innerText = "Erreur d'envoi réseau.";
-                chatContainer.appendChild(errDiv);
-            }
+            // Envoi direct par le canal P2P
+            dataChannel.send(texte);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         };
     </script>
 </body>
