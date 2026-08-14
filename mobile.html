@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hub IA - Chat Mobile (Mode Statique JSON)</title>
+    <title>Hub IA - Chat Mobile (Mode Flask POST)</title>
     <style>
         :root {
             --bg: #0b0c10;
@@ -27,7 +27,6 @@
             box-sizing: border-box;
         }
 
-        /* En-tête épuré avec configuration du fichier JSON partagé */
         header {
             background: var(--panel);
             border-bottom: 1px solid var(--hair);
@@ -53,7 +52,6 @@
             cursor: pointer;
         }
 
-        /* Panneau de configuration de l'URL JSON distante (escamotable) */
         #config-panel {
             background: var(--panel-alt);
             border-bottom: 1px solid var(--hair);
@@ -85,7 +83,6 @@
             cursor: pointer;
         }
 
-        /* Zone de discussion centrale */
         #chat-container {
             flex: 1;
             overflow-y: auto;
@@ -130,7 +127,6 @@
             white-space: pre-wrap;
         }
 
-        /* Barre de saisie en bas */
         footer {
             background: var(--panel);
             border-top: 1px solid var(--hair);
@@ -172,21 +168,21 @@
 <body>
 
     <header>
-        <h2>Chat Hub Mobile (JSON Bridge)</h2>
+        <h2>Chat Hub Mobile (Flask Bridge)</h2>
         <button class="settings-toggle" id="btn-toggle-config">⚙️ Source JSON</button>
     </header>
 
     <div id="config-panel">
-        <input type="text" id="input-url" placeholder="URL du fichier JSON (ex: https://.../hub-state.json)">
+        <input type="text" id="input-url" placeholder="URL du serveur (ex: http://192.168.0.35:8000/hub-state.json)">
         <button id="btn-save-url">OK</button>
     </div>
 
     <div id="chat-container">
-        <div class="message hub">Mode 100% statique JSON initialisé. Prêt pour l'échange de données inter-domaines.</div>
+        <div class="message hub">Mode pont Flask initialisé. Prêt pour l'écriture et la lecture réseau local.</div>
     </div>
 
     <footer>
-        <textarea id="user-input" placeholder="Envoyer une requête JSON..."></textarea>
+        <textarea id="user-input" placeholder="Envoyer un message au Hub..."></textarea>
         <button id="btn-envoyer">➤</button>
     </footer>
 
@@ -199,7 +195,6 @@
         const userInput = document.getElementById('user-input');
         const btnEnvoyer = document.getElementById('btn-envoyer');
 
-        // Gestion de l'URL du fichier JSON partagé stockée sur le téléphone
         let jsonBridgeUrl = localStorage.getItem('hub_json_bridge_url') || '';
         inputUrl.value = jsonBridgeUrl;
 
@@ -211,10 +206,9 @@
             jsonBridgeUrl = inputUrl.value.trim();
             localStorage.setItem('hub_json_bridge_url', jsonBridgeUrl);
             configPanel.style.display = 'none';
-            ajouterMessageHub(`URL du pont JSON mise à jour : ${jsonBridgeUrl}`);
+            ajouterMessageHub(`URL du pont mise à jour : ${jsonBridgeUrl}`);
         };
 
-        // Chargement de l'historique de discussion local du téléphone
         let historiqueChat = JSON.parse(localStorage.getItem('chat_history_mobile') || '[]');
         historiqueChat.forEach(msg => afficherMessageUI(msg.texte, msg.expediteur, msg.reflexion));
 
@@ -253,7 +247,7 @@
             if (!texte) return;
 
             if (!jsonBridgeUrl) {
-                alert("Veuillez configurer l'URL de votre fichier JSON partagé via le bouton 'Source JSON'.");
+                alert("Veuillez configurer l'URL de votre serveur via le bouton 'Source JSON'.");
                 configPanel.style.display = 'flex';
                 return;
             }
@@ -262,37 +256,35 @@
             userInput.value = "";
             userInput.style.height = '22px';
 
-            // Message de chargement temporaire
             const msgLoadId = 'load-' + Date.now();
             const divLoad = document.createElement('div');
             divLoad.className = 'message hub';
             divLoad.id = msgLoadId;
-            divLoad.innerText = "Lecture du flux JSON distant...";
+            divLoad.innerText = "Transmission vers le PC...";
             chatContainer.appendChild(divLoad);
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
             try {
-                // Lecture de la mémoire globale et de l'état statique JSON (zéro serveur, simple fetch GET)
-                const reponse = await fetch(jsonBridgeUrl + '?t=' + Date.now(), {
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' }
+                // Envoi des données en POST vers Flask
+                const reponse = await fetch(jsonBridgeUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        dernierMessageUser: texte,
+                        dernierMessageHub: "En attente de traitement...",
+                        reflexion: "Message transmis depuis le mobile."
+                    })
                 });
 
                 document.getElementById(msgLoadId).remove();
 
-                if (!reponse.ok) throw new Error("Impossible de lire le fichier JSON distant.");
+                if (!reponse.ok) throw new Error("Erreur de transmission au serveur.");
 
-                const data = await reponse.json();
-                
-                // Exploitation des données statiques du JSON récupéré
-                const reponseTexte = data.dernierMessageHub || data.reponse || "Données JSON synchronisées avec succès.";
-                const reflexionTexte = data.reflexion || "Mode Boost statique actif - Pont inter-domaines opérationnel.";
-
-                ajouterMessageHub(reponseTexte, reflexionTexte);
+                ajouterMessageHub("Message transmis avec succès au PC.", "SYNCHRONISÉ");
 
             } catch (err) {
                 document.getElementById(msgLoadId).remove();
-                ajouterMessageHub("Erreur de lecture du pont JSON statique. Vérifiez l'URL configurée.");
+                ajouterMessageHub("Erreur d'écriture sur le serveur Flask. Vérifiez la connexion.");
                 console.error(err);
             }
         }
@@ -305,7 +297,6 @@
             }
         };
 
-        // Ajustement automatique de la hauteur du champ de texte
         userInput.oninput = () => {
             userInput.style.height = '22px';
             userInput.style.height = (userInput.scrollHeight - 6) + 'px';
