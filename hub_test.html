@@ -189,6 +189,7 @@
     <header>
         <h2>Hub IA Central - Moteur & Modules (JSON Bridge)</h2>
         <div class="btn-group" style="align-items: center;">
+            <button id="btn-lier-fichier-local" style="background: rgba(180, 124, 255, 0.1); border-color: var(--purple); color: var(--purple);">💾 Lier & Autoriser JSON Local</button>
             <button id="btn-verifier-table" style="background: rgba(0, 217, 255, 0.1); border-color: var(--cyan); color: var(--cyan);">📥 Vérifier la Table (Mobile)</button>
             <button id="btn-tout-lancer" style="background: rgba(0, 255, 102, 0.1); border-color: #00ff66; color: #00ff66;">🚀 Tout synchroniser (Mode Boost)</button>
         </div>
@@ -229,6 +230,9 @@
         window.categorieActuelle = 'tous';
 
         let jsonBridgeUrl = localStorage.getItem('hub_json_bridge_url') || 'https://benlyna60.github.io/sandbox/hub-state.json';
+        
+        // Handle pour l'accès direct en lecture/écriture au fichier local
+        let localFileHandle = null;
 
         function initHub() {
             MODULES_REGISTRY.forEach(modData => {
@@ -247,6 +251,33 @@
             renderGrilleModules();
             renderSidebarModules();
         }
+
+        // --- NOUVELLES FONCTIONS DE LECTURE / ECRITURE DIRECTE SUR LE DISQUE ---
+        async function lireFichierLocalDirect() {
+            if (!localFileHandle) return null;
+            try {
+                const file = await localFileHandle.getFile();
+                const text = await file.text();
+                return JSON.parse(text);
+            } catch (e) {
+                console.error("Erreur de lecture du fichier local:", e);
+                return null;
+            }
+        }
+
+        async function ecrireFichierLocalDirect(data) {
+            if (!localFileHandle) return false;
+            try {
+                const writable = await localFileHandle.createWritable();
+                await writable.write(JSON.stringify(data, null, 2));
+                await writable.close();
+                return true;
+            } catch (e) {
+                console.error("Erreur d'écriture du fichier local:", e);
+                return false;
+            }
+        }
+        // ----------------------------------------------------------------------
 
         function renderSidebarModules() {
             const list = document.getElementById('sidebar-modules-list');
@@ -352,8 +383,8 @@
                     if (typeof exp.lancerApprentissage === 'function') exp.lancerApprentissage();
                 };
 
-                // Bouton Générer optimisé pour préparer le message pour le mobile
-                card.querySelector('.btn-generer').onclick = () => {
+                // Bouton Générer avec écriture directe si le fichier local est lié
+                card.querySelector('.btn-generer').onclick = async () => {
                     let texteReponse = "Aucun texte généré récent. Utilisez Zoom pour voir la mémoire.";
                     if (typeof exp.dernierTexte === 'string' && exp.dernierTexte.length > 0) {
                         texteReponse = exp.dernierTexte;
@@ -366,11 +397,24 @@
                         }
                     }
 
-                    const jsonBridgePayload = JSON.stringify({
+                    const jsonPayloadObj = {
                         dernierMessageUser: window.derniereQuestionRecue || "Requête mobile",
                         dernierMessageHub: texteReponse,
                         reflexion: `Module actif : ${exp.nom} (${exp.cat})`
-                    }, null, 2);
+                    };
+
+                    // Si on a l'accès direct au fichier sur le disque
+                    if (localFileHandle) {
+                        const succes = await ecrireFichierLocalDirect(jsonPayloadObj);
+                        if (succes) {
+                            document.getElementById(`out-${exp.id}`).innerText = "✔ Réponse écrite directement dans hub-state.json sur ton disque !";
+                            alert("✔ La réponse a été enregistrée directement sur ton disque dur !");
+                            return;
+                        }
+                    }
+
+                    // Sinon, repli sur l'affichage classique modal
+                    const jsonBridgePayload = JSON.stringify(jsonPayloadObj, null, 2);
 
                     document.getElementById('modal-inner-content').innerHTML = `
                         <h3 style="color:#fff; margin-top:0;">📤 Pont JSON : ${exp.nom}</h3>
@@ -395,8 +439,52 @@
             });
         }
 
+        // Bouton pour sélectionner et autoriser l'accès au fichier JSON sur ton disque dur
+        document.getElementById('btn-lier-fichier-local').onclick = async () => {
+            try {
+                [localFileHandle] = await window.showOpenFilePicker({
+                    types: [{
+                        description: 'Fichier JSON local',
+                        accept: { 'application/json': ['.json'] }
+                    }]
+                });
+
+                const data = await lireFichierLocalDirect();
+                if (data) {
+                    window.derniereQuestionRecue = data.dernierMessageUser || "";
+                    alert("✔ Fichier local lié avec succès ! Les réponses s'écriront directement dessus.");
+                    document.getElementById('btn-lier-fichier-local').innerText = "✔ Fichier Local Connecté";
+                    document.getElementById('btn-lier-fichier-local').style.borderColor = "#00ff66";
+                    document.getElementById('btn-lier-fichier-local').style.color = "#00ff66";
+                }
+            } catch (err) {
+                console.log("Sélection de fichier annulée ou non supportée.", err);
+            }
+        };
+
         // Fonction pour vérifier ce que le mobile a écrit sur la table partagée
         document.getElementById('btn-verifier-table').onclick = async () => {
+            // Si un fichier local est lié, on lit directement sur le disque
+            if (localFileHandle) {
+                const data = await lireFichierLocalDirect();
+                if (data) {
+                    window.derniereQuestionRecue = data.dernierMessageUser || "Aucune question";
+                    document.getElementById('modal-inner-content').innerHTML = `
+                        <h3 style="color:#fff; margin-top:0;">📥 Message reçu (Fichier Local)</h3>
+                        <p style="font-size:11px; color:var(--text-dim);">Question posée sur la table local :</p>
+                        <div style="background:#000; padding:10px; color:#00ff66; font-size:12px; border-radius:6px; margin-bottom:15px;">"${window.derniereQuestionRecue}"</div>
+                        <p style="font-size:11px; color:var(--text-dim);">Clique sur <b>Générer</b> sur le module de ton choix pour répondre et mettre à jour le fichier automatiquement !</p>
+                        <button id="btn-fermer-modal-3" style="width:100%;">Compris</button>
+                    `;
+                    document.getElementById('modal-overlay').style.display = 'flex';
+                    document.getElementById('btn-fermer-modal-3').onclick = () => {
+                        document.getElementById('modal-overlay').style.display = 'none';
+                    };
+                    return;
+                }
+            }
+
+            // Sinon lecture via URL distante
             const url = prompt("Vérifier l'URL de la table partagée (hub-state.json) :", jsonBridgeUrl);
             if (!url) return;
             jsonBridgeUrl = url;
