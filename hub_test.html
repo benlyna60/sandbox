@@ -350,23 +350,12 @@
                 document.getElementById('p2p-status-text').style.color = "#00ff66";
             };
 
-            dataChannel.onmessage = (e) => {
+            dataChannel.onmessage = async (e) => {
                 const messageMobile = e.data;
                 console.log("📩 Message reçu du mobile via P2P :", messageMobile);
-                window.derniereQuestionRecue = messageMobile;
 
-                // Sélection automatique d'un expert pour répondre
-                let expertCible = window.appState['expert-comm'] || Object.values(window.appState)[0];
-                let texteReponse = `Hub Central : Réponse à "${messageMobile}"`;
-                
-                if (expertCible) {
-                    const cles = Object.keys(expertCible.poids || {});
-                    if (cles.length > 0) {
-                        texteReponse = `Analyse (${expertCible.nom}) [${cles.slice(0, 3).join(', ')}] : Bien reçu !`;
-                    }
-                }
+                let texteReponse = await hub.traiterRequete(messageMobile);
 
-                // Envoi de la réponse directement par le canal P2P vers le mobile
                 if (dataChannel && dataChannel.readyState === 'open') {
                     dataChannel.send(texteReponse);
                     console.log("📤 Réponse renvoyée au mobile via P2P :", texteReponse);
