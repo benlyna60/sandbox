@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hub IA - Chat Mobile (Mode Diagnostic Flask)</title>
+    <title>Hub IA - Chat Formulaire Direct</title>
     <style>
         :root {
             --bg: #0b0c10;
@@ -118,21 +118,14 @@
             border-bottom-left-radius: 2px;
         }
 
-        .message.hub .reflexion-bloc {
-            margin-top: 8px;
-            font-size: 11px;
-            color: var(--text-dim);
-            border-top: 1px solid var(--hair);
-            padding-top: 6px;
-            white-space: pre-wrap;
-        }
-
-        footer {
+        /* Formulaire en bas */
+        form {
             background: var(--panel);
             border-top: 1px solid var(--hair);
             padding: 12px;
             display: flex;
             gap: 10px;
+            margin: 0;
         }
 
         textarea {
@@ -146,7 +139,6 @@
             font-size: 14px;
             resize: none;
             height: 22px;
-            max-height: 100px;
             font-family: inherit;
         }
 
@@ -159,32 +151,30 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h2>Chat Hub Mobile (Diagnostic)</h2>
-        <button class="settings-toggle" id="btn-toggle-config">⚙️ Source JSON</button>
+        <h2>Chat Hub Mobile (Formulaire)</h2>
+        <button class="settings-toggle" id="btn-toggle-config" type="button">⚙️ Source URL</button>
     </header>
 
     <div id="config-panel">
         <input type="text" id="input-url" placeholder="URL du serveur (ex: http://192.168.0.35:8000/hub-state.json)">
-        <button id="btn-save-url">OK</button>
+        <button id="btn-save-url" type="button">OK</button>
     </div>
 
     <div id="chat-container">
-        <div class="message hub">Mode diagnostic initialisé. Prêt pour l'analyse des requêtes.</div>
+        <div class="message hub">Mode formulaire direct initialisé.</div>
     </div>
 
-    <footer>
-        <textarea id="user-input" placeholder="Envoyer un message au Hub..."></textarea>
-        <button id="btn-envoyer">➤</button>
-    </footer>
+    <!-- On utilise un formulaire standard pour forcer l'envoi brut -->
+    <form id="chat-form">
+        <textarea id="user-input" placeholder="Écrire un message..."></textarea>
+        <button id="btn-envoyer" type="submit">➤</button>
+    </form>
 
     <script>
         const inputUrl = document.getElementById('input-url');
@@ -193,113 +183,65 @@
         const btnToggleConfig = document.getElementById('btn-toggle-config');
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input');
-        const btnEnvoyer = document.getElementById('btn-envoyer');
+        const chatForm = document.getElementById('chat-form');
 
-        let jsonBridgeUrl = localStorage.getItem('hub_json_bridge_url') || '';
-        inputUrl.value = jsonBridgeUrl;
+        let serverUrl = localStorage.getItem('hub_server_url') || '';
+        inputUrl.value = serverUrl;
 
         btnToggleConfig.onclick = () => {
             configPanel.style.display = configPanel.style.display === 'flex' ? 'none' : 'flex';
         };
 
         btnSaveUrl.onclick = () => {
-            jsonBridgeUrl = inputUrl.value.trim();
-            localStorage.setItem('hub_json_bridge_url', jsonBridgeUrl);
+            serverUrl = inputUrl.value.trim();
+            localStorage.setItem('hub_server_url', serverUrl);
             configPanel.style.display = 'none';
-            ajouterMessageHub(`URL du pont mise à jour : ${jsonBridgeUrl}`);
+            alert("URL enregistrée : " + serverUrl);
         };
 
-        let historiqueChat = JSON.parse(localStorage.getItem('chat_history_mobile') || '[]');
-        historiqueChat.forEach(msg => afficherMessageUI(msg.texte, msg.expediteur, msg.reflexion));
-
-        function ajouterMessageHub(texte, reflexion = '') {
-            afficherMessageUI(texte, 'hub', reflexion);
-            sauvegarderHistorique(texte, 'hub', reflexion);
-        }
-
-        function ajouterMessageUser(texte) {
-            afficherMessageUI(texte, 'user');
-            sauvegarderHistorique(texte, 'user');
-        }
-
-        function afficherMessageUI(texte, expediteur, reflexion = '') {
-            const div = document.createElement('div');
-            div.className = `message ${expediteur}`;
-            
-            if (expediteur === 'hub' && reflexion) {
-                div.innerHTML = `<div>${texte}</div><div class="reflexion-bloc">🔍 ${reflexion}</div>`;
-            } else {
-                div.innerText = texte;
-            }
-
-            chatContainer.appendChild(div);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        function sauvegarderHistorique(texte, expediteur, reflexion = '') {
-            historiqueChat.push({ texte, expediteur, reflexion });
-            if (historiqueChat.length > 50) historiqueChat.shift();
-            localStorage.setItem('chat_history_mobile', JSON.stringify(historiqueChat));
-        }
-
-        async function envoyerRequete() {
+        chatForm.onsubmit = async (e) => {
+            e.preventDefault();
             const texte = userInput.value.trim();
             if (!texte) return;
 
-            if (!jsonBridgeUrl) {
-                alert("Veuillez configurer l'URL de votre serveur via le bouton 'Source JSON'.");
+            if (!serverUrl) {
+                alert("Veuillez configurer l'URL du serveur via 'Source URL'.");
                 configPanel.style.display = 'flex';
                 return;
             }
 
-            ajouterMessageUser(texte);
-            userInput.value = "";
-            userInput.style.height = '22px';
+            // Affiche immédiatement le message utilisateur à l'écran
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user';
+            userDiv.innerText = texte;
+            chatContainer.appendChild(userDiv);
 
-            const msgLoadId = 'load-' + Date.now();
-            const divLoad = document.createElement('div');
-            divLoad.className = 'message hub';
-            divLoad.id = msgLoadId;
-            divLoad.innerText = "Transmission vers le PC...";
-            chatContainer.appendChild(divLoad);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            userInput.value = "";
 
             try {
-                const reponse = await fetch(jsonBridgeUrl, {
+                // Envoi direct via fetch basique
+                await fetch(serverUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         dernierMessageUser: texte,
-                        dernierMessageHub: "En attente de traitement...",
-                        reflexion: "Message transmis depuis le mobile."
+                        dernierMessageHub: "En attente...",
+                        reflexion: "Transmis via formulaire"
                     })
                 });
 
-                document.getElementById(msgLoadId).remove();
-
-                if (!reponse.ok) throw new Error("Erreur HTTP serveur : " + reponse.status);
-
-                ajouterMessageHub("Message transmis avec succès au PC.", "SYNCHRONISÉ");
+                const hubDiv = document.createElement('div');
+                hubDiv.className = 'message hub';
+                hubDiv.innerText = "Message envoyé au PC !";
+                chatContainer.appendChild(hubDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
 
             } catch (err) {
-                document.getElementById(msgLoadId).remove();
-                // Affiche l'erreur technique précise directement dans l'interface mobile
-                ajouterMessageHub("ERREUR FETCH : " + err.message, "DIAGNOSTIC ÉCHEC");
-                console.error(err);
+                const errDiv = document.createElement('div');
+                errDiv.className = 'message hub';
+                errDiv.innerText = "Erreur d'envoi réseau.";
+                chatContainer.appendChild(errDiv);
             }
-        }
-
-        btnEnvoyer.onclick = envoyerRequete;
-        userInput.onkeydown = (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                envoyerRequete();
-            }
-        };
-
-        userInput.oninput = () => {
-            userInput.style.height = '22px';
-            userInput.style.height = (userInput.scrollHeight - 6) + 'px';
         };
     </script>
 </body>
