@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hub IA - Chat Mobile (Mode Flask POST)</title>
+    <title>Hub IA - Chat Mobile (Mode Diagnostic Flask)</title>
     <style>
         :root {
             --bg: #0b0c10;
@@ -168,7 +168,7 @@
 <body>
 
     <header>
-        <h2>Chat Hub Mobile (Flask Bridge)</h2>
+        <h2>Chat Hub Mobile (Diagnostic)</h2>
         <button class="settings-toggle" id="btn-toggle-config">⚙️ Source JSON</button>
     </header>
 
@@ -178,7 +178,7 @@
     </div>
 
     <div id="chat-container">
-        <div class="message hub">Mode pont Flask initialisé. Prêt pour l'écriture et la lecture réseau local.</div>
+        <div class="message hub">Mode diagnostic initialisé. Prêt pour l'analyse des requêtes.</div>
     </div>
 
     <footer>
@@ -265,7 +265,6 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
             try {
-                // Envoi des données en POST vers Flask
                 const reponse = await fetch(jsonBridgeUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -278,13 +277,14 @@
 
                 document.getElementById(msgLoadId).remove();
 
-                if (!reponse.ok) throw new Error("Erreur de transmission au serveur.");
+                if (!reponse.ok) throw new Error("Erreur HTTP serveur : " + reponse.status);
 
                 ajouterMessageHub("Message transmis avec succès au PC.", "SYNCHRONISÉ");
 
             } catch (err) {
                 document.getElementById(msgLoadId).remove();
-                ajouterMessageHub("Erreur d'écriture sur le serveur Flask. Vérifiez la connexion.");
+                // Affiche l'erreur technique précise directement dans l'interface mobile
+                ajouterMessageHub("ERREUR FETCH : " + err.message, "DIAGNOSTIC ÉCHEC");
                 console.error(err);
             }
         }
