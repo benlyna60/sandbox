@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hub IA - Chat Mobile</title>
+    <title>Hub IA - Chat Mobile (Mode Statique JSON)</title>
     <style>
         :root {
             --bg: #0b0c10;
@@ -27,7 +27,7 @@
             box-sizing: border-box;
         }
 
-        /* En-tête épuré avec configuration du lien distant */
+        /* En-tête épuré avec configuration du fichier JSON partagé */
         header {
             background: var(--panel);
             border-bottom: 1px solid var(--hair);
@@ -53,7 +53,7 @@
             cursor: pointer;
         }
 
-        /* Panneau de configuration de l'URL distant (escamotable) */
+        /* Panneau de configuration de l'URL JSON distante (escamotable) */
         #config-panel {
             background: var(--panel-alt);
             border-bottom: 1px solid var(--hair);
@@ -172,21 +172,21 @@
 <body>
 
     <header>
-        <h2>Chat Hub Mobile</h2>
-        <button class="settings-toggle" id="btn-toggle-config">⚙️ Connexion</button>
+        <h2>Chat Hub Mobile (JSON Bridge)</h2>
+        <button class="settings-toggle" id="btn-toggle-config">⚙️ Source JSON</button>
     </header>
 
     <div id="config-panel">
-        <input type="text" id="input-url" placeholder="URL du Hub (ex: https://xxx.trycloudflare.com)">
+        <input type="text" id="input-url" placeholder="URL du fichier JSON (ex: https://.../hub-state.json)">
         <button id="btn-save-url">OK</button>
     </div>
 
     <div id="chat-container">
-        <div class="message hub">Connexion mobile initialisée. Tapez une question pour interroger le Hub distant et entraîner les experts.</div>
+        <div class="message hub">Mode 100% statique JSON initialisé. Prêt pour l'échange de données inter-domaines.</div>
     </div>
 
     <footer>
-        <textarea id="user-input" placeholder="Envoyer un message au Hub..."></textarea>
+        <textarea id="user-input" placeholder="Envoyer une requête JSON..."></textarea>
         <button id="btn-envoyer">➤</button>
     </footer>
 
@@ -199,19 +199,19 @@
         const userInput = document.getElementById('user-input');
         const btnEnvoyer = document.getElementById('btn-envoyer');
 
-        // Gestion de l'URL distante stockée sur le téléphone
-        let hubUrl = localStorage.getItem('hub_remote_url') || '';
-        inputUrl.value = hubUrl;
+        // Gestion de l'URL du fichier JSON partagé stockée sur le téléphone
+        let jsonBridgeUrl = localStorage.getItem('hub_json_bridge_url') || '';
+        inputUrl.value = jsonBridgeUrl;
 
         btnToggleConfig.onclick = () => {
             configPanel.style.display = configPanel.style.display === 'flex' ? 'none' : 'flex';
         };
 
         btnSaveUrl.onclick = () => {
-            hubUrl = inputUrl.value.trim().replace(/\/$/, ''); // Supprime le slash de fin éventuel
-            localStorage.setItem('hub_remote_url', hubUrl);
+            jsonBridgeUrl = inputUrl.value.trim();
+            localStorage.setItem('hub_json_bridge_url', jsonBridgeUrl);
             configPanel.style.display = 'none';
-            ajouterMessageHub(`URL mise à jour : ${hubUrl}`);
+            ajouterMessageHub(`URL du pont JSON mise à jour : ${jsonBridgeUrl}`);
         };
 
         // Chargement de l'historique de discussion local du téléphone
@@ -244,7 +244,7 @@
 
         function sauvegarderHistorique(texte, expediteur, reflexion = '') {
             historiqueChat.push({ texte, expediteur, reflexion });
-            if (historiqueChat.length > 50) historiqueChat.shift(); // Garde les 50 derniers messages
+            if (historiqueChat.length > 50) historiqueChat.shift();
             localStorage.setItem('chat_history_mobile', JSON.stringify(historiqueChat));
         }
 
@@ -252,8 +252,8 @@
             const texte = userInput.value.trim();
             if (!texte) return;
 
-            if (!hubUrl) {
-                alert("Veuillez configurer l'URL distante de votre Hub via le bouton 'Connexion' en haut.");
+            if (!jsonBridgeUrl) {
+                alert("Veuillez configurer l'URL de votre fichier JSON partagé via le bouton 'Source JSON'.");
                 configPanel.style.display = 'flex';
                 return;
             }
@@ -267,28 +267,32 @@
             const divLoad = document.createElement('div');
             divLoad.className = 'message hub';
             divLoad.id = msgLoadId;
-            divLoad.innerText = "Analyse en cours par les modules distants...";
+            divLoad.innerText = "Lecture du flux JSON distant...";
             chatContainer.appendChild(divLoad);
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
             try {
-                // Requête HTTP vers ton Hub central sur ton ordinateur via le tunnel
-                const reponse = await fetch(`${hubUrl}/api/requete`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: texte })
+                // Lecture de la mémoire globale et de l'état statique JSON (zéro serveur, simple fetch GET)
+                const reponse = await fetch(jsonBridgeUrl + '?t=' + Date.now(), {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
                 });
 
                 document.getElementById(msgLoadId).remove();
 
-                if (!reponse.ok) throw new Error("Erreur de communication avec le Hub.");
+                if (!reponse.ok) throw new Error("Impossible de lire le fichier JSON distant.");
 
                 const data = await reponse.json();
-                ajouterMessageHub(data.reponse || "Réponse reçue.", data.reflexion || "");
+                
+                // Exploitation des données statiques du JSON récupéré
+                const reponseTexte = data.dernierMessageHub || data.reponse || "Données JSON synchronisées avec succès.";
+                const reflexionTexte = data.reflexion || "Mode Boost statique actif - Pont inter-domaines opérationnel.";
+
+                ajouterMessageHub(reponseTexte, reflexionTexte);
 
             } catch (err) {
                 document.getElementById(msgLoadId).remove();
-                ajouterMessageHub("Impossible de joindre le Hub central. Vérifiez que votre ordinateur est allumé et que le tunnel est actif.");
+                ajouterMessageHub("Erreur de lecture du pont JSON statique. Vérifiez l'URL configurée.");
                 console.error(err);
             }
         }
