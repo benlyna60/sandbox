@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub IA - Moteur & Modules (Mode P2P Direct & JSON)</title>
+    <!-- Intégration de LZ-String pour raccourcir les clés de liaison P2P -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
     <style>
         :root {
             --bg: #0b0c10;
@@ -215,8 +217,11 @@
             <span id="p2p-status-text" style="font-size:11px; color:var(--text-dim);">Statut : En attente de création...</span>
         </div>
         <div id="offer-output-container" style="display:none; flex-direction:column; gap:5px;">
-            <span style="font-size:11px; color:var(--text);">Lien ou Code Offre à copier sur mobile.html :</span>
-            <textarea id="output-offer-text" readonly style="background:#000; color:var(--cyan); border:1px solid var(--hair); padding:6px; border-radius:4px; font-size:10px; height:45px; resize:none;" onclick="this.select()"></textarea>
+            <span style="font-size:11px; color:var(--text);">Code Offre à copier sur mobile.html :</span>
+            <div style="display:flex; gap:5px;">
+                <textarea id="output-offer-text" readonly style="flex:1; background:#000; color:var(--cyan); border:1px solid var(--hair); padding:6px; border-radius:4px; font-size:10px; height:45px; resize:none;" onclick="this.select()"></textarea>
+                <button id="btn-copier-offre" type="button" style="background:var(--panel-alt); border-color:var(--cyan); color:var(--cyan); font-weight:bold; padding:0 12px;">📋 Copier</button>
+            </div>
         </div>
         <div style="display:flex; gap:10px; align-items:center; margin-top:5px;">
             <input type="text" id="input-answer-remote" placeholder="Coller le code de réponse du mobile ici..." style="flex:1; background:var(--bg); border:1px solid var(--hair); color:#fff; padding:6px; border-radius:4px; font-size:11px; outline:none;">
@@ -263,7 +268,7 @@
         let localFileHandle = null;
         let dernierMessageTraite = ""; 
 
-        // --- GESTION WEBRTC P2P (Liaison directe mobile.html) ---
+        // --- GESTION WEBRTC P2P (Liaison directe mobile.html avec LZ-String) ---
         const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
         let dataChannel = null;
 
@@ -276,24 +281,57 @@
                 await pc.setLocalDescription(offer);
 
                 setTimeout(() => {
-                    const offerB64 = btoa(JSON.stringify(pc.localDescription));
+                    const rawOffer = JSON.stringify(pc.localDescription);
+                    const offerB64 = btoa(rawOffer);
+                    // Compression LZ-String pour raccourcir considérablement le code
+                    const compressedOffer = LZString.compressToEncodedURIComponent(offerB64);
+
                     document.getElementById('offer-output-container').style.display = 'flex';
-                    document.getElementById('output-offer-text').value = offerB64;
-                    document.getElementById('p2p-status-text').innerText = "Statut : Offre générée. Transmettez-la au mobile.";
+                    document.getElementById('output-offer-text').value = compressedOffer;
+                    document.getElementById('p2p-status-text').innerText = "Statut : Offre générée et compressée. Transmettez-la au mobile.";
                 }, 1000);
             } catch (err) {
                 alert("Erreur création P2P : " + err.message);
             }
         };
 
+        // Gestion du bouton copier en un clic pour l'offre PC
+        document.getElementById('btn-copier-offre').onclick = () => {
+            const texteBox = document.getElementById('output-offer-text');
+            texteBox.select();
+            navigator.clipboard.writeText(texteBox.value).then(() => {
+                const btnOriginal = document.getElementById('btn-copier-offre');
+                btnOriginal.innerText = "✔ Copié !";
+                btnOriginal.style.background = "#00ff66";
+                btnOriginal.style.color = "#000";
+                setTimeout(() => {
+                    btnOriginal.innerText = "📋 Copier";
+                    btnOriginal.style.background = "var(--panel-alt)";
+                    btnOriginal.style.color = "var(--cyan)";
+                }, 2000);
+            }).catch(err => {
+                alert("Erreur lors de la copie : " + err);
+            });
+        };
+
         document.getElementById('btn-join-session').onclick = async () => {
             try {
-                const answerB64 = document.getElementById('input-answer-remote').value.trim();
-                if (!answerB64) {
+                const answerInputText = document.getElementById('input-answer-remote').value.trim();
+                if (!answerInputText) {
                     alert("Veuillez coller la réponse du mobile.");
                     return;
                 }
-                const answerDesc = JSON.parse(atob(answerB64));
+
+                // Décompression LZ-String de la réponse mobile (rétrocompatible si non compressé)
+                let decompressedAnswer = answerInputText;
+                try {
+                    const maybeJson = LZString.decompressFromEncodedURIComponent(answerInputText);
+                    if (maybeJson) {
+                        decompressedAnswer = maybeJson;
+                    }
+                } catch (e) {}
+
+                const answerDesc = JSON.parse(atob(decompressedAnswer));
                 await pc.setRemoteDescription(new RTCSessionDescription(answerDesc));
                 document.getElementById('p2p-status-text').innerText = "Statut : Connexion P2P en cours d'établissement...";
             } catch (err) {
