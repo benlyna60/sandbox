@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hub IA - Moteur & Modules (Mode P2P Direct & JSON)</title>
+    <title>Hub IA Central - Moteur & Modules (Temps Réel P2P)</title>
     <!-- Intégration de LZ-String pour raccourcir les clés de liaison P2P -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
     <!-- Intégration de PDF.js pour la lecture locale des fichiers PDF -->
@@ -236,9 +236,9 @@
     </header>
 
     <div id="p2p-panel">
-        <h4 style="margin:0; color:var(--cyan); font-size:13px;">🔗 Pont P2P par Fichier de Liaison (Sans long copier-coller)</h4>
+        <h4 style="margin:0; color:var(--cyan); font-size:13px;">🔗 Pont P2P par Fichier de Liaison ou QR Code</h4>
         <div style="display:flex; gap:10px; align-items:center;">
-            <button id="btn-generer-offre-json" style="background:var(--cyan); color:#000; font-weight:bold;">1. Générer le fichier de liaison (PC)</button>
+            <button id="btn-generer-offre-json" style="background:var(--cyan); color:#000; font-weight:bold;">1. Générer l'offre (QR Code & Fichier PC)</button>
             <span id="p2p-status-text" style="font-size:11px; color:var(--text-dim);">Statut : En attente de création...</span>
         </div>
         <div style="display:flex; gap:10px; align-items:center; margin-top:5px;">
@@ -275,10 +275,13 @@
     <!-- Modale QR Code PC -->
     <div id="pc-qr-modal">
         <div style="color: #fff; margin-bottom: 15px; font-weight: bold; font-size: 14px; text-align: center;">
-            📷 Scannez ce QR Code avec votre téléphone (Menu ☰ > Scanner le QR Code)
+            📷 Offre P2P Générée (Prête à l'emploi)
         </div>
         <div id="pc-qrcode-container"></div>
-        <button id="btn-fermer-pc-qr" style="margin-top: 20px; background: var(--panel-alt); color: #fff; border: 1px solid var(--hair); padding: 8px 20px; border-radius: 6px; cursor: pointer;">Fermer</button>
+        <div style="margin-top: 15px; display: flex; gap: 10px;">
+            <a id="btn-telecharger-offre" style="background: var(--cyan); color: #000; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: bold; text-align: center;" download="liaison-pc-vers-mobile.json">📥 Télécharger le fichier JSON d'offre</a>
+            <button id="btn-fermer-pc-qr" style="background: var(--panel-alt); color: #fff; border: 1px solid var(--hair); padding: 8px 20px; border-radius: 6px; cursor: pointer;">Fermer</button>
+        </div>
     </div>
 
     <script type="module">
@@ -291,7 +294,6 @@
         window.appState = {};
         window.categorieActuelle = 'tous';
 
-        let jsonBridgeUrl = localStorage.getItem('hub_json_bridge_url') || 'https://benlyna60.github.io/sandbox/hub-state.json';
         let localFileHandle = null;
         let dernierMessageTraite = ""; 
 
@@ -301,7 +303,6 @@
 
         document.getElementById('btn-generer-offre-json').onclick = async () => {
             try {
-                // Fermer l'ancien dataChannel s'il existait déjà pour repartir sur une base propre
                 if (dataChannel) {
                     try { dataChannel.close(); } catch(e){}
                 }
@@ -312,7 +313,6 @@
                 const offer = await pc.createOffer();
                 await pc.setLocalDescription(offer);
 
-                // On s'assure que la description locale est prête immédiatement
                 if (!pc.localDescription) {
                     throw new Error("Impossible de générer la description locale WebRTC.");
                 }
@@ -323,30 +323,28 @@
 
                 const payloadString = JSON.stringify({ type: "p2p-offer", payload: compressedOffer });
 
-                // 1. Affichage direct et immédiat du QR Code visuel à l'écran du PC
+                // 1. Génération du QR Code visuel à l'écran du PC
                 const container = document.getElementById('pc-qrcode-container');
-                container.innerHTML = ""; // Nettoyer l'ancien s'il existe
+                container.innerHTML = "";
                 
                 const qrImg = document.createElement('img');
-                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(payloadString)}`;
+                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(payloadString)}`;
                 qrImg.alt = "QR Code de liaison P2P";
                 qrImg.style.display = "block";
                 qrImg.style.borderRadius = "4px";
                 
                 container.appendChild(qrImg);
 
+                // 2. Préparation du téléchargement du fichier JSON d'offre
+                const blob = new Blob([payloadString], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const lienTelechargement = document.getElementById('btn-telecharger-offre');
+                lienTelechargement.href = url;
+
                 // Ouvrir immédiatement la modale PC
                 document.getElementById('pc-qr-modal').style.display = 'flex';
 
-                // 2. Préparation du téléchargement JSON en arrière-plan (secours)
-                const blob = new Blob([payloadString], { type: "application/json" });
-                const url = URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = "liaison-pc-vers-mobile.json";
-
-                document.getElementById('p2p-status-text').innerText = "Statut : QR Code affiché à l'écran ! Flashez-le avec le mobile.";
+                document.getElementById('p2p-status-text').innerText = "Statut : Offre générée (QR Code & Fichier prêts) !";
                 document.getElementById('p2p-status-text').style.color = "var(--cyan)";
 
             } catch (err) {
@@ -391,7 +389,7 @@
 
         function setupDataChannel() {
             dataChannel.onopen = () => {
-                document.getElementById('p2p-status-text').innerText = "Statut : Connecté en direct avec mobile.html ! ✅";
+                document.getElementById('p2p-status-text').innerText = "Statut : Connecté en direct avec mobile ! ✅";
                 document.getElementById('p2p-status-text').style.color = "#00ff66";
             };
 
