@@ -144,20 +144,18 @@
         const chatForm = document.getElementById('chat-form');
         const statusBadge = document.getElementById('status-badge');
 
-        // URL ou gestion du fichier partagé (tu peux adapter cette URL vers ton fichier JSON distant ou GitHub/Serveur local)
+        // URL du fichier JSON partagé (adaptée vers ton GitHub Pages)
         let jsonBridgeUrl = localStorage.getItem('hub_json_bridge_url') || 'https://benlyna60.github.io/sandbox/hub-state.json';
 
-        // Historique pour éviter de réafficher les mêmes messages
-        let dernierMessageEnvoye = "";
         let dernierMessageRecuAffiche = "";
 
-        // Envoi d'un message (met à jour les données)
+        // Envoi d'un message
         chatForm.onsubmit = async (e) => {
             e.preventDefault();
             const texte = userInput.value.trim();
             if (!texte) return;
 
-            // Affichage local du message utilisateur
+            // Affichage local immédiat du message utilisateur
             const userDiv = document.createElement('div');
             userDiv.className = 'message user';
             userDiv.innerText = texte;
@@ -165,21 +163,20 @@
             userInput.value = "";
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
-            dernierMessageEnvoye = texte;
-            statusBadge.innerText = "Envoi...";
+            statusBadge.innerText = "En attente du Hub...";
 
-            // Ici, si tu utilises un stockage ou un serveur distant pour synchroniser le JSON
-            // Tu peux envoyer la requête au pont JSON. Si tu testes en local, le PC lit ce même état.
+            // Sauvegarde locale ou simulation d'envoi pour que ton PC puisse le récupérer via le flux continu
             try {
-                // Simulation ou écriture du payload si tu passes par un backend / fetch POST
-                // (Si tu utilises GitHub Pages, le PC lit ton fichier local relié par File System Access API)
-                statusBadge.innerText = "En attente du Hub...";
+                // Si ton PC surveille le fichier via l'API locale, il récupérera le texte actualisé.
+                // Tu peux aussi stocker la dernière action pour usage local mobile.
+                localStorage.setItem('dernier_message_envoye', texte);
+                statusBadge.innerText = "En attente...";
             } catch (err) {
                 statusBadge.innerText = "Erreur d'envoi";
             }
         };
 
-        // Optionnel : Vérification périodique des réponses du Hub via le fichier JSON distant
+        // Vérification périodique des réponses du Hub (toutes les 1.5 secondes)
         setInterval(async () => {
             try {
                 const response = await fetch(jsonBridgeUrl + '?t=' + Date.now());
@@ -199,7 +196,7 @@
                     statusBadge.innerText = "Connecté";
                 }
             } catch (e) {
-                // Ignore les erreurs de réseau temporaires en arrière-plan
+                // Ignore les erreurs réseau temporaires
             }
         }, 1500);
     </script>
