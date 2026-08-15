@@ -6,6 +6,11 @@
     <title>Hub IA - Moteur & Modules (Mode P2P Direct & JSON)</title>
     <!-- Intégration de LZ-String pour raccourcir les clés de liaison P2P -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+    <!-- Intégration de PDF.js pour la lecture locale des fichiers PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
     <style>
         :root {
             --bg: #0b0c10;
@@ -185,7 +190,6 @@
             box-sizing: border-box;
         }
 
-        /* Panneau de configuration P2P intégré */
         #p2p-panel {
             background: var(--panel);
             border: 1px solid var(--cyan);
@@ -209,7 +213,6 @@
         </div>
     </header>
 
-    <!-- Panneau de liaison P2P direct et simplifié par Fichier JSON -->
     <div id="p2p-panel">
         <h4 style="margin:0; color:var(--cyan); font-size:13px;">🔗 Pont P2P par Fichier de Liaison (Sans long copier-coller)</h4>
         <div style="display:flex; gap:10px; align-items:center;">
@@ -250,6 +253,7 @@
     <script type="module">
         import { Orchestrateur } from './Orchestrateur.js';
         import { Expert } from './Js/expert.js';
+        import { IngestorModule } from './ingestor_module.js';
         import { MODULES_REGISTRY, CATEGORIES_CONFIG } from './Js/modules.registry.js';
 
         const orchestrateur = new Orchestrateur();
@@ -257,15 +261,13 @@
         window.categorieActuelle = 'tous';
 
         let jsonBridgeUrl = localStorage.getItem('hub_json_bridge_url') || 'https://benlyna60.github.io/sandbox/hub-state.json';
-        
         let localFileHandle = null;
         let dernierMessageTraite = ""; 
 
-        // --- GESTION WEBRTC P2P (Liaison directe via Fichiers JSON de liaison) ---
+        // --- GESTION WEBRTC P2P ---
         const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
         let dataChannel = null;
 
-        // 1. Générer l'offre et la télécharger sous forme de fichier JSON
         document.getElementById('btn-generer-offre-json').onclick = async () => {
             try {
                 dataChannel = pc.createDataChannel("hub-chat-channel");
@@ -279,7 +281,6 @@
                     const offerB64 = btoa(rawOffer);
                     const compressedOffer = LZString.compressToEncodedURIComponent(offerB64);
 
-                    // Création d'un fichier JSON virtuel à télécharger pour le mobile
                     const blob = new Blob([JSON.stringify({ type: "p2p-offer", payload: compressedOffer }, null, 2)], { type: "application/json" });
                     const url = URL.createObjectURL(blob);
                     
@@ -296,7 +297,6 @@
             }
         };
 
-        // 2. Charger automatiquement le fichier de réponse JSON envoyé par le mobile
         document.getElementById('input-file-answer').onchange = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -338,26 +338,21 @@
                 console.log("📩 Message reçu du mobile via P2P :", messageMobile);
                 window.derniereQuestionRecue = messageMobile;
 
-                // Appel de l'Orchestrateur intelligent
                 let texteBrutReponse = await orchestrateur.orchestrerAnalyse(messageMobile);
 
-                // --- NETTOYAGE INTELLIGENT ---
                 let texteReponse = texteBrutReponse;
                 if (typeof texteReponse === 'string') {
-                    // On retire les balises techniques <small> et les analyses de modules parasites sans écraser la réponse utile
                     texteReponse = texteReponse.replace(/<small>[\s\S]*?<\/small>/gi, '');
                     texteReponse = texteReponse.replace(/Analyse du domaine de [^:]+:\s*/gi, '');
                     texteReponse = texteReponse.replace(/\(Pistes mémorielles mobilisées[^\)]+\)\.?/gi, '');
                     texteReponse = texteReponse.replace(/<br\s*[\/]?>/gi, '\n');
                     texteReponse = texteReponse.trim();
 
-                    // Si après nettoyage il ne reste rien, on génère une réponse contextuelle propre
                     if (!texteReponse) {
                         texteReponse = "J'ai bien reçu ton message concernant : " + messageMobile + ". Tout est en ordre !";
                     }
                 }
 
-                // Envoi de la réponse propre et fluide vers le mobile
                 if (dataChannel && dataChannel.readyState === 'open') {
                     dataChannel.send(texteReponse);
                     console.log("📤 Réponse renvoyée au mobile via P2P :", texteReponse);
@@ -367,14 +362,19 @@
 
         function initHub() {
             MODULES_REGISTRY.forEach(modData => {
-                const expert = new Expert(
-                    modData.id, 
-                    modData.nom, 
-                    `Domaine : ${modData.nom} (${modData.cat})`, 
-                    modData.cat, 
-                    modData.wikiLang, 
-                    modData.isRtl || false
-                );
+                let expert;
+                if (modData.id === 'ingestor') {
+                    expert = new IngestorModule(modData.id, modData.nom, modData.cat);
+                } else {
+                    expert = new Expert(
+                        modData.id, 
+                        modData.nom, 
+                        `Domaine : ${modData.nom} (${modData.cat})`, 
+                        modData.cat, 
+                        modData.wikiLang, 
+                        modData.isRtl || false
+                    );
+                }
                 orchestrateur.ajouterExpert(expert);
                 window.appState[modData.id] = expert;
             });
@@ -457,7 +457,7 @@
             }
 
             if (filtres.length === 0 && window.categorieActuelle === 'non-relies') {
-                container.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 30px; color: var(--text-dim); background: var(--panel); border-radius: 8px; border: 1px solid var(--hair);">✔ Excellent ! Tous les modules ont leur mémoire JSON active.</div>`;
+                container.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding: 30px; color: var(--text-dim); background: var(--panel); border-radius: 8px; border: 1px solid var(--hair);">✔ Excellent ! Tous les modules ont leur mémoire active.</div>`;
                 return;
             }
 
@@ -466,6 +466,29 @@
                 const card = document.createElement('div');
                 card.className = "card";
                 card.id = `card-${exp.id}`;
+
+                // Bloc spécifique pour le module Ingestor sur sa carte
+                let sectionSpecifique = '';
+                let boutonsLigne = `
+                    <button class="action-btn btn-lier" id="btn-file-${exp.id}">📂 Charger JSON</button>
+                    <button class="action-btn btn-injecter" style="color:var(--orange)">💉 Injecter</button>
+                    <button class="action-btn btn-lancer">Lancer</button>
+                    <button class="action-btn btn-generer" style="color:var(--cyan)">Générer</button>
+                `;
+
+                if (exp.id === 'ingestor') {
+                    sectionSpecifique = `
+                        <div style="border: 2px dashed var(--purple); padding: 8px; text-align: center; border-radius: 6px; cursor: pointer; font-size: 10px; background: rgba(180,124,255,0.03);" class="drop-zone-ingest">
+                            📂 Glissez TXT, JSON, PDF ici ou <span style="color:var(--purple); text-decoration:underline;">Parcourir</span>
+                            <input type="file" class="file-input-ingest" multiple accept=".txt,.json,.pdf,.md" style="display: none;">
+                        </div>
+                    `;
+                    boutonsLigne = `
+                        <button class="action-btn" id="btn-lier-physique-${exp.id}" style="border-color:var(--purple); color:var(--purple);">🔗 Lier Fichier Disque</button>
+                        <button class="action-btn btn-zoom" data-id="${exp.id}">🔍 Zoom</button>
+                    `;
+                }
+
                 card.innerHTML = `
                     <div class="card-top">
                         <div class="card-title">
@@ -474,7 +497,7 @@
                         </div>
                         <div style="display:flex; gap:6px; align-items:center;">
                             <span class="badge" id="badge-${exp.id}">Prêt</span>
-                            <button class="action-btn btn-zoom" data-id="${exp.id}">🔍 Zoom</button>
+                            ${exp.id !== 'ingestor' ? `<button class="action-btn btn-zoom" data-id="${exp.id}">🔍 Zoom</button>` : ''}
                         </div>
                     </div>
                     <div class="stats-row">
@@ -482,13 +505,11 @@
                         <div class="mini-stat"><div class="v" id="densite-${exp.id}">0</div><div class="k">Densité</div></div>
                         <div class="mini-stat"><div class="v" id="entropie-${exp.id}">0</div><div class="k">Diversité</div></div>
                     </div>
+                    ${sectionSpecifique}
                     <div class="btn-row">
-                        <button class="action-btn btn-lier" id="btn-file-${exp.id}">📂 Charger JSON</button>
-                        <button class="action-btn btn-injecter" style="color:var(--orange)">💉 Injecter</button>
-                        <button class="action-btn btn-lancer">Lancer</button>
-                        <button class="action-btn btn-generer" style="color:var(--cyan)">Générer</button>
+                        ${boutonsLigne}
                     </div>
-                    <div class="output ${rtl}" id="out-${exp.id}">En attente de synchronisation JSON...</div>
+                    <div class="output ${rtl}" id="out-${exp.id}">En attente de synchronisation...</div>
                 `;
                 container.appendChild(card);
 
@@ -496,68 +517,103 @@
                     const nbPoids = Object.keys(exp.poids || {}).length;
                     if (nbPoids > 0) {
                         document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                        document.getElementById(`out-${exp.id}`).innerText = `✔ Mémoire JSON active (${nbPoids} concepts).`;
+                        document.getElementById(`out-${exp.id}`).innerText = `✔ Mémoire active (${nbPoids} concepts).`;
                         if (typeof exp.mettreAJourUI === 'function') exp.mettreAJourUI();
                     }
                 }, 50);
 
-                card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
-                card.querySelector('.btn-injecter').onclick = () => ouvrirModalInjection(exp.id);
-                
-                card.querySelector('.btn-lier').onclick = async () => {
-                    const urlSaisie = prompt("Entrez l'URL du fichier JSON pour le module " + exp.nom + " :", jsonBridgeUrl);
-                    if (!urlSaisie) return;
-                    jsonBridgeUrl = urlSaisie;
-                    localStorage.setItem('hub_json_bridge_url', jsonBridgeUrl);
+                // Événements spécifiques pour l'Ingestor
+                if (exp.id === 'ingestor') {
+                    const dropZone = card.querySelector('.drop-zone-ingest');
+                    const fileInput = card.querySelector('.file-input-ingest');
 
-                    try {
-                        const reponse = await fetch(jsonBridgeUrl + '?t=' + Date.now());
-                        if (!reponse.ok) throw new Error("Erreur de chargement du JSON");
-                        const data = await reponse.json();
-
-                        if (data.poids) {
-                            exp.poids = data.poids;
-                        } else {
-                            Object.keys(data).forEach(k => exp.mettreAJourPoids(k, 1));
+                    dropZone.onclick = () => fileInput.click();
+                    dropZone.addEventListener('dragover', (e) => e.preventDefault());
+                    dropZone.addEventListener('drop', async (e) => {
+                        e.preventDefault();
+                        for (const file of e.dataTransfer.files) {
+                            await exp.traiterFichier(file);
                         }
-
-                        const nbPoids = Object.keys(exp.poids || {}).length;
-                        document.getElementById(`out-${exp.id}`).innerText = `✔ JSON chargé avec succès (${nbPoids} concepts).`;
-                        document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                        card.querySelector('.btn-lier').innerText = "✔ Lié JSON";
-                    } catch (err) {
-                        alert("Impossible de récupérer le fichier JSON distant. Vérifiez l'URL.");
-                    }
-                };
-
-                card.querySelector('.btn-lancer').onclick = async () => {
-                    if (typeof exp.lancerApprentissage === 'function') exp.lancerApprentissage();
-                };
-
-                card.querySelector('.btn-generer').onclick = async () => {
-                    let texteReponse = "Aucun texte généré récent.";
-                    if (typeof exp.dernierTexte === 'string' && exp.dernierTexte.length > 0) {
-                        texteReponse = exp.dernierTexte;
-                    } else {
-                        const cles = Object.keys(exp.poids || {});
-                        if (cles.length > 0) {
-                            texteReponse = `Analyse du module ${exp.nom} : Concepts clés [${cles.slice(0, 5).join(', ')}].`;
-                        } else {
-                            texteReponse = `Module ${exp.nom} opérationnel.`;
+                    });
+                    fileInput.onchange = async (e) => {
+                        for (const file of e.target.files) {
+                            await exp.traiterFichier(file);
                         }
-                    }
-
-                    const jsonPayloadObj = {
-                        dernierMessageUser: window.derniereQuestionRecue || "Requête mobile",
-                        dernierMessageHub: texteReponse,
-                        reflexion: `Module actif : ${exp.nom} (${exp.cat})`
                     };
 
-                    if (localFileHandle) {
-                        await ecrireFichierLocalDirect(jsonPayloadObj);
-                        document.getElementById(`out-${exp.id}`).innerText = "✔ Réponse écrite dans hub-state.json !";
-                    }
-                };
+                    card.querySelector(`#btn-lier-physique-${exp.id}`).onclick = async () => {
+                        try {
+                            const [handle] = await window.showOpenFilePicker({
+                                types: [{ description: 'Fichiers Texte ou JSON', accept: { 'text/plain': ['.txt'], 'application/json': ['.json'] } }]
+                            });
+                            await exp.lierFichierSauvegarde(handle);
+                            alert("Fichier de sauvegarde lié et synchronisé avec succès !");
+                        } catch (err) {
+                            console.log("Sélection annulée.");
+                        }
+                    };
+
+                    card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
+                } else {
+                    // Événements pour les experts standards
+                    card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
+                    card.querySelector('.btn-injecter').onclick = () => ouvrirModalInjection(exp.id);
+                    
+                    card.querySelector('.btn-lier').onclick = async () => {
+                        const urlSaisie = prompt("Entrez l'URL du fichier JSON pour le module " + exp.nom + " :", jsonBridgeUrl);
+                        if (!urlSaisie) return;
+                        jsonBridgeUrl = urlSaisie;
+                        localStorage.setItem('hub_json_bridge_url', jsonBridgeUrl);
+
+                        try {
+                            const reponse = await fetch(jsonBridgeUrl + '?t=' + Date.now());
+                            if (!reponse.ok) throw new Error("Erreur de chargement du JSON");
+                            const data = await reponse.json();
+
+                            if (data.poids) {
+                                exp.poids = data.poids;
+                            } else {
+                                Object.keys(data).forEach(k => exp.mettreAJourPoids(k, 1));
+                            }
+
+                            const nbPoids = Object.keys(exp.poids || {}).length;
+                            document.getElementById(`out-${exp.id}`).innerText = `✔ JSON chargé avec succès (${nbPoids} concepts).`;
+                            document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
+                            card.querySelector('.btn-lier').innerText = "✔ Lié JSON";
+                        } catch (err) {
+                            alert("Impossible de récupérer le fichier JSON distant. Vérifiez l'URL.");
+                        }
+                    };
+
+                    card.querySelector('.btn-lancer').onclick = async () => {
+                        if (typeof exp.lancerApprentissage === 'function') exp.lancerApprentissage();
+                    };
+
+                    card.querySelector('.btn-generer').onclick = async () => {
+                        let texteReponse = "Aucun texte généré récent.";
+                        if (typeof exp.dernierTexte === 'string' && exp.dernierTexte.length > 0) {
+                            texteReponse = exp.dernierTexte;
+                        } else {
+                            const cles = Object.keys(exp.poids || {});
+                            if (cles.length > 0) {
+                                texteReponse = `Analyse du module ${exp.nom} : Concepts clés [${cles.slice(0, 5).join(', ')}].`;
+                            } else {
+                                texteReponse = `Module ${exp.nom} opérationnel.`;
+                            }
+                        }
+
+                        const jsonPayloadObj = {
+                            dernierMessageUser: window.derniereQuestionRecue || "Requête mobile",
+                            dernierMessageHub: texteReponse,
+                            reflexion: `Module actif : ${exp.nom} (${exp.cat})`
+                        };
+
+                        if (localFileHandle) {
+                            await ecrireFichierLocalDirect(jsonPayloadObj);
+                            document.getElementById(`out-${exp.id}`).innerText = "✔ Réponse écrite dans hub-state.json !";
+                        }
+                    };
+                }
             });
         }
 
@@ -596,13 +652,6 @@
                 }
             }
         };
-
-        function filtrerModules(cat, btn) {
-            window.categorieActuelle = cat;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderGrilleModules();
-        }
 
         function ouvrirZoom(id) {
             const exp = window.appState[id];
@@ -646,7 +695,12 @@
         };
 
         document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.onclick = () => filtrerModules(btn.dataset.cat, btn);
+            btn.onclick = () => {
+                window.categorieActuelle = btn.dataset.cat;
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderGrilleModules();
+            };
         });
 
         initHub();
