@@ -44,6 +44,12 @@
             color: #fff;
         }
 
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         #status-badge {
             font-size: 11px;
             background: rgba(255, 176, 0, 0.1);
@@ -51,6 +57,80 @@
             border: 1px solid #ffb000;
             padding: 4px 8px;
             border-radius: 6px;
+        }
+
+        /* Menu Hamburger & Tiroir */
+        .hamburger-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        #nav-menu {
+            position: fixed;
+            top: 0;
+            right: -260px;
+            width: 240px;
+            height: 100%;
+            background: var(--panel);
+            border-left: 1px solid var(--hair);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 12px;
+            transition: right 0.3s ease;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        #nav-menu.active {
+            right: 0;
+        }
+
+        #nav-menu h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: var(--cyan);
+            border-bottom: 1px solid var(--hair);
+            padding-bottom: 8px;
+        }
+
+        .menu-action-btn {
+            background: var(--panel-alt);
+            color: #fff;
+            border: 1px solid var(--hair);
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            text-align: left;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .menu-action-btn:hover {
+            background: rgba(0, 217, 255, 0.1);
+            border-color: var(--cyan);
+        }
+
+        /* Overlay sombre lorsque le menu est ouvert */
+        #menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+        #menu-overlay.active {
+            display: block;
         }
 
         /* Panneau de configuration P2P mobile par fichier */
@@ -144,8 +224,19 @@
 
     <header>
         <h2>Chat Hub Mobile</h2>
-        <span id="status-badge">Déconnecté</span>
+        <div class="header-right">
+            <span id="status-badge">Déconnecté</span>
+            <button class="hamburger-btn" id="btn-toggle-menu" aria-label="Menu">☰</button>
+        </div>
     </header>
+
+    <!-- Overlay et Menu Hamburger -->
+    <div id="menu-overlay"></div>
+    <nav id="nav-menu">
+        <h3>Options & Actions</h3>
+        <button class="menu-action-btn" id="menu-clear">🧹 Nettoyer la mare</button>
+        <button class="menu-action-btn" id="menu-new-conv">✨ Nouvelle conversation</button>
+    </nav>
 
     <!-- Panneau mobile pour charger le fichier du PC et générer la réponse -->
     <div id="mobile-p2p-panel">
@@ -171,6 +262,30 @@
         const userInput = document.getElementById('user-input');
         const chatForm = document.getElementById('chat-form');
         const statusBadge = document.getElementById('status-badge');
+
+        // --- GESTION DU MENU HAMBURGER ---
+        const navMenu = document.getElementById('nav-menu');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const btnToggleMenu = document.getElementById('btn-toggle-menu');
+
+        function toggleMenu() {
+            navMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+        }
+
+        btnToggleMenu.onclick = toggleMenu;
+        menuOverlay.onclick = toggleMenu;
+
+        // --- ACTIONS DU MENU ---
+        document.getElementById('menu-clear').onclick = () => {
+            chatContainer.innerHTML = '<div class="message hub">Mare nettoyée. Prêt pour de nouveaux tests.</div>';
+            toggleMenu();
+        };
+
+        document.getElementById('menu-new-conv').onclick = () => {
+            chatContainer.innerHTML = '<div class="message hub">Nouvelle conversation initialisée. Chargez le fichier de liaison ou continuez via le canal actif.</div>';
+            toggleMenu();
+        };
 
         // --- CONFIGURATION WEBRTC P2P VIA FICHIER ---
         const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
