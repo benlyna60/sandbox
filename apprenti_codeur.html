@@ -19,7 +19,7 @@
 
     <h1>🧠 Apprenti Codeur Autonome</h1>
     
-    <!-- Nouveau : Connexion au dossier disque dur -->
+    <!-- Connexion au dossier disque dur -->
     <div class="box" style="border-color: #007acc;">
         <h3>0. Connexion au Dossier Disque Dur (Optionnel mais recommandé)</h3>
         <button onclick="choisirDossier()">📁 Choisir un dossier pour stocker la mémoire</button>
@@ -59,7 +59,6 @@
         // --- GESTION DOSSIER LOCAL DISQUE DUR ---
         async function choisirDossier() {
             try {
-                // Demande à l'utilisateur de sélectionner un dossier sur son PC
                 dossierHandle = await window.showDirectoryPicker();
                 document.getElementById('dossierStatus').textContent = "✅ Dossier connecté ! Les sauvegardes se feront en direct dedans.";
                 log("📁 Dossier de travail local connecté avec succès.");
@@ -69,7 +68,7 @@
         }
 
         async function sauvegarderSurDisqueDur() {
-            if (!dossierHandle) return; // Si aucun dossier n'est lié, on ne fait rien (sauvegarde en RAM classique)
+            if (!dossierHandle) return; 
             try {
                 const fileHandle = await dossierHandle.getFileHandle('memoire.json', { create: true });
                 const writable = await fileHandle.createWritable();
@@ -94,6 +93,9 @@
                 }
             }
             log("✅ ZIP ingéré avec succès !");
+
+            // Forcer l'écriture immédiate du fichier memoire.json dans le dossier sélectionné
+            await sauvegarderSurDisqueDur();
         });
 
         // --- GESTION API ---
