@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hub IA - Chat P2P par Fichier</title>
+    <title>Hub IA - Chat P2P par QR Code</title>
     <!-- Intégration de LZ-String pour compresser les clés de liaison P2P -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+    <!-- Intégration de Html5QrcodeScanner pour la lecture par caméra -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5.min.js"></script>
     <style>
         :root {
             --bg: #0b0c10;
@@ -135,11 +137,6 @@
             font-size: 11px;
         }
 
-        #mobile-p2p-panel input[type="file"] {
-            font-size: 10px;
-            color: var(--text);
-        }
-
         /* Overlay sombre */
         #menu-overlay {
             position: fixed;
@@ -153,6 +150,28 @@
         }
         #menu-overlay.active {
             display: block;
+        }
+
+        /* Modale pour le Scan QR Code par Caméra */
+        #qr-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #reader {
+            width: 100%;
+            max-width: 350px;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         /* Zone de chat stable */
@@ -263,27 +282,33 @@
         </div>
     </header>
 
-    <!-- Overlay et Menu Hamburger (contient les options et la liaison P2P masquée) -->
+    <!-- Overlay et Menu Hamburger -->
     <div id="menu-overlay"></div>
     <nav id="nav-menu">
         <h3>Actions</h3>
         <button class="menu-action-btn" id="menu-clear">🧹 Nettoyer la mare</button>
         <button class="menu-action-btn" id="menu-new-conv">✨ Nouvelle conversation</button>
 
-        <h3 style="margin-top: 10px;">Liaison P2P</h3>
+        <h3 style="margin-top: 10px;">Liaison P2P Caméra</h3>
         <div id="mobile-p2p-panel">
-            <div style="color:var(--cyan); font-weight:bold;">🔗 Fichier P2P :</div>
-            <span style="font-size:10px; color:var(--text-dim);">1. Fichier offre du PC :</span>
-            <input type="file" id="input-file-offer" accept=".json">
-            <button id="btn-generer-reponse-json" style="background:var(--cyan); color:#000; font-weight:bold; padding:6px; border-radius:4px; border:none; cursor:pointer;">2. Télécharger réponse</button>
+            <div style="color:var(--cyan); font-weight:bold;">🔗 Connexion Instantanée :</div>
+            <button id="btn-scanner-qr" style="background:var(--cyan); color:#000; font-weight:bold; padding:8px; border-radius:4px; border:none; cursor:pointer;">📷 1. Scanner le QR Code du PC</button>
+            <button id="btn-generer-reponse-json" style="background:var(--panel-alt); color:#fff; border:1px solid var(--hair); padding:6px; border-radius:4px; cursor:pointer; margin-top:4px;">2. Télécharger réponse</button>
         </div>
     </nav>
+
+    <!-- Modale contenant le lecteur caméra QR -->
+    <div id="qr-modal">
+        <div style="color: #fff; margin-bottom: 10px; font-weight: bold; font-size: 13px;">Pointez la caméra vers l'écran du PC</div>
+        <div id="reader"></div>
+        <button id="btn-fermer-qr" style="margin-top: 15px; background: var(--panel-alt); color: #fff; border: 1px solid var(--hair); padding: 8px 16px; border-radius: 6px; cursor: pointer;">Fermer la caméra</button>
+    </div>
 
     <!-- Zone de discussion propre et stable -->
     <div id="chat-container">
         <div class="message hub">
             <div class="message-header"><button class="btn-copy" onclick="copyText(this)">📋 Copier</button></div>
-            <div>Interface épurée et stable. Ouvrez le menu ☰ pour configurer la liaison P2P.</div>
+            <div>Interface épurée et stable. Ouvrez le menu ☰ pour scanner le QR Code du PC.</div>
         </div>
     </div>
 
@@ -333,7 +358,7 @@
             });
         };
 
-        // --- CONFIGURATION WEBRTC P2P VIA FICHIER ---
+        // --- CONFIGURATION WEBRTC P2P VIA QR CODE ---
         const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
         let dataChannel = null;
 
@@ -382,28 +407,57 @@
             };
         }
 
-        document.getElementById('input-file-offer').onchange = async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+        // --- GESTION DU SCANNER QR CODE CAMÉRA ---
+        let html5QrCode = null;
 
-            try {
-                const text = await file.text();
-                const data = JSON.parse(text);
+        document.getElementById('btn-scanner-qr').onclick = () => {
+            document.getElementById('qr-modal').style.display = 'flex';
+            toggleMenu(); // Ferme le menu latéral pour laisser place à la caméra
 
-                let decompressedOffer = data.payload;
-                try {
-                    const maybeJson = LZString.decompressFromEncodedURIComponent(data.payload);
-                    if (maybeJson) decompressedOffer = maybeJson;
-                } catch (err) {}
+            html5QrCode = new Html5Qrcode("reader");
+            html5QrCode.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: 250 },
+                async (decodedText) => {
+                    // Succès du scan de l'offre du PC
+                    try {
+                        const data = JSON.parse(decodedText);
+                        let decompressedOffer = data.payload;
+                        try {
+                            const maybeJson = LZString.decompressFromEncodedURIComponent(data.payload);
+                            if (maybeJson) decompressedOffer = maybeJson;
+                        } catch (err) {}
 
-                const offerDesc = JSON.parse(atob(decompressedOffer));
-                await pc.setRemoteDescription(new RTCSessionDescription(offerDesc));
+                        const offerDesc = JSON.parse(atob(decompressedOffer));
+                        await pc.setRemoteDescription(new RTCSessionDescription(offerDesc));
 
-                statusBadge.innerText = "Offre reçue !";
-            } catch (err) {
-                alert("Erreur de lecture du fichier offre : " + err.message);
-            }
+                        statusBadge.innerText = "Offre scannée !";
+                        stopScanner();
+                    } catch (err) {
+                        alert("Erreur de décodage du QR Code : " + err.message);
+                    }
+                },
+                (errorMessage) => {
+                    // Erreurs de frame ignorées pour garder le flux fluide
+                }
+            ).catch(err => {
+                alert("Impossible d'accéder à la caméra : " + err);
+            });
         };
+
+        function stopScanner() {
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    document.getElementById('qr-modal').style.display = 'none';
+                }).catch(() => {
+                    document.getElementById('qr-modal').style.display = 'none';
+                });
+            } else {
+                document.getElementById('qr-modal').style.display = 'none';
+            }
+        }
+
+        document.getElementById('btn-fermer-qr').onclick = stopScanner;
 
         document.getElementById('btn-generer-reponse-json').onclick = async () => {
             try {
@@ -436,7 +490,7 @@
             if (!texte) return;
 
             if (!dataChannel || dataChannel.readyState !== 'open') {
-                alert("La liaison P2P n'est pas établie. Ouvrez le menu ☰ pour charger le fichier du PC.");
+                alert("La liaison P2P n'est pas établie. Ouvrez le menu ☰ pour scanner le QR Code du PC.");
                 return;
             }
 
