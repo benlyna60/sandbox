@@ -12,12 +12,20 @@
         button { cursor: pointer; background: #007acc; border: none; }
         button:hover { background: #005999; }
         pre { background: #000; padding: 15px; border-radius: 5px; overflow-x: auto; height: 300px; font-size: 12px; }
+        .success { background: #28a745; }
     </style>
 </head>
 <body>
 
     <h1>🧠 Apprenti Codeur Autonome</h1>
     
+    <!-- Nouveau : Connexion au dossier disque dur -->
+    <div class="box" style="border-color: #007acc;">
+        <h3>0. Connexion au Dossier Disque Dur (Optionnel mais recommandé)</h3>
+        <button onclick="choisirDossier()">📁 Choisir un dossier pour stocker la mémoire</button>
+        <p><small id="dossierStatus">Aucun dossier connecté (la mémoire reste en RAM jusqu'à l'export).</small></p>
+    </div>
+
     <div class="box">
         <h3>1. Ingestion Massive (ZIP Local)</h3>
         <input type="file" id="zipInput" accept=".zip">
@@ -30,27 +38,53 @@
         <p><small>Le script attendra 61 secondes entre chaque fichier pour respecter la limite GitHub.</small></p>
     </div>
 
-    <button onclick="sauvegarderMemoireJSON()" style="background: #28a745;">💾 Sauvegarder Mémoire (JSON)</button>
+    <button onclick="sauvegarderMemoireJSON()" class="success">💾 Télécharger la Mémoire (JSON)</button>
 
     <h3>Journal d'apprentissage :</h3>
     <pre id="log"></pre>
 
     <script>
         let memoireCode = [];
+        let dossierHandle = null;
         const DELAY_MS = 61000; // > 60 secondes pour 60 req/heure
 
         function log(m) {
             const el = document.getElementById('log');
-            el.textContent += `[${new Date().toLocaleTimeString()}] ${m}
-`;
+            el.textContent += `[${new Date().toLocaleTimeString()}] ${m}\n`;
             el.scrollTop = el.scrollHeight;
         }
 
         const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
+        // --- GESTION DOSSIER LOCAL DISQUE DUR ---
+        async function choisirDossier() {
+            try {
+                // Demande à l'utilisateur de sélectionner un dossier sur son PC
+                dossierHandle = await window.showDirectoryPicker();
+                document.getElementById('dossierStatus').textContent = "✅ Dossier connecté ! Les sauvegardes se feront en direct dedans.";
+                log("📁 Dossier de travail local connecté avec succès.");
+            } catch (err) {
+                log("⚠️ Sélection de dossier annulée ou non supportée par le navigateur.");
+            }
+        }
+
+        async function sauvegarderSurDisqueDur() {
+            if (!dossierHandle) return; // Si aucun dossier n'est lié, on ne fait rien (sauvegarde en RAM classique)
+            try {
+                const fileHandle = await dossierHandle.getFileHandle('memoire.json', { create: true });
+                const writable = await fileHandle.createWritable();
+                await writable.write(JSON.stringify(memoireCode, null, 2));
+                await writable.close();
+                log("💾 Fichier 'memoire.json' mis à jour automatiquement sur le disque.");
+            } catch (e) {
+                log("❌ Erreur lors de l'écriture sur le disque : " + e.message);
+            }
+        }
+
         // --- GESTION ZIP ---
         document.getElementById('zipInput').addEventListener('change', async (e) => {
             const file = e.target.files[0];
+            if (!file) return;
             const zip = await JSZip.loadAsync(file);
             log("Décompression du ZIP...");
             for (let [relativePath, zipEntry] of Object.entries(zip.files)) {
@@ -70,6 +104,7 @@
             log(`Démarrage API pour : ${repo}`);
             try {
                 const response = await fetch(`https://api.github.com/repos/${repo}/contents`);
+                if (!response.ok) throw new Error("Dépôt introuvable ou limite dépassée.");
                 const files = await response.json();
                 
                 for (const file of files) {
@@ -87,17 +122,24 @@
         }
 
         // --- MOTEUR ANALYSE ---
-        function analyserEtStocker(text, filename) {
+        async function analyserEtStocker(text, filename) {
             const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 5);
             memoireCode.push({
                 source: filename,
                 patterns: lines.slice(0, 50) // Garde un échantillon de 50 lignes par fichier
             });
-            log(`-> Stocké : ${filename} (${lines.length} lignes)`);
+            log(`-> Stocké en mémoire : ${filename} (${lines.length} lignes)`);
+
+            // Si un dossier local est connecté, on met à jour le fichier texte sur le PC en temps réel
+            await sauvegarderSurDisqueDur();
         }
 
-        // --- EXPORT JSON ---
+        // --- EXPORT JSON CLASSIQUE (Téléchargement de secours) ---
         function sauvegarderMemoireJSON() {
+            if (memoireCode.length === 0) {
+                alert("La mémoire est vide pour l'instant !");
+                return;
+            }
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(memoireCode, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
@@ -105,9 +147,8 @@
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
-            log("💾 Mémoire exportée.");
+            log("💾 Mémoire exportée manuellement via téléchargement.");
         }
     </script>
 </body>
 </html>
-
