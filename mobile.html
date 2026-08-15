@@ -426,9 +426,14 @@
             }
         };
 
-        // --- GESTION DU PARTAGE / EMAIL DE LA RÉPONSE ---
+        // --- GESTION DU PARTAGE / EMAIL DE LA RÉPONSE (CORRIGÉ) ---
         document.getElementById('btn-partager-email').onclick = async () => {
             try {
+                // Vérification de sécurité pour éviter l'erreur "cannot create an answer in a state other than have-remote-offer"
+                if (pc.signalingState !== "have-remote-offer" && pc.signalingState !== "have-local-pranswer") {
+                    throw new Error("L'offre du PC n'est pas encore chargée. Veuillez d'abord sélectionner le fichier JSON du PC à l'étape 1.");
+                }
+
                 const answer = await pc.createAnswer();
                 await pc.setLocalDescription(answer);
 
