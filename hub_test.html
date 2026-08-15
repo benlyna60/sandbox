@@ -353,9 +353,29 @@
             dataChannel.onmessage = async (e) => {
                 const messageMobile = e.data;
                 console.log("📩 Message reçu du mobile via P2P :", messageMobile);
+                window.derniereQuestionRecue = messageMobile;
 
+                // --- ANALYSE D'INTENTION & ROUTAGE VERS LE VRAI HUB ---
+                const texteMin = messageMobile.toLowerCase();
+                const motsTechniques = ["code", "script", "fonction", "python", "javascript", "sql", "bug", "erreur", "html", "css", "php", "java"];
+                const motsConversationnels = ["bonjour", "salut", "ça va", "coucou", "hello", "comment", "pourquoi", "merci", "aide", "dis-moi"];
+
+                const contientTechnique = motsTechniques.some(mot => texteMin.includes(mot));
+                const contientConversation = motsConversationnels.some(mot => texteMin.includes(mot));
+
+                // On ajuste temporairement les poids ou on laisse le Hub orchestrer selon l'intention
+                if (contientConversation && !contientTechnique) {
+                    // Priorité au Rédacteur / Communication pour le small talk
+                    let redacteur = hub.experts.find(exp => exp.id === 'redacteur');
+                    if (redacteur) {
+                        redacteur.dernierTexte = "Bonjour ! Comment puis-je vous aider aujourd'hui ?";
+                    }
+                }
+
+                // Appel du véritable orchestrateur Hub Central
                 let texteReponse = await hub.traiterRequete(messageMobile);
 
+                // Envoi de la réponse dynamique vers le mobile
                 if (dataChannel && dataChannel.readyState === 'open') {
                     dataChannel.send(texteReponse);
                     console.log("📤 Réponse renvoyée au mobile via P2P :", texteReponse);
@@ -416,19 +436,12 @@
                     dernierMessageTraite = messageActuel;
                     window.derniereQuestionRecue = messageActuel;
 
-                    let expertCible = window.appState['expert-comm'] || Object.values(window.appState)[0];
-                    if (!expertCible) return;
-
-                    let texteReponse = `Réponse auto du Hub pour : "${messageActuel}"`;
-                    const cles = Object.keys(expertCible.poids || {});
-                    if (cles.length > 0) {
-                        texteReponse = `Analyse (${expertCible.nom}) [${cles.slice(0, 3).join(', ')}] : Bien reçu !`;
-                    }
+                    let texteReponse = await hub.traiterRequete(messageActuel);
 
                     const nouvelleDonnee = {
                         dernierMessageUser: messageActuel,
                         dernierMessageHub: texteReponse,
-                        reflexion: `Traité en temps réel par ${expertCible.nom}`
+                        reflexion: `Traité en temps réel par le Hub Central`
                     };
 
                     await ecrireFichierLocalDirect(nouvelleDonnee);
