@@ -8,6 +8,18 @@ export class Orchestrateur {
         this.experts.push(expert);
     }
 
+    // Nettoie les entités HTML et les caractères parasites (comme &#039;) pour un rendu fluide
+    nettoyerTexte(texte) {
+        if (!texte) return '';
+        return texte
+            .replace(/&#039;/g, "'")
+            .replace(/&quot;/g, '"')
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .trim();
+    }
+
     async orchestrerAnalyse(question, maxPasses = 2, seuilCible = 25) {
         let iteration = 0;
         let meilleur = null;
@@ -45,10 +57,11 @@ export class Orchestrateur {
             contexteTravail = `${question} [Affinage passe ${iteration} - Approfondir les axes : ${conceptsCles}]`;
         }
 
-        // 4. Retourne les métadonnées "sous le capot" séparées par "---" de la réponse claire
+        // 4. Formatage propre : métadonnées discrètes en haut, séparateur, puis texte nettoyé et fluide en bas
         const infoPasses = historiquePasses.length > 1 ? ` | Parcours: ${historiquePasses.join(' ➔ ')}` : '';
         const sousLeCapot = `[Module: ${meilleur.expert} | Score: ${meilleur.score}${infoPasses}]`;
+        const textePropre = this.nettoyerTexte(meilleur.reflexion);
         
-        return `${sousLeCapot}\n---\n${meilleur.reflexion}`;
+        return `${sousLeCapot}\n---\n${textePropre}`;
     }
 }
