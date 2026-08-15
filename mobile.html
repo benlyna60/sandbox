@@ -293,7 +293,7 @@
         <div id="mobile-p2p-panel">
             <div style="color:var(--cyan); font-weight:bold;">🔗 Connexion Instantanée :</div>
             <button id="btn-scanner-qr" style="background:var(--cyan); color:#000; font-weight:bold; padding:8px; border-radius:4px; border:none; cursor:pointer;">📷 1. Scanner le QR Code du PC</button>
-            <button id="btn-generer-reponse-json" style="background:var(--panel-alt); color:#fff; border:1px solid var(--hair); padding:6px; border-radius:4px; cursor:pointer; margin-top:4px;">2. Télécharger réponse</button>
+            <button id="btn-partager-email" style="background:var(--panel-alt); color:#fff; border:1px solid var(--hair); padding:8px; border-radius:4px; cursor:pointer; margin-top:4px;">✉️ 2. Partager / Envoyer par Email le JSON</button>
         </div>
     </nav>
 
@@ -459,28 +459,39 @@
 
         document.getElementById('btn-fermer-qr').onclick = stopScanner;
 
-        document.getElementById('btn-generer-reponse-json').onclick = async () => {
+        document.getElementById('btn-partager-email').onclick = async () => {
             try {
                 const answer = await pc.createAnswer();
                 await pc.setLocalDescription(answer);
 
-                setTimeout(() => {
+                setTimeout(async () => {
                     const rawAnswer = JSON.stringify(pc.localDescription);
                     const answerB64 = btoa(rawAnswer);
                     const compressedAnswer = LZString.compressToEncodedURIComponent(answerB64);
 
                     const blob = new Blob([JSON.stringify({ type: "p2p-answer", payload: compressedAnswer }, null, 2)], { type: "application/json" });
-                    const url = URL.createObjectURL(blob);
-                    
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = "liaison-mobile-vers-pc.json";
-                    a.click();
+                    const fichier = new File([blob], 'liaison-mobile-vers-pc.json', { type: 'application/json' });
 
-                    statusBadge.innerText = "Réponse générée !";
+                    if (navigator.canShare && navigator.canShare({ files: [fichier] })) {
+                        await navigator.share({
+                            title: 'Fichier de liaison P2P Hub IA',
+                            text: 'Voici le fichier JSON de réponse pour établir la connexion avec le Hub.',
+                            files: [fichier],
+                        });
+                    } else {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = "liaison-mobile-vers-pc.json";
+                        a.click();
+
+                        window.location.href = `mailto:?subject=Fichier%20de%20liaison%20Hub%20IA&body=Bonjour,%20veuillez%20trouver%20ci-joint%20(ou%20télécharger)%20le%20fichier%20JSON%20généré%20pour%20la%20connexion.`;
+                    }
+
+                    statusBadge.innerText = "Réponse partagée !";
                 }, 1000);
             } catch (err) {
-                alert("Erreur lors de la génération de la réponse : " + err.message);
+                alert("Erreur lors de la génération ou du partage de la réponse : " + err.message);
             }
         };
 
