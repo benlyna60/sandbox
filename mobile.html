@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hub IA - Chat Fichier JSON</title>
+    <title>Hub IA - Chat P2P par Fichier</title>
+    <!-- Intégration de LZ-String pour compresser les clés de liaison P2P -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
     <style>
         :root {
             --bg: #0b0c10;
@@ -44,11 +46,27 @@
 
         #status-badge {
             font-size: 11px;
-            background: rgba(0, 255, 102, 0.1);
-            color: #00ff66;
-            border: 1px solid #00ff66;
+            background: rgba(255, 176, 0, 0.1);
+            color: #ffb000;
+            border: 1px solid #ffb000;
             padding: 4px 8px;
             border-radius: 6px;
+        }
+
+        /* Panneau de configuration P2P mobile par fichier */
+        #mobile-p2p-panel {
+            background: var(--panel);
+            border-bottom: 1px solid var(--cyan);
+            padding: 10px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        #mobile-p2p-panel input[type="file"] {
+            font-size: 11px;
+            color: var(--text);
         }
 
         #chat-container {
@@ -126,11 +144,21 @@
 
     <header>
         <h2>Chat Hub Mobile</h2>
-        <span id="status-badge">Prêt</span>
+        <span id="status-badge">Déconnecté</span>
     </header>
 
+    <!-- Panneau mobile pour charger le fichier du PC et générer la réponse -->
+    <div id="mobile-p2p-panel">
+        <div style="color:var(--cyan); font-weight:bold;">🔗 Liaison P2P par Fichier :</div>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+            <span style="font-size:10px; color:var(--text-dim);">1. Glisser ou sélectionner le fichier du PC (`liaison-pc-vers-mobile.json`) :</span>
+            <input type="file" id="input-file-offer" accept=".json">
+        </div>
+        <button id="btn-generer-reponse-json" style="background:var(--cyan); color:#000; font-weight:bold; padding:6px; border-radius:4px; border:none; cursor:pointer; margin-top:2px;">2. Générer et télécharger le fichier de réponse</button>
+    </div>
+
     <div id="chat-container">
-        <div class="message hub">Mode fichier JSON activé. Tapez votre message ci-dessous pour l'envoyer au Hub.</div>
+        <div class="message hub">Chargez le fichier de liaison du PC ci-dessus pour initialiser la discussion P2P.</div>
     </div>
 
     <form id="chat-form">
@@ -144,18 +172,97 @@
         const chatForm = document.getElementById('chat-form');
         const statusBadge = document.getElementById('status-badge');
 
-        // URL du fichier JSON partagé (adaptée vers ton GitHub Pages)
-        let jsonBridgeUrl = localStorage.getItem('hub_json_bridge_url') || 'https://benlyna60.github.io/sandbox/hub-state.json';
+        // --- CONFIGURATION WEBRTC P2P VIA FICHIER ---
+        const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+        let dataChannel = null;
 
-        let dernierMessageRecuAffiche = "";
+        // Écouter les canaux de données entrants créés par le PC
+        pc.ondatachannel = (e) => {
+            dataChannel = e.channel;
+            setupDataChannel();
+        };
 
-        // Envoi d'un message
-        chatForm.onsubmit = async (e) => {
+        function setupDataChannel() {
+            dataChannel.onopen = () => {
+                statusBadge.innerText = "Connecté ✅";
+                statusBadge.style.background = "rgba(0, 255, 102, 0.1)";
+                statusBadge.style.color = "#00ff66";
+                statusBadge.style.borderColor = "#00ff66";
+            };
+
+            dataChannel.onmessage = (e) => {
+                const texteReponse = e.data;
+                const hubDiv = document.createElement('div');
+                hubDiv.className = 'message hub';
+                hubDiv.innerText = texteReponse;
+                chatContainer.appendChild(hubDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            };
+        }
+
+        // 1. Charger le fichier de liaison envoyé par le PC
+        document.getElementById('input-file-offer').onchange = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                const text = await file.text();
+                const data = JSON.parse(text);
+
+                let decompressedOffer = data.payload;
+                try {
+                    const maybeJson = LZString.decompressFromEncodedURIComponent(data.payload);
+                    if (maybeJson) decompressedOffer = maybeJson;
+                } catch (err) {}
+
+                const offerDesc = JSON.parse(atob(decompressedOffer));
+                await pc.setRemoteDescription(new RTCSessionDescription(offerDesc));
+
+                statusBadge.innerText = "Offre reçue !";
+            } catch (err) {
+                alert("Erreur de lecture du fichier offre : " + err.message);
+            }
+        };
+
+        // 2. Générer la réponse et télécharger le fichier JSON à renvoyer au PC
+        document.getElementById('btn-generer-reponse-json').onclick = async () => {
+            try {
+                const answer = await pc.createAnswer();
+                await pc.setLocalDescription(answer);
+
+                setTimeout(() => {
+                    const rawAnswer = JSON.stringify(pc.localDescription);
+                    const answerB64 = btoa(rawAnswer);
+                    const compressedAnswer = LZString.compressToEncodedURIComponent(answerB64);
+
+                    // Création du fichier JSON de réponse
+                    const blob = new Blob([JSON.stringify({ type: "p2p-answer", payload: compressedAnswer }, null, 2)], { type: "application/json" });
+                    const url = URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "liaison-mobile-vers-pc.json";
+                    a.click();
+
+                    statusBadge.innerText = "Réponse générée !";
+                }, 1000);
+            } catch (err) {
+                alert("Erreur lors de la génération de la réponse : " + err.message);
+            }
+        };
+
+        // Envoi d'un message textuel via le canal P2P direct
+        chatForm.onsubmit = (e) => {
             e.preventDefault();
             const texte = userInput.value.trim();
             if (!texte) return;
 
-            // Affichage local immédiat du message utilisateur
+            if (!dataChannel || dataChannel.readyState !== 'open') {
+                alert("La liaison P2P n'est pas encore établie. Chargez le fichier du PC et renvoyez la réponse.");
+                return;
+            }
+
+            // Affichage local immédiat
             const userDiv = document.createElement('div');
             userDiv.className = 'message user';
             userDiv.innerText = texte;
@@ -163,42 +270,9 @@
             userInput.value = "";
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
-            statusBadge.innerText = "En attente du Hub...";
-
-            // Sauvegarde locale ou simulation d'envoi pour que ton PC puisse le récupérer via le flux continu
-            try {
-                // Si ton PC surveille le fichier via l'API locale, il récupérera le texte actualisé.
-                // Tu peux aussi stocker la dernière action pour usage local mobile.
-                localStorage.setItem('dernier_message_envoye', texte);
-                statusBadge.innerText = "En attente...";
-            } catch (err) {
-                statusBadge.innerText = "Erreur d'envoi";
-            }
+            // Envoi direct au PC par WebRTC
+            dataChannel.send(texte);
         };
-
-        // Vérification périodique des réponses du Hub (toutes les 1.5 secondes)
-        setInterval(async () => {
-            try {
-                const response = await fetch(jsonBridgeUrl + '?t=' + Date.now());
-                if (!response.ok) return;
-                const data = await response.json();
-
-                // Si le Hub a répondu et que ce n'est pas déjà affiché
-                if (data.dernierMessageHub && data.dernierMessageHub !== dernierMessageRecuAffiche) {
-                    dernierMessageRecuAffiche = data.dernierMessageHub;
-
-                    const hubDiv = document.createElement('div');
-                    hubDiv.className = 'message hub';
-                    hubDiv.innerText = data.dernierMessageHub;
-                    chatContainer.appendChild(hubDiv);
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
-                    
-                    statusBadge.innerText = "Connecté";
-                }
-            } catch (e) {
-                // Ignore les erreurs réseau temporaires
-            }
-        }, 1500);
     </script>
 </body>
 </html>
