@@ -63,7 +63,8 @@ export class ExpertRedacteur {
      * 2. L'ANALYSE ET LA SYNTHÈSE RÉDACTIONNELLE
      */
     async analyser(texteUtilisateur) {
-        const mots = texteUtilisateur.toLowerCase().split(/[\s,.;!?]+/).filter(m => m.length > 2);
+        const texteMin = texteUtilisateur.toLowerCase();
+        const mots = texteMin.split(/[\s,.;!?]+/).filter(m => m.length > 2);
 
         // A. Apprentissage direct
         mots.forEach(mot => this.mettreAJourPoids(mot, 2));
@@ -81,29 +82,61 @@ export class ExpertRedacteur {
         // C. Recherche externe (Lexique / Style)
         const rechercheDirecte = await this.rechercherDansSonDomaine(mots);
 
-        // D. Formulation orientée clarté et structure
+        // D. Formulation orientée clarté, structure et rédaction développée
         let reflexionFinale = "";
 
-        if (rechercheDirecte) {
-            reflexionFinale = `Sur le plan de la formulation (${rechercheDirecte.titre}) : ${rechercheDirecte.extrait.toLowerCase()}...`;
+        if (texteMin.includes("plan") || texteMin.includes("organisation") || texteMin.includes("semaine") || texteMin.includes("alternance") || texteMin.includes("structur")) {
+            reflexionFinale = `### 🌍 Analyse et Structuration : Plan d'action détaillé
+
+Voici une architecture fluide et équilibrée conçue pour harmoniser vos tâches administratives, techniques et créatives avec clarté et efficacité.
+
+**1. L'approche méthodologique globale :**
+L'objectif est de cloisonner les temps forts pour éviter la dispersion cognitive. Travailler par blocs homogènes permet d'optimiser la concentration et d'assurer un suivi rigoureux des livrables sans rupture de charge.
+
+**2. Déclinaison opérationnelle :**
+* **Phase d'initialisation :** Consacrez les premiers moments de votre démarche à la mise en ordre des priorités, au tri des flux entrants et à la préparation des environnements de travail.
+* **Phase d'immersion technique :** Isolez les séquences à forte complexité intellectuelle ou de développement pour y injecter un maximum d'énergie créative.
+* **Phase de consolidation :** Réservez des créneaux dédiés aux bilans intermédiaires, au nettoyage des espaces numériques et à la validation des acquis.
+
+**3. Points clés et exigences de clarté :**
+*   **Domaine d'application :** ${this.cat}
+*   **Concepts mobilisés :** ${conceptsMemoire.length > 0 ? conceptsMemoire.slice(0, 4).join(', ') : 'Optimisation, Fluidité, Structure'}
+*   **Synthèse organique :** Traitement validé par le module ${this.nom}.`;
+        } else if (rechercheDirecte) {
+            reflexionFinale = `### 🌍 Analyse lexicale : ${rechercheDirecte.titre}
+
+Sur le plan de la formulation et du style : ${rechercheDirecte.extrait.toLowerCase()}.
+
+**Axes de développement rédactionnel :**
+* Veillez à articuler chaque idée autour d'un noyau sémantique fort.
+* Assurez la liaison logique entre les paragraphes pour garantir une lecture fluide et sans heurt.
+* Éliminez les redondances superflues pour ne conserver que l'essence de l'information.`;
         } else {
-            reflexionFinale = `Sur le plan de la structure rédactionnelle, il est recommandé de clarifier les objectifs, d'ordonner les idées logiquement et d'assurer une transition fluide entre chaque point clé.`;
+            reflexionFinale = `### 🌍 Analyse de la structure rédactionnelle
+
+Sur le plan de la structuration globale, il est recommandé de clarifier les objectifs, d'ordonner les concepts logiquement et d'instaurer des transitions fluides entre chaque argument.
+
+**Lignes directrices pour la clarté :**
+* Définir l'intention centrale dès l'introduction du propos.
+* Hiérarchiser l'information du général vers le particulier à l'aide de puces épurées.
+* Soigner la concision pour alléger la charge cognitive du lecteur.`;
         }
 
         if (conceptsMemoire.length > 0) {
-            reflexionFinale += ` (Termes de style associés : ${conceptsMemoire.slice(0, 3).join(', ')})`;
+            reflexionFinale += `\n\n> *Termes de style et pistes mémorielles mobilisés :* ${conceptsMemoire.slice(0, 4).join(', ')}.`;
         }
 
         this.dernierTexte = reflexionFinale;
         this.mettreAJourUI();
 
-        const scoreTotal = (rechercheDirecte ? 15 : 0) + scoreMemoire;
+        const scoreTotal = (rechercheDirecte ? 15 : 0) + scoreMemoire + (conceptsMemoire.length * 2);
 
         return {
             expert: this.nom,
             domaine: this.cat,
             score: scoreTotal,
-            reflexion: reflexionFinale
+            reflexion: reflexionFinale,
+            poidsPartage: this.poids
         };
     }
 
