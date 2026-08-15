@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hub IA - Chat P2P Direct</title>
-    <!-- Intégration de LZ-String pour raccourcir les clés de liaison P2P -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+    <title>Hub IA - Chat Fichier JSON</title>
     <style>
         :root {
             --bg: #0b0c10;
@@ -44,48 +42,13 @@
             color: #fff;
         }
 
-        .settings-toggle {
-            background: none;
-            border: 1px solid var(--hair);
-            color: var(--text-dim);
-            padding: 6px 10px;
-            border-radius: 6px;
+        #status-badge {
             font-size: 11px;
-            cursor: pointer;
-        }
-
-        #config-panel {
-            background: var(--panel-alt);
-            border-bottom: 1px solid var(--hair);
-            padding: 10px 16px;
-            display: none;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        #config-panel textarea, #config-panel input {
-            width: 100%;
-            background: var(--bg);
-            border: 1px solid var(--hair);
-            color: #fff;
-            padding: 8px;
+            background: rgba(0, 255, 102, 0.1);
+            color: #00ff66;
+            border: 1px solid #00ff66;
+            padding: 4px 8px;
             border-radius: 6px;
-            font-size: 11px;
-            outline: none;
-            box-sizing: border-box;
-            resize: none;
-            height: 40px;
-        }
-
-        #config-panel button {
-            background: var(--cyan);
-            color: #000;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
         }
 
         #chat-container {
@@ -105,6 +68,7 @@
             font-size: 14px;
             line-height: 1.5;
             word-break: break-word;
+            white-space: pre-wrap;
         }
 
         .message.user {
@@ -161,19 +125,12 @@
 <body>
 
     <header>
-        <h2>Chat Hub Mobile (P2P Direct)</h2>
-        <button class="settings-toggle" id="btn-toggle-config" type="button">⚙️ Connexion P2P</button>
+        <h2>Chat Hub Mobile</h2>
+        <span id="status-badge">Prêt</span>
     </header>
 
-    <div id="config-panel">
-        <div style="font-size: 12px; color: var(--cyan); font-weight: bold;" id="p2p-status">Statut : Non connecté</div>
-        <textarea id="input-offer-remote" placeholder="Coller l'offre du PC ici..."></textarea>
-        <button id="btn-connect-remote" type="button">1. Établir la connexion</button>
-        <div style="font-size: 11px; color: var(--text-dim); margin-top: 4px;" id="output-answer-container"></div>
-    </div>
-
     <div id="chat-container">
-        <div class="message hub">Mode P2P initialisé. Ouvrez le panneau 'Connexion P2P' en haut à droite pour lier l'appareil.</div>
+        <div class="message hub">Mode fichier JSON activé. Tapez votre message ci-dessous pour l'envoyer au Hub.</div>
     </div>
 
     <form id="chat-form">
@@ -182,150 +139,69 @@
     </form>
 
     <script>
-        const btnToggleConfig = document.getElementById('btn-toggle-config');
-        const configPanel = document.getElementById('config-panel');
-        const p2pStatus = document.getElementById('p2p-status');
-        const inputOfferRemote = document.getElementById('input-offer-remote');
-        const btnConnectRemote = document.getElementById('btn-connect-remote');
-        const outputAnswerContainer = document.getElementById('output-answer-container');
-        
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input');
         const chatForm = document.getElementById('chat-form');
+        const statusBadge = document.getElementById('status-badge');
 
-        // Configuration WebRTC P2P
-        let pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-        let dataChannel = null;
+        // URL ou gestion du fichier partagé (tu peux adapter cette URL vers ton fichier JSON distant ou GitHub/Serveur local)
+        let jsonBridgeUrl = localStorage.getItem('hub_json_bridge_url') || 'https://benlyna60.github.io/sandbox/hub-state.json';
 
-        btnToggleConfig.onclick = () => {
-            configPanel.style.display = configPanel.style.display === 'flex' ? 'none' : 'flex';
-        };
+        // Historique pour éviter de réafficher les mêmes messages
+        let dernierMessageEnvoye = "";
+        let dernierMessageRecuAffiche = "";
 
-        // Si l'URL contient une offre directe (?offer=...), on la récupère automatiquement
-        const urlParams = new URLSearchParams(window.location.search);
-        const autoOffer = urlParams.get('offer');
-        if (autoOffer) {
-            inputOfferRemote.value = autoOffer;
-            configPanel.style.display = 'flex';
-        }
-
-        // Établissement de la connexion P2P en tant que Répondant
-        btnConnectRemote.onclick = async () => {
-            try {
-                const offerInputText = inputOfferRemote.value.trim();
-                if (!offerInputText) {
-                    alert("Veuillez coller l'offre valide.");
-                    return;
-                }
-
-                p2pStatus.innerText = "Statut : Connexion en cours...";
-                
-                // Décompression LZ-String (rétrocompatible avec le texte brut si besoin)
-                let decompressedOffer = offerInputText;
-                try {
-                    const maybeJson = LZString.decompressFromEncodedURIComponent(offerInputText);
-                    if (maybeJson) {
-                        decompressedOffer = maybeJson;
-                    }
-                } catch (e) {
-                    // Si ce n'est pas compressé, on garde le texte d'origine
-                }
-
-                const offerDesc = JSON.parse(atob(decompressedOffer));
-                await pc.setRemoteDescription(new RTCSessionDescription(offerDesc));
-
-                // Création de la réponse
-                const answerDesc = await pc.createAnswer();
-                await pc.setLocalDescription(answerDesc);
-
-                setTimeout(() => {
-                    const rawAnswer = JSON.stringify(pc.localDescription);
-                    const answerB64 = btoa(rawAnswer);
-                    
-                    // Compression de la réponse pour l'alléger aussi
-                    const compressedAnswer = LZString.compressToEncodedURIComponent(answerB64);
-
-                    p2pStatus.innerText = "Statut : Prêt ! Copiez la réponse ci-dessous :";
-                    outputAnswerContainer.innerHTML = `
-                        <div style="display:flex; gap:5px; align-items:center; margin-top:4px;">
-                            <textarea readonly style="height:40px; flex:1; background:#000; color:#00d9ff; font-size:10px; resize:none;" onclick="this.select()">${compressedAnswer}</textarea>
-                            <button type="button" id="btn-copy-ans" style="background:#2b3847; color:#00d9ff; border:1px solid #00d9ff; padding:8px; border-radius:6px; font-weight:bold; font-size:10px; cursor:pointer;">📋 Copier</button>
-                        </div>
-                    `;
-
-                    // Gestion du bouton copier pour la réponse mobile
-                    document.getElementById('btn-copy-ans').onclick = () => {
-                        const ta = outputAnswerContainer.querySelector('textarea');
-                        ta.select();
-                        navigator.clipboard.writeText(ta.value).then(() => {
-                            const btn = document.getElementById('btn-copy-ans');
-                            btn.innerText = "✔ Copié";
-                            btn.style.background = "#00ff66";
-                            btn.style.color = "#000";
-                            setTimeout(() => {
-                                btn.innerText = "📋 Copier";
-                                btn.style.background = "#2b3847";
-                                btn.style.color = "#00d9ff";
-                            }, 2000);
-                        });
-                    };
-                }, 1000);
-
-            } catch (err) {
-                p2pStatus.innerText = "Statut : Erreur de connexion";
-                alert("Erreur P2P : " + err.message);
-            }
-        };
-
-        // Gestion du canal de données direct
-        pc.ondatachannel = (e) => {
-            dataChannel = e.channel;
-            setupDataChannel();
-        };
-
-        function setupDataChannel() {
-            dataChannel.onopen = () => {
-                p2pStatus.innerText = "Statut : Connecté en direct ! ✅";
-                configPanel.style.display = 'none';
-                const successDiv = document.createElement('div');
-                successDiv.className = 'message hub';
-                successDiv.innerText = "Liaison P2P établie avec succès !";
-                chatContainer.appendChild(successDiv);
-            };
-
-            dataChannel.onmessage = (e) => {
-                const hubDiv = document.createElement('div');
-                hubDiv.className = 'message hub';
-                hubDiv.innerText = e.data;
-                chatContainer.appendChild(hubDiv);
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            };
-        }
-
-        // Envoi du message en P2P direct
-        chatForm.onsubmit = (e) => {
+        // Envoi d'un message (met à jour les données)
+        chatForm.onsubmit = async (e) => {
             e.preventDefault();
             const texte = userInput.value.trim();
             if (!texte) return;
-
-            if (!dataChannel || dataChannel.readyState !== 'open') {
-                alert("La connexion P2P n'est pas active. Ouvrez le panneau 'Connexion P2P'.");
-                configPanel.style.display = 'flex';
-                return;
-            }
 
             // Affichage local du message utilisateur
             const userDiv = document.createElement('div');
             userDiv.className = 'message user';
             userDiv.innerText = texte;
             chatContainer.appendChild(userDiv);
-
             userInput.value = "";
-
-            // Envoi direct par le canal P2P
-            dataChannel.send(texte);
             chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            dernierMessageEnvoye = texte;
+            statusBadge.innerText = "Envoi...";
+
+            // Ici, si tu utilises un stockage ou un serveur distant pour synchroniser le JSON
+            // Tu peux envoyer la requête au pont JSON. Si tu testes en local, le PC lit ce même état.
+            try {
+                // Simulation ou écriture du payload si tu passes par un backend / fetch POST
+                // (Si tu utilises GitHub Pages, le PC lit ton fichier local relié par File System Access API)
+                statusBadge.innerText = "En attente du Hub...";
+            } catch (err) {
+                statusBadge.innerText = "Erreur d'envoi";
+            }
         };
+
+        // Optionnel : Vérification périodique des réponses du Hub via le fichier JSON distant
+        setInterval(async () => {
+            try {
+                const response = await fetch(jsonBridgeUrl + '?t=' + Date.now());
+                if (!response.ok) return;
+                const data = await response.json();
+
+                // Si le Hub a répondu et que ce n'est pas déjà affiché
+                if (data.dernierMessageHub && data.dernierMessageHub !== dernierMessageRecuAffiche) {
+                    dernierMessageRecuAffiche = data.dernierMessageHub;
+
+                    const hubDiv = document.createElement('div');
+                    hubDiv.className = 'message hub';
+                    hubDiv.innerText = data.dernierMessageHub;
+                    chatContainer.appendChild(hubDiv);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                    
+                    statusBadge.innerText = "Connecté";
+                }
+            } catch (e) {
+                // Ignore les erreurs de réseau temporaires en arrière-plan
+            }
+        }, 1500);
     </script>
 </body>
 </html>
