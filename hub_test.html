@@ -301,46 +301,56 @@
 
         document.getElementById('btn-generer-offre-json').onclick = async () => {
             try {
+                // Fermer l'ancien dataChannel s'il existait déjà pour repartir sur une base propre
+                if (dataChannel) {
+                    try { dataChannel.close(); } catch(e){}
+                }
+
                 dataChannel = pc.createDataChannel("hub-chat-channel");
                 setupDataChannel();
 
                 const offer = await pc.createOffer();
                 await pc.setLocalDescription(offer);
 
-                setTimeout(() => {
-                    const rawOffer = JSON.stringify(pc.localDescription);
-                    const offerB64 = btoa(rawOffer);
-                    const compressedOffer = LZString.compressToEncodedURIComponent(offerB64);
+                // On s'assure que la description locale est prête immédiatement
+                if (!pc.localDescription) {
+                    throw new Error("Impossible de générer la description locale WebRTC.");
+                }
 
-                    const payloadString = JSON.stringify({ type: "p2p-offer", payload: compressedOffer });
+                const rawOffer = JSON.stringify(pc.localDescription);
+                const offerB64 = btoa(rawOffer);
+                const compressedOffer = LZString.compressToEncodedURIComponent(offerB64);
 
-                    // 1. Affichage direct et robuste du QR Code visuel à l'écran du PC
-                    const container = document.getElementById('pc-qrcode-container');
-                    container.innerHTML = ""; // Nettoyer l'ancien s'il existe
-                    
-                    const qrImg = document.createElement('img');
-                    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(payloadString)}`;
-                    qrImg.alt = "QR Code de liaison P2P";
-                    qrImg.style.display = "block";
-                    qrImg.style.borderRadius = "4px";
-                    
-                    container.appendChild(qrImg);
+                const payloadString = JSON.stringify({ type: "p2p-offer", payload: compressedOffer });
 
-                    // Ouvrir la modale PC
-                    document.getElementById('pc-qr-modal').style.display = 'flex';
+                // 1. Affichage direct et immédiat du QR Code visuel à l'écran du PC
+                const container = document.getElementById('pc-qrcode-container');
+                container.innerHTML = ""; // Nettoyer l'ancien s'il existe
+                
+                const qrImg = document.createElement('img');
+                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(payloadString)}`;
+                qrImg.alt = "QR Code de liaison P2P";
+                qrImg.style.display = "block";
+                qrImg.style.borderRadius = "4px";
+                
+                container.appendChild(qrImg);
 
-                    // 2. Préparation du téléchargement JSON en arrière-plan (secours)
-                    const blob = new Blob([payloadString], { type: "application/json" });
-                    const url = URL.createObjectURL(blob);
-                    
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = "liaison-pc-vers-mobile.json";
+                // Ouvrir immédiatement la modale PC
+                document.getElementById('pc-qr-modal').style.display = 'flex';
 
-                    document.getElementById('p2p-status-text').innerText = "Statut : QR Code affiché à l'écran ! Flashez-le avec le mobile.";
-                    document.getElementById('p2p-status-text').style.color = "var(--cyan)";
-                }, 1000);
+                // 2. Préparation du téléchargement JSON en arrière-plan (secours)
+                const blob = new Blob([payloadString], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "liaison-pc-vers-mobile.json";
+
+                document.getElementById('p2p-status-text').innerText = "Statut : QR Code affiché à l'écran ! Flashez-le avec le mobile.";
+                document.getElementById('p2p-status-text').style.color = "var(--cyan)";
+
             } catch (err) {
+                console.error("Erreur génération P2P :", err);
                 alert("Erreur création P2P : " + err.message);
             }
         };
