@@ -99,19 +99,34 @@ export class IngestorModule {
             return;
         }
 
-        const arrayBuffer = await file.arrayBuffer();
-        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-        const pdfDoc = await loadingTask.promise;
-        
-        let texteTotal = "";
-        for (let i = 1; i <= pdfDoc.numPages; i++) {
-            const page = await pdfDoc.getPage(i);
-            const tokenText = await page.getTextContent();
-            const textPages = tokenText.items.map(item => item.str).join(' ');
-            texteTotal += textPages + "\n";
-        }
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+            const pdfDoc = await loadingTask.promise;
+            
+            let texteTotal = "";
+            for (let i = 1; i <= pdfDoc.numPages; i++) {
+                const page = await pdfDoc.getPage(i);
+                const tokenText = await page.getTextContent();
+                // Sécurisation de l'extraction des chaînes de caractères (.str)
+                const textPages = tokenText.items
+                    .map(item => item.str || '')
+                    .join(' ');
+                texteTotal += textPages + "\n";
+            }
 
-        this.ingererTexte(texteTotal, `PDF: ${file.name}`);
+            // Vérification si le PDF contient du texte extractible
+            if (!texteTotal.trim()) {
+                console.warn(`[${this.nom}] Le PDF "${file.name}" ne contient aucun texte textuel. Il s'agit probablement d'un PDF scanné (image).`);
+                alert(`Attention : Le PDF "${file.name}" semble être une image ou un scan sans texte sélectionnable. L'extraction automatique n'a rien trouvé.`);
+                return;
+            }
+
+            this.ingererTexte(texteTotal, `PDF: ${file.name}`);
+        } catch (err) {
+            console.error(`[${this.nom}] Erreur critique lors de la lecture du PDF :`, err);
+            alert(`Erreur de lecture du PDF ${file.name}. Voir la console pour les détails.`);
+        }
     }
 
     /**
