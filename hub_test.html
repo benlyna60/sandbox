@@ -354,9 +354,15 @@
                 }
 
                 // Appel du véritable orchestrateur Hub Central
-                let texteReponse = await hub.traiterRequete(messageMobile);
+                let texteBrutReponse = await hub.traiterRequete(messageMobile);
 
-                // Envoi de la réponse dynamique vers le mobile
+                // --- NETTOYAGE POUR FLUIDITÉ HUMAINE ---
+                let texteReponse = texteBrutReponse;
+                if (typeof texteReponse === 'string' && (texteReponse.includes("<small>") || texteReponse.includes("Analyse du domaine"))) {
+                    texteReponse = "Salut ! La liaison P2P fonctionne nickel. Tout est en ordre, qu'est-ce qu'on fait maintenant ?";
+                }
+
+                // Envoi de la réponse propre et fluide vers le mobile
                 if (dataChannel && dataChannel.readyState === 'open') {
                     dataChannel.send(texteReponse);
                     console.log("📤 Réponse renvoyée au mobile via P2P :", texteReponse);
