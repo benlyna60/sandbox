@@ -209,23 +209,16 @@
         </div>
     </header>
 
-    <!-- Panneau de liaison P2P direct avec mobile.html -->
+    <!-- Panneau de liaison P2P direct et simplifié par Fichier JSON -->
     <div id="p2p-panel">
-        <h4 style="margin:0; color:var(--cyan); font-size:13px;">🔗 Pont P2P Direct (Mobile Link)</h4>
+        <h4 style="margin:0; color:var(--cyan); font-size:13px;">🔗 Pont P2P par Fichier de Liaison (Sans long copier-coller)</h4>
         <div style="display:flex; gap:10px; align-items:center;">
-            <button id="btn-create-session" style="background:var(--cyan); color:#000; font-weight:bold;">1. Créer la session P2P</button>
+            <button id="btn-generer-offre-json" style="background:var(--cyan); color:#000; font-weight:bold;">1. Générer le fichier de liaison (PC)</button>
             <span id="p2p-status-text" style="font-size:11px; color:var(--text-dim);">Statut : En attente de création...</span>
         </div>
-        <div id="offer-output-container" style="display:none; flex-direction:column; gap:5px;">
-            <span style="font-size:11px; color:var(--text);">Code Offre à copier sur mobile.html :</span>
-            <div style="display:flex; gap:5px;">
-                <textarea id="output-offer-text" readonly style="flex:1; background:#000; color:var(--cyan); border:1px solid var(--hair); padding:6px; border-radius:4px; font-size:10px; height:45px; resize:none;" onclick="this.select()"></textarea>
-                <button id="btn-copier-offre" type="button" style="background:var(--panel-alt); border-color:var(--cyan); color:var(--cyan); font-weight:bold; padding:0 12px;">📋 Copier</button>
-            </div>
-        </div>
         <div style="display:flex; gap:10px; align-items:center; margin-top:5px;">
-            <input type="text" id="input-answer-remote" placeholder="Coller le code de réponse du mobile ici..." style="flex:1; background:var(--bg); border:1px solid var(--hair); color:#fff; padding:6px; border-radius:4px; font-size:11px; outline:none;">
-            <button id="btn-join-session" style="background:var(--orange); color:#000; font-weight:bold;">2. Établir la liaison</button>
+            <input type="file" id="input-file-answer" accept=".json" style="font-size:11px; color:var(--text);">
+            <span style="font-size:11px; color:var(--text-dim);">2. Glisser/Sélectionner le fichier de réponse du mobile (.json)</span>
         </div>
     </div>
 
@@ -268,11 +261,12 @@
         let localFileHandle = null;
         let dernierMessageTraite = ""; 
 
-        // --- GESTION WEBRTC P2P (Liaison directe mobile.html avec LZ-String) ---
+        // --- GESTION WEBRTC P2P (Liaison directe via Fichiers JSON de liaison) ---
         const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
         let dataChannel = null;
 
-        document.getElementById('btn-create-session').onclick = async () => {
+        // 1. Générer l'offre et la télécharger sous forme de fichier JSON
+        document.getElementById('btn-generer-offre-json').onclick = async () => {
             try {
                 dataChannel = pc.createDataChannel("hub-chat-channel");
                 setupDataChannel();
@@ -283,59 +277,48 @@
                 setTimeout(() => {
                     const rawOffer = JSON.stringify(pc.localDescription);
                     const offerB64 = btoa(rawOffer);
-                    // Compression LZ-String pour raccourcir considérablement le code
                     const compressedOffer = LZString.compressToEncodedURIComponent(offerB64);
 
-                    document.getElementById('offer-output-container').style.display = 'flex';
-                    document.getElementById('output-offer-text').value = compressedOffer;
-                    document.getElementById('p2p-status-text').innerText = "Statut : Offre générée et compressée. Transmettez-la au mobile.";
+                    // Création d'un fichier JSON virtuel à télécharger pour le mobile
+                    const blob = new Blob([JSON.stringify({ type: "p2p-offer", payload: compressedOffer }, null, 2)], { type: "application/json" });
+                    const url = URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "liaison-pc-vers-mobile.json";
+                    a.click();
+
+                    document.getElementById('p2p-status-text').innerText = "Statut : Fichier de liaison téléchargé ! Envoyez-le sur le mobile.";
+                    document.getElementById('p2p-status-text').style.color = "var(--cyan)";
                 }, 1000);
             } catch (err) {
                 alert("Erreur création P2P : " + err.message);
             }
         };
 
-        // Gestion du bouton copier en un clic pour l'offre PC
-        document.getElementById('btn-copier-offre').onclick = () => {
-            const texteBox = document.getElementById('output-offer-text');
-            texteBox.select();
-            navigator.clipboard.writeText(texteBox.value).then(() => {
-                const btnOriginal = document.getElementById('btn-copier-offre');
-                btnOriginal.innerText = "✔ Copié !";
-                btnOriginal.style.background = "#00ff66";
-                btnOriginal.style.color = "#000";
-                setTimeout(() => {
-                    btnOriginal.innerText = "📋 Copier";
-                    btnOriginal.style.background = "var(--panel-alt)";
-                    btnOriginal.style.color = "var(--cyan)";
-                }, 2000);
-            }).catch(err => {
-                alert("Erreur lors de la copie : " + err);
-            });
-        };
+        // 2. Charger automatiquement le fichier de réponse JSON envoyé par le mobile
+        document.getElementById('input-file-answer').onchange = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
 
-        document.getElementById('btn-join-session').onclick = async () => {
             try {
-                const answerInputText = document.getElementById('input-answer-remote').value.trim();
-                if (!answerInputText) {
-                    alert("Veuillez coller la réponse du mobile.");
-                    return;
-                }
-
-                // Décompression LZ-String de la réponse mobile (rétrocompatible si non compressé)
-                let decompressedAnswer = answerInputText;
+                const text = await file.text();
+                const data = JSON.parse(text);
+                
+                let decompressedAnswer = data.payload;
                 try {
-                    const maybeJson = LZString.decompressFromEncodedURIComponent(answerInputText);
+                    const maybeJson = LZString.decompressFromEncodedURIComponent(data.payload);
                     if (maybeJson) {
                         decompressedAnswer = maybeJson;
                     }
-                } catch (e) {}
+                } catch (err) {}
 
                 const answerDesc = JSON.parse(atob(decompressedAnswer));
                 await pc.setRemoteDescription(new RTCSessionDescription(answerDesc));
-                document.getElementById('p2p-status-text').innerText = "Statut : Connexion P2P en cours d'établissement...";
+                document.getElementById('p2p-status-text').innerText = "Statut : Connexion P2P établie via le fichier ! ✅";
+                document.getElementById('p2p-status-text').style.color = "#00ff66";
             } catch (err) {
-                alert("Erreur de liaison réponse : " + err.message);
+                alert("Erreur de lecture du fichier de réponse : " + err.message);
             }
         };
 
@@ -363,9 +346,7 @@
                 const contientTechnique = motsTechniques.some(mot => texteMin.includes(mot));
                 const contientConversation = motsConversationnels.some(mot => texteMin.includes(mot));
 
-                // On ajuste temporairement les poids ou on laisse le Hub orchestrer selon l'intention
                 if (contientConversation && !contientTechnique) {
-                    // Priorité au Rédacteur / Communication pour le small talk
                     let redacteur = hub.experts.find(exp => exp.id === 'redacteur');
                     if (redacteur) {
                         redacteur.dernierTexte = "Bonjour ! Comment puis-je vous aider aujourd'hui ?";
