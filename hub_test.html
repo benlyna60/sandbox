@@ -252,9 +252,9 @@
 
     <script type="module">
         import { Orchestrateur } from './Orchestrateur.js';
-        import { Expert } from './Js/expert.js';
+        import { Expert } from './expert.js';
         import { IngestorModule } from './ingestor_module.js';
-        import { MODULES_REGISTRY, CATEGORIES_CONFIG } from './Js/modules.registry.js';
+        import { MODULES_REGISTRY, CATEGORIES_CONFIG } from './modules.registry.js';
 
         const orchestrateur = new Orchestrateur();
         window.appState = {};
@@ -467,7 +467,6 @@
                 card.className = "card";
                 card.id = `card-${exp.id}`;
 
-                // Bloc spécifique pour le module Ingestor sur sa carte
                 let sectionSpecifique = '';
                 let boutonsLigne = `
                     <button class="action-btn btn-lier" id="btn-file-${exp.id}">📂 Charger JSON</button>
@@ -522,7 +521,6 @@
                     }
                 }, 50);
 
-                // Événements spécifiques pour l'Ingestor
                 if (exp.id === 'ingestor') {
                     const dropZone = card.querySelector('.drop-zone-ingest');
                     const fileInput = card.querySelector('.file-input-ingest');
@@ -555,7 +553,6 @@
 
                     card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
                 } else {
-                    // Événements pour les experts standards
                     card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
                     card.querySelector('.btn-injecter').onclick = () => ouvrirModalInjection(exp.id);
                     
