@@ -207,12 +207,16 @@
             align-self: flex-start;
             border: 1px solid var(--cyan);
             border-bottom-left-radius: 2px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .message-header {
             display: flex;
-            justify-content: flex-end;
-            margin-bottom: 6px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2px;
         }
 
         .btn-copy {
@@ -306,8 +310,11 @@
 
     <div id="chat-container">
         <div class="message hub">
-            <div class="message-header"><button class="btn-copy" onclick="copyText(this)">📋 Copier</button></div>
-            <div>Mode Fichiers JSON actif. Ouvrez le menu ☰ pour charger l'offre du PC.</div>
+            <div class="message-header">
+                <span style="font-size: 10px; color: #8892b0; font-family: monospace; opacity: 0.7;">[Système Central]</span>
+                <button class="btn-copy" onclick="copyText(this)">📋 Copier</button>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 6px;">Mode Fichiers JSON actif. Ouvrez le menu ☰ pour charger l'offre du PC.</div>
         </div>
     </div>
 
@@ -335,12 +342,26 @@
         menuOverlay.onclick = toggleMenu;
 
         document.getElementById('menu-clear').onclick = () => {
-            chatContainer.innerHTML = '<div class="message hub"><div class="message-header"><button class="btn-copy" onclick="copyText(this)">📋 Copier</button></div><div>Mare nettoyée. Prêt pour de nouveaux tests.</div></div>';
+            chatContainer.innerHTML = `
+                <div class="message hub">
+                    <div class="message-header">
+                        <span style="font-size: 10px; color: #8892b0; font-family: monospace; opacity: 0.7;">[Système Central]</span>
+                        <button class="btn-copy" onclick="copyText(this)">📋 Copier</button>
+                    </div>
+                    <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 6px;">Mare nettoyée. Prêt pour de nouveaux tests.</div>
+                </div>`;
             toggleMenu();
         };
 
         document.getElementById('menu-new-conv').onclick = () => {
-            chatContainer.innerHTML = '<div class="message hub"><div class="message-header"><button class="btn-copy" onclick="copyText(this)">📋 Copier</button></div><div>Nouvelle conversation initialisée.</div></div>';
+            chatContainer.innerHTML = `
+                <div class="message hub">
+                    <div class="message-header">
+                        <span style="font-size: 10px; color: #8892b0; font-family: monospace; opacity: 0.7;">[Système Central]</span>
+                        <button class="btn-copy" onclick="copyText(this)">📋 Copier</button>
+                    </div>
+                    <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 6px;">Nouvelle conversation initialisée.</div>
+                </div>`;
             toggleMenu();
         };
 
@@ -370,31 +391,54 @@
             };
 
             dataChannel.onmessage = (e) => {
-                const texteReponse = e.data;
+                const texteBrut = e.data;
+                
+                // Découpage entre le "sous le capot" et la "vraie réponse"
+                let metadataText = "[Système Central]";
+                let vraieReponse = texteBrut;
+
+                if (texteBrut.includes("---")) {
+                    const parties = texteBrut.split("---");
+                    metadataText = parties[0].trim();
+                    vraieReponse = parties.slice(1).join("---").trim();
+                }
+
                 const hubDiv = document.createElement('div');
                 hubDiv.className = 'message hub';
-                
+
+                // En-tête (Métadonnées discrètes + Bouton copier)
                 const headerDiv = document.createElement('div');
                 headerDiv.className = 'message-header';
-                
+
+                const metaSpan = document.createElement('span');
+                metaSpan.innerText = metadataText;
+                metaSpan.style.fontSize = '10px';
+                metaSpan.style.color = '#8892b0'; // Gris discret
+                metaSpan.style.fontFamily = 'monospace';
+                metaSpan.style.opacity = '0.7';
+
                 const copyBtn = document.createElement('button');
                 copyBtn.className = 'btn-copy';
                 copyBtn.innerText = '📋 Copier';
                 copyBtn.onclick = () => {
-                    navigator.clipboard.writeText(texteReponse).then(() => {
+                    navigator.clipboard.writeText(vraieReponse).then(() => {
                         copyBtn.innerText = 'Copié ! ✅';
                         setTimeout(() => copyBtn.innerText = '📋 Copier', 2000);
                     });
                 };
-                
+
+                headerDiv.appendChild(metaSpan);
                 headerDiv.appendChild(copyBtn);
-                
+
+                // Corps de la réponse (Texte structuré et propre)
                 const textSpan = document.createElement('div');
-                textSpan.innerText = texteReponse;
-                
+                textSpan.innerText = vraieReponse;
+                textSpan.style.borderTop = '1px solid rgba(255,255,255,0.05)';
+                textSpan.style.paddingTop = '6px';
+
                 hubDiv.appendChild(headerDiv);
                 hubDiv.appendChild(textSpan);
-                
+
                 chatContainer.appendChild(hubDiv);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             };
