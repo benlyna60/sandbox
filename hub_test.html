@@ -542,6 +542,11 @@
                     card.querySelector(`#btn-lier-physique-${exp.id}`).onclick = async () => {
                         await exp.lierFichierDisquePersonnel();
                         document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
+                        const btnLi = card.querySelector(`#btn-lier-physique-${exp.id}`);
+                        btnLi.innerText = "✔ Fichier Lié";
+                        btnLi.style.borderColor = "#00ff66";
+                        btnLi.style.color = "#00ff66";
+                        document.getElementById(`out-${exp.id}`).innerText = `🔗 Fichier disque lié avec succès !\n✔ Mémoire active prête.`;
                     };
 
                     card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
@@ -551,17 +556,32 @@
                     
                     card.querySelector('.btn-lier').onclick = async () => {
                         if (typeof exp.lierFichierDisquePersonnel === 'function') {
-                            await exp.lierFichierDisquePersonnel();
-                            document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                            card.querySelector('.btn-lier').innerText = "✔ Lié JSON";
+                            try {
+                                await exp.lierFichierDisquePersonnel();
+                                document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
+                                const btnLi = card.querySelector('.btn-lier');
+                                btnLi.innerText = "✔ Fichier Lié";
+                                btnLi.style.borderColor = "#00ff66";
+                                btnLi.style.color = "#00ff66";
+                                document.getElementById(`out-${exp.id}`).innerText = `🔗 Fichier JSON lié avec succès !\n✔ Mémoire active prête.`;
+                            } catch (err) {
+                                console.log("Sélection annulée.");
+                            }
                         } else {
                             try {
                                 const [handle] = await window.showOpenFilePicker({
                                     types: [{ description: 'Fichier JSON', accept: { 'application/json': ['.json'] } }]
                                 });
                                 await exp.lierFichierSauvegarde(handle);
+                                const fileObj = await handle.getFile();
+
                                 document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
-                                card.querySelector('.btn-lier').innerText = "✔ Lié JSON";
+                                const btnLi = card.querySelector('.btn-lier');
+                                btnLi.innerText = "✔ Fichier Lié";
+                                btnLi.style.borderColor = "#00ff66";
+                                btnLi.style.color = "#00ff66";
+
+                                document.getElementById(`out-${exp.id}`).innerText = `🔗 Fichier lié avec succès :\n📂 ${fileObj.name}\n✔ Mémoire active prête.`;
                             } catch (err) {
                                 console.log("Sélection annulée.");
                             }
