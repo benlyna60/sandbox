@@ -338,28 +338,23 @@
                 console.log("📩 Message reçu du mobile via P2P :", messageMobile);
                 window.derniereQuestionRecue = messageMobile;
 
-                // --- ANALYSE D'INTENTION & ROUTAGE VERS LE VRAI HUB ---
-                const texteMin = messageMobile.toLowerCase();
-                const motsTechniques = ["code", "script", "fonction", "python", "javascript", "sql", "bug", "erreur", "html", "css", "php", "java"];
-                const motsConversationnels = ["bonjour", "salut", "ça va", "coucou", "hello", "comment", "pourquoi", "merci", "aide", "dis-moi"];
-
-                const contientTechnique = motsTechniques.some(mot => texteMin.includes(mot));
-                const contientConversation = motsConversationnels.some(mot => texteMin.includes(mot));
-
-                if (contientConversation && !contientTechnique) {
-                    let redacteur = hub.experts.find(exp => exp.id === 'redacteur');
-                    if (redacteur) {
-                        redacteur.dernierTexte = "Bonjour ! Comment puis-je vous aider aujourd'hui ?";
-                    }
-                }
-
                 // Appel du véritable orchestrateur Hub Central
                 let texteBrutReponse = await hub.traiterRequete(messageMobile);
 
-                // --- NETTOYAGE POUR FLUIDITÉ HUMAINE ---
+                // --- NETTOYAGE INTELLIGENT ---
                 let texteReponse = texteBrutReponse;
-                if (typeof texteReponse === 'string' && (texteReponse.includes("<small>") || texteReponse.includes("Analyse du domaine"))) {
-                    texteReponse = "Salut ! La liaison P2P fonctionne nickel. Tout est en ordre, qu'est-ce qu'on fait maintenant ?";
+                if (typeof texteReponse === 'string') {
+                    // On retire les balises techniques <small> et les analyses de modules parasites sans écraser la réponse utile
+                    texteReponse = texteReponse.replace(/<small>[\s\S]*?<\/small>/gi, '');
+                    texteReponse = texteReponse.replace(/Analyse du domaine de [^:]+:\s*/gi, '');
+                    texteReponse = texteReponse.replace(/\(Pistes mémorielles mobilisées[^\)]+\)\.?/gi, '');
+                    texteReponse = texteReponse.replace(/<br\s*[\/]?>/gi, '\n');
+                    texteReponse = texteReponse.trim();
+
+                    // Si après nettoyage il ne reste rien, on génère une réponse contextuelle propre
+                    if (!texteReponse) {
+                        texteReponse = "J'ai bien reçu ton message concernant : " + messageMobile + ". Tout est en ordre !";
+                    }
                 }
 
                 // Envoi de la réponse propre et fluide vers le mobile
