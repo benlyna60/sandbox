@@ -469,7 +469,7 @@
 
                 let sectionSpecifique = '';
                 let boutonsLigne = `
-                    <button class="action-btn btn-lier" id="btn-file-${exp.id}">📂 Charger JSON</button>
+                    <button class="action-btn btn-lier" id="btn-file-${exp.id}">📂 Lier Fichier JSON</button>
                     <button class="action-btn btn-injecter" style="color:var(--orange)">💉 Injecter</button>
                     <button class="action-btn btn-lancer">Lancer</button>
                     <button class="action-btn btn-generer" style="color:var(--cyan)">Générer</button>
@@ -540,15 +540,8 @@
                     };
 
                     card.querySelector(`#btn-lier-physique-${exp.id}`).onclick = async () => {
-                        try {
-                            const [handle] = await window.showOpenFilePicker({
-                                types: [{ description: 'Fichiers Texte ou JSON', accept: { 'text/plain': ['.txt'], 'application/json': ['.json'] } }]
-                            });
-                            await exp.lierFichierSauvegarde(handle);
-                            alert("Fichier de sauvegarde lié et synchronisé avec succès !");
-                        } catch (err) {
-                            console.log("Sélection annulée.");
-                        }
+                        await exp.lierFichierDisquePersonnel();
+                        document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
                     };
 
                     card.querySelector('.btn-zoom').onclick = () => ouvrirZoom(exp.id);
@@ -557,28 +550,21 @@
                     card.querySelector('.btn-injecter').onclick = () => ouvrirModalInjection(exp.id);
                     
                     card.querySelector('.btn-lier').onclick = async () => {
-                        const urlSaisie = prompt("Entrez l'URL du fichier JSON pour le module " + exp.nom + " :", jsonBridgeUrl);
-                        if (!urlSaisie) return;
-                        jsonBridgeUrl = urlSaisie;
-                        localStorage.setItem('hub_json_bridge_url', jsonBridgeUrl);
-
-                        try {
-                            const reponse = await fetch(jsonBridgeUrl + '?t=' + Date.now());
-                            if (!reponse.ok) throw new Error("Erreur de chargement du JSON");
-                            const data = await reponse.json();
-
-                            if (data.poids) {
-                                exp.poids = data.poids;
-                            } else {
-                                Object.keys(data).forEach(k => exp.mettreAJourPoids(k, 1));
-                            }
-
-                            const nbPoids = Object.keys(exp.poids || {}).length;
-                            document.getElementById(`out-${exp.id}`).innerText = `✔ JSON chargé avec succès (${nbPoids} concepts).`;
+                        if (typeof exp.lierFichierDisquePersonnel === 'function') {
+                            await exp.lierFichierDisquePersonnel();
                             document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
                             card.querySelector('.btn-lier').innerText = "✔ Lié JSON";
-                        } catch (err) {
-                            alert("Impossible de récupérer le fichier JSON distant. Vérifiez l'URL.");
+                        } else {
+                            try {
+                                const [handle] = await window.showOpenFilePicker({
+                                    types: [{ description: 'Fichier JSON', accept: { 'application/json': ['.json'] } }]
+                                });
+                                await exp.lierFichierSauvegarde(handle);
+                                document.getElementById(`dot-${exp.id}`).className = "status-dot ready";
+                                card.querySelector('.btn-lier').innerText = "✔ Lié JSON";
+                            } catch (err) {
+                                console.log("Sélection annulée.");
+                            }
                         }
                     };
 
