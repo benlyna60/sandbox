@@ -71,13 +71,53 @@ export class Expert {
     }
 
     /**
+     * INTERROGER LA MÉMOIRE : Extrait et structure les connaissances acquises
+     */
+    interrogerMemoire() {
+        const conceptsTries = Object.entries(this.poids)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10);
+
+        if (conceptsTries.length === 0) {
+            return `### 🧠 Mémoire de ${this.nom}\nMa mémoire est encore vierge. Posez-moi des questions pour que j'apprenne !`;
+        }
+
+        let reponse = `### 🧠 Connaissances acquises : ${this.nom}\n`;
+        reponse += `Mon expertise s'articule actuellement autour de **${Object.keys(this.poids).length} concepts clés**.\n\n`;
+        reponse += `**Mes piliers de savoir :**\n`;
+        
+        conceptsTries.forEach(([mot, poids]) => {
+            reponse += `*   **${mot}** (Force : ${poids})\n`;
+        });
+
+        reponse += `\n> *Prêt à approfondir ces thématiques.*`;
+        return reponse;
+    }
+
+    /**
      * 3. L'ANALYSE ORGANIQUE (Apprend de la question + Mémoire + Recherche)
      */
     async analyser(texteUtilisateur) {
-        const mots = texteUtilisateur.toLowerCase().split(/[\s,.;!?]+/).filter(m => m.length > 2);
+        const texteMin = texteUtilisateur.toLowerCase();
+
+        // Commande spéciale pour inspecter la mémoire de l'expert
+        if (texteMin.includes("que sais-tu") || texteMin.includes("ta mémoire")) {
+            const reponseMemoire = this.interrogerMemoire();
+            this.dernierTexte = reponseMemoire;
+            this.mettreAJourUI();
+            return {
+                expert: this.nom,
+                domaine: this.cat,
+                score: 10,
+                reflexion: reponseMemoire,
+                poidsPartage: this.poids
+            };
+        }
+
+        const mots = texteMin.split(/[\s,.;!?]+/).filter(m => m.length > 2);
         
         // A. APPRENTISSAGE ACTIF : Le module apprend directement de chaque question de l'utilisateur
-        mots.forEach(mot => this.mettreAJourPoids(mot, 3)); // Fort impact pour ce qu'écrit l'utilisateur
+        mots.forEach(mot => this.mettreAJourPoids(mot, 3));
 
         // B. Consultation de sa mémoire accumulée
         let conceptsMemoire = [];
@@ -92,20 +132,21 @@ export class Expert {
         // C. Recherche directe en temps réel
         const rechercheDirecte = await this.rechercherDansSonDomaine(mots);
 
-        // D. SYNTHÈSE ORGANIQUE (Fini les templates figés, le texte se construit selon ce qu'il sait)
+        // D. SYNTHÈSE ORGANIQUE STRUCTURÉE (Markdown fluide)
         let reflexionFinale = "";
-        
-        if (rechercheDirecte) {
-            reflexionFinale = `Analyse du domaine de ${this.nom} : En lien avec ${rechercheDirecte.titre}, ${rechercheDirecte.extrait.toLowerCase()}.`;
-        } else if (conceptsMemoire.length > 0) {
-            reflexionFinale = `Expertise ${this.nom} : Structuration validée autour des notions de [${conceptsMemoire.slice(0, 3).join(', ')}].`;
-        } else {
-            reflexionFinale = `Module ${this.nom} (${this.domaine}) : Intégration des flux et traitement des paramètres de la requête en cours.`;
-        }
+        let titreDomaine = rechercheDirecte ? rechercheDirecte.titre : this.domaine;
+        let extraitBrut = rechercheDirecte ? rechercheDirecte.extrait : "Analyse des flux de données et des paramètres de la requête en cours.";
 
-        // Ajout des concepts forts tirés de sa mémoire interne
+        reflexionFinale = `### 🌍 Analyse : ${titreDomaine}
+${extraitBrut.charAt(0).toUpperCase() + extraitBrut.slice(1)}.
+
+**Points clés de l'expertise (${this.nom}) :**
+*   **Domaine :** ${this.cat}
+*   **Concepts mobilisés :** ${conceptsMemoire.length > 0 ? conceptsMemoire.slice(0, 3).join(', ') : 'Aucun concept majeur bloquant'}
+*   **Synthèse organique :** Traitement validé par le module ${this.nom}.`;
+
         if (conceptsMemoire.length > 0) {
-            reflexionFinale += ` (Pistes mémorielles mobilisées : ${conceptsMemoire.slice(0, 4).join(', ')}).`;
+            reflexionFinale += `\n\n> *Pistes mémorielles mobilisées :* ${conceptsMemoire.slice(0, 4).join(', ')}.`;
         }
 
         this.dernierTexte = reflexionFinale;
@@ -118,7 +159,7 @@ export class Expert {
             domaine: this.cat,
             score: scoreTotal,
             reflexion: reflexionFinale,
-            poidsPartage: this.poids // Prêt à être partagé avec les autres modules via le Hub
+            poidsPartage: this.poids 
         };
     }
 
