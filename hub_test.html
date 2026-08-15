@@ -6,8 +6,6 @@
     <title>Hub IA - Moteur & Modules (Mode P2P Direct & JSON)</title>
     <!-- Intégration de LZ-String pour raccourcir les clés de liaison P2P -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
-    <!-- Intégration de qrcode.js pour afficher visuellement le QR Code d'offre PC -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- Intégration de PDF.js pour la lecture locale des fichiers PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
@@ -300,7 +298,6 @@
         // --- GESTION WEBRTC P2P ---
         const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
         let dataChannel = null;
-        let qrCodeInstance = null;
 
         document.getElementById('btn-generer-offre-json').onclick = async () => {
             try {
@@ -317,32 +314,30 @@
 
                     const payloadString = JSON.stringify({ type: "p2p-offer", payload: compressedOffer });
 
-                    // 1. Affichage du QR Code visuel à l'écran du PC
+                    // 1. Affichage direct et robuste du QR Code visuel à l'écran du PC
                     const container = document.getElementById('pc-qrcode-container');
                     container.innerHTML = ""; // Nettoyer l'ancien s'il existe
                     
-                    qrCodeInstance = new QRCode(container, {
-                        text: payloadString,
-                        width: 280,
-                        height: 280,
-                        colorDark: "#000000",
-                        colorLight: "#ffffff",
-                        correctLevel: QRCode.CorrectLevel.L
-                    });
+                    const qrImg = document.createElement('img');
+                    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(payloadString)}`;
+                    qrImg.alt = "QR Code de liaison P2P";
+                    qrImg.style.display = "block";
+                    qrImg.style.borderRadius = "4px";
+                    
+                    container.appendChild(qrImg);
 
                     // Ouvrir la modale PC
                     document.getElementById('pc-qr-modal').style.display = 'flex';
 
-                    // 2. Garde le téléchargement JSON en arrière-plan en secours ou si besoin
-                    const blob = new Blob([JSON.stringify({ type: "p2p-offer", payload: compressedOffer }, null, 2)], { type: "application/json" });
+                    // 2. Préparation du téléchargement JSON en arrière-plan (secours)
+                    const blob = new Blob([payloadString], { type: "application/json" });
                     const url = URL.createObjectURL(blob);
                     
                     const a = document.createElement('a');
                     a.href = url;
                     a.download = "liaison-pc-vers-mobile.json";
-                    // a.click(); // Décommentez si vous souhaitez déclencher aussi le téléchargement automatique
 
-                    document.getElementById('p2p-status-text').innerText = "Statut : QR Code généré à l'écran ! Flashez-le avec le mobile.";
+                    document.getElementById('p2p-status-text').innerText = "Statut : QR Code affiché à l'écran ! Flashez-le avec le mobile.";
                     document.getElementById('p2p-status-text').style.color = "var(--cyan)";
                 }, 1000);
             } catch (err) {
