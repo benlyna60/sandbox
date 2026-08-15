@@ -8,24 +8,45 @@ export class Orchestrateur {
         this.experts.push(expert);
     }
 
-    async orchestrerAnalyse(question) {
-        // 1. Tous les experts analysent la question en parallèle
-        const promesses = this.experts.map(e => e.analyser(question));
-        const resultats = await Promise.all(promesses);
+    async orchestrerAnalyse(question, maxPasses = 2, seuilCible = 25) {
+        let iteration = 0;
+        let meilleur = null;
+        let contexteTravail = question;
+        let historiquePasses = [];
 
-        // 2. Tri par score pour trouver le meilleur expert
-        const resultatsTries = resultats.sort((a, b) => b.score - a.score);
-        const meilleur = resultatsTries[0];
+        while (iteration < maxPasses) {
+            iteration++;
 
-        // 3. Diffusion de l'influence (Apprentissage social)
-        // Les autres experts "apprennent" du meilleur
-        this.experts.forEach(expert => {
-            if (expert.id !== meilleur.expert) {
-                expert.recevoirInfluence(meilleur.expert, meilleur.poidsPartage);
+            // 1. Tous les experts analysent la question en parallèle
+            const promesses = this.experts.map(e => e.analyser(contexteTravail));
+            const resultats = await Promise.all(promesses);
+
+            // 2. Tri par score pour trouver le meilleur expert
+            resultats.sort((a, b) => b.score - a.score);
+            meilleur = resultats[0];
+
+            historiquePasses.push(`Passe ${iteration}: ${meilleur.expert} (Score: ${meilleur.score})`);
+
+            // 3. Diffusion de l'influence (Apprentissage social)
+            // Les autres experts "apprennent" du meilleur
+            this.experts.forEach(expert => {
+                if (expert.id !== meilleur.expert) {
+                    expert.recevoirInfluence(meilleur.expert, meilleur.poidsPartage);
+                }
+            });
+
+            // Si le score est suffisant ou qu'on a atteint la limite de passes, on sort de la boucle
+            if (meilleur.score >= seuilCible || iteration >= maxPasses) {
+                break;
             }
-        });
 
-        // 4. Retourne la réflexion du meilleur + une mention de l'expert
-        return `*Analyse validée par le module : **${meilleur.expert}** (Score: ${meilleur.score})*\n\n${meilleur.reflexion}`;
+            // Raffinement dynamique du contexte pour la passe suivante basé sur les concepts du meilleur
+            const conceptsCles = Object.keys(meilleur.poidsPartage || {}).slice(0, 3).join(', ');
+            contexteTravail = `${question} [Affinage passe ${iteration} - Approfondir les axes : ${conceptsCles}]`;
+        }
+
+        // 4. Retourne la réflexion du meilleur + mention de l'expert et l'historique des passes si itéré
+        const infoPasses = historiquePasses.length > 1 ? `\n> *Parcours itératif :* ${historiquePasses.join(' ➔ ')}\n\n` : '';
+        return `*Analyse validée par le module : **${meilleur.expert}** (Score: ${meilleur.score})*\n\n${infoPasses}${meilleur.reflexion}`;
     }
 }
