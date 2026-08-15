@@ -1,7 +1,7 @@
 // modules.registry.js
 
 export const MODULES_REGISTRY = [
-    // --- Communication & Style (2) ---
+    // --- Communication & Style (3) ---
     { id: "redacteur", nom: "Rédacteur & Clarté", cat: "communication", dbName: "HubDB_Redacteur", keyName: "redacKey", type: "wiki", wikiLang: "fr", file: "redacteur.html" },
     { id: "synthetiseur", nom: "Synthétiseur & Structure", cat: "communication", dbName: "HubDB_Synthetiseur", keyName: "synthKey", type: "wiki", wikiLang: "fr", file: "synthetiseur.html" },
     { id: "lexique", nom: "Lexique & Rédaction", cat: "communication", dbName: "HubDB_Lexique", keyName: "lexKey", type: "wiki", wikiLang: "fr", file: "lexique.html" },
@@ -23,7 +23,8 @@ export const MODULES_REGISTRY = [
     { id: "arabe", nom: "Arabe (V2)", cat: "langue", dbName: "HubDB_Arabe", keyName: "arKey", type: "wiki", wikiLang: "ar", isRtl: true, file: "Arabe.html" },
     { id: "poesie", nom: "Poésie Métrique", cat: "langue", dbName: "HubDB_Poesie", keyName: "poesieKey", type: "wiki", wikiLang: "fr", file: "module-poesie-metrique.html" },
 
-    // --- Archives, Sciences & Domaines Spécifiques (6) ---
+    // --- Archives, Sciences & Domaines Spécifiques (7) ---
+    { id: "ingestor", nom: "Ingestor & Mémoire Persistante", cat: "archives", dbName: "HubDB_Ingestor", keyName: "ingestKey", type: "local", file: "ingestor.html" },
     { id: "logique", nom: "Logique & Synthèse", cat: "archives", dbName: "HubDB_Logique", keyName: "logKey", type: "wiki", wikiLang: "fr", file: "logique.html" },
     { id: "maths", nom: "Mathématiques", cat: "archives", dbName: "HubDB_Maths", keyName: "mathsKey", type: "wiki", wikiLang: "en", file: "Mathématique.html" },
     { id: "droit", nom: "Droit & Réglementation", cat: "archives", dbName: "HubDB_Droit", keyName: "droitKey", type: "wiki", wikiLang: "fr", file: "Droit_ Normes_Réglementation.html" },
