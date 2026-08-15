@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Apprenti Codeur Autonome</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #121212; color: #e0e0e0; padding: 20px; max-width: 900px; margin: auto; }
+        h1 { color: #007acc; }
+        .box { border: 1px solid #444; padding: 20px; margin: 15px 0; border-radius: 8px; background: #1e1e1e; }
+        input, button { padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #555; background: #333; color: white; }
+        button { cursor: pointer; background: #007acc; border: none; }
+        button:hover { background: #005999; }
+        pre { background: #000; padding: 15px; border-radius: 5px; overflow-x: auto; height: 300px; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <h1>🧠 Apprenti Codeur Autonome</h1>
+    
+    <div class="box">
+        <h3>1. Ingestion Massive (ZIP Local)</h3>
+        <input type="file" id="zipInput" accept=".zip">
+    </div>
+
+    <div class="box">
+        <h3>2. Ingestion API GitHub (60 req/h)</h3>
+        <input type="text" id="repoInput" placeholder="utilisateur/repo">
+        <button onclick="lancerAPI()">Démarrer l'Apprentissage API</button>
+        <p><small>Le script attendra 61 secondes entre chaque fichier pour respecter la limite GitHub.</small></p>
+    </div>
+
+    <button onclick="sauvegarderMemoireJSON()" style="background: #28a745;">💾 Sauvegarder Mémoire (JSON)</button>
+
+    <h3>Journal d'apprentissage :</h3>
+    <pre id="log"></pre>
+
+    <script>
+        let memoireCode = [];
+        const DELAY_MS = 61000; // > 60 secondes pour 60 req/heure
+
+        function log(m) {
+            const el = document.getElementById('log');
+            el.textContent += `[${new Date().toLocaleTimeString()}] ${m}
+`;
+            el.scrollTop = el.scrollHeight;
+        }
+
+        const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+        // --- GESTION ZIP ---
+        document.getElementById('zipInput').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            const zip = await JSZip.loadAsync(file);
+            log("Décompression du ZIP...");
+            for (let [relativePath, zipEntry] of Object.entries(zip.files)) {
+                if (!zipEntry.dir && (relativePath.endsWith('.py') || relativePath.endsWith('.js'))) {
+                    const content = await zipEntry.async("string");
+                    analyserEtStocker(content, relativePath);
+                }
+            }
+            log("✅ ZIP ingéré avec succès !");
+        });
+
+        // --- GESTION API ---
+        async function lancerAPI() {
+            const repo = document.getElementById('repoInput').value;
+            if(!repo) return alert("Entrez utilisateur/repo");
+            
+            log(`Démarrage API pour : ${repo}`);
+            try {
+                const response = await fetch(`https://api.github.com/repos/${repo}/contents`);
+                const files = await response.json();
+                
+                for (const file of files) {
+                    if (file.type === 'file' && (file.name.endsWith('.py') || file.name.endsWith('.js'))) {
+                        log(`Traitement API: ${file.name}`);
+                        const res = await fetch(file.download_url);
+                        const code = await res.text();
+                        analyserEtStocker(code, file.name);
+                        
+                        log("Attente de sécurité (61s)...");
+                        await sleep(DELAY_MS);
+                    }
+                }
+            } catch(e) { log("Erreur API : " + e.message); }
+        }
+
+        // --- MOTEUR ANALYSE ---
+        function analyserEtStocker(text, filename) {
+            const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 5);
+            memoireCode.push({
+                source: filename,
+                patterns: lines.slice(0, 50) // Garde un échantillon de 50 lignes par fichier
+            });
+            log(`-> Stocké : ${filename} (${lines.length} lignes)`);
+        }
+
+        // --- EXPORT JSON ---
+        function sauvegarderMemoireJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(memoireCode, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "memoire_code.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            log("💾 Mémoire exportée.");
+        }
+    </script>
+</body>
+</html>
+
