@@ -45,8 +45,10 @@ export class Orchestrateur {
             contexteTravail = `${question} [Affinage passe ${iteration} - Approfondir les axes : ${conceptsCles}]`;
         }
 
-        // 4. Retourne la réflexion du meilleur + mention de l'expert et l'historique des passes si itéré
-        const infoPasses = historiquePasses.length > 1 ? `\n> *Parcours itératif :* ${historiquePasses.join(' ➔ ')}\n\n` : '';
-        return `*Analyse validée par le module : **${meilleur.expert}** (Score: ${meilleur.score})*\n\n${infoPasses}${meilleur.reflexion}`;
+        // 4. Retourne les métadonnées "sous le capot" séparées par "---" de la réponse claire
+        const infoPasses = historiquePasses.length > 1 ? ` | Parcours: ${historiquePasses.join(' ➔ ')}` : '';
+        const sousLeCapot = `[Module: ${meilleur.expert} | Score: ${meilleur.score}${infoPasses}]`;
+        
+        return `${sousLeCapot}\n---\n${meilleur.reflexion}`;
     }
 }
