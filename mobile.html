@@ -17,16 +17,19 @@
             --hair: rgba(255, 255, 255, 0.1);
         }
 
-        body {
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Empêche le scroll global de la page */
             background-color: var(--bg);
             color: var(--text);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+        }
+
+        body {
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            box-sizing: border-box;
         }
 
         header {
@@ -36,6 +39,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         header h2 {
@@ -73,8 +77,8 @@
         #nav-menu {
             position: fixed;
             top: 0;
-            right: -260px;
-            width: 240px;
+            right: -280px;
+            width: 260px;
             height: 100%;
             background: var(--panel);
             border-left: 1px solid var(--hair);
@@ -82,10 +86,11 @@
             display: flex;
             flex-direction: column;
             padding: 20px;
-            gap: 12px;
+            gap: 15px;
             transition: right 0.3s ease;
             z-index: 1000;
             box-sizing: border-box;
+            overflow-y: auto;
         }
 
         #nav-menu.active {
@@ -93,8 +98,8 @@
         }
 
         #nav-menu h3 {
-            margin: 0 0 10px 0;
-            font-size: 16px;
+            margin: 0 0 5px 0;
+            font-size: 15px;
             color: var(--cyan);
             border-bottom: 1px solid var(--hair);
             padding-bottom: 8px;
@@ -118,7 +123,24 @@
             border-color: var(--cyan);
         }
 
-        /* Overlay sombre lorsque le menu est ouvert */
+        /* Panneau P2P intégré discrètement dans le menu */
+        #mobile-p2p-panel {
+            background: var(--bg);
+            border: 1px solid var(--cyan);
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 11px;
+        }
+
+        #mobile-p2p-panel input[type="file"] {
+            font-size: 10px;
+            color: var(--text);
+        }
+
+        /* Overlay sombre */
         #menu-overlay {
             position: fixed;
             top: 0;
@@ -133,22 +155,7 @@
             display: block;
         }
 
-        /* Panneau de configuration P2P mobile par fichier */
-        #mobile-p2p-panel {
-            background: var(--panel);
-            border-bottom: 1px solid var(--cyan);
-            padding: 10px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            font-size: 12px;
-        }
-
-        #mobile-p2p-panel input[type="file"] {
-            font-size: 11px;
-            color: var(--text);
-        }
-
+        /* Zone de chat stable */
         #chat-container {
             flex: 1;
             overflow-y: auto;
@@ -157,6 +164,7 @@
             flex-direction: column;
             gap: 14px;
             scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         .message {
@@ -185,13 +193,37 @@
             border-bottom-left-radius: 2px;
         }
 
+        .message-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 6px;
+        }
+
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text);
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: var(--cyan);
+            color: #000;
+        }
+
+        /* Formulaire de saisie fixe en bas */
         form {
             background: var(--panel);
             border-top: 1px solid var(--hair);
-            padding: 12px;
+            padding: 10px 12px;
             display: flex;
             gap: 10px;
             margin: 0;
+            flex-shrink: 0;
         }
 
         textarea#user-input {
@@ -217,6 +249,7 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 14px;
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -230,28 +263,31 @@
         </div>
     </header>
 
-    <!-- Overlay et Menu Hamburger -->
+    <!-- Overlay et Menu Hamburger (contient les options et la liaison P2P masquée) -->
     <div id="menu-overlay"></div>
     <nav id="nav-menu">
-        <h3>Options & Actions</h3>
+        <h3>Actions</h3>
         <button class="menu-action-btn" id="menu-clear">🧹 Nettoyer la mare</button>
         <button class="menu-action-btn" id="menu-new-conv">✨ Nouvelle conversation</button>
+
+        <h3 style="margin-top: 10px;">Liaison P2P</h3>
+        <div id="mobile-p2p-panel">
+            <div style="color:var(--cyan); font-weight:bold;">🔗 Fichier P2P :</div>
+            <span style="font-size:10px; color:var(--text-dim);">1. Fichier offre du PC :</span>
+            <input type="file" id="input-file-offer" accept=".json">
+            <button id="btn-generer-reponse-json" style="background:var(--cyan); color:#000; font-weight:bold; padding:6px; border-radius:4px; border:none; cursor:pointer;">2. Télécharger réponse</button>
+        </div>
     </nav>
 
-    <!-- Panneau mobile pour charger le fichier du PC et générer la réponse -->
-    <div id="mobile-p2p-panel">
-        <div style="color:var(--cyan); font-weight:bold;">🔗 Liaison P2P par Fichier :</div>
-        <div style="display:flex; flex-direction:column; gap:4px;">
-            <span style="font-size:10px; color:var(--text-dim);">1. Glisser ou sélectionner le fichier du PC (`liaison-pc-vers-mobile.json`) :</span>
-            <input type="file" id="input-file-offer" accept=".json">
-        </div>
-        <button id="btn-generer-reponse-json" style="background:var(--cyan); color:#000; font-weight:bold; padding:6px; border-radius:4px; border:none; cursor:pointer; margin-top:2px;">2. Générer et télécharger le fichier de réponse</button>
-    </div>
-
+    <!-- Zone de discussion propre et stable -->
     <div id="chat-container">
-        <div class="message hub">Chargez le fichier de liaison du PC ci-dessus pour initialiser la discussion P2P.</div>
+        <div class="message hub">
+            <div class="message-header"><button class="btn-copy" onclick="copyText(this)">📋 Copier</button></div>
+            <div>Interface épurée et stable. Ouvrez le menu ☰ pour configurer la liaison P2P.</div>
+        </div>
     </div>
 
+    <!-- Formulaire d'envoi fixe -->
     <form id="chat-form">
         <textarea id="user-input" placeholder="Écrire un message..."></textarea>
         <button id="btn-envoyer" type="submit">➤</button>
@@ -278,20 +314,29 @@
 
         // --- ACTIONS DU MENU ---
         document.getElementById('menu-clear').onclick = () => {
-            chatContainer.innerHTML = '<div class="message hub">Mare nettoyée. Prêt pour de nouveaux tests.</div>';
+            chatContainer.innerHTML = '<div class="message hub"><div class="message-header"><button class="btn-copy" onclick="copyText(this)">📋 Copier</button></div><div>Mare nettoyée. Prêt pour de nouveaux tests.</div></div>';
             toggleMenu();
         };
 
         document.getElementById('menu-new-conv').onclick = () => {
-            chatContainer.innerHTML = '<div class="message hub">Nouvelle conversation initialisée. Chargez le fichier de liaison ou continuez via le canal actif.</div>';
+            chatContainer.innerHTML = '<div class="message hub"><div class="message-header"><button class="btn-copy" onclick="copyText(this)">📋 Copier</button></div><div>Nouvelle conversation initialisée.</div></div>';
             toggleMenu();
+        };
+
+        // Fonction globale de copie rapide
+        window.copyText = function(btn) {
+            const contentDiv = btn.parentElement.nextElementSibling;
+            const textToCopy = contentDiv ? contentDiv.innerText : '';
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                btn.innerText = 'Copié ! ✅';
+                setTimeout(() => btn.innerText = '📋 Copier', 2000);
+            });
         };
 
         // --- CONFIGURATION WEBRTC P2P VIA FICHIER ---
         const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
         let dataChannel = null;
 
-        // Écouter les canaux de données entrants créés par le PC
         pc.ondatachannel = (e) => {
             dataChannel = e.channel;
             setupDataChannel();
@@ -307,15 +352,36 @@
 
             dataChannel.onmessage = (e) => {
                 const texteReponse = e.data;
+                
                 const hubDiv = document.createElement('div');
                 hubDiv.className = 'message hub';
-                hubDiv.innerText = texteReponse;
+                
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'message-header';
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'btn-copy';
+                copyBtn.innerText = '📋 Copier';
+                copyBtn.onclick = () => {
+                    navigator.clipboard.writeText(texteReponse).then(() => {
+                        copyBtn.innerText = 'Copié ! ✅';
+                        setTimeout(() => copyBtn.innerText = '📋 Copier', 2000);
+                    });
+                };
+                
+                headerDiv.appendChild(copyBtn);
+                
+                const textSpan = document.createElement('div');
+                textSpan.innerText = texteReponse;
+                
+                hubDiv.appendChild(headerDiv);
+                hubDiv.appendChild(textSpan);
+                
                 chatContainer.appendChild(hubDiv);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             };
         }
 
-        // 1. Charger le fichier de liaison envoyé par le PC
         document.getElementById('input-file-offer').onchange = async (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -339,7 +405,6 @@
             }
         };
 
-        // 2. Générer la réponse et télécharger le fichier JSON à renvoyer au PC
         document.getElementById('btn-generer-reponse-json').onclick = async () => {
             try {
                 const answer = await pc.createAnswer();
@@ -350,7 +415,6 @@
                     const answerB64 = btoa(rawAnswer);
                     const compressedAnswer = LZString.compressToEncodedURIComponent(answerB64);
 
-                    // Création du fichier JSON de réponse
                     const blob = new Blob([JSON.stringify({ type: "p2p-answer", payload: compressedAnswer }, null, 2)], { type: "application/json" });
                     const url = URL.createObjectURL(blob);
                     
@@ -366,18 +430,16 @@
             }
         };
 
-        // Envoi d'un message textuel via le canal P2P direct
         chatForm.onsubmit = (e) => {
             e.preventDefault();
             const texte = userInput.value.trim();
             if (!texte) return;
 
             if (!dataChannel || dataChannel.readyState !== 'open') {
-                alert("La liaison P2P n'est pas encore établie. Chargez le fichier du PC et renvoyez la réponse.");
+                alert("La liaison P2P n'est pas établie. Ouvrez le menu ☰ pour charger le fichier du PC.");
                 return;
             }
 
-            // Affichage local immédiat
             const userDiv = document.createElement('div');
             userDiv.className = 'message user';
             userDiv.innerText = texte;
@@ -385,7 +447,6 @@
             userInput.value = "";
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
-            // Envoi direct au PC par WebRTC
             dataChannel.send(texte);
         };
     </script>
