@@ -248,11 +248,11 @@
     </div>
 
     <script type="module">
-        import { HubCentral } from './Js/hub.js';
+        import { Orchestrateur } from './Orchestrateur.js';
         import { Expert } from './Js/expert.js';
         import { MODULES_REGISTRY, CATEGORIES_CONFIG } from './Js/modules.registry.js';
 
-        const hub = new HubCentral();
+        const orchestrateur = new Orchestrateur();
         window.appState = {};
         window.categorieActuelle = 'tous';
 
@@ -338,8 +338,8 @@
                 console.log("📩 Message reçu du mobile via P2P :", messageMobile);
                 window.derniereQuestionRecue = messageMobile;
 
-                // Appel du véritable orchestrateur Hub Central
-                let texteBrutReponse = await hub.traiterRequete(messageMobile);
+                // Appel de l'Orchestrateur intelligent
+                let texteBrutReponse = await orchestrateur.orchestrerAnalyse(messageMobile);
 
                 // --- NETTOYAGE INTELLIGENT ---
                 let texteReponse = texteBrutReponse;
@@ -375,7 +375,7 @@
                     modData.wikiLang, 
                     modData.isRtl || false
                 );
-                hub.ajouterExpert(expert);
+                orchestrateur.ajouterExpert(expert);
                 window.appState[modData.id] = expert;
             });
 
@@ -418,12 +418,12 @@
                     dernierMessageTraite = messageActuel;
                     window.derniereQuestionRecue = messageActuel;
 
-                    let texteReponse = await hub.traiterRequete(messageActuel);
+                    let texteReponse = await orchestrateur.orchestrerAnalyse(messageActuel);
 
                     const nouvelleDonnee = {
                         dernierMessageUser: messageActuel,
                         dernierMessageHub: texteReponse,
-                        reflexion: `Traité en temps réel par le Hub Central`
+                        reflexion: `Traité en temps réel par l'Orchestrateur`
                     };
 
                     await ecrireFichierLocalDirect(nouvelleDonnee);
@@ -434,7 +434,7 @@
         function renderSidebarModules() {
             const list = document.getElementById('sidebar-modules-list');
             list.innerHTML = "";
-            hub.experts.forEach(exp => {
+            orchestrateur.experts.forEach(exp => {
                 const item = document.createElement('div');
                 item.style.cssText = "padding:8px 10px; margin:3px 0; border-radius:6px; cursor:default; font-size:11px; display:flex; justify-content:space-between; align-items:center; background:var(--bg); border:1px solid var(--hair);";
                 const color = CATEGORIES_CONFIG[exp.cat]?.color || '#00d9ff';
@@ -449,11 +449,11 @@
             
             let filtres = [];
             if (window.categorieActuelle === 'tous' || !window.categorieActuelle) {
-                filtres = hub.experts;
+                filtres = orchestrateur.experts;
             } else if (window.categorieActuelle === 'non-relies') {
-                filtres = hub.experts.filter(exp => Object.keys(exp.poids || {}).length === 0);
+                filtres = orchestrateur.experts.filter(exp => Object.keys(exp.poids || {}).length === 0);
             } else {
-                filtres = hub.experts.filter(m => m.cat === window.categorieActuelle);
+                filtres = orchestrateur.experts.filter(m => m.cat === window.categorieActuelle);
             }
 
             if (filtres.length === 0 && window.categorieActuelle === 'non-relies') {
@@ -640,7 +640,7 @@
         }
 
         document.getElementById('btn-tout-lancer').onclick = () => {
-            hub.experts.forEach(exp => {
+            orchestrateur.experts.forEach(exp => {
                 if (typeof exp.lancerApprentissage === 'function') exp.lancerApprentissage();
             });
         };
