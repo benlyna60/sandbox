@@ -63,7 +63,6 @@ export class IngestorModule {
             else if (extension === 'json') {
                 const texte = await file.text();
                 const json = JSON.parse(texte);
-                // Supporte le JSON pur ou le format avec clé mémoire_paires
                 const donnees = json.memoire_paires || json;
                 for (let [k, v] of Object.entries(donnees)) {
                     if (typeof v === 'number') this.mettreAJourPoids(k, v);
@@ -106,7 +105,6 @@ export class IngestorModule {
             
             if (text && text.trim() !== "") {
                 const json = JSON.parse(text);
-                // On fusionne le contenu du fichier dans la mémoire actuelle
                 for (let [k, v] of Object.entries(json)) {
                     this.poids[k] = (this.poids[k] || 0) + v;
                 }
@@ -119,7 +117,24 @@ export class IngestorModule {
     }
 
     /**
-     * SAUVEGARDE : Écrit uniquement l'objet mémoire (JSON pur)
+     * Permet à ce module de lier son propre fichier JSON distinct sur le disque
+     */
+    async lierFichierDisquePersonnel() {
+        try {
+            const [handle] = await window.showOpenFilePicker({
+                types: [{
+                    description: `Fichier Mémoire (${this.nom})`,
+                    accept: { 'application/json': ['.json', '.txt'] }
+                }]
+            });
+            await this.lierFichierSauvegarde(handle);
+        } catch (err) {
+            console.log("Sélection du fichier personnel annulée.");
+        }
+    }
+
+    /**
+     * SAUVEGARDE : Écrit uniquement l'objet mémoire (JSON pur) dans son fichier dédié
      */
     async sauvegarderFichierPhysique() {
         if (!this.handle) return;
@@ -128,7 +143,7 @@ export class IngestorModule {
             await writable.write(JSON.stringify(this.poids, null, 2));
             await writable.close();
         } catch (err) {
-            console.error("Erreur sauvegarde physique :", err);
+            console.error(`[${this.nom}] Erreur sauvegarde physique :`, err);
         }
     }
 
