@@ -289,7 +289,7 @@
             <div style="color:var(--cyan); font-weight:bold;">📁 1. Charger l'offre du PC :</div>
             <input type="file" id="input-charger-json" accept=".json" style="font-size:10px; color:#fff; width:100%;">
             
-            <button id="btn-partager-email" style="background:var(--panel-alt); color:#fff; border:1px solid var(--hair); padding:8px; border-radius:4px; cursor:pointer; margin-top:4px;">✉️ 2. Partager / Envoyer la réponse JSON</button>
+            <button id="btn-partager-email" style="background:var(--panel-alt); color:#fff; border:1px solid var(--hair); padding:8px; border-radius:4px; cursor:pointer; margin-top:4px;">📥 2. Générer et télécharger le JSON</button>
         </div>
 
         <h3 style="margin-top: 10px; color:var(--text-dim);">Options Caméra / QR (Bêta)</h3>
@@ -420,16 +420,15 @@
 
                 statusBadge.innerText = "Offre chargée !";
                 toggleMenu();
-                alert("Offre du PC chargée avec succès ! Vous pouvez maintenant générer/partager la réponse JSON.");
+                alert("Offre du PC chargée avec succès ! Vous pouvez maintenant générer le fichier JSON de réponse.");
             } catch (err) {
                 alert("Erreur lors de la lecture du fichier JSON : " + err.message);
             }
         };
 
-        // --- GESTION DU PARTAGE / EMAIL DE LA RÉPONSE (CORRIGÉ) ---
+        // --- GESTION DU TÉLÉCHARGEMENT ET EMAIL DE LA RÉPONSE JSON ---
         document.getElementById('btn-partager-email').onclick = async () => {
             try {
-                // Vérification de sécurité pour éviter l'erreur "cannot create an answer in a state other than have-remote-offer"
                 if (pc.signalingState !== "have-remote-offer" && pc.signalingState !== "have-local-pranswer") {
                     throw new Error("L'offre du PC n'est pas encore chargée. Veuillez d'abord sélectionner le fichier JSON du PC à l'étape 1.");
                 }
@@ -443,29 +442,22 @@
                     const compressedAnswer = LZString.compressToEncodedURIComponent(answerB64);
 
                     const blob = new Blob([JSON.stringify({ type: "p2p-answer", payload: compressedAnswer }, null, 2)], { type: "application/json" });
-                    const fichier = new File([blob], 'liaison-mobile-vers-pc.json', { type: 'application/json' });
+                    
+                    // Téléchargement direct du fichier JSON
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "liaison-mobile-vers-pc.json";
+                    a.click();
 
-                    if (navigator.canShare && navigator.canShare({ files: [fichier] })) {
-                        await navigator.share({
-                            title: 'Fichier de liaison P2P Hub IA',
-                            text: 'Voici le fichier JSON de réponse pour établir la connexion avec le Hub.',
-                            files: [fichier],
-                        });
-                    } else {
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = "liaison-mobile-vers-pc.json";
-                        a.click();
+                    // Ouverture du client mail pour faciliter l'envoi
+                    window.location.href = `mailto:?subject=Fichier%20de%20liaison%20Hub%20IA&body=Bonjour,%20veuillez%20trouver%20ci-joint%20le%20fichier%20JSON%20téléchargé%20depuis%20le%20mobile.`;
 
-                        window.location.href = `mailto:?subject=Fichier%20de%20liaison%20Hub%20IA&body=Bonjour,%20veuillez%20trouver%20ci-joint%20(ou%20télécharger)%20le%20fichier%20JSON%20généré%20pour%20la%20connexion.`;
-                    }
-
-                    statusBadge.innerText = "Réponse partagée !";
+                    statusBadge.innerText = "JSON généré !";
                     toggleMenu();
                 }, 1000);
             } catch (err) {
-                alert("Erreur lors de la génération ou du partage de la réponse : " + err.message);
+                alert("Erreur lors de la génération du fichier : " + err.message);
             }
         };
 
