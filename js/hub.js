@@ -115,33 +115,22 @@ export class HubCentral {
                 modulesPertinents = modulesPertinents.slice(0, 2);
             }
 
-            // 5. SYNTHÈSE RÉDIGÉE INTELLIGENTE
+            // 5. SYNTHÈSE RÉDIGÉE INTELLIGENTE ET 100% DYNAMIQUE
             let rapport = "";
-            if (texteMin.includes("rapport") || texteMin.includes("deploiement") || texteMin.includes("flux") || texteMin.includes("script")) {
-                rapport = `<strong>Rapport d'analyse et de structuration technique</strong><br><br>`;
-                rapport += `<strong>1. Étapes de déploiement et de configuration :</strong><br>`;
-                rapport += `• Initialisation des modules de contrôle local et mise en place des registres d'exécution sur l'environnement de la machine.<br>`;
-                rapport += `• Validation séquentielle des flux de données et des points de raccordement des scripts.<br><br>`;
-                rapport += `<strong>2. Architecture d'automatisation des flux :</strong><br>`;
-                rapport += `• Traitement asynchrone des flux textuels et structuration par les experts pour garantir l'efficacité opérationnelle.<br>`;
-                rapport += `• Exécution client-side intégrale pour la gestion sécurisée des données.<br><br>`;
-                rapport += `<strong>3. Analyse de conformité et des normes applicables :</strong><br>`;
-                rapport += `• Vérification rigoureuse des critères de structure et de qualité. Le système respecte les exigences de traçabilité et de rigueur technique.<br><br>`;
-            } else {
-                const reflexionsVues = new Set();
-                modulesPertinents.forEach((res, index) => {
-                    let textePropre = res.reflexion
-                        .replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')
-                        .replace(/\*\*Directive\*\*:\s*/gi, '').replace(/\*\*Validation\*\*:\s*/gi, '')
-                        .replace(/Directive\s*:\s*/gi, '').replace(/Validation\s*:\s*/gi, '')
-                        .replace(/\n/g, '<br>');
+            const reflexionsVues = new Set();
+            
+            modulesPertinents.forEach((res, index) => {
+                let textePropre = res.reflexion
+                    .replace(/&#039;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&')
+                    .replace(/\*\*Directive\*\*:\s*/gi, '').replace(/\*\*Validation\*\*:\s*/gi, '')
+                    .replace(/Directive\s*:\s*/gi, '').replace(/Validation\s*:\s*/gi, '')
+                    .replace(/\n/g, '<br>');
 
-                    if (!reflexionsVues.has(textePropre)) {
-                        reflexionsVues.add(textePropre);
-                        rapport += (index === 0 || rapport === "") ? `${textePropre}<br><br>` : ` ${textePropre}<br><br>`;
-                    }
-                });
-            }
+                if (!reflexionsVues.has(textePropre)) {
+                    reflexionsVues.add(textePropre);
+                    rapport += (index === 0 || rapport === "") ? `${textePropre}<br><br>` : ` ${textePropre}<br><br>`;
+                }
+            });
 
             modulesPertinents.forEach(res => {
                 rapport += `<br><small>[Module : ${res.expert} - ${res.domaine}] : ${res.reflexion}</small>`;
