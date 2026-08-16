@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Module IA : English Word Chain & Punctuation</title>
+    <style>
+        body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 15px; max-width: 600px; margin: auto; }
+        .control-panel, .gen-panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 15px; }
+        button { background-color: #222; color: #fff; border: 1px solid #444; padding: 12px; cursor: pointer; width: 100%; margin-bottom: 8px; border-radius: 4px; font-weight: bold; font-size: 1em; }
+        .status-line { background-color: #1a1a1a; border-left: 3px solid #ff9800; padding: 10px; font-size: 0.85em; margin-bottom: 15px; line-height: 1.4; }
+        .output-box { background-color: #000; color: #ffeb3b; padding: 12px; border-radius: 4px; min-height: 50px; font-size: 1em; word-break: break-word; margin-top: 8px; border: 1px solid #333; line-height: 1.5; }
+        .bar-row { display: flex; align-items: center; margin-bottom: 4px; }
+        .bar-label { width: 95px; font-weight: bold; font-size: 0.85em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .bar-track { flex-grow: 1; background-color: #222; height: 10px; border-radius: 3px; overflow: hidden; margin: 0 8px; }
+        .bar-fill { height: 100%; background-color: #ff9800; }
+        .bar-stats { width: 95px; text-align: right; font-size: 0.75em; color: #888; }
+        h2 { font-size: 0.95em; color: #fff; border-bottom: 1px solid #333; padding-bottom: 4px; margin-top: 0; }
+    </style>
+</head>
+<body>
+
+    <h1>English AI Module : Word Learning & Punctuation</h1>
+    
+    <div class="control-panel">
+        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #333;">1. Link or create "memoire_mots_en.json"</button>
+        <button onclick="lancerEntrainementMots()" style="background-color: #e65100;">2. Start English Learning</button>
+        <button onclick="arreterEntrainement()" style="background-color: #b71c1c;">3. ⏹ Pause & Save</button>
+    </div>
+
+    <div class="gen-panel">
+        <label>Sentence Generator (English Words & Punctuation) :</label>
+        <button onclick="genererPhraseMots()" style="background-color: #1b5e20; margin-top: 5px;">Generate Sentence</button>
+        <div id="resultat-generation" class="output-box">Waiting for generation...</div>
+    </div>
+    
+    <div id="status" class="status-line">Link your English JSON memory file to start.</div>
+    
+    <div class="control-panel">
+        <h2>Memory Stats & Links</h2>
+        <div id="chart">No data loaded yet...</div>
+    </div>
+
+    <script>
+        let fichierHandle = null;
+        let memoireMots = {}; 
+        let motsTotauxAppris = 0;
+        let enCoursDApprentissage = false;
+
+        // Sources riches en anglais (Classiques de Gutenberg)
+        const sourcesLivresEN = [
+            "https://www.gutenberg.org/files/11/11-0.txt",   // Alice in Wonderland
+            "https://www.gutenberg.org/files/84/84-0.txt",   // Frankenstein
+            "https://www.gutenberg.org/files/1342/1342-0.txt" // Pride and Prejudice
+        ];
+
+        async function selectionnerFichierMemoire() {
+            try {
+                [fichierHandle] = await window.showOpenFilePicker({ 
+                    types: [{ description: 'JSON Files', accept: { 'application/json': ['.json'] } }] 
+                });
+                const file = await fichierHandle.getFile();
+                const textData = await file.text();
+                const data = JSON.parse(textData);
+                
+                motsTotauxAppris = data.mots_appris || 0;
+                memoireMots = data.memoire_mots || {};
+
+                document.getElementById("btn-fichier").innerText = "✔ Linked (" + motsTotauxAppris + " elements)";
+                document.getElementById("status").innerText = "File loaded successfully. Ready to learn English!";
+                majAffichage();
+            } catch (e) { 
+                document.getElementById("status").innerText = "Selection canceled."; 
+            }
+        }
+
+        async function ecrireFichierDirect() {
+            if (!fichierHandle) return;
+            try {
+                const flux = await fichierHandle.createWritable();
+                await flux.write(JSON.stringify({ mots_appris: motsTotauxAppris, memoire_mots: memoireMots }, null, 2));
+                await flux.close();
+            } catch (e) {
+                console.error("Write error.");
+            }
+        }
+
+        async function fetchWikiEN() {
+            try {
+                const url = "https://en.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*";
+                const res = await fetch(url);
+                const data = await res.json();
+                const title = data.query.random[0].title;
+
+                const contentUrl = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+                const contentRes = await fetch(contentUrl);
+                const contentData = await contentRes.json();
+                const pages = contentData.query.pages;
+                const extract = Object.values(pages)[0].extract;
+
+                return extract && extract.length > 200 ? extract : "English Wikipedia learning text structure.";
+            } catch (e) {
+                return "Network fallback English text.";
+            }
+        }
+
+        async function fetchBookEN() {
+            try {
+                const randomBook = sourcesLivresEN[Math.floor(Math.random() * sourcesLivresEN.length)];
+                const res = await fetch(randomBook);
+                const text = await res.text();
+                return text.length > 500 ? text.substring(0, 50000) : "Classic English literature.";
+            } catch (e) {
+                return "Literature fallback source.";
+            }
+        }
+
+        async function lancerEntrainementMots() {
+            if (!fichierHandle) {
+                document.getElementById("status").innerText = "Error: Please select your JSON file first!";
+                return;
+            }
+            if (enCoursDApprentissage) return;
+            enCoursDApprentissage = true;
+            
+            while (enCoursDApprentissage) {
+                // Alternance entre Wikipédia EN et les livres classiques anglophones
+                let texteSource = Math.random() > 0.4 ? await fetchWikiEN() : await fetchBookEN();
+                
+                document.getElementById("status").innerHTML = `📖 <b>Learning in progress...</b> (Processed elements: ${motsTotauxAppris})`;
+
+                // TRAITEMENT DE LA PONCTUATION ET DES APOSTROPHES EN ANGLAIS
+                let texteNettoye = texteSource.toLowerCase()
+                    .replace(/['’]/g, "' ") // Isole les apostrophes (ex: "don't" -> "don ' t")
+                    .replace(/([.,\/#!$%\^&\*;:{}=\-_`~()?])/g, " $1 ") // Isole la ponctuation
+                    .replace(/\s+/g, " "); // Nettoie les espaces multiples
+
+                let mots = texteNettoye.split(' ').filter(m => m.length > 0);
+
+                for (let i = 0; i < mots.length - 1; i++) {
+                    if (!enCoursDApprentissage) break;
+                    motsTotauxAppris++;
+                    
+                    let elementActuel = mots[i];
+                    let elementSuivant = mots[i + 1];
+
+                    if (!memoireMots[elementActuel]) memoireMots[elementActuel] = {};
+                    if (!memoireMots[elementActuel][elementSuivant]) memoireMots[elementActuel][elementSuivant] = 0;
+                    memoireMots[elementActuel][elementSuivant]++;
+
+                    if (motsTotauxAppris % 300 === 0) majAffichage();
+                }
+
+                if (enCoursDApprentissage) {
+                    await ecrireFichierDirect();
+                    majAffichage();
+                    document.getElementById("btn-fichier").innerText = "✔ Saved (" + motsTotauxAppris + " elements)";
+                    await new Promise(r => setTimeout(r, 400));
+                }
+            }
+        }
+
+        async function arreterEntrainement() {
+            enCoursDApprentissage = false;
+            await ecrireFichierDirect();
+            document.getElementById("status").innerText = "Paused. File successfully saved.";
+        }
+
+        function majAffichage() {
+            let html = "";
+            let keys = Object.keys(memoireMots).slice(0, 6);
+            keys.forEach(mot => {
+                let totalSuivants = Object.values(memoireMots[mot]).reduce((a, b) => a + b, 0);
+                html += `<div class="bar-row">
+                    <div class="bar-label" title="${mot}">${mot}</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+                    <div class="bar-stats">${totalSuivants} links</div>
+                </div>`;
+            });
+            document.getElementById("chart").innerHTML = html || "Waiting for data...";
+        }
+
+        function genererPhraseMots() {
+            const cles = Object.keys(memoireMots);
+            if (cles.length === 0) {
+                document.getElementById("resultat-generation").innerText = "No memory found. Run some learning first!";
+                return;
+            }
+
+            let courant = cles[Math.floor(Math.random() * cles.length)];
+            let resultat = [courant];
+
+            for (let i = 0; i < 20; i++) {
+                let suivants = memoireMots[courant];
+                if (!suivants || Object.keys(suivants).length === 0) {
+                    courant = cles[Math.floor(Math.random() * cles.length)];
+                } else {
+                    let options = Object.entries(suivants);
+                    options.sort((a, b) => b[1] - a[1]);
+                    
+                    let choixPool = options.slice(0, Math.min(3, options.length));
+                    courant = choixPool[Math.floor(Math.random() * choixPool.length)][0];
+                }
+                resultat.push(courant);
+
+                // Arrêt automatique si on tombe sur un point final ou un point d'exclamation
+                if (courant === '.' || courant === '!') break;
+            }
+            
+            // NETTOYAGE FINAL DU TEXTE ANGLAIS GÉNÉRÉ
+            let texteBrut = resultat.join(' ');
+            let textePropre = texteBrut
+                .replace(/\s+([.,\/#!$%\^&\*;:{}=\-_`~()?])/g, '$1') // Recollement de la ponctuation
+                .replace(/'\s+/g, "'") // Recollement des apostrophes (ex: "don ' t" devient "don't")
+                .replace(/([.!?])\s*([a-z])/g, (match, p1, p2) => p1 + ' ' + p2.toUpperCase()); // Majuscule après un point
+
+            document.getElementById("resultat-generation").innerText = textePropre;
+        }
+    </script>
+</body>
+</html>
