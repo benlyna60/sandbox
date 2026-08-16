@@ -2,83 +2,161 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Apprenti Codeur - Tableau de Bord Visuel</title>
+    <title>Apprenti Codeur - Tableau de Bord & Moteur Local</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #121212; color: #e0e0e0; padding: 20px; max-width: 950px; margin: auto; }
-        h1, h2 { color: #007acc; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #121212; color: #e0e0e0; margin: 0; padding: 20px; }
+        
+        /* BARRE DE NAVIGATION ET MENU HAMBURGER */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; max-width: 950px; margin: 0 auto 20px auto; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .top-bar h1 { margin: 0; font-size: 22px; color: #007acc; }
+        .nav-tabs { display: flex; gap: 10px; align-items: center; }
+        .nav-tab { background: #252526; border: 1px solid #444; color: #ccc; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .nav-tab.active { background: #007acc; color: white; border-color: #007acc; }
+        .hamburger-btn { font-size: 22px; background: none; border: none; color: white; cursor: pointer; padding: 0 10px; }
+        
+        /* MENU COULISSANT (DRAWER) */
+        .drawer { position: fixed; top: 0; right: -350px; width: 330px; height: 100%; background: #1e1e1e; border-left: 1px solid #444; box-shadow: -5px 0 15px rgba(0,0,0,0.5); z-index: 1000; padding: 20px; transition: right 0.3s ease; overflow-y: auto; }
+        .drawer.open { right: 0; }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+        .close-btn { background: none; border: none; color: #888; font-size: 20px; cursor: pointer; }
+
+        /* STRUCTURE GLOBALE */
+        .container { max-width: 950px; margin: auto; }
         .box { border: 1px solid #444; padding: 20px; margin: 15px 0; border-radius: 8px; background: #1e1e1e; }
-        input, button { padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #555; background: #333; color: white; }
-        button { cursor: pointer; background: #007acc; border: none; font-weight: bold; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        input, textarea, button { padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #555; background: #333; color: white; width: 100%; }
+        button { cursor: pointer; background: #007acc; border: none; font-weight: bold; width: auto; }
         button:hover { background: #005999; }
         pre { background: #000; padding: 15px; border-radius: 5px; overflow-x: auto; height: 180px; font-size: 12px; }
-        .success { background: #28a745; width: 100%; font-size: 16px; margin-top: 10px; }
+        .success { background: #28a745; width: 100%; font-size: 15px; }
         .success:hover { background: #218838; }
 
-        /* Styles pour les graphiques et stats visuelles */
+        /* DASHBOARD STATS */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
         .stat-card { background: #252526; border: 1px solid #333; padding: 15px; border-radius: 6px; text-align: center; }
         .stat-number { font-size: 24px; font-weight: bold; color: #4ec9b0; margin-top: 5px; }
-        
         .chart-container { background: #252526; padding: 15px; border-radius: 6px; margin-top: 15px; border: 1px solid #333; }
         .bar-wrapper { margin: 8px 0; }
         .bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 3px; }
         .bar-bg { background: #333; border-radius: 4px; overflow: hidden; height: 12px; width: 100%; }
         .bar-fill { height: 100%; background: #007acc; width: 0%; transition: width 0.4s ease; }
+
+        /* INTERFACE ÉPURÉE DU GÉNÉRATEUR */
+        .prompt-container { background: #1e1e1e; border: 1px solid #007acc; border-radius: 8px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .prompt-textarea { width: 100%; height: 100px; background: #121212; border: 1px solid #444; border-radius: 6px; padding: 15px; color: #fff; font-size: 15px; resize: vertical; }
+        .prompt-textarea:focus { outline: none; border-color: #007acc; }
+        .output-code { background: #000; color: #4ec9b0; border: 1px solid #333; padding: 20px; border-radius: 6px; min-height: 250px; font-family: 'Consolas', monospace; font-size: 13px; white-space: pre-wrap; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <h1>🧠 Apprenti Codeur - Tableau de Bord Visuel</h1>
-    
-    <!-- STATISTIQUES VISUELLES SOUS LE CAPOT -->
-    <div class="box">
-        <h2>📊 Statistiques sous le capot</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div>Fichiers Analysés</div>
-                <div id="statFiles" class="stat-number">0</div>
-            </div>
-            <div class="stat-card">
-                <div>Lignes Traitées</div>
-                <div id="statLines" class="stat-number">0</div>
-            </div>
-            <div class="stat-card">
-                <div>Patterns Mémorisés</div>
-                <div id="statPatterns" class="stat-number">0</div>
-            </div>
-        </div>
-
-        <!-- Graphique de répartition par extension -->
-        <div class="chart-container">
-            <div style="font-weight: bold; margin-bottom: 8px;">Répartition par Langage</div>
-            <div class="bar-wrapper">
-                <div class="bar-label"><span>Python (.py)</span><span id="countPy">0 fichiers</span></div>
-                <div class="bar-bg"><div id="barPy" class="bar-fill" style="background: #3572A5;"></div></div>
-            </div>
-            <div class="bar-wrapper">
-                <div class="bar-label"><span>JavaScript (.js)</span><span id="countJs">0 fichiers</span></div>
-                <div class="bar-bg"><div id="barJs" class="bar-fill" style="background: #f1e05a;"></div></div>
-            </div>
+    <!-- TOP BAR DE NAVIGATION -->
+    <div class="top-bar">
+        <h1>🧠 Apprenti Codeur</h1>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="changerOnglet('apprentissage')">📊 Studio Apprentissage</button>
+            <button class="nav-tab" onclick="changerOnglet('generateur')">⚡ Générateur de Code</button>
+            <button class="hamburger-btn" onclick="toggleDrawer()">☰</button>
         </div>
     </div>
 
-    <div class="box">
-        <h3>1. Ingestion Massive (ZIP Local)</h3>
-        <input type="file" id="zipInput" accept=".zip">
+    <!-- MENU HAMBURGER COULISSANT (OPTIONS & MÉMOIRE) -->
+    <div id="drawer" class="drawer">
+        <div class="drawer-header">
+            <h3>⚙️ Options Mémoire</h3>
+            <button class="close-btn" onclick="toggleDrawer()">✕</button>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <h4>📥 Charger une Mémoire (JSON)</h4>
+            <p><small>Importez un fichier memoire_code.json stocké sur votre PC.</small></p>
+            <input type="file" id="jsonFileInput" accept=".json" onchange="chargerMemoireJSON(event)">
+        </div>
+
+        <hr style="border-color: #333;">
+
+        <div style="margin-bottom: 20px;">
+            <h4>✍️ Ajout Manuel Rapide</h4>
+            <input type="text" id="manualName" placeholder="Nom du fichier (ex: snippet.py)">
+            <textarea id="manualCode" rows="3" placeholder="Collez un bout de code..."></textarea>
+            <button onclick="ajouterMemoireManuelle()" style="background: #28a745; width: 100%;">Ajouter à la mémoire</button>
+        </div>
+
+        <hr style="border-color: #333;">
+
+        <button onclick="sauvegarderMemoireJSON()" class="success" style="margin-bottom: 10px;">💾 Télécharger la Mémoire (JSON)</button>
+        <button onclick="reinitialiserMemoire()" style="background: #dc3545; width: 100%;">🗑️ Vider la Mémoire RAM</button>
     </div>
 
-    <div class="box">
-        <h3>2. Ingestion API GitHub (60 req/h)</h3>
-        <input type="text" id="repoInput" placeholder="utilisateur/repo">
-        <button onclick="lancerAPI()">Démarrer l'Apprentissage API</button>
-        <p><small>Le script attendra 61 secondes entre chaque fichier pour respecter la limite GitHub.</small></p>
+    <div class="container">
+
+        <!-- FENÊTRE 1 : STUDIO D'APPRENTISSAGE -->
+        <div id="tab-apprentissage" class="tab-content active">
+            
+            <div class="box">
+                <h2>📊 Statistiques sous le capot</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div>Fichiers Analysés</div>
+                        <div id="statFiles" class="stat-number">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div>Lignes Traitées</div>
+                        <div id="statLines" class="stat-number">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div>Patterns Mémorisés</div>
+                        <div id="statPatterns" class="stat-number">0</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div style="font-weight: bold; margin-bottom: 8px;">Répartition par Langage</div>
+                    <div class="bar-wrapper">
+                        <div class="bar-label"><span>Python (.py)</span><span id="countPy">0 fichiers</span></div>
+                        <div class="bar-bg"><div id="barPy" class="bar-fill" style="background: #3572A5;"></div></div>
+                    </div>
+                    <div class="bar-wrapper">
+                        <div class="bar-label"><span>JavaScript (.js)</span><span id="countJs">0 fichiers</span></div>
+                        <div class="bar-bg"><div id="barJs" class="bar-fill" style="background: #f1e05a;"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <h3>1. Ingestion Massive (ZIP Local)</h3>
+                <input type="file" id="zipInput" accept=".zip">
+            </div>
+
+            <div class="box">
+                <h3>2. Ingestion API GitHub (60 req/h)</h3>
+                <input type="text" id="repoInput" placeholder="utilisateur/repo">
+                <button onclick="lancerAPI()">Démarrer l'Apprentissage API</button>
+                <p><small>Le script attendra 61 secondes entre chaque fichier pour respecter la limite GitHub.</small></p>
+            </div>
+
+            <h3>Journal d'apprentissage :</h3>
+            <pre id="log"></pre>
+        </div>
+
+        <!-- FENÊTRE 2 : GÉNÉRATEUR ÉPURÉ (SANS IA) -->
+        <div id="tab-generateur" class="tab-content">
+            <div class="prompt-container">
+                <h2 style="color: #007acc; margin-top: 0;">⚡ Générateur de Code Local</h2>
+                <p style="color: #aaa; font-size: 14px;">Décrivez votre besoin avec des mots-clés (ex: <i>def lire_fichier, boucle for, fetch api, json parse...</i>)</p>
+                
+                <textarea id="userInput" class="prompt-textarea" placeholder="Que voulez-vous générer ?"></textarea>
+                <button onclick="genererCodeLocal()" style="margin-top: 15px; padding: 12px 25px; font-size: 15px;">🚀 Générer à partir de la mémoire</button>
+                
+                <div id="resultatGeneration" class="output-code">/* Le code généré à partir de votre mémoire locale apparaîtra ici... */</div>
+            </div>
+        </div>
+
     </div>
-
-    <button onclick="sauvegarderMemoireJSON()" class="success">💾 Télécharger la Mémoire (JSON)</button>
-
-    <h3>Journal d'apprentissage :</h3>
-    <pre id="log"></pre>
 
     <script>
         let memoireCode = [];
@@ -93,10 +171,25 @@
             jsCount: 0
         };
 
+        // --- GESTION DES ONGLETS ET DRAWER ---
+        function changerOnglet(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function toggleDrawer() {
+            document.getElementById('drawer').classList.toggle('open');
+        }
+
         function log(m) {
             const el = document.getElementById('log');
-            el.textContent += `[${new Date().toLocaleTimeString()}] ${m}\n`;
-            el.scrollTop = el.scrollHeight;
+            if(el) {
+                el.textContent += `[${new Date().toLocaleTimeString()}] ${m}\n`;
+                el.scrollTop = el.scrollHeight;
+            }
         }
 
         const sleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -116,6 +209,131 @@
 
             document.getElementById('barPy').style.width = pctPy + "%";
             document.getElementById('barJs').style.width = pctJs + "%";
+        }
+
+        // --- MOTEUR ANALYSE ET STATS ---
+        function analyserEtStocker(text, filename) {
+            const lines = text.split('\n');
+            const filteredLines = lines.map(l => l.trim()).filter(l => l.length > 5);
+            
+            memoireCode.push({
+                source: filename,
+                patterns: filteredLines.slice(0, 50) 
+            });
+
+            // Mise à jour des statistiques visuelles
+            stats.filesCount++;
+            stats.totalLines += lines.length;
+            stats.totalPatterns += filteredLines.slice(0, 50).length;
+
+            if (filename.endsWith('.py')) stats.pyCount++;
+            if (filename.endsWith('.js')) stats.jsCount++;
+
+            mettreAJourGraphiques();
+            log(`-> Analysé : ${filename} (${lines.length} lignes)`);
+        }
+
+        // --- CHARGEMENT D'UN FICHIER MEMOIRE.JSON DÉJÀ EXISTANT ---
+        function chargerMemoireJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (Array.isArray(data)) {
+                        memoireCode = data;
+                        
+                        // Recalcul des stats d'affichage
+                        stats = { filesCount: 0, totalLines: 0, totalPatterns: 0, pyCount: 0, jsCount: 0 };
+                        memoireCode.forEach(item => {
+                            stats.filesCount++;
+                            stats.totalPatterns += item.patterns.length;
+                            stats.totalLines += item.patterns.length * 2; 
+                            if (item.source.endsWith('.py')) stats.pyCount++;
+                            if (item.source.endsWith('.js')) stats.jsCount++;
+                        });
+
+                        mettreAJourGraphiques();
+                        log(`✅ Mémoire JSON chargée avec succès (${memoireCode.length} fichiers réintégrés).`);
+                        alert(`Mémoire réintégrée ! ${memoireCode.length} fichiers sont prêts.`);
+                        toggleDrawer();
+                    } else {
+                        alert("Format JSON invalide.");
+                    }
+                } catch (err) {
+                    alert("Erreur lors de la lecture du fichier JSON : " + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // --- AJOUT MANUEL ---
+        function ajouterMemoireManuelle() {
+            const name = document.getElementById('manualName').value.trim() || "manuel.txt";
+            const code = document.getElementById('manualCode').value;
+            if(!code) return alert("Veuillez entrer du code à apprendre.");
+
+            analyserEtStocker(code, name);
+            document.getElementById('manualCode').value = "";
+            document.getElementById('manualName').value = "";
+            log(`✍️ Ajout manuel réussi : ${name}`);
+            alert("Code ajouté à la mémoire !");
+        }
+
+        function reinitialiserMemoire() {
+            if(confirm("Voulez-vous vraiment vider la mémoire de la session ?")) {
+                memoireCode = [];
+                stats = { filesCount: 0, totalLines: 0, totalPatterns: 0, pyCount: 0, jsCount: 0 };
+                mettreAJourGraphiques();
+                log("🗑️ Mémoire réinitialisée.");
+                toggleDrawer();
+            }
+        }
+
+        // --- MOTEUR DE RECHERCHE / GÉNÉRATION LOCALE ---
+        function genererCodeLocal() {
+            const query = document.getElementById('userInput').value.toLowerCase().trim();
+            const container = document.getElementById('resultatGeneration');
+            
+            if(!query) {
+                container.textContent = "⚠️ Veuillez entrer votre demande dans le champ ci-dessus.";
+                return;
+            }
+
+            if(memoireCode.length === 0) {
+                container.textContent = "⚠️ La mémoire est actuellement vide. Inférez un ZIP ou chargez un fichier memoire_code.json via le menu hamburger (☰).";
+                return;
+            }
+
+            const motsCles = query.split(' ');
+            
+            let resultats = memoireCode.map(item => {
+                let score = 0;
+                item.patterns.forEach(line => {
+                    motsCles.forEach(mot => {
+                        if (line.toLowerCase().includes(mot)) score++;
+                    });
+                });
+                return { source: item.source, patterns: item.patterns, score };
+            });
+
+            resultats.sort((a, b) => b.score - a.score);
+            let meilleurs = resultats.filter(r => r.score > 0).slice(0, 3);
+
+            if(meilleurs.length === 0) {
+                container.textContent = "❌ Aucun résultat correspondant trouvé dans votre mémoire pour ces termes.";
+                return;
+            }
+
+            let output = `/* --- CODE ASSEMBLÉ DEPUIS VOTRE MÉMOIRE (${meilleurs.length} SOURCES TROUVÉES) --- */\n\n`;
+            meilleurs.forEach(m => {
+                output += `// --- Source : ${m.source} (Score : ${m.score}) ---\n`;
+                output += m.patterns.join('\n') + "\n\n";
+            });
+
+            container.textContent = output;
         }
 
         // --- GESTION ZIP ---
@@ -156,28 +374,6 @@
                     }
                 }
             } catch(e) { log("Erreur API : " + e.message); }
-        }
-
-        // --- MOTEUR ANALYSE ET STATS ---
-        function analyserEtStocker(text, filename) {
-            const lines = text.split('\n');
-            const filteredLines = lines.map(l => l.trim()).filter(l => l.length > 5);
-            
-            memoireCode.push({
-                source: filename,
-                patterns: filteredLines.slice(0, 50) 
-            });
-
-            // Mise à jour des statistiques visuelles
-            stats.filesCount++;
-            stats.totalLines += lines.length;
-            stats.totalPatterns += filteredLines.slice(0, 50).length;
-
-            if (filename.endsWith('.py')) stats.pyCount++;
-            if (filename.endsWith('.js')) stats.jsCount++;
-
-            mettreAJourGraphiques();
-            log(`-> Analysé : ${filename} (${lines.length} lignes)`);
         }
 
         // --- EXPORT JSON ---
