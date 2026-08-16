@@ -35,15 +35,27 @@
         .success { background: #28a745; width: 100%; font-size: 15px; }
         .success:hover { background: #218838; }
 
-        /* DASHBOARD STATS */
+        /* DASHBOARD STATS & COULEURS LANGAGES */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
         .stat-card { background: #252526; border: 1px solid #333; padding: 15px; border-radius: 6px; text-align: center; }
         .stat-number { font-size: 24px; font-weight: bold; color: #4ec9b0; margin-top: 5px; }
-        .chart-container { background: #252526; padding: 15px; border-radius: 6px; margin-top: 15px; border: 1px solid #333; }
+        .chart-container { background: #252526; padding: 15px; border-radius: 6px; margin-top: 15px; border: 1px solid #333; max-height: 250px; overflow-y: auto; }
         .bar-wrapper { margin: 8px 0; }
         .bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 3px; }
         .bar-bg { background: #333; border-radius: 4px; overflow: hidden; height: 12px; width: 100%; }
-        .bar-fill { height: 100%; background: #007acc; width: 0%; transition: width 0.4s ease; }
+        .bar-fill { height: 100%; width: 0%; transition: width 0.4s ease; }
+
+        .bar-py { background: #3572A5; }
+        .bar-js { background: #f1e05a; }
+        .bar-gs { background: #4285F4; }
+        .bar-ts { background: #3178c6; }
+        .bar-html { background: #e34c26; }
+        .bar-css { background: #563d7c; }
+        .bar-sql { background: #e38c00; }
+        .bar-cpp { background: #f34b7d; }
+        .bar-java { background: #b07219; }
+        .bar-php { background: #4F5D95; }
+        .bar-go { background: #00ADD8; }
 
         /* INTERFACE ÉPURÉE DU GÉNÉRATEUR */
         .prompt-container { background: #1e1e1e; border: 1px solid #007acc; border-radius: 8px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
@@ -73,7 +85,6 @@
 
         <div style="margin-bottom: 20px;">
             <h4>📥 Charger une Mémoire (JSON)</h4>
-            <p><small>Importez un fichier memoire_code.json stocké sur votre PC.</small></p>
             <input type="file" id="jsonFileInput" accept=".json" onchange="chargerMemoireJSON(event)">
         </div>
 
@@ -81,7 +92,7 @@
 
         <div style="margin-bottom: 20px;">
             <h4>✍️ Ajout Manuel Rapide</h4>
-            <input type="text" id="manualName" placeholder="Nom du fichier (ex: snippet.gs)">
+            <input type="text" id="manualName" placeholder="Nom du fichier (ex: snippet.js)">
             <textarea id="manualCode" rows="3" placeholder="Collez un bout de code..."></textarea>
             <button onclick="ajouterMemoireManuelle()" style="background: #28a745; width: 100%;">Ajouter à la mémoire</button>
         </div>
@@ -100,64 +111,44 @@
             <div class="box">
                 <h2>📊 Statistiques sous le capot</h2>
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div>Fichiers Analysés</div>
-                        <div id="statFiles" class="stat-number">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div>Lignes Traitées</div>
-                        <div id="statLines" class="stat-number">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div>Patterns Mémorisés</div>
-                        <div id="statPatterns" class="stat-number">0</div>
-                    </div>
+                    <div class="stat-card"><div>Fichiers Analysés</div><div id="statFiles" class="stat-number">0</div></div>
+                    <div class="stat-card"><div>Lignes Traitées</div><div id="statLines" class="stat-number">0</div></div>
+                    <div class="stat-card"><div>Patterns Mémorisés</div><div id="statPatterns" class="stat-number">0</div></div>
                 </div>
 
                 <div class="chart-container">
                     <div style="font-weight: bold; margin-bottom: 8px;">Répartition par Langage</div>
-                    <div class="bar-wrapper">
-                        <div class="bar-label"><span>Python (.py)</span><span id="countPy">0 fichiers</span></div>
-                        <div class="bar-bg"><div id="barPy" class="bar-fill" style="background: #3572A5;"></div></div>
-                    </div>
-                    <div class="bar-wrapper">
-                        <div class="bar-label"><span>JavaScript (.js)</span><span id="countJs">0 fichiers</span></div>
-                        <div class="bar-bg"><div id="barJs" class="bar-fill" style="background: #f1e05a;"></div></div>
-                    </div>
-                    <div class="bar-wrapper">
-                        <div class="bar-label"><span>Google Apps Script (.gs)</span><span id="countGs">0 fichiers</span></div>
-                        <div class="bar-bg"><div id="barGs" class="bar-fill" style="background: #4285F4;"></div></div>
-                    </div>
+                    <div class="bar-wrapper"><div class="bar-label"><span>Python (.py)</span><span id="countPy">0 fichiers</span></div><div class="bar-bg"><div id="barPy" class="bar-fill bar-py"></div></div></div>
+                    <div class="bar-wrapper"><div class="bar-label"><span>JavaScript (.js)</span><span id="countJs">0 fichiers</span></div><div class="bar-bg"><div id="barJs" class="bar-fill bar-js"></div></div></div>
+                    <div class="bar-wrapper"><div class="bar-label"><span>Google Apps Script (.gs)</span><span id="countGs">0 fichiers</span></div><div class="bar-bg"><div id="barGs" class="bar-fill bar-gs"></div></div></div>
+                    <div class="bar-wrapper"><div class="bar-label"><span>TypeScript (.ts)</span><span id="countTs">0 fichiers</span></div><div class="bar-bg"><div id="barTs" class="bar-fill bar-ts"></div></div></div>
+                    <div class="bar-wrapper"><div class="bar-label"><span>HTML (.html)</span><span id="countHtml">0 fichiers</span></div><div class="bar-bg"><div id="barHtml" class="bar-fill bar-html"></div></div></div>
+                    <div class="bar-wrapper"><div class="bar-label"><span>CSS (.css)</span><span id="countCss">0 fichiers</span></div><div class="bar-bg"><div id="barCss" class="bar-fill bar-css"></div></div></div>
+                    <div class="bar-wrapper"><div class="bar-label"><span>SQL (.sql)</span><span id="countSql">0 fichiers</span></div><div class="bar-bg"><div id="barSql" class="bar-fill bar-sql"></div></div></div>
+                    <div class="bar-wrapper"><div class="bar-label"><span>C++ (.cpp/.h)</span><span id="countCpp">0 fichiers</span></div><div class="bar-bg"><div id="barCpp" class="bar-fill bar-cpp"></div></div></div>
+                    <div class="bar-wrapper"><div class="bar-label"><span>Java (.java)</span><span id="countJava">0 fichiers</span></div><div class="bar-bg"><div id="barJava" class="bar-fill bar-java"></div></div></div>
+                    <div class="bar-wrapper"><div class="bar-label"><span>PHP (.php)</span><span id="countPhp">0 fichiers</span></div><div class="bar-bg"><div id="barPhp" class="bar-fill bar-php"></div></div></div>
+                    <div class="bar-wrapper"><div class="bar-label"><span>Go (.go)</span><span id="countGo">0 fichiers</span></div><div class="bar-bg"><div id="barGo" class="bar-fill bar-go"></div></div></div>
                 </div>
             </div>
 
             <div class="box">
                 <h3>1. Ingestion Massive (ZIP Local)</h3>
                 <input type="file" id="zipInput" accept=".zip">
-                <p><small>Prend en charge les fichiers .py, .js et .gs</small></p>
-            </div>
-
-            <div class="box">
-                <h3>2. Ingestion API GitHub (60 req/h)</h3>
-                <input type="text" id="repoInput" placeholder="utilisateur/repo">
-                <button onclick="lancerAPI()">Démarrer l'Apprentissage API</button>
-                <p><small>Le script attendra 61 secondes entre chaque fichier pour respecter la limite GitHub.</small></p>
+                <p><small>Prend en charge tous les langages configurés.</small></p>
             </div>
 
             <h3>Journal d'apprentissage :</h3>
             <pre id="log"></pre>
         </div>
 
-        <!-- FENÊTRE 2 : GÉNÉRATEUR ÉPURÉ (SANS IA) -->
+        <!-- FENÊTRE 2 : GÉNÉRATEUR -->
         <div id="tab-generateur" class="tab-content">
             <div class="prompt-container">
                 <h2 style="color: #007acc; margin-top: 0;">⚡ Générateur de Code Local</h2>
-                <p style="color: #aaa; font-size: 14px;">Décrivez votre besoin avec des mots-clés (ex: <i>def, function, SpreadsheetApp, for, fetch...</i>)</p>
-                
                 <textarea id="userInput" class="prompt-textarea" placeholder="Que voulez-vous générer ?"></textarea>
                 <button onclick="genererCodeLocal()" style="margin-top: 15px; padding: 12px 25px; font-size: 15px;">🚀 Générer à partir de la mémoire</button>
-                
-                <div id="resultatGeneration" class="output-code">/* Le code généré à partir de votre mémoire locale apparaîtra ici... */</div>
+                <div id="resultatGeneration" class="output-code">/* Le code généré apparaîtra ici... */</div>
             </div>
         </div>
 
@@ -165,23 +156,17 @@
 
     <script>
         let memoireCode = [];
-        const DELAY_MS = 61000; 
 
-        // Compteurs globaux pour les graphiques
         let stats = {
-            filesCount: 0,
-            totalLines: 0,
-            totalPatterns: 0,
-            pyCount: 0,
-            jsCount: 0,
-            gsCount: 0
+            filesCount: 0, totalLines: 0, totalPatterns: 0,
+            pyCount: 0, jsCount: 0, gsCount: 0, tsCount: 0,
+            htmlCount: 0, cssCount: 0, sqlCount: 0, cppCount: 0,
+            javaCount: 0, phpCount: 0, goCount: 0
         };
 
-        // --- GESTION DES ONGLETS ET DRAWER ---
         function changerOnglet(tabName) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
-            
             document.getElementById(`tab-${tabName}`).classList.add('active');
             event.target.classList.add('active');
         }
@@ -198,53 +183,59 @@
             }
         }
 
-        const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-
         function mettreAJourGraphiques() {
             document.getElementById('statFiles').textContent = stats.filesCount;
             document.getElementById('statLines').textContent = stats.totalLines;
             document.getElementById('statPatterns').textContent = stats.totalPatterns;
 
-            document.getElementById('countPy').textContent = stats.pyCount + " fichiers";
-            document.getElementById('countJs').textContent = stats.jsCount + " fichiers";
-            document.getElementById('countGs').textContent = stats.gsCount + " fichiers";
+            const langs = ['Py', 'Js', 'Gs', 'Ts', 'Html', 'Css', 'Sql', 'Cpp', 'Java', 'Php', 'Go'];
+            let totalFilesSum = langs.reduce((acc, l) => acc + stats[l.toLowerCase() + 'Count'], 0);
+            let maxFiles = Math.max(totalFilesSum, 1);
 
-            // Calcul des pourcentages pour les barres graphiques
-            let maxFiles = Math.max(stats.pyCount + stats.jsCount + stats.gsCount, 1);
-            let pctPy = (stats.pyCount / maxFiles) * 100;
-            let pctJs = (stats.jsCount / maxFiles) * 100;
-            let pctGs = (stats.gsCount / maxFiles) * 100;
-
-            document.getElementById('barPy').style.width = pctPy + "%";
-            document.getElementById('barJs').style.width = pctJs + "%";
-            document.getElementById('barGs').style.width = pctGs + "%";
+            langs.forEach(l => {
+                let count = stats[l.toLowerCase() + 'Count'];
+                document.getElementById('count' + l).textContent = count + " fichiers";
+                document.getElementById('bar' + l).style.width = (count / maxFiles) * 100 + "%";
+            });
         }
 
-        // --- MOTEUR ANALYSE ET STATS (AVEC FILTRAGE DES LIGNES MINIFIÉES) ---
         function analyserEtStocker(text, filename) {
+            if (filename.toLowerCase().includes('.min.')) {
+                log(`🚫 Ignoré (minifié) : ${filename}`);
+                return;
+            }
+
             const lines = text.split('\n');
-            // Filtrage : ignore les lignes vides, de moins de 5 caractères, et les lignes minifiées de plus de 200 caractères
-            const filteredLines = lines.map(l => l.trim()).filter(l => l.length > 5 && l.length < 200);
+            const filteredLines = lines.map(l => l.trim()).filter(l => l.length > 5 && l.length < 150);
             
+            if (filteredLines.length < 5) return;
+
             memoireCode.push({
                 source: filename,
                 patterns: filteredLines.slice(0, 50) 
             });
 
-            // Mise à jour des statistiques visuelles
             stats.filesCount++;
             stats.totalLines += lines.length;
             stats.totalPatterns += filteredLines.slice(0, 50).length;
 
-            if (filename.endsWith('.py')) stats.pyCount++;
-            if (filename.endsWith('.js')) stats.jsCount++;
-            if (filename.endsWith('.gs')) stats.gsCount++;
+            const fn = filename.toLowerCase();
+            if (fn.endsWith('.py')) stats.pyCount++;
+            else if (fn.endsWith('.js')) stats.jsCount++;
+            else if (fn.endsWith('.gs')) stats.gsCount++;
+            else if (fn.endsWith('.ts') || fn.endsWith('.tsx')) stats.tsCount++;
+            else if (fn.endsWith('.html') || fn.endsWith('.htm')) stats.htmlCount++;
+            else if (fn.endsWith('.css') || fn.endsWith('.scss')) stats.cssCount++;
+            else if (fn.endsWith('.sql')) stats.sqlCount++;
+            else if (fn.endsWith('.cpp') || fn.endsWith('.cc') || fn.endsWith('.h')) stats.cppCount++;
+            else if (fn.endsWith('.java')) stats.javaCount++;
+            else if (fn.endsWith('.php')) stats.phpCount++;
+            else if (fn.endsWith('.go')) stats.goCount++;
 
             mettreAJourGraphiques();
-            log(`-> Analysé : ${filename} (${lines.length} lignes)`);
+            log(`✅ Appris : ${filename} (${filteredLines.length} patterns)`);
         }
 
-        // --- CHARGEMENT D'UN FICHIER MEMOIRE.JSON DÉJÀ EXISTANT ---
         function chargerMemoireJSON(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -255,78 +246,67 @@
                     const data = JSON.parse(e.target.result);
                     if (Array.isArray(data)) {
                         memoireCode = data;
+                        stats = { filesCount: 0, totalLines: 0, totalPatterns: 0, pyCount: 0, jsCount: 0, gsCount: 0, tsCount: 0, htmlCount: 0, cssCount: 0, sqlCount: 0, cppCount: 0, javaCount: 0, phpCount: 0, goCount: 0 };
                         
-                        // Recalcul des stats d'affichage
-                        stats = { filesCount: 0, totalLines: 0, totalPatterns: 0, pyCount: 0, jsCount: 0, gsCount: 0 };
                         memoireCode.forEach(item => {
                             stats.filesCount++;
                             stats.totalPatterns += item.patterns.length;
                             stats.totalLines += item.patterns.length * 2; 
-                            if (item.source.endsWith('.py')) stats.pyCount++;
-                            if (item.source.endsWith('.js')) stats.jsCount++;
-                            if (item.source.endsWith('.gs')) stats.gsCount++;
+                            const fn = item.source.toLowerCase();
+                            if (fn.endsWith('.py')) stats.pyCount++;
+                            else if (fn.endsWith('.js')) stats.jsCount++;
+                            else if (fn.endsWith('.gs')) stats.gsCount++;
+                            else if (fn.endsWith('.ts') || fn.endsWith('.tsx')) stats.tsCount++;
+                            else if (fn.endsWith('.html') || fn.endsWith('.htm')) stats.htmlCount++;
+                            else if (fn.endsWith('.css') || fn.endsWith('.scss')) stats.cssCount++;
+                            else if (fn.endsWith('.sql')) stats.sqlCount++;
+                            else if (fn.endsWith('.cpp') || fn.endsWith('.h')) stats.cppCount++;
+                            else if (fn.endsWith('.java')) stats.javaCount++;
+                            else if (fn.endsWith('.php')) stats.phpCount++;
+                            else if (fn.endsWith('.go')) stats.goCount++;
                         });
 
                         mettreAJourGraphiques();
-                        log(`✅ Mémoire JSON chargée avec succès (${memoireCode.length} fichiers réintégrés).`);
-                        alert(`Mémoire réintégrée ! ${memoireCode.length} fichiers sont prêts.`);
+                        log(`✅ Mémoire JSON chargée (${memoireCode.length} fichiers).`);
                         toggleDrawer();
-                    } else {
-                        alert("Format JSON invalide.");
                     }
-                } catch (err) {
-                    alert("Erreur lors de la lecture du fichier JSON : " + err.message);
-                }
+                } catch (err) { alert("Erreur JSON : " + err.message); }
             };
             reader.readAsText(file);
         }
 
-        // --- AJOUT MANUEL ---
         function ajouterMemoireManuelle() {
             const name = document.getElementById('manualName').value.trim() || "manuel.txt";
             const code = document.getElementById('manualCode').value;
-            if(!code) return alert("Veuillez entrer du code à apprendre.");
-
+            if(!code) return alert("Entrez du code.");
             analyserEtStocker(code, name);
             document.getElementById('manualCode').value = "";
             document.getElementById('manualName').value = "";
-            log(`✍️ Ajout manuel réussi : ${name}`);
-            alert("Code ajouté à la mémoire !");
+            toggleDrawer();
         }
 
         function reinitialiserMemoire() {
-            if(confirm("Voulez-vous vraiment vider la mémoire de la session ?")) {
+            if(confirm("Voulez-vous vider la mémoire ?")) {
                 memoireCode = [];
-                stats = { filesCount: 0, totalLines: 0, totalPatterns: 0, pyCount: 0, jsCount: 0, gsCount: 0 };
+                stats = { filesCount: 0, totalLines: 0, totalPatterns: 0, pyCount: 0, jsCount: 0, gsCount: 0, tsCount: 0, htmlCount: 0, cssCount: 0, sqlCount: 0, cppCount: 0, javaCount: 0, phpCount: 0, goCount: 0 };
                 mettreAJourGraphiques();
                 log("🗑️ Mémoire réinitialisée.");
                 toggleDrawer();
             }
         }
 
-        // --- MOTEUR DE RECHERCHE / GÉNÉRATION LOCALE ---
         function genererCodeLocal() {
             const query = document.getElementById('userInput').value.toLowerCase().trim();
             const container = document.getElementById('resultatGeneration');
             
-            if(!query) {
-                container.textContent = "⚠️ Veuillez entrer votre demande dans le champ ci-dessus.";
-                return;
-            }
-
-            if(memoireCode.length === 0) {
-                container.textContent = "⚠️ La mémoire est actuellement vide. Inférez un ZIP ou chargez un fichier memoire_code.json via le menu hamburger (☰).";
-                return;
-            }
+            if(!query) return container.textContent = "⚠️ Veuillez entrer une demande.";
+            if(memoireCode.length === 0) return container.textContent = "⚠️ Mémoire vide.";
 
             const motsCles = query.split(' ');
-            
             let resultats = memoireCode.map(item => {
                 let score = 0;
                 item.patterns.forEach(line => {
-                    motsCles.forEach(mot => {
-                        if (line.toLowerCase().includes(mot)) score++;
-                    });
+                    motsCles.forEach(mot => { if (line.toLowerCase().includes(mot)) score++; });
                 });
                 return { source: item.source, patterns: item.patterns, score };
             });
@@ -334,28 +314,26 @@
             resultats.sort((a, b) => b.score - a.score);
             let meilleurs = resultats.filter(r => r.score > 0).slice(0, 3);
 
-            if(meilleurs.length === 0) {
-                container.textContent = "❌ Aucun résultat correspondant trouvé dans votre mémoire pour ces termes.";
-                return;
-            }
+            if(meilleurs.length === 0) return container.textContent = "❌ Aucun résultat trouvé.";
 
-            let output = `/* --- CODE ASSEMBLÉ DEPUIS VOTRE MÉMOIRE (${meilleurs.length} SOURCES TROUVÉES) --- */\n\n`;
+            let output = `/* --- CODE ASSEMBLÉ DEPUIS VOTRE MÉMOIRE (${meilleurs.length} SOURCES) --- */\n\n`;
             meilleurs.forEach(m => {
                 output += `// --- Source : ${m.source} (Score : ${m.score}) ---\n`;
                 output += m.patterns.join('\n') + "\n\n";
             });
-
             container.textContent = output;
         }
 
-        // --- GESTION ZIP (AVEC SUPPORT .PY, .JS ET .GS) ---
         document.getElementById('zipInput').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
             const zip = await JSZip.loadAsync(file);
-            log("Décompression du ZIP...");
+            log("Décompression du ZIP multi-langages...");
+            
+            const extensionsValides = ['.py', '.js', '.gs', '.ts', '.tsx', '.html', '.htm', '.css', '.scss', '.sql', '.cpp', '.cc', '.h', '.java', '.php', '.go'];
+            
             for (let [relativePath, zipEntry] of Object.entries(zip.files)) {
-                if (!zipEntry.dir && (relativePath.endsWith('.py') || relativePath.endsWith('.js') || relativePath.endsWith('.gs'))) {
+                if (!zipEntry.dir && extensionsValides.some(ext => relativePath.endsWith(ext))) {
                     const content = await zipEntry.async("string");
                     analyserEtStocker(content, relativePath);
                 }
@@ -363,37 +341,8 @@
             log("✅ ZIP ingéré avec succès !");
         });
 
-        // --- GESTION API ---
-        async function lancerAPI() {
-            const repo = document.getElementById('repoInput').value;
-            if(!repo) return alert("Entrez utilisateur/repo");
-            
-            log(`Démarrage API pour : ${repo}`);
-            try {
-                const response = await fetch(`https://api.github.com/repos/${repo}/contents`);
-                if (!response.ok) throw new Error("Dépôt introuvable ou limite dépassée.");
-                const files = await response.json();
-                
-                for (const file of files) {
-                    if (file.type === 'file' && (file.name.endsWith('.py') || file.name.endsWith('.js') || file.name.endsWith('.gs'))) {
-                        log(`Traitement API: ${file.name}`);
-                        const res = await fetch(file.download_url);
-                        const code = await res.text();
-                        analyserEtStocker(code, file.name);
-                        
-                        log("Attente de sécurité (61s)...");
-                        await sleep(DELAY_MS);
-                    }
-                }
-            } catch(e) { log("Erreur API : " + e.message); }
-        }
-
-        // --- EXPORT JSON ---
         function sauvegarderMemoireJSON() {
-            if (memoireCode.length === 0) {
-                alert("La mémoire est vide pour l'instant !");
-                return;
-            }
+            if (memoireCode.length === 0) return alert("Mémoire vide.");
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(memoireCode, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
@@ -401,7 +350,7 @@
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
-            log("💾 Mémoire exportée avec succès.");
+            log("💾 Mémoire exportée.");
         }
     </script>
 </body>
