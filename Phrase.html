@@ -2,13 +2,13 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Module IA : Chaîne de Mots (Front-End)</title>
+    <title>Module IA : Chaîne de Mots & Ponctuation (Français)</title>
     <style>
         body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 15px; max-width: 600px; margin: auto; }
         .control-panel, .gen-panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 15px; }
         button { background-color: #222; color: #fff; border: 1px solid #444; padding: 12px; cursor: pointer; width: 100%; margin-bottom: 8px; border-radius: 4px; font-weight: bold; font-size: 1em; }
         .status-line { background-color: #1a1a1a; border-left: 3px solid #03a9f4; padding: 10px; font-size: 0.85em; margin-bottom: 15px; line-height: 1.4; }
-        .output-box { background-color: #000; color: #00e676; padding: 12px; border-radius: 4px; min-height: 40px; font-size: 1em; word-break: break-word; margin-top: 8px; border: 1px solid #333; }
+        .output-box { background-color: #000; color: #00e676; padding: 12px; border-radius: 4px; min-height: 50px; font-size: 1em; word-break: break-word; margin-top: 8px; border: 1px solid #333; line-height: 1.5; }
         .bar-row { display: flex; align-items: center; margin-bottom: 4px; }
         .bar-label { width: 95px; font-weight: bold; font-size: 0.85em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .bar-track { flex-grow: 1; background-color: #222; height: 10px; border-radius: 3px; overflow: hidden; margin: 0 8px; }
@@ -19,21 +19,21 @@
 </head>
 <body>
 
-    <h1>Module II : Apprentissage par Mots</h1>
+    <h1>Module II : Apprentissage par Mots (Français)</h1>
     
     <div class="control-panel">
-        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #333;">1. Créer ou lier "memoire_mots.json"</button>
-        <button onclick="lancerEntrainementMots()" style="background-color: #01579b;">2. Lancer l'Apprentissage Mots</button>
+        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #333;">1. Créer ou lier "memoire_mots_fr.json"</button>
+        <button onclick="lancerEntrainementMots()" style="background-color: #01579b;">2. Lancer l'Apprentissage Français</button>
         <button onclick="arreterEntrainement()" style="background-color: #b71c1c;">3. ⏹ Pause et Sauvegarde</button>
     </div>
 
     <div class="gen-panel">
-        <label>Générateur de phrases (Mots complets) :</label>
+        <label>Générateur de phrases (Mots & Ponctuation) :</label>
         <button onclick="genererPhraseMots()" style="background-color: #1b5e20; margin-top: 5px;">Générer une phrase</button>
         <div id="resultat-generation" class="output-box">En attente de génération...</div>
     </div>
     
-    <div id="status" class="status-line">Crée ou sélectionne un fichier JSON spécifique pour ce module de mots.</div>
+    <div id="status" class="status-line">Sélectionne ton fichier JSON français pour commencer.</div>
     
     <div class="control-panel">
         <h2>Mots et liaisons mémorisées</h2>
@@ -42,13 +42,14 @@
 
     <script>
         let fichierHandle = null;
-        let memoireMots = {}; // Structure : { "motActuel": { "motSuivant": poids } }
+        let memoireMots = {}; 
         let motsTotauxAppris = 0;
         let enCoursDApprentissage = false;
 
-        const booksList = [
-            "https://www.gutenberg.org/files/11/11-0.txt",
-            "https://www.gutenberg.org/files/84/84-0.txt"
+        // Sources riches en français (Livres Gutenberg classiques libres de droits)
+        const sourcesLivresFR = [
+            "https://www.gutenberg.org/files/13846/13846-0.txt", // Le Petit Prince (ou équivalent classique)
+            "https://www.gutenberg.org/files/4650/4650-0.txt"   // Les Contes de Grimm / Littérature
         ];
 
         async function selectionnerFichierMemoire() {
@@ -63,8 +64,8 @@
                 motsTotauxAppris = data.mots_appris || 0;
                 memoireMots = data.memoire_mots || {};
 
-                document.getElementById("btn-fichier").innerText = "✔ Fichier lié (" + motsTotauxAppris + " transitions)";
-                document.getElementById("status").innerText = "Fichier chargé avec succès. Prêt à accumuler des mots !";
+                document.getElementById("btn-fichier").innerText = "✔ Fichier lié (" + motsTotauxAppris + " éléments)";
+                document.getElementById("status").innerText = "Fichier chargé avec succès. Prêt à accumuler du vocabulaire !";
                 majAffichage();
             } catch (e) { 
                 document.getElementById("status").innerText = "Sélection annulée."; 
@@ -75,33 +76,40 @@
             if (!fichierHandle) return;
             try {
                 const flux = await fichierHandle.createWritable();
-                const contenuJSON = {
-                    mots_appris: motsTotauxAppris,
-                    memoire_mots: memoireMots
-                };
-                await flux.write(JSON.stringify(contenuJSON, null, 2));
+                await flux.write(JSON.stringify({ mots_appris: motsTotauxAppris, memoire_mots: memoireMots }, null, 2));
                 await flux.close();
             } catch (e) {
                 console.error("Erreur d'écriture.");
             }
         }
 
-        async function fetchWikiRandom(lang) {
+        async function fetchWikiFR() {
             try {
-                const url = `https://${lang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`;
+                const url = "https://fr.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*";
                 const res = await fetch(url);
                 const data = await res.json();
                 const title = data.query.random[0].title;
 
-                const contentUrl = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+                const contentUrl = `https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext&titles=${encodeURIComponent(title)}&format=json&origin=*`;
                 const contentRes = await fetch(contentUrl);
                 const contentData = await contentRes.json();
                 const pages = contentData.query.pages;
                 const extract = Object.values(pages)[0].extract;
 
-                return extract && extract.length > 200 ? extract : "Apprentissage des structures de mots.";
+                return extract && extract.length > 200 ? extract : "Apprentissage des structures textuelles françaises.";
             } catch (e) {
-                return "Erreur réseau.";
+                return "Erreur réseau Wikipédia.";
+            }
+        }
+
+        async function fetchBookFR() {
+            try {
+                const randomBook = sourcesLivresFR[Math.floor(Math.random() * sourcesLivresFR.length)];
+                const res = await fetch(randomBook);
+                const text = await res.text();
+                return text.length > 500 ? text.substring(0, 50000) : "Littérature classique française.";
+            } catch (e) {
+                return "Module de secours littéraire.";
             }
         }
 
@@ -114,41 +122,39 @@
             enCoursDApprentissage = true;
             
             while (enCoursDApprentissage) {
-                let texte = await fetchWikiRandom("fr");
+                // Alternance entre Wikipédia FR et les livres classiques
+                let texteSource = Math.random() > 0.4 ? await fetchWikiFR() : await fetchBookFR();
                 
-                document.getElementById("status").innerHTML = `📖 <b>Apprentissage en cours...</b> (Mots traités : ${motsTotauxAppris})`;
+                document.getElementById("status").innerHTML = `📖 <b>Apprentissage en cours...</b> (Éléments traités : ${motsTotauxAppris})`;
 
-                // Nettoyage et découpage propre en mots
-                let mots = texte.toLowerCase()
-                                .replace(/[^\w\sàâäéèêëîïôöùûüç]/g, ' ')
-                                .split(/\s+/)
-                                .filter(m => m.length > 0);
+                // TRAITEMENT DE LA PONCTUATION ET DES APOSTROPHES
+                // On isole les signes (.,;:?!') pour qu'ils soient traités comme des mots à part entière
+                let texteNettoye = texteSource.toLowerCase()
+                    .replace(/['’]/g, "' ") // Sépare proprement les apostrophes (ex: "l'homme" devient "l' homme" ou "l ' homme")
+                    .replace(/([.,\/#!$%\^&\*;:{}=\-_`~()?])/g, " $1 ") // Isole la ponctuation
+                    .replace(/\s+/g, " "); // Nettoie les espaces multiples
+
+                let mots = texteNettoye.split(' ').filter(m => m.length > 0);
 
                 for (let i = 0; i < mots.length - 1; i++) {
                     if (!enCoursDApprentissage) break;
                     motsTotauxAppris++;
                     
-                    let motActuel = mots[i];
-                    let motSuivant = mots[i + 1];
+                    let elementActuel = mots[i];
+                    let elementSuivant = mots[i + 1];
 
-                    if (!memoireMots[motActuel]) {
-                        memoireMots[motActuel] = {};
-                    }
-                    if (!memoireMots[motActuel][motSuivant]) {
-                        memoireMots[motActuel][motSuivant] = 0;
-                    }
-                    memoireMots[motActuel][motSuivant]++;
+                    if (!memoireMots[elementActuel]) memoireMots[elementActuel] = {};
+                    if (!memoireMots[elementActuel][elementSuivant]) memoireMots[elementActuel][elementSuivant] = 0;
+                    memoireMots[elementActuel][elementSuivant]++;
 
-                    if (motsTotauxAppris % 200 === 0) {
-                        majAffichage();
-                    }
+                    if (motsTotauxAppris % 300 === 0) majAffichage();
                 }
 
                 if (enCoursDApprentissage) {
                     await ecrireFichierDirect();
                     majAffichage();
-                    document.getElementById("btn-fichier").innerText = "✔ Sauvegardé (" + motsTotauxAppris + " transitions)";
-                    await new Promise(r => setTimeout(r, 500));
+                    document.getElementById("btn-fichier").innerText = "✔ Sauvegardé (" + motsTotauxAppris + " éléments)";
+                    await new Promise(r => setTimeout(r, 400));
                 }
             }
         }
@@ -163,7 +169,7 @@
             let html = "";
             let keys = Object.keys(memoireMots).slice(0, 6);
             keys.forEach(mot => {
-                let totalSuivants = Object.values(memoireMots[mot]).reduce((a, b) => a + b, 0);
+                let totalSuivants = Object.values(memource = memoireMots[mot]).reduce((a, b) => a + b, 0);
                 html += `<div class="bar-row">
                     <div class="bar-label" title="${mot}">${mot}</div>
                     <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
@@ -174,31 +180,40 @@
         }
 
         function genererPhraseMots() {
-            const motsDisponibles = Object.keys(memoireMots);
-            if (motsDisponibles.length === 0) {
+            const cles = Object.keys(memoireMots);
+            if (cles.length === 0) {
                 document.getElementById("resultat-generation").innerText = "Aucun mot en mémoire. Lance un peu d'apprentissage !";
                 return;
             }
 
-            let motCourant = motsDisponibles[Math.floor(Math.random() * motsDisponibles.length)];
-            let phraseGeneree = [motCourant];
+            let courant = cles[Math.floor(Math.random() * cles.length)];
+            let resultat = [courant];
 
-            for (let i = 0; i < 12; i++) {
-                let suivants = memoireMots[motCourant];
+            for (let i = 0; i < 20; i++) {
+                let suivants = memoireMots[courant];
                 if (!suivants || Object.keys(suivants).length === 0) {
-                    motCourant = motsDisponibles[Math.floor(Math.random() * motsDisponibles.length)];
+                    courant = cles[Math.floor(Math.random() * cles.length)];
                 } else {
                     let options = Object.entries(suivants);
                     options.sort((a, b) => b[1] - a[1]);
                     
                     let choixPool = options.slice(0, Math.min(3, options.length));
-                    let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
-                    motCourant = choixAleatoire[0];
+                    courant = choixPool[Math.floor(Math.random() * choixPool.length)][0];
                 }
-                phraseGeneree.push(motCourant);
+                resultat.push(courant);
+
+                // Arrêt automatique si on tombe sur un point ou un point d'exclamation
+                if (courant === '.' || courant === '!') break;
             }
             
-            document.getElementById("resultat-generation").innerText = phraseGeneree.join(' ');
+            // NETTOYAGE FINAL DU TEXTE GÉNÉRÉ
+            let texteBrut = resultat.join(' ');
+            let textePropre = texteBrut
+                .replace(/\s+([.,\/#!$%\^&\*;:{}=\-_`~()?])/g, '$1') // Recolle la ponctuation au mot précédent
+                .replace(/'\s+/g, "'") // Recolle les apostrophes (ex: "l ' homme" devient "l'homme")
+                .replace(/([.!?])\s*([a-zàâäéèêëîïôöùûüç])/g, (match, p1, p2) => p1 + ' ' + p2.toUpperCase()); // Majuscule après un point
+
+            document.getElementById("resultat-generation").innerText = textePropre;
         }
     </script>
 </body>
