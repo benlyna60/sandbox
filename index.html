@@ -19,7 +19,7 @@
 </head>
 <body>
 
-    <h1>IA Mobile : Mémoire Contextuelle (Optimisée)</h1>
+    <h1>IA Mobile : Mémoire Contextuelle (Optimisée & Chiffres inclus)</h1>
     
     <div class="control-panel">
         <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #333;">1. Choisir ton fichier JSON principal</button>
@@ -53,9 +53,9 @@
             "https://www.gutenberg.org/files/84/84-0.txt"
         ];
 
-        // Fonction de nettoyage chirurgical rétrocompatible
+        // Fonction de nettoyage incluant les lettres, les chiffres et la ponctuation de base
         function nettoyerMemoireExistante() {
-            const regexValide = /^[a-zA-ZàâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ\s.,'!?-]$/;
+            const regexValide = /^[a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ\s.,'!?-]$/;
             let transitionsSupprimees = 0;
 
             for (let charActuel in memoirePaires) {
@@ -65,7 +65,6 @@
                 }
 
                 for (let charSuivant in memoirePaires[charActuel]) {
-                    // On supprime le bruit faible (< 5 occurrences) et les caractères exotiques
                     if (!regexValide.test(charSuivant) || memoirePaires[charActuel][charSuivant] < 5) {
                         delete memoirePaires[charActuel][charSuivant];
                         transitionsSupprimees++;
@@ -76,7 +75,7 @@
                     delete memoirePaires[charActuel];
                 }
             }
-            console.log(`Nettoyage rétrocompatible effectué : ${transitionsSupprimees} parasites purgés.`);
+            console.log(`Nettoyage effectué : ${transitionsSupprimees} parasites purgés.`);
         }
 
         async function selectionnerFichierMemoire() {
@@ -97,7 +96,6 @@
                     memoirePaires = {};
                 }
 
-                // Application du nettoyage direct sur l'ancienne mémoire chargée
                 nettoyerMemoireExistante();
 
                 document.getElementById("btn-fichier").innerText = "✔ Fichier lié (Cycle " + cycleActuel + " | Iter: " + iterationsTotales + ")";
@@ -217,8 +215,8 @@
                     document.getElementById("status").innerHTML = `🔄 <b>Cycle n° ${cycleActuel}</b><br>📖 Chargement de <b>${mod.nom}</b>...`;
                     let texte = await mod.getData();
                     
-                    // FILTRE STRICT : Nettoyage à la volée du texte entrant
-                    texte = texte.replace(/\s+/g, ' ').replace(/[^a-zA-ZàâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ\s.,'!?-]/g, "");
+                    // Nettoyage incluant les chiffres
+                    texte = texte.replace(/\s+/g, ' ').replace(/[^a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ\s.,'!?-]/g, "");
 
                     document.getElementById("status").innerHTML = `🔄 <b>Cycle n° ${cycleActuel}</b><br>📖 Apprentissage filtré sur <b>${mod.nom}</b>`;
                     
@@ -265,8 +263,8 @@
 
         function majAffichage() {
             let totalCles = Object.keys(memoirePaires).length;
-            let clesLatines = Object.keys(memoirePaires).filter(k => /^[a-zA-Z\s]$/.test(k)).length;
-            let qualiteMemoire = totalCles > 0 ? Math.round((clesLatines / totalCles) * 100) : 0;
+            let clesValides = Object.keys(memoirePaires).filter(k => /^[a-zA-Z0-9\s]$/.test(k)).length;
+            let qualiteMemoire = totalCles > 0 ? Math.round((clesValides / totalCles) * 100) : 0;
 
             let html = `<div style="font-size: 0.8em; color: #4caf50; margin-bottom: 8px;"><b>Santé / Propreté du JSON :</b> ${qualiteMemoire}% de clarté</div>`;
             
@@ -290,7 +288,6 @@
                 return;
             }
 
-            // Amorçage intelligent : Priorité aux majuscules ou espaces suivis de lettres
             const lettresPossibles = Object.keys(memoirePaires).filter(l => /[A-ZÀ-Ü\s]/.test(l));
             let lettreCourante = lettresPossibles.length > 0 
                 ? lettresPossibles[Math.floor(Math.random() * lettresPossibles.length)] 
@@ -307,14 +304,12 @@
                 } else {
                     let options = Object.entries(suivantes);
                     
-                    // Filtrage de confiance : Ignore les petites transitions parasites (< 1% du total de la lettre)
                     let totalOccurrences = options.reduce((sum, [_, poids]) => sum + poids, 0);
                     let seuilMinimum = totalOccurrences * 0.01;
                     let optionsFiltrees = options.filter(([_, poids]) => poids > seuilMinimum);
 
                     if (optionsFiltrees.length === 0) optionsFiltrees = options;
 
-                    // ANTI-BÉGAIEMENT ÉTENDU
                     let optionsAntiBeguaiement = optionsFiltrees.filter(([suiv]) => {
                         let occurrencesRecentes = dernieresLettres.slice(-6).filter(l => l === suiv).length;
                         return occurrencesRecentes < 2;
@@ -324,7 +319,6 @@
 
                     optionsAntiBeguaiement.sort((a, b) => b[1] - a[1]);
                     
-                    // Sélection parmi les meilleures options pondérées
                     let choixPool = optionsAntiBeguaiement.slice(0, Math.min(3, optionsAntiBeguaiement.length));
                     let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
                     
