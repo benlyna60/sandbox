@@ -19,7 +19,7 @@
 </head>
 <body>
 
-    <h1>IA Mobile : Mémoire Contextuelle (Optimisée & Chiffres inclus)</h1>
+    <h1>IA Mobile : Mémoire Contextuelle (Optimisée & Ponctuation)</h1>
     
     <div class="control-panel">
         <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #333;">1. Choisir ton fichier JSON principal</button>
@@ -53,9 +53,9 @@
             "https://www.gutenberg.org/files/84/84-0.txt"
         ];
 
-        // Fonction de nettoyage incluant les lettres, les chiffres et la ponctuation de base
+        // Filtre complet incluant lettres, chiffres, espaces et ponctuation courante (. , ' ! ? - : ; " ( ))
         function nettoyerMemoireExistante() {
-            const regexValide = /^[a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ\s.,'!?-]$/;
+            const regexValide = /^[a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ\s.,'!?;:\-"()]$/;
             let transitionsSupprimees = 0;
 
             for (let charActuel in memoirePaires) {
@@ -215,8 +215,8 @@
                     document.getElementById("status").innerHTML = `🔄 <b>Cycle n° ${cycleActuel}</b><br>📖 Chargement de <b>${mod.nom}</b>...`;
                     let texte = await mod.getData();
                     
-                    // Nettoyage incluant les chiffres
-                    texte = texte.replace(/\s+/g, ' ').replace(/[^a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ\s.,'!?-]/g, "");
+                    // Nettoyage incluant la ponctuation élargie
+                    texte = texte.replace(/\s+/g, ' ').replace(/[^a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ\s.,'!?;:\-"()]/g, "");
 
                     document.getElementById("status").innerHTML = `🔄 <b>Cycle n° ${cycleActuel}</b><br>📖 Apprentissage filtré sur <b>${mod.nom}</b>`;
                     
@@ -263,7 +263,7 @@
 
         function majAffichage() {
             let totalCles = Object.keys(memoirePaires).length;
-            let clesValides = Object.keys(memoirePaires).filter(k => /^[a-zA-Z0-9\s]$/.test(k)).length;
+            let clesValides = Object.keys(memoirePaires).filter(k => /^[a-zA-Z0-9\s.,'!?;:\-"()]$/.test(k)).length;
             let qualiteMemoire = totalCles > 0 ? Math.round((clesValides / totalCles) * 100) : 0;
 
             let html = `<div style="font-size: 0.8em; color: #4caf50; margin-bottom: 8px;"><b>Santé / Propreté du JSON :</b> ${qualiteMemoire}% de clarté</div>`;
