@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Module IA : Chaîne de Mots (Front-End)</title>
+    <style>
+        body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 15px; max-width: 600px; margin: auto; }
+        .control-panel, .gen-panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 15px; }
+        button { background-color: #222; color: #fff; border: 1px solid #444; padding: 12px; cursor: pointer; width: 100%; margin-bottom: 8px; border-radius: 4px; font-weight: bold; font-size: 1em; }
+        .status-line { background-color: #1a1a1a; border-left: 3px solid #03a9f4; padding: 10px; font-size: 0.85em; margin-bottom: 15px; line-height: 1.4; }
+        .output-box { background-color: #000; color: #00e676; padding: 12px; border-radius: 4px; min-height: 40px; font-size: 1em; word-break: break-word; margin-top: 8px; border: 1px solid #333; }
+        .bar-row { display: flex; align-items: center; margin-bottom: 4px; }
+        .bar-label { width: 95px; font-weight: bold; font-size: 0.85em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .bar-track { flex-grow: 1; background-color: #222; height: 10px; border-radius: 3px; overflow: hidden; margin: 0 8px; }
+        .bar-fill { height: 100%; background-color: #03a9f4; }
+        .bar-stats { width: 95px; text-align: right; font-size: 0.75em; color: #888; }
+        h2 { font-size: 0.95em; color: #fff; border-bottom: 1px solid #333; padding-bottom: 4px; margin-top: 0; }
+    </style>
+</head>
+<body>
+
+    <h1>Module II : Apprentissage par Mots</h1>
+    
+    <div class="control-panel">
+        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #333;">1. Créer ou lier "memoire_mots.json"</button>
+        <button onclick="lancerEntrainementMots()" style="background-color: #01579b;">2. Lancer l'Apprentissage Mots</button>
+        <button onclick="arreterEntrainement()" style="background-color: #b71c1c;">3. ⏹ Pause et Sauvegarde</button>
+    </div>
+
+    <div class="gen-panel">
+        <label>Générateur de phrases (Mots complets) :</label>
+        <button onclick="genererPhraseMots()" style="background-color: #1b5e20; margin-top: 5px;">Générer une phrase</button>
+        <div id="resultat-generation" class="output-box">En attente de génération...</div>
+    </div>
+    
+    <div id="status" class="status-line">Crée ou sélectionne un fichier JSON spécifique pour ce module de mots.</div>
+    
+    <div class="control-panel">
+        <h2>Mots et liaisons mémorisées</h2>
+        <div id="chart">Liez un fichier pour voir les stats...</div>
+    </div>
+
+    <script>
+        let fichierHandle = null;
+        let memoireMots = {}; // Structure : { "motActuel": { "motSuivant": poids } }
+        let motsTotauxAppris = 0;
+        let enCoursDApprentissage = false;
+
+        const booksList = [
+            "https://www.gutenberg.org/files/11/11-0.txt",
+            "https://www.gutenberg.org/files/84/84-0.txt"
+        ];
+
+        async function selectionnerFichierMemoire() {
+            try {
+                [fichierHandle] = await window.showOpenFilePicker({ 
+                    types: [{ description: 'Fichiers JSON', accept: { 'application/json': ['.json'] } }] 
+                });
+                const file = await fichierHandle.getFile();
+                const textData = await file.text();
+                const data = JSON.parse(textData);
+                
+                motsTotauxAppris = data.mots_appris || 0;
+                memoireMots = data.memoire_mots || {};
+
+                document.getElementById("btn-fichier").innerText = "✔ Fichier lié (" + motsTotauxAppris + " transitions)";
+                document.getElementById("status").innerText = "Fichier chargé avec succès. Prêt à accumuler des mots !";
+                majAffichage();
+            } catch (e) { 
+                document.getElementById("status").innerText = "Sélection annulée."; 
+            }
+        }
+
+        async function ecrireFichierDirect() {
+            if (!fichierHandle) return;
+            try {
+                const flux = await fichierHandle.createWritable();
+                const contenuJSON = {
+                    mots_appris: motsTotauxAppris,
+                    memoire_mots: memoireMots
+                };
+                await flux.write(JSON.stringify(contenuJSON, null, 2));
+                await flux.close();
+            } catch (e) {
+                console.error("Erreur d'écriture.");
+            }
+        }
+
+        async function fetchWikiRandom(lang) {
+            try {
+                const url = `https://${lang}.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*`;
+                const res = await fetch(url);
+                const data = await res.json();
+                const title = data.query.random[0].title;
+
+                const contentUrl = `https://${lang}.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+                const contentRes = await fetch(contentUrl);
+                const contentData = await contentRes.json();
+                const pages = contentData.query.pages;
+                const extract = Object.values(pages)[0].extract;
+
+                return extract && extract.length > 200 ? extract : "Apprentissage des structures de mots.";
+            } catch (e) {
+                return "Erreur réseau.";
+            }
+        }
+
+        async function lancerEntrainementMots() {
+            if (!fichierHandle) {
+                document.getElementById("status").innerText = "Erreur : Sélectionne d'abord un fichier JSON !";
+                return;
+            }
+            if (enCoursDApprentissage) return;
+            enCoursDApprentissage = true;
+            
+            while (enCoursDApprentissage) {
+                let texte = await fetchWikiRandom("fr");
+                
+                document.getElementById("status").innerHTML = `📖 <b>Apprentissage en cours...</b> (Mots traités : ${motsTotauxAppris})`;
+
+                // Nettoyage et découpage propre en mots
+                let mots = texte.toLowerCase()
+                                .replace(/[^\w\sàâäéèêëîïôöùûüç]/g, ' ')
+                                .split(/\s+/)
+                                .filter(m => m.length > 0);
+
+                for (let i = 0; i < mots.length - 1; i++) {
+                    if (!enCoursDApprentissage) break;
+                    motsTotauxAppris++;
+                    
+                    let motActuel = mots[i];
+                    let motSuivant = mots[i + 1];
+
+                    if (!memoireMots[motActuel]) {
+                        memoireMots[motActuel] = {};
+                    }
+                    if (!memoireMots[motActuel][motSuivant]) {
+                        memoireMots[motActuel][motSuivant] = 0;
+                    }
+                    memoireMots[motActuel][motSuivant]++;
+
+                    if (motsTotauxAppris % 200 === 0) {
+                        majAffichage();
+                    }
+                }
+
+                if (enCoursDApprentissage) {
+                    await ecrireFichierDirect();
+                    majAffichage();
+                    document.getElementById("btn-fichier").innerText = "✔ Sauvegardé (" + motsTotauxAppris + " transitions)";
+                    await new Promise(r => setTimeout(r, 500));
+                }
+            }
+        }
+
+        async function arreterEntrainement() {
+            enCoursDApprentissage = false;
+            await ecrireFichierDirect();
+            document.getElementById("status").innerText = "En pause. Fichier sauvegardé.";
+        }
+
+        function majAffichage() {
+            let html = "";
+            let keys = Object.keys(memoireMots).slice(0, 6);
+            keys.forEach(mot => {
+                let totalSuivants = Object.values(memoireMots[mot]).reduce((a, b) => a + b, 0);
+                html += `<div class="bar-row">
+                    <div class="bar-label" title="${mot}">${mot}</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+                    <div class="bar-stats">${totalSuivants} liens</div>
+                </div>`;
+            });
+            document.getElementById("chart").innerHTML = html || "En attente de données...";
+        }
+
+        function genererPhraseMots() {
+            const motsDisponibles = Object.keys(memoireMots);
+            if (motsDisponibles.length === 0) {
+                document.getElementById("resultat-generation").innerText = "Aucun mot en mémoire. Lance un peu d'apprentissage !";
+                return;
+            }
+
+            let motCourant = motsDisponibles[Math.floor(Math.random() * motsDisponibles.length)];
+            let phraseGeneree = [motCourant];
+
+            for (let i = 0; i < 12; i++) {
+                let suivants = memoireMots[motCourant];
+                if (!suivants || Object.keys(suivants).length === 0) {
+                    motCourant = motsDisponibles[Math.floor(Math.random() * motsDisponibles.length)];
+                } else {
+                    let options = Object.entries(suivants);
+                    options.sort((a, b) => b[1] - a[1]);
+                    
+                    let choixPool = options.slice(0, Math.min(3, options.length));
+                    let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
+                    motCourant = choixAleatoire[0];
+                }
+                phraseGeneree.push(motCourant);
+            }
+            
+            document.getElementById("resultat-generation").innerText = phraseGeneree.join(' ');
+        }
+    </script>
+</body>
+</html>
