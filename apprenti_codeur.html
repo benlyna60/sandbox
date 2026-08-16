@@ -146,8 +146,8 @@
         <div id="tab-generateur" class="tab-content">
             <div class="prompt-container">
                 <h2 style="color: #007acc; margin-top: 0;">⚡ Générateur de Code Local</h2>
-                <textarea id="userInput" class="prompt-textarea" placeholder="Que voulez-vous générer ?"></textarea>
-                <button onclick="genererCodeLocal()" style="margin-top: 15px; padding: 12px 25px; font-size: 15px;">🚀 Générer à partir de la mémoire</button>
+                <textarea id="userInput" class="prompt-textarea" placeholder="Que voulez-vous générer ? (ex: en python, créer une fonction de validation...)"></textarea>
+                <button onclick="genererCodeLocal()" style="margin-top: 15px; padding: 12px 25px; font-size: 15px;">🚀 Générer par synthèse locale</button>
                 <div id="resultatGeneration" class="output-code">/* Le code généré apparaîtra ici... */</div>
             </div>
         </div>
@@ -300,28 +300,48 @@
             const container = document.getElementById('resultatGeneration');
             
             if(!query) return container.textContent = "⚠️ Veuillez entrer une demande.";
-            if(memoireCode.length === 0) return container.textContent = "⚠️ Mémoire vide.";
+            if(memoireCode.length === 0) return container.textContent = "⚠️ Mémoire vide. Veuillez ingérer des fichiers ou un ZIP.";
 
-            const motsCles = query.split(' ');
-            let resultats = memoireCode.map(item => {
-                let score = 0;
-                item.patterns.forEach(line => {
-                    motsCles.forEach(mot => { if (line.toLowerCase().includes(mot)) score++; });
-                });
-                return { source: item.source, patterns: item.patterns, score };
-            });
+            // Détection intelligente du langage ciblé par la requête
+            let langageCible = "python";
+            if (query.includes('javascript') || query.includes('js')) langageCible = "javascript";
+            else if (query.includes('html')) langageCible = "html";
+            else if (query.includes('sql')) langageCible = "sql";
 
-            resultats.sort((a, b) => b.score - a.score);
-            let meilleurs = resultats.filter(r => r.score > 0).slice(0, 3);
+            // Recherche d'un modèle structurel correspondant dans la mémoire
+            let modeleTrouve = memoireCode.find(item => {
+                const fn = item.source.toLowerCase();
+                if (langageCible === "python" && fn.endsWith('.py')) return true;
+                if (langageCible === "javascript" && fn.endsWith('.js')) return true;
+                if (langageCible === "html" && (fn.endsWith('.html') || fn.endsWith('.htm'))) return true;
+                if (langageCible === "sql" && fn.endsWith('.sql')) return true;
+                return false;
+            }) || memoireCode[0];
 
-            if(meilleurs.length === 0) return container.textContent = "❌ Aucun résultat trouvé.";
+            // Extraction de patterns de la mémoire pour composer le code
+            let extraits = modeleTrouve.patterns.slice(0, 6).join('\n    ');
 
-            let output = `/* --- CODE ASSEMBLÉ DEPUIS VOTRE MÉMOIRE (${meilleurs.length} SOURCES) --- */\n\n`;
-            meilleurs.forEach(m => {
-                output += `// --- Source : ${m.source} (Score : ${m.score}) ---\n`;
-                output += m.patterns.join('\n') + "\n\n";
-            });
-            container.textContent = output;
+            let codeGenere = `/* --- CODE GÉNÉRÉ PAR SYNTHÈSE LOCALE (${langageCible.toUpperCase()}) --- */\n`;
+            codeGenere += `// Basé sur le modèle mémorisé : ${modeleTrouve.source}\n\n`;
+
+            if (langageCible === "python") {
+                let nomFonction = query.replace(/[^a-zA-Z0-9]/g, '_') || "fonction_generee";
+                codeGenere += `def ${nomFonction}():\n`;
+                codeGenere += `    """\n    Synthèse automatique basée sur votre historique de code.\n    """\n`;
+                codeGenere += `    ${extraits}\n`;
+                codeGenere += `    return True\n`;
+            } else if (langageCible === "javascript") {
+                let nomFonction = query.replace(/[^a-zA-Z0-9]/g, '') || "fonctionGeneree";
+                codeGenere += `function ${nomFonction}() {\n`;
+                codeGenere += `    // Logique assemblée depuis la mémoire\n`;
+                codeGenere += `    ${extraits}\n`;
+                codeGenere += `}\n`;
+            } else {
+                codeGenere += `<!-- Élément généré depuis ${modeleTrouve.source} -->\n`;
+                codeGenere += `<div>\n    ${extraits}\n</div>\n`;
+            }
+
+            container.textContent = codeGenere;
         }
 
         document.getElementById('zipInput').addEventListener('change', async (e) => {
