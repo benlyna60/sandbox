@@ -19,12 +19,12 @@
 </head>
 <body>
 
-    <h1>IA Mobile : Mémoire Contextuelle (Paires)</h1>
+    <h1>IA Mobile : Mémoire Contextuelle (Optimisée)</h1>
     
     <div class="control-panel">
         <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #333;">1. Choisir ton fichier JSON principal</button>
-        <button onclick="importerSavoirExterieur()" style="background-color: #6a1b9a;">📥 Importer un savoir extérieur (Coup de pouce)</button>
-        <button onclick="lancerEntrainementContinu()" style="background-color: #0d47a1;">2. Lancer l'Apprentissage Contextuel</button>
+        <button onclick="importerSavoirExterieur()" style="background-color: #6a1b9a;">📥 Importer un savoir extérieur</button>
+        <button onclick="lancerEntrainementContinu()" style="background-color: #0d47a1;">2. Lancer l'Apprentissage (Filtré)</button>
         <button onclick="arreterEntrainement()" style="background-color: #b71c1c;">3. ⏹ Mettre en pause et Sauvegarder</button>
     </div>
 
@@ -34,10 +34,10 @@
         <div id="resultat-generation" class="output-box">En attente de génération...</div>
     </div>
     
-    <div id="status" class="status-line">En attente de la sélection de ton fichier JSON dans ton dossier "Mémoire".</div>
+    <div id="status" class="status-line">En attente de la sélection de ton fichier JSON...</div>
     
     <div class="control-panel">
-        <h2>État des Transitions (Bigrammes)</h2>
+        <h2>État des Transitions & Santé de la Mémoire</h2>
         <div id="chart">Liez ton fichier pour voir les statistiques...</div>
     </div>
 
@@ -52,6 +52,32 @@
             "https://www.gutenberg.org/files/11/11-0.txt",
             "https://www.gutenberg.org/files/84/84-0.txt"
         ];
+
+        // Fonction de nettoyage chirurgical rétrocompatible
+        function nettoyerMemoireExistante() {
+            const regexValide = /^[a-zA-ZàâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ\s.,'!?-]$/;
+            let transitionsSupprimees = 0;
+
+            for (let charActuel in memoirePaires) {
+                if (!regexValide.test(charActuel)) {
+                    delete memoirePaires[charActuel];
+                    continue;
+                }
+
+                for (let charSuivant in memoirePaires[charActuel]) {
+                    // On supprime le bruit faible (< 5 occurrences) et les caractères exotiques
+                    if (!regexValide.test(charSuivant) || memoirePaires[charActuel][charSuivant] < 5) {
+                        delete memoirePaires[charActuel][charSuivant];
+                        transitionsSupprimees++;
+                    }
+                }
+
+                if (Object.keys(memoirePaires[charActuel]).length === 0) {
+                    delete memoirePaires[charActuel];
+                }
+            }
+            console.log(`Nettoyage rétrocompatible effectué : ${transitionsSupprimees} parasites purgés.`);
+        }
 
         async function selectionnerFichierMemoire() {
             try {
@@ -71,8 +97,11 @@
                     memoirePaires = {};
                 }
 
+                // Application du nettoyage direct sur l'ancienne mémoire chargée
+                nettoyerMemoireExistante();
+
                 document.getElementById("btn-fichier").innerText = "✔ Fichier lié (Cycle " + cycleActuel + " | Iter: " + iterationsTotales + ")";
-                document.getElementById("status").innerText = "Fichier JSON chargé avec succès. Prêt pour l'apprentissage contextuel !";
+                document.getElementById("status").innerText = "Fichier JSON chargé, nettoyé et prêt !";
                 majAffichage();
             } catch (e) { 
                 document.getElementById("status").innerText = "Sélection annulée ou non prise en charge."; 
@@ -112,7 +141,7 @@
                 await ecrireFichierDirect();
                 majAffichage();
                 document.getElementById("status").innerText = `✔ Savoir extérieur importé avec succès (${ajoutsCount} transitions fusionnées) !`;
-                alert("Coup de pouce appliqué ! Le savoir a été fusionné et sauvegardé.");
+                alert("Coup de pouce appliqué et fusionné !");
             } catch (e) {
                 console.error(e);
                 document.getElementById("status").innerText = "Importation du savoir annulée ou erreur de format.";
@@ -188,7 +217,10 @@
                     document.getElementById("status").innerHTML = `🔄 <b>Cycle n° ${cycleActuel}</b><br>📖 Chargement de <b>${mod.nom}</b>...`;
                     let texte = await mod.getData();
                     
-                    document.getElementById("status").innerHTML = `🔄 <b>Cycle n° ${cycleActuel}</b><br>📖 Apprentissage sur <b>${mod.nom}</b> (Total : ${iterationsTotales})`;
+                    // FILTRE STRICT : Nettoyage à la volée du texte entrant
+                    texte = texte.replace(/\s+/g, ' ').replace(/[^a-zA-ZàâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ\s.,'!?-]/g, "");
+
+                    document.getElementById("status").innerHTML = `🔄 <b>Cycle n° ${cycleActuel}</b><br>📖 Apprentissage filtré sur <b>${mod.nom}</b>`;
                     
                     for (let i = 0; i < texte.length - 1; i++) {
                         if (!enCoursDApprentissage) break;
@@ -215,7 +247,7 @@
                 }
                 
                 if (enCoursDApprentissage) {
-                    document.getElementById("status").innerHTML = `💾 <b>Fin du Cycle n° ${cycleActuel} !</b> Sauvegarde dans le fichier JSON...`;
+                    document.getElementById("status").innerHTML = `💾 <b>Fin du Cycle n° ${cycleActuel} !</b> Sauvegarde...`;
                     await ecrireFichierDirect();
                     majAffichage();
                     document.getElementById("btn-fichier").innerText = "✔ Fichier mis à jour (Cycle " + cycleActuel + " | Iter: " + iterationsTotales + ")";
@@ -232,8 +264,13 @@
         }
 
         function majAffichage() {
-            let html = "";
-            let keys = Object.keys(memoirePaires).slice(0, 8);
+            let totalCles = Object.keys(memoirePaires).length;
+            let clesLatines = Object.keys(memoirePaires).filter(k => /^[a-zA-Z\s]$/.test(k)).length;
+            let qualiteMemoire = totalCles > 0 ? Math.round((clesLatines / totalCles) * 100) : 0;
+
+            let html = `<div style="font-size: 0.8em; color: #4caf50; margin-bottom: 8px;"><b>Santé / Propreté du JSON :</b> ${qualiteMemoire}% de clarté</div>`;
+            
+            let keys = Object.keys(memoirePaires).slice(0, 7);
             keys.forEach(char => {
                 let displayChar = char === ' ' ? '[espace]' : char;
                 let totalSuivantes = Object.values(memoirePaires[char]).reduce((a, b) => a + b, 0);
@@ -253,7 +290,12 @@
                 return;
             }
 
-            let lettreCourante = lettresDisponibles[Math.floor(Math.random() * lettresDisponibles.length)];
+            // Amorçage intelligent : Priorité aux majuscules ou espaces suivis de lettres
+            const lettresPossibles = Object.keys(memoirePaires).filter(l => /[A-ZÀ-Ü\s]/.test(l));
+            let lettreCourante = lettresPossibles.length > 0 
+                ? lettresPossibles[Math.floor(Math.random() * lettresPossibles.length)] 
+                : lettresDisponibles[Math.floor(Math.random() * lettresDisponibles.length)];
+
             let texteGenere = lettreCourante;
             let dernieresLettres = [lettreCourante];
 
@@ -265,18 +307,25 @@
                 } else {
                     let options = Object.entries(suivantes);
                     
-                    // ANTI-BÉGAIEMENT ÉTENDU : On vérifie les 6 dernières lettres
-                    let optionsFiltrees = options.filter(([suiv]) => {
+                    // Filtrage de confiance : Ignore les petites transitions parasites (< 1% du total de la lettre)
+                    let totalOccurrences = options.reduce((sum, [_, poids]) => sum + poids, 0);
+                    let seuilMinimum = totalOccurrences * 0.01;
+                    let optionsFiltrees = options.filter(([_, poids]) => poids > seuilMinimum);
+
+                    if (optionsFiltrees.length === 0) optionsFiltrees = options;
+
+                    // ANTI-BÉGAIEMENT ÉTENDU
+                    let optionsAntiBeguaiement = optionsFiltrees.filter(([suiv]) => {
                         let occurrencesRecentes = dernieresLettres.slice(-6).filter(l => l === suiv).length;
                         return occurrencesRecentes < 2;
                     });
 
-                    if (optionsFiltrees.length === 0) optionsFiltrees = options;
+                    if (optionsAntiBeguaiement.length === 0) optionsAntiBeguaiement = optionsFiltrees;
 
-                    optionsFiltrees.sort((a, b) => b[1] - a[1]);
+                    optionsAntiBeguaiement.sort((a, b) => b[1] - a[1]);
                     
-                    // CHOIX ÉLARGI : On pioche parmi les 8 meilleurs choix pour plus de diversité
-                    let choixPool = optionsFiltrees.slice(0, Math.min(4, optionsFiltrees.length));
+                    // Sélection parmi les meilleures options pondérées
+                    let choixPool = optionsAntiBeguaiement.slice(0, Math.min(3, optionsAntiBeguaiement.length));
                     let choixAleatoire = choixPool[Math.floor(Math.random() * choixPool.length)];
                     
                     lettreCourante = choixAleatoire[0];
