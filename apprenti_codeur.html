@@ -49,7 +49,7 @@
         .prompt-container { background: #1e1e1e; border: 1px solid #007acc; border-radius: 8px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .prompt-textarea { width: 100%; height: 100px; background: #121212; border: 1px solid #444; border-radius: 6px; padding: 15px; color: #fff; font-size: 15px; resize: vertical; }
         .prompt-textarea:focus { outline: none; border-color: #007acc; }
-        .output-code { background: #000; color: #4ec9b0; border: 1px solid #333; padding: 20px; border-radius: 6px; min-height: 250px; font-family: 'Consolas', monospace; font-size: 13px; white-space: pre-wrap; margin-top: 15px; }
+        .output-code { background: #000; color: #4ec9b0; border: 1px solid #333; padding: 20px; border-radius: 6px; min-height: 250px; font-family: 'Consolas', monospace; font-size: 13px; white-space: pre-wrap; word-break: break-all; overflow-x: auto; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -81,7 +81,7 @@
 
         <div style="margin-bottom: 20px;">
             <h4>✍️ Ajout Manuel Rapide</h4>
-            <input type="text" id="manualName" placeholder="Nom du fichier (ex: snippet.py)">
+            <input type="text" id="manualName" placeholder="Nom du fichier (ex: snippet.gs)">
             <textarea id="manualCode" rows="3" placeholder="Collez un bout de code..."></textarea>
             <button onclick="ajouterMemoireManuelle()" style="background: #28a745; width: 100%;">Ajouter à la mémoire</button>
         </div>
@@ -124,12 +124,17 @@
                         <div class="bar-label"><span>JavaScript (.js)</span><span id="countJs">0 fichiers</span></div>
                         <div class="bar-bg"><div id="barJs" class="bar-fill" style="background: #f1e05a;"></div></div>
                     </div>
+                    <div class="bar-wrapper">
+                        <div class="bar-label"><span>Google Apps Script (.gs)</span><span id="countGs">0 fichiers</span></div>
+                        <div class="bar-bg"><div id="barGs" class="bar-fill" style="background: #4285F4;"></div></div>
+                    </div>
                 </div>
             </div>
 
             <div class="box">
                 <h3>1. Ingestion Massive (ZIP Local)</h3>
                 <input type="file" id="zipInput" accept=".zip">
+                <p><small>Prend en charge les fichiers .py, .js et .gs</small></p>
             </div>
 
             <div class="box">
@@ -147,7 +152,7 @@
         <div id="tab-generateur" class="tab-content">
             <div class="prompt-container">
                 <h2 style="color: #007acc; margin-top: 0;">⚡ Générateur de Code Local</h2>
-                <p style="color: #aaa; font-size: 14px;">Décrivez votre besoin avec des mots-clés (ex: <i>def lire_fichier, boucle for, fetch api, json parse...</i>)</p>
+                <p style="color: #aaa; font-size: 14px;">Décrivez votre besoin avec des mots-clés (ex: <i>def, function, SpreadsheetApp, for, fetch...</i>)</p>
                 
                 <textarea id="userInput" class="prompt-textarea" placeholder="Que voulez-vous générer ?"></textarea>
                 <button onclick="genererCodeLocal()" style="margin-top: 15px; padding: 12px 25px; font-size: 15px;">🚀 Générer à partir de la mémoire</button>
@@ -168,7 +173,8 @@
             totalLines: 0,
             totalPatterns: 0,
             pyCount: 0,
-            jsCount: 0
+            jsCount: 0,
+            gsCount: 0
         };
 
         // --- GESTION DES ONGLETS ET DRAWER ---
@@ -201,20 +207,24 @@
 
             document.getElementById('countPy').textContent = stats.pyCount + " fichiers";
             document.getElementById('countJs').textContent = stats.jsCount + " fichiers";
+            document.getElementById('countGs').textContent = stats.gsCount + " fichiers";
 
             // Calcul des pourcentages pour les barres graphiques
-            let maxFiles = Math.max(stats.pyCount + stats.jsCount, 1);
+            let maxFiles = Math.max(stats.pyCount + stats.jsCount + stats.gsCount, 1);
             let pctPy = (stats.pyCount / maxFiles) * 100;
             let pctJs = (stats.jsCount / maxFiles) * 100;
+            let pctGs = (stats.gsCount / maxFiles) * 100;
 
             document.getElementById('barPy').style.width = pctPy + "%";
             document.getElementById('barJs').style.width = pctJs + "%";
+            document.getElementById('barGs').style.width = pctGs + "%";
         }
 
-        // --- MOTEUR ANALYSE ET STATS ---
+        // --- MOTEUR ANALYSE ET STATS (AVEC FILTRAGE DES LIGNES MINIFIÉES) ---
         function analyserEtStocker(text, filename) {
             const lines = text.split('\n');
-            const filteredLines = lines.map(l => l.trim()).filter(l => l.length > 5);
+            // Filtrage : ignore les lignes vides, de moins de 5 caractères, et les lignes minifiées de plus de 200 caractères
+            const filteredLines = lines.map(l => l.trim()).filter(l => l.length > 5 && l.length < 200);
             
             memoireCode.push({
                 source: filename,
@@ -228,6 +238,7 @@
 
             if (filename.endsWith('.py')) stats.pyCount++;
             if (filename.endsWith('.js')) stats.jsCount++;
+            if (filename.endsWith('.gs')) stats.gsCount++;
 
             mettreAJourGraphiques();
             log(`-> Analysé : ${filename} (${lines.length} lignes)`);
@@ -246,13 +257,14 @@
                         memoireCode = data;
                         
                         // Recalcul des stats d'affichage
-                        stats = { filesCount: 0, totalLines: 0, totalPatterns: 0, pyCount: 0, jsCount: 0 };
+                        stats = { filesCount: 0, totalLines: 0, totalPatterns: 0, pyCount: 0, jsCount: 0, gsCount: 0 };
                         memoireCode.forEach(item => {
                             stats.filesCount++;
                             stats.totalPatterns += item.patterns.length;
                             stats.totalLines += item.patterns.length * 2; 
                             if (item.source.endsWith('.py')) stats.pyCount++;
                             if (item.source.endsWith('.js')) stats.jsCount++;
+                            if (item.source.endsWith('.gs')) stats.gsCount++;
                         });
 
                         mettreAJourGraphiques();
@@ -285,7 +297,7 @@
         function reinitialiserMemoire() {
             if(confirm("Voulez-vous vraiment vider la mémoire de la session ?")) {
                 memoireCode = [];
-                stats = { filesCount: 0, totalLines: 0, totalPatterns: 0, pyCount: 0, jsCount: 0 };
+                stats = { filesCount: 0, totalLines: 0, totalPatterns: 0, pyCount: 0, jsCount: 0, gsCount: 0 };
                 mettreAJourGraphiques();
                 log("🗑️ Mémoire réinitialisée.");
                 toggleDrawer();
@@ -336,14 +348,14 @@
             container.textContent = output;
         }
 
-        // --- GESTION ZIP ---
+        // --- GESTION ZIP (AVEC SUPPORT .PY, .JS ET .GS) ---
         document.getElementById('zipInput').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
             const zip = await JSZip.loadAsync(file);
             log("Décompression du ZIP...");
             for (let [relativePath, zipEntry] of Object.entries(zip.files)) {
-                if (!zipEntry.dir && (relativePath.endsWith('.py') || relativePath.endsWith('.js'))) {
+                if (!zipEntry.dir && (relativePath.endsWith('.py') || relativePath.endsWith('.js') || relativePath.endsWith('.gs'))) {
                     const content = await zipEntry.async("string");
                     analyserEtStocker(content, relativePath);
                 }
@@ -363,7 +375,7 @@
                 const files = await response.json();
                 
                 for (const file of files) {
-                    if (file.type === 'file' && (file.name.endsWith('.py') || file.name.endsWith('.js'))) {
+                    if (file.type === 'file' && (file.name.endsWith('.py') || file.name.endsWith('.js') || file.name.endsWith('.gs'))) {
                         log(`Traitement API: ${file.name}`);
                         const res = await fetch(file.download_url);
                         const code = await res.text();
