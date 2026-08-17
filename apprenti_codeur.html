@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Apprenti Codeur - Studio & Entraîneur Local</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- Utilisation d'un CDN fiable et vérifié pour JSZip -->
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #121212; color: #e0e0e0; margin: 0; padding: 20px; line-height: 1.5; }
@@ -446,22 +447,18 @@
             let sourcesUtilisees = new Set();
 
             if (meilleursMatchs.length > 0) {
-                // Prendre des blocs parmi les meilleurs résultats pertinents trouvés
                 meilleursMatchs.slice(0, 3).forEach(match => {
                     sourcesUtilisees.add(match.item.source);
-                    // Extraction brute des patterns pertinents
                     const echantillons = match.item.patterns.sort(() => 0.5 - Math.random()).slice(0, 6);
                     lignesAssemblees.push(...echantillons);
                 });
             } else {
-                // Fallback si aucun mot-clé direct ne matche : sélection aléatoire dans la mémoire du langage
                 const candidats = memoireCode.filter(item => item.source.toLowerCase().endsWith(langageCible === 'python' ? '.py' : '.js'));
                 const sourceChoisie = candidats.length > 0 ? candidats[Math.floor(Math.random() * candidats.length)] : memoireCode[Math.floor(Math.random() * memoireCode.length)];
                 sourcesUtilisees.add(sourceChoisie.source);
                 lignesAssemblees = sourceChoisie.patterns.slice(0, 10);
             }
 
-            // Génération finale purement basée sur les données extraites
             let codeGenere = `# Synthèse dynamique depuis la mémoire [Sources : ${Array.from(sourcesUtilisees).join(', ')}]\n\n`;
             codeGenere += lignesAssemblees.join('\n');
 
