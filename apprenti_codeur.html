@@ -80,8 +80,8 @@
     <div class="top-bar">
         <h1>🧠 Apprenti Codeur</h1>
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="changerOnglet('apprentissage')">📊 Studio Apprentissage</button>
-            <button class="nav-tab" onclick="changerOnglet('generateur')">⚡ Générateur & Entraînement</button>
+            <button class="nav-tab active" onclick="changerOnglet('apprentissage', event)">📊 Studio Apprentissage</button>
+            <button class="nav-tab" onclick="changerOnglet('generateur', event)">⚡ Générateur & Entraînement</button>
             <button class="hamburger-btn" onclick="toggleDrawer()">☰</button>
         </div>
     </div>
@@ -193,14 +193,63 @@
             javaCount: 0, phpCount: 0, goCount: 0
         };
 
-        function changerOnglet(tabName) {
+        // GESTION DU SON LOCAL (WEB AUDIO API - ZERO DEPENDANCE EXTERNE)
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function jouerSonClic() {
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } catch (e) {}
+        }
+
+        function jouerSonSucces() {
+            try {
+                initAudio();
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // Accord majeur Do-Mi-Sol-Do
+                notes.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (idx * 0.06));
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime + (idx * 0.06));
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (idx * 0.06) + 0.2);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + (idx * 0.06));
+                    osc.stop(audioCtx.currentTime + (idx * 0.06) + 0.2);
+                });
+            } catch (e) {}
+        }
+
+        function changerOnglet(tabName, event) {
+            jouerSonClic();
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
             document.getElementById(`tab-${tabName}`).classList.add('active');
-            event.target.classList.add('active');
+            if(event && event.target) {
+                event.target.classList.add('active');
+            }
         }
 
         function toggleDrawer() {
+            jouerSonClic();
             document.getElementById('drawer').classList.toggle('open');
         }
 
@@ -213,6 +262,7 @@
         }
 
         function effacerPrompt() {
+            jouerSonClic();
             document.getElementById('userInput').value = "";
         }
 
@@ -238,15 +288,13 @@
             }
 
             const lines = text.split('\n');
-            // Filtre amélioré pour retenir en priorité les lignes de code (présence de symboles techniques)
             const filteredLines = lines.map(l => l.trim()).filter(l => {
-                if (l.length < 6 || l.length > 140) return false;
-                // Exclure le texte brut évident (sans aucun signe de code ou de ponctuation technique)
+                if (l.length < 4 || l.length > 140) return false;
                 const contientCode = /[={}();:]/.test(l);
                 return contientCode;
             });
             
-            if (filteredLines.length < 3) return;
+            if (filteredLines.length < 1) return;
 
             memoireCode.push({
                 source: filename,
@@ -274,6 +322,7 @@
         }
 
         function chargerMemoireJSON(event) {
+            jouerSonClic();
             const file = event.target.files[0];
             if (!file) return;
 
@@ -305,6 +354,7 @@
 
                         mettreAJourGraphiques();
                         log(`✅ Mémoire JSON chargée (${memoireCode.length} fichiers).`);
+                        jouerSonSucces();
                         toggleDrawer();
                     }
                 } catch (err) { alert("Erreur JSON : " + err.message); }
@@ -313,16 +363,19 @@
         }
 
         function ajouterMemoireManuelle() {
-            const name = document.getElementById('manualName').value.trim() || "manuel.txt";
+            jouerSonClic();
+            const name = document.getElementById('manualName').value.trim() || "snippet_manuel.py";
             const code = document.getElementById('manualCode').value;
             if(!code) return alert("Entrez du code.");
             analyserEtStocker(code, name);
             document.getElementById('manualCode').value = "";
             document.getElementById('manualName').value = "";
+            jouerSonSucces();
             toggleDrawer();
         }
 
         function reinitialiserMemoire() {
+            jouerSonClic();
             if(confirm("Voulez-vous vider la mémoire ?")) {
                 memoireCode = [];
                 stats = { filesCount: 0, totalLines: 0, totalPatterns: 0, pyCount: 0, jsCount: 0, gsCount: 0, tsCount: 0, htmlCount: 0, cssCount: 0, sqlCount: 0, cppCount: 0, javaCount: 0, phpCount: 0, goCount: 0 };
@@ -332,7 +385,9 @@
             }
         }
 
+        // MOTEUR DE GÉNÉRATION PAR PATRONS LOGIQUES STRUCTURÉS (OPTION 2)
         function genererCodeLocal() {
+            jouerSonClic();
             const query = document.getElementById('userInput').value.toLowerCase().trim();
             const container = document.getElementById('resultatGeneration');
             const feedbackBox = document.getElementById('feedbackBox');
@@ -345,7 +400,7 @@
             else if (query.includes('html')) langageCible = "html";
             else if (query.includes('sql')) langageCible = "sql";
 
-            // Sélection intelligente d'un modèle correspondant au langage (ou aléatoire si non trouvé)
+            // Recherche deSnippets ou de modèles associés dans la mémoire
             const candidatsLangage = memoireCode.filter(item => {
                 const fn = item.source.toLowerCase();
                 if (langageCible === "python" && fn.endsWith('.py')) return true;
@@ -359,32 +414,58 @@
                 ? candidatsLangage[Math.floor(Math.random() * candidatsLangage.length)]
                 : memoireCode[Math.floor(Math.random() * memoireCode.length)];
 
-            let extraits = modeleTrouve.patterns.slice(0, 5).join('\n    ');
+            // Extraction et nettoyage des blocs
+            let blocLogique = modeleTrouve.patterns.slice(0, 6).map(l => "    " + l).join('\n');
 
-            let codeGenere = `/* --- CODE GÉNÉRÉ PAR SYNTHÈSE LOCALE (${langageCible.toUpperCase()}) --- */\n`;
-            codeGenere += `// Basé sur le modèle mémorisé : ${modeleTrouve.source}\n\n`;
+            let codeGenere = "";
 
             if (langageCible === "python") {
-                codeGenere += `def fonction_generee():\n`;
-                codeGenere += `    """\n    Synthèse automatique basée sur votre historique.\n    """\n`;
-                codeGenere += `    ${extraits}\n`;
-                codeGenere += `    return True\n`;
+                codeGenere = `# ==========================================================\n`;
+                codeGenere += `# CODE STRUCTURÉ GÉNÉRÉ EN LOCAL (PYTHON)\n`;
+                codeGenere += `# Source de référence : ${modeleTrouve.source}\n`;
+                codeGenere += `# ==========================================================\n\n`;
+                codeGenere += `def executer_traitement_local(donnees=None):\n`;
+                codeGenere += `    """\n`;
+                codeGenere += `    Structure de traitement générée à partir des gabarits locaux.\n`;
+                codeGenere += `    """\n`;
+                codeGenere += `${blocLogique}\n`;
+                codeGenere += `    return True\n\n`;
+                codeGenere += `# Point d'entrée de test\n`;
+                codeGenere += `if __name__ == "__main__":\n`;
+                codeGenere += `    print("Exécution de la fonction locale...")\n`;
+                codeGenere += `    executer_traitement_local()\n`;
             } else if (langageCible === "javascript") {
-                codeGenere += `function maFonction() {\n`;
-                codeGenere += `    // Logique assemblée depuis la mémoire\n`;
-                codeGenere += `    ${extraits}\n`;
-                codeGenere += `}\n`;
+                codeGenere = `/* ==========================================================\n`;
+                codeGenere += ` * CODE STRUCTURÉ GÉNÉRÉ EN LOCAL (JAVASCRIPT)\n`;
+                codeGenere += ` * Source de référence : ${modeleTrouve.source}\n`;
+                codeGenere += ` * ========================================================== */\n\n`;
+                codeGenere += `function executerTraitementLocal(param = null) {\n`;
+                codeGenere += `    try {\n`;
+                codeGenere += `${blocLogique}\n`;
+                codeGenere += `    } catch (erreur) {\n`;
+                codeGenere += `        console.error("Erreur lors de l'exécution :", erreur);\n`;
+                codeGenere += `    }\n`;
+                codeGenere += `}\n\n`;
+                codeGenere += `// Appel de test\n`;
+                codeGenere += `executerTraitementLocal();\n`;
+            } else if (langageCible === "html") {
+                codeGenere = `<!-- Structure HTML générée depuis ${modeleTrouve.source} -->\n`;
+                codeGenere += `<div class="conteneur-local">\n`;
+                codeGenere += `${blocLogique}\n`;
+                codeGenere += `</div>\n`;
             } else {
-                codeGenere += `<!-- Élément généré depuis ${modeleTrouve.source} -->\n`;
-                codeGenere += `<div>\n    ${extraits}\n</div>\n`;
+                codeGenere = `-- Requête SQL / Modèle généré depuis ${modeleTrouve.source}\n`;
+                codeGenere += `${modeleTrouve.patterns.join('\n')};\n`;
             }
 
             container.textContent = codeGenere;
             feedbackBox.classList.add('visible');
-            document.getElementById('feedbackFilename').value = modeleTrouve.source;
+            document.getElementById('feedbackFilename').value = "modele_" + modeleTrouve.source;
+            jouerSonSucces();
         }
 
         function copierCodeGenere() {
+            jouerSonClic();
             const codeText = document.getElementById('resultatGeneration').textContent;
             navigator.clipboard.writeText(codeText).then(() => {
                 alert("📋 Code copié dans le presse-papier !");
@@ -392,15 +473,18 @@
         }
 
         function reinjecterCorrection() {
-            const name = document.getElementById('feedbackFilename').value.trim() || "correction.txt";
+            jouerSonClic();
+            const name = document.getElementById('feedbackFilename').value.trim() || "correction.py";
             const code = document.getElementById('feedbackCode').value;
             if(!code) return alert("Veuillez entrer le code corrigé.");
             analyserEtStocker(code, name);
             document.getElementById('feedbackCode').value = "";
+            jouerSonSucces();
             alert("✨ Correction réinjectée avec succès dans la mémoire !");
         }
 
         document.getElementById('zipInput').addEventListener('change', async (e) => {
+            jouerSonClic();
             const file = e.target.files[0];
             if (!file) return;
             const zip = await JSZip.loadAsync(file);
@@ -415,9 +499,11 @@
                 }
             }
             log("✅ ZIP ingéré et filtré avec succès !");
+            jouerSonSucces();
         });
 
         function sauvegarderMemoireJSON() {
+            jouerSonClic();
             if (memoireCode.length === 0) return alert("Mémoire vide.");
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(memoireCode, null, 2));
             const downloadAnchor = document.createElement('a');
@@ -427,6 +513,7 @@
             downloadAnchor.click();
             downloadAnchor.remove();
             log("💾 Mémoire exportée.");
+            jouerSonSucces();
         }
     </script>
 </body>
