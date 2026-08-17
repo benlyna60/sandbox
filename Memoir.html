@@ -18,12 +18,11 @@
     --good:#3ecf6e;
     --warn:#f0b93a;
     --bad:#ff6b6b;
-    --mono:"JetBrains Mono","SFMono-Regular",Consolas,monospace;
     --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"JetBrains Mono","SFMono-Regular",Consolas,monospace;
 }
 
 *{box-sizing:border-box}
-
 html,body{height:100%}
 
 body{
@@ -76,7 +75,6 @@ body{
     height:8px;
     border-radius:50%;
     background:var(--dim);
-    flex:none;
 }
 
 .hdr-title .dot.ready{background:var(--good)}
@@ -222,6 +220,11 @@ button:disabled{
     color:#ffb4b4;
 }
 
+.warning-btn{
+    background:#332b14;
+    border-color:#635321;
+}
+
 .secondary{background:#191d26}
 
 /* STATUS */
@@ -254,8 +257,8 @@ button:disabled{
     border-radius:10px;
     padding:10px 11px;
     margin-top:4px;
-    font-size:.78rem;
-    line-height:1.6;
+    font-size:.76rem;
+    line-height:1.65;
 }
 
 .file-name{
@@ -264,7 +267,7 @@ button:disabled{
     font-family:var(--mono);
 }
 
-/* STATS */
+/* GRID */
 
 .grid{
     display:grid;
@@ -282,13 +285,13 @@ button:disabled{
 
 .stat-label{
     color:var(--dim);
-    font-size:.62rem;
+    font-size:.6rem;
     letter-spacing:.4px;
 }
 
 .stat-value{
     color:var(--accent);
-    font-size:1.05rem;
+    font-size:1rem;
     font-weight:700;
     margin-top:3px;
     font-family:var(--mono);
@@ -297,6 +300,7 @@ button:disabled{
 /* FORM */
 
 input[type=text],
+input[type=number],
 select{
     width:100%;
     background:var(--panel-2);
@@ -309,7 +313,7 @@ select{
     font-family:var(--sans);
 }
 
-input[type=text]:focus,
+input:focus,
 select:focus{
     outline:2px solid var(--accent-2);
     outline-offset:1px;
@@ -348,7 +352,7 @@ input[type=range]{
     height:180px;
     overflow:auto;
     font-family:var(--mono);
-    font-size:.72rem;
+    font-size:.7rem;
     line-height:1.55;
 }
 
@@ -464,51 +468,58 @@ input[type=range]{
     margin-bottom:6px;
 }
 
-/* MEMORY MONITOR */
+/* MEMORY HEALTH */
 
-.monitor{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-    margin-top:10px;
-}
-
-.monitor-item{
-    background:var(--panel-2);
-    border:1px solid var(--line);
+.health{
+    height:10px;
+    background:#ffffff0d;
     border-radius:10px;
-    padding:9px;
+    overflow:hidden;
+    margin:8px 0;
 }
 
-.monitor-label{
-    color:var(--dim);
-    font-size:.65rem;
+.health-fill{
+    height:100%;
+    width:0%;
+    background:var(--good);
+    transition:width .3s;
 }
 
-.monitor-value{
-    margin-top:3px;
+.health-fill.warning{background:var(--warn)}
+.health-fill.danger{background:var(--bad)}
+
+.metric-row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-size:.75rem;
+    margin:5px 0;
+}
+
+.metric-row span:first-child{color:var(--dim)}
+.metric-row span:last-child{
     font-family:var(--mono);
+    color:var(--accent);
+    text-align:right;
+}
+
+/* CHECKBOX */
+
+.check-row{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin:10px 0;
+    color:var(--dim);
     font-size:.78rem;
 }
 
-.monitor-good{color:var(--good)}
-.monitor-warn{color:var(--warn)}
-.monitor-bad{color:var(--bad)}
-
-.progress{
-    height:8px;
-    border-radius:5px;
-    background:#ffffff0d;
-    overflow:hidden;
-    margin-top:8px;
+.check-row input{
+    width:18px;
+    height:18px;
 }
 
-.progress-fill{
-    height:100%;
-    width:0%;
-    background:var(--accent);
-    transition:width .2s;
-}
+/* DESKTOP */
 
 @media(min-width:600px){
     .grid{
@@ -537,32 +548,35 @@ input[type=range]{
 <div class="wrap">
 
 <!-- =====================================================
-     MÉMOIRE
+     MEMOIRE
 ===================================================== -->
 
 <div class="view active" id="view-memoire">
 
     <div class="panel">
-        <h2>💾 Gestion de la mémoire V5.1</h2>
+        <h2>💾 Gestion de la mémoire</h2>
 
-        <button class="secondary btn-block"
-                onclick="ouvrirFichier()">
+        <button class="secondary btn-block" onclick="ouvrirFichier()">
             📂 Charger une mémoire JSON
         </button>
 
-        <input id="fichierMemoire"
-               type="file"
-               accept=".json,application/json"
-               style="display:none">
+        <input
+            id="fichierMemoire"
+            type="file"
+            accept=".json,application/json"
+            style="display:none"
+        >
 
-        <button class="secondary btn-block"
-                onclick="creerNouvelleMemoire()">
+        <button class="secondary btn-block" onclick="creerNouvelleMemoire()">
             🆕 Créer une nouvelle mémoire
         </button>
 
-        <button class="primary btn-block"
-                onclick="sauvegarderMemoire()">
+        <button class="primary btn-block" onclick="sauvegarderMemoire()">
             💾 Télécharger la mémoire
+        </button>
+
+        <button class="warning-btn btn-block" onclick="optimiserMemoireManuellement()">
+            🧹 Optimiser maintenant
         </button>
 
         <div class="file-info">
@@ -582,22 +596,66 @@ input[type=range]{
                 Version :
                 <span id="versionMemoire">—</span>
             </div>
+
+            <div>
+                Mode :
+                <strong id="modeMemoire">Mémoire active</strong>
+            </div>
         </div>
     </div>
 
     <div id="status" class="status warning">
-        <div class="status-title">
-            🟡 Initialisation
-        </div>
-
+        <div class="status-title">🟡 Initialisation</div>
         Crée une nouvelle mémoire ou charge un fichier JSON existant.
     </div>
+
+    <!-- SANTE MEMOIRE -->
+
+    <div class="panel">
+        <h2>🧠 Santé de la mémoire</h2>
+
+        <div class="metric-row">
+            <span>Charge estimée</span>
+            <span id="chargeMemoire">0%</span>
+        </div>
+
+        <div class="health">
+            <div class="health-fill" id="barreMemoire"></div>
+        </div>
+
+        <div class="metric-row">
+            <span>Objets mémoire</span>
+            <span id="objetsMemoire">0</span>
+        </div>
+
+        <div class="metric-row">
+            <span>Relations actives</span>
+            <span id="relationsActives">0</span>
+        </div>
+
+        <div class="metric-row">
+            <span>Associations actives</span>
+            <span id="associationsActives">0</span>
+        </div>
+
+        <div class="metric-row">
+            <span>Dernière optimisation</span>
+            <span id="derniereOptimisation">Jamais</span>
+        </div>
+
+        <div class="small">
+            La charge affichée est une estimation interne. Elle sert à
+            déclencher une maintenance avant que la mémoire du navigateur
+            devienne inutilement volumineuse.
+        </div>
+    </div>
+
+    <!-- STATS -->
 
     <div class="panel">
         <h2>📊 Mémoire générale</h2>
 
         <div class="grid">
-
             <div class="stat">
                 <div class="stat-label">TOKENS</div>
                 <div id="statTokens" class="stat-value">0</div>
@@ -627,73 +685,56 @@ input[type=range]{
                 <div class="stat-label">RELATIONS</div>
                 <div id="statRelations" class="stat-value">0</div>
             </div>
-
         </div>
     </div>
+
+    <!-- V5.1 CONTROLE -->
 
     <div class="panel">
-        <h2>🧠 Moniteur mémoire</h2>
+        <h2>⚙️ Contrôle V5.1</h2>
 
-        <div class="monitor">
-
-            <div class="monitor-item">
-                <div class="monitor-label">
-                    Relations
-                </div>
-                <div id="monitorRelations"
-                     class="monitor-value monitor-good">
-                    0
-                </div>
-            </div>
-
-            <div class="monitor-item">
-                <div class="monitor-label">
-                    Vocabulaire
-                </div>
-                <div id="monitorVocab"
-                     class="monitor-value monitor-good">
-                    0
-                </div>
-            </div>
-
-            <div class="monitor-item">
-                <div class="monitor-label">
-                    Croissance
-                </div>
-                <div id="monitorGrowth"
-                     class="monitor-value monitor-good">
-                    Stable
-                </div>
-            </div>
-
-            <div class="monitor-item">
-                <div class="monitor-label">
-                    Mode
-                </div>
-                <div id="monitorMode"
-                     class="monitor-value monitor-good">
-                    Normal
-                </div>
-            </div>
-
+        <div class="metric-row">
+            <span>Relations max / mot</span>
+            <span id="maxRelUI">40</span>
         </div>
 
-        <div class="progress">
-            <div id="memoryProgress"
-                 class="progress-fill">
-            </div>
+        <div class="metric-row">
+            <span>Associations max / mot</span>
+            <span id="maxAssocUI">35</span>
         </div>
 
-        <div class="small" style="margin-top:8px">
-            Surveillance interne. Ce compteur est une estimation
-            structurelle et ne prétend pas mesurer exactement la RAM
-            physique utilisée par le navigateur.
+        <div class="metric-row">
+            <span>Concepts max / mot</span>
+            <span id="maxConceptUI">12</span>
+        </div>
+
+        <div class="metric-row">
+            <span>Fréquence maintenance</span>
+            <span id="maintenanceUI">250 cycles</span>
+        </div>
+
+        <label class="check-row">
+            <input type="checkbox" id="autoOptimisation" checked>
+            Optimisation automatique
+        </label>
+
+        <label class="check-row">
+            <input type="checkbox" id="autoSauvegarde">
+            Préparer une sauvegarde périodique
+        </label>
+
+        <div class="small">
+            La V5.1 ne supprime pas les tokens appris.
+            Elle limite surtout le nombre de connexions secondaires
+            conservées autour de chaque élément afin d'éviter une
+            croissance exponentielle des relations.
         </div>
     </div>
+
+    <!-- TOP MOTS -->
 
     <div class="panel">
         <h2>📚 Vocabulaire dominant</h2>
-
         <div id="topMots">
             <div class="empty-state">
                 <span class="ic">📭</span>
@@ -715,52 +756,45 @@ input[type=range]{
         <h2>📚 Apprentissage V5.1</h2>
 
         <div class="hint">
-            L'apprentissage fonctionne maintenant par lots afin de
-            limiter les recalculs inutiles et de garder l'interface
-            réactive lorsque la mémoire devient très volumineuse.
+            Le moteur apprend progressivement. La V5.1 effectue
+            régulièrement une consolidation pour éviter que les
+            relations faibles remplissent inutilement la mémoire.
         </div>
 
         <div class="btn-row">
-            <button id="btnStart"
-                    class="primary"
-                    onclick="lancerApprentissage()">
+            <button
+                id="btnStart"
+                class="primary"
+                onclick="lancerApprentissage()">
                 ▶ Démarrer
             </button>
 
-            <button id="btnStop"
-                    class="danger"
-                    onclick="arreterApprentissage()"
-                    disabled>
+            <button
+                id="btnStop"
+                class="danger"
+                onclick="arreterApprentissage()"
+                disabled>
                 ⏹ Arrêter
             </button>
         </div>
 
         <div class="file-info" style="margin-top:10px">
-
             <div>
                 Source Wikipédia :
-                <strong id="wikiEtat">
-                    — inconnue —
-                </strong>
+                <strong id="wikiEtat">— inconnue —</strong>
             </div>
 
             <div>
-                Taille du lot :
-                <strong id="batchInfo">
-                    10 textes
-                </strong>
+                Cycle :
+                <strong id="cycleUI">0</strong>
             </div>
 
             <div>
-                Prochain checkpoint :
-                <strong id="checkpointInfo">
-                    0 tokens
-                </strong>
+                Dernière maintenance :
+                <strong id="maintenanceCycleUI">0</strong>
             </div>
-
         </div>
     </div>
-
 
     <div class="panel">
         <h2>📡 Activité du moteur</h2>
@@ -772,50 +806,11 @@ input[type=range]{
         </div>
     </div>
 
-
-    <div class="panel">
-        <h2>⚙️ Paramètres V5.1</h2>
-
-        <label class="small">
-            Textes par lot
-        </label>
-
-        <select id="batchSize">
-            <option value="5">5 textes</option>
-            <option value="10" selected>10 textes</option>
-            <option value="20">20 textes</option>
-            <option value="50">50 textes</option>
-        </select>
-
-        <label class="small">
-            Pause entre les lots
-        </label>
-
-        <select id="batchPause">
-            <option value="100">100 ms</option>
-            <option value="250" selected>250 ms</option>
-            <option value="500">500 ms</option>
-            <option value="1000">1 seconde</option>
-        </select>
-
-        <label class="small">
-            Fréquence de mise à jour visuelle
-        </label>
-
-        <select id="uiInterval">
-            <option value="1">Chaque lot</option>
-            <option value="3" selected>Tous les 3 lots</option>
-            <option value="5">Tous les 5 lots</option>
-            <option value="10">Tous les 10 lots</option>
-        </select>
-
-    </div>
-
 </div>
 
 
 <!-- =====================================================
-     GÉNÉRER
+     GENERATION
 ===================================================== -->
 
 <div class="view" id="view-generer">
@@ -845,20 +840,27 @@ input[type=range]{
             Influence de la mémoire sémantique
         </div>
 
-        <input id="forceSemantique"
-               type="range"
-               min="0"
-               max="100"
-               value="55">
+        <input
+            id="forceSemantique"
+            type="range"
+            min="0"
+            max="100"
+            value="55"
+        >
 
-        <div class="small" style="margin-bottom:10px">
+        <div
+            class="small"
+            style="margin-bottom:10px">
+
             <span id="forceValue">55%</span>
         </div>
 
-        <button id="btnGenerer"
-                class="success btn-block"
-                onclick="genererPhrase()"
-                disabled>
+        <button
+            id="btnGenerer"
+            class="success btn-block"
+            onclick="genererPhrase()"
+            disabled>
+
             ✨ Générer une phrase
         </button>
 
@@ -879,18 +881,24 @@ input[type=range]{
     <div class="panel">
         <h2>🔎 Explorer la mémoire</h2>
 
-        <input id="motRecherche"
-               type="text"
-               placeholder="Exemple : chat"
-               onkeydown="if(event.key==='Enter')explorerMot()">
+        <input
+            id="motRecherche"
+            type="text"
+            placeholder="Exemple : chat"
+            onkeydown="if(event.key==='Enter')explorerMot()"
+        >
 
-        <button class="secondary btn-block"
-                onclick="explorerMot()">
+        <button
+            class="secondary btn-block"
+            onclick="explorerMot()">
+
             🔍 Explorer
         </button>
 
-        <div id="exploration"
-             class="semantic">
+        <div
+            id="exploration"
+            class="semantic">
+
             Aucun mot sélectionné.
         </div>
     </div>
@@ -905,20 +913,25 @@ input[type=range]{
 <div class="view" id="view-graphe">
 
     <div class="panel">
-        <h2>🕸️ Graphe sémantique</h2>
+        <h2>🕸️ Graphe sémantique V5.1</h2>
 
         <div class="hint">
-            Le graphe n'est plus reconstruit à chaque texte appris.
-            Il est actualisé seulement lorsque cela est nécessaire.
+            Le graphe utilise uniquement une partie des relations
+            actives afin de ne pas charger inutilement des milliers
+            de connexions visuelles.
         </div>
 
-        <input id="grapheRecherche"
-               type="text"
-               placeholder="Concept central — ex. chat"
-               onkeydown="if(event.key==='Enter')construireGraphe()">
+        <input
+            id="grapheRecherche"
+            type="text"
+            placeholder="Concept central — ex. chat"
+            onkeydown="if(event.key==='Enter')construireGraphe()"
+        >
 
-        <button class="secondary btn-block"
-                onclick="construireGraphe()">
+        <button
+            class="secondary btn-block"
+            onclick="construireGraphe()">
+
             🕸️ Actualiser le graphe
         </button>
 
@@ -930,7 +943,6 @@ input[type=range]{
             <span>Épaisseur = force</span>
         </div>
     </div>
-
 
     <div class="panel">
         <h2>🧠 Architecture V5.1</h2>
@@ -945,7 +957,7 @@ input[type=range]{
         <div class="arch-item">
             <b>2. Modèle 2-gramme</b>
             <span class="small">
-                Relations entre deux éléments successifs.
+                Transitions entre deux éléments.
             </span>
         </div>
 
@@ -966,39 +978,37 @@ input[type=range]{
         <div class="arch-item">
             <b>5. Mémoire de concepts</b>
             <span class="small">
-                Regroupement progressif.
+                Regroupements conceptuels.
             </span>
         </div>
 
         <div class="arch-item">
-            <b>6. Gestion par lots</b>
+            <b>6. Mémoire active</b>
             <span class="small">
-                Réduit les recalculs pendant l'apprentissage.
+                Relations fréquemment utilisées.
             </span>
         </div>
 
         <div class="arch-item">
-            <b>7. Surveillance</b>
+            <b>7. Mémoire froide</b>
             <span class="small">
-                Suit la croissance structurelle de la mémoire.
+                Structure réservée aux informations moins prioritaires.
             </span>
         </div>
 
         <div class="arch-item">
-            <b>8. Génération</b>
+            <b>8. Consolidation</b>
             <span class="small">
-                Combine probabilités linguistiques et sémantique.
+                Réduction périodique des relations faibles.
             </span>
         </div>
 
         <div class="arch-item">
-            <b>9. V5.2 — à venir</b>
+            <b>9. Génération</b>
             <span class="small">
-                Renforcement, relances intelligentes,
-                oubli contrôlé et consolidation.
+                Combine modèle linguistique et mémoire sémantique.
             </span>
         </div>
-
     </div>
 
 </div>
@@ -1012,37 +1022,42 @@ input[type=range]{
 
 <div class="tabbar">
 
-    <button class="tab active"
-            data-view="view-memoire"
-            onclick="changerOnglet('view-memoire',this)">
+    <button
+        class="tab active"
+        data-view="view-memoire"
+        onclick="changerOnglet('view-memoire',this)">
         <span class="ic">💾</span>
         Mémoire
     </button>
 
-    <button class="tab"
-            data-view="view-apprentissage"
-            onclick="changerOnglet('view-apprentissage',this)">
+    <button
+        class="tab"
+        data-view="view-apprentissage"
+        onclick="changerOnglet('view-apprentissage',this)">
         <span class="ic">📚</span>
         Appr.
     </button>
 
-    <button class="tab"
-            data-view="view-generer"
-            onclick="changerOnglet('view-generer',this)">
+    <button
+        class="tab"
+        data-view="view-generer"
+        onclick="changerOnglet('view-generer',this)">
         <span class="ic">✨</span>
         Générer
     </button>
 
-    <button class="tab"
-            data-view="view-explorer"
-            onclick="changerOnglet('view-explorer',this)">
+    <button
+        class="tab"
+        data-view="view-explorer"
+        onclick="changerOnglet('view-explorer',this)">
         <span class="ic">🔎</span>
         Explorer
     </button>
 
-    <button class="tab"
-            data-view="view-graphe"
-            onclick="changerOnglet('view-graphe',this)">
+    <button
+        class="tab"
+        data-view="view-graphe"
+        onclick="changerOnglet('view-graphe',this)">
         <span class="ic">🕸️</span>
         Graphe
     </button>
@@ -1053,42 +1068,77 @@ input[type=range]{
 <script>
 
 /* =========================================================
+   IA FRANÇAISE V5.1
+   Mémoire contrôlée
+========================================================= */
+
+
+/* =========================================================
    CONFIGURATION V5.1
 ========================================================= */
 
-const VERSION_MEMOIRE = 5.1;
-
-/*
-    Ces valeurs sont volontairement conservatrices.
-
-    Le système ne supprime PAS encore les connaissances.
-    Il surveille seulement leur croissance.
-
-    L'oubli intelligent arrivera en V5.2.
-*/
-
 const CONFIG = {
 
-    batchSize:10,
+    VERSION: 5.1,
 
-    pauseEntreLots:250,
+    /*
+     * Limites locales.
+     *
+     * Elles évitent qu'un mot extrêmement fréquent
+     * possède des milliers de connexions secondaires.
+     */
 
-    uiInterval:3,
+    MAX_TRANSITIONS_PAR_MOT: 40,
 
-    checkpointTokens:100000,
+    MAX_TRANSITIONS3_PAR_CONTEXTE: 30,
 
-    journalMax:200,
+    MAX_ASSOCIATIONS_PAR_MOT: 35,
 
-    fenetreSemantique:5,
+    MAX_CONCEPTS_PAR_MOT: 12,
 
-    seuilWarningRelations:5000000,
+    MAX_CATEGORIES_PAR_MOT: 8,
 
-    seuilDangerRelations:10000000,
+    MAX_ACTIONS_PAR_MOT: 20,
 
-    seuilWarningVocabulaire:500000,
+    /*
+     * Maintenance automatique.
+     */
 
-    seuilDangerVocabulaire:1000000
+    MAINTENANCE_CYCLES: 250,
 
+    /*
+     * Combien de textes sont gardés dans la mémoire froide.
+     * La mémoire froide V5.1 est légère : elle conserve des
+     * statistiques de maintenance, pas les textes complets.
+     */
+
+    MAX_HISTORIQUE_MAINTENANCE: 50,
+
+    /*
+     * Seuils indicatifs de charge interne.
+     */
+
+    SEUIL_CHARGE_AVERTISSEMENT: 70,
+
+    SEUIL_CHARGE_CRITIQUE: 88,
+
+    /*
+     * Nombre maximal de lignes du journal.
+     */
+
+    MAX_LOG: 200,
+
+    /*
+     * Pause entre cycles.
+     */
+
+    PAUSE_APPRENTISSAGE: 150,
+
+    /*
+     * Limite du texte Wikipédia.
+     */
+
+    MAX_WIKIPEDIA_CARACTERES: 4000
 };
 
 
@@ -1098,13 +1148,16 @@ const CONFIG = {
 
 function changerOnglet(id,boutonEl){
 
-    document.querySelectorAll(".view")
+    document
+        .querySelectorAll(".view")
         .forEach(v=>v.classList.remove("active"));
 
-    document.querySelectorAll(".tab")
+    document
+        .querySelectorAll(".tab")
         .forEach(t=>t.classList.remove("active"));
 
-    document.getElementById(id)
+    document
+        .getElementById(id)
         .classList.add("active");
 
     boutonEl.classList.add("active");
@@ -1115,53 +1168,35 @@ function changerOnglet(id,boutonEl){
     });
 
     if(id==="view-graphe"){
-        construireGraphe();
+        setTimeout(construireGraphe,50);
     }
 }
 
 
 /* =========================================================
-   MEMOIRE
-========================================================= */
-
-let memoire = creerMemoire();
-
-let apprentissageActif=false;
-
-let nomMemoire="memoire_ia_fr_v5.1.json";
-
-let sourceWikipediaDisponible=null;
-
-let avertissementRelations=false;
-let avertissementVocabulaire=false;
-
-let derniereSauvegardeTokens=0;
-
-let statistiquesInternes={
-    lots:0,
-    textes:0,
-    tokensSession:0,
-    dernierLotTokens:0,
-    tempsDernierLot:0,
-    relationsAjoutees:0,
-    motsNouveaux:0
-};
-
-
-/* =========================================================
-   CREATION MEMOIRE
+   CREATION MEMOIRE V5.1
 ========================================================= */
 
 function creerMemoire(){
 
     return {
 
-        version:VERSION_MEMOIRE,
+        version:CONFIG.VERSION,
 
         statistiques:{
             tokens:0,
             phrases:0,
-            relations:0
+            cycles:0,
+            maintenances:0,
+
+            /*
+             * Ces valeurs permettent de suivre les économies
+             * réalisées par la consolidation.
+             */
+
+            relationsSupprimees:0,
+            associationsSupprimees:0,
+            conceptsSupprimes:0
         },
 
         vocabulaire:{},
@@ -1187,26 +1222,62 @@ function creerMemoire(){
             sentiment:{},
 
             proprietes:{}
+        },
 
+        /*
+         * Mémoire froide V5.1.
+         *
+         * On n'y stocke volontairement pas les textes complets.
+         * Elle contient seulement l'historique de consolidation.
+         */
+
+        memoireFroide:{
+            historique:[],
+            compteur:0
         }
-
     };
 }
 
 
 /* =========================================================
-   OUVERTURE
+   ETAT GLOBAL
+========================================================= */
+
+let memoire=creerMemoire();
+
+let apprentissageActif=false;
+
+let nomMemoire="memoire_ia_fr_v5_1.json";
+
+let sourceWikipediaDisponible=null;
+
+let cyclesApprentissage=0;
+
+let cyclesDepuisMaintenance=0;
+
+let avertissementCharge=false;
+
+let sauvegardeEnCours=false;
+
+
+/* =========================================================
+   CHARGEMENT FICHIER
 ========================================================= */
 
 function ouvrirFichier(){
 
-    document.getElementById("fichierMemoire").click();
+    document
+        .getElementById("fichierMemoire")
+        .click();
 }
 
 
 document
-.getElementById("fichierMemoire")
-.addEventListener("change",chargerMemoire);
+    .getElementById("fichierMemoire")
+    .addEventListener(
+        "change",
+        chargerMemoire
+    );
 
 
 async function chargerMemoire(event){
@@ -1217,59 +1288,56 @@ async function chargerMemoire(event){
 
     try{
 
-        journaliser("📂 Lecture de "+fichier.name+"...");
-
-        const debut=performance.now();
+        journaliser(
+            "📂 Lecture de "+fichier.name
+        );
 
         const texte=await fichier.text();
 
         journaliser(
-            "📦 Fichier lu : "+
+            "📦 Taille du fichier : "+
             formatOctets(texte.length)
         );
 
-        /*
-            JSON.parse est forcément nécessaire pour
-            importer le fichier actuel.
-
-            Mais une seule instance est créée.
-        */
-
         const data=JSON.parse(texte);
+
+        /*
+         * Conversion vers V5.1.
+         */
 
         memoire=normaliserMemoire(data);
 
         nomMemoire=fichier.name;
 
-        avertissementRelations=false;
-        avertissementVocabulaire=false;
+        cyclesApprentissage=
+            Number(
+                memoire.statistiques.cycles||0
+            );
 
-        derniereSauvegardeTokens=
-            Number(memoire.statistiques.tokens||0);
-
-        const duree=
-            ((performance.now()-debut)/1000).toFixed(2);
-
-        afficherInfosMemoire();
-        afficherStats();
-        rafraichirEtatGenerer();
-        actualiserMoniteur();
+        afficherTout();
 
         changerStatus(
             "ready",
-            "🟢 Mémoire prête",
-            "Mémoire chargée en "+
-            duree+
-            " s — "+
-            formatNombre(memoire.statistiques.tokens)+
+            "🟢 Mémoire V5.1 prête",
+            "Mémoire chargée avec succès."
+        );
+
+        journaliser(
+            "✅ Mémoire chargée : "+
+            formatNombre(
+                memoire.statistiques.tokens
+            )+
             " tokens."
         );
 
         journaliser(
-            "✅ Mémoire chargée en "+
-            duree+
-            " s."
+            "🧠 Relations actives : "+
+            formatNombre(
+                compterRelations(memoire.transitions2)
+            )
         );
+
+        mettreAJourSante();
 
     }
     catch(erreur){
@@ -1279,7 +1347,7 @@ async function chargerMemoire(event){
         changerStatus(
             "error",
             "🔴 Erreur",
-            "Le fichier JSON est invalide ou impossible à charger."
+            "Le fichier JSON est invalide ou trop volumineux pour être chargé par ce navigateur."
         );
 
         journaliser(
@@ -1301,8 +1369,8 @@ function normaliserMemoire(data){
     const base=creerMemoire();
 
     /*
-        Ancien format
-    */
+     * Ancien format memoire_mots.
+     */
 
     if(data.memoire_mots){
 
@@ -1312,16 +1380,30 @@ function normaliserMemoire(data){
         base.transitions2=
             data.memoire_mots||{};
 
-        reconstruireVocabulaireDepuisTransitions(base);
+        reconstruireVocabulaireDepuisTransitions(
+            base
+        );
 
-        recalculerCompteursStructurels(base);
+        journaliser(
+            "🔄 Ancien format détecté."
+        );
+
+        journaliser(
+            "🔄 Conversion vers V5.1."
+        );
+
+        /*
+         * Consolidation immédiate.
+         */
+
+        optimiserMemoireObjet(base);
 
         return base;
     }
 
     /*
-        Format moderne
-    */
+     * Statistiques.
+     */
 
     if(data.statistiques){
 
@@ -1331,6 +1413,10 @@ function normaliserMemoire(data){
                 data.statistiques
             );
     }
+
+    /*
+     * Structures principales.
+     */
 
     base.vocabulaire=
         data.vocabulaire||{};
@@ -1344,6 +1430,9 @@ function normaliserMemoire(data){
     base.debuts=
         data.debuts||{};
 
+    /*
+     * Sémantique.
+     */
 
     if(data.semantique){
 
@@ -1354,6 +1443,9 @@ function normaliserMemoire(data){
             );
     }
 
+    /*
+     * Garantir les sous-objets.
+     */
 
     const s=base.semantique;
 
@@ -1365,20 +1457,37 @@ function normaliserMemoire(data){
     s.sentiment=s.sentiment||{};
     s.proprietes=s.proprietes||{};
 
+    /*
+     * Mémoire froide.
+     */
+
+    if(data.memoireFroide){
+
+        base.memoireFroide=
+            Object.assign(
+                base.memoireFroide,
+                data.memoireFroide
+            );
+    }
 
     /*
-        Le fichier peut être ancien et ne pas
-        contenir la statistique des relations.
-    */
+     * Migration de version.
+     */
 
-    recalculerCompteursStructurels(base);
+    base.version=CONFIG.VERSION;
+
+    /*
+     * Consolidation lors du chargement.
+     */
+
+    optimiserMemoireObjet(base);
 
     return base;
 }
 
 
 /* =========================================================
-   RECONSTRUCTION VOCABULAIRE
+   VOCABULAIRE DEPUIS ANCIEN FORMAT
 ========================================================= */
 
 function reconstruireVocabulaireDepuisTransitions(base){
@@ -1389,32 +1498,20 @@ function reconstruireVocabulaireDepuisTransitions(base){
             base.vocabulaire[mot]=0;
         }
 
-        for(const suivant in base.transitions2[mot]){
+        const suivants=
+            base.transitions2[mot];
+
+        if(!suivants||
+           typeof suivants!=="object")continue;
+
+        for(const suivant in suivants){
 
             const n=
-                Number(base.transitions2[mot][suivant]);
+                Number(suivants[suivant])||0;
 
             base.vocabulaire[mot]+=n;
         }
     }
-}
-
-
-/* =========================================================
-   COMPTEURS
-========================================================= */
-
-function recalculerCompteursStructurels(base){
-
-    /*
-        Cette fonction n'est utilisée qu'au chargement.
-
-        Pendant l'apprentissage, les compteurs sont
-        maintenus directement.
-    */
-
-    base.statistiques.relations=
-        compterRelations(base.semantique.associations);
 }
 
 
@@ -1425,7 +1522,9 @@ function recalculerCompteursStructurels(base){
 function creerNouvelleMemoire(){
 
     const tokens=
-        Number(memoire.statistiques.tokens||0);
+        Number(
+            memoire.statistiques.tokens||0
+        );
 
     if(tokens>0){
 
@@ -1433,8 +1532,9 @@ function creerNouvelleMemoire(){
             "Une mémoire contenant "+
             formatNombre(tokens)+
             " tokens existe actuellement.\n\n"+
-            "La mémoire de cette page sera remplacée.\n\n"+
-            "Le fichier JSON original ne sera PAS supprimé.\n\n"+
+            "Créer une nouvelle mémoire remplacera "+
+            "uniquement la mémoire chargée dans cette page.\n\n"+
+            "Le fichier JSON original ne sera pas supprimé.\n\n"+
             "Continuer ?"
         );
 
@@ -1448,29 +1548,19 @@ function creerNouvelleMemoire(){
     memoire=creerMemoire();
 
     nomMemoire=
-        "memoire_ia_fr_v5.1.json";
+        "memoire_ia_fr_v5_1.json";
 
-    derniereSauvegardeTokens=0;
+    cyclesApprentissage=0;
+    cyclesDepuisMaintenance=0;
 
-    statistiquesInternes={
-        lots:0,
-        textes:0,
-        tokensSession:0,
-        dernierLotTokens:0,
-        tempsDernierLot:0,
-        relationsAjoutees:0,
-        motsNouveaux:0
-    };
+    avertissementCharge=false;
 
-    afficherInfosMemoire();
-    afficherStats();
-    actualiserMoniteur();
-    rafraichirEtatGenerer();
+    afficherTout();
 
-    document.getElementById("resultat").textContent=
+    document
+        .getElementById("resultat")
+        .textContent=
         "En attente d'apprentissage...";
-
-    construireGraphe();
 
     changerStatus(
         "ready",
@@ -1479,7 +1569,7 @@ function creerNouvelleMemoire(){
     );
 
     journaliser(
-        "🆕 Nouvelle mémoire créée."
+        "🆕 Nouvelle mémoire V5.1 créée."
     );
 }
 
@@ -1490,25 +1580,35 @@ function creerNouvelleMemoire(){
 
 function sauvegarderMemoire(){
 
+    if(sauvegardeEnCours)return;
+
+    sauvegardeEnCours=true;
+
     try{
 
-        const debut=performance.now();
+        /*
+         * Une dernière optimisation avant export.
+         */
 
         journaliser(
-            "💾 Préparation de la sauvegarde..."
+            "🧹 Optimisation avant sauvegarde..."
         );
 
-        /*
-            IMPORTANT :
+        optimiserMemoireObjet(
+            memoire,
+            false
+        );
 
-            JSON.stringify reste nécessaire pour produire
-            le fichier JSON demandé.
+        memoire.version=
+            CONFIG.VERSION;
 
-            On ne fait aucun recalcul de statistiques ici.
-        */
+        memoire.statistiques.cycles=
+            cyclesApprentissage;
 
         const contenu=
-            JSON.stringify(memoire);
+            JSON.stringify(
+                memoire
+            );
 
         const blob=
             new Blob(
@@ -1528,20 +1628,30 @@ function sauvegarderMemoire(){
         const date=
             maintenant.getFullYear()+
             "-"+
-            String(maintenant.getMonth()+1).padStart(2,"0")+
+            String(
+                maintenant.getMonth()+1
+            ).padStart(2,"0")+
             "-"+
-            String(maintenant.getDate()).padStart(2,"0")+
+            String(
+                maintenant.getDate()
+            ).padStart(2,"0")+
             "_"+
-            String(maintenant.getHours()).padStart(2,"0")+
+            String(
+                maintenant.getHours()
+            ).padStart(2,"0")+
             "-"+
-            String(maintenant.getMinutes()).padStart(2,"0")+
+            String(
+                maintenant.getMinutes()
+            ).padStart(2,"0")+
             "-"+
-            String(maintenant.getSeconds()).padStart(2,"0");
+            String(
+                maintenant.getSeconds()
+            ).padStart(2,"0");
 
         lien.href=url;
 
         lien.download=
-            "memoire_ia_fr_V5.1_"+
+            "memoire_ia_fr_v5_1_"+
             date+
             ".json";
 
@@ -1551,28 +1661,23 @@ function sauvegarderMemoire(){
 
         lien.remove();
 
-        setTimeout(
-            ()=>URL.revokeObjectURL(url),
-            3000
-        );
-
-        derniereSauvegardeTokens=
-            Number(memoire.statistiques.tokens||0);
-
-        const duree=
-            ((performance.now()-debut)/1000).toFixed(2);
+        setTimeout(()=>{
+            URL.revokeObjectURL(url);
+        },2000);
 
         journaliser(
-            "✅ Sauvegarde terminée en "+
-            duree+
-            " s — "+
+            "💾 Mémoire V5.1 sauvegardée."
+        );
+
+        journaliser(
+            "📦 Taille JSON : "+
             formatOctets(contenu.length)
         );
 
         changerStatus(
             "ready",
             "🟢 Mémoire sauvegardée",
-            "Export V5.1 terminé."
+            "Le fichier V5.1 a été généré."
         );
 
     }
@@ -1582,14 +1687,366 @@ function sauvegarderMemoire(){
 
         changerStatus(
             "error",
-            "🔴 Erreur de sauvegarde",
-            "Le navigateur n'a pas pu créer le fichier JSON."
+            "🔴 Échec de sauvegarde",
+            "La mémoire est peut-être trop volumineuse pour le navigateur."
         );
 
         journaliser(
-            "❌ Échec sauvegarde : "+
-            (erreur.message||"erreur inconnue")
+            "❌ Sauvegarde impossible : "+
+            (erreur.message||"")
         );
+    }
+
+    sauvegardeEnCours=false;
+}
+
+
+/* =========================================================
+   OPTIMISATION MANUELLE
+========================================================= */
+
+function optimiserMemoireManuellement(){
+
+    journaliser(
+        "🧹 Optimisation manuelle démarrée..."
+    );
+
+    const resultat=
+        optimiserMemoireObjet(
+            memoire,
+            true
+        );
+
+    afficherTout();
+
+    journaliser(
+        "✅ Optimisation terminée."
+    );
+
+    journaliser(
+        "🗑️ Relations supprimées : "+
+        formatNombre(
+            resultat.relationsSupprimees
+        )
+    );
+
+    journaliser(
+        "🗑️ Associations supprimées : "+
+        formatNombre(
+            resultat.associationsSupprimees
+        )
+    );
+
+    changerStatus(
+        "ready",
+        "🟢 Mémoire optimisée",
+        "La mémoire a été consolidée sans supprimer les fréquences principales."
+    );
+}
+
+
+/* =========================================================
+   CONSOLIDATION PRINCIPALE
+========================================================= */
+
+function optimiserMemoireObjet(
+    m,
+    enregistrerHistorique=true
+){
+
+    const avantRelations=
+        compterRelations(m.transitions2);
+
+    const avantAssociations=
+        compterRelations(
+            m.semantique.associations
+        );
+
+    const avantConcepts=
+        compterRelations(
+            m.semantique.concepts
+        );
+
+    /*
+     * 2-GRAMMES
+     */
+
+    for(const mot in m.transitions2){
+
+        m.transitions2[mot]=
+            garderTopN(
+                m.transitions2[mot],
+                CONFIG.MAX_TRANSITIONS_PAR_MOT
+            );
+    }
+
+    /*
+     * 3-GRAMMES
+     */
+
+    for(const contexte in m.transitions3){
+
+        m.transitions3[contexte]=
+            garderTopN(
+                m.transitions3[contexte],
+                CONFIG.MAX_TRANSITIONS3_PAR_CONTEXTE
+            );
+    }
+
+    /*
+     * ASSOCIATIONS SEMANTIQUES
+     */
+
+    for(const mot in m.semantique.associations){
+
+        m.semantique.associations[mot]=
+            garderTopN(
+                m.semantique.associations[mot],
+                CONFIG.MAX_ASSOCIATIONS_PAR_MOT
+            );
+    }
+
+    /*
+     * CONCEPTS
+     */
+
+    for(const mot in m.semantique.concepts){
+
+        m.semantique.concepts[mot]=
+            garderTopN(
+                m.semantique.concepts[mot],
+                CONFIG.MAX_CONCEPTS_PAR_MOT
+            );
+    }
+
+    /*
+     * CATEGORIES
+     */
+
+    for(const mot in m.semantique.categories){
+
+        m.semantique.categories[mot]=
+            garderTopN(
+                m.semantique.categories[mot],
+                CONFIG.MAX_CATEGORIES_PAR_MOT
+            );
+    }
+
+    /*
+     * ACTIONS
+     */
+
+    for(const mot in m.semantique.actions){
+
+        m.semantique.actions[mot]=
+            garderTopN(
+                m.semantique.actions[mot],
+                CONFIG.MAX_ACTIONS_PAR_MOT
+            );
+    }
+
+    /*
+     * Supprimer les structures devenues vides.
+     */
+
+    nettoyerObjetsVides(m.transitions2);
+    nettoyerObjetsVides(m.transitions3);
+
+    nettoyerObjetsVides(
+        m.semantique.associations
+    );
+
+    nettoyerObjetsVides(
+        m.semantique.concepts
+    );
+
+    nettoyerObjetsVides(
+        m.semantique.categories
+    );
+
+    nettoyerObjetsVides(
+        m.semantique.actions
+    );
+
+    /*
+     * Compteurs.
+     */
+
+    const apresRelations=
+        compterRelations(m.transitions2);
+
+    const apresAssociations=
+        compterRelations(
+            m.semantique.associations
+        );
+
+    const apresConcepts=
+        compterRelations(
+            m.semantique.concepts
+        );
+
+    const relationsSupprimees=
+        Math.max(
+            0,
+            avantRelations-apresRelations
+        );
+
+    const associationsSupprimees=
+        Math.max(
+            0,
+            avantAssociations-apresAssociations
+        );
+
+    const conceptsSupprimes=
+        Math.max(
+            0,
+            avantConcepts-apresConcepts
+        );
+
+    m.statistiques.relationsSupprimees=
+        Number(
+            m.statistiques.relationsSupprimees||0
+        )+
+        relationsSupprimees;
+
+    m.statistiques.associationsSupprimees=
+        Number(
+            m.statistiques.associationsSupprimees||0
+        )+
+        associationsSupprimees;
+
+    m.statistiques.conceptsSupprimes=
+        Number(
+            m.statistiques.conceptsSupprimes||0
+        )+
+        conceptsSupprimes;
+
+    m.statistiques.maintenances=
+        Number(
+            m.statistiques.maintenances||0
+        )+1;
+
+    /*
+     * Mémoire froide.
+     */
+
+    if(!m.memoireFroide){
+
+        m.memoireFroide={
+            historique:[],
+            compteur:0
+        };
+    }
+
+    m.memoireFroide.compteur++;
+
+    if(enregistrerHistorique){
+
+        m.memoireFroide.historique.push({
+
+            date:new Date().toISOString(),
+
+            relationsSupprimees,
+
+            associationsSupprimees,
+
+            conceptsSupprimes,
+
+            relationsRestantes:apresRelations,
+
+            associationsRestantes:apresAssociations
+        });
+
+        while(
+            m.memoireFroide.historique.length>
+            CONFIG.MAX_HISTORIQUE_MAINTENANCE
+        ){
+
+            m.memoireFroide.historique.shift();
+        }
+    }
+
+    document
+        .getElementById("derniereOptimisation")
+        .textContent=
+        new Date().toLocaleTimeString("fr-FR");
+
+    return{
+        relationsSupprimees,
+        associationsSupprimees,
+        conceptsSupprimes
+    };
+}
+
+
+/* =========================================================
+   GARDER TOP N
+========================================================= */
+
+function garderTopN(objet,limite){
+
+    if(!objet||
+       typeof objet!=="object"){
+
+        return {};
+    }
+
+    const entrees=
+        Object.entries(objet);
+
+    if(entrees.length<=limite){
+
+        return objet;
+    }
+
+    entrees.sort(
+        (a,b)=>
+        Number(b[1]||0)-
+        Number(a[1]||0)
+    );
+
+    const nouveau={};
+
+    for(
+        let i=0;
+        i<Math.min(limite,entrees.length);
+        i++
+    ){
+
+        const cle=entrees[i][0];
+
+        const valeur=
+            Number(entrees[i][1]);
+
+        if(
+            Number.isFinite(valeur)&&
+            valeur>0
+        ){
+
+            nouveau[cle]=valeur;
+        }
+    }
+
+    return nouveau;
+}
+
+
+/* =========================================================
+   NETTOYAGE
+========================================================= */
+
+function nettoyerObjetsVides(objet){
+
+    for(const cle in objet){
+
+        if(
+            !objet[cle]||
+            typeof objet[cle]!=="object"||
+            Object.keys(objet[cle]).length===0
+        ){
+
+            delete objet[cle];
+        }
     }
 }
 
@@ -1598,14 +2055,17 @@ function sauvegarderMemoire(){
    STATUS
 ========================================================= */
 
-function changerStatus(type,titre,message){
+function changerStatus(
+    type,
+    titre,
+    message
+){
 
     const element=
         document.getElementById("status");
 
     element.className=
-        "status "+
-        type;
+        "status "+type;
 
     element.innerHTML=
         "<div class='status-title'>"+
@@ -1650,13 +2110,11 @@ function journaliser(message){
     ligne.className="log-line";
 
     const heure=
-        new Date().toLocaleTimeString("fr-FR");
+        new Date()
+        .toLocaleTimeString("fr-FR");
 
     ligne.textContent=
-        "["+
-        heure+
-        "] "+
-        message;
+        "["+heure+"] "+message;
 
     journal.appendChild(ligne);
 
@@ -1665,41 +2123,13 @@ function journaliser(message){
 
     while(
         journal.children.length>
-        CONFIG.journalMax
+        CONFIG.MAX_LOG
     ){
+
         journal.removeChild(
             journal.firstChild
         );
     }
-}
-
-
-/* =========================================================
-   INFOS MEMOIRE
-========================================================= */
-
-function afficherInfosMemoire(){
-
-    document.getElementById("nomFichier")
-        .textContent=nomMemoire;
-
-    document.getElementById("versionMemoire")
-        .textContent="v"+memoire.version;
-
-    document.getElementById("etatMemoire")
-        .textContent="🟢 Mémoire prête";
-
-    document.getElementById("hdrTokens")
-        .textContent=
-        formatNombre(
-            memoire.statistiques.tokens
-        );
-
-    document.getElementById("hdrVocab")
-        .textContent=
-        formatNombre(
-            Object.keys(memoire.vocabulaire).length
-        );
 }
 
 
@@ -1722,7 +2152,10 @@ function tokenizer(texte){
             " $1 "
         )
 
-        .replace(/\s+/g," ")
+        .replace(
+            /\s+/g,
+            " "
+        )
 
         .trim()
 
@@ -1790,7 +2223,9 @@ const corpusLocal=[
 function afficherEtatWikipedia(){
 
     const el=
-        document.getElementById("wikiEtat");
+        document.getElementById(
+            "wikiEtat"
+        );
 
     if(sourceWikipediaDisponible===null){
 
@@ -1812,20 +2247,20 @@ async function recupererWikipedia(){
     try{
 
         const url=
-            "https://fr.wikipedia.org/w/api.php"+
-            "?action=query"+
-            "&list=random"+
-            "&rnnamespace=0"+
-            "&rnlimit=1"+
-            "&format=json"+
-            "&origin=*";
+        "https://fr.wikipedia.org/w/api.php"+
+        "?action=query"+
+        "&list=random"+
+        "&rnnamespace=0"+
+        "&rnlimit=1"+
+        "&format=json"+
+        "&origin=*";
 
         const response=
             await fetch(
                 url,
                 {
                     signal:
-                        AbortSignal.timeout(7000)
+                    AbortSignal.timeout(7000)
                 }
             );
 
@@ -1855,21 +2290,21 @@ async function recupererWikipedia(){
             data.query.random[0].title;
 
         const url2=
-            "https://fr.wikipedia.org/w/api.php"+
-            "?action=query"+
-            "&prop=extracts"+
-            "&explaintext=1"+
-            "&titles="+
-            encodeURIComponent(titre)+
-            "&format=json"+
-            "&origin=*";
+        "https://fr.wikipedia.org/w/api.php"+
+        "?action=query"+
+        "&prop=extracts"+
+        "&explaintext=1"+
+        "&titles="+
+        encodeURIComponent(titre)+
+        "&format=json"+
+        "&origin=*";
 
         const response2=
             await fetch(
                 url2,
                 {
                     signal:
-                        AbortSignal.timeout(7000)
+                    AbortSignal.timeout(7000)
                 }
             );
 
@@ -1884,12 +2319,15 @@ async function recupererWikipedia(){
         const data2=
             await response2.json();
 
-        const page=
+        const pages=
             Object.values(
                 data2.query.pages
-            )[0];
+            );
+
+        const page=pages[0];
 
         if(
+            !page||
             !page.extract||
             page.extract.length<100
         ){
@@ -1899,14 +2337,11 @@ async function recupererWikipedia(){
             );
         }
 
-        /*
-            Limite volontaire pour éviter
-            un énorme bloc d'apprentissage
-            en un seul cycle.
-        */
-
         const extrait=
-            page.extract.slice(0,4000);
+            page.extract.slice(
+                0,
+                CONFIG.MAX_WIKIPEDIA_CARACTERES
+            );
 
         sourceWikipediaDisponible=true;
 
@@ -1933,61 +2368,81 @@ async function recupererWikipedia(){
 const categoriesConnues={
 
     animaux:[
-        "chat","chien","cheval","vache","lion",
-        "tigre","ours","loup","oiseau","poisson",
-        "souris","lapin","cochon","mouton","chèvre",
-        "éléphant","girafe","singe","poule","canard"
+        "chat","chien","cheval","vache",
+        "lion","tigre","ours","loup",
+        "oiseau","poisson","souris",
+        "lapin","cochon","mouton",
+        "chèvre","éléphant","girafe",
+        "singe","poule","canard"
     ],
 
     nourriture:[
-        "pain","fromage","viande","poisson","riz",
-        "pomme","orange","banane","légume","fruit",
-        "soupe","gâteau","chocolat","lait","eau",
+        "pain","fromage","viande",
+        "poisson","riz","pomme",
+        "orange","banane","légume",
+        "fruit","soupe","gâteau",
+        "chocolat","lait","eau",
         "café","thé"
     ],
 
     lieux:[
-        "maison","ville","village","pays","école",
-        "hôpital","bureau","rue","jardin","parc",
-        "magasin","restaurant","gare","aéroport",
-        "plage","montagne","forêt"
+        "maison","ville","village",
+        "pays","école","hôpital",
+        "bureau","rue","jardin",
+        "parc","magasin",
+        "restaurant","gare",
+        "aéroport","plage",
+        "montagne","forêt"
     ],
 
     personnes:[
-        "homme","femme","enfant","garçon","fille",
-        "père","mère","frère","soeur","ami",
-        "amie","professeur","médecin","policier",
+        "homme","femme","enfant",
+        "garçon","fille","père",
+        "mère","frère","soeur",
+        "ami","amie","professeur",
+        "médecin","policier",
         "président"
     ],
 
     objets:[
-        "table","chaise","porte","fenêtre","voiture",
-        "vélo","ordinateur","téléphone","livre",
-        "stylo","sac","clé","lit","lampe"
+        "table","chaise","porte",
+        "fenêtre","voiture",
+        "vélo","ordinateur",
+        "téléphone","livre",
+        "stylo","sac","clé",
+        "lit","lampe"
     ],
 
     nature:[
-        "arbre","fleur","forêt","rivière","mer",
-        "océan","montagne","soleil","lune","pluie",
-        "neige","vent","ciel","terre"
+        "arbre","fleur","forêt",
+        "rivière","mer","océan",
+        "montagne","soleil",
+        "lune","pluie","neige",
+        "vent","ciel","terre"
     ]
-
 };
 
 
 const actionsConnues=[
 
-    "manger","boire","dormir","courir","marcher",
-    "parler","regarder","voir","entendre","écouter",
-    "aimer","détester","prendre","donner","faire",
-    "dire","aller","venir","partir","arriver",
-    "vivre","travailler","jouer","lire","écrire",
-    "apprendre","enseigner","acheter","vendre",
-    "ouvrir","fermer","chercher","trouver","penser",
-    "comprendre","connaître","construire","créer",
-    "utiliser","porter","mettre","tenir","sauter",
+    "manger","boire","dormir",
+    "courir","marcher","parler",
+    "regarder","voir","entendre",
+    "écouter","aimer","détester",
+    "prendre","donner","faire",
+    "dire","aller","venir",
+    "partir","arriver","vivre",
+    "travailler","jouer","lire",
+    "écrire","apprendre",
+    "enseigner","acheter",
+    "vendre","ouvrir","fermer",
+    "chercher","trouver",
+    "penser","comprendre",
+    "connaître","construire",
+    "créer","utiliser",
+    "porter","mettre",
+    "tenir","sauter",
     "chanter","rire","pleurer"
-
 ];
 
 
@@ -2001,40 +2456,38 @@ function apprendreTexte(texte){
         tokenizer(texte);
 
     if(tokens.length<3){
+
         return 0;
     }
 
-    let nouveauxMots=0;
-
     /*
-        VOCABULAIRE
-    */
+     * VOCABULAIRE
+     */
 
     for(const mot of tokens){
 
-        if(!Object.prototype.hasOwnProperty.call(
-            memoire.vocabulaire,
-            mot
-        )){
-
-            memoire.vocabulaire[mot]=0;
-
-            nouveauxMots++;
-        }
-
-        memoire.vocabulaire[mot]++;
+        memoire.vocabulaire[mot]=
+            (
+                memoire.vocabulaire[mot]||
+                0
+            )+1;
     }
 
-
     /*
-        DEBUTS
-    */
+     * DEBUTS
+     */
 
-    for(let i=0;i<tokens.length;i++){
+    for(
+        let i=0;
+        i<tokens.length;
+        i++
+    ){
 
         if(
             i===0||
-            [".","!","?"].includes(tokens[i-1])
+            [".","!","?"].includes(
+                tokens[i-1]
+            )
         ){
 
             const mot=tokens[i];
@@ -2043,16 +2496,16 @@ function apprendreTexte(texte){
 
                 memoire.debuts[mot]=
                     (
-                        memoire.debuts[mot]||0
+                        memoire.debuts[mot]||
+                        0
                     )+1;
             }
         }
     }
 
-
     /*
-        2-GRAMMES
-    */
+     * 2-GRAMMES
+     */
 
     for(
         let i=0;
@@ -2064,30 +2517,23 @@ function apprendreTexte(texte){
 
         const b=tokens[i+1];
 
-        if(!memoire.transitions2[a]){
+        if(
+            !memoire.transitions2[a]
+        ){
 
             memoire.transitions2[a]={};
         }
 
-        if(
-            !Object.prototype.hasOwnProperty.call(
-                memoire.transitions2[a],
-                b
-            )
-        ){
-
-            memoire.transitions2[a][b]=1;
-
-        }else{
-
-            memoire.transitions2[a][b]++;
-        }
+        memoire.transitions2[a][b]=
+            (
+                memoire.transitions2[a][b]||
+                0
+            )+1;
     }
 
-
     /*
-        3-GRAMMES
-    */
+     * 3-GRAMMES
+     */
 
     for(
         let i=0;
@@ -2104,60 +2550,41 @@ function apprendreTexte(texte){
         const cle=
             a+"|"+b;
 
-        if(!memoire.transitions3[cle]){
+        if(
+            !memoire.transitions3[cle]
+        ){
 
             memoire.transitions3[cle]={};
         }
 
-        if(
-            !Object.prototype.hasOwnProperty.call(
-                memoire.transitions3[cle],
-                c
-            )
-        ){
-
-            memoire.transitions3[cle][c]=1;
-
-        }else{
-
-            memoire.transitions3[cle][c]++;
-        }
+        memoire.transitions3[cle][c]=
+            (
+                memoire.transitions3[cle][c]||
+                0
+            )+1;
     }
 
-
     /*
-        SEMANTIQUE
-    */
+     * SEMANTIQUE
+     */
 
     apprendreSemantique(tokens);
 
-
     /*
-        STATISTIQUES
-
-        On met à jour directement.
-        Pas besoin de recompter toute la mémoire.
-    */
+     * STATISTIQUES
+     */
 
     memoire.statistiques.tokens+=
         tokens.length;
 
     memoire.statistiques.phrases++;
 
-    statistiquesInternes.motsNouveaux+=
-        nouveauxMots;
-
-    statistiquesInternes.tokensSession+=
-        tokens.length;
-
-    statistiquesInternes.textes++;
-
     return tokens.length;
 }
 
 
 /* =========================================================
-   SEMANTIQUE
+   CATEGORIES / CONCEPTS
 ========================================================= */
 
 function ajouterCategorie(
@@ -2166,16 +2593,37 @@ function ajouterCategorie(
     poids=1
 ){
 
-    if(!memoire.semantique.categories[mot]){
+    if(
+        !memoire.semantique.categories[mot]
+    ){
 
         memoire.semantique.categories[mot]={};
     }
 
-    memoire.semantique.categories[mot][categorie]=
+    const obj=
+        memoire.semantique.categories[mot];
+
+    obj[categorie]=
         (
-            memoire.semantique.categories[mot][categorie]||0
-        )+
-        poids;
+            obj[categorie]||
+            0
+        )+poids;
+
+    /*
+     * Petite protection immédiate.
+     */
+
+    if(
+        Object.keys(obj).length>
+        CONFIG.MAX_CATEGORIES_PAR_MOT
+    ){
+
+        memoire.semantique.categories[mot]=
+            garderTopN(
+                obj,
+                CONFIG.MAX_CATEGORIES_PAR_MOT
+            );
+    }
 }
 
 
@@ -2185,18 +2633,39 @@ function ajouterConcept(
     poids=1
 ){
 
-    if(!memoire.semantique.concepts[mot]){
+    if(
+        !memoire.semantique.concepts[mot]
+    ){
 
         memoire.semantique.concepts[mot]={};
     }
 
-    memoire.semantique.concepts[mot][concept]=
+    const obj=
+        memoire.semantique.concepts[mot];
+
+    obj[concept]=
         (
-            memoire.semantique.concepts[mot][concept]||0
-        )+
-        poids;
+            obj[concept]||
+            0
+        )+poids;
+
+    if(
+        Object.keys(obj).length>
+        CONFIG.MAX_CONCEPTS_PAR_MOT
+    ){
+
+        memoire.semantique.concepts[mot]=
+            garderTopN(
+                obj,
+                CONFIG.MAX_CONCEPTS_PAR_MOT
+            );
+    }
 }
 
+
+/* =========================================================
+   ASSOCIATIONS
+========================================================= */
 
 function ajouterAssociation(
     a,
@@ -2204,37 +2673,55 @@ function ajouterAssociation(
     poids
 ){
 
-    if(!memoire.semantique.associations[a]){
+    if(a===b)return;
+
+    if(
+        !memoire.semantique.associations[a]
+    ){
 
         memoire.semantique.associations[a]={};
     }
 
-    const existe=
-        Object.prototype.hasOwnProperty.call(
-            memoire.semantique.associations[a],
-            b
-        );
+    const obj=
+        memoire.semantique.associations[a];
 
-    if(!existe){
+    obj[b]=
+        (
+            obj[b]||
+            0
+        )+poids;
 
-        memoire.semantique.associations[a][b]=
-            poids;
+    /*
+     * On ne laisse pas une association dépasser
+     * le nombre maximum de voisins.
+     *
+     * Cela est extrêmement important pour éviter
+     * une croissance incontrôlée.
+     */
 
-        statistiquesInternes.relationsAjoutees++;
+    if(
+        Object.keys(obj).length>
+        CONFIG.MAX_ASSOCIATIONS_PAR_MOT+8
+    ){
 
-    }else{
-
-        memoire.semantique.associations[a][b]+=
-            poids;
+        memoire.semantique.associations[a]=
+            garderTopN(
+                obj,
+                CONFIG.MAX_ASSOCIATIONS_PAR_MOT
+            );
     }
 }
 
 
+/* =========================================================
+   SEMANTIQUE
+========================================================= */
+
 function apprendreSemantique(tokens){
 
     /*
-        CATEGORIES
-    */
+     * CATEGORIES
+     */
 
     for(const mot of tokens){
 
@@ -2243,8 +2730,9 @@ function apprendreSemantique(tokens){
         ){
 
             if(
-                categoriesConnues[categorie]
-                .includes(mot)
+                categoriesConnues[
+                    categorie
+                ].includes(mot)
             ){
 
                 ajouterCategorie(
@@ -2279,13 +2767,11 @@ function apprendreSemantique(tokens){
         }
     }
 
-
     /*
-        ASSOCIATIONS
-    */
+     * ASSOCIATIONS
+     */
 
-    const fenetre=
-        CONFIG.fenetreSemantique;
+    const fenetre=5;
 
     for(
         let i=0;
@@ -2295,9 +2781,7 @@ function apprendreSemantique(tokens){
 
         const a=tokens[i];
 
-        if(isPonctuation(a)){
-            continue;
-        }
+        if(isPonctuation(a))continue;
 
         for(
             let j=i+1;
@@ -2311,9 +2795,7 @@ function apprendreSemantique(tokens){
 
             const b=tokens[j];
 
-            if(isPonctuation(b)){
-                continue;
-            }
+            if(isPonctuation(b))continue;
 
             const poids=
                 1/(j-i);
@@ -2330,12 +2812,13 @@ function apprendreSemantique(tokens){
                 poids
             );
 
-
             const categoriesA=
-                memoire.semantique.categories[a]||{};
+                memoire.semantique.categories[a]||
+                {};
 
             const categoriesB=
-                memoire.semantique.categories[b]||{};
+                memoire.semantique.categories[b]||
+                {};
 
             for(
                 const categorie in categoriesA
@@ -2361,10 +2844,9 @@ function apprendreSemantique(tokens){
         }
     }
 
-
     /*
-        ACTIONS
-    */
+     * ACTIONS
+     */
 
     for(
         let i=0;
@@ -2387,239 +2869,260 @@ function apprendreSemantique(tokens){
                 memoire.semantique.actions[sujet]={};
             }
 
-            memoire.semantique.actions[sujet][action]=
+            const obj=
+                memoire.semantique.actions[sujet];
+
+            obj[action]=
                 (
-                    memoire.semantique.actions[sujet][action]||0
-                )+
-                1;
+                    obj[action]||
+                    0
+                )+1;
+
+            if(
+                Object.keys(obj).length>
+                CONFIG.MAX_ACTIONS_PAR_MOT
+            ){
+
+                memoire.semantique.actions[sujet]=
+                    garderTopN(
+                        obj,
+                        CONFIG.MAX_ACTIONS_PAR_MOT
+                    );
+            }
         }
     }
 }
 
 
+function isPonctuation(mot){
+
+    return [
+        ".",
+        ",",
+        "!",
+        "?",
+        ";",
+        ":",
+        "(",
+        ")",
+        "[",
+        "]",
+        "«",
+        "»"
+    ].includes(mot);
+}
+
+
 /* =========================================================
-   APPRENTISSAGE V5.1 PAR LOTS
+   APPRENTISSAGE
 ========================================================= */
 
 async function lancerApprentissage(){
 
-    if(apprentissageActif){
-        return;
-    }
-
-    CONFIG.batchSize=
-        Number(
-            document.getElementById("batchSize").value
-        );
-
-    CONFIG.pauseEntreLots=
-        Number(
-            document.getElementById("batchPause").value
-        );
-
-    CONFIG.uiInterval=
-        Number(
-            document.getElementById("uiInterval").value
-        );
-
+    if(apprentissageActif)return;
 
     apprentissageActif=true;
 
-    document.getElementById("btnStart")
+    document
+        .getElementById("btnStart")
         .disabled=true;
 
-    document.getElementById("btnStop")
+    document
+        .getElementById("btnStop")
         .disabled=false;
 
-    document.getElementById("etatMemoire")
-        .textContent="🟡 Apprentissage";
-
+    document
+        .getElementById("etatMemoire")
+        .textContent=
+        "🟡 Apprentissage";
 
     changerStatus(
         "learning",
         "🟡 Apprentissage actif",
-        "Moteur V5.1 — apprentissage par lots."
+        "Le moteur apprend progressivement avec contrôle mémoire."
     );
 
     journaliser(
         "▶ Apprentissage V5.1 démarré."
     );
 
-    journaliser(
-        "⚙️ Lot : "+
-        CONFIG.batchSize+
-        " textes."
-    );
-
-
-    let cycles=0;
-
-
     while(apprentissageActif){
 
-        const debutLot=
-            performance.now();
+        cyclesApprentissage++;
 
-        let tokensLot=0;
+        cyclesDepuisMaintenance++;
 
-        cycles++;
+        memoire.statistiques.cycles=
+            cyclesApprentissage;
 
-        /*
-            BATCH
-        */
+        document
+            .getElementById("cycleUI")
+            .textContent=
+            formatNombre(
+                cyclesApprentissage
+            );
 
-        for(
-            let i=0;
-            i<CONFIG.batchSize;
-            i++
-        ){
-
-            if(!apprentissageActif){
-                break;
-            }
-
-            let texte=null;
-
-            /*
-                65 % Wikipédia
-            */
-
-            if(Math.random()<0.65){
-
-                texte=
-                    await recupererWikipedia();
-            }
-
-
-            /*
-                Fallback local
-            */
-
-            if(!texte){
-
-                texte=
-                    corpusLocal[
-                        Math.floor(
-                            Math.random()*
-                            corpusLocal.length
-                        )
-                    ];
-
-            }
-
-
-            if(!apprentissageActif){
-                break;
-            }
-
-
-            const nombre=
-                apprendreTexte(texte);
-
-            tokensLot+=nombre;
-        }
-
-
-        const tempsLot=
-            performance.now()-
-            debutLot;
-
-        statistiquesInternes.lots++;
-
-        statistiquesInternes.dernierLotTokens=
-            tokensLot;
-
-        statistiquesInternes.tempsDernierLot=
-            tempsLot;
-
+        let texte=null;
 
         /*
-            MISE A JOUR UI
-        */
+         * Wikipédia 65% du temps.
+         */
 
-        if(
-            cycles%CONFIG.uiInterval===0||
-            cycles===1
-        ){
-
-            afficherStats();
-
-            afficherInfosMemoire();
-
-            actualiserMoniteur();
-
-            rafraichirEtatGenerer();
-
-            mettreAJourCheckpoint();
+        if(Math.random()<0.65){
 
             journaliser(
-                "🧠 Lot "+
-                cycles+
-                " : +"+
-                formatNombre(tokensLot)+
-                " tokens — total "+
-                formatNombre(
-                    memoire.statistiques.tokens
+                "🌐 Tentative Wikipédia..."
+            );
+
+            texte=
+                await recupererWikipedia();
+        }
+
+        /*
+         * Corpus local si Wikipédia échoue.
+         */
+
+        if(!texte){
+
+            texte=
+                corpusLocal[
+                    Math.floor(
+                        Math.random()*
+                        corpusLocal.length
+                    )
+                ];
+
+            journaliser(
+                "📚 Corpus local utilisé."
+            );
+        }
+        else{
+
+            journaliser(
+                "🌐 Texte Wikipédia récupéré."
+            );
+        }
+
+        if(!apprentissageActif)break;
+
+        const nombre=
+            apprendreTexte(texte);
+
+        /*
+         * MAINTENANCE
+         */
+
+        if(
+            cyclesDepuisMaintenance>=
+            CONFIG.MAINTENANCE_CYCLES
+        ){
+
+            if(
+                document
+                    .getElementById(
+                        "autoOptimisation"
+                    )
+                    .checked
+            ){
+
+                journaliser(
+                    "🧹 Maintenance automatique..."
+                );
+
+                const resultat=
+                    optimiserMemoireObjet(
+                        memoire,
+                        true
+                    );
+
+                journaliser(
+                    "🧹 "+
+                    formatNombre(
+                        resultat.relationsSupprimees+
+                        resultat.associationsSupprimees
+                    )+
+                    " connexions secondaires retirées."
+                );
+
+                cyclesDepuisMaintenance=0;
+
+                document
+                    .getElementById(
+                        "maintenanceCycleUI"
+                    )
+                    .textContent=
+                    formatNombre(
+                        cyclesApprentissage
+                    );
+            }
+        }
+
+        afficherStats();
+        afficherInfosMemoire();
+        mettreAJourSante();
+
+        if(
+            document
+                .getElementById(
+                    "view-graphe"
                 )
-            );
+                .classList
+                .contains("active")
+        ){
 
-            journaliser(
-                "⏱️ "+
-                (tempsLot/1000).toFixed(2)+
-                " s — "+
-                formatNombre(
-                    statistiquesInternes.relationsAjoutees
-                )+
-                " nouvelles relations cumulées."
-            );
+            construireGraphe();
         }
 
+        rafraichirEtatGenerer();
+
+        journaliser(
+            "🧠 +"+
+            nombre+
+            " tokens."
+        );
 
         /*
-            SURVEILLANCE
-        */
+         * Si la charge devient critique,
+         * on force une consolidation.
+         */
 
-        verifierCroissance();
-
-
-        /*
-            CHECKPOINT LOGIQUE
-
-            Pour l'instant on ne sauvegarde pas
-            automatiquement un énorme JSON à chaque
-            checkpoint.
-
-            On prévient simplement l'utilisateur.
-        */
-
-        const tokensActuels=
-            Number(
-                memoire.statistiques.tokens||0
-            );
+        const charge=
+            calculerChargeMemoire();
 
         if(
-            tokensActuels-
-            derniereSauvegardeTokens
-            >=
-            CONFIG.checkpointTokens
+            charge>=
+            CONFIG.SEUIL_CHARGE_CRITIQUE
         ){
 
             journaliser(
-                "💾 Checkpoint recommandé : "+
-                formatNombre(tokensActuels)+
-                " tokens."
+                "⚠️ Charge mémoire élevée."
             );
 
-            derniereSauvegardeTokens=
-                tokensActuels;
-        }
+            const resultat=
+                optimiserMemoireObjet(
+                    memoire,
+                    true
+                );
 
+            journaliser(
+                "🧹 Nettoyage critique : "+
+                formatNombre(
+                    resultat.relationsSupprimees+
+                    resultat.associationsSupprimees
+                )+
+                " connexions retirées."
+            );
+
+            cyclesDepuisMaintenance=0;
+        }
 
         changerStatus(
             "learning",
             "🟡 Apprentissage actif",
-            "Lot "+
-            cycles+
+            "Cycle "+
+            formatNombre(
+                cyclesApprentissage
+            )+
             " — "+
             formatNombre(
                 memoire.statistiques.tokens
@@ -2627,30 +3130,39 @@ async function lancerApprentissage(){
             " tokens."
         );
 
-
-        /*
-            Petite pause entre les lots.
-
-            Cela laisse le navigateur respirer.
-        */
-
-        if(apprentissageActif){
-
-            await attendre(
-                CONFIG.pauseEntreLots
-            );
-        }
+        await attendre(
+            CONFIG.PAUSE_APPRENTISSAGE
+        );
     }
 
+    apprentissageActif=false;
 
-    terminerApprentissage();
+    document
+        .getElementById("btnStart")
+        .disabled=false;
 
+    document
+        .getElementById("btnStop")
+        .disabled=true;
+
+    document
+        .getElementById("etatMemoire")
+        .textContent=
+        "🟢 Mémoire prête";
+
+    changerStatus(
+        "ready",
+        "🟢 Apprentissage arrêté",
+        "La mémoire actuelle est conservée dans cette page."
+    );
+
+    journaliser(
+        "⏹ Apprentissage arrêté."
+    );
+
+    afficherTout();
 }
 
-
-/* =========================================================
-   ARRET
-========================================================= */
 
 function arreterApprentissage(){
 
@@ -2665,7 +3177,8 @@ function arreterApprentissage(){
 
     apprentissageActif=false;
 
-    document.getElementById("btnStop")
+    document
+        .getElementById("btnStop")
         .disabled=true;
 
     journaliser(
@@ -2674,252 +3187,15 @@ function arreterApprentissage(){
 }
 
 
-function terminerApprentissage(){
-
-    apprentissageActif=false;
-
-    document.getElementById("btnStart")
-        .disabled=false;
-
-    document.getElementById("btnStop")
-        .disabled=true;
-
-    document.getElementById("etatMemoire")
-        .textContent="🟢 Mémoire prête";
-
-    afficherStats();
-
-    afficherInfosMemoire();
-
-    actualiserMoniteur();
-
-    rafraichirEtatGenerer();
-
-    changerStatus(
-        "ready",
-        "🟢 Apprentissage arrêté",
-        "Mémoire conservée. Sauvegarde le JSON pour conserver cette session."
-    );
-
-    journaliser(
-        "⏹ Apprentissage arrêté."
-    );
-}
-
-
 function attendre(ms){
 
     return new Promise(
-        resolve=>setTimeout(resolve,ms)
+        resolve=>
+        setTimeout(
+            resolve,
+            ms
+        )
     );
-}
-
-
-/* =========================================================
-   SURVEILLANCE CROISSANCE
-========================================================= */
-
-function verifierCroissance(){
-
-    const relations=
-        Object.keys(
-            memoire.semantique.associations
-        ).reduce(
-            (total,mot)=>{
-                return total+
-                    Object.keys(
-                        memoire.semantique.associations[mot]||{}
-                    ).length;
-            },
-            0
-        );
-
-    const vocab=
-        Object.keys(
-            memoire.vocabulaire
-        ).length;
-
-
-    /*
-        Warning relations
-    */
-
-    if(
-        relations>=CONFIG.seuilWarningRelations&&
-        !avertissementRelations
-    ){
-
-        avertissementRelations=true;
-
-        journaliser(
-            "⚠️ Beaucoup de relations : "+
-            formatNombre(relations)
-        );
-    }
-
-
-    /*
-        Warning vocabulaire
-    */
-
-    if(
-        vocab>=CONFIG.seuilWarningVocabulaire&&
-        !avertissementVocabulaire
-    ){
-
-        avertissementVocabulaire=true;
-
-        journaliser(
-            "⚠️ Vocabulaire très volumineux : "+
-            formatNombre(vocab)
-        );
-    }
-}
-
-
-/* =========================================================
-   MONITEUR
-========================================================= */
-
-function actualiserMoniteur(){
-
-    const relations=
-        memoire.statistiques.relations||
-        compterRelations(
-            memoire.semantique.associations
-        );
-
-    const vocab=
-        Object.keys(
-            memoire.vocabulaire
-        ).length;
-
-
-    document.getElementById(
-        "monitorRelations"
-    ).textContent=
-        formatNombre(relations);
-
-
-    document.getElementById(
-        "monitorVocab"
-    ).textContent=
-        formatNombre(vocab);
-
-
-    let niveau="Stable";
-
-    let classe="monitor-good";
-
-
-    if(
-        relations>=
-        CONFIG.seuilDangerRelations||
-        vocab>=
-        CONFIG.seuilDangerVocabulaire
-    ){
-
-        niveau="Très élevé";
-
-        classe="monitor-bad";
-
-    }
-    else if(
-        relations>=
-        CONFIG.seuilWarningRelations||
-        vocab>=
-        CONFIG.seuilWarningVocabulaire
-    ){
-
-        niveau="Élevé";
-
-        classe="monitor-warn";
-    }
-
-
-    const growth=
-        document.getElementById(
-            "monitorGrowth"
-        );
-
-    growth.textContent=niveau;
-
-    growth.className=
-        "monitor-value "+
-        classe;
-
-
-    const mode=
-        document.getElementById(
-            "monitorMode"
-        );
-
-    if(apprentissageActif){
-
-        mode.textContent=
-            "Batch";
-
-        mode.className=
-            "monitor-value monitor-good";
-
-    }else{
-
-        mode.textContent=
-            "Repos";
-
-        mode.className=
-            "monitor-value monitor-good";
-    }
-
-
-    /*
-        Barre purement indicative.
-    */
-
-    const ratio=
-        Math.min(
-            100,
-            Math.max(
-                0,
-                (
-                    relations/
-                    CONFIG.seuilDangerRelations
-                )*100
-            )
-        );
-
-    document.getElementById(
-        "memoryProgress"
-    ).style.width=
-        ratio+"%";
-}
-
-
-/* =========================================================
-   CHECKPOINT UI
-========================================================= */
-
-function mettreAJourCheckpoint(){
-
-    const tokens=
-        Number(
-            memoire.statistiques.tokens||0
-        );
-
-    const prochain=
-        (
-            Math.floor(
-                tokens/
-                CONFIG.checkpointTokens
-            )+1
-        )*
-        CONFIG.checkpointTokens;
-
-    document.getElementById(
-        "checkpointInfo"
-    ).textContent=
-        formatNombre(prochain)+
-        " tokens";
 }
 
 
@@ -2933,20 +3209,19 @@ function choixPondere(options){
         !options||
         !options.length
     ){
+
         return null;
     }
 
     let total=0;
 
     for(
-        const [,poids]
-        of options
+        const [,poids] of options
     ){
 
         total+=
-            Number(poids);
+            Number(poids)||0;
     }
-
 
     if(total<=0){
 
@@ -2958,24 +3233,21 @@ function choixPondere(options){
         ][0];
     }
 
-
     let hasard=
         Math.random()*total;
 
-
     for(
-        const [mot,poids]
-        of options
+        const [mot,poids] of options
     ){
 
         hasard-=
-            Number(poids);
+            Number(poids)||0;
 
         if(hasard<=0){
+
             return mot;
         }
     }
-
 
     return options[
         options.length-1
@@ -2994,11 +3266,12 @@ function scoreSemantique(
 
     let score=0;
 
-
     const assoc=
-        memoire.semantique
-        .associations[precedent];
-
+        memoire
+        .semantique
+        .associations[
+            precedent
+        ];
 
     if(
         assoc&&
@@ -3011,19 +3284,22 @@ function scoreSemantique(
             )*4;
     }
 
-
     const cat1=
-        memoire.semantique
-        .categories[precedent]||{};
+        memoire
+        .semantique
+        .categories[
+            precedent
+        ]||{};
 
     const cat2=
-        memoire.semantique
-        .categories[candidat]||{};
-
+        memoire
+        .semantique
+        .categories[
+            candidat
+        ]||{};
 
     for(
-        const categorie
-        in cat1
+        const categorie in cat1
     ){
 
         if(
@@ -3034,19 +3310,22 @@ function scoreSemantique(
         }
     }
 
-
     const concepts1=
-        memoire.semantique
-        .concepts[precedent]||{};
+        memoire
+        .semantique
+        .concepts[
+            precedent
+        ]||{};
 
     const concepts2=
-        memoire.semantique
-        .concepts[candidat]||{};
-
+        memoire
+        .semantique
+        .concepts[
+            candidat
+        ]||{};
 
     for(
-        const concept
-        in concepts1
+        const concept in concepts1
     ){
 
         if(
@@ -3057,13 +3336,12 @@ function scoreSemantique(
         }
     }
 
-
     return score;
 }
 
 
 /* =========================================================
-   CHOIX PROCHAIN
+   CHOISIR PROCHAIN
 ========================================================= */
 
 function choisirProchain(
@@ -3076,9 +3354,9 @@ function choisirProchain(
         !options||
         !options.length
     ){
+
         return null;
     }
-
 
     const candidats=
         options.map(
@@ -3086,7 +3364,9 @@ function choisirProchain(
 
                 const linguistique=
                     Math.log1p(
-                        Number(frequence)
+                        Number(
+                            frequence
+                        )
                     );
 
                 const semantique=
@@ -3097,20 +3377,23 @@ function choisirProchain(
 
                 const score=
                     linguistique*
-                    (1-force)
-                    +
+                    (1-force)+
                     semantique*
                     force;
 
-                return [
+                return[
                     mot,
-                    Math.max(score,.01)
+                    Math.max(
+                        score,
+                        .01
+                    )
                 ];
             }
         );
 
-
-    return choixPondere(candidats);
+    return choixPondere(
+        candidats
+    );
 }
 
 
@@ -3125,12 +3408,12 @@ function choisirDebut(){
             memoire.debuts
         );
 
-
     if(options.length){
 
-        return choixPondere(options);
+        return choixPondere(
+            options
+        );
     }
-
 
     const mots=
         Object.keys(
@@ -3140,15 +3423,12 @@ function choisirDebut(){
             m=>!isPonctuation(m)
         );
 
-
-    if(!mots.length){
-        return null;
-    }
-
+    if(!mots.length)return null;
 
     return mots[
         Math.floor(
-            Math.random()*mots.length
+            Math.random()*
+            mots.length
         )
     ];
 }
@@ -3165,9 +3445,11 @@ function rafraichirEtatGenerer(){
             memoire.vocabulaire
         ).length>0;
 
-    document.getElementById(
-        "btnGenerer"
-    ).disabled=!pret;
+    document
+        .getElementById(
+            "btnGenerer"
+        )
+        .disabled=!pret;
 }
 
 
@@ -3179,50 +3461,52 @@ function genererPhrase(){
         ).length
     ){
 
-        document.getElementById(
-            "resultat"
-        ).textContent=
+        document
+            .getElementById(
+                "resultat"
+            )
+            .textContent=
             "❌ La mémoire est vide.";
 
         return;
     }
 
-
     const longueur=
         Number(
-            document.getElementById(
-                "longueur"
-            ).value
+            document
+                .getElementById(
+                    "longueur"
+                )
+                .value
         );
-
 
     const force=
         Number(
-            document.getElementById(
-                "forceSemantique"
-            ).value
+            document
+                .getElementById(
+                    "forceSemantique"
+                )
+                .value
         )/100;
-
 
     const premier=
         choisirDebut();
 
-
     if(!premier){
 
-        document.getElementById(
-            "resultat"
-        ).textContent=
+        document
+            .getElementById(
+                "resultat"
+            )
+            .textContent=
             "❌ Impossible de démarrer.";
 
         return;
     }
 
-
     const resultat=[
         premier
     ];
-
 
     for(
         let i=1;
@@ -3238,17 +3522,16 @@ function genererPhrase(){
 
         let choix=null;
 
-
         if(a){
 
             const contexte=
                 a+"|"+b;
 
             const transitions=
-                memoire.transitions3[
+                memoire
+                .transitions3[
                     contexte
                 ];
-
 
             if(transitions){
 
@@ -3263,12 +3546,13 @@ function genererPhrase(){
             }
         }
 
-
         if(!choix){
 
             const alternatives=
-                memoire.transitions2[b];
-
+                memoire
+                .transitions2[
+                    b
+                ];
 
             if(alternatives){
 
@@ -3283,19 +3567,15 @@ function genererPhrase(){
             }
         }
 
-
-        if(!choix){
-            break;
-        }
-
+        if(!choix)break;
 
         resultat.push(choix);
 
-
         if(
             resultat.length>=8&&
-            [".","!","?"]
-            .includes(choix)&&
+            [".","!","?"].includes(
+                choix
+            )&&
             Math.random()<.8
         ){
 
@@ -3303,14 +3583,16 @@ function genererPhrase(){
         }
     }
 
-
     const phrase=
-        reconstruirePhrase(resultat);
+        reconstruirePhrase(
+            resultat
+        );
 
-
-    document.getElementById(
-        "resultat"
-    ).textContent=
+    document
+        .getElementById(
+            "resultat"
+        )
+        .textContent=
         phrase||
         "❌ Aucune phrase générée.";
 }
@@ -3325,9 +3607,15 @@ function reconstruirePhrase(tokens){
     let texte="";
 
     const sansEspace=[
-        ".",",","!","?",";",":",")","]"
+        ".",
+        ",",
+        "!",
+        "?",
+        ";",
+        ":",
+        ")",
+        "]"
     ];
-
 
     for(
         let i=0;
@@ -3337,7 +3625,6 @@ function reconstruirePhrase(tokens){
 
         const token=tokens[i];
 
-
         if(i===0){
 
             texte+=token;
@@ -3345,10 +3632,8 @@ function reconstruirePhrase(tokens){
             continue;
         }
 
-
         const precedent=
             tokens[i-1];
-
 
         if(
             precedent.endsWith("'")
@@ -3359,7 +3644,6 @@ function reconstruirePhrase(tokens){
             continue;
         }
 
-
         if(
             sansEspace.includes(token)
         ){
@@ -3368,7 +3652,6 @@ function reconstruirePhrase(tokens){
 
             continue;
         }
-
 
         if(
             ["(","[","«"]
@@ -3380,10 +3663,8 @@ function reconstruirePhrase(tokens){
             continue;
         }
 
-
         texte+=" "+token;
     }
-
 
     texte=
         texte
@@ -3393,14 +3674,12 @@ function reconstruirePhrase(tokens){
         )
         .trim();
 
-
     if(texte){
 
         texte=
             texte.charAt(0).toUpperCase()+
             texte.slice(1);
     }
-
 
     return texte;
 }
@@ -3417,17 +3696,6 @@ function afficherStats(){
             memoire.vocabulaire
         ).length;
 
-
-    /*
-        IMPORTANT :
-
-        On utilise maintenant le compteur stocké
-        lorsque possible.
-
-        Les gros parcours sont évités pendant
-        l'apprentissage.
-    */
-
     const trans2=
         compterRelations(
             memoire.transitions2
@@ -3438,78 +3706,81 @@ function afficherStats(){
             memoire.transitions3
         );
 
-
     const concepts=
         Object.keys(
-            memoire.semantique.concepts
+            memoire
+            .semantique
+            .concepts
         ).length;
-
 
     const relations=
         compterRelations(
-            memoire.semantique.associations
+            memoire
+            .semantique
+            .associations
         );
 
-
-    memoire.statistiques.relations=
-        relations;
-
-
-    document.getElementById(
-        "statTokens"
-    ).textContent=
+    document
+        .getElementById(
+            "statTokens"
+        )
+        .textContent=
         formatNombre(
             memoire.statistiques.tokens
         );
 
-
-    document.getElementById(
-        "statVocab"
-    ).textContent=
+    document
+        .getElementById(
+            "statVocab"
+        )
+        .textContent=
         formatNombre(vocab);
 
-
-    document.getElementById(
-        "stat2"
-    ).textContent=
+    document
+        .getElementById(
+            "stat2"
+        )
+        .textContent=
         formatNombre(trans2);
 
-
-    document.getElementById(
-        "stat3"
-    ).textContent=
+    document
+        .getElementById(
+            "stat3"
+        )
+        .textContent=
         formatNombre(trans3);
 
-
-    document.getElementById(
-        "statConcepts"
-    ).textContent=
+    document
+        .getElementById(
+            "statConcepts"
+        )
+        .textContent=
         formatNombre(concepts);
 
-
-    document.getElementById(
-        "statRelations"
-    ).textContent=
+    document
+        .getElementById(
+            "statRelations"
+        )
+        .textContent=
         formatNombre(relations);
 
-
-    document.getElementById(
-        "hdrTokens"
-    ).textContent=
+    document
+        .getElementById(
+            "hdrTokens"
+        )
+        .textContent=
         formatNombre(
             memoire.statistiques.tokens
         );
 
-
-    document.getElementById(
-        "hdrVocab"
-    ).textContent=
+    document
+        .getElementById(
+            "hdrVocab"
+        )
+        .textContent=
         formatNombre(vocab);
 
-
     afficherTopMots();
-
-    actualiserMoniteur();
 }
 
 
@@ -3552,16 +3823,19 @@ function afficherTopMots(){
             memoire.vocabulaire
         )
         .sort(
-            (a,b)=>b[1]-a[1]
+            (a,b)=>
+            Number(b[1])-
+            Number(a[1])
         )
         .slice(0,12);
 
-
     if(!mots.length){
 
-        document.getElementById(
-            "topMots"
-        ).innerHTML=
+        document
+            .getElementById(
+                "topMots"
+            )
+            .innerHTML=
             "<div class='empty-state'>"+
             "<span class='ic'>📭</span>"+
             "Aucun mot appris pour l'instant."+
@@ -3570,13 +3844,10 @@ function afficherTopMots(){
         return;
     }
 
-
     const max=
-        mots[0][1];
-
+        Number(mots[0][1])||1;
 
     let html="";
-
 
     for(
         const [mot,nombre]
@@ -3584,30 +3855,30 @@ function afficherTopMots(){
     ){
 
         const largeur=
-            nombre/max*100;
-
+            Number(nombre)/
+            max*100;
 
         html+=
             "<div class='bar-row'>"+
-                "<div class='bar-label'>"+
-                    escapeHTML(mot)+
-                "</div>"+
-                "<div class='bar-track'>"+
-                    "<div class='bar-fill' "+
-                    "style='width:"+
-                    largeur+
-                    "%'></div>"+
-                "</div>"+
-                "<div class='bar-number'>"+
-                    formatNombre(nombre)+
-                "</div>"+
+            "<div class='bar-label'>"+
+            escapeHTML(mot)+
+            "</div>"+
+            "<div class='bar-track'>"+
+            "<div class='bar-fill' style='width:"+
+            largeur+
+            "%'></div>"+
+            "</div>"+
+            "<div class='bar-number'>"+
+            formatNombre(nombre)+
+            "</div>"+
             "</div>";
     }
 
-
-    document.getElementById(
-        "topMots"
-    ).innerHTML=html;
+    document
+        .getElementById(
+            "topMots"
+        )
+        .innerHTML=html;
 }
 
 
@@ -3618,29 +3889,34 @@ function afficherTopMots(){
 function explorerMot(){
 
     const mot=
-        document.getElementById(
+        document
+        .getElementById(
             "motRecherche"
         )
         .value
         .trim()
         .toLowerCase();
 
-
     if(!mot)return;
 
-
     const occurrences=
-        memoire.vocabulaire[mot]||0;
-
+        memoire
+        .vocabulaire[
+            mot
+        ]||0;
 
     if(
         occurrences===0&&
-        !memoire.semantique.associations[mot]
+        !memoire
+        .semantique
+        .associations[mot]
     ){
 
-        document.getElementById(
-            "exploration"
-        ).innerHTML=
+        document
+            .getElementById(
+                "exploration"
+            )
+            .innerHTML=
             "<b>Mot :</b> "+
             escapeHTML(mot)+
             "<br><br>"+
@@ -3649,37 +3925,39 @@ function explorerMot(){
         return;
     }
 
-
     const categories=
-        memoire.semantique
-        .categories[mot]||{};
-
+        memoire
+        .semantique
+        .categories[
+            mot
+        ]||{};
 
     const concepts=
-        memoire.semantique
-        .concepts[mot]||{};
-
+        memoire
+        .semantique
+        .concepts[
+            mot
+        ]||{};
 
     const associations=
-        memoire.semantique
-        .associations[mot]||{};
-
+        memoire
+        .semantique
+        .associations[
+            mot
+        ]||{};
 
     let html=
         "<b>Mot :</b> "+
         escapeHTML(mot)+
         "<br><br>";
 
-
     html+=
         "<b>Occurrences :</b> "+
         formatNombre(occurrences)+
         "<br><br>";
 
-
     html+=
         "<b>Catégories :</b><br>";
-
 
     html+=
         Object.keys(categories).length
@@ -3687,26 +3965,25 @@ function explorerMot(){
         Object.keys(categories)
         .map(
             c=>
-                "<span class='badge'>"+
-                escapeHTML(c)+
-                "</span>"
+            "<span class='badge'>"+
+            escapeHTML(c)+
+            "</span>"
         )
         .join("")
         :
         "Aucune";
 
-
     html+=
         "<br><br><b>Concepts :</b><br>";
-
 
     const topConcepts=
         Object.entries(concepts)
         .sort(
-            (a,b)=>b[1]-a[1]
+            (a,b)=>
+            Number(b[1])-
+            Number(a[1])
         )
         .slice(0,10);
-
 
     html+=
         topConcepts.length
@@ -3714,28 +3991,27 @@ function explorerMot(){
         topConcepts
         .map(
             x=>
-                "<span class='badge'>"+
-                escapeHTML(x[0])+
-                " · "+
-                Number(x[1]).toFixed(1)+
-                "</span>"
+            "<span class='badge'>"+
+            escapeHTML(x[0])+
+            " · "+
+            Number(x[1]).toFixed(1)+
+            "</span>"
         )
         .join("")
         :
         "Aucun";
 
-
     html+=
         "<br><br><b>Associations :</b><br>";
-
 
     const topAssoc=
         Object.entries(associations)
         .sort(
-            (a,b)=>b[1]-a[1]
+            (a,b)=>
+            Number(b[1])-
+            Number(a[1])
         )
         .slice(0,12);
-
 
     html+=
         topAssoc.length
@@ -3743,25 +4019,27 @@ function explorerMot(){
         topAssoc
         .map(
             x=>
-                "<span class='badge'>"+
-                escapeHTML(x[0])+
-                " · "+
-                Number(x[1]).toFixed(1)+
-                "</span>"
+            "<span class='badge'>"+
+            escapeHTML(x[0])+
+            " · "+
+            Number(x[1]).toFixed(1)+
+            "</span>"
         )
         .join("")
         :
         "Aucune";
 
+    document
+        .getElementById(
+            "exploration"
+        )
+        .innerHTML=html;
 
-    document.getElementById(
-        "exploration"
-    ).innerHTML=html;
-
-
-    document.getElementById(
-        "grapheRecherche"
-    ).value=mot;
+    document
+        .getElementById(
+            "grapheRecherche"
+        )
+        .value=mot;
 }
 
 
@@ -3776,39 +4054,44 @@ function construireGraphe(){
             "graphe"
         );
 
-
     const recherche=
-        document.getElementById(
+        document
+        .getElementById(
             "grapheRecherche"
         )
         .value
         .trim()
         .toLowerCase();
 
-
     let centre=recherche;
-
 
     if(
         !centre||
-        !memoire.semantique.associations[centre]
+        !memoire
+        .semantique
+        .associations[
+            centre
+        ]
     ){
 
         const candidats=
             Object.entries(
-                memoire.semantique.associations
+                memoire
+                .semantique
+                .associations
             )
             .map(
                 ([mot,relations])=>
-                    [
-                        mot,
-                        Object.keys(relations).length
-                    ]
+                [
+                    mot,
+                    Object.keys(
+                        relations
+                    ).length
+                ]
             )
             .sort(
                 (a,b)=>b[1]-a[1]
             );
-
 
         centre=
             candidats.length
@@ -3817,7 +4100,6 @@ function construireGraphe(){
             :
             null;
     }
-
 
     if(!centre){
 
@@ -3830,19 +4112,21 @@ function construireGraphe(){
         return;
     }
 
-
     const relations=
-        memoire.semantique
-        .associations[centre]||{};
-
+        memoire
+        .semantique
+        .associations[
+            centre
+        ]||{};
 
     const voisins=
         Object.entries(relations)
         .sort(
-            (a,b)=>b[1]-a[1]
+            (a,b)=>
+            Number(b[1])-
+            Number(a[1])
         )
         .slice(0,14);
-
 
     if(!voisins.length){
 
@@ -3857,19 +4141,15 @@ function construireGraphe(){
         return;
     }
 
-
     const largeur=
         zone.clientWidth||700;
-
 
     const hauteur=
         zone.clientHeight||390;
 
-
     const cx=largeur/2;
 
     const cy=hauteur/2;
-
 
     let svg=
         "<svg viewBox='0 0 "+
@@ -3878,9 +4158,7 @@ function construireGraphe(){
         hauteur+
         "'>";
 
-
     const positions=[];
-
 
     voisins.forEach(
         ([mot,poids],index)=>{
@@ -3893,25 +4171,21 @@ function construireGraphe(){
                 )*
                 Math.PI*2;
 
-
             const rayon=
                 Math.min(
                     largeur,
                     hauteur
                 )*.32;
 
-
             const x=
                 cx+
                 Math.cos(angle)*
                 rayon;
 
-
             const y=
                 cy+
                 Math.sin(angle)*
                 rayon;
-
 
             positions.push({
                 mot,
@@ -3919,7 +4193,6 @@ function construireGraphe(){
                 x,
                 y
             });
-
 
             const epaisseur=
                 Math.max(
@@ -3929,7 +4202,6 @@ function construireGraphe(){
                         Number(poids)
                     )
                 );
-
 
             svg+=
                 "<line "+
@@ -3943,14 +4215,12 @@ function construireGraphe(){
         }
     );
 
-
     svg+=
         "<circle "+
         "cx='"+cx+"' "+
         "cy='"+cy+"' "+
         "r='32' "+
         "fill='#7c9cff'/>";
-
 
     svg+=
         "<text "+
@@ -3962,7 +4232,6 @@ function construireGraphe(){
         "font-weight='bold'>"+
         escapeSVG(centre)+
         "</text>";
-
 
     positions.forEach(
         node=>{
@@ -3979,10 +4248,8 @@ function construireGraphe(){
                     )
                 );
 
-
             svg+=
                 "<g class='node'>";
-
 
             svg+=
                 "<circle "+
@@ -3990,7 +4257,6 @@ function construireGraphe(){
                 "cy='"+node.y+"' "+
                 "r='"+taille+"' "+
                 "fill='#3ecf6e'/>";
-
 
             svg+=
                 "<text "+
@@ -4002,16 +4268,254 @@ function construireGraphe(){
                 escapeSVG(node.mot)+
                 "</text>";
 
-
             svg+="</g>";
         }
     );
 
-
     svg+="</svg>";
 
-
     zone.innerHTML=svg;
+}
+
+
+/* =========================================================
+   SANTE MEMOIRE
+========================================================= */
+
+function calculerChargeMemoire(){
+
+    const vocab=
+        Object.keys(
+            memoire.vocabulaire
+        ).length;
+
+    const rel=
+        compterRelations(
+            memoire.transitions2
+        );
+
+    const rel3=
+        compterRelations(
+            memoire.transitions3
+        );
+
+    const assoc=
+        compterRelations(
+            memoire
+            .semantique
+            .associations
+        );
+
+    const concepts=
+        compterRelations(
+            memoire
+            .semantique
+            .concepts
+        );
+
+    /*
+     * Ce n'est PAS une mesure réelle de la RAM.
+     * C'est un indicateur interne pondéré.
+     */
+
+    const score=
+        vocab*0.00001+
+        rel*0.000015+
+        rel3*0.00001+
+        assoc*0.000018+
+        concepts*0.000008;
+
+    return Math.min(
+        100,
+        score
+    );
+}
+
+
+function mettreAJourSante(){
+
+    const charge=
+        calculerChargeMemoire();
+
+    const barre=
+        document
+        .getElementById(
+            "barreMemoire"
+        );
+
+    barre.style.width=
+        charge.toFixed(1)+"%";
+
+    barre.className=
+        "health-fill";
+
+    if(
+        charge>=
+        CONFIG.SEUIL_CHARGE_CRITIQUE
+    ){
+
+        barre.classList.add(
+            "danger"
+        );
+    }
+    else if(
+        charge>=
+        CONFIG.SEUIL_CHARGE_AVERTISSEMENT
+    ){
+
+        barre.classList.add(
+            "warning"
+        );
+    }
+
+    document
+        .getElementById(
+            "chargeMemoire"
+        )
+        .textContent=
+        charge.toFixed(1)+"%";
+
+    const objets=
+        Object.keys(
+            memoire.vocabulaire
+        ).length+
+        Object.keys(
+            memoire.transitions2
+        ).length+
+        Object.keys(
+            memoire.transitions3
+        ).length+
+        Object.keys(
+            memoire.semantique.associations
+        ).length+
+        Object.keys(
+            memoire.semantique.concepts
+        ).length;
+
+    document
+        .getElementById(
+            "objetsMemoire"
+        )
+        .textContent=
+        formatNombre(objets);
+
+    document
+        .getElementById(
+            "relationsActives"
+        )
+        .textContent=
+        formatNombre(
+            compterRelations(
+                memoire.transitions2
+            )
+        );
+
+    document
+        .getElementById(
+            "associationsActives"
+        )
+        .textContent=
+        formatNombre(
+            compterRelations(
+                memoire.semantique.associations
+            )
+        );
+
+    if(
+        charge>=
+        CONFIG.SEUIL_CHARGE_AVERTISSEMENT&&
+        !avertissementCharge
+    ){
+
+        avertissementCharge=true;
+
+        journaliser(
+            "⚠️ Charge mémoire interne élevée."
+        );
+    }
+
+    if(
+        charge<
+        CONFIG.SEUIL_CHARGE_AVERTISSEMENT
+    ){
+
+        avertissementCharge=false;
+    }
+}
+
+
+/* =========================================================
+   INFOS MEMOIRE
+========================================================= */
+
+function afficherInfosMemoire(){
+
+    document
+        .getElementById(
+            "nomFichier"
+        )
+        .textContent=
+        nomMemoire;
+
+    document
+        .getElementById(
+            "versionMemoire"
+        )
+        .textContent=
+        "v"+
+        CONFIG.VERSION;
+
+    document
+        .getElementById(
+            "etatMemoire"
+        )
+        .textContent=
+        apprentissageActif
+        ?"🟡 Apprentissage"
+        :"🟢 Mémoire prête";
+
+    document
+        .getElementById(
+            "modeMemoire"
+        )
+        .textContent=
+        "Active + consolidation V5.1";
+}
+
+
+/* =========================================================
+   AFFICHER TOUT
+========================================================= */
+
+function afficherTout(){
+
+    afficherInfosMemoire();
+
+    afficherStats();
+
+    afficherEtatWikipedia();
+
+    rafraichirEtatGenerer();
+
+    mettreAJourSante();
+
+    document
+        .getElementById(
+            "cycleUI"
+        )
+        .textContent=
+        formatNombre(
+            cyclesApprentissage
+        );
+
+    document
+        .getElementById(
+            "maintenanceCycleUI"
+        )
+        .textContent=
+        formatNombre(
+            memoire.statistiques.maintenances||0
+        );
 }
 
 
@@ -4020,20 +4524,21 @@ function construireGraphe(){
 ========================================================= */
 
 document
-.getElementById(
-    "forceSemantique"
-)
-.addEventListener(
-    "input",
-    function(){
+    .getElementById(
+        "forceSemantique"
+    )
+    .addEventListener(
+        "input",
+        function(){
 
-        document.getElementById(
-            "forceValue"
-        ).textContent=
-            this.value+
-            "%";
-    }
-);
+            document
+                .getElementById(
+                    "forceValue"
+                )
+                .textContent=
+                this.value+"%";
+        }
+    );
 
 
 /* =========================================================
@@ -4045,9 +4550,12 @@ window.addEventListener(
     debounce(
         ()=>{
             if(
-                document.getElementById(
+                document
+                .getElementById(
                     "view-graphe"
-                ).classList.contains("active")
+                )
+                .classList
+                .contains("active")
             ){
 
                 construireGraphe();
@@ -4062,7 +4570,10 @@ window.addEventListener(
    DEBOUNCE
 ========================================================= */
 
-function debounce(fn,delai){
+function debounce(
+    fn,
+    delai
+){
 
     let t;
 
@@ -4072,7 +4583,10 @@ function debounce(fn,delai){
 
         t=
             setTimeout(
-                ()=>fn.apply(this,args),
+                ()=>fn.apply(
+                    this,
+                    args
+                ),
                 delai
             );
     };
@@ -4087,7 +4601,8 @@ function formatNombre(nombre){
 
     return Number(
         nombre||0
-    ).toLocaleString(
+    )
+    .toLocaleString(
         "fr-FR"
     );
 }
@@ -4096,28 +4611,29 @@ function formatNombre(nombre){
 function formatOctets(octets){
 
     const n=
-        Number(octets||0);
+        Number(octets)||0;
 
     if(n<1024){
+
         return n+" o";
     }
 
     if(n<1024*1024){
-        return (
+
+        return(
             n/1024
         ).toFixed(1)+" Ko";
     }
 
     if(n<1024*1024*1024){
-        return (
-            n/
-            (1024*1024)
-        ).toFixed(1)+" Mo";
+
+        return(
+            n/(1024*1024)
+        ).toFixed(2)+" Mo";
     }
 
-    return (
-        n/
-        (1024*1024*1024)
+    return(
+        n/(1024*1024*1024)
     ).toFixed(2)+" Go";
 }
 
@@ -4184,88 +4700,40 @@ function escapeSVG(texte){
 }
 
 
-function isPonctuation(mot){
-
-    return [
-        ".",
-        ",",
-        "!",
-        "?",
-        ";",
-        ":",
-        "(",
-        ")",
-        "[",
-        "]",
-        "«",
-        "»"
-    ].includes(mot);
-}
-
-
 /* =========================================================
    INITIALISATION
 ========================================================= */
 
-afficherInfosMemoire();
+document
+    .getElementById(
+        "maxRelUI"
+    )
+    .textContent=
+    CONFIG.MAX_TRANSITIONS_PAR_MOT;
 
-afficherStats();
+document
+    .getElementById(
+        "maxAssocUI"
+    )
+    .textContent=
+    CONFIG.MAX_ASSOCIATIONS_PAR_MOT;
 
-afficherEtatWikipedia();
+document
+    .getElementById(
+        "maxConceptUI"
+    )
+    .textContent=
+    CONFIG.MAX_CONCEPTS_PAR_MOT;
 
-rafraichirEtatGenerer();
+document
+    .getElementById(
+        "maintenanceUI"
+    )
+    .textContent=
+    CONFIG.MAINTENANCE_CYCLES+
+    " cycles";
 
-actualiserMoniteur();
-
-mettreAJourCheckpoint();
-
-document.getElementById(
-    "batchInfo"
-).textContent=
-    CONFIG.batchSize+
-    " textes";
-
-
-document.getElementById(
-    "batchSize"
-).addEventListener(
-    "change",
-    function(){
-
-        CONFIG.batchSize=
-            Number(this.value);
-
-        document.getElementById(
-            "batchInfo"
-        ).textContent=
-            CONFIG.batchSize+
-            " textes";
-    }
-);
-
-
-document.getElementById(
-    "batchPause"
-).addEventListener(
-    "change",
-    function(){
-
-        CONFIG.pauseEntreLots=
-            Number(this.value);
-    }
-);
-
-
-document.getElementById(
-    "uiInterval"
-).addEventListener(
-    "change",
-    function(){
-
-        CONFIG.uiInterval=
-            Number(this.value);
-    }
-);
+afficherTout();
 
 </script>
 
