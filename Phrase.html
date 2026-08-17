@@ -1,220 +1,1704 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Module IA : Chaîne de Mots & Ponctuation (Français)</title>
-    <style>
-        body { background-color: #121212; color: #e0e0e0; font-family: monospace; padding: 15px; max-width: 600px; margin: auto; }
-        .control-panel, .gen-panel { background-color: #1a1a1a; padding: 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 15px; }
-        button { background-color: #222; color: #fff; border: 1px solid #444; padding: 12px; cursor: pointer; width: 100%; margin-bottom: 8px; border-radius: 4px; font-weight: bold; font-size: 1em; }
-        .status-line { background-color: #1a1a1a; border-left: 3px solid #03a9f4; padding: 10px; font-size: 0.85em; margin-bottom: 15px; line-height: 1.4; }
-        .output-box { background-color: #000; color: #00e676; padding: 12px; border-radius: 4px; min-height: 50px; font-size: 1em; word-break: break-word; margin-top: 8px; border: 1px solid #333; line-height: 1.5; }
-        .bar-row { display: flex; align-items: center; margin-bottom: 4px; }
-        .bar-label { width: 95px; font-weight: bold; font-size: 0.85em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .bar-track { flex-grow: 1; background-color: #222; height: 10px; border-radius: 3px; overflow: hidden; margin: 0 8px; }
-        .bar-fill { height: 100%; background-color: #03a9f4; }
-        .bar-stats { width: 95px; text-align: right; font-size: 0.75em; color: #888; }
-        h2 { font-size: 0.95em; color: #fff; border-bottom: 1px solid #333; padding-bottom: 4px; margin-top: 0; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IA Française — Apprentissage 3-Grammes</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #121212;
+    color: #e0e0e0;
+    font-family: monospace;
+    padding: 15px;
+    max-width: 700px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 1.25em;
+    margin-bottom: 18px;
+}
+
+h2 {
+    font-size: 0.95em;
+    color: white;
+    border-bottom: 1px solid #333;
+    padding-bottom: 6px;
+    margin-top: 0;
+}
+
+.control-panel,
+.gen-panel,
+.stats-panel {
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    margin-bottom: 15px;
+}
+
+button {
+    background: #222;
+    color: white;
+    border: 1px solid #444;
+    padding: 12px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+button:hover {
+    filter: brightness(1.2);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.status-line {
+    background: #1a1a1a;
+    border-left: 3px solid #03a9f4;
+    padding: 10px;
+    font-size: 0.85em;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.output-box {
+    background: #000;
+    color: #00e676;
+    padding: 15px;
+    border-radius: 4px;
+    min-height: 70px;
+    font-size: 1em;
+    word-break: break-word;
+    margin-top: 8px;
+    border: 1px solid #333;
+    line-height: 1.6;
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.stat {
+    background: #111;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.stat-title {
+    color: #888;
+    font-size: 0.75em;
+}
+
+.stat-value {
+    color: #03a9f4;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.bar-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 7px;
+}
+
+.bar-label {
+    width: 100px;
+    font-weight: bold;
+    font-size: 0.8em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bar-track {
+    flex-grow: 1;
+    background: #222;
+    height: 10px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 8px;
+}
+
+.bar-fill {
+    height: 100%;
+    background: #03a9f4;
+}
+
+.bar-stats {
+    width: 90px;
+    text-align: right;
+    font-size: 0.7em;
+    color: #888;
+}
+
+.small {
+    color: #777;
+    font-size: 0.75em;
+    line-height: 1.5;
+}
+
+select {
+    width: 100%;
+    background: #111;
+    color: white;
+    border: 1px solid #444;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+</style>
 </head>
+
 <body>
 
-    <h1>Module II : Apprentissage par Mots (Français)</h1>
-    
-    <div class="control-panel">
-        <button onclick="selectionnerFichierMemoire()" id="btn-fichier" style="background-color: #333;">1. Créer ou lier "memoire_mots_fr.json"</button>
-        <button onclick="lancerEntrainementMots()" style="background-color: #01579b;">2. Lancer l'Apprentissage Français</button>
-        <button onclick="arreterEntrainement()" style="background-color: #b71c1c;">3. ⏹ Pause et Sauvegarde</button>
+<h1>🧠 Module II — IA Française par Chaînes de Mots</h1>
+
+<div class="control-panel">
+
+    <button
+        onclick="creerOuLierMemoire()"
+        id="btn-fichier"
+        style="background:#333;">
+        1. 📁 Créer ou ouvrir la mémoire JSON
+    </button>
+
+    <button
+        onclick="lancerEntrainementMots()"
+        id="btn-start"
+        style="background:#01579b;">
+        2. ▶ Lancer l'apprentissage
+    </button>
+
+    <button
+        onclick="arreterEntrainement()"
+        id="btn-stop"
+        style="background:#b71c1c;">
+        3. ⏹ Pause et sauvegarde
+    </button>
+
+</div>
+
+<div class="gen-panel">
+
+    <h2>🤖 Générateur de phrases</h2>
+
+    <select id="longueurPhrase">
+        <option value="10">Phrase courte — 10 mots</option>
+        <option value="20" selected>Phrase normale — 20 mots</option>
+        <option value="30">Phrase longue — 30 mots</option>
+        <option value="50">Phrase très longue — 50 mots</option>
+    </select>
+
+    <button
+        onclick="genererPhraseMots()"
+        style="background:#1b5e20;">
+        ✨ Générer une phrase
+    </button>
+
+    <div id="resultat-generation" class="output-box">
+        En attente de génération...
     </div>
 
-    <div class="gen-panel">
-        <label>Générateur de phrases (Mots & Ponctuation) :</label>
-        <button onclick="genererPhraseMots()" style="background-color: #1b5e20; margin-top: 5px;">Générer une phrase</button>
-        <div id="resultat-generation" class="output-box">En attente de génération...</div>
-    </div>
-    
-    <div id="status" class="status-line">Sélectionne ton fichier JSON français pour commencer.</div>
-    
-    <div class="control-panel">
-        <h2>Mots et liaisons mémorisées</h2>
-        <div id="chart">Liez un fichier pour voir les stats...</div>
+</div>
+
+<div id="status" class="status-line">
+    Sélectionne ou crée ton fichier JSON français pour commencer.
+</div>
+
+<div class="stats-panel">
+
+    <h2>📊 Statistiques de l'IA</h2>
+
+    <div class="stat-grid">
+
+        <div class="stat">
+            <div class="stat-title">TOKENS APPRIS</div>
+            <div class="stat-value" id="stat-tokens">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-title">VOCABULAIRE</div>
+            <div class="stat-value" id="stat-vocabulaire">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-title">CONTEXTES</div>
+            <div class="stat-value" id="stat-contextes">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-title">LIENS</div>
+            <div class="stat-value" id="stat-liens">0</div>
+        </div>
+
     </div>
 
-    <script>
-        let fichierHandle = null;
-        let memoireMots = {}; 
-        let motsTotauxAppris = 0;
-        let enCoursDApprentissage = false;
+    <div id="chart">
+        Aucune donnée.
+    </div>
 
-        // Sources riches en français (Livres Gutenberg classiques libres de droits)
-        const sourcesLivresFR = [
-            "https://www.gutenberg.org/files/13846/13846-0.txt", // Le Petit Prince (ou équivalent classique)
-            "https://www.gutenberg.org/files/4650/4650-0.txt"   // Les Contes de Grimm / Littérature
+</div>
+
+<div class="control-panel">
+
+    <h2>ℹ️ Fonctionnement</h2>
+
+    <div class="small">
+
+        Cette IA n'utilise pas ChatGPT ni un modèle neuronal.
+        Elle construit progressivement une mémoire statistique du français.
+
+        <br><br>
+
+        Exemple :
+
+        <br><br>
+
+        <b>le → chat → mange</b>
+
+        <br>
+
+        devient :
+
+        <br><br>
+
+        <b>"le + chat" → "mange"</b>
+
+        <br><br>
+
+        Plus elle lit de textes, plus elle accumule de relations entre les mots.
+
+    </div>
+
+</div>
+
+<script>
+
+/* ============================================================
+   VARIABLES PRINCIPALES
+============================================================ */
+
+let fichierHandle = null;
+
+let memoire = {
+
+    version: 2,
+
+    tokens_appris: 0,
+
+    vocabulaire: {},
+
+    transitions: {},
+
+    debuts: {}
+
+};
+
+let enCoursDApprentissage = false;
+
+
+/* ============================================================
+   SOURCES
+============================================================ */
+
+const SOURCES_WIKIPEDIA = [
+    "https://fr.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*"
+];
+
+
+/* ============================================================
+   UTILITAIRES
+============================================================ */
+
+function nombreFormate(nombre) {
+
+    return Number(nombre || 0).toLocaleString("fr-FR");
+
+}
+
+
+function attendre(ms) {
+
+    return new Promise(resolve => setTimeout(resolve, ms));
+
+}
+
+
+/* ============================================================
+   CRÉER / OUVRIR LE FICHIER
+============================================================ */
+
+async function creerOuLierMemoire() {
+
+    try {
+
+        if ("showOpenFilePicker" in window) {
+
+            const choix = confirm(
+                "OK = ouvrir un fichier JSON existant\n\n" +
+                "Annuler = créer une nouvelle mémoire"
+            );
+
+            if (choix) {
+
+                const handles = await window.showOpenFilePicker({
+
+                    types: [{
+                        description: "Mémoire IA JSON",
+                        accept: {
+                            "application/json": [".json"]
+                        }
+                    }],
+
+                    multiple: false
+
+                });
+
+                fichierHandle = handles[0];
+
+                const fichier = await fichierHandle.getFile();
+
+                const texte = await fichier.text();
+
+                if (texte.trim()) {
+
+                    const donnees = JSON.parse(texte);
+
+                    memoire = normaliserMemoire(donnees);
+
+                }
+
+                document.getElementById("btn-fichier").innerText =
+                    "✔ Mémoire ouverte";
+
+                afficherStats();
+
+                afficherStatus(
+                    "Mémoire JSON chargée avec succès."
+                );
+
+                return;
+
+            } else {
+
+                fichierHandle =
+                    await window.showSaveFilePicker({
+
+                        suggestedName:
+                            "memoire_mots_fr.json",
+
+                        types: [{
+                            description: "Mémoire IA JSON",
+                            accept: {
+                                "application/json": [".json"]
+                            }
+                        }]
+
+                    });
+
+                memoire = creerMemoireVide();
+
+                await ecrireFichierDirect();
+
+                document.getElementById("btn-fichier").innerText =
+                    "✔ Nouvelle mémoire créée";
+
+                afficherStats();
+
+                afficherStatus(
+                    "Nouvelle mémoire créée. Prête pour l'apprentissage."
+                );
+
+                return;
+            }
+
+        }
+
+        /*
+         * Solution de secours pour les navigateurs
+         * qui ne supportent pas File System Access API.
+         */
+
+        alert(
+            "Ton navigateur ne permet pas la création directe " +
+            "de fichiers depuis cette page.\n\n" +
+            "Utilise Chrome ou Edge sur ordinateur pour profiter " +
+            "de la sauvegarde directe."
+        );
+
+    } catch (erreur) {
+
+        console.error(erreur);
+
+        afficherStatus(
+            "Opération annulée ou erreur lors de l'ouverture du fichier."
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   MÉMOIRE VIDE
+============================================================ */
+
+function creerMemoireVide() {
+
+    return {
+
+        version: 2,
+
+        tokens_appris: 0,
+
+        vocabulaire: {},
+
+        transitions: {},
+
+        debuts: {}
+
+    };
+
+}
+
+
+/* ============================================================
+   NORMALISATION D'UNE ANCIENNE MÉMOIRE
+============================================================ */
+
+function normaliserMemoire(data) {
+
+    if (!data || typeof data !== "object") {
+
+        return creerMemoireVide();
+
+    }
+
+    /*
+     * Si ancienne structure détectée :
+     *
+     * memoire_mots:
+     * {
+     *    "le": {
+     *       "chat": 10
+     *    }
+     * }
+     *
+     * on la convertit en structure moderne.
+     */
+
+    if (data.memoire_mots && !data.transitions) {
+
+        const nouvelle = creerMemoireVide();
+
+        nouvelle.tokens_appris =
+            Number(data.mots_appris || 0);
+
+        for (const mot in data.memoire_mots) {
+
+            const suivants =
+                data.memoire_mots[mot];
+
+            if (!suivants) continue;
+
+            for (const suivant in suivants) {
+
+                const cle = "START|" + mot;
+
+                if (!nouvelle.transitions[cle]) {
+
+                    nouvelle.transitions[cle] = {};
+
+                }
+
+                nouvelle.transitions[cle][suivant] =
+                    Number(suivants[suivant]) || 0;
+
+            }
+
+        }
+
+        return nouvelle;
+
+    }
+
+    return {
+
+        version: data.version || 2,
+
+        tokens_appris:
+            Number(data.tokens_appris || 0),
+
+        vocabulaire:
+            data.vocabulaire || {},
+
+        transitions:
+            data.transitions || {},
+
+        debuts:
+            data.debuts || {}
+
+    };
+
+}
+
+
+/* ============================================================
+   SAUVEGARDE
+============================================================ */
+
+async function ecrireFichierDirect() {
+
+    if (!fichierHandle) return;
+
+    try {
+
+        const flux =
+            await fichierHandle.createWritable();
+
+        await flux.write(
+            JSON.stringify(
+                memoire,
+                null,
+                2
+            )
+        );
+
+        await flux.close();
+
+    } catch (erreur) {
+
+        console.error(
+            "Erreur sauvegarde :",
+            erreur
+        );
+
+        afficherStatus(
+            "⚠️ Erreur pendant la sauvegarde."
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+function afficherStatus(texte) {
+
+    document.getElementById("status").innerHTML = texte;
+
+}
+
+
+/* ============================================================
+   TOKENISATION FRANÇAISE
+============================================================ */
+
+function tokenizerFrancais(texte) {
+
+    texte = texte
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n");
+
+    /*
+     * On protège les apostrophes françaises.
+     */
+
+    texte = texte.replace(/[’]/g, "'");
+
+    /*
+     * Ponctuation isolée.
+     */
+
+    texte = texte.replace(
+        /([,.!?;:()[\]"«»])/g,
+        " $1 "
+    );
+
+    /*
+     * Tirets.
+     */
+
+    texte = texte.replace(
+        /(\s[-–—]\s)/g,
+        " - "
+    );
+
+    /*
+     * Espaces multiples.
+     */
+
+    texte = texte.replace(
+        /\s+/g,
+        " "
+    );
+
+    texte = texte.trim().toLowerCase();
+
+    /*
+     * On conserve les apostrophes à l'intérieur
+     * des mots :
+     *
+     * l'homme
+     * qu'il
+     * j'aime
+     */
+
+    const tokens = texte
+        .split(" ")
+        .filter(token => {
+
+            if (!token) return false;
+
+            /*
+             * On enlève certains caractères parasites.
+             */
+
+            token = token.trim();
+
+            return token.length > 0;
+
+        });
+
+    return tokens;
+
+}
+
+
+/* ============================================================
+   WIKIPEDIA
+============================================================ */
+
+async function fetchWikiFR() {
+
+    try {
+
+        const url =
+            SOURCES_WIKIPEDIA[0];
+
+        const res =
+            await fetch(url);
+
+        if (!res.ok) {
+
+            throw new Error(
+                "Erreur Wikipedia"
+            );
+
+        }
+
+        const data =
+            await res.json();
+
+        if (
+            !data.query ||
+            !data.query.random ||
+            !data.query.random.length
+        ) {
+
+            throw new Error(
+                "Aucun article"
+            );
+
+        }
+
+        const titre =
+            data.query.random[0].title;
+
+        const contentUrl =
+            "https://fr.wikipedia.org/w/api.php" +
+            "?action=query" +
+            "&prop=extracts" +
+            "&explaintext=1" +
+            "&exsectionformat=plain" +
+            "&titles=" +
+            encodeURIComponent(titre) +
+            "&format=json" +
+            "&origin=*";
+
+        const contentRes =
+            await fetch(contentUrl);
+
+        const contentData =
+            await contentRes.json();
+
+        const pages =
+            contentData.query.pages;
+
+        const page =
+            Object.values(pages)[0];
+
+        const extract =
+            page.extract || "";
+
+        if (extract.length < 200) {
+
+            return null;
+
+        }
+
+        return extract;
+
+    } catch (erreur) {
+
+        console.warn(
+            "Wikipedia indisponible",
+            erreur
+        );
+
+        return null;
+
+    }
+
+}
+
+
+/* ============================================================
+   APPRENTISSAGE
+============================================================ */
+
+async function apprendreDepuisTexte(texte) {
+
+    const mots =
+        tokenizerFrancais(texte);
+
+    if (mots.length < 3) {
+
+        return 0;
+
+    }
+
+    /*
+     * Premier mot comme possibilité de début.
+     */
+
+    const premier =
+        mots[0];
+
+    if (!memoire.debuts[premier]) {
+
+        memoire.debuts[premier] = 0;
+
+    }
+
+    memoire.debuts[premier]++;
+
+    /*
+     * Vocabulaire.
+     */
+
+    for (const mot of mots) {
+
+        if (!memoire.vocabulaire[mot]) {
+
+            memoire.vocabulaire[mot] = 0;
+
+        }
+
+        memoire.vocabulaire[mot]++;
+
+    }
+
+    /*
+     * 3-GRAMMES
+     *
+     * mot précédent + mot actuel
+     *                ↓
+     *          mot suivant
+     */
+
+    for (let i = 0; i < mots.length - 2; i++) {
+
+        if (!enCoursDApprentissage) {
+
+            break;
+
+        }
+
+        const mot1 = mots[i];
+
+        const mot2 = mots[i + 1];
+
+        const suivant = mots[i + 2];
+
+        const contexte =
+            mot1 + "|" + mot2;
+
+        if (!memoire.transitions[contexte]) {
+
+            memoire.transitions[contexte] = {};
+
+        }
+
+        if (
+            !memoire.transitions[contexte][suivant]
+        ) {
+
+            memoire.transitions[contexte][suivant] = 0;
+
+        }
+
+        memoire.transitions[contexte][suivant]++;
+
+        memoire.tokens_appris++;
+
+        /*
+         * Rafraîchissement de l'interface
+         */
+
+        if (
+            memoire.tokens_appris % 500 === 0
+        ) {
+
+            afficherStats();
+
+            await attendre(0);
+
+        }
+
+    }
+
+    return mots.length;
+
+}
+
+
+/* ============================================================
+   LANCER APPRENTISSAGE
+============================================================ */
+
+async function lancerEntrainementMots() {
+
+    if (!fichierHandle) {
+
+        afficherStatus(
+            "❌ Sélectionne ou crée d'abord un fichier JSON."
+        );
+
+        return;
+
+    }
+
+    if (enCoursDApprentissage) {
+
+        return;
+
+    }
+
+    enCoursDApprentissage = true;
+
+    document.getElementById("btn-start").disabled = true;
+
+    afficherStatus(
+        "📚 <b>Apprentissage en cours...</b>"
+    );
+
+    while (enCoursDApprentissage) {
+
+        afficherStatus(
+            "📖 <b>Recherche d'un texte français...</b><br>" +
+            "Tokens appris : " +
+            nombreFormate(memoire.tokens_appris)
+        );
+
+        const texte =
+            await fetchWikiFR();
+
+        if (!enCoursDApprentissage) {
+
+            break;
+
+        }
+
+        if (!texte) {
+
+            afficherStatus(
+                "⚠️ Source temporairement indisponible. Nouvelle tentative..."
+            );
+
+            await attendre(1500);
+
+            continue;
+
+        }
+
+        const tokens =
+            await apprendreDepuisTexte(
+                texte
+            );
+
+        afficherStatus(
+            "🧠 <b>Texte appris.</b><br>" +
+            tokens +
+            " tokens analysés.<br>" +
+            "Mémoire totale : " +
+            nombreFormate(
+                memoire.tokens_appris
+            )
+        );
+
+        afficherStats();
+
+        /*
+         * Sauvegarde après chaque texte.
+         */
+
+        await ecrireFichierDirect();
+
+        if (!enCoursDApprentissage) {
+
+            break;
+
+        }
+
+        await attendre(500);
+
+    }
+
+    document.getElementById("btn-start").disabled =
+        false;
+
+    afficherStats();
+
+}
+
+
+/* ============================================================
+   ARRÊTER
+============================================================ */
+
+async function arreterEntrainement() {
+
+    if (!enCoursDApprentissage) {
+
+        await ecrireFichierDirect();
+
+        afficherStatus(
+            "⏸️ Pas d'apprentissage actif. Mémoire sauvegardée."
+        );
+
+        return;
+
+    }
+
+    enCoursDApprentissage = false;
+
+    afficherStatus(
+        "💾 Arrêt demandé. Sauvegarde..."
+    );
+
+    await ecrireFichierDirect();
+
+    afficherStats();
+
+    document.getElementById("btn-start").disabled =
+        false;
+
+    afficherStatus(
+        "⏸️ <b>Apprentissage en pause.</b><br>" +
+        "Mémoire sauvegardée."
+    );
+
+}
+
+
+/* ============================================================
+   TIRAGE PONDÉRÉ
+============================================================ */
+
+function choixPondere(options) {
+
+    if (!options || options.length === 0) {
+
+        return null;
+
+    }
+
+    let total = 0;
+
+    for (const [, poids] of options) {
+
+        total += Number(poids);
+
+    }
+
+    if (total <= 0) {
+
+        return options[
+            Math.floor(
+                Math.random() * options.length
+            )
+        ][0];
+
+    }
+
+    let hasard =
+        Math.random() * total;
+
+    for (const [mot, poids] of options) {
+
+        hasard -= Number(poids);
+
+        if (hasard <= 0) {
+
+            return mot;
+
+        }
+
+    }
+
+    return options[options.length - 1][0];
+
+}
+
+
+/* ============================================================
+   CHOISIR UN MOT DE DÉPART
+============================================================ */
+
+function choisirDebut() {
+
+    const options =
+        Object.entries(
+            memoire.debuts
+        );
+
+    if (!options.length) {
+
+        const vocab =
+            Object.keys(
+                memoire.vocabulaire
+            );
+
+        if (!vocab.length) {
+
+            return null;
+
+        }
+
+        return vocab[
+            Math.floor(
+                Math.random() * vocab.length
+            )
         ];
 
-        async function selectionnerFichierMemoire() {
-            try {
-                [fichierHandle] = await window.showOpenFilePicker({ 
-                    types: [{ description: 'Fichiers JSON', accept: { 'application/json': ['.json'] } }] 
-                });
-                const file = await fichierHandle.getFile();
-                const textData = await file.text();
-                const data = JSON.parse(textData);
-                
-                motsTotauxAppris = data.mots_appris || 0;
-                memoireMots = data.memoire_mots || {};
+    }
 
-                document.getElementById("btn-fichier").innerText = "✔ Fichier lié (" + motsTotauxAppris + " éléments)";
-                document.getElementById("status").innerText = "Fichier chargé avec succès. Prêt à accumuler du vocabulaire !";
-                majAffichage();
-            } catch (e) { 
-                document.getElementById("status").innerText = "Sélection annulée."; 
-            }
-        }
+    return choixPondere(options);
 
-        async function ecrireFichierDirect() {
-            if (!fichierHandle) return;
-            try {
-                const flux = await fichierHandle.createWritable();
-                await flux.write(JSON.stringify({ mots_appris: motsTotauxAppris, memoire_mots: memoireMots }, null, 2));
-                await flux.close();
-            } catch (e) {
-                console.error("Erreur d'écriture.");
-            }
-        }
+}
 
-        async function fetchWikiFR() {
-            try {
-                const url = "https://fr.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=1&format=json&origin=*";
-                const res = await fetch(url);
-                const data = await res.json();
-                const title = data.query.random[0].title;
 
-                const contentUrl = `https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext&titles=${encodeURIComponent(title)}&format=json&origin=*`;
-                const contentRes = await fetch(contentUrl);
-                const contentData = await contentRes.json();
-                const pages = contentData.query.pages;
-                const extract = Object.values(pages)[0].extract;
+/* ============================================================
+   GÉNÉRATION
+============================================================ */
 
-                return extract && extract.length > 200 ? extract : "Apprentissage des structures textuelles françaises.";
-            } catch (e) {
-                return "Erreur réseau Wikipédia.";
-            }
-        }
+function genererPhraseMots() {
 
-        async function fetchBookFR() {
-            try {
-                const randomBook = sourcesLivresFR[Math.floor(Math.random() * sourcesLivresFR.length)];
-                const res = await fetch(randomBook);
-                const text = await res.text();
-                return text.length > 500 ? text.substring(0, 50000) : "Littérature classique française.";
-            } catch (e) {
-                return "Module de secours littéraire.";
-            }
-        }
+    const contextes =
+        Object.keys(
+            memoire.transitions
+        );
 
-        async function lancerEntrainementMots() {
-            if (!fichierHandle) {
-                document.getElementById("status").innerText = "Erreur : Sélectionne d'abord un fichier JSON !";
-                return;
-            }
-            if (enCoursDApprentissage) return;
-            enCoursDApprentissage = true;
-            
-            while (enCoursDApprentissage) {
-                // Alternance entre Wikipédia FR et les livres classiques
-                let texteSource = Math.random() > 0.4 ? await fetchWikiFR() : await fetchBookFR();
-                
-                document.getElementById("status").innerHTML = `📖 <b>Apprentissage en cours...</b> (Éléments traités : ${motsTotauxAppris})`;
+    if (!contextes.length) {
 
-                // TRAITEMENT DE LA PONCTUATION ET DES APOSTROPHES
-                // On isole les signes (.,;:?!') pour qu'ils soient traités comme des mots à part entière
-                let texteNettoye = texteSource.toLowerCase()
-                    .replace(/['’]/g, "' ") // Sépare proprement les apostrophes (ex: "l'homme" devient "l' homme" ou "l ' homme")
-                    .replace(/([.,\/#!$%\^&\*;:{}=\-_`~()?])/g, " $1 ") // Isole la ponctuation
-                    .replace(/\s+/g, " "); // Nettoie les espaces multiples
+        document.getElementById(
+            "resultat-generation"
+        ).innerText =
+            "❌ La mémoire est vide. Lance d'abord l'apprentissage.";
 
-                let mots = texteNettoye.split(' ').filter(m => m.length > 0);
+        return;
 
-                for (let i = 0; i < mots.length - 1; i++) {
-                    if (!enCoursDApprentissage) break;
-                    motsTotauxAppris++;
-                    
-                    let elementActuel = mots[i];
-                    let elementSuivant = mots[i + 1];
+    }
 
-                    if (!memoireMots[elementActuel]) memoireMots[elementActuel] = {};
-                    if (!memoireMots[elementActuel][elementSuivant]) memoireMots[elementActuel][elementSuivant] = 0;
-                    memoireMots[elementActuel][elementSuivant]++;
+    const longueur =
+        Number(
+            document.getElementById(
+                "longueurPhrase"
+            ).value
+        );
 
-                    if (motsTotauxAppris % 300 === 0) majAffichage();
-                }
+    let premier =
+        choisirDebut();
 
-                if (enCoursDApprentissage) {
-                    await ecrireFichierDirect();
-                    majAffichage();
-                    document.getElementById("btn-fichier").innerText = "✔ Sauvegardé (" + motsTotauxAppris + " éléments)";
-                    await new Promise(r => setTimeout(r, 400));
-                }
-            }
-        }
+    if (!premier) {
 
-        async function arreterEntrainement() {
-            enCoursDApprentissage = false;
-            await ecrireFichierDirect();
-            document.getElementById("status").innerText = "En pause. Fichier sauvegardé.";
-        }
+        document.getElementById(
+            "resultat-generation"
+        ).innerText =
+            "Pas assez de données.";
 
-        function majAffichage() {
-            let html = "";
-            let keys = Object.keys(memoireMots).slice(0, 6);
-            keys.forEach(mot => {
-                let totalSuivants = Object.values(memource = memoireMots[mot]).reduce((a, b) => a + b, 0);
-                html += `<div class="bar-row">
-                    <div class="bar-label" title="${mot}">${mot}</div>
-                    <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
-                    <div class="bar-stats">${totalSuivants} liens</div>
-                </div>`;
-            });
-            document.getElementById("chart").innerHTML = html || "En attente de données...";
-        }
+        return;
 
-        function genererPhraseMots() {
-            const cles = Object.keys(memoireMots);
-            if (cles.length === 0) {
-                document.getElementById("resultat-generation").innerText = "Aucun mot en mémoire. Lance un peu d'apprentissage !";
-                return;
+    }
+
+    /*
+     * Évite de commencer par de la ponctuation.
+     */
+
+    let compteur = 0;
+
+    while (
+        /^[,.!?;:()[\]"«»]$/.test(premier) &&
+        compteur < 20
+    ) {
+
+        premier =
+            choisirDebut();
+
+        compteur++;
+
+    }
+
+    let resultat = [premier];
+
+    /*
+     * Deuxième mot :
+     * on cherche les contextes START|premier
+     */
+
+    let candidatsDeuxieme = [];
+
+    for (
+        const contexte in memoire.transitions
+    ) {
+
+        if (
+            contexte.startsWith(
+                "START|" + premier
+            )
+        ) {
+
+            const suivants =
+                memoire.transitions[contexte];
+
+            for (
+                const mot in suivants
+            ) {
+
+                candidatsDeuxieme.push([
+                    mot,
+                    suivants[mot]
+                ]);
+
             }
 
-            let courant = cles[Math.floor(Math.random() * cles.length)];
-            let resultat = [courant];
-
-            for (let i = 0; i < 20; i++) {
-                let suivants = memoireMots[courant];
-                if (!suivants || Object.keys(suivants).length === 0) {
-                    courant = cles[Math.floor(Math.random() * cles.length)];
-                } else {
-                    let options = Object.entries(suivants);
-                    options.sort((a, b) => b[1] - a[1]);
-                    
-                    let choixPool = options.slice(0, Math.min(3, options.length));
-                    courant = choixPool[Math.floor(Math.random() * choixPool.length)][0];
-                }
-                resultat.push(courant);
-
-                // Arrêt automatique si on tombe sur un point ou un point d'exclamation
-                if (courant === '.' || courant === '!') break;
-            }
-            
-            // NETTOYAGE FINAL DU TEXTE GÉNÉRÉ
-            let texteBrut = resultat.join(' ');
-            let textePropre = texteBrut
-                .replace(/\s+([.,\/#!$%\^&\*;:{}=\-_`~()?])/g, '$1') // Recolle la ponctuation au mot précédent
-                .replace(/'\s+/g, "'") // Recolle les apostrophes (ex: "l ' homme" devient "l'homme")
-                .replace(/([.!?])\s*([a-zàâäéèêëîïôöùûüç])/g, (match, p1, p2) => p1 + ' ' + p2.toUpperCase()); // Majuscule après un point
-
-            document.getElementById("resultat-generation").innerText = textePropre;
         }
-    </script>
+
+    }
+
+    let deuxieme =
+        choixPondere(
+            candidatsDeuxieme
+        );
+
+    /*
+     * Si aucun deuxième mot,
+     * prendre un mot du vocabulaire.
+     */
+
+    if (!deuxieme) {
+
+        const vocab =
+            Object.keys(
+                memoire.vocabulaire
+            );
+
+        deuxieme =
+            vocab[
+                Math.floor(
+                    Math.random() * vocab.length
+                )
+            ];
+
+    }
+
+    resultat.push(deuxieme);
+
+    /*
+     * Génération 3-grammes
+     */
+
+    for (
+        let i = 2;
+        i < longueur;
+        i++
+    ) {
+
+        const mot1 =
+            resultat[i - 2];
+
+        const mot2 =
+            resultat[i - 1];
+
+        const contexte =
+            mot1 + "|" + mot2;
+
+        const suivants =
+            memoire.transitions[contexte];
+
+        if (
+            !suivants ||
+            Object.keys(suivants).length === 0
+        ) {
+
+            /*
+             * On cherche un nouveau contexte
+             * raisonnable.
+             */
+
+            let nouveauxContextes =
+                Object.keys(
+                    memoire.transitions
+                ).filter(
+                    c =>
+                        c.startsWith(
+                            mot2 + "|"
+                        )
+                );
+
+            if (
+                nouveauxContextes.length === 0
+            ) {
+
+                break;
+
+            }
+
+            const contexteAleatoire =
+                nouveauxContextes[
+                    Math.floor(
+                        Math.random() *
+                        nouveauxContextes.length
+                    )
+                ];
+
+            const nouveauMot =
+                contexteAleatoire.split("|")[1];
+
+            resultat.push(
+                nouveauMot
+            );
+
+            continue;
+
+        }
+
+        const options =
+            Object.entries(
+                suivants
+            );
+
+        let prochain =
+            choixPondere(options);
+
+        if (!prochain) {
+
+            break;
+
+        }
+
+        resultat.push(prochain);
+
+        /*
+         * Arrêt naturel.
+         */
+
+        if (
+            prochain === "." ||
+            prochain === "!" ||
+            prochain === "?"
+        ) {
+
+            /*
+             * On arrête avec une probabilité
+             * élevée après une ponctuation.
+             */
+
+            if (
+                Math.random() < 0.85
+            ) {
+
+                break;
+
+            }
+
+        }
+
+    }
+
+    const phrase =
+        reconstruirePhrase(
+            resultat
+        );
+
+    document.getElementById(
+        "resultat-generation"
+    ).innerText =
+        phrase;
+
+}
+
+
+/* ============================================================
+   RECONSTRUIRE UNE PHRASE
+============================================================ */
+
+function reconstruirePhrase(tokens) {
+
+    if (!tokens.length) {
+
+        return "";
+
+    }
+
+    let texte = "";
+
+    const ponctuationSansEspace = [
+        ".",
+        ",",
+        "!",
+        "?",
+        ";",
+        ":",
+        ")",
+        "]"
+    ];
+
+    const ponctuationOuvrante = [
+        "(",
+        "[",
+        "«"
+    ];
+
+    for (
+        let i = 0;
+        i < tokens.length;
+        i++
+    ) {
+
+        const token =
+            tokens[i];
+
+        if (i === 0) {
+
+            texte += token;
+
+            continue;
+
+        }
+
+        const precedent =
+            tokens[i - 1];
+
+        /*
+         * Apostrophes :
+         *
+         * l'homme
+         * qu'il
+         */
+
+        if (
+            precedent.endsWith("'")
+        ) {
+
+            texte += token;
+
+            continue;
+
+        }
+
+        /*
+         * Ponctuation française
+         */
+
+        if (
+            ponctuationSansEspace.includes(
+                token
+            )
+        ) {
+
+            texte += token;
+
+            continue;
+
+        }
+
+        /*
+         * Parenthèse ouvrante
+         */
+
+        if (
+            ponctuationOuvrante.includes(
+                precedent
+            )
+        ) {
+
+            texte += token;
+
+            continue;
+
+        }
+
+        /*
+         * Apostrophe seule.
+         */
+
+        if (
+            token === "'"
+        ) {
+
+            texte += token;
+
+            continue;
+
+        }
+
+        texte += " " + token;
+
+    }
+
+    /*
+     * Nettoyage
+     */
+
+    texte = texte
+        .replace(/\s+/g, " ")
+        .trim();
+
+    /*
+     * Majuscule au début.
+     */
+
+    if (texte.length > 0) {
+
+        texte =
+            texte.charAt(0).toUpperCase() +
+            texte.slice(1);
+
+    }
+
+    /*
+     * Majuscule après . ! ?
+     */
+
+    texte = texte.replace(
+        /([.!?]\s+)([a-zàâäéèêëîïôöùûüç])/g,
+        function(
+            match,
+            ponctuation,
+            lettre
+        ) {
+
+            return (
+                ponctuation +
+                lettre.toUpperCase()
+            );
+
+        }
+    );
+
+    /*
+     * Correction de quelques espaces.
+     */
+
+    texte = texte
+        .replace(/\(\s+/g, "(")
+        .replace(/\s+\)/g, ")")
+        .replace(/\[\s+/g, "[")
+        .replace(/\s+\]/g, "]");
+
+    return texte;
+
+}
+
+
+/* ============================================================
+   STATISTIQUES
+============================================================ */
+
+function afficherStats() {
+
+    const vocabulaire =
+        Object.keys(
+            memoire.vocabulaire
+        ).length;
+
+    const contextes =
+        Object.keys(
+            memoire.transitions
+        ).length;
+
+    let liens = 0;
+
+    for (
+        const contexte in memoire.transitions
+    ) {
+
+        liens += Object.keys(
+            memoire.transitions[contexte]
+        ).length;
+
+    }
+
+    document.getElementById(
+        "stat-tokens"
+    ).innerText =
+        nombreFormate(
+            memoire.tokens_appris
+        );
+
+    document.getElementById(
+        "stat-vocabulaire"
+    ).innerText =
+        nombreFormate(
+            vocabulaire
+        );
+
+    document.getElementById(
+        "stat-contextes"
+    ).innerText =
+        nombreFormate(
+            contextes
+        );
+
+    document.getElementById(
+        "stat-liens"
+    ).innerText =
+        nombreFormate(
+            liens
+        );
+
+    afficherTopMots();
+
+}
+
+
+/* ============================================================
+   TOP MOTS
+============================================================ */
+
+function afficherTopMots() {
+
+    const mots =
+        Object.entries(
+            memoire.vocabulaire
+        );
+
+    if (!mots.length) {
+
+        document.getElementById(
+            "chart"
+        ).innerText =
+            "Aucune donnée.";
+
+        return;
+
+    }
+
+    mots.sort(
+        (a, b) =>
+            b[1] - a[1]
+    );
+
+    const top =
+        mots.slice(0, 10);
+
+    const maximum =
+        top[0][1];
+
+    let html = "";
+
+    for (
+        const [mot, nombre] of top
+    ) {
+
+        const pourcentage =
+            (
+                nombre /
+                maximum
+            ) * 100;
+
+        html += `
+            <div class="bar-row">
+
+                <div
+                    class="bar-label"
+                    title="${escapeHTML(mot)}">
+                    ${escapeHTML(mot)}
+                </div>
+
+                <div class="bar-track">
+
+                    <div
+                        class="bar-fill"
+                        style="width:${pourcentage}%">
+                    </div>
+
+                </div>
+
+                <div class="bar-stats">
+                    ${nombreFormate(nombre)}
+                </div>
+
+            </div>
+        `;
+
+    }
+
+    document.getElementById(
+        "chart"
+    ).innerHTML =
+        html;
+
+}
+
+
+/* ============================================================
+   SÉCURITÉ AFFICHAGE
+============================================================ */
+
+function escapeHTML(texte) {
+
+    return String(texte)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ============================================================
+   INITIALISATION
+============================================================ */
+
+afficherStats();
+
+</script>
+
 </body>
 </html>
