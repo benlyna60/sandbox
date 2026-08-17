@@ -66,12 +66,12 @@
         /* INTERFACE GÉNÉRATEUR & ENTRAÎNEMENT */
         .prompt-container { background: #181818; border: 1px solid #2a2a2a; border-radius: 10px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .prompt-textarea { width: 100%; height: 90px; background: #121212; border: 1px solid #3a3a3a; border-radius: 6px; padding: 12px; color: #fff; font-size: 14px; resize: vertical; }
+        .prompt-actions { display: flex; gap: 10px; margin-top: 10px; }
         .output-code { background: #0b0b0b; color: #4ec9b0; border: 1px solid #2a2a2a; padding: 20px; border-radius: 8px; min-height: 200px; font-family: 'Consolas', 'Courier New', monospace; font-size: 13px; white-space: pre-wrap; word-break: break-all; overflow-x: auto; margin-top: 15px; }
         
         /* ZONE DE FEEDBACK ENTRAÎNEUR */
         .feedback-box { margin-top: 20px; background: #202020; border: 1px solid #2a2a2a; padding: 15px; border-radius: 8px; display: none; }
         .feedback-box.visible { display: block; }
-        .action-row { display: flex; gap: 10px; margin-top: 12px; }
     </style>
 </head>
 <body>
@@ -156,8 +156,13 @@
         <div id="tab-generateur" class="tab-content">
             <div class="prompt-container">
                 <h2 style="color: #4ec9b0; margin-top: 0; font-size: 18px;">⚡ Générateur & Mode Entraîneur</h2>
+                
                 <textarea id="userInput" class="prompt-textarea" placeholder="Que voulez-vous générer ? (ex: en python, créer une fonction de validation...)"></textarea>
-                <button onclick="genererCodeLocal()" style="margin-top: 10px; padding: 10px 20px; font-size: 14px;">🚀 Générer par synthèse locale</button>
+                
+                <div class="prompt-actions">
+                    <button onclick="genererCodeLocal()" style="flex: 1; padding: 10px; font-size: 14px;">🚀 Générer par synthèse locale</button>
+                    <button onclick="effacerPrompt()" style="background: #333; color: #ccc; width: 100px; font-size: 14px;" title="Effacer la saisie">🧹 Effacer</button>
+                </div>
                 
                 <div id="resultatGeneration" class="output-code">/* Le code généré apparaîtra ici... */</div>
 
@@ -207,6 +212,10 @@
             }
         }
 
+        function effacerPrompt() {
+            document.getElementById('userInput').value = "";
+        }
+
         function mettreAJourGraphiques() {
             document.getElementById('statFiles').textContent = stats.filesCount;
             document.getElementById('statLines').textContent = stats.totalLines;
@@ -224,15 +233,20 @@
         }
 
         function analyserEtStocker(text, filename) {
-            if (filename.toLowerCase().includes('.min.')) {
-                log(`🚫 Ignoré (minifié) : ${filename}`);
+            if (filename.toLowerCase().includes('.min.') || filename.toLowerCase().includes('config')) {
                 return;
             }
 
             const lines = text.split('\n');
-            const filteredLines = lines.map(l => l.trim()).filter(l => l.length > 5 && l.length < 150);
+            // Filtre amélioré pour retenir en priorité les lignes de code (présence de symboles techniques)
+            const filteredLines = lines.map(l => l.trim()).filter(l => {
+                if (l.length < 6 || l.length > 140) return false;
+                // Exclure le texte brut évident (sans aucun signe de code ou de ponctuation technique)
+                const contientCode = /[={}();:]/.test(l);
+                return contientCode;
+            });
             
-            if (filteredLines.length < 5) return;
+            if (filteredLines.length < 3) return;
 
             memoireCode.push({
                 source: filename,
@@ -257,7 +271,6 @@
             else if (fn.endsWith('.go')) stats.goCount++;
 
             mettreAJourGraphiques();
-            log(`✅ Appris : ${filename} (${filteredLines.length} patterns)`);
         }
 
         function chargerMemoireJSON(event) {
@@ -332,29 +345,32 @@
             else if (query.includes('html')) langageCible = "html";
             else if (query.includes('sql')) langageCible = "sql";
 
-            let modeleTrouve = memoireCode.find(item => {
+            // Sélection intelligente d'un modèle correspondant au langage (ou aléatoire si non trouvé)
+            const candidatsLangage = memoireCode.filter(item => {
                 const fn = item.source.toLowerCase();
                 if (langageCible === "python" && fn.endsWith('.py')) return true;
                 if (langageCible === "javascript" && fn.endsWith('.js')) return true;
                 if (langageCible === "html" && (fn.endsWith('.html') || fn.endsWith('.htm'))) return true;
                 if (langageCible === "sql" && fn.endsWith('.sql')) return true;
                 return false;
-            }) || memoireCode[0];
+            });
 
-            let extraits = modeleTrouve.patterns.slice(0, 6).join('\n    ');
+            let modeleTrouve = candidatsLangage.length > 0 
+                ? candidatsLangage[Math.floor(Math.random() * candidatsLangage.length)]
+                : memoireCode[Math.floor(Math.random() * memoireCode.length)];
+
+            let extraits = modeleTrouve.patterns.slice(0, 5).join('\n    ');
 
             let codeGenere = `/* --- CODE GÉNÉRÉ PAR SYNTHÈSE LOCALE (${langageCible.toUpperCase()}) --- */\n`;
             codeGenere += `// Basé sur le modèle mémorisé : ${modeleTrouve.source}\n\n`;
 
             if (langageCible === "python") {
-                let nomFonction = query.replace(/[^a-zA-Z0-9]/g, '_') || "fonction_generee";
-                codeGenere += `def ${nomFonction}():\n`;
-                codeGenere += `    """\n    Synthèse automatique basée sur votre historique de code.\n    """\n`;
+                codeGenere += `def fonction_generee():\n`;
+                codeGenere += `    """\n    Synthèse automatique basée sur votre historique.\n    """\n`;
                 codeGenere += `    ${extraits}\n`;
                 codeGenere += `    return True\n`;
             } else if (langageCible === "javascript") {
-                let nomFonction = query.replace(/[^a-zA-Z0-9]/g, '') || "fonctionGeneree";
-                codeGenere += `function ${nomFonction}() {\n`;
+                codeGenere += `function maFonction() {\n`;
                 codeGenere += `    // Logique assemblée depuis la mémoire\n`;
                 codeGenere += `    ${extraits}\n`;
                 codeGenere += `}\n`;
@@ -371,7 +387,7 @@
         function copierCodeGenere() {
             const codeText = document.getElementById('resultatGeneration').textContent;
             navigator.clipboard.writeText(codeText).then(() => {
-                alert("📋 Code copié dans le presse-papier ! Vous pouvez le coller ici pour test.");
+                alert("📋 Code copié dans le presse-papier !");
             });
         }
 
@@ -381,7 +397,7 @@
             if(!code) return alert("Veuillez entrer le code corrigé.");
             analyserEtStocker(code, name);
             document.getElementById('feedbackCode').value = "";
-            alert("✨ Correction réinjectée avec succès dans la mémoire de l'application !");
+            alert("✨ Correction réinjectée avec succès dans la mémoire !");
         }
 
         document.getElementById('zipInput').addEventListener('change', async (e) => {
@@ -398,7 +414,7 @@
                     analyserEtStocker(content, relativePath);
                 }
             }
-            log("✅ ZIP ingéré avec succès !");
+            log("✅ ZIP ingéré et filtré avec succès !");
         });
 
         function sauvegarderMemoireJSON() {
