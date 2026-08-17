@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Apprenti Codeur - Studio & Entraîneur Local</title>
-    <!-- Utilisation d'un CDN fiable et vérifié pour JSZip -->
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <style>
         * { box-sizing: border-box; }
@@ -37,7 +36,7 @@
         input:focus, textarea:focus { outline: none; border-color: #007acc; }
         button { cursor: pointer; background: #007acc; border: none; font-weight: 600; width: auto; transition: background 0.2s; }
         button:hover { background: #005999; }
-        pre { background: #0b0b0b; padding: 15px; border-radius: 6px; overflow-x: auto; height: 160px; font-size: 12px; border: 1px solid #222; color: #ce9178; }
+        pre { background: #0b0b0b; padding: 15px; border-radius: 6px; overflow-x: auto; height: 160px; font-size: 12px; border: 1px solid #222; color: #ce9178; white-space: pre; tab-size: 4; }
         .success { background: #2ea043; width: 100%; font-size: 14px; }
         .success:hover { background: #238636; }
 
@@ -68,7 +67,7 @@
         .prompt-container { background: #181818; border: 1px solid #2a2a2a; border-radius: 10px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
         .prompt-textarea { width: 100%; height: 90px; background: #121212; border: 1px solid #3a3a3a; border-radius: 6px; padding: 12px; color: #fff; font-size: 14px; resize: vertical; }
         .prompt-actions { display: flex; gap: 10px; margin-top: 10px; }
-        .output-code { background: #0b0b0b; color: #4ec9b0; border: 1px solid #2a2a2a; padding: 20px; border-radius: 8px; min-height: 200px; font-family: 'Consolas', 'Courier New', monospace; font-size: 13px; white-space: pre-wrap; word-break: break-all; overflow-x: auto; margin-top: 15px; }
+        .output-code { background: #0b0b0b; color: #4ec9b0; border: 1px solid #2a2a2a; padding: 20px; border-radius: 8px; min-height: 200px; font-family: 'Consolas', 'Courier New', monospace; font-size: 13px; white-space: pre; tab-size: 4; word-break: normal; overflow-x: auto; margin-top: 15px; }
         
         /* ZONE DE FEEDBACK ENTRAÎNEUR */
         .feedback-box { margin-top: 20px; background: #202020; border: 1px solid #2a2a2a; padding: 15px; border-radius: 8px; display: none; }
@@ -103,8 +102,8 @@
 
         <div style="margin-bottom: 20px;">
             <h4 style="margin:0 0 8px 0; color:#ccc; font-size:14px;">✍️ Ajout Manuel Rapide</h4>
-            <input type="text" id="manualName" placeholder="Nom du fichier (ex: snippet.js)">
-            <textarea id="manualCode" rows="3" placeholder="Collez un bout de code..."></textarea>
+            <input type="text" id="manualName" placeholder="Nom du fichier (ex: snippet.py)">
+            <textarea id="manualCode" rows="3" placeholder="Collez un bout de code..." style="white-space: pre;"></textarea>
             <button onclick="ajouterMemoireManuelle()" style="background: #2ea043; width: 100%; margin-top: 8px;">Ajouter à la mémoire</button>
         </div>
 
@@ -124,7 +123,7 @@
                 <div class="stats-grid">
                     <div class="stat-card"><div>Fichiers Analysés</div><div id="statFiles" class="stat-number">0</div></div>
                     <div class="stat-card"><div>Lignes Traitées</div><div id="statLines" class="stat-number">0</div></div>
-                    <div class="stat-card"><div>Patterns Mémorisés</div><div id="statPatterns" class="stat-number">0</div></div>
+                    <div class="stat-card"><div>Blocs / Fonctions</div><div id="statPatterns" class="stat-number">0</div></div>
                 </div>
 
                 <div class="chart-container">
@@ -146,7 +145,7 @@
             <div class="box">
                 <h3 style="margin-top:0; font-size:16px;">📥 Ingestion Massive (ZIP Local)</h3>
                 <input type="file" id="zipInput" accept=".zip">
-                <p style="margin-bottom:0;"><small style="color: #888;">Prend en charge tous les langages configurés ci-dessus.</small></p>
+                <p style="margin-bottom:0;"><small style="color: #888;">Analyse structurelle et extraction chirurgicale des fonctions/blocs.</small></p>
             </div>
 
             <h3 style="font-size: 16px; margin-top: 20px;">Journal d'apprentissage :</h3>
@@ -158,24 +157,24 @@
             <div class="prompt-container">
                 <h2 style="color: #4ec9b0; margin-top: 0; font-size: 18px;">⚡ Générateur & Mode Entraîneur</h2>
                 
-                <textarea id="userInput" class="prompt-textarea" placeholder="Que voulez-vous générer ? (ex: en python, créer une fonction de validation...)"></textarea>
+                <textarea id="userInput" class="prompt-textarea" placeholder="Entrez un nom de fonction ou un mot-clé (ex: nom_fonction ou def calcul)..." style="white-space: pre;"></textarea>
                 
                 <div class="prompt-actions">
-                    <button onclick="genererCodeLocal()" style="flex: 1; padding: 10px; font-size: 14px;">🚀 Générer par synthèse dynamique</button>
+                    <button onclick="genererCodeLocal()" style="flex: 1; padding: 10px; font-size: 14px;">🚀 Extraire le bloc exact</button>
                     <button onclick="effacerPrompt()" style="background: #333; color: #ccc; width: 100px; font-size: 14px;" title="Effacer la saisie">🧹 Effacer</button>
                 </div>
                 
-                <div id="resultatGeneration" class="output-code">/* Le code généré apparaîtra ici... */</div>
+                <div id="resultatGeneration" class="output-code">/* Le code extrait apparaîtra ici sans filtre ni squelette... */</div>
 
                 <!-- ZONE DE FEEDBACK POUR L'ENTRAÎNEMENT -->
                 <div id="feedbackBox" class="feedback-box">
                     <h4 style="margin: 0 0 8px 0; color: #4ec9b0; font-size: 14px;">🎓 Espace Entraîneur (Feedback)</h4>
-                    <p style="margin: 0 0 10px 0; font-size: 12px; color: #aaa;">Copiez ce code pour le tester avec Gemini, puis injectez la version corrigée ou validée directement dans la mémoire de l'app.</p>
+                    <p style="margin: 0 0 10px 0; font-size: 12px; color: #aaa;">Copiez ce code, testez-le, puis réinjectez la version corrigée directement dans la mémoire.</p>
                     
-                    <button onclick="copierCodeGenere()" style="background: #2b2b2b; border: 1px solid #444; width: 100%; margin-bottom: 8px;">📋 Copier le code généré</button>
+                    <button onclick="copierCodeGenere()" style="background: #2b2b2b; border: 1px solid #444; width: 100%; margin-bottom: 8px;">📋 Copier le code extrait</button>
                     
-                    <input type="text" id="feedbackFilename" placeholder="Nom du fichier (ex: correction_fonction.py)">
-                    <textarea id="feedbackCode" rows="3" placeholder="Collez ici la correction validée par Gemini..."></textarea>
+                    <input type="text" id="feedbackFilename" placeholder="Nom du fichier (ex: fonction_extraite.py)">
+                    <textarea id="feedbackCode" rows="3" placeholder="Collez ici le code validé..." style="white-space: pre;"></textarea>
                     
                     <button onclick="reinjecterCorrection()" style="background: #2ea043; width: 100%;">✨ Réinjecter la correction dans la mémoire</button>
                 </div>
@@ -194,7 +193,6 @@
             javaCount: 0, phpCount: 0, goCount: 0
         };
 
-        // GESTION DU SON LOCAL (WEB AUDIO API - ZERO DEPENDANCE EXTERNE)
         let audioCtx = null;
 
         function initAudio() {
@@ -283,29 +281,92 @@
             });
         }
 
+        // PARSEUR STRUCTUREL ROBUSTE (Extraction chirurgicale des fonctions / blocs avec conservation totale des indentations et tabulations)
         function analyserEtStocker(text, filename) {
             if (filename.toLowerCase().includes('.min.') || filename.toLowerCase().includes('config')) {
                 return;
             }
 
-            const lines = text.split('\n');
-            const filteredLines = lines.map(l => l.replace(/\r$/, '')).filter(l => {
-                const trimmed = l.trim();
-                if (trimmed.length < 4 || trimmed.length > 140) return false;
-                const contientCode = /[={}();:]/.test(trimmed) || /^(def |class |function |const |let |var |if |for |while |import )/.test(trimmed);
-                return contientCode;
-            });
+            const lines = text.split(/\r?\n/);
+            let blocsExtraits = [];
             
-            if (filteredLines.length < 1) return;
+            let blocCourant = [];
+            let nomBlocActuel = "global_scope";
+            let indentationBase = 0;
+            let dansBloc = false;
+
+            // Regex pour détecter les définitions de fonctions / méthodes / classes
+            // Python (def ), JS/TS/Go/Java (function , const x = function, class , etc.)
+            const regexDefinition = /^\s*(?:async\s+)?(?:def|function|class)\s+([a-zA-Z_][a-zA-Z0-9_]*)/;
+
+            for (let i = 0; i < lines.length; i++) {
+                let ligne = lines[i];
+                let match = ligne.match(regexDefinition);
+
+                if (match) {
+                    // Si on était déjà dans un bloc, on le sauvegarde proprement
+                    if (dansBloc && blocCourant.length > 0) {
+                        blocsExtraits.push({
+                            name: nomBlocActuel,
+                            code: blocCourant.join('\n')
+                        });
+                        blocCourant = [];
+                    }
+                    dansBloc = true;
+                    nomBlocActuel = match[1];
+                    // Calcul de l'indentation de départ
+                    let matchIndent = ligne.match(/^(\s*)/);
+                    indentationBase = matchIndent ? matchIndent[1].length : 0;
+                    blocCourant.push(ligne);
+                } else if (dansBloc) {
+                    // Vérifie si le bloc se termine (retour à une indentation inférieure ou égale à l'indentation de base, hors lignes vides)
+                    let estVide = ligne.trim() === "";
+                    let matchIndent = ligne.match(/^(\s*)/);
+                    let indentLigne = matchIndent ? matchIndent[1].length : 0;
+
+                    if (!estVide && indentLigne <= indentationBase && !ligne.trim().startsWith('#') && !ligne.trim().startsWith('//')) {
+                        // Fin du bloc détectée
+                        blocsExtraits.push({
+                            name: nomBlocActuel,
+                            code: blocCourant.join('\n')
+                        });
+                        blocCourant = [];
+                        dansBloc = false;
+                        nomBlocActuel = "global_scope";
+                        // Re-tester si cette ligne commence un nouveau bloc
+                        i--; 
+                    } else {
+                        blocCourant.push(ligne);
+                    }
+                } else {
+                    // Hors fonction, on capture les blocs globaux significatifs ou lignes structurantes
+                    if (ligne.trim().length > 0) {
+                        blocsExtraits.push({
+                            name: filename + "_line_" + i,
+                            code: ligne
+                        });
+                    }
+                }
+            }
+
+            // S'il reste un bloc ouvert à la fin du fichier
+            if (dansBloc && blocCourant.length > 0) {
+                blocsExtraits.push({
+                    name: nomBlocActuel,
+                    code: blocCourant.join('\n')
+                });
+            }
+
+            if (blocsExtraits.length === 0) return;
 
             memoireCode.push({
                 source: filename,
-                patterns: filteredLines.slice(0, 50) 
+                blocks: blocsExtraits
             });
 
             stats.filesCount++;
             stats.totalLines += lines.length;
-            stats.totalPatterns += filteredLines.slice(0, 50).length;
+            stats.totalPatterns += blocsExtraits.length;
 
             const fn = filename.toLowerCase();
             if (fn.endsWith('.py')) stats.pyCount++;
@@ -338,8 +399,9 @@
                         
                         memoireCode.forEach(item => {
                             stats.filesCount++;
-                            stats.totalPatterns += item.patterns.length;
-                            stats.totalLines += item.patterns.length * 2; 
+                            let blockCount = item.blocks ? item.blocks.length : (item.patterns ? item.patterns.length : 1);
+                            stats.totalPatterns += blockCount;
+                            stats.totalLines += blockCount * 5; 
                             const fn = item.source.toLowerCase();
                             if (fn.endsWith('.py')) stats.pyCount++;
                             else if (fn.endsWith('.js')) stats.jsCount++;
@@ -355,7 +417,7 @@
                         });
 
                         mettreAJourGraphiques();
-                        log(`✅ Mémoire JSON chargée (${memoireCode.length} fichiers).`);
+                        log(`✅ Mémoire JSON chargée (${memoireCode.length} fichiers sécurisés).`);
                         jouerSonSucces();
                         toggleDrawer();
                     }
@@ -387,85 +449,56 @@
             }
         }
 
-        // MOTEUR DE GÉNÉRATION INTELLIGENT (RECHERCHE + ASSEMBLAGE DYNAMIQUE BRUT)
+        // GÉNÉRATEUR SANS SQUELETTE (Restitution pure et chirurgicale du bloc extrait)
         function genererCodeLocal() {
             jouerSonClic();
-            const query = document.getElementById('userInput').value.toLowerCase().trim();
+            const query = document.getElementById('userInput').value.trim().toLowerCase();
             const container = document.getElementById('resultatGeneration');
             const feedbackBox = document.getElementById('feedbackBox');
             
-            if(!query) return container.textContent = "⚠️ Veuillez entrer une demande.";
+            if(!query) return container.textContent = "⚠️ Veuillez entrer un nom de fonction ou un terme de recherche.";
             if(memoireCode.length === 0) return container.textContent = "⚠️ Mémoire vide. Veuillez ingérer des fichiers ou un ZIP.";
 
-            // 1. Détection du langage cible demandé dans le prompt
-            let langageCible = "python";
-            if (query.includes('javascript') || query.includes('js')) langageCible = "javascript";
-            else if (query.includes('html')) langageCible = "html";
-            else if (query.includes('sql')) langageCible = "sql";
-            else if (query.includes('css')) langageCible = "css";
+            let blocTrouve = null;
 
-            // 2. Moteur de recherche contextuel basé sur des mots-clés extraits de la requête
-            const motsClesRecherche = query.split(/\s+/).filter(m => m.length > 3);
-            
-            let meilleursMatchs = [];
-            
-            memoireCode.forEach(item => {
-                const fn = item.source.toLowerCase();
-                let score = 0;
-
-                // Filtrage extension
-                let correspondLangage = false;
-                if (langageCible === "python" && fn.endsWith('.py')) correspondLangage = true;
-                else if (langageCible === "javascript" && fn.endsWith('.js')) correspondLangage = true;
-                else if (langageCible === "html" && (fn.endsWith('.html') || fn.endsWith('.htm'))) correspondLangage = true;
-                else if (langageCible === "sql" && fn.endsWith('.sql')) correspondLangage = true;
-                else if (langageCible === "css" && fn.endsWith('.css')) correspondLangage = true;
-                else if (!langageCible) correspondLangage = true;
-
-                if (correspondLangage) score += 5;
-
-                // Recherche de similarité sur les lignes mémorisées
-                item.patterns.forEach(ligne => {
-                    const ligneLower = ligne.toLowerCase();
-                    motsClesRecherche.forEach(mot => {
-                        if (ligneLower.includes(mot)) {
-                            score += 2;
+            // Recherche exacte ou partielle par nom de fonction / bloc
+            for (let item of memoireCode) {
+                if (item.blocks) {
+                    for (let block of item.blocks) {
+                        if (block.name.toLowerCase().includes(query)) {
+                            blocTrouve = block.code;
+                            break;
                         }
-                    });
-                });
-
-                if (score > 0) {
-                    meilleursMatchs.push({ item: item, score: score });
+                    }
                 }
-            });
-
-            // Tri par pertinence (score décroissant)
-            meilleursMatchs.sort((a, b) => b.score - a.score);
-
-            // 3. Extraction et assemblage dynamique direct de la mémoire brute (sans squelette rigide pré-écrit)
-            let lignesAssemblees = [];
-            let sourcesUtilisees = new Set();
-
-            if (meilleursMatchs.length > 0) {
-                meilleursMatchs.slice(0, 3).forEach(match => {
-                    sourcesUtilisees.add(match.item.source);
-                    const echantillons = match.item.patterns.sort(() => 0.5 - Math.random()).slice(0, 6);
-                    lignesAssemblees.push(...echantillons);
-                });
-            } else {
-                const candidats = memoireCode.filter(item => item.source.toLowerCase().endsWith(langageCible === 'python' ? '.py' : '.js'));
-                const sourceChoisie = candidats.length > 0 ? candidats[Math.floor(Math.random() * candidats.length)] : memoireCode[Math.floor(Math.random() * memoireCode.length)];
-                sourcesUtilisees.add(sourceChoisie.source);
-                lignesAssemblees = sourceChoisie.patterns.slice(0, 10);
+                if (blocTrouve) break;
             }
 
-            let codeGenere = `# Synthèse dynamique depuis la mémoire [Sources : ${Array.from(sourcesUtilisees).join(', ')}]\n\n`;
-            codeGenere += lignesAssemblees.join('\n');
+            // Si aucun nom exact ne correspond, recherche dans le contenu des blocs
+            if (!blocTrouve) {
+                for (let item of memoireCode) {
+                    if (item.blocks) {
+                        for (let block of item.blocks) {
+                            if (block.code.toLowerCase().includes(query)) {
+                                blocTrouve = block.code;
+                                break;
+                            }
+                        }
+                    }
+                    if (blocTrouve) break;
+                }
+            }
 
-            container.textContent = codeGenere;
-            feedbackBox.classList.add('visible');
-            document.getElementById('feedbackFilename').value = "synthese_dynamique." + (langageCible === 'python' ? 'py' : 'js');
-            jouerSonSucces();
+            if (blocTrouve) {
+                // Restitution pure sans aucun template ou en-tête rigide
+                container.textContent = blocTrouve;
+                feedbackBox.classList.add('visible');
+                document.getElementById('feedbackFilename').value = "fonction_recuperee.py";
+                jouerSonSucces();
+            } else {
+                container.textContent = `/* Aucun bloc correspondant à "${query}" n'a été trouvé dans la mémoire. */`;
+                feedbackBox.classList.remove('visible');
+            }
         }
 
         function copierCodeGenere() {
@@ -492,7 +525,7 @@
             const file = e.target.files[0];
             if (!file) return;
             const zip = await JSZip.loadAsync(file);
-            log("Décompression du ZIP multi-langages...");
+            log("Décompression et analyse structurelle du ZIP...");
             
             const extensionsValides = ['.py', '.js', '.gs', '.ts', '.tsx', '.html', '.htm', '.css', '.scss', '.sql', '.cpp', '.cc', '.h', '.java', '.php', '.go'];
             
@@ -502,7 +535,7 @@
                     analyserEtStocker(content, relativePath);
                 }
             }
-            log("✅ ZIP ingéré et filtré avec succès !");
+            log("✅ ZIP ingéré avec extraction chirurgicale des blocs !");
             jouerSonSucces();
         });
 
