@@ -85,7 +85,8 @@ button:disabled {
     word-break:break-word;
 }
 
-select {
+select,
+input[type="text"] {
     width:100%;
     background:#111;
     color:#fff;
@@ -178,39 +179,97 @@ input[type="range"] {
     font-weight:bold;
 }
 
+.file-name {
+    color:#00e676;
+    font-size:.8em;
+    margin-top:5px;
+    word-break:break-all;
+}
+
 </style>
 </head>
 
 <body>
 
+
 <h1>🧠 IA Française — Mémoire Linguistique + Sémantique</h1>
 
 
 <!-- =========================================================
-     CONTRÔLES
+     MÉMOIRE
 ========================================================= -->
 
 <div class="panel">
 
+    <h2>💾 Gestion de la mémoire</h2>
+
     <button
-        onclick="ouvrirMemoire()"
-        id="btn-fichier"
-        style="background:#333;">
-        1. 📁 Créer ou ouvrir la mémoire
+        onclick="document.getElementById('fichierMemoire').click()"
+        style="background:#37474f;">
+
+        📂 Charger une mémoire JSON
+
     </button>
+
+    <input
+        type="file"
+        id="fichierMemoire"
+        accept=".json,application/json"
+        style="display:none"
+        onchange="chargerMemoire(event)"
+    >
+
+    <button
+        onclick="creerNouvelleMemoire()"
+        style="background:#263238;">
+
+        🆕 Créer une nouvelle mémoire
+
+    </button>
+
+    <button
+        onclick="sauvegarderMemoire()"
+        style="background:#1565c0;">
+
+        💾 Télécharger / sauvegarder la mémoire
+
+    </button>
+
+    <div
+        id="nomFichier"
+        class="file-name">
+
+        Aucune mémoire chargée.
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     APPRENTISSAGE
+========================================================= -->
+
+<div class="panel">
+
+    <h2>📚 Apprentissage</h2>
 
     <button
         onclick="lancerApprentissage()"
         id="btn-start"
         style="background:#01579b;">
-        2. ▶ Lancer l'apprentissage
+
+        ▶ Lancer l'apprentissage
+
     </button>
 
     <button
         onclick="arreterApprentissage()"
         id="btn-stop"
         style="background:#b71c1c;">
-        3. ⏹ Pause + sauvegarde
+
+        ⏹ Pause + sauvegarde
+
     </button>
 
 </div>
@@ -225,11 +284,25 @@ input[type="range"] {
     <h2>🤖 Générateur intelligent</h2>
 
     <select id="longueur">
-        <option value="10">10 mots</option>
-        <option value="20" selected>20 mots</option>
-        <option value="30">30 mots</option>
-        <option value="50">50 mots</option>
+
+        <option value="10">
+            Phrase courte — 10 mots
+        </option>
+
+        <option value="20" selected>
+            Phrase normale — 20 mots
+        </option>
+
+        <option value="30">
+            Phrase longue — 30 mots
+        </option>
+
+        <option value="50">
+            Phrase très longue — 50 mots
+        </option>
+
     </select>
+
 
     <label class="small">
         Influence de la mémoire sémantique :
@@ -240,11 +313,14 @@ input[type="range"] {
         id="forceSemantique"
         min="0"
         max="100"
-        value="55">
+        value="55"
+    >
 
     <div class="small">
-        0 = principalement linguistique |
-        100 = fortement sémantique
+
+        0 = linguistique uniquement |
+        100 = sémantique fortement utilisée
+
     </div>
 
     <br>
@@ -252,27 +328,31 @@ input[type="range"] {
     <button
         onclick="genererPhrase()"
         style="background:#1b5e20;">
+
         ✨ Générer une phrase
+
     </button>
 
     <div
         id="resultat"
         class="output">
+
         En attente...
+
     </div>
 
 </div>
 
 
 <!-- =========================================================
-     STATUT
+     STATUS
 ========================================================= -->
 
 <div
     id="status"
     class="status">
 
-    Sélectionne ou crée ton fichier JSON.
+    Crée une nouvelle mémoire ou charge un fichier JSON existant.
 
 </div>
 
@@ -288,47 +368,70 @@ input[type="range"] {
     <div class="stat-grid">
 
         <div class="stat">
+
             <div class="stat-title">
-                TOKENS
+                TOKENS APPRIS
             </div>
+
             <div
                 class="stat-value"
                 id="stat-tokens">
+
                 0
+
             </div>
+
         </div>
 
+
         <div class="stat">
+
             <div class="stat-title">
                 VOCABULAIRE
             </div>
+
             <div
                 class="stat-value"
                 id="stat-vocab">
+
                 0
+
             </div>
+
         </div>
 
+
         <div class="stat">
+
             <div class="stat-title">
                 CONTEXTES 3-GRAMMES
             </div>
+
             <div
                 class="stat-value"
                 id="stat-contextes">
+
                 0
+
             </div>
+
         </div>
 
+
         <div class="stat">
+
             <div class="stat-title">
                 RELATIONS SÉMANTIQUES
             </div>
+
             <div
                 class="stat-value"
                 id="stat-relations">
+
                 0
+
             </div>
+
         </div>
 
     </div>
@@ -337,7 +440,7 @@ input[type="range"] {
 
 
 <!-- =========================================================
-     TOP VOCABULAIRE
+     TOP MOTS
 ========================================================= -->
 
 <div class="panel">
@@ -345,14 +448,16 @@ input[type="range"] {
     <h2>📚 Mots les plus appris</h2>
 
     <div id="top-mots">
+
         Aucun mot.
+
     </div>
 
 </div>
 
 
 <!-- =========================================================
-     EXPLORATEUR SÉMANTIQUE
+     EXPLORATEUR
 ========================================================= -->
 
 <div class="panel">
@@ -363,19 +468,14 @@ input[type="range"] {
         id="motRecherche"
         type="text"
         placeholder="Exemple : chat"
-        style="
-            width:100%;
-            background:#111;
-            color:white;
-            border:1px solid #444;
-            padding:10px;
-            margin-bottom:8px;
-        ">
+    >
 
     <button
         onclick="explorerMot()"
         style="background:#37474f;">
-        🔍 Explorer
+
+        🔍 Explorer le mot
+
     </button>
 
     <div
@@ -395,36 +495,33 @@ input[type="range"] {
 
 <div class="panel">
 
-    <h2>ℹ️ Ce que cette IA apprend</h2>
+    <h2>ℹ️ Architecture de l'IA</h2>
 
     <div class="small">
 
-        <b>1. Vocabulaire</b><br>
-        Elle mémorise les mots et leur fréquence.
+        <b>Vocabulaire</b><br>
+        Fréquence de chaque mot.
 
         <br><br>
 
-        <b>2. 3-grammes</b><br>
-        Elle apprend les relations entre trois mots.
+        <b>2-grammes</b><br>
+        Relations entre deux mots.
 
         <br><br>
 
-        <b>3. Associations</b><br>
-        Elle mémorise les mots qui apparaissent souvent
-        dans les mêmes contextes.
+        <b>3-grammes</b><br>
+        Relations entre trois mots.
 
         <br><br>
 
-        <b>4. Catégories</b><br>
-        Elle tente d'identifier automatiquement certains
-        types de mots : animaux, lieux, nourriture,
-        personnes, actions, objets, etc.
+        <b>Mémoire sémantique</b><br>
+        Associations, catégories, actions et contextes.
 
         <br><br>
 
-        <b>5. Cohérence</b><br>
-        Lors de la génération, les relations sémantiques
-        peuvent influencer le choix du prochain mot.
+        <b>Génération</b><br>
+        Le moteur combine les probabilités linguistiques
+        avec les relations sémantiques apprises.
 
     </div>
 
@@ -435,18 +532,18 @@ input[type="range"] {
 
 
 /* =========================================================
-   MÉMOIRE
+   VARIABLES
 ========================================================= */
 
 let memoire = creerMemoire();
 
-let fichierHandle = null;
+let nomMemoire = "memoire_ia_fr_v3.json";
 
 let apprentissageActif = false;
 
 
 /* =========================================================
-   CRÉATION MÉMOIRE
+   CRÉER MÉMOIRE
 ========================================================= */
 
 function creerMemoire() {
@@ -456,9 +553,13 @@ function creerMemoire() {
         version:3,
 
         statistiques:{
+
             tokens:0,
+
             phrases:0,
+
             relations:0
+
         },
 
         vocabulaire:{},
@@ -493,24 +594,168 @@ function creerMemoire() {
 
 
 /* =========================================================
-   NORMALISATION
+   NOUVELLE MÉMOIRE
 ========================================================= */
 
-function normaliserMemoire(data) {
+function creerNouvelleMemoire() {
 
-    if (!data || typeof data !== "object") {
+    if (
+        memoire.statistiques.tokens > 0
+    ) {
 
-        return creerMemoire();
+        const confirmation =
+            confirm(
+                "Cette action va remplacer la mémoire actuelle.\n\n" +
+                "Es-tu sûr ?"
+            );
+
+        if (!confirmation) {
+
+            return;
+
+        }
 
     }
 
 
-    /* Ancienne version */
+    memoire =
+        creerMemoire();
 
-    if (data.memoire_mots) {
+
+    nomMemoire =
+        "memoire_ia_fr_v3.json";
+
+
+    document.getElementById(
+        "nomFichier"
+    ).innerText =
+        "Nouvelle mémoire créée.";
+
+
+    afficherStats();
+
+
+    status(
+        "🆕 Nouvelle mémoire créée. Elle est prête à apprendre."
+    );
+
+}
+
+
+/* =========================================================
+   CHARGER MÉMOIRE
+========================================================= */
+
+async function chargerMemoire(event) {
+
+    const fichier =
+        event.target.files[0];
+
+
+    if (!fichier) {
+
+        return;
+
+    }
+
+
+    try {
+
+        status(
+            "📂 Lecture de la mémoire..."
+        );
+
+
+        const texte =
+            await fichier.text();
+
+
+        if (!texte.trim()) {
+
+            throw new Error(
+                "Le fichier est vide."
+            );
+
+        }
+
+
+        const data =
+            JSON.parse(texte);
+
+
+        memoire =
+            normaliserMemoire(data);
+
+
+        nomMemoire =
+            fichier.name;
+
+
+        document.getElementById(
+            "nomFichier"
+        ).innerText =
+            "✔ Fichier chargé : " +
+            fichier.name;
+
+
+        afficherStats();
+
+
+        status(
+            "🧠 <b>Mémoire chargée avec succès.</b><br>" +
+            "Tokens : " +
+            formatNombre(
+                memoire.statistiques.tokens
+            )
+        );
+
+
+    }
+    catch(erreur) {
+
+        console.error(erreur);
+
+
+        status(
+            "❌ Impossible de lire ce fichier JSON."
+        );
+
+
+        alert(
+            "Erreur : le fichier ne semble pas être " +
+            "un JSON valide."
+        );
+
+    }
+
+
+    /*
+     * Permet de sélectionner à nouveau
+     * le même fichier plus tard.
+     */
+
+    event.target.value = "";
+
+}
+
+
+/* =========================================================
+   NORMALISER
+========================================================= */
+
+function normaliserMemoire(data) {
+
+    /*
+     * Ancienne mémoire
+     */
+
+    if (
+        data.memoire_mots
+    ) {
 
         const nouvelle =
             creerMemoire();
+
 
         nouvelle.statistiques.tokens =
             Number(
@@ -522,18 +767,20 @@ function normaliserMemoire(data) {
             const mot in data.memoire_mots
         ) {
 
-            const suivants =
+            nouvelle.transitions2[mot] =
                 data.memoire_mots[mot];
 
-            nouvelle.transitions2[mot] =
-                suivants;
-
         }
+
 
         return nouvelle;
 
     }
 
+
+    /*
+     * Nouvelle mémoire
+     */
 
     const base =
         creerMemoire();
@@ -543,7 +790,9 @@ function normaliserMemoire(data) {
         data.version || 3;
 
 
-    if (data.statistiques) {
+    if (
+        data.statistiques
+    ) {
 
         base.statistiques =
             Object.assign(
@@ -570,7 +819,9 @@ function normaliserMemoire(data) {
         data.debuts || {};
 
 
-    if (data.semantique) {
+    if (
+        data.semantique
+    ) {
 
         base.semantique =
             Object.assign(
@@ -587,186 +838,117 @@ function normaliserMemoire(data) {
 
 
 /* =========================================================
-   OUVRIR / CRÉER
+   SAUVEGARDER / TÉLÉCHARGER
 ========================================================= */
 
-async function ouvrirMemoire() {
+function sauvegarderMemoire() {
 
     try {
 
-        if (
-            !("showOpenFilePicker" in window)
-        ) {
-
-            alert(
-                "Utilise Chrome ou Edge sur ordinateur " +
-                "pour la sauvegarde directe des fichiers."
-            );
-
-            return;
-
-        }
-
-
-        const ouvrir =
-            confirm(
-                "OK = ouvrir une mémoire existante\n\n" +
-                "Annuler = créer une nouvelle mémoire"
+        const contenu =
+            JSON.stringify(
+                memoire,
+                null,
+                2
             );
 
 
-        if (ouvrir) {
-
-            const handles =
-                await window.showOpenFilePicker({
-
-                    types:[{
-
-                        description:
-                            "Mémoire IA",
-
-                        accept:{
-                            "application/json":
-                                [".json"]
-                        }
-
-                    }]
-
-                });
-
-
-            fichierHandle =
-                handles[0];
-
-
-            const fichier =
-                await fichierHandle.getFile();
-
-
-            const texte =
-                await fichier.text();
-
-
-            if (texte.trim()) {
-
-                memoire =
-                    normaliserMemoire(
-                        JSON.parse(texte)
-                    );
-
-            }
-
-
-            document.getElementById(
-                "btn-fichier"
-            ).innerText =
-                "✔ Mémoire chargée";
-
-
-            afficherStats();
-
-
-            afficherStatus(
-                "🧠 Mémoire chargée avec succès."
+        const blob =
+            new Blob(
+                [contenu],
+                {
+                    type:
+                        "application/json"
+                }
             );
 
 
-        } else {
-
-
-            fichierHandle =
-                await window.showSaveFilePicker({
-
-                    suggestedName:
-                        "memoire_ia_fr_v3.json",
-
-                    types:[{
-
-                        description:
-                            "Mémoire IA",
-
-                        accept:{
-                            "application/json":
-                                [".json"]
-                        }
-
-                    }]
-
-                });
-
-
-            memoire =
-                creerMemoire();
-
-
-            await sauvegarder();
-
-
-            document.getElementById(
-                "btn-fichier"
-            ).innerText =
-                "✔ Nouvelle mémoire créée";
-
-
-            afficherStats();
-
-
-            afficherStatus(
-                "🧠 Nouvelle mémoire prête."
+        const url =
+            URL.createObjectURL(
+                blob
             );
 
-        }
+
+        const lien =
+            document.createElement(
+                "a"
+            );
+
+
+        lien.href =
+            url;
+
+
+        /*
+         * Nouveau nom automatique
+         */
+
+        const date =
+            new Date();
+
+
+        const suffixe =
+            date.getFullYear() +
+            "-" +
+            String(
+                date.getMonth()+1
+            ).padStart(2,"0") +
+            "-" +
+            String(
+                date.getDate()
+            ).padStart(2,"0") +
+            "_" +
+            String(
+                date.getHours()
+            ).padStart(2,"0") +
+            "-" +
+            String(
+                date.getMinutes()
+            ).padStart(2,"0");
+
+
+        lien.download =
+            "memoire_ia_fr_" +
+            suffixe +
+            ".json";
+
+
+        document.body.appendChild(
+            lien
+        );
+
+
+        lien.click();
+
+
+        document.body.removeChild(
+            lien
+        );
+
+
+        setTimeout(
+            () =>
+                URL.revokeObjectURL(
+                    url
+                ),
+            1000
+        );
+
+
+        status(
+            "💾 <b>Mémoire sauvegardée.</b><br>" +
+            "Le fichier JSON a été téléchargé."
+        );
+
 
     }
     catch(erreur) {
 
         console.error(erreur);
 
-        afficherStatus(
-            "Opération annulée ou erreur."
-        );
 
-    }
-
-}
-
-
-/* =========================================================
-   SAUVEGARDE
-========================================================= */
-
-async function sauvegarder() {
-
-    if (!fichierHandle) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const flux =
-            await fichierHandle.createWritable();
-
-
-        await flux.write(
-            JSON.stringify(
-                memoire,
-                null,
-                2
-            )
-        );
-
-
-        await flux.close();
-
-    }
-    catch(erreur) {
-
-        console.error(
-            "Erreur sauvegarde",
-            erreur
+        status(
+            "❌ Erreur pendant la sauvegarde."
         );
 
     }
@@ -789,18 +971,33 @@ function status(texte) {
 
 
 /* =========================================================
-   TOKENISATION
+   TOKENIZER
 ========================================================= */
 
 function tokenizer(texte) {
 
     texte =
         texte
-        .replace(/\r\n/g," ")
-        .replace(/\r/g," ")
-        .replace(/[’]/g,"'")
-        .replace(/«/g," « ")
-        .replace(/»/g," » ")
+        .replace(
+            /\r\n/g,
+            " "
+        )
+        .replace(
+            /\r/g,
+            " "
+        )
+        .replace(
+            /[’]/g,
+            "'"
+        )
+        .replace(
+            /«/g,
+            " « "
+        )
+        .replace(
+            /»/g,
+            " » "
+        )
         .replace(
             /([,.!?;:()[\]])/g,
             " $1 "
@@ -815,13 +1012,16 @@ function tokenizer(texte) {
 
     return texte
         .split(" ")
-        .filter(x => x.length > 0);
+        .filter(
+            x =>
+                x.length > 0
+        );
 
 }
 
 
 /* =========================================================
-   SOURCE WIKIPEDIA
+   WIKIPEDIA
 ========================================================= */
 
 async function recupererWikipedia() {
@@ -865,13 +1065,17 @@ async function recupererWikipedia() {
             "&prop=extracts" +
             "&explaintext=1" +
             "&titles=" +
-            encodeURIComponent(titre) +
+            encodeURIComponent(
+                titre
+            ) +
             "&format=json" +
             "&origin=*";
 
 
         const response2 =
-            await fetch(urlContenu);
+            await fetch(
+                urlContenu
+            );
 
 
         const data2 =
@@ -883,7 +1087,9 @@ async function recupererWikipedia() {
 
 
         const page =
-            Object.values(pages)[0];
+            Object.values(
+                pages
+            )[0];
 
 
         if (
@@ -905,6 +1111,7 @@ async function recupererWikipedia() {
             erreur
         );
 
+
         return null;
 
     }
@@ -913,7 +1120,7 @@ async function recupererWikipedia() {
 
 
 /* =========================================================
-   CATÉGORIES SÉMANTIQUES
+   CATÉGORIES
 ========================================================= */
 
 const categoriesConnues = {
@@ -1037,7 +1244,7 @@ const categoriesConnues = {
 
 
 /* =========================================================
-   ACTIONS CONNUES
+   ACTIONS
 ========================================================= */
 
 const actionsConnues = [
@@ -1085,7 +1292,6 @@ const actionsConnues = [
     "porter",
     "mettre",
     "tenir",
-    "courir",
     "sauter",
     "chanter",
     "rire",
@@ -1095,23 +1301,7 @@ const actionsConnues = [
 
 
 /* =========================================================
-   RACINES VERBALES SIMPLES
-========================================================= */
-
-function ressembleAUnVerbe(mot) {
-
-    return (
-        mot.endsWith("er") ||
-        mot.endsWith("ir") ||
-        mot.endsWith("re") ||
-        mot.endsWith("oir")
-    );
-
-}
-
-
-/* =========================================================
-   AJOUTER CATÉGORIE
+   CATÉGORIE
 ========================================================= */
 
 function ajouterCategorie(
@@ -1147,7 +1337,7 @@ function ajouterCategorie(
 
 
 /* =========================================================
-   ANALYSE SÉMANTIQUE D'UN MOT
+   ANALYSE MOT
 ========================================================= */
 
 function analyserMotSemantique(mot) {
@@ -1163,8 +1353,7 @@ function analyserMotSemantique(mot) {
 
             ajouterCategorie(
                 mot,
-                categorie,
-                1
+                categorie
             );
 
         }
@@ -1183,23 +1372,12 @@ function analyserMotSemantique(mot) {
         );
 
     }
-    else if (
-        ressembleAUnVerbe(mot)
-    ) {
-
-        ajouterCategorie(
-            mot,
-            "verbe_probable",
-            .3
-        );
-
-    }
 
 }
 
 
 /* =========================================================
-   ASSOCIATION DE MOTS
+   ASSOCIATION
 ========================================================= */
 
 function ajouterAssociation(
@@ -1231,14 +1409,11 @@ function ajouterAssociation(
     memoire.semantique.associations[mot1][mot2] +=
         poids;
 
-
-    memoire.statistiques.relations++;
-
 }
 
 
 /* =========================================================
-   ACTIONS
+   ACTION
 ========================================================= */
 
 function ajouterAction(
@@ -1272,7 +1447,7 @@ function ajouterAction(
 
 
 /* =========================================================
-   CONTEXTES
+   CONTEXTE
 ========================================================= */
 
 function ajouterContexte(
@@ -1312,7 +1487,7 @@ function ajouterContexte(
 function apprendreSemantique(tokens) {
 
     /*
-     * Analyse individuelle
+     * Catégories
      */
 
     for (
@@ -1327,15 +1502,16 @@ function apprendreSemantique(tokens) {
 
         }
 
-        analyserMotSemantique(mot);
+
+        analyserMotSemantique(
+            mot
+        );
 
     }
 
 
     /*
-     * Associations locales.
-     *
-     * Fenêtre de 5 mots.
+     * Associations
      */
 
     const fenetre = 5;
@@ -1382,17 +1558,22 @@ function apprendreSemantique(tokens) {
             }
 
 
+            const poids =
+                1 /
+                (j-i);
+
+
             ajouterAssociation(
                 mot,
                 autre,
-                1 / (j-i)
+                poids
             );
 
 
             ajouterAssociation(
                 autre,
                 mot,
-                1 / (j-i)
+                poids
             );
 
         }
@@ -1401,13 +1582,7 @@ function apprendreSemantique(tokens) {
 
 
     /*
-     * Détection simple :
-     *
-     * sujet + verbe
-     *
-     * Exemple :
-     *
-     * chien court
+     * Détection action
      */
 
     for (
@@ -1424,7 +1599,9 @@ function apprendreSemantique(tokens) {
 
 
         if (
-            actionsConnues.includes(action)
+            actionsConnues.includes(
+                action
+            )
         ) {
 
             ajouterAction(
@@ -1438,7 +1615,7 @@ function apprendreSemantique(tokens) {
 
 
     /*
-     * Contextes de phrase.
+     * Contextes
      */
 
     for (
@@ -1450,8 +1627,15 @@ function apprendreSemantique(tokens) {
         const mot =
             tokens[i];
 
+
         const gauche =
-            tokens[Math.max(0,i-2)] || "";
+            tokens[
+                Math.max(
+                    0,
+                    i-2
+                )
+            ] || "";
+
 
         const droite =
             tokens[i+1] || "";
@@ -1482,7 +1666,7 @@ function apprendreSemantique(tokens) {
 
 
 /* =========================================================
-   APPRENTISSAGE LINGUISTIQUE
+   APPRENDRE TEXTE
 ========================================================= */
 
 function apprendreTexte(texte) {
@@ -1501,7 +1685,7 @@ function apprendreTexte(texte) {
 
 
     /*
-     * Vocabulaire
+     * VOCABULAIRE
      */
 
     for (
@@ -1517,13 +1701,14 @@ function apprendreTexte(texte) {
 
         }
 
+
         memoire.vocabulaire[mot]++;
 
     }
 
 
     /*
-     * Début de phrase
+     * DÉBUTS
      */
 
     for (
@@ -1542,6 +1727,7 @@ function apprendreTexte(texte) {
             const mot =
                 tokens[i];
 
+
             if (
                 !memoire.debuts[mot]
             ) {
@@ -1550,6 +1736,7 @@ function apprendreTexte(texte) {
                     0;
 
             }
+
 
             memoire.debuts[mot]++;
 
@@ -1568,34 +1755,34 @@ function apprendreTexte(texte) {
         i++
     ) {
 
-        const mot =
+        const a =
             tokens[i];
 
-        const suivant =
+        const b =
             tokens[i+1];
 
 
         if (
-            !memoire.transitions2[mot]
+            !memoire.transitions2[a]
         ) {
 
-            memoire.transitions2[mot] =
+            memoire.transitions2[a] =
                 {};
 
         }
 
 
         if (
-            !memoire.transitions2[mot][suivant]
+            !memoire.transitions2[a][b]
         ) {
 
-            memoire.transitions2[mot][suivant] =
+            memoire.transitions2[a][b] =
                 0;
 
         }
 
 
-        memoire.transitions2[mot][suivant]++;
+        memoire.transitions2[a][b]++;
 
     }
 
@@ -1646,21 +1833,20 @@ function apprendreTexte(texte) {
 
         memoire.transitions3[contexte][c]++;
 
+
         memoire.statistiques.tokens++;
 
     }
 
 
     /*
-     * Mémoire sémantique
+     * SÉMANTIQUE
      */
 
-    apprendreSemantique(tokens);
+    apprendreSemantique(
+        tokens
+    );
 
-
-    /*
-     * Une phrase de plus
-     */
 
     memoire.statistiques.phrases++;
 
@@ -1671,23 +1857,14 @@ function apprendreTexte(texte) {
 
 
 /* =========================================================
-   APPRENTISSAGE CONTINU
+   LANCER APPRENTISSAGE
 ========================================================= */
 
 async function lancerApprentissage() {
 
-    if (!fichierHandle) {
-
-        status(
-            "❌ Crée ou ouvre d'abord une mémoire JSON."
-        );
-
-        return;
-
-    }
-
-
-    if (apprentissageActif) {
+    if (
+        apprentissageActif
+    ) {
 
         return;
 
@@ -1705,7 +1882,7 @@ async function lancerApprentissage() {
 
 
     status(
-        "📚 <b>Apprentissage démarré...</b>"
+        "📚 <b>Apprentissage en cours...</b>"
     );
 
 
@@ -1713,11 +1890,18 @@ async function lancerApprentissage() {
         apprentissageActif
     ) {
 
+        status(
+            "🌐 Recherche d'un article français..."
+        );
+
+
         const texte =
             await recupererWikipedia();
 
 
-        if (!apprentissageActif) {
+        if (
+            !apprentissageActif
+        ) {
 
             break;
 
@@ -1727,10 +1911,14 @@ async function lancerApprentissage() {
         if (!texte) {
 
             status(
-                "⚠️ Source indisponible. Nouvelle tentative..."
+                "⚠️ Wikipédia n'a pas fourni de texte. Nouvelle tentative..."
             );
 
-            await attendre(1500);
+
+            await attendre(
+                1500
+            );
+
 
             continue;
 
@@ -1747,21 +1935,30 @@ async function lancerApprentissage() {
 
 
         status(
-            "🧠 <b>Apprentissage effectué.</b><br>" +
-            nombreFormate(nombre) +
+            "🧠 <b>Nouvel apprentissage terminé.</b><br>" +
+            nombre +
             " tokens analysés.<br>" +
-            "Mémoire : " +
-            nombreFormate(
+            "Total : " +
+            formatNombre(
                 memoire.statistiques.tokens
             ) +
             " transitions."
         );
 
 
-        await sauvegarder();
+        /*
+         * Avec le nouveau système,
+         * la sauvegarde se fait manuellement
+         * avec le bouton Télécharger.
+         *
+         * Cela évite de télécharger un fichier
+         * à chaque article.
+         */
 
 
-        await attendre(500);
+        await attendre(
+            500
+        );
 
     }
 
@@ -1772,33 +1969,25 @@ async function lancerApprentissage() {
         false;
 
 
-    await sauvegarder();
-
-
     afficherStats();
+
+
+    status(
+        "⏸️ Apprentissage arrêté. " +
+        "Pense à télécharger la mémoire avec le bouton 💾."
+    );
 
 }
 
 
 /* =========================================================
-   ARRÊT
+   ARRÊTER
 ========================================================= */
 
-async function arreterApprentissage() {
+function arreterApprentissage() {
 
     apprentissageActif =
         false;
-
-
-    status(
-        "💾 Sauvegarde en cours..."
-    );
-
-
-    await sauvegarder();
-
-
-    afficherStats();
 
 
     document.getElementById(
@@ -1808,8 +1997,9 @@ async function arreterApprentissage() {
 
 
     status(
-        "⏸️ <b>Apprentissage en pause.</b><br>" +
-        "Mémoire sauvegardée."
+        "⏸️ <b>Pause.</b><br>" +
+        "Clique sur 💾 Télécharger / sauvegarder la mémoire " +
+        "pour conserver les nouveaux apprentissages."
     );
 
 }
@@ -1840,7 +2030,7 @@ function choixPondere(options) {
 
     if (
         !options ||
-        options.length===0
+        !options.length
     ) {
 
         return null;
@@ -1913,7 +2103,7 @@ function choixPondere(options) {
 ========================================================= */
 
 function scoreSemantique(
-    motPrecedent,
+    precedent,
     candidat
 ) {
 
@@ -1925,8 +2115,11 @@ function scoreSemantique(
      */
 
     const associations =
-        memoire.semantique
-            .associations[motPrecedent];
+        memoire
+        .semantique
+        .associations[
+            precedent
+        ];
 
 
     if (
@@ -1943,12 +2136,15 @@ function scoreSemantique(
 
 
     /*
-     * Action connue
+     * Action
      */
 
     const actions =
-        memoire.semantique
-            .actions[motPrecedent];
+        memoire
+        .semantique
+        .actions[
+            precedent
+        ];
 
 
     if (
@@ -1962,17 +2158,23 @@ function scoreSemantique(
 
 
     /*
-     * Même catégorie
+     * Catégories communes
      */
 
     const cat1 =
-        memoire.semantique
-            .categories[motPrecedent] || {};
+        memoire
+        .semantique
+        .categories[
+            precedent
+        ] || {};
 
 
     const cat2 =
-        memoire.semantique
-            .categories[candidat] || {};
+        memoire
+        .semantique
+        .categories[
+            candidat
+        ] || {};
 
 
     for (
@@ -1991,17 +2193,23 @@ function scoreSemantique(
 
 
     /*
-     * Contexte partagé
+     * Contextes communs
      */
 
     const ctx1 =
-        memoire.semantique
-            .contextes[motPrecedent] || {};
+        memoire
+        .semantique
+        .contextes[
+            precedent
+        ] || {};
 
 
     const ctx2 =
-        memoire.semantique
-            .contextes[candidat] || {};
+        memoire
+        .semantique
+        .contextes[
+            candidat
+        ] || {};
 
 
     let commun=0;
@@ -2040,7 +2248,7 @@ function scoreSemantique(
 
 function choisirProchain(
     options,
-    motPrecedent
+    precedent
 ) {
 
     if (
@@ -2065,6 +2273,7 @@ function choisirProchain(
         options.map(
             ([mot,frequence]) => {
 
+
                 const linguistique =
                     Math.log1p(
                         Number(
@@ -2075,17 +2284,21 @@ function choisirProchain(
 
                 const semantique =
                     scoreSemantique(
-                        motPrecedent,
+                        precedent,
                         mot
                     );
 
 
                 const score =
-                    linguistique *
-                    (1-force)
+                    (
+                        linguistique *
+                        (1-force)
+                    )
                     +
-                    semantique *
-                    force;
+                    (
+                        semantique *
+                        force
+                    );
 
 
                 return [
@@ -2108,7 +2321,7 @@ function choisirProchain(
 
 
 /* =========================================================
-   CHOISIR DÉBUT
+   DÉBUT
 ========================================================= */
 
 function choisirDebut() {
@@ -2156,7 +2369,7 @@ function choisirDebut() {
 
 
 /* =========================================================
-   GÉNÉRER
+   GÉNÉRER PHRASE
 ========================================================= */
 
 function genererPhrase() {
@@ -2170,7 +2383,7 @@ function genererPhrase() {
         document.getElementById(
             "resultat"
         ).innerText =
-            "❌ Pas assez de mémoire. Lance d'abord l'apprentissage.";
+            "❌ Pas assez de données. Fais d'abord apprendre l'IA.";
 
         return;
 
@@ -2185,7 +2398,7 @@ function genererPhrase() {
         );
 
 
-    let premier =
+    const premier =
         choisirDebut();
 
 
@@ -2196,36 +2409,36 @@ function genererPhrase() {
     }
 
 
-    let resultat =
+    const resultat =
         [premier];
 
 
     /*
-     * Trouver le deuxième mot
+     * Deuxième mot
      */
 
-    let optionsDeuxieme=[];
-
-
-    const transitionsPremier =
-        memoire.transitions2[premier];
+    let options =
+        memoire
+        .transitions2[
+            premier
+        ];
 
 
     if (
-        transitionsPremier
+        options
     ) {
 
-        optionsDeuxieme =
-            Object.entries(
-                transitionsPremier
-            );
+        resultat.push(
+            choisirProchain(
+                Object.entries(
+                    options
+                ),
+                premier
+            )
+        );
 
     }
-
-
-    if (
-        !optionsDeuxieme.length
-    ) {
+    else {
 
         const mots =
             Object.keys(
@@ -2239,25 +2452,14 @@ function genererPhrase() {
                     Math.random() *
                     mots.length
                 )
-            );
-
-        );
-
-    }
-    else {
-
-        resultat.push(
-            choisirProchain(
-                optionsDeuxieme,
-                premier
-            )
+            ]
         );
 
     }
 
 
     /*
-     * Génération principale
+     * Suite
      */
 
     for (
@@ -2277,23 +2479,53 @@ function genererPhrase() {
             a + "|" + b;
 
 
-        const options =
-            memoire.transitions3[
+        const choix =
+            memoire
+            .transitions3[
                 contexte
             ];
 
 
         if (
-            !options
+            choix
         ) {
 
+            const prochain =
+                choisirProchain(
+                    Object.entries(
+                        choix
+                    ),
+                    b
+                );
+
+
+            if (
+                prochain
+            ) {
+
+                resultat.push(
+                    prochain
+                );
+
+            }
+            else {
+
+                break;
+
+            }
+
+        }
+        else {
+
             /*
-             * Tentative de continuation
-             * avec un 2-gramme.
+             * Fallback 2-gramme
              */
 
             const alternatives =
-                memoire.transitions2[b];
+                memoire
+                .transitions2[
+                    b
+                ];
 
 
             if (
@@ -2314,30 +2546,9 @@ function genererPhrase() {
                 );
 
 
-            if (!prochain) {
-
-                break;
-
-            }
-
-
-            resultat.push(
-                prochain
-            );
-
-        }
-        else {
-
-            const prochain =
-                choisirProchain(
-                    Object.entries(
-                        options
-                    ),
-                    b
-                );
-
-
-            if (!prochain) {
+            if (
+                !prochain
+            ) {
 
                 break;
 
@@ -2350,10 +2561,6 @@ function genererPhrase() {
 
         }
 
-
-        /*
-         * Fin de phrase
-         */
 
         const dernier =
             resultat[
@@ -2362,14 +2569,17 @@ function genererPhrase() {
 
 
         if (
-            dernier==="." ||
-            dernier==="!" ||
-            dernier==="?"
+            (
+                dernier === "." ||
+                dernier === "!" ||
+                dernier === "?"
+            )
+            &&
+            resultat.length >= 8
         ) {
 
             if (
-                resultat.length>=8 &&
-                Math.random()<.85
+                Math.random() < .85
             ) {
 
                 break;
@@ -2410,25 +2620,23 @@ function reconstruirePhrase(tokens) {
     }
 
 
-    const ponctuation =
-        [
-            ".",
-            ",",
-            "!",
-            "?",
-            ";",
-            ":",
-            ")",
-            "]"
-        ];
+    const sansEspace = [
+        ".",
+        ",",
+        "!",
+        "?",
+        ";",
+        ":",
+        ")",
+        "]"
+    ];
 
 
-    const ouvrantes =
-        [
-            "(",
-            "[",
-            "«"
-        ];
+    const ouvrants = [
+        "(",
+        "[",
+        "«"
+    ];
 
 
     let texte="";
@@ -2460,10 +2668,6 @@ function reconstruirePhrase(tokens) {
             tokens[i-1];
 
 
-        /*
-         * Apostrophe
-         */
-
         if (
             precedent.endsWith("'")
         ) {
@@ -2477,7 +2681,7 @@ function reconstruirePhrase(tokens) {
 
 
         if (
-            ponctuation.includes(
+            sansEspace.includes(
                 token
             )
         ) {
@@ -2491,7 +2695,7 @@ function reconstruirePhrase(tokens) {
 
 
         if (
-            ouvrantes.includes(
+            ouvrants.includes(
                 precedent
             )
         ) {
@@ -2519,36 +2723,29 @@ function reconstruirePhrase(tokens) {
         .trim();
 
 
-    /*
-     * Majuscule initiale
-     */
-
     if (
         texte.length
     ) {
 
         texte =
-            texte[0].toUpperCase() +
+            texte.charAt(0)
+                .toUpperCase() +
             texte.slice(1);
 
     }
 
-
-    /*
-     * Majuscule après ponctuation
-     */
 
     texte =
         texte.replace(
             /([.!?]\s+)([a-zàâäéèêëîïôöùûüç])/g,
             function(
                 match,
-                p,
+                ponctuation,
                 lettre
             ) {
 
                 return (
-                    p +
+                    ponctuation +
                     lettre.toUpperCase()
                 );
 
@@ -2610,8 +2807,8 @@ function afficherStats() {
         relations +=
             Object.keys(
                 memoire
-                    .semantique
-                    .associations[mot]
+                .semantique
+                .associations[mot]
             ).length;
 
     }
@@ -2715,33 +2912,26 @@ function afficherTopMots() {
 
         html += `
 
-            <div class="bar-row">
+        <div class="bar-row">
+
+            <div class="bar-label">
+                ${escapeHTML(mot)}
+            </div>
+
+            <div class="bar-track">
 
                 <div
-                    class="bar-label">
-                    ${escapeHTML(mot)}
-                </div>
-
-                <div
-                    class="bar-track">
-
-                    <div
-                        class="bar-fill"
-                        style="
-                            width:${largeur}%
-                        ">
-                    </div>
-
-                </div>
-
-                <div
-                    class="bar-stats">
-
-                    ${formatNombre(nombre)}
-
+                    class="bar-fill"
+                    style="width:${largeur}%">
                 </div>
 
             </div>
+
+            <div class="bar-stats">
+                ${formatNombre(nombre)}
+            </div>
+
+        </div>
 
         `;
 
@@ -2757,7 +2947,7 @@ function afficherTopMots() {
 
 
 /* =========================================================
-   EXPLORATEUR SÉMANTIQUE
+   EXPLORER MOT
 ========================================================= */
 
 function explorerMot() {
@@ -2765,7 +2955,8 @@ function explorerMot() {
     const mot =
         document.getElementById(
             "motRecherche"
-        ).value
+        )
+        .value
         .trim()
         .toLowerCase();
 
@@ -2777,36 +2968,57 @@ function explorerMot() {
     }
 
 
-    const vocab =
-        memoire.vocabulaire[mot] || 0;
+    const occurrences =
+        memoire
+        .vocabulaire[
+            mot
+        ] || 0;
 
 
     const categories =
-        memoire.semantique
-            .categories[mot] || {};
+        memoire
+        .semantique
+        .categories[
+            mot
+        ] || {};
 
 
     const associations =
-        memoire.semantique
-            .associations[mot] || {};
+        memoire
+        .semantique
+        .associations[
+            mot
+        ] || {};
 
 
     const actions =
-        memoire.semantique
-            .actions[mot] || {};
+        memoire
+        .semantique
+        .actions[
+            mot
+        ] || {};
 
 
     const contextes =
-        memoire.semantique
-            .contextes[mot] || {};
+        memoire
+        .semantique
+        .contextes[
+            mot
+        ] || {};
 
 
     let html =
-        `<b>Mot :</b> ${escapeHTML(mot)}<br>`;
+        "<b>Mot :</b> " +
+        escapeHTML(mot) +
+        "<br>";
 
 
     html +=
-        `<b>Occurrences :</b> ${formatNombre(vocab)}<br>`;
+        "<b>Occurrences :</b> " +
+        formatNombre(
+            occurrences
+        ) +
+        "<br>";
 
 
     /*
@@ -2814,7 +3026,10 @@ function explorerMot() {
      */
 
     html +=
-        `<br><span class="label">Catégories :</span><br>`;
+        "<br>" +
+        "<span class='label'>" +
+        "Catégories :" +
+        "</span><br>";
 
 
     const cats =
@@ -2826,7 +3041,7 @@ function explorerMot() {
     html +=
         cats.length
         ? cats.join(", ")
-        : "aucune catégorie identifiée";
+        : "Aucune catégorie identifiée";
 
 
     /*
@@ -2834,7 +3049,10 @@ function explorerMot() {
      */
 
     html +=
-        `<br><br><span class="label">Associations :</span><br>`;
+        "<br><br>" +
+        "<span class='label'>" +
+        "Associations :" +
+        "</span><br>";
 
 
     const topAssociations =
@@ -2851,28 +3069,22 @@ function explorerMot() {
         );
 
 
-    if (
+    html +=
         topAssociations.length
-    ) {
-
-        html +=
-            topAssociations
-            .map(
-                x =>
-                    escapeHTML(x[0]) +
-                    " (" +
-                    x[1].toFixed(1) +
-                    ")"
-            )
-            .join(", ");
-
-    }
-    else {
-
-        html +=
-            "aucune";
-
-    }
+        ?
+        topAssociations
+        .map(
+            x =>
+                escapeHTML(
+                    x[0]
+                ) +
+                " (" +
+                x[1].toFixed(1) +
+                ")"
+        )
+        .join(", ")
+        :
+        "Aucune";
 
 
     /*
@@ -2880,7 +3092,10 @@ function explorerMot() {
      */
 
     html +=
-        `<br><br><span class="label">Actions associées :</span><br>`;
+        "<br><br>" +
+        "<span class='label'>" +
+        "Actions associées :" +
+        "</span><br>";
 
 
     const topActions =
@@ -2897,28 +3112,22 @@ function explorerMot() {
         );
 
 
-    if (
+    html +=
         topActions.length
-    ) {
-
-        html +=
-            topActions
-            .map(
-                x =>
-                    escapeHTML(x[0]) +
-                    " (" +
-                    x[1] +
-                    ")"
-            )
-            .join(", ");
-
-    }
-    else {
-
-        html +=
-            "aucune";
-
-    }
+        ?
+        topActions
+        .map(
+            x =>
+                escapeHTML(
+                    x[0]
+                ) +
+                " (" +
+                x[1] +
+                ")"
+        )
+        .join(", ")
+        :
+        "Aucune";
 
 
     /*
@@ -2926,7 +3135,10 @@ function explorerMot() {
      */
 
     html +=
-        `<br><br><span class="label">Contextes :</span><br>`;
+        "<br><br>" +
+        "<span class='label'>" +
+        "Contextes :" +
+        "</span><br>";
 
 
     const topContextes =
@@ -2943,25 +3155,19 @@ function explorerMot() {
         );
 
 
-    if (
+    html +=
         topContextes.length
-    ) {
-
-        html +=
-            topContextes
-            .map(
-                x =>
-                    escapeHTML(x[0])
-            )
-            .join(", ");
-
-    }
-    else {
-
-        html +=
-            "aucun";
-
-    }
+        ?
+        topContextes
+        .map(
+            x =>
+                escapeHTML(
+                    x[0]
+                )
+        )
+        .join(", ")
+        :
+        "Aucun";
 
 
     document.getElementById(
@@ -2988,7 +3194,7 @@ function formatNombre(nombre) {
 
 
 /* =========================================================
-   ESCAPE HTML
+   SÉCURITÉ HTML
 ========================================================= */
 
 function escapeHTML(texte) {
@@ -3027,4 +3233,4 @@ afficherStats();
 </script>
 
 </body>
-    </html>
+</html>
