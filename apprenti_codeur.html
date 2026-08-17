@@ -222,7 +222,7 @@
         function jouerSonSucces() {
             try {
                 initAudio();
-                const notes = [523.25, 659.25, 783.99, 1046.50]; // Accord majeur Do-Mi-Sol-Do
+                const notes = [523.25, 659.25, 783.99, 1046.50];
                 notes.forEach((freq, idx) => {
                     const osc = audioCtx.createOscillator();
                     const gain = audioCtx.createGain();
@@ -288,9 +288,11 @@
             }
 
             const lines = text.split('\n');
-            const filteredLines = lines.map(l => l.trim()).filter(l => {
-                if (l.length < 4 || l.length > 140) return false;
-                const contientCode = /[={}();:]/.test(l);
+            // CORRECTION : Conserve les espaces/indentations de début de ligne en évitant le .trim() destructeur
+            const filteredLines = lines.map(l => l.replace(/\r$/, '')).filter(l => {
+                const trimmed = l.trim();
+                if (trimmed.length < 4 || trimmed.length > 140) return false;
+                const contientCode = /[={}();:]/.test(trimmed);
                 return contientCode;
             });
             
@@ -385,7 +387,7 @@
             }
         }
 
-        // MOTEUR DE GÉNÉRATION PAR PATRONS LOGIQUES STRUCTURÉS (OPTION 2)
+        // MOTEUR DE GÉNÉRATION PAR PATRONS LOGIQUES STRUCTURÉS
         function genererCodeLocal() {
             jouerSonClic();
             const query = document.getElementById('userInput').value.toLowerCase().trim();
@@ -400,7 +402,6 @@
             else if (query.includes('html')) langageCible = "html";
             else if (query.includes('sql')) langageCible = "sql";
 
-            // Recherche deSnippets ou de modèles associés dans la mémoire
             const candidatsLangage = memoireCode.filter(item => {
                 const fn = item.source.toLowerCase();
                 if (langageCible === "python" && fn.endsWith('.py')) return true;
@@ -414,8 +415,8 @@
                 ? candidatsLangage[Math.floor(Math.random() * candidatsLangage.length)]
                 : memoireCode[Math.floor(Math.random() * memoireCode.length)];
 
-            // Extraction et nettoyage des blocs
-            let blocLogique = modeleTrouve.patterns.slice(0, 6).map(l => "    " + l).join('\n');
+            // Conserve l'indentation originale des blocs extraits
+            let blocLogique = modeleTrouve.patterns.slice(0, 6).join('\n');
 
             let codeGenere = "";
 
