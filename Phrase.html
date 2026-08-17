@@ -2,296 +2,517 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>IA Française V4 — Mémoire Sémantique Évolutive</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>IA Française — Mémoire Sémantique V5.1</title>
 
 <style>
+:root{
+    --bg:#0b0d12;
+    --panel:#12151c;
+    --panel-2:#0a0c10;
+    --line:#232833;
+    --text:#e7ebf1;
+    --dim:#8a93a3;
+    --accent:#4fd1c5;
+    --accent-2:#7c9cff;
+    --good:#3ecf6e;
+    --warn:#f0b93a;
+    --bad:#ff6b6b;
+    --mono:"JetBrains Mono","SFMono-Regular",Consolas,monospace;
+    --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
 *{box-sizing:border-box}
+
+html,body{height:100%}
 
 body{
     margin:0;
-    padding:16px;
-    background:#0d1117;
-    color:#e6edf3;
-    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:
+        radial-gradient(1200px 600px at 50% -10%,#14202033,transparent),
+        var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    padding-bottom:74px;
 }
 
-.container{
-    max-width:1000px;
+.wrap{
+    width:min(760px,100%);
+    margin:auto;
+    padding:16px 14px 8px;
+}
+
+/* HEADER */
+
+.hdr{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(11,13,18,.94);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:10px 14px;
+}
+
+.hdr-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    width:min(760px,100%);
     margin:auto;
 }
 
-h1{
-    font-size:1.45rem;
-    margin:5px 0 6px;
+.hdr-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:700;
+    font-size:.95rem;
 }
 
-h2{
-    font-size:1rem;
-    margin:0 0 14px;
-    color:#fff;
+.hdr-title .dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--dim);
+    flex:none;
 }
 
-h3{
-    font-size:.9rem;
-    margin:12px 0 8px;
+.hdr-title .dot.ready{background:var(--good)}
+.hdr-title .dot.learning{
+    background:var(--accent-2);
+    animation:pulse 1.4s infinite;
+}
+.hdr-title .dot.error{background:var(--bad)}
+.hdr-title .dot.warning{background:var(--warn)}
+
+@keyframes pulse{
+    0%,100%{opacity:1}
+    50%{opacity:.35}
 }
 
-.subtitle{
-    color:#8b949e;
-    font-size:.82rem;
-    margin-bottom:18px;
+.hdr-mini{
+    display:flex;
+    gap:12px;
+    font-family:var(--mono);
+    font-size:.68rem;
+    color:var(--dim);
 }
+
+.hdr-mini b{color:var(--accent)}
+
+/* TABS */
+
+.tabbar{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:30;
+    display:flex;
+    background:rgba(10,12,16,.97);
+    backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);
+    padding:4px 4px calc(4px + env(safe-area-inset-bottom));
+}
+
+.tab{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+    padding:8px 2px 6px;
+    background:none;
+    border:none;
+    color:var(--dim);
+    font-size:.62rem;
+    font-family:var(--sans);
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.tab .ic{
+    font-size:1.15rem;
+    line-height:1;
+}
+
+.tab.active{
+    color:var(--accent);
+    background:#ffffff08;
+}
+
+/* PANELS */
+
+.view{display:none}
+.view.active{display:block}
 
 .panel{
-    background:#161b22;
-    border:1px solid #30363d;
-    border-radius:10px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
     padding:16px;
-    margin-bottom:14px;
+    margin-bottom:12px;
 }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
+.panel h2{
+    font-size:.92rem;
+    margin:0 0 12px;
+    display:flex;
+    align-items:center;
+    gap:7px;
 }
 
-.grid3{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
+.hint{
+    color:var(--dim);
+    font-size:.78rem;
+    line-height:1.5;
+    margin-bottom:10px;
 }
+
+/* BUTTONS */
 
 button{
-    width:100%;
-    padding:12px;
-    margin-bottom:8px;
-    border:1px solid #3b434d;
-    border-radius:7px;
-    background:#21262d;
-    color:white;
-    font-weight:600;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:13px 14px;
+    color:var(--text);
+    background:#191d26;
     cursor:pointer;
-    transition:.15s;
+    font-weight:600;
+    font-size:.86rem;
+    -webkit-tap-highlight-color:transparent;
 }
 
-button:hover{
-    filter:brightness(1.2);
-    transform:translateY(-1px);
-}
-
+button:active{transform:scale(.98)}
 button:disabled{
-    opacity:.45;
+    opacity:.4;
     cursor:not-allowed;
     transform:none;
 }
 
-.primary{background:#0969da}
-.success{background:#238636}
-.danger{background:#da3633}
-.secondary{background:#30363d}
-
-input,select{
+.btn-block{
     width:100%;
-    padding:11px;
-    background:#0d1117;
-    color:#fff;
-    border:1px solid #30363d;
-    border-radius:6px;
-    margin-bottom:9px;
+    margin-bottom:8px;
 }
 
-input[type=range]{
-    padding:0;
+.btn-row{
+    display:flex;
+    gap:8px;
 }
+
+.btn-row button{flex:1}
+
+.primary{
+    background:var(--accent-2);
+    border-color:var(--accent-2);
+    color:#0a0c10;
+}
+
+.success{
+    background:var(--good);
+    border-color:var(--good);
+    color:#0a0c10;
+}
+
+.danger{
+    background:#3a1a1a;
+    border-color:#5c2626;
+    color:#ffb4b4;
+}
+
+.secondary{background:#191d26}
+
+/* STATUS */
 
 .status{
-    border-left:4px solid #58a6ff;
-    background:#161b22;
-    padding:12px;
-    border-radius:5px;
+    border-radius:12px;
+    padding:12px 13px;
+    margin-bottom:12px;
+    border:1px solid var(--line);
+    background:var(--panel);
     line-height:1.5;
     font-size:.85rem;
-    margin-bottom:14px;
+}
+
+.status.ready{border-left:3px solid var(--good)}
+.status.learning{border-left:3px solid var(--accent-2)}
+.status.error{border-left:3px solid var(--bad)}
+.status.warning{border-left:3px solid var(--warn)}
+
+.status-title{
+    font-weight:700;
+    margin-bottom:3px;
+}
+
+/* FILE */
+
+.file-info{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 11px;
+    margin-top:4px;
+    font-size:.78rem;
+    line-height:1.6;
 }
 
 .file-name{
-    color:#3fb950;
-    font-size:.78rem;
-    overflow-wrap:anywhere;
+    color:var(--accent);
+    word-break:break-all;
+    font-family:var(--mono);
+}
+
+/* STATS */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
 }
 
 .stat{
-    background:#0d1117;
-    border:1px solid #30363d;
-    border-radius:7px;
-    padding:12px;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    padding:11px 8px;
+    border-radius:10px;
+    text-align:center;
 }
 
-.stat-title{
-    color:#8b949e;
-    font-size:.7rem;
+.stat-label{
+    color:var(--dim);
+    font-size:.62rem;
+    letter-spacing:.4px;
 }
 
 .stat-value{
-    color:#58a6ff;
-    font-size:1.15rem;
-    font-weight:bold;
-    margin-top:4px;
+    color:var(--accent);
+    font-size:1.05rem;
+    font-weight:700;
+    margin-top:3px;
+    font-family:var(--mono);
 }
 
-.output{
-    background:#010409;
-    border:1px solid #30363d;
-    border-radius:7px;
-    min-height:80px;
-    padding:15px;
-    color:#3fb950;
-    line-height:1.6;
-    word-break:break-word;
+/* FORM */
+
+input[type=text],
+select{
+    width:100%;
+    background:var(--panel-2);
+    color:var(--text);
+    border:1px solid var(--line);
+    border-radius:9px;
+    padding:12px;
+    margin-bottom:10px;
+    font-size:.86rem;
+    font-family:var(--sans);
+}
+
+input[type=text]:focus,
+select:focus{
+    outline:2px solid var(--accent-2);
+    outline-offset:1px;
+}
+
+input[type=range]{
+    width:100%;
+    accent-color:var(--accent-2);
 }
 
 .small{
-    color:#8b949e;
-    font-size:.75rem;
-    line-height:1.5;
+    color:var(--dim);
+    font-size:.76rem;
+    line-height:1.55;
 }
 
-.label{
-    color:#58a6ff;
-    font-weight:bold;
+.output{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:15px;
+    min-height:70px;
+    color:var(--accent);
+    line-height:1.6;
+    word-break:break-word;
+    font-size:.95rem;
 }
+
+/* LOG */
+
+.log{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px;
+    height:180px;
+    overflow:auto;
+    font-family:var(--mono);
+    font-size:.72rem;
+    line-height:1.55;
+}
+
+.log-line{
+    border-bottom:1px solid #ffffff08;
+    padding:3px 0;
+    color:var(--dim);
+}
+
+.log-line:last-child{color:var(--text)}
+
+/* BARS */
 
 .bar-row{
     display:flex;
     align-items:center;
+    gap:7px;
     margin-bottom:7px;
 }
 
 .bar-label{
-    width:110px;
-    overflow:hidden;
+    width:92px;
     white-space:nowrap;
+    overflow:hidden;
     text-overflow:ellipsis;
-    font-size:.78rem;
+    font-size:.76rem;
 }
 
 .bar-track{
     flex:1;
-    height:9px;
-    background:#21262d;
-    border-radius:4px;
+    height:8px;
+    background:#ffffff0d;
+    border-radius:5px;
     overflow:hidden;
-    margin:0 8px;
 }
 
 .bar-fill{
     height:100%;
-    background:#238636;
+    background:var(--accent);
 }
 
-.bar-stats{
-    width:80px;
+.bar-number{
+    width:56px;
     text-align:right;
-    color:#8b949e;
-    font-size:.7rem;
+    color:var(--dim);
+    font-size:.68rem;
+    font-family:var(--mono);
 }
 
-.semantic-box{
-    background:#0d1117;
-    border:1px solid #30363d;
-    border-radius:7px;
+/* SEMANTIQUE */
+
+.semantic{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:10px;
     padding:13px;
-    line-height:1.6;
-    min-height:80px;
+    line-height:1.7;
+    font-size:.82rem;
 }
 
-.graph-wrap{
-    background:#080b10;
-    border:1px solid #30363d;
-    border-radius:8px;
-    overflow:hidden;
+.semantic b{color:var(--accent-2)}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    background:#ffffff0d;
+    margin:0 5px 5px 0;
+    font-size:.72rem;
+    color:var(--text);
+    border:1px solid var(--line);
+}
+
+/* GRAPH */
+
+.graph{
     position:relative;
+    height:min(70vh,420px);
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
 }
 
-#graph{
+.graph svg{
     width:100%;
-    height:520px;
-    display:block;
+    height:100%;
 }
 
-.graph-help{
-    position:absolute;
-    bottom:8px;
-    left:10px;
-    color:#8b949e;
-    font-size:.7rem;
-    background:#0d1117cc;
-    padding:5px 8px;
-    border-radius:5px;
-}
-
-.node{
-    cursor:pointer;
-}
-
-.node circle{
-    stroke:#fff;
-    stroke-width:1.2;
-}
-
-.node text{
-    fill:#e6edf3;
-    font-size:11px;
-    pointer-events:none;
-}
-
-.edge{
-    stroke:#58a6ff;
-    opacity:.35;
-}
+.node{cursor:pointer}
 
 .legend{
     display:flex;
-    gap:15px;
+    gap:12px;
     flex-wrap:wrap;
-    font-size:.75rem;
-    color:#8b949e;
+    color:var(--dim);
+    font-size:.7rem;
+    margin-top:8px;
 }
 
-.legend span{
-    display:flex;
-    align-items:center;
-    gap:5px;
+/* EMPTY */
+
+.empty-state{
+    text-align:center;
+    padding:26px 10px;
+    color:var(--dim);
+    font-size:.85rem;
 }
 
-.dot{
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    display:inline-block;
+.empty-state .ic{
+    font-size:1.8rem;
+    display:block;
+    margin-bottom:6px;
 }
 
-.green{background:#3fb950}
-.blue{background:#58a6ff}
-.orange{background:#d29922}
-.purple{background:#bc8cff}
+/* MEMORY MONITOR */
 
-@media(max-width:650px){
-    .grid,.grid3{
-        grid-template-columns:1fr 1fr;
-    }
-
-    #graph{
-        height:430px;
-    }
+.monitor{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:10px;
 }
 
-@media(max-width:430px){
-    .grid,.grid3{
-        grid-template-columns:1fr;
+.monitor-item{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:9px;
+}
+
+.monitor-label{
+    color:var(--dim);
+    font-size:.65rem;
+}
+
+.monitor-value{
+    margin-top:3px;
+    font-family:var(--mono);
+    font-size:.78rem;
+}
+
+.monitor-good{color:var(--good)}
+.monitor-warn{color:var(--warn)}
+.monitor-bad{color:var(--bad)}
+
+.progress{
+    height:8px;
+    border-radius:5px;
+    background:#ffffff0d;
+    overflow:hidden;
+    margin-top:8px;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    transition:width .2s;
+}
+
+@media(min-width:600px){
+    .grid{
+        grid-template-columns:repeat(6,1fr);
     }
 }
 </style>
@@ -299,387 +520,648 @@ input[type=range]{
 
 <body>
 
-<div class="container">
+<div class="hdr">
+    <div class="hdr-row">
+        <div class="hdr-title">
+            <span class="dot" id="hdrDot"></span>
+            IA Française V5.1
+        </div>
 
-<h1>🧠 IA Française V4 — Mémoire Sémantique Évolutive</h1>
-
-<div class="subtitle">
-Mémoire linguistique + concepts + associations + graphe sémantique auto-évolutif
+        <div class="hdr-mini">
+            <span>Tok <b id="hdrTokens">0</b></span>
+            <span>Voc <b id="hdrVocab">0</b></span>
+        </div>
+    </div>
 </div>
 
+<div class="wrap">
 
-<!-- ======================================================
+<!-- =====================================================
      MÉMOIRE
-====================================================== -->
+===================================================== -->
 
-<div class="panel">
+<div class="view active" id="view-memoire">
 
-<h2>💾 Gestion de la mémoire</h2>
+    <div class="panel">
+        <h2>💾 Gestion de la mémoire V5.1</h2>
 
-<div class="grid">
+        <button class="secondary btn-block"
+                onclick="ouvrirFichier()">
+            📂 Charger une mémoire JSON
+        </button>
 
-<div>
-<button
-class="secondary"
-onclick="document.getElementById('fichierMemoire').click()">
-📂 Charger une mémoire JSON
-</button>
+        <input id="fichierMemoire"
+               type="file"
+               accept=".json,application/json"
+               style="display:none">
 
-<input
-type="file"
-id="fichierMemoire"
-accept=".json,application/json"
-style="display:none"
-onchange="chargerMemoire(event)">
+        <button class="secondary btn-block"
+                onclick="creerNouvelleMemoire()">
+            🆕 Créer une nouvelle mémoire
+        </button>
+
+        <button class="primary btn-block"
+                onclick="sauvegarderMemoire()">
+            💾 Télécharger la mémoire
+        </button>
+
+        <div class="file-info">
+            <div>
+                État :
+                <strong id="etatMemoire">🔴 Aucune mémoire</strong>
+            </div>
+
+            <div>
+                Fichier :
+                <span id="nomFichier" class="file-name">
+                    Aucun fichier chargé
+                </span>
+            </div>
+
+            <div>
+                Version :
+                <span id="versionMemoire">—</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="status" class="status warning">
+        <div class="status-title">
+            🟡 Initialisation
+        </div>
+
+        Crée une nouvelle mémoire ou charge un fichier JSON existant.
+    </div>
+
+    <div class="panel">
+        <h2>📊 Mémoire générale</h2>
+
+        <div class="grid">
+
+            <div class="stat">
+                <div class="stat-label">TOKENS</div>
+                <div id="statTokens" class="stat-value">0</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">VOCAB.</div>
+                <div id="statVocab" class="stat-value">0</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">2-GR.</div>
+                <div id="stat2" class="stat-value">0</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">3-GR.</div>
+                <div id="stat3" class="stat-value">0</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">CONCEPTS</div>
+                <div id="statConcepts" class="stat-value">0</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">RELATIONS</div>
+                <div id="statRelations" class="stat-value">0</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>🧠 Moniteur mémoire</h2>
+
+        <div class="monitor">
+
+            <div class="monitor-item">
+                <div class="monitor-label">
+                    Relations
+                </div>
+                <div id="monitorRelations"
+                     class="monitor-value monitor-good">
+                    0
+                </div>
+            </div>
+
+            <div class="monitor-item">
+                <div class="monitor-label">
+                    Vocabulaire
+                </div>
+                <div id="monitorVocab"
+                     class="monitor-value monitor-good">
+                    0
+                </div>
+            </div>
+
+            <div class="monitor-item">
+                <div class="monitor-label">
+                    Croissance
+                </div>
+                <div id="monitorGrowth"
+                     class="monitor-value monitor-good">
+                    Stable
+                </div>
+            </div>
+
+            <div class="monitor-item">
+                <div class="monitor-label">
+                    Mode
+                </div>
+                <div id="monitorMode"
+                     class="monitor-value monitor-good">
+                    Normal
+                </div>
+            </div>
+
+        </div>
+
+        <div class="progress">
+            <div id="memoryProgress"
+                 class="progress-fill">
+            </div>
+        </div>
+
+        <div class="small" style="margin-top:8px">
+            Surveillance interne. Ce compteur est une estimation
+            structurelle et ne prétend pas mesurer exactement la RAM
+            physique utilisée par le navigateur.
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>📚 Vocabulaire dominant</h2>
+
+        <div id="topMots">
+            <div class="empty-state">
+                <span class="ic">📭</span>
+                Aucun mot appris pour l'instant.
+            </div>
+        </div>
+    </div>
 
 </div>
 
-<div>
-<button
-class="secondary"
-onclick="creerNouvelleMemoire()">
-🆕 Nouvelle mémoire
-</button>
-</div>
 
-</div>
-
-<button
-class="primary"
-onclick="sauvegarderMemoire()">
-💾 Télécharger la mémoire V4
-</button>
-
-<div id="nomFichier" class="file-name">
-Aucune mémoire chargée.
-</div>
-
-<div class="small" style="margin-top:8px">
-La mémoire originale n'est jamais écrasée. Une nouvelle copie JSON est téléchargée.
-</div>
-
-</div>
-
-
-<!-- ======================================================
+<!-- =====================================================
      APPRENTISSAGE
-====================================================== -->
+===================================================== -->
 
-<div class="panel">
+<div class="view" id="view-apprentissage">
 
-<h2>📚 Apprentissage automatique</h2>
+    <div class="panel">
+        <h2>📚 Apprentissage V5.1</h2>
 
-<div class="grid">
+        <div class="hint">
+            L'apprentissage fonctionne maintenant par lots afin de
+            limiter les recalculs inutiles et de garder l'interface
+            réactive lorsque la mémoire devient très volumineuse.
+        </div>
 
-<button
-id="btnStart"
-class="primary"
-onclick="lancerApprentissage()">
-▶ Lancer l'apprentissage
-</button>
+        <div class="btn-row">
+            <button id="btnStart"
+                    class="primary"
+                    onclick="lancerApprentissage()">
+                ▶ Démarrer
+            </button>
 
-<button
-id="btnStop"
-class="danger"
-onclick="arreterApprentissage()">
-⏹ Pause
-</button>
+            <button id="btnStop"
+                    class="danger"
+                    onclick="arreterApprentissage()"
+                    disabled>
+                ⏹ Arrêter
+            </button>
+        </div>
 
-</div>
+        <div class="file-info" style="margin-top:10px">
 
-<div class="small">
-L'IA récupère des textes français, apprend les mots, les transitions,
-les contextes, les associations et les concepts.
-</div>
+            <div>
+                Source Wikipédia :
+                <strong id="wikiEtat">
+                    — inconnue —
+                </strong>
+            </div>
 
-</div>
+            <div>
+                Taille du lot :
+                <strong id="batchInfo">
+                    10 textes
+                </strong>
+            </div>
 
+            <div>
+                Prochain checkpoint :
+                <strong id="checkpointInfo">
+                    0 tokens
+                </strong>
+            </div>
 
-<!-- ======================================================
-     GÉNÉRATEUR
-====================================================== -->
-
-<div class="panel">
-
-<h2>🤖 Générateur intelligent</h2>
-
-<select id="longueur">
-<option value="10">Phrase courte — 10 mots</option>
-<option value="20" selected>Phrase normale — 20 mots</option>
-<option value="30">Phrase longue — 30 mots</option>
-<option value="50">Phrase très longue — 50 mots</option>
-</select>
-
-<label class="small">
-Influence de la mémoire sémantique :
-</label>
-
-<input
-type="range"
-id="forceSemantique"
-min="0"
-max="100"
-value="60"
-oninput="document.getElementById('forceValue').innerText=this.value+'%'">
-
-<div class="small">
-Influence actuelle :
-<b id="forceValue">60%</b>
-</div>
-
-<br>
-
-<button
-class="success"
-onclick="genererPhrase()">
-✨ Générer une phrase
-</button>
-
-<div id="resultat" class="output">
-En attente...
-</div>
-
-</div>
+        </div>
+    </div>
 
 
-<!-- ======================================================
-     STATUS
-====================================================== -->
+    <div class="panel">
+        <h2>📡 Activité du moteur</h2>
 
-<div id="status" class="status">
-🆕 Crée une nouvelle mémoire ou charge un ancien fichier JSON.
-</div>
+        <div id="journal" class="log">
+            <div class="log-line">
+                Système V5.1 prêt.
+            </div>
+        </div>
+    </div>
 
 
-<!-- ======================================================
-     STATISTIQUES
-====================================================== -->
+    <div class="panel">
+        <h2>⚙️ Paramètres V5.1</h2>
 
-<div class="panel">
+        <label class="small">
+            Textes par lot
+        </label>
 
-<h2>📊 État de la mémoire</h2>
+        <select id="batchSize">
+            <option value="5">5 textes</option>
+            <option value="10" selected>10 textes</option>
+            <option value="20">20 textes</option>
+            <option value="50">50 textes</option>
+        </select>
 
-<div class="grid3">
+        <label class="small">
+            Pause entre les lots
+        </label>
 
-<div class="stat">
-<div class="stat-title">TOKENS</div>
-<div id="statTokens" class="stat-value">0</div>
-</div>
+        <select id="batchPause">
+            <option value="100">100 ms</option>
+            <option value="250" selected>250 ms</option>
+            <option value="500">500 ms</option>
+            <option value="1000">1 seconde</option>
+        </select>
 
-<div class="stat">
-<div class="stat-title">VOCABULAIRE</div>
-<div id="statVocab" class="stat-value">0</div>
-</div>
+        <label class="small">
+            Fréquence de mise à jour visuelle
+        </label>
 
-<div class="stat">
-<div class="stat-title">3-GRAMMES</div>
-<div id="stat3" class="stat-value">0</div>
-</div>
+        <select id="uiInterval">
+            <option value="1">Chaque lot</option>
+            <option value="3" selected>Tous les 3 lots</option>
+            <option value="5">Tous les 5 lots</option>
+            <option value="10">Tous les 10 lots</option>
+        </select>
 
-<div class="stat">
-<div class="stat-title">CONCEPTS</div>
-<div id="statConcepts" class="stat-value">0</div>
-</div>
-
-<div class="stat">
-<div class="stat-title">RELATIONS</div>
-<div id="statRelations" class="stat-value">0</div>
-</div>
-
-<div class="stat">
-<div class="stat-title">PHRASES</div>
-<div id="statPhrases" class="stat-value">0</div>
-</div>
-
-</div>
+    </div>
 
 </div>
 
 
-<!-- ======================================================
-     TOP MOTS
-====================================================== -->
+<!-- =====================================================
+     GÉNÉRER
+===================================================== -->
 
-<div class="panel">
+<div class="view" id="view-generer">
 
-<h2>📈 Mots les plus appris</h2>
+    <div class="panel">
+        <h2>🤖 Générateur intelligent</h2>
 
-<div id="topMots">
-Aucun mot.
+        <select id="longueur">
+            <option value="10">
+                Phrase courte — 10 mots
+            </option>
+
+            <option value="20" selected>
+                Phrase normale — 20 mots
+            </option>
+
+            <option value="30">
+                Phrase longue — 30 mots
+            </option>
+
+            <option value="50">
+                Phrase très longue — 50 mots
+            </option>
+        </select>
+
+        <div class="small">
+            Influence de la mémoire sémantique
+        </div>
+
+        <input id="forceSemantique"
+               type="range"
+               min="0"
+               max="100"
+               value="55">
+
+        <div class="small" style="margin-bottom:10px">
+            <span id="forceValue">55%</span>
+        </div>
+
+        <button id="btnGenerer"
+                class="success btn-block"
+                onclick="genererPhrase()"
+                disabled>
+            ✨ Générer une phrase
+        </button>
+
+        <div id="resultat" class="output">
+            En attente d'apprentissage...
+        </div>
+    </div>
+
 </div>
 
+
+<!-- =====================================================
+     EXPLORER
+===================================================== -->
+
+<div class="view" id="view-explorer">
+
+    <div class="panel">
+        <h2>🔎 Explorer la mémoire</h2>
+
+        <input id="motRecherche"
+               type="text"
+               placeholder="Exemple : chat"
+               onkeydown="if(event.key==='Enter')explorerMot()">
+
+        <button class="secondary btn-block"
+                onclick="explorerMot()">
+            🔍 Explorer
+        </button>
+
+        <div id="exploration"
+             class="semantic">
+            Aucun mot sélectionné.
+        </div>
+    </div>
+
 </div>
 
 
-<!-- ======================================================
+<!-- =====================================================
      GRAPHE
-====================================================== -->
+===================================================== -->
 
-<div class="panel">
+<div class="view" id="view-graphe">
 
-<h2>🕸️ Graphe sémantique auto-évolutif</h2>
+    <div class="panel">
+        <h2>🕸️ Graphe sémantique</h2>
 
-<div class="small" style="margin-bottom:10px">
-Chaque cercle représente un concept ou un mot.
-Plus deux éléments sont associés dans les textes, plus leur relation devient forte.
-Le graphe évolue automatiquement pendant l'apprentissage.
-</div>
+        <div class="hint">
+            Le graphe n'est plus reconstruit à chaque texte appris.
+            Il est actualisé seulement lorsque cela est nécessaire.
+        </div>
 
-<div class="legend">
-<span><i class="dot green"></i> concept fréquent</span>
-<span><i class="dot blue"></i> relation</span>
-<span><i class="dot orange"></i> action</span>
-<span><i class="dot purple"></i> concept recherché</span>
-</div>
+        <input id="grapheRecherche"
+               type="text"
+               placeholder="Concept central — ex. chat"
+               onkeydown="if(event.key==='Enter')construireGraphe()">
 
-<br>
+        <button class="secondary btn-block"
+                onclick="construireGraphe()">
+            🕸️ Actualiser le graphe
+        </button>
 
-<div class="graph-wrap">
-<svg id="graph" viewBox="0 0 900 520"></svg>
-<div class="graph-help">
-Clique sur un nœud pour explorer le concept.
-</div>
-</div>
+        <div id="graphe" class="graph"></div>
 
-</div>
-
-
-<!-- ======================================================
-     EXPLORATEUR
-====================================================== -->
-
-<div class="panel">
-
-<h2>🔎 Explorer la mémoire sémantique</h2>
-
-<input
-id="motRecherche"
-type="text"
-placeholder="Exemple : chat"
-onkeydown="if(event.key==='Enter') explorerMot()">
-
-<button
-class="secondary"
-onclick="explorerMot()">
-🔍 Explorer
-</button>
-
-<div
-id="exploration"
-class="semantic-box">
-Aucun concept sélectionné.
-</div>
-
-</div>
+        <div class="legend">
+            <span>● Concept</span>
+            <span>━━ Association</span>
+            <span>Épaisseur = force</span>
+        </div>
+    </div>
 
 
-<!-- ======================================================
-     CONCEPTS
-====================================================== -->
+    <div class="panel">
+        <h2>🧠 Architecture V5.1</h2>
 
-<div class="panel">
+        <div class="arch-item">
+            <b>1. Vocabulaire</b>
+            <span class="small">
+                Fréquences des mots.
+            </span>
+        </div>
 
-<h2>🧩 Concepts les plus importants</h2>
+        <div class="arch-item">
+            <b>2. Modèle 2-gramme</b>
+            <span class="small">
+                Relations entre deux éléments successifs.
+            </span>
+        </div>
 
-<div id="topConcepts">
-Aucun concept.
-</div>
+        <div class="arch-item">
+            <b>3. Modèle 3-gramme</b>
+            <span class="small">
+                Séquences de trois éléments.
+            </span>
+        </div>
 
-</div>
+        <div class="arch-item">
+            <b>4. Mémoire sémantique</b>
+            <span class="small">
+                Associations contextuelles.
+            </span>
+        </div>
 
+        <div class="arch-item">
+            <b>5. Mémoire de concepts</b>
+            <span class="small">
+                Regroupement progressif.
+            </span>
+        </div>
 
-<!-- ======================================================
-     ARCHITECTURE
-====================================================== -->
+        <div class="arch-item">
+            <b>6. Gestion par lots</b>
+            <span class="small">
+                Réduit les recalculs pendant l'apprentissage.
+            </span>
+        </div>
 
-<div class="panel">
+        <div class="arch-item">
+            <b>7. Surveillance</b>
+            <span class="small">
+                Suit la croissance structurelle de la mémoire.
+            </span>
+        </div>
 
-<h2>ℹ️ Comment fonctionne cette mémoire ?</h2>
+        <div class="arch-item">
+            <b>8. Génération</b>
+            <span class="small">
+                Combine probabilités linguistiques et sémantique.
+            </span>
+        </div>
 
-<div class="small">
+        <div class="arch-item">
+            <b>9. V5.2 — à venir</b>
+            <span class="small">
+                Renforcement, relances intelligentes,
+                oubli contrôlé et consolidation.
+            </span>
+        </div>
 
-<b>1. Mémoire linguistique</b><br>
-L'IA apprend la fréquence des mots et les transitions entre eux.
-
-<br><br>
-
-<b>2. Mémoire contextuelle</b><br>
-Elle mémorise les mots qui apparaissent dans des contextes proches.
-
-<br><br>
-
-<b>3. Mémoire de concepts</b><br>
-Un mot peut appartenir à plusieurs concepts.
-Par exemple : <b>chat → animal</b>.
-
-<br><br>
-
-<b>4. Graphe sémantique</b><br>
-Les concepts et les mots sont reliés entre eux.
-Chaque relation possède un poids.
-
-<br><br>
-
-<b>5. Évolution automatique</b><br>
-Lorsqu'une association revient dans de nouveaux textes,
-son poids augmente.
-
-<br><br>
-
-<b>6. Génération</b><br>
-Le moteur combine les probabilités linguistiques avec
-les relations sémantiques.
-
-<br><br>
-
-<b>Important :</b><br>
-Cette architecture est une mémoire associative locale.
-Elle ne possède pas la compréhension générale d'un grand modèle
-de langage comme GPT. Elle apprend cependant progressivement
-sa propre structure à partir des données qu'on lui donne.
+    </div>
 
 </div>
 
 </div>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<div class="tabbar">
+
+    <button class="tab active"
+            data-view="view-memoire"
+            onclick="changerOnglet('view-memoire',this)">
+        <span class="ic">💾</span>
+        Mémoire
+    </button>
+
+    <button class="tab"
+            data-view="view-apprentissage"
+            onclick="changerOnglet('view-apprentissage',this)">
+        <span class="ic">📚</span>
+        Appr.
+    </button>
+
+    <button class="tab"
+            data-view="view-generer"
+            onclick="changerOnglet('view-generer',this)">
+        <span class="ic">✨</span>
+        Générer
+    </button>
+
+    <button class="tab"
+            data-view="view-explorer"
+            onclick="changerOnglet('view-explorer',this)">
+        <span class="ic">🔎</span>
+        Explorer
+    </button>
+
+    <button class="tab"
+            data-view="view-graphe"
+            onclick="changerOnglet('view-graphe',this)">
+        <span class="ic">🕸️</span>
+        Graphe
+    </button>
 
 </div>
 
 
 <script>
 
-/* ==========================================================
-   VERSION
-========================================================== */
+/* =========================================================
+   CONFIGURATION V5.1
+========================================================= */
 
-const VERSION_MEMOIRE = 4;
+const VERSION_MEMOIRE = 5.1;
+
+/*
+    Ces valeurs sont volontairement conservatrices.
+
+    Le système ne supprime PAS encore les connaissances.
+    Il surveille seulement leur croissance.
+
+    L'oubli intelligent arrivera en V5.2.
+*/
+
+const CONFIG = {
+
+    batchSize:10,
+
+    pauseEntreLots:250,
+
+    uiInterval:3,
+
+    checkpointTokens:100000,
+
+    journalMax:200,
+
+    fenetreSemantique:5,
+
+    seuilWarningRelations:5000000,
+
+    seuilDangerRelations:10000000,
+
+    seuilWarningVocabulaire:500000,
+
+    seuilDangerVocabulaire:1000000
+
+};
 
 
-/* ==========================================================
-   VARIABLES
-========================================================== */
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function changerOnglet(id,boutonEl){
+
+    document.querySelectorAll(".view")
+        .forEach(v=>v.classList.remove("active"));
+
+    document.querySelectorAll(".tab")
+        .forEach(t=>t.classList.remove("active"));
+
+    document.getElementById(id)
+        .classList.add("active");
+
+    boutonEl.classList.add("active");
+
+    window.scrollTo({
+        top:0,
+        behavior:"instant"
+    });
+
+    if(id==="view-graphe"){
+        construireGraphe();
+    }
+}
+
+
+/* =========================================================
+   MEMOIRE
+========================================================= */
 
 let memoire = creerMemoire();
 
-let nomMemoire = "memoire_ia_fr_v4.json";
+let apprentissageActif=false;
 
-let apprentissageActif = false;
+let nomMemoire="memoire_ia_fr_v5.1.json";
+
+let sourceWikipediaDisponible=null;
+
+let avertissementRelations=false;
+let avertissementVocabulaire=false;
+
+let derniereSauvegardeTokens=0;
+
+let statistiquesInternes={
+    lots:0,
+    textes:0,
+    tokensSession:0,
+    dernierLotTokens:0,
+    tempsDernierLot:0,
+    relationsAjoutees:0,
+    motsNouveaux:0
+};
 
 
-/* ==========================================================
-   CRÉATION MÉMOIRE
-========================================================== */
+/* =========================================================
+   CREATION MEMOIRE
+========================================================= */
 
 function creerMemoire(){
 
     return {
 
-        version: VERSION_MEMOIRE,
+        version:VERSION_MEMOIRE,
 
         statistiques:{
             tokens:0,
             phrases:0,
-            relations:0,
-            dernierApprentissage:null
+            relations:0
         },
 
         vocabulaire:{},
@@ -692,8 +1174,6 @@ function creerMemoire(){
 
         semantique:{
 
-            concepts:{},
-
             categories:{},
 
             associations:{},
@@ -702,9 +1182,11 @@ function creerMemoire(){
 
             contextes:{},
 
-            proprietes:{},
+            concepts:{},
 
-            sentiment:{}
+            sentiment:{},
+
+            proprietes:{}
 
         }
 
@@ -712,42 +1194,20 @@ function creerMemoire(){
 }
 
 
-/* ==========================================================
-   NOUVELLE MÉMOIRE
-========================================================== */
+/* =========================================================
+   OUVERTURE
+========================================================= */
 
-function creerNouvelleMemoire(){
+function ouvrirFichier(){
 
-    if(memoire.statistiques.tokens>0){
-
-        if(!confirm(
-            "La mémoire actuelle sera remplacée dans l'application.\n\n"+
-            "Ton ancien fichier JSON restera intact.\n\n"+
-            "Continuer ?"
-        )){
-            return;
-        }
-    }
-
-    memoire=creerMemoire();
-
-    nomMemoire="memoire_ia_fr_v4.json";
-
-    document.getElementById("nomFichier").innerText=
-        "🆕 Nouvelle mémoire V4";
-
-    afficherTout();
-
-    status(
-        "🆕 <b>Nouvelle mémoire V4 créée.</b><br>"+
-        "Elle est prête à apprendre."
-    );
+    document.getElementById("fichierMemoire").click();
 }
 
 
-/* ==========================================================
-   CHARGEMENT JSON
-========================================================== */
+document
+.getElementById("fichierMemoire")
+.addEventListener("change",chargerMemoire);
+
 
 async function chargerMemoire(event){
 
@@ -757,13 +1217,23 @@ async function chargerMemoire(event){
 
     try{
 
-        status("📂 Lecture du fichier JSON...");
+        journaliser("📂 Lecture de "+fichier.name+"...");
+
+        const debut=performance.now();
 
         const texte=await fichier.text();
 
-        if(!texte.trim()){
-            throw new Error("Fichier vide");
-        }
+        journaliser(
+            "📦 Fichier lu : "+
+            formatOctets(texte.length)
+        );
+
+        /*
+            JSON.parse est forcément nécessaire pour
+            importer le fichier actuel.
+
+            Mais une seule instance est créée.
+        */
 
         const data=JSON.parse(texte);
 
@@ -771,31 +1241,50 @@ async function chargerMemoire(event){
 
         nomMemoire=fichier.name;
 
-        document.getElementById("nomFichier").innerText=
-            "✔ Mémoire chargée : "+fichier.name+
-            " → V"+memoire.version;
+        avertissementRelations=false;
+        avertissementVocabulaire=false;
 
-        afficherTout();
+        derniereSauvegardeTokens=
+            Number(memoire.statistiques.tokens||0);
 
-        dessinerGraphe();
+        const duree=
+            ((performance.now()-debut)/1000).toFixed(2);
 
-        status(
-            "🧠 <b>Mémoire importée avec succès.</b><br>"+
-            "Les anciennes données ont été conservées et "+
-            "adaptées au système V4."
+        afficherInfosMemoire();
+        afficherStats();
+        rafraichirEtatGenerer();
+        actualiserMoniteur();
+
+        changerStatus(
+            "ready",
+            "🟢 Mémoire prête",
+            "Mémoire chargée en "+
+            duree+
+            " s — "+
+            formatNombre(memoire.statistiques.tokens)+
+            " tokens."
         );
 
-    }catch(erreur){
+        journaliser(
+            "✅ Mémoire chargée en "+
+            duree+
+            " s."
+        );
+
+    }
+    catch(erreur){
 
         console.error(erreur);
 
-        status(
-            "❌ Erreur : impossible de lire cette mémoire JSON."
+        changerStatus(
+            "error",
+            "🔴 Erreur",
+            "Le fichier JSON est invalide ou impossible à charger."
         );
 
-        alert(
-            "Le fichier n'est pas un JSON valide ou "+
-            "sa structure est incorrecte."
+        journaliser(
+            "❌ Erreur JSON : "+
+            (erreur.message||"format invalide")
         );
     }
 
@@ -803,752 +1292,520 @@ async function chargerMemoire(event){
 }
 
 
-/* ==========================================================
-   MIGRATION / NORMALISATION
-========================================================== */
+/* =========================================================
+   NORMALISATION
+========================================================= */
 
 function normaliserMemoire(data){
 
     const base=creerMemoire();
 
     /*
-     * ANCIEN FORMAT :
-     * {
-     *   mots_appris: ...,
-     *   memoire_mots: ...
-     * }
-     */
+        Ancien format
+    */
 
     if(data.memoire_mots){
 
         base.statistiques.tokens=
             Number(data.mots_appris||0);
 
-        for(const mot in data.memoire_mots){
+        base.transitions2=
+            data.memoire_mots||{};
 
-            base.transitions2[mot]=
-                copierObjet(data.memoire_mots[mot]);
+        reconstruireVocabulaireDepuisTransitions(base);
 
-            /*
-             * Reconstruction du vocabulaire
-             */
-
-            if(!base.vocabulaire[mot]){
-                base.vocabulaire[mot]=0;
-            }
-
-            for(
-                const suivant in data.memoire_mots[mot]
-            ){
-
-                base.vocabulaire[suivant]=
-                    (base.vocabulaire[suivant]||0)+
-                    Number(data.memoire_mots[mot][suivant]);
-
-            }
-        }
-
-        base.version=4;
-
-        reconstruireConceptsDepuisAncienneMemoire(base);
+        recalculerCompteursStructurels(base);
 
         return base;
     }
 
-
     /*
-     * FORMAT V3
-     */
+        Format moderne
+    */
 
-    if(data.version){
+    if(data.statistiques){
 
-        base.version=4;
-
-        if(data.statistiques){
-            base.statistiques=Object.assign(
+        base.statistiques=
+            Object.assign(
                 base.statistiques,
                 data.statistiques
             );
-        }
+    }
 
-        base.vocabulaire=
-            data.vocabulaire||{};
+    base.vocabulaire=
+        data.vocabulaire||{};
 
-        base.transitions2=
-            data.transitions2||{};
+    base.transitions2=
+        data.transitions2||{};
 
-        base.transitions3=
-            data.transitions3||{};
+    base.transitions3=
+        data.transitions3||{};
 
-        base.debuts=
-            data.debuts||{};
+    base.debuts=
+        data.debuts||{};
 
 
-        if(data.semantique){
+    if(data.semantique){
 
-            base.semantique=Object.assign(
+        base.semantique=
+            Object.assign(
                 base.semantique,
                 data.semantique
             );
-
-        }
-
-        /*
-         * Si l'ancienne version n'avait pas
-         * de mémoire de concepts, on la construit.
-         */
-
-        if(!base.semantique.concepts){
-            base.semantique.concepts={};
-        }
-
-        reconstruireConceptsDepuisMemoire(base);
-
-        return base;
     }
+
+
+    const s=base.semantique;
+
+    s.concepts=s.concepts||{};
+    s.associations=s.associations||{};
+    s.categories=s.categories||{};
+    s.actions=s.actions||{};
+    s.contextes=s.contextes||{};
+    s.sentiment=s.sentiment||{};
+    s.proprietes=s.proprietes||{};
 
 
     /*
-     * Tentative générique
-     */
+        Le fichier peut être ancien et ne pas
+        contenir la statistique des relations.
+    */
 
-    if(data.vocabulaire){
-        base.vocabulaire=data.vocabulaire;
-    }
-
-    if(data.transitions2){
-        base.transitions2=data.transitions2;
-    }
-
-    if(data.transitions3){
-        base.transitions3=data.transitions3;
-    }
-
-    if(data.semantique){
-        base.semantique=Object.assign(
-            base.semantique,
-            data.semantique
-        );
-    }
-
-    base.version=4;
-
-    reconstruireConceptsDepuisMemoire(base);
+    recalculerCompteursStructurels(base);
 
     return base;
 }
 
 
-/* ==========================================================
-   COPIE
-========================================================== */
+/* =========================================================
+   RECONSTRUCTION VOCABULAIRE
+========================================================= */
 
-function copierObjet(obj){
-
-    try{
-        return JSON.parse(JSON.stringify(obj));
-    }catch{
-        return {};
-    }
-}
-
-
-/* ==========================================================
-   RECONSTRUCTION CONCEPTS
-========================================================== */
-
-function reconstruireConceptsDepuisAncienneMemoire(base){
-
-    for(const mot in base.vocabulaire){
-
-        analyserMotSemantique(mot);
-
-    }
+function reconstruireVocabulaireDepuisTransitions(base){
 
     for(const mot in base.transitions2){
 
-        const suivants=base.transitions2[mot];
+        if(!base.vocabulaire[mot]){
+            base.vocabulaire[mot]=0;
+        }
 
-        for(const suivant in suivants){
+        for(const suivant in base.transitions2[mot]){
 
-            if(
-                estMotValide(mot)&&
-                estMotValide(suivant)
-            ){
+            const n=
+                Number(base.transitions2[mot][suivant]);
 
-                ajouterAssociation(
-                    mot,
-                    suivant,
-                    Math.min(
-                        Number(suivants[suivant]),
-                        20
-                    )*.05
-                );
-            }
+            base.vocabulaire[mot]+=n;
         }
     }
 }
 
 
-function reconstruireConceptsDepuisMemoire(base){
+/* =========================================================
+   COMPTEURS
+========================================================= */
 
-    for(const mot in base.vocabulaire){
-
-        analyserMotSemantique(mot);
-
-    }
+function recalculerCompteursStructurels(base){
 
     /*
-     * Crée des associations supplémentaires
-     * à partir des transitions existantes.
-     */
+        Cette fonction n'est utilisée qu'au chargement.
 
-    for(const mot in base.transitions2){
+        Pendant l'apprentissage, les compteurs sont
+        maintenus directement.
+    */
 
-        const suivants=base.transitions2[mot];
+    base.statistiques.relations=
+        compterRelations(base.semantique.associations);
+}
 
-        for(const suivant in suivants){
 
-            if(
-                estMotValide(mot)&&
-                estMotValide(suivant)
-            ){
+/* =========================================================
+   NOUVELLE MEMOIRE
+========================================================= */
 
-                ajouterAssociation(
-                    mot,
-                    suivant,
-                    Math.min(
-                        Number(suivants[suivant]),
-                        100
-                    )*.02
-                );
-            }
-        }
+function creerNouvelleMemoire(){
+
+    const tokens=
+        Number(memoire.statistiques.tokens||0);
+
+    if(tokens>0){
+
+        const ok=confirm(
+            "Une mémoire contenant "+
+            formatNombre(tokens)+
+            " tokens existe actuellement.\n\n"+
+            "La mémoire de cette page sera remplacée.\n\n"+
+            "Le fichier JSON original ne sera PAS supprimé.\n\n"+
+            "Continuer ?"
+        );
+
+        if(!ok)return;
     }
-}
 
+    if(apprentissageActif){
+        arreterApprentissage();
+    }
 
-/* ==========================================================
-   CATÉGORIES CONNUES
-========================================================== */
+    memoire=creerMemoire();
 
-const categoriesConnues={
+    nomMemoire=
+        "memoire_ia_fr_v5.1.json";
 
-    animaux:[
-        "chat","chien","cheval","vache","lion","tigre",
-        "ours","loup","oiseau","poisson","souris","rat",
-        "lapin","cochon","mouton","chèvre","éléphant",
-        "girafe","singe","poule","canard"
-    ],
+    derniereSauvegardeTokens=0;
 
-    nourriture:[
-        "pain","fromage","viande","poisson","riz","pomme",
-        "orange","banane","légume","fruit","soupe","gâteau",
-        "chocolat","lait","eau","café","thé"
-    ],
+    statistiquesInternes={
+        lots:0,
+        textes:0,
+        tokensSession:0,
+        dernierLotTokens:0,
+        tempsDernierLot:0,
+        relationsAjoutees:0,
+        motsNouveaux:0
+    };
 
-    lieux:[
-        "maison","ville","village","pays","école","hôpital",
-        "bureau","rue","jardin","parc","magasin","restaurant",
-        "gare","aéroport","plage","montagne"
-    ],
+    afficherInfosMemoire();
+    afficherStats();
+    actualiserMoniteur();
+    rafraichirEtatGenerer();
 
-    personnes:[
-        "homme","femme","enfant","garçon","fille","père",
-        "mère","frère","soeur","ami","amie","professeur",
-        "médecin","policier","président"
-    ],
+    document.getElementById("resultat").textContent=
+        "En attente d'apprentissage...";
 
-    objets:[
-        "table","chaise","porte","fenêtre","voiture","vélo",
-        "ordinateur","téléphone","livre","stylo","sac",
-        "clé","lit","lampe"
-    ],
+    construireGraphe();
 
-    nature:[
-        "arbre","fleur","forêt","rivière","mer","océan",
-        "montagne","soleil","lune","pluie","neige","vent",
-        "ciel","terre"
-    ],
+    changerStatus(
+        "ready",
+        "🟢 Nouvelle mémoire",
+        "Nouvelle mémoire V5.1 créée."
+    );
 
-    temps:[
-        "jour","nuit","matin","soir","semaine","mois",
-        "année","heure","minute","temps"
-    ],
-
-    transport:[
-        "voiture","vélo","train","avion","bus","métro",
-        "bateau","camion","route","gare","aéroport"
-    ]
-};
-
-
-/* ==========================================================
-   ACTIONS
-========================================================== */
-
-const actionsConnues=[
-
-    "manger","boire","dormir","courir","marcher",
-    "parler","regarder","voir","entendre","écouter",
-    "aimer","détester","prendre","donner","faire",
-    "dire","aller","venir","partir","arriver",
-    "vivre","travailler","jouer","lire","écrire",
-    "apprendre","enseigner","acheter","vendre",
-    "ouvrir","fermer","chercher","trouver","penser",
-    "comprendre","connaître","construire","créer",
-    "utiliser","porter","mettre","tenir","sauter",
-    "chanter","rire","pleurer"
-];
-
-
-/* ==========================================================
-   MOTS-OUTILS
-========================================================== */
-
-const motsStop=new Set([
-
-    "le","la","les","un","une","des","de","du","et",
-    "ou","mais","donc","or","ni","car","à","au","aux",
-    "en","dans","sur","sous","avec","sans","pour","par",
-    "ce","cette","ces","cet","son","sa","ses","mon",
-    "ma","mes","ton","ta","tes","il","elle","ils","elles",
-    "je","tu","nous","vous","on","qui","que","quoi",
-    "dont","où","est","sont","a","ont","être","avoir"
-]);
-
-
-/* ==========================================================
-   PONCTUATION
-========================================================== */
-
-function estPonctuation(mot){
-
-    return /^[,.!?;:()[\]«»"—-]$/.test(mot);
-}
-
-
-function estMotValide(mot){
-
-    return (
-        mot &&
-        !estPonctuation(mot) &&
-        mot.length>1 &&
-        !/^\d+$/.test(mot)
+    journaliser(
+        "🆕 Nouvelle mémoire créée."
     );
 }
 
 
-/* ==========================================================
+/* =========================================================
+   SAUVEGARDE
+========================================================= */
+
+function sauvegarderMemoire(){
+
+    try{
+
+        const debut=performance.now();
+
+        journaliser(
+            "💾 Préparation de la sauvegarde..."
+        );
+
+        /*
+            IMPORTANT :
+
+            JSON.stringify reste nécessaire pour produire
+            le fichier JSON demandé.
+
+            On ne fait aucun recalcul de statistiques ici.
+        */
+
+        const contenu=
+            JSON.stringify(memoire);
+
+        const blob=
+            new Blob(
+                [contenu],
+                {type:"application/json"}
+            );
+
+        const url=
+            URL.createObjectURL(blob);
+
+        const lien=
+            document.createElement("a");
+
+        const maintenant=
+            new Date();
+
+        const date=
+            maintenant.getFullYear()+
+            "-"+
+            String(maintenant.getMonth()+1).padStart(2,"0")+
+            "-"+
+            String(maintenant.getDate()).padStart(2,"0")+
+            "_"+
+            String(maintenant.getHours()).padStart(2,"0")+
+            "-"+
+            String(maintenant.getMinutes()).padStart(2,"0")+
+            "-"+
+            String(maintenant.getSeconds()).padStart(2,"0");
+
+        lien.href=url;
+
+        lien.download=
+            "memoire_ia_fr_V5.1_"+
+            date+
+            ".json";
+
+        document.body.appendChild(lien);
+
+        lien.click();
+
+        lien.remove();
+
+        setTimeout(
+            ()=>URL.revokeObjectURL(url),
+            3000
+        );
+
+        derniereSauvegardeTokens=
+            Number(memoire.statistiques.tokens||0);
+
+        const duree=
+            ((performance.now()-debut)/1000).toFixed(2);
+
+        journaliser(
+            "✅ Sauvegarde terminée en "+
+            duree+
+            " s — "+
+            formatOctets(contenu.length)
+        );
+
+        changerStatus(
+            "ready",
+            "🟢 Mémoire sauvegardée",
+            "Export V5.1 terminé."
+        );
+
+    }
+    catch(erreur){
+
+        console.error(erreur);
+
+        changerStatus(
+            "error",
+            "🔴 Erreur de sauvegarde",
+            "Le navigateur n'a pas pu créer le fichier JSON."
+        );
+
+        journaliser(
+            "❌ Échec sauvegarde : "+
+            (erreur.message||"erreur inconnue")
+        );
+    }
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function changerStatus(type,titre,message){
+
+    const element=
+        document.getElementById("status");
+
+    element.className=
+        "status "+
+        type;
+
+    element.innerHTML=
+        "<div class='status-title'>"+
+        escapeHTML(titre)+
+        "</div>"+
+        escapeHTML(message);
+
+    const dot=
+        document.getElementById("hdrDot");
+
+    dot.className=
+        "dot "+
+        (
+            type==="learning"
+            ?"learning"
+            :
+            type==="error"
+            ?"error"
+            :
+            type==="ready"
+            ?"ready"
+            :
+            type==="warning"
+            ?"warning"
+            :""
+        );
+}
+
+
+/* =========================================================
+   JOURNAL
+========================================================= */
+
+function journaliser(message){
+
+    const journal=
+        document.getElementById("journal");
+
+    const ligne=
+        document.createElement("div");
+
+    ligne.className="log-line";
+
+    const heure=
+        new Date().toLocaleTimeString("fr-FR");
+
+    ligne.textContent=
+        "["+
+        heure+
+        "] "+
+        message;
+
+    journal.appendChild(ligne);
+
+    journal.scrollTop=
+        journal.scrollHeight;
+
+    while(
+        journal.children.length>
+        CONFIG.journalMax
+    ){
+        journal.removeChild(
+            journal.firstChild
+        );
+    }
+}
+
+
+/* =========================================================
+   INFOS MEMOIRE
+========================================================= */
+
+function afficherInfosMemoire(){
+
+    document.getElementById("nomFichier")
+        .textContent=nomMemoire;
+
+    document.getElementById("versionMemoire")
+        .textContent="v"+memoire.version;
+
+    document.getElementById("etatMemoire")
+        .textContent="🟢 Mémoire prête";
+
+    document.getElementById("hdrTokens")
+        .textContent=
+        formatNombre(
+            memoire.statistiques.tokens
+        );
+
+    document.getElementById("hdrVocab")
+        .textContent=
+        formatNombre(
+            Object.keys(memoire.vocabulaire).length
+        );
+}
+
+
+/* =========================================================
    TOKENIZER
-========================================================== */
+========================================================= */
 
 function tokenizer(texte){
 
     return texte
+
         .replace(/\r\n/g," ")
+
         .replace(/\r/g," ")
+
         .replace(/[’]/g,"'")
-        .replace(/«/g," « ")
-        .replace(/»/g," » ")
-        .replace(/([,.!?;:()[\]"—-])/g," $1 ")
+
+        .replace(
+            /([,.!?;:()[\]«»])/g,
+            " $1 "
+        )
+
         .replace(/\s+/g," ")
+
         .trim()
+
         .toLowerCase()
+
         .split(" ")
+
         .filter(Boolean);
 }
 
 
-/* ==========================================================
-   CONCEPT
-========================================================== */
+/* =========================================================
+   CORPUS LOCAL
+========================================================= */
 
-function enregistrerConcept(mot){
+const corpusLocal=[
 
-    if(!estMotValide(mot))return;
+"Le chat marche dans le jardin et regarde les oiseaux.",
 
-    if(!memoire.semantique.concepts[mot]){
+"Le chien court dans la rue puis revient vers la maison.",
 
-        memoire.semantique.concepts[mot]={
-            occurrences:0,
-            importance:0,
-            dernierApprentissage:Date.now()
-        };
-    }
+"Un enfant apprend à lire un livre dans une petite école.",
 
-    memoire.semantique.concepts[mot].occurrences++;
+"Les personnes travaillent ensemble pour construire une ville.",
 
-    memoire.semantique.concepts[mot].importance=
-        Math.log1p(
-            memoire.semantique.concepts[mot].occurrences
-        );
+"La voiture avance lentement sur la route pendant la pluie.",
 
-    memoire.semantique.concepts[mot].dernierApprentissage=
-        Date.now();
-}
+"Le professeur explique une nouvelle idée aux élèves.",
 
+"Une famille prépare un repas dans la cuisine.",
 
-/* ==========================================================
-   CATÉGORIE
-========================================================== */
+"L'homme regarde le ciel et pense à son avenir.",
 
-function ajouterCategorie(mot,categorie,poids=1){
+"La femme ouvre la porte et entre dans la maison.",
 
-    if(!memoire.semantique.categories[mot]){
-        memoire.semantique.categories[mot]={};
-    }
+"Les arbres poussent dans la forêt près de la rivière.",
 
-    memoire.semantique.categories[mot][categorie]=
-        (
-            memoire.semantique.categories[mot][categorie]||0
-        )+poids;
-}
+"Un ordinateur permet de chercher des informations et de créer des documents.",
 
+"Les gens peuvent apprendre de nouvelles choses avec le temps.",
 
-/* ==========================================================
-   ANALYSE SÉMANTIQUE
-========================================================== */
+"La connaissance permet de mieux comprendre le monde.",
 
-function analyserMotSemantique(mot){
+"Un projet commence par une idée puis devient progressivement une réalité.",
 
-    if(!estMotValide(mot))return;
+"Les données permettent de trouver des relations entre plusieurs informations.",
 
-    enregistrerConcept(mot);
+"Une bonne mémoire conserve les expériences et les associations importantes.",
 
-    for(const categorie in categoriesConnues){
+"Le cerveau utilise différents types de mémoire pour comprendre son environnement.",
 
-        if(categoriesConnues[categorie].includes(mot)){
+"Les mots apparaissent souvent dans des contextes différents.",
 
-            ajouterCategorie(
-                mot,
-                categorie,
-                1
-            );
-        }
-    }
+"Une phrase relie plusieurs mots pour transmettre une idée.",
 
-    if(actionsConnues.includes(mot)){
+"Le langage permet aux personnes de communiquer et de partager leurs connaissances."
 
-        ajouterCategorie(
-            mot,
-            "action",
-            2
-        );
-    }
-}
+];
 
 
-/* ==========================================================
-   ASSOCIATIONS
-========================================================== */
-
-function ajouterAssociation(
-    mot1,
-    mot2,
-    poids=1
-){
-
-    if(
-        !estMotValide(mot1)||
-        !estMotValide(mot2)||
-        mot1===mot2
-    ){
-        return;
-    }
-
-    if(!memoire.semantique.associations[mot1]){
-        memoire.semantique.associations[mot1]={};
-    }
-
-    if(!memoire.semantique.associations[mot1][mot2]){
-        memoire.semantique.associations[mot1][mot2]=0;
-    }
-
-    /*
-     * Croissance logarithmique.
-     * Les relations fortes progressent,
-     * mais ne deviennent pas infinies trop rapidement.
-     */
-
-    const ancienne=
-        memoire.semantique.associations[mot1][mot2];
-
-    memoire.semantique.associations[mot1][mot2]=
-        Math.min(
-            ancienne+poids,
-            100000
-        );
-}
-
-
-/* ==========================================================
-   ACTIONS
-========================================================== */
-
-function ajouterAction(sujet,action){
-
-    if(!estMotValide(sujet))return;
-
-    if(!memoire.semantique.actions[sujet]){
-        memoire.semantique.actions[sujet]={};
-    }
-
-    memoire.semantique.actions[sujet][action]=
-        (
-            memoire.semantique.actions[sujet][action]||0
-        )+1;
-}
-
-
-/* ==========================================================
-   CONTEXTE
-========================================================== */
-
-function ajouterContexte(mot,contexte){
-
-    if(
-        !estMotValide(mot)||
-        !estMotValide(contexte)
-    ){
-        return;
-    }
-
-    if(!memoire.semantique.contextes[mot]){
-        memoire.semantique.contextes[mot]={};
-    }
-
-    memoire.semantique.contextes[mot][contexte]=
-        (
-            memoire.semantique.contextes[mot][contexte]||0
-        )+1;
-}
-
-
-/* ==========================================================
-   APPRENDRE SÉMANTIQUE
-========================================================== */
-
-function apprendreSemantique(tokens){
-
-    /*
-     * Concepts
-     */
-
-    for(const mot of tokens){
-
-        analyserMotSemantique(mot);
-    }
-
-
-    /*
-     * Graphe sémantique.
-     * Fenêtre de contexte de 5 mots.
-     */
-
-    const fenetre=5;
-
-    for(let i=0;i<tokens.length;i++){
-
-        const mot=tokens[i];
-
-        if(!estMotValide(mot))continue;
-
-        for(
-            let j=i+1;
-            j<Math.min(tokens.length,i+fenetre+1);
-            j++
-        ){
-
-            const autre=tokens[j];
-
-            if(!estMotValide(autre))continue;
-
-            /*
-             * Plus les mots sont proches,
-             * plus la relation est forte.
-             */
-
-            const distance=j-i;
-
-            const poids=1/distance;
-
-            ajouterAssociation(
-                mot,
-                autre,
-                poids
-            );
-
-            ajouterAssociation(
-                autre,
-                mot,
-                poids
-            );
-        }
-    }
-
-
-    /*
-     * Actions simples.
-     */
-
-    for(let i=0;i<tokens.length-1;i++){
-
-        const sujet=tokens[i];
-        const action=tokens[i+1];
-
-        if(
-            estMotValide(sujet)&&
-            actionsConnues.includes(action)
-        ){
-
-            ajouterAction(
-                sujet,
-                action
-            );
-        }
-    }
-
-
-    /*
-     * Contextes.
-     */
-
-    for(let i=0;i<tokens.length;i++){
-
-        const mot=tokens[i];
-
-        if(!estMotValide(mot))continue;
-
-        for(
-            let j=Math.max(0,i-2);
-            j<=Math.min(tokens.length-1,i+2);
-            j++
-        ){
-
-            if(j===i)continue;
-
-            const voisin=tokens[j];
-
-            if(estMotValide(voisin)){
-                ajouterContexte(
-                    mot,
-                    voisin
-                );
-            }
-        }
-    }
-}
-
-
-/* ==========================================================
-   APPRENDRE TEXTE
-========================================================== */
-
-function apprendreTexte(texte){
-
-    const tokens=tokenizer(texte);
-
-    if(tokens.length<3)return 0;
-
-
-    /*
-     * VOCABULAIRE
-     */
-
-    for(const mot of tokens){
-
-        memoire.vocabulaire[mot]=
-            (
-                memoire.vocabulaire[mot]||0
-            )+1;
-    }
-
-
-    /*
-     * DÉBUTS
-     */
-
-    for(let i=0;i<tokens.length;i++){
-
-        if(
-            i===0||
-            tokens[i-1]==="."||
-            tokens[i-1]==="!"||
-            tokens[i-1]==="?"
-        ){
-
-            const mot=tokens[i];
-
-            if(!memoire.debuts[mot]){
-                memoire.debuts[mot]=0;
-            }
-
-            memoire.debuts[mot]++;
-        }
-    }
-
-
-    /*
-     * 2-GRAMMES
-     */
-
-    for(let i=0;i<tokens.length-1;i++){
-
-        const a=tokens[i];
-        const b=tokens[i+1];
-
-        if(!memoire.transitions2[a]){
-            memoire.transitions2[a]={};
-        }
-
-        memoire.transitions2[a][b]=
-            (
-                memoire.transitions2[a][b]||0
-            )+1;
-    }
-
-
-    /*
-     * 3-GRAMMES
-     */
-
-    for(let i=0;i<tokens.length-2;i++){
-
-        const a=tokens[i];
-        const b=tokens[i+1];
-        const c=tokens[i+2];
-
-        const cle=a+"|"+b;
-
-        if(!memoire.transitions3[cle]){
-            memoire.transitions3[cle]={};
-        }
-
-        memoire.transitions3[cle][c]=
-            (
-                memoire.transitions3[cle][c]||0
-            )+1;
-    }
-
-
-    memoire.statistiques.tokens+=tokens.length;
-
-    memoire.statistiques.phrases++;
-
-    memoire.statistiques.dernierApprentissage=
-        new Date().toISOString();
-
-
-    apprendreSemantique(tokens);
-
-    return tokens.length;
-}
-
-
-/* ==========================================================
+/* =========================================================
    WIKIPEDIA
-========================================================== */
+========================================================= */
+
+function afficherEtatWikipedia(){
+
+    const el=
+        document.getElementById("wikiEtat");
+
+    if(sourceWikipediaDisponible===null){
+
+        el.textContent=
+            "— inconnue —";
+
+        return;
+    }
+
+    el.textContent=
+        sourceWikipediaDisponible
+        ?"🟢 disponible"
+        :"🔴 indisponible — corpus local";
+}
+
 
 async function recupererWikipedia(){
 
@@ -1563,153 +1820,892 @@ async function recupererWikipedia(){
             "&format=json"+
             "&origin=*";
 
-        const response=await fetch(url);
+        const response=
+            await fetch(
+                url,
+                {
+                    signal:
+                        AbortSignal.timeout(7000)
+                }
+            );
 
-        if(!response.ok)throw new Error();
+        if(!response.ok){
 
-        const data=await response.json();
+            throw new Error(
+                "HTTP "+
+                response.status
+            );
+        }
 
-        const titre=data.query.random[0].title;
+        const data=
+            await response.json();
 
-        const contenuUrl=
+        if(
+            !data.query||
+            !data.query.random||
+            !data.query.random[0]
+        ){
+
+            throw new Error(
+                "Réponse Wikipédia invalide"
+            );
+        }
+
+        const titre=
+            data.query.random[0].title;
+
+        const url2=
             "https://fr.wikipedia.org/w/api.php"+
             "?action=query"+
             "&prop=extracts"+
             "&explaintext=1"+
-            "&titles="+encodeURIComponent(titre)+
+            "&titles="+
+            encodeURIComponent(titre)+
             "&format=json"+
             "&origin=*";
 
-        const response2=await fetch(contenuUrl);
+        const response2=
+            await fetch(
+                url2,
+                {
+                    signal:
+                        AbortSignal.timeout(7000)
+                }
+            );
 
-        if(!response2.ok)throw new Error();
+        if(!response2.ok){
 
-        const data2=await response2.json();
+            throw new Error(
+                "HTTP "+
+                response2.status
+            );
+        }
 
-        const pages=data2.query.pages;
+        const data2=
+            await response2.json();
 
-        const page=Object.values(pages)[0];
+        const page=
+            Object.values(
+                data2.query.pages
+            )[0];
 
         if(
             !page.extract||
-            page.extract.length<200
+            page.extract.length<100
         ){
-            return null;
+
+            throw new Error(
+                "Extrait trop court"
+            );
         }
 
-        return page.extract;
+        /*
+            Limite volontaire pour éviter
+            un énorme bloc d'apprentissage
+            en un seul cycle.
+        */
 
-    }catch(e){
+        const extrait=
+            page.extract.slice(0,4000);
 
-        console.warn("Wikipedia:",e);
+        sourceWikipediaDisponible=true;
+
+        afficherEtatWikipedia();
+
+        return extrait;
+
+    }
+    catch(erreur){
+
+        sourceWikipediaDisponible=false;
+
+        afficherEtatWikipedia();
 
         return null;
     }
 }
 
 
-/* ==========================================================
-   APPRENTISSAGE AUTOMATIQUE
-========================================================== */
+/* =========================================================
+   CATEGORIES
+========================================================= */
 
-async function lancerApprentissage(){
+const categoriesConnues={
 
-    if(apprentissageActif)return;
+    animaux:[
+        "chat","chien","cheval","vache","lion",
+        "tigre","ours","loup","oiseau","poisson",
+        "souris","lapin","cochon","mouton","chèvre",
+        "éléphant","girafe","singe","poule","canard"
+    ],
 
-    if(
-        Object.keys(memoire.vocabulaire).length===0
-    ){
+    nourriture:[
+        "pain","fromage","viande","poisson","riz",
+        "pomme","orange","banane","légume","fruit",
+        "soupe","gâteau","chocolat","lait","eau",
+        "café","thé"
+    ],
 
-        status(
-            "⚠️ La mémoire est vide. Elle peut quand même commencer à apprendre."
-        );
+    lieux:[
+        "maison","ville","village","pays","école",
+        "hôpital","bureau","rue","jardin","parc",
+        "magasin","restaurant","gare","aéroport",
+        "plage","montagne","forêt"
+    ],
+
+    personnes:[
+        "homme","femme","enfant","garçon","fille",
+        "père","mère","frère","soeur","ami",
+        "amie","professeur","médecin","policier",
+        "président"
+    ],
+
+    objets:[
+        "table","chaise","porte","fenêtre","voiture",
+        "vélo","ordinateur","téléphone","livre",
+        "stylo","sac","clé","lit","lampe"
+    ],
+
+    nature:[
+        "arbre","fleur","forêt","rivière","mer",
+        "océan","montagne","soleil","lune","pluie",
+        "neige","vent","ciel","terre"
+    ]
+
+};
+
+
+const actionsConnues=[
+
+    "manger","boire","dormir","courir","marcher",
+    "parler","regarder","voir","entendre","écouter",
+    "aimer","détester","prendre","donner","faire",
+    "dire","aller","venir","partir","arriver",
+    "vivre","travailler","jouer","lire","écrire",
+    "apprendre","enseigner","acheter","vendre",
+    "ouvrir","fermer","chercher","trouver","penser",
+    "comprendre","connaître","construire","créer",
+    "utiliser","porter","mettre","tenir","sauter",
+    "chanter","rire","pleurer"
+
+];
+
+
+/* =========================================================
+   APPRENDRE TEXTE
+========================================================= */
+
+function apprendreTexte(texte){
+
+    const tokens=
+        tokenizer(texte);
+
+    if(tokens.length<3){
+        return 0;
     }
 
-    apprentissageActif=true;
+    let nouveauxMots=0;
 
-    document.getElementById("btnStart").disabled=true;
+    /*
+        VOCABULAIRE
+    */
 
-    while(apprentissageActif){
+    for(const mot of tokens){
 
-        status(
-            "🌐 Recherche d'un nouveau texte français..."
+        if(!Object.prototype.hasOwnProperty.call(
+            memoire.vocabulaire,
+            mot
+        )){
+
+            memoire.vocabulaire[mot]=0;
+
+            nouveauxMots++;
+        }
+
+        memoire.vocabulaire[mot]++;
+    }
+
+
+    /*
+        DEBUTS
+    */
+
+    for(let i=0;i<tokens.length;i++){
+
+        if(
+            i===0||
+            [".","!","?"].includes(tokens[i-1])
+        ){
+
+            const mot=tokens[i];
+
+            if(!isPonctuation(mot)){
+
+                memoire.debuts[mot]=
+                    (
+                        memoire.debuts[mot]||0
+                    )+1;
+            }
+        }
+    }
+
+
+    /*
+        2-GRAMMES
+    */
+
+    for(
+        let i=0;
+        i<tokens.length-1;
+        i++
+    ){
+
+        const a=tokens[i];
+
+        const b=tokens[i+1];
+
+        if(!memoire.transitions2[a]){
+
+            memoire.transitions2[a]={};
+        }
+
+        if(
+            !Object.prototype.hasOwnProperty.call(
+                memoire.transitions2[a],
+                b
+            )
+        ){
+
+            memoire.transitions2[a][b]=1;
+
+        }else{
+
+            memoire.transitions2[a][b]++;
+        }
+    }
+
+
+    /*
+        3-GRAMMES
+    */
+
+    for(
+        let i=0;
+        i<tokens.length-2;
+        i++
+    ){
+
+        const a=tokens[i];
+
+        const b=tokens[i+1];
+
+        const c=tokens[i+2];
+
+        const cle=
+            a+"|"+b;
+
+        if(!memoire.transitions3[cle]){
+
+            memoire.transitions3[cle]={};
+        }
+
+        if(
+            !Object.prototype.hasOwnProperty.call(
+                memoire.transitions3[cle],
+                c
+            )
+        ){
+
+            memoire.transitions3[cle][c]=1;
+
+        }else{
+
+            memoire.transitions3[cle][c]++;
+        }
+    }
+
+
+    /*
+        SEMANTIQUE
+    */
+
+    apprendreSemantique(tokens);
+
+
+    /*
+        STATISTIQUES
+
+        On met à jour directement.
+        Pas besoin de recompter toute la mémoire.
+    */
+
+    memoire.statistiques.tokens+=
+        tokens.length;
+
+    memoire.statistiques.phrases++;
+
+    statistiquesInternes.motsNouveaux+=
+        nouveauxMots;
+
+    statistiquesInternes.tokensSession+=
+        tokens.length;
+
+    statistiquesInternes.textes++;
+
+    return tokens.length;
+}
+
+
+/* =========================================================
+   SEMANTIQUE
+========================================================= */
+
+function ajouterCategorie(
+    mot,
+    categorie,
+    poids=1
+){
+
+    if(!memoire.semantique.categories[mot]){
+
+        memoire.semantique.categories[mot]={};
+    }
+
+    memoire.semantique.categories[mot][categorie]=
+        (
+            memoire.semantique.categories[mot][categorie]||0
+        )+
+        poids;
+}
+
+
+function ajouterConcept(
+    mot,
+    concept,
+    poids=1
+){
+
+    if(!memoire.semantique.concepts[mot]){
+
+        memoire.semantique.concepts[mot]={};
+    }
+
+    memoire.semantique.concepts[mot][concept]=
+        (
+            memoire.semantique.concepts[mot][concept]||0
+        )+
+        poids;
+}
+
+
+function ajouterAssociation(
+    a,
+    b,
+    poids
+){
+
+    if(!memoire.semantique.associations[a]){
+
+        memoire.semantique.associations[a]={};
+    }
+
+    const existe=
+        Object.prototype.hasOwnProperty.call(
+            memoire.semantique.associations[a],
+            b
         );
 
-        const texte=await recupererWikipedia();
+    if(!existe){
 
-        if(!apprentissageActif)break;
+        memoire.semantique.associations[a][b]=
+            poids;
 
-        if(!texte){
+        statistiquesInternes.relationsAjoutees++;
 
-            status(
-                "⚠️ Aucun texte récupéré. Nouvelle tentative..."
+    }else{
+
+        memoire.semantique.associations[a][b]+=
+            poids;
+    }
+}
+
+
+function apprendreSemantique(tokens){
+
+    /*
+        CATEGORIES
+    */
+
+    for(const mot of tokens){
+
+        for(
+            const categorie in categoriesConnues
+        ){
+
+            if(
+                categoriesConnues[categorie]
+                .includes(mot)
+            ){
+
+                ajouterCategorie(
+                    mot,
+                    categorie,
+                    1
+                );
+
+                ajouterConcept(
+                    mot,
+                    categorie,
+                    1
+                );
+            }
+        }
+
+        if(
+            actionsConnues.includes(mot)
+        ){
+
+            ajouterCategorie(
+                mot,
+                "action",
+                2
             );
 
-            await attendre(1500);
+            ajouterConcept(
+                mot,
+                "action",
+                2
+            );
+        }
+    }
 
+
+    /*
+        ASSOCIATIONS
+    */
+
+    const fenetre=
+        CONFIG.fenetreSemantique;
+
+    for(
+        let i=0;
+        i<tokens.length;
+        i++
+    ){
+
+        const a=tokens[i];
+
+        if(isPonctuation(a)){
             continue;
         }
 
-        const nombre=apprendreTexte(texte);
+        for(
+            let j=i+1;
+            j<
+            Math.min(
+                tokens.length,
+                i+fenetre+1
+            );
+            j++
+        ){
 
-        afficherTout();
+            const b=tokens[j];
 
-        dessinerGraphe();
+            if(isPonctuation(b)){
+                continue;
+            }
 
-        status(
-            "🧠 <b>Apprentissage terminé.</b><br>"+
-            nombre+
-            " tokens analysés.<br>"+
-            "Concepts : "+
-            Object.keys(
-                memoire.semantique.concepts
-            ).length+
-            "<br>"+
-            "Relations : "+
-            compterRelations()+
-            "<br><br>"+
-            "La mémoire évolue automatiquement."
-        );
+            const poids=
+                1/(j-i);
 
-        /*
-         * Petite pause pour éviter de marteler
-         * l'API.
-         */
+            ajouterAssociation(
+                a,
+                b,
+                poids
+            );
 
-        await attendre(800);
+            ajouterAssociation(
+                b,
+                a,
+                poids
+            );
+
+
+            const categoriesA=
+                memoire.semantique.categories[a]||{};
+
+            const categoriesB=
+                memoire.semantique.categories[b]||{};
+
+            for(
+                const categorie in categoriesA
+            ){
+
+                if(
+                    categoriesB[categorie]
+                ){
+
+                    ajouterConcept(
+                        a,
+                        categorie,
+                        .15
+                    );
+
+                    ajouterConcept(
+                        b,
+                        categorie,
+                        .15
+                    );
+                }
+            }
+        }
     }
 
-    document.getElementById("btnStart").disabled=false;
 
-    afficherTout();
+    /*
+        ACTIONS
+    */
 
-    status(
-        "⏸️ <b>Apprentissage en pause.</b><br>"+
-        "Télécharge la mémoire pour conserver cette session."
-    );
+    for(
+        let i=0;
+        i<tokens.length-1;
+        i++
+    ){
+
+        const sujet=tokens[i];
+
+        const action=tokens[i+1];
+
+        if(
+            actionsConnues.includes(action)
+        ){
+
+            if(
+                !memoire.semantique.actions[sujet]
+            ){
+
+                memoire.semantique.actions[sujet]={};
+            }
+
+            memoire.semantique.actions[sujet][action]=
+                (
+                    memoire.semantique.actions[sujet][action]||0
+                )+
+                1;
+        }
+    }
 }
 
 
-/* ==========================================================
-   ARRÊT
-========================================================== */
+/* =========================================================
+   APPRENTISSAGE V5.1 PAR LOTS
+========================================================= */
+
+async function lancerApprentissage(){
+
+    if(apprentissageActif){
+        return;
+    }
+
+    CONFIG.batchSize=
+        Number(
+            document.getElementById("batchSize").value
+        );
+
+    CONFIG.pauseEntreLots=
+        Number(
+            document.getElementById("batchPause").value
+        );
+
+    CONFIG.uiInterval=
+        Number(
+            document.getElementById("uiInterval").value
+        );
+
+
+    apprentissageActif=true;
+
+    document.getElementById("btnStart")
+        .disabled=true;
+
+    document.getElementById("btnStop")
+        .disabled=false;
+
+    document.getElementById("etatMemoire")
+        .textContent="🟡 Apprentissage";
+
+
+    changerStatus(
+        "learning",
+        "🟡 Apprentissage actif",
+        "Moteur V5.1 — apprentissage par lots."
+    );
+
+    journaliser(
+        "▶ Apprentissage V5.1 démarré."
+    );
+
+    journaliser(
+        "⚙️ Lot : "+
+        CONFIG.batchSize+
+        " textes."
+    );
+
+
+    let cycles=0;
+
+
+    while(apprentissageActif){
+
+        const debutLot=
+            performance.now();
+
+        let tokensLot=0;
+
+        cycles++;
+
+        /*
+            BATCH
+        */
+
+        for(
+            let i=0;
+            i<CONFIG.batchSize;
+            i++
+        ){
+
+            if(!apprentissageActif){
+                break;
+            }
+
+            let texte=null;
+
+            /*
+                65 % Wikipédia
+            */
+
+            if(Math.random()<0.65){
+
+                texte=
+                    await recupererWikipedia();
+            }
+
+
+            /*
+                Fallback local
+            */
+
+            if(!texte){
+
+                texte=
+                    corpusLocal[
+                        Math.floor(
+                            Math.random()*
+                            corpusLocal.length
+                        )
+                    ];
+
+            }
+
+
+            if(!apprentissageActif){
+                break;
+            }
+
+
+            const nombre=
+                apprendreTexte(texte);
+
+            tokensLot+=nombre;
+        }
+
+
+        const tempsLot=
+            performance.now()-
+            debutLot;
+
+        statistiquesInternes.lots++;
+
+        statistiquesInternes.dernierLotTokens=
+            tokensLot;
+
+        statistiquesInternes.tempsDernierLot=
+            tempsLot;
+
+
+        /*
+            MISE A JOUR UI
+        */
+
+        if(
+            cycles%CONFIG.uiInterval===0||
+            cycles===1
+        ){
+
+            afficherStats();
+
+            afficherInfosMemoire();
+
+            actualiserMoniteur();
+
+            rafraichirEtatGenerer();
+
+            mettreAJourCheckpoint();
+
+            journaliser(
+                "🧠 Lot "+
+                cycles+
+                " : +"+
+                formatNombre(tokensLot)+
+                " tokens — total "+
+                formatNombre(
+                    memoire.statistiques.tokens
+                )
+            );
+
+            journaliser(
+                "⏱️ "+
+                (tempsLot/1000).toFixed(2)+
+                " s — "+
+                formatNombre(
+                    statistiquesInternes.relationsAjoutees
+                )+
+                " nouvelles relations cumulées."
+            );
+        }
+
+
+        /*
+            SURVEILLANCE
+        */
+
+        verifierCroissance();
+
+
+        /*
+            CHECKPOINT LOGIQUE
+
+            Pour l'instant on ne sauvegarde pas
+            automatiquement un énorme JSON à chaque
+            checkpoint.
+
+            On prévient simplement l'utilisateur.
+        */
+
+        const tokensActuels=
+            Number(
+                memoire.statistiques.tokens||0
+            );
+
+        if(
+            tokensActuels-
+            derniereSauvegardeTokens
+            >=
+            CONFIG.checkpointTokens
+        ){
+
+            journaliser(
+                "💾 Checkpoint recommandé : "+
+                formatNombre(tokensActuels)+
+                " tokens."
+            );
+
+            derniereSauvegardeTokens=
+                tokensActuels;
+        }
+
+
+        changerStatus(
+            "learning",
+            "🟡 Apprentissage actif",
+            "Lot "+
+            cycles+
+            " — "+
+            formatNombre(
+                memoire.statistiques.tokens
+            )+
+            " tokens."
+        );
+
+
+        /*
+            Petite pause entre les lots.
+
+            Cela laisse le navigateur respirer.
+        */
+
+        if(apprentissageActif){
+
+            await attendre(
+                CONFIG.pauseEntreLots
+            );
+        }
+    }
+
+
+    terminerApprentissage();
+
+}
+
+
+/* =========================================================
+   ARRET
+========================================================= */
 
 function arreterApprentissage(){
 
+    if(!apprentissageActif){
+
+        journaliser(
+            "ℹ️ Aucun apprentissage actif."
+        );
+
+        return;
+    }
+
     apprentissageActif=false;
 
-    document.getElementById("btnStart").disabled=false;
+    document.getElementById("btnStop")
+        .disabled=true;
 
-    status(
-        "⏸️ <b>Apprentissage arrêté.</b><br>"+
-        "Clique sur 💾 Télécharger la mémoire V4 pour sauvegarder."
+    journaliser(
+        "⏹ Demande d'arrêt envoyée..."
     );
 }
 
 
-/* ==========================================================
-   ATTENDRE
-========================================================== */
+function terminerApprentissage(){
+
+    apprentissageActif=false;
+
+    document.getElementById("btnStart")
+        .disabled=false;
+
+    document.getElementById("btnStop")
+        .disabled=true;
+
+    document.getElementById("etatMemoire")
+        .textContent="🟢 Mémoire prête";
+
+    afficherStats();
+
+    afficherInfosMemoire();
+
+    actualiserMoniteur();
+
+    rafraichirEtatGenerer();
+
+    changerStatus(
+        "ready",
+        "🟢 Apprentissage arrêté",
+        "Mémoire conservée. Sauvegarde le JSON pour conserver cette session."
+    );
+
+    journaliser(
+        "⏹ Apprentissage arrêté."
+    );
+}
+
 
 function attendre(ms){
 
@@ -1719,140 +2715,346 @@ function attendre(ms){
 }
 
 
-/* ==========================================================
-   CHOIX PONDÉRÉ
-========================================================== */
+/* =========================================================
+   SURVEILLANCE CROISSANCE
+========================================================= */
+
+function verifierCroissance(){
+
+    const relations=
+        Object.keys(
+            memoire.semantique.associations
+        ).reduce(
+            (total,mot)=>{
+                return total+
+                    Object.keys(
+                        memoire.semantique.associations[mot]||{}
+                    ).length;
+            },
+            0
+        );
+
+    const vocab=
+        Object.keys(
+            memoire.vocabulaire
+        ).length;
+
+
+    /*
+        Warning relations
+    */
+
+    if(
+        relations>=CONFIG.seuilWarningRelations&&
+        !avertissementRelations
+    ){
+
+        avertissementRelations=true;
+
+        journaliser(
+            "⚠️ Beaucoup de relations : "+
+            formatNombre(relations)
+        );
+    }
+
+
+    /*
+        Warning vocabulaire
+    */
+
+    if(
+        vocab>=CONFIG.seuilWarningVocabulaire&&
+        !avertissementVocabulaire
+    ){
+
+        avertissementVocabulaire=true;
+
+        journaliser(
+            "⚠️ Vocabulaire très volumineux : "+
+            formatNombre(vocab)
+        );
+    }
+}
+
+
+/* =========================================================
+   MONITEUR
+========================================================= */
+
+function actualiserMoniteur(){
+
+    const relations=
+        memoire.statistiques.relations||
+        compterRelations(
+            memoire.semantique.associations
+        );
+
+    const vocab=
+        Object.keys(
+            memoire.vocabulaire
+        ).length;
+
+
+    document.getElementById(
+        "monitorRelations"
+    ).textContent=
+        formatNombre(relations);
+
+
+    document.getElementById(
+        "monitorVocab"
+    ).textContent=
+        formatNombre(vocab);
+
+
+    let niveau="Stable";
+
+    let classe="monitor-good";
+
+
+    if(
+        relations>=
+        CONFIG.seuilDangerRelations||
+        vocab>=
+        CONFIG.seuilDangerVocabulaire
+    ){
+
+        niveau="Très élevé";
+
+        classe="monitor-bad";
+
+    }
+    else if(
+        relations>=
+        CONFIG.seuilWarningRelations||
+        vocab>=
+        CONFIG.seuilWarningVocabulaire
+    ){
+
+        niveau="Élevé";
+
+        classe="monitor-warn";
+    }
+
+
+    const growth=
+        document.getElementById(
+            "monitorGrowth"
+        );
+
+    growth.textContent=niveau;
+
+    growth.className=
+        "monitor-value "+
+        classe;
+
+
+    const mode=
+        document.getElementById(
+            "monitorMode"
+        );
+
+    if(apprentissageActif){
+
+        mode.textContent=
+            "Batch";
+
+        mode.className=
+            "monitor-value monitor-good";
+
+    }else{
+
+        mode.textContent=
+            "Repos";
+
+        mode.className=
+            "monitor-value monitor-good";
+    }
+
+
+    /*
+        Barre purement indicative.
+    */
+
+    const ratio=
+        Math.min(
+            100,
+            Math.max(
+                0,
+                (
+                    relations/
+                    CONFIG.seuilDangerRelations
+                )*100
+            )
+        );
+
+    document.getElementById(
+        "memoryProgress"
+    ).style.width=
+        ratio+"%";
+}
+
+
+/* =========================================================
+   CHECKPOINT UI
+========================================================= */
+
+function mettreAJourCheckpoint(){
+
+    const tokens=
+        Number(
+            memoire.statistiques.tokens||0
+        );
+
+    const prochain=
+        (
+            Math.floor(
+                tokens/
+                CONFIG.checkpointTokens
+            )+1
+        )*
+        CONFIG.checkpointTokens;
+
+    document.getElementById(
+        "checkpointInfo"
+    ).textContent=
+        formatNombre(prochain)+
+        " tokens";
+}
+
+
+/* =========================================================
+   CHOIX PONDERE
+========================================================= */
 
 function choixPondere(options){
 
-    if(!options||!options.length)return null;
+    if(
+        !options||
+        !options.length
+    ){
+        return null;
+    }
 
     let total=0;
 
-    for(const [,poids] of options){
-        total+=Number(poids);
+    for(
+        const [,poids]
+        of options
+    ){
+
+        total+=
+            Number(poids);
     }
+
 
     if(total<=0){
 
         return options[
             Math.floor(
-                Math.random()*options.length
+                Math.random()*
+                options.length
             )
         ][0];
     }
 
-    let hasard=Math.random()*total;
 
-    for(const [mot,poids] of options){
+    let hasard=
+        Math.random()*total;
 
-        hasard-=Number(poids);
 
-        if(hasard<=0)return mot;
+    for(
+        const [mot,poids]
+        of options
+    ){
+
+        hasard-=
+            Number(poids);
+
+        if(hasard<=0){
+            return mot;
+        }
     }
 
-    return options[options.length-1][0];
+
+    return options[
+        options.length-1
+    ][0];
 }
 
 
-/* ==========================================================
-   SCORE SÉMANTIQUE
-========================================================== */
+/* =========================================================
+   SCORE SEMANTIQUE
+========================================================= */
 
-function scoreSemantique(precedent,candidat){
+function scoreSemantique(
+    precedent,
+    candidat
+){
 
     let score=0;
 
 
-    /*
-     * Association directe
-     */
+    const assoc=
+        memoire.semantique
+        .associations[precedent];
 
-    const associations=
-        memoire.semantique.associations[precedent];
 
     if(
-        associations&&
-        associations[candidat]
+        assoc&&
+        assoc[candidat]
     ){
 
         score+=
             Math.log1p(
-                associations[candidat]
-            )*3;
+                assoc[candidat]
+            )*4;
     }
 
-
-    /*
-     * Action
-     */
-
-    const actions=
-        memoire.semantique.actions[precedent];
-
-    if(
-        actions&&
-        actions[candidat]
-    ){
-
-        score+=5;
-    }
-
-
-    /*
-     * Catégories communes
-     */
 
     const cat1=
-        memoire.semantique.categories[precedent]||{};
+        memoire.semantique
+        .categories[precedent]||{};
 
     const cat2=
-        memoire.semantique.categories[candidat]||{};
+        memoire.semantique
+        .categories[candidat]||{};
 
-    for(const categorie in cat1){
 
-        if(cat2[categorie]){
+    for(
+        const categorie
+        in cat1
+    ){
+
+        if(
+            cat2[categorie]
+        ){
+
+            score+=2;
+        }
+    }
+
+
+    const concepts1=
+        memoire.semantique
+        .concepts[precedent]||{};
+
+    const concepts2=
+        memoire.semantique
+        .concepts[candidat]||{};
+
+
+    for(
+        const concept
+        in concepts1
+    ){
+
+        if(
+            concepts2[concept]
+        ){
+
             score+=1.5;
         }
-    }
-
-
-    /*
-     * Contexte commun
-     */
-
-    const ctx1=
-        memoire.semantique.contextes[precedent]||{};
-
-    const ctx2=
-        memoire.semantique.contextes[candidat]||{};
-
-    let commun=0;
-
-    for(const mot in ctx1){
-
-        if(ctx2[mot]){
-            commun++;
-        }
-    }
-
-    score+=Math.min(commun,5)*.4;
-
-
-    /*
-     * Concept important
-     */
-
-    const concept=
-        memoire.semantique.concepts[candidat];
-
-    if(concept){
-
-        score+=
-            Math.min(
-                concept.importance,
-                5
-            )*.2;
     }
 
 
@@ -1860,58 +3062,61 @@ function scoreSemantique(precedent,candidat){
 }
 
 
-/* ==========================================================
-   CHOISIR PROCHAIN MOT
-========================================================== */
+/* =========================================================
+   CHOIX PROCHAIN
+========================================================= */
 
-function choisirProchain(options,precedent){
+function choisirProchain(
+    options,
+    precedent,
+    force
+){
 
-    if(!options||!options.length)return null;
+    if(
+        !options||
+        !options.length
+    ){
+        return null;
+    }
 
-    const force=
-        Number(
-            document.getElementById(
-                "forceSemantique"
-            ).value
-        )/100;
 
-    const candidats=options.map(
-        ([mot,frequence])=>{
+    const candidats=
+        options.map(
+            ([mot,frequence])=>{
 
-            const linguistique=
-                Math.log1p(
-                    Number(frequence)
-                );
+                const linguistique=
+                    Math.log1p(
+                        Number(frequence)
+                    );
 
-            const semantique=
-                scoreSemantique(
-                    precedent,
-                    mot
-                );
+                const semantique=
+                    scoreSemantique(
+                        precedent,
+                        mot
+                    );
 
-            /*
-             * Évite que la sémantique écrase
-             * complètement la langue.
-             */
+                const score=
+                    linguistique*
+                    (1-force)
+                    +
+                    semantique*
+                    force;
 
-            const score=
-                linguistique*(1-force)+
-                semantique*force;
+                return [
+                    mot,
+                    Math.max(score,.01)
+                ];
+            }
+        );
 
-            return[
-                mot,
-                Math.max(score,.01)
-            ];
-        }
-    );
 
     return choixPondere(candidats);
 }
 
 
-/* ==========================================================
-   DÉBUT
-========================================================== */
+/* =========================================================
+   DEBUT
+========================================================= */
 
 function choisirDebut(){
 
@@ -1920,17 +3125,26 @@ function choisirDebut(){
             memoire.debuts
         );
 
+
     if(options.length){
 
         return choixPondere(options);
     }
 
+
     const mots=
         Object.keys(
             memoire.vocabulaire
+        )
+        .filter(
+            m=>!isPonctuation(m)
         );
 
-    if(!mots.length)return null;
+
+    if(!mots.length){
+        return null;
+    }
+
 
     return mots[
         Math.floor(
@@ -1940,9 +3154,22 @@ function choisirDebut(){
 }
 
 
-/* ==========================================================
-   GÉNÉRER
-========================================================== */
+/* =========================================================
+   GENERATION
+========================================================= */
+
+function rafraichirEtatGenerer(){
+
+    const pret=
+        Object.keys(
+            memoire.vocabulaire
+        ).length>0;
+
+    document.getElementById(
+        "btnGenerer"
+    ).disabled=!pret;
+}
+
 
 function genererPhrase(){
 
@@ -1952,162 +3179,218 @@ function genererPhrase(){
         ).length
     ){
 
-        document.getElementById("resultat").innerText=
-            "❌ La mémoire est vide. Fais d'abord apprendre l'IA.";
+        document.getElementById(
+            "resultat"
+        ).textContent=
+            "❌ La mémoire est vide.";
 
         return;
     }
 
+
     const longueur=
         Number(
-            document.getElementById("longueur").value
+            document.getElementById(
+                "longueur"
+            ).value
         );
 
-    const premier=choisirDebut();
 
-    if(!premier)return;
+    const force=
+        Number(
+            document.getElementById(
+                "forceSemantique"
+            ).value
+        )/100;
 
-    const resultat=[premier];
 
-    let options=
-        memoire.transitions2[premier];
+    const premier=
+        choisirDebut();
 
-    if(options){
 
-        const deuxieme=
-            choisirProchain(
-                Object.entries(options),
-                premier
-            );
+    if(!premier){
 
-        if(deuxieme)resultat.push(deuxieme);
+        document.getElementById(
+            "resultat"
+        ).textContent=
+            "❌ Impossible de démarrer.";
+
+        return;
     }
 
 
+    const resultat=[
+        premier
+    ];
+
+
     for(
-        let i=2;
+        let i=1;
         i<longueur;
         i++
     ){
 
-        const a=resultat[i-2];
-        const b=resultat[i-1];
+        const b=
+            resultat[i-1];
 
-        const cle=a+"|"+b;
+        const a=
+            resultat[i-2];
 
-        let choix=
-            memoire.transitions3[cle];
+        let choix=null;
 
-        if(choix){
 
-            const prochain=
-                choisirProchain(
-                    Object.entries(choix),
-                    b
-                );
+        if(a){
 
-            if(prochain){
-                resultat.push(prochain);
-            }else{
-                break;
+            const contexte=
+                a+"|"+b;
+
+            const transitions=
+                memoire.transitions3[
+                    contexte
+                ];
+
+
+            if(transitions){
+
+                choix=
+                    choisirProchain(
+                        Object.entries(
+                            transitions
+                        ),
+                        b,
+                        force
+                    );
             }
+        }
 
-        }else{
+
+        if(!choix){
 
             const alternatives=
                 memoire.transitions2[b];
 
-            if(!alternatives)break;
 
-            const prochain=
-                choisirProchain(
-                    Object.entries(alternatives),
-                    b
-                );
+            if(alternatives){
 
-            if(!prochain)break;
-
-            resultat.push(prochain);
+                choix=
+                    choisirProchain(
+                        Object.entries(
+                            alternatives
+                        ),
+                        b,
+                        force
+                    );
+            }
         }
 
 
-        const dernier=
-            resultat[resultat.length-1];
+        if(!choix){
+            break;
+        }
+
+
+        resultat.push(choix);
+
 
         if(
-            (
-                dernier==="."||
-                dernier==="!"||
-                dernier==="?"
-            )&&
-            resultat.length>=8
+            resultat.length>=8&&
+            [".","!","?"]
+            .includes(choix)&&
+            Math.random()<.8
         ){
 
-            if(Math.random()<.85){
-                break;
-            }
+            break;
         }
     }
 
-    document.getElementById("resultat").innerText=
+
+    const phrase=
         reconstruirePhrase(resultat);
+
+
+    document.getElementById(
+        "resultat"
+    ).textContent=
+        phrase||
+        "❌ Aucune phrase générée.";
 }
 
 
-/* ==========================================================
-   RECONSTRUIRE PHRASE
-========================================================== */
+/* =========================================================
+   RECONSTRUCTION
+========================================================= */
 
 function reconstruirePhrase(tokens){
 
-    if(!tokens.length)return "";
-
-    const sansEspace=[
-        ".",",","!","?",";",":",")","]","»"
-    ];
-
-    const ouvrants=[
-        "(","[","«"
-    ];
-
     let texte="";
 
-    for(let i=0;i<tokens.length;i++){
+    const sansEspace=[
+        ".",",","!","?",";",":",")","]"
+    ];
+
+
+    for(
+        let i=0;
+        i<tokens.length;
+        i++
+    ){
 
         const token=tokens[i];
+
 
         if(i===0){
 
             texte+=token;
+
             continue;
         }
 
-        const precedent=tokens[i-1];
 
-        if(precedent.endsWith("'")){
+        const precedent=
+            tokens[i-1];
+
+
+        if(
+            precedent.endsWith("'")
+        ){
 
             texte+=token;
+
             continue;
         }
 
-        if(sansEspace.includes(token)){
+
+        if(
+            sansEspace.includes(token)
+        ){
 
             texte+=token;
+
             continue;
         }
 
-        if(ouvrants.includes(precedent)){
+
+        if(
+            ["(","[","«"]
+            .includes(precedent)
+        ){
 
             texte+=token;
+
             continue;
         }
+
 
         texte+=" "+token;
     }
 
 
-    texte=texte
-        .replace(/\s+/g," ")
+    texte=
+        texte
+        .replace(
+            /\s+/g,
+            " "
+        )
         .trim();
 
 
@@ -2119,50 +3402,13 @@ function reconstruirePhrase(tokens){
     }
 
 
-    texte=texte.replace(
-        /([.!?]\s+)([a-zàâäéèêëîïôöùûüç])/g,
-        (match,p1,p2)=>
-            p1+p2.toUpperCase()
-    );
-
-
-    texte=texte
-        .replace(/\(\s+/g,"(")
-        .replace(/\s+\)/g,")")
-        .replace(/\[\s+/g,"[")
-        .replace(/\s+\]/g,"]");
-
-
     return texte;
 }
 
 
-/* ==========================================================
-   COMPTAGE RELATIONS
-========================================================== */
-
-function compterRelations(){
-
-    let total=0;
-
-    for(
-        const mot in
-        memoire.semantique.associations
-    ){
-
-        total+=
-            Object.keys(
-                memoire.semantique.associations[mot]
-            ).length;
-    }
-
-    return total;
-}
-
-
-/* ==========================================================
-   STATS
-========================================================== */
+/* =========================================================
+   STATISTIQUES
+========================================================= */
 
 function afficherStats(){
 
@@ -2171,184 +3417,210 @@ function afficherStats(){
             memoire.vocabulaire
         ).length;
 
-    const contextes=
-        Object.keys(
+
+    /*
+        IMPORTANT :
+
+        On utilise maintenant le compteur stocké
+        lorsque possible.
+
+        Les gros parcours sont évités pendant
+        l'apprentissage.
+    */
+
+    const trans2=
+        compterRelations(
+            memoire.transitions2
+        );
+
+    const trans3=
+        compterRelations(
             memoire.transitions3
-        ).length;
+        );
+
 
     const concepts=
         Object.keys(
             memoire.semantique.concepts
         ).length;
 
+
     const relations=
-        compterRelations();
+        compterRelations(
+            memoire.semantique.associations
+        );
 
 
-    document.getElementById("statTokens").innerText=
+    memoire.statistiques.relations=
+        relations;
+
+
+    document.getElementById(
+        "statTokens"
+    ).textContent=
         formatNombre(
             memoire.statistiques.tokens
         );
 
-    document.getElementById("statVocab").innerText=
+
+    document.getElementById(
+        "statVocab"
+    ).textContent=
         formatNombre(vocab);
 
-    document.getElementById("stat3").innerText=
-        formatNombre(contextes);
 
-    document.getElementById("statConcepts").innerText=
+    document.getElementById(
+        "stat2"
+    ).textContent=
+        formatNombre(trans2);
+
+
+    document.getElementById(
+        "stat3"
+    ).textContent=
+        formatNombre(trans3);
+
+
+    document.getElementById(
+        "statConcepts"
+    ).textContent=
         formatNombre(concepts);
 
-    document.getElementById("statRelations").innerText=
+
+    document.getElementById(
+        "statRelations"
+    ).textContent=
         formatNombre(relations);
 
-    document.getElementById("statPhrases").innerText=
+
+    document.getElementById(
+        "hdrTokens"
+    ).textContent=
         formatNombre(
-            memoire.statistiques.phrases
+            memoire.statistiques.tokens
         );
+
+
+    document.getElementById(
+        "hdrVocab"
+    ).textContent=
+        formatNombre(vocab);
+
 
     afficherTopMots();
 
-    afficherTopConcepts();
+    actualiserMoniteur();
 }
 
 
-/* ==========================================================
+/* =========================================================
+   COMPTER RELATIONS
+========================================================= */
+
+function compterRelations(objet){
+
+    let total=0;
+
+    for(
+        const cle in objet
+    ){
+
+        if(
+            objet[cle]&&
+            typeof objet[cle]==="object"
+        ){
+
+            total+=
+                Object.keys(
+                    objet[cle]
+                ).length;
+        }
+    }
+
+    return total;
+}
+
+
+/* =========================================================
    TOP MOTS
-========================================================== */
+========================================================= */
 
 function afficherTopMots(){
 
     const mots=
         Object.entries(
             memoire.vocabulaire
-        ).sort(
+        )
+        .sort(
             (a,b)=>b[1]-a[1]
         )
-        .slice(0,10);
+        .slice(0,12);
 
 
     if(!mots.length){
 
-        document.getElementById("topMots").innerText=
-            "Aucun mot.";
+        document.getElementById(
+            "topMots"
+        ).innerHTML=
+            "<div class='empty-state'>"+
+            "<span class='ic'>📭</span>"+
+            "Aucun mot appris pour l'instant."+
+            "</div>";
 
         return;
     }
 
 
-    const maximum=mots[0][1];
+    const max=
+        mots[0][1];
 
-    let html="";
-
-    for(const [mot,nombre] of mots){
-
-        const largeur=
-            nombre/maximum*100;
-
-        html+=`
-        <div class="bar-row">
-
-            <div class="bar-label">
-                ${escapeHTML(mot)}
-            </div>
-
-            <div class="bar-track">
-                <div
-                    class="bar-fill"
-                    style="width:${largeur}%">
-                </div>
-            </div>
-
-            <div class="bar-stats">
-                ${formatNombre(nombre)}
-            </div>
-
-        </div>`;
-    }
-
-    document.getElementById("topMots").innerHTML=
-        html;
-}
-
-
-/* ==========================================================
-   TOP CONCEPTS
-========================================================== */
-
-function afficherTopConcepts(){
-
-    const concepts=
-        Object.entries(
-            memoire.semantique.concepts
-        )
-        .sort(
-            (a,b)=>
-                b[1].importance-
-                a[1].importance
-        )
-        .slice(0,10);
-
-
-    if(!concepts.length){
-
-        document.getElementById("topConcepts").innerText=
-            "Aucun concept.";
-
-        return;
-    }
-
-
-    const maximum=
-        concepts[0][1].importance;
 
     let html="";
 
 
-    for(const [mot,data] of concepts){
+    for(
+        const [mot,nombre]
+        of mots
+    ){
 
         const largeur=
-            data.importance/
-            maximum*
-            100;
+            nombre/max*100;
 
-        html+=`
-        <div class="bar-row">
 
-            <div class="bar-label">
-                ${escapeHTML(mot)}
-            </div>
-
-            <div class="bar-track">
-
-                <div
-                    class="bar-fill"
-                    style="width:${largeur}%">
-                </div>
-
-            </div>
-
-            <div class="bar-stats">
-                ${formatNombre(data.occurrences)}
-            </div>
-
-        </div>`;
+        html+=
+            "<div class='bar-row'>"+
+                "<div class='bar-label'>"+
+                    escapeHTML(mot)+
+                "</div>"+
+                "<div class='bar-track'>"+
+                    "<div class='bar-fill' "+
+                    "style='width:"+
+                    largeur+
+                    "%'></div>"+
+                "</div>"+
+                "<div class='bar-number'>"+
+                    formatNombre(nombre)+
+                "</div>"+
+            "</div>";
     }
 
 
-    document.getElementById("topConcepts").innerHTML=
-        html;
+    document.getElementById(
+        "topMots"
+    ).innerHTML=html;
 }
 
 
-/* ==========================================================
-   EXPLORATEUR
-========================================================== */
+/* =========================================================
+   EXPLORATION
+========================================================= */
 
 function explorerMot(){
 
     const mot=
-        document.getElementById("motRecherche")
+        document.getElementById(
+            "motRecherche"
+        )
         .value
         .trim()
         .toLowerCase();
@@ -2356,79 +3628,108 @@ function explorerMot(){
 
     if(!mot)return;
 
-    afficherExploration(mot);
-
-    dessinerGraphe(mot);
-}
-
-
-/* ==========================================================
-   EXPLORATION
-========================================================== */
-
-function afficherExploration(mot){
 
     const occurrences=
         memoire.vocabulaire[mot]||0;
 
-    const concept=
-        memoire.semantique.concepts[mot];
+
+    if(
+        occurrences===0&&
+        !memoire.semantique.associations[mot]
+    ){
+
+        document.getElementById(
+            "exploration"
+        ).innerHTML=
+            "<b>Mot :</b> "+
+            escapeHTML(mot)+
+            "<br><br>"+
+            "Ce mot n'a pas encore été rencontré.";
+
+        return;
+    }
+
 
     const categories=
-        memoire.semantique.categories[mot]||{};
+        memoire.semantique
+        .categories[mot]||{};
+
+
+    const concepts=
+        memoire.semantique
+        .concepts[mot]||{};
+
 
     const associations=
-        memoire.semantique.associations[mot]||{};
-
-    const actions=
-        memoire.semantique.actions[mot]||{};
-
-    const contextes=
-        memoire.semantique.contextes[mot]||{};
+        memoire.semantique
+        .associations[mot]||{};
 
 
     let html=
-        "<b>🧩 Concept :</b> "+
+        "<b>Mot :</b> "+
         escapeHTML(mot)+
         "<br><br>";
 
 
     html+=
-        "<b>Occurrences linguistiques :</b> "+
+        "<b>Occurrences :</b> "+
         formatNombre(occurrences)+
-        "<br>";
-
-
-    if(concept){
-
-        html+=
-            "<b>Importance :</b> "+
-            concept.importance.toFixed(2)+
-            "<br>";
-    }
+        "<br><br>";
 
 
     html+=
-        "<br><span class='label'>Catégories</span><br>";
-
-
-    const cats=
-        Object.keys(categories);
+        "<b>Catégories :</b><br>";
 
 
     html+=
-        cats.length
+        Object.keys(categories).length
         ?
-        cats.join(", ")
+        Object.keys(categories)
+        .map(
+            c=>
+                "<span class='badge'>"+
+                escapeHTML(c)+
+                "</span>"
+        )
+        .join("")
         :
-        "Aucune catégorie connue";
+        "Aucune";
 
 
     html+=
-        "<br><br><span class='label'>🔗 Relations les plus fortes</span><br>";
+        "<br><br><b>Concepts :</b><br>";
 
 
-    const topRelations=
+    const topConcepts=
+        Object.entries(concepts)
+        .sort(
+            (a,b)=>b[1]-a[1]
+        )
+        .slice(0,10);
+
+
+    html+=
+        topConcepts.length
+        ?
+        topConcepts
+        .map(
+            x=>
+                "<span class='badge'>"+
+                escapeHTML(x[0])+
+                " · "+
+                Number(x[1]).toFixed(1)+
+                "</span>"
+        )
+        .join("")
+        :
+        "Aucun";
+
+
+    html+=
+        "<br><br><b>Associations :</b><br>";
+
+
+    const topAssoc=
         Object.entries(associations)
         .sort(
             (a,b)=>b[1]-a[1]
@@ -2437,139 +3738,101 @@ function afficherExploration(mot){
 
 
     html+=
-        topRelations.length
+        topAssoc.length
         ?
-        topRelations
+        topAssoc
         .map(
             x=>
+                "<span class='badge'>"+
                 escapeHTML(x[0])+
-                " <small>("+
-                x[1].toFixed(2)+
-                ")</small>"
+                " · "+
+                Number(x[1]).toFixed(1)+
+                "</span>"
         )
-        .join(", ")
-        :
-        "Aucune relation";
-
-
-    html+=
-        "<br><br><span class='label'>⚡ Actions associées</span><br>";
-
-
-    const topActions=
-        Object.entries(actions)
-        .sort(
-            (a,b)=>b[1]-a[1]
-        )
-        .slice(0,8);
-
-
-    html+=
-        topActions.length
-        ?
-        topActions
-        .map(
-            x=>
-                escapeHTML(x[0])+
-                " ("+x[1]+")"
-        )
-        .join(", ")
+        .join("")
         :
         "Aucune";
 
 
-    html+=
-        "<br><br><span class='label'>📚 Contextes</span><br>";
+    document.getElementById(
+        "exploration"
+    ).innerHTML=html;
 
 
-    const topContextes=
-        Object.entries(contextes)
-        .sort(
-            (a,b)=>b[1]-a[1]
-        )
-        .slice(0,10);
-
-
-    html+=
-        topContextes.length
-        ?
-        topContextes
-        .map(
-            x=>escapeHTML(x[0])
-        )
-        .join(", ")
-        :
-        "Aucun";
-
-
-    document.getElementById("exploration").innerHTML=
-        html;
+    document.getElementById(
+        "grapheRecherche"
+    ).value=mot;
 }
 
 
-/* ==========================================================
-   GRAPHE SÉMANTIQUE
-========================================================== */
+/* =========================================================
+   GRAPHE
+========================================================= */
 
-function dessinerGraphe(motCentre=null){
+function construireGraphe(){
 
-    const svg=
-        document.getElementById("graph");
-
-    const largeur=900;
-    const hauteur=520;
-
-    svg.innerHTML="";
+    const zone=
+        document.getElementById(
+            "graphe"
+        );
 
 
-    /*
-     * Choix du centre.
-     */
+    const recherche=
+        document.getElementById(
+            "grapheRecherche"
+        )
+        .value
+        .trim()
+        .toLowerCase();
 
-    let centre=motCentre;
+
+    let centre=recherche;
+
 
     if(
         !centre||
         !memoire.semantique.associations[centre]
     ){
 
-        const top=
+        const candidats=
             Object.entries(
-                memoire.semantique.concepts
+                memoire.semantique.associations
+            )
+            .map(
+                ([mot,relations])=>
+                    [
+                        mot,
+                        Object.keys(relations).length
+                    ]
             )
             .sort(
-                (a,b)=>
-                    b[1].importance-
-                    a[1].importance
-            )[0];
+                (a,b)=>b[1]-a[1]
+            );
+
 
         centre=
-            top?top[0]:null;
+            candidats.length
+            ?
+            candidats[0][0]
+            :
+            null;
     }
 
 
     if(!centre){
 
-        svg.innerHTML=`
-        <text
-            x="450"
-            y="260"
-            text-anchor="middle"
-            fill="#8b949e">
-            Le graphe apparaîtra après l'apprentissage.
-        </text>`;
+        zone.innerHTML=
+            "<div class='empty-state'>"+
+            "<span class='ic'>🕸️</span>"+
+            "Le graphe apparaîtra après quelques apprentissages."+
+            "</div>";
 
         return;
     }
 
 
-    /*
-     * Construire les nœuds autour du centre.
-     */
-
     const relations=
-        memoire
-        .semantique
+        memoire.semantique
         .associations[centre]||{};
 
 
@@ -2581,24 +3844,46 @@ function dessinerGraphe(motCentre=null){
         .slice(0,14);
 
 
-    const nodes=[
-        {
-            id:centre,
-            x:largeur/2,
-            y:hauteur/2,
-            centre:true
-        }
-    ];
+    if(!voisins.length){
+
+        zone.innerHTML=
+            "<div class='empty-state'>"+
+            "<span class='ic'>🔍</span>"+
+            "« "+
+            escapeHTML(centre)+
+            " » n'a pas encore d'associations."+
+            "</div>";
+
+        return;
+    }
 
 
-    const rayon=Math.min(
-        185,
-        90+voisins.length*7
-    );
+    const largeur=
+        zone.clientWidth||700;
+
+
+    const hauteur=
+        zone.clientHeight||390;
+
+
+    const cx=largeur/2;
+
+    const cy=hauteur/2;
+
+
+    let svg=
+        "<svg viewBox='0 0 "+
+        largeur+
+        " "+
+        hauteur+
+        "'>";
+
+
+    const positions=[];
 
 
     voisins.forEach(
-        ([mot],index)=>{
+        ([mot,poids],index)=>{
 
             const angle=
                 index/
@@ -2608,308 +3893,195 @@ function dessinerGraphe(motCentre=null){
                 )*
                 Math.PI*2;
 
-            nodes.push({
-                id:mot,
-                x:
-                    largeur/2+
-                    Math.cos(angle)*rayon,
-                y:
-                    hauteur/2+
-                    Math.sin(angle)*rayon,
-                centre:false
-            });
-        }
-    );
 
-
-    /*
-     * Relations
-     */
-
-    voisins.forEach(
-        ([mot,poids])=>{
-
-            const cible=
-                nodes.find(
-                    n=>n.id===mot
-                );
-
-            if(!cible)return;
-
-            const ligne=
-                document.createElementNS(
-                    "http://www.w3.org/2000/svg",
-                    "line"
-                );
-
-            ligne.setAttribute(
-                "x1",
-                largeur/2
-            );
-
-            ligne.setAttribute(
-                "y1",
-                hauteur/2
-            );
-
-            ligne.setAttribute(
-                "x2",
-                cible.x
-            );
-
-            ligne.setAttribute(
-                "y2",
-                cible.y
-            );
-
-            ligne.setAttribute(
-                "stroke-width",
+            const rayon=
                 Math.min(
-                    1+poids*.5,
-                    6
-                )
-            );
+                    largeur,
+                    hauteur
+                )*.32;
 
-            ligne.classList.add("edge");
 
-            svg.appendChild(ligne);
+            const x=
+                cx+
+                Math.cos(angle)*
+                rayon;
+
+
+            const y=
+                cy+
+                Math.sin(angle)*
+                rayon;
+
+
+            positions.push({
+                mot,
+                poids,
+                x,
+                y
+            });
+
+
+            const epaisseur=
+                Math.max(
+                    1,
+                    Math.min(
+                        7,
+                        Number(poids)
+                    )
+                );
+
+
+            svg+=
+                "<line "+
+                "x1='"+cx+"' "+
+                "y1='"+cy+"' "+
+                "x2='"+x+"' "+
+                "y2='"+y+"' "+
+                "stroke='#2a3140' "+
+                "stroke-width='"+epaisseur+
+                "'/>";
         }
     );
 
 
-    /*
-     * Nœuds
-     */
-
-    nodes.forEach(node=>{
-
-        const groupe=
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "g"
-            );
-
-        groupe.classList.add("node");
-
-        groupe.addEventListener(
-            "click",
-            ()=>{
-
-                document.getElementById(
-                    "motRecherche"
-                ).value=node.id;
-
-                afficherExploration(node.id);
-
-                dessinerGraphe(node.id);
-            }
-        );
+    svg+=
+        "<circle "+
+        "cx='"+cx+"' "+
+        "cy='"+cy+"' "+
+        "r='32' "+
+        "fill='#7c9cff'/>";
 
 
-        const cercle=
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "circle"
-            );
-
-        cercle.setAttribute(
-            "cx",
-            node.x
-        );
-
-        cercle.setAttribute(
-            "cy",
-            node.y
-        );
-
-        cercle.setAttribute(
-            "r",
-            node.centre?30:19
-        );
+    svg+=
+        "<text "+
+        "x='"+cx+"' "+
+        "y='"+(cy+4)+"' "+
+        "text-anchor='middle' "+
+        "fill='#0a0c10' "+
+        "font-size='13' "+
+        "font-weight='bold'>"+
+        escapeSVG(centre)+
+        "</text>";
 
 
-        let categorie=
-            "normal";
+    positions.forEach(
+        node=>{
 
-        if(
-            memoire.semantique.categories[
-                node.id
-            ]?.action
-        ){
-            categorie="action";
+            const taille=
+                Math.max(
+                    16,
+                    Math.min(
+                        27,
+                        15+
+                        Math.log1p(
+                            node.poids
+                        )*3
+                    )
+                );
+
+
+            svg+=
+                "<g class='node'>";
+
+
+            svg+=
+                "<circle "+
+                "cx='"+node.x+"' "+
+                "cy='"+node.y+"' "+
+                "r='"+taille+"' "+
+                "fill='#3ecf6e'/>";
+
+
+            svg+=
+                "<text "+
+                "x='"+node.x+"' "+
+                "y='"+(node.y+4)+"' "+
+                "text-anchor='middle' "+
+                "fill='#0a0c10' "+
+                "font-size='10'>"+
+                escapeSVG(node.mot)+
+                "</text>";
+
+
+            svg+="</g>";
         }
+    );
 
 
-        if(node.centre){
-
-            cercle.setAttribute(
-                "fill",
-                "#bc8cff"
-            );
-
-        }else if(categorie==="action"){
-
-            cercle.setAttribute(
-                "fill",
-                "#d29922"
-            );
-
-        }else{
-
-            cercle.setAttribute(
-                "fill",
-                "#238636"
-            );
-        }
+    svg+="</svg>";
 
 
-        groupe.appendChild(cercle);
-
-
-        const texte=
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "text"
-            );
-
-        texte.setAttribute(
-            "x",
-            node.x
-        );
-
-        texte.setAttribute(
-            "y",
-            node.y+
-            (node.centre?45:34)
-        );
-
-        texte.setAttribute(
-            "text-anchor",
-            "middle"
-        );
-
-        texte.textContent=
-            node.id.length>17
-            ?
-            node.id.substring(0,17)+"…"
-            :
-            node.id;
-
-
-        groupe.appendChild(texte);
-
-        svg.appendChild(groupe);
-    });
+    zone.innerHTML=svg;
 }
 
 
-/* ==========================================================
-   SAUVEGARDE
-========================================================== */
+/* =========================================================
+   FORCE SEMANTIQUE
+========================================================= */
 
-function sauvegarderMemoire(){
+document
+.getElementById(
+    "forceSemantique"
+)
+.addEventListener(
+    "input",
+    function(){
 
-    try{
-
-        /*
-         * Toujours remettre la version à jour.
-         */
-
-        memoire.version=VERSION_MEMOIRE;
-
-
-        const contenu=
-            JSON.stringify(
-                memoire,
-                null,
-                2
-            );
-
-
-        const blob=
-            new Blob(
-                [contenu],
-                {
-                    type:"application/json"
-                }
-            );
-
-
-        const url=
-            URL.createObjectURL(blob);
-
-
-        const lien=
-            document.createElement("a");
-
-
-        const date=new Date();
-
-
-        const suffixe=
-            date.getFullYear()+
-            "-"+
-            String(
-                date.getMonth()+1
-            ).padStart(2,"0")+
-            "-"+
-            String(
-                date.getDate()
-            ).padStart(2,"0")+
-            "_"+
-            String(
-                date.getHours()
-            ).padStart(2,"0")+
-            "-"+
-            String(
-                date.getMinutes()
-            ).padStart(2,"0")+
-            "-"+
-            String(
-                date.getSeconds()
-            ).padStart(2,"0");
-
-
-        lien.href=url;
-
-        lien.download=
-            "memoire_ia_fr_v4_"+
-            suffixe+
-            ".json";
-
-
-        document.body.appendChild(lien);
-
-        lien.click();
-
-        document.body.removeChild(lien);
-
-
-        setTimeout(
-            ()=>URL.revokeObjectURL(url),
-            1000
-        );
-
-
-        status(
-            "💾 <b>Mémoire V4 sauvegardée.</b><br>"+
-            "Tous les apprentissages actuels ont été exportés."
-        );
-
-    }catch(e){
-
-        console.error(e);
-
-        status(
-            "❌ Erreur pendant la sauvegarde."
-        );
+        document.getElementById(
+            "forceValue"
+        ).textContent=
+            this.value+
+            "%";
     }
+);
+
+
+/* =========================================================
+   REDIMENSIONNEMENT
+========================================================= */
+
+window.addEventListener(
+    "resize",
+    debounce(
+        ()=>{
+            if(
+                document.getElementById(
+                    "view-graphe"
+                ).classList.contains("active")
+            ){
+
+                construireGraphe();
+            }
+        },
+        200
+    )
+);
+
+
+/* =========================================================
+   DEBOUNCE
+========================================================= */
+
+function debounce(fn,delai){
+
+    let t;
+
+    return function(...args){
+
+        clearTimeout(t);
+
+        t=
+            setTimeout(
+                ()=>fn.apply(this,args),
+                delai
+            );
+    };
 }
 
 
-/* ==========================================================
-   FORMAT NOMBRE
-========================================================== */
+/* =========================================================
+   UTILITAIRES
+========================================================= */
 
 function formatNombre(nombre){
 
@@ -2921,38 +4093,179 @@ function formatNombre(nombre){
 }
 
 
-/* ==========================================================
-   SÉCURITÉ HTML
-========================================================== */
+function formatOctets(octets){
+
+    const n=
+        Number(octets||0);
+
+    if(n<1024){
+        return n+" o";
+    }
+
+    if(n<1024*1024){
+        return (
+            n/1024
+        ).toFixed(1)+" Ko";
+    }
+
+    if(n<1024*1024*1024){
+        return (
+            n/
+            (1024*1024)
+        ).toFixed(1)+" Mo";
+    }
+
+    return (
+        n/
+        (1024*1024*1024)
+    ).toFixed(2)+" Go";
+}
+
 
 function escapeHTML(texte){
 
     return String(texte)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
-/* ==========================================================
-   AFFICHER TOUT
-========================================================== */
+function escapeSVG(texte){
 
-function afficherTout(){
+    return String(texte)
 
-    afficherStats();
+        .replace(
+            /&/g,
+            "&amp;"
+        )
 
-    dessinerGraphe();
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&apos;"
+        );
 }
 
 
-/* ==========================================================
+function isPonctuation(mot){
+
+    return [
+        ".",
+        ",",
+        "!",
+        "?",
+        ";",
+        ":",
+        "(",
+        ")",
+        "[",
+        "]",
+        "«",
+        "»"
+    ].includes(mot);
+}
+
+
+/* =========================================================
    INITIALISATION
-========================================================== */
+========================================================= */
 
-afficherTout();
+afficherInfosMemoire();
+
+afficherStats();
+
+afficherEtatWikipedia();
+
+rafraichirEtatGenerer();
+
+actualiserMoniteur();
+
+mettreAJourCheckpoint();
+
+document.getElementById(
+    "batchInfo"
+).textContent=
+    CONFIG.batchSize+
+    " textes";
+
+
+document.getElementById(
+    "batchSize"
+).addEventListener(
+    "change",
+    function(){
+
+        CONFIG.batchSize=
+            Number(this.value);
+
+        document.getElementById(
+            "batchInfo"
+        ).textContent=
+            CONFIG.batchSize+
+            " textes";
+    }
+);
+
+
+document.getElementById(
+    "batchPause"
+).addEventListener(
+    "change",
+    function(){
+
+        CONFIG.pauseEntreLots=
+            Number(this.value);
+    }
+);
+
+
+document.getElementById(
+    "uiInterval"
+).addEventListener(
+    "change",
+    function(){
+
+        CONFIG.uiInterval=
+            Number(this.value);
+    }
+);
 
 </script>
 
