@@ -160,7 +160,7 @@
                 <textarea id="userInput" class="prompt-textarea" placeholder="Que voulez-vous générer ? (ex: en python, créer une fonction de validation...)"></textarea>
                 
                 <div class="prompt-actions">
-                    <button onclick="genererCodeLocal()" style="flex: 1; padding: 10px; font-size: 14px;">🚀 Générer par synthèse locale</button>
+                    <button onclick="genererCodeLocal()" style="flex: 1; padding: 10px; font-size: 14px;">🚀 Générer par synthèse dynamique</button>
                     <button onclick="effacerPrompt()" style="background: #333; color: #ccc; width: 100px; font-size: 14px;" title="Effacer la saisie">🧹 Effacer</button>
                 </div>
                 
@@ -288,11 +288,10 @@
             }
 
             const lines = text.split('\n');
-            // CORRECTION : Conserve les espaces/indentations de début de ligne en évitant le .trim() destructeur
             const filteredLines = lines.map(l => l.replace(/\r$/, '')).filter(l => {
                 const trimmed = l.trim();
                 if (trimmed.length < 4 || trimmed.length > 140) return false;
-                const contientCode = /[={}();:]/.test(trimmed);
+                const contientCode = /[={}();:]/.test(trimmed) || /^(def |class |function |const |let |var |if |for |while |import )/.test(trimmed);
                 return contientCode;
             });
             
@@ -387,7 +386,7 @@
             }
         }
 
-        // MOTEUR DE GÉNÉRATION PAR PATRONS LOGIQUES STRUCTURÉS
+        // MOTEUR DE GÉNÉRATION INTELLIGENT (RECHERCHE + ASSEMBLAGE DYNAMIQUE BRUT)
         function genererCodeLocal() {
             jouerSonClic();
             const query = document.getElementById('userInput').value.toLowerCase().trim();
@@ -397,71 +396,78 @@
             if(!query) return container.textContent = "⚠️ Veuillez entrer une demande.";
             if(memoireCode.length === 0) return container.textContent = "⚠️ Mémoire vide. Veuillez ingérer des fichiers ou un ZIP.";
 
+            // 1. Détection du langage cible demandé dans le prompt
             let langageCible = "python";
             if (query.includes('javascript') || query.includes('js')) langageCible = "javascript";
             else if (query.includes('html')) langageCible = "html";
             else if (query.includes('sql')) langageCible = "sql";
+            else if (query.includes('css')) langageCible = "css";
 
-            const candidatsLangage = memoireCode.filter(item => {
+            // 2. Moteur de recherche contextuel basé sur des mots-clés extraits de la requête
+            const motsClesRecherche = query.split(/\s+/).filter(m => m.length > 3);
+            
+            let meilleursMatchs = [];
+            
+            memoireCode.forEach(item => {
                 const fn = item.source.toLowerCase();
-                if (langageCible === "python" && fn.endsWith('.py')) return true;
-                if (langageCible === "javascript" && fn.endsWith('.js')) return true;
-                if (langageCible === "html" && (fn.endsWith('.html') || fn.endsWith('.htm'))) return true;
-                if (langageCible === "sql" && fn.endsWith('.sql')) return true;
-                return false;
+                let score = 0;
+
+                // Filtrage extension
+                let correspondLangage = false;
+                if (langageCible === "python" && fn.endsWith('.py')) correspondLangage = true;
+                else if (langageCible === "javascript" && fn.endsWith('.js')) correspondLangage = true;
+                else if (langageCible === "html" && (fn.endsWith('.html') || fn.endsWith('.htm'))) correspondLangage = true;
+                else if (langageCible === "sql" && fn.endsWith('.sql')) correspondLangage = true;
+                else if (langageCible === "css" && fn.endsWith('.css')) correspondLangage = true;
+                else if (!langageCible) correspondLangage = true;
+
+                if (correspondLangage) score += 5;
+
+                // Recherche de similarité sur les lignes mémorisées
+                item.patterns.forEach(ligne => {
+                    const ligneLower = ligne.toLowerCase();
+                    motsClesRecherche.forEach(mot => {
+                        if (ligneLower.includes(mot)) {
+                            score += 2;
+                        }
+                    });
+                });
+
+                if (score > 0) {
+                    meilleursMatchs.push({ item: item, score: score });
+                }
             });
 
-            let modeleTrouve = candidatsLangage.length > 0 
-                ? candidatsLangage[Math.floor(Math.random() * candidatsLangage.length)]
-                : memoireCode[Math.floor(Math.random() * memoireCode.length)];
+            // Tri par pertinence (score décroissant)
+            meilleursMatchs.sort((a, b) => b.score - a.score);
 
-            // Conserve l'indentation originale des blocs extraits
-            let blocLogique = modeleTrouve.patterns.slice(0, 6).join('\n');
+            // 3. Extraction et assemblage dynamique direct de la mémoire brute (sans squelette rigide pré-écrit)
+            let lignesAssemblees = [];
+            let sourcesUtilisees = new Set();
 
-            let codeGenere = "";
-
-            if (langageCible === "python") {
-                codeGenere = `# ==========================================================\n`;
-                codeGenere += `# CODE STRUCTURÉ GÉNÉRÉ EN LOCAL (PYTHON)\n`;
-                codeGenere += `# Source de référence : ${modeleTrouve.source}\n`;
-                codeGenere += `# ==========================================================\n\n`;
-                codeGenere += `def executer_traitement_local(donnees=None):\n`;
-                codeGenere += `    """\n`;
-                codeGenere += `    Structure de traitement générée à partir des gabarits locaux.\n`;
-                codeGenere += `    """\n`;
-                codeGenere += `${blocLogique}\n`;
-                codeGenere += `    return True\n\n`;
-                codeGenere += `# Point d'entrée de test\n`;
-                codeGenere += `if __name__ == "__main__":\n`;
-                codeGenere += `    print("Exécution de la fonction locale...")\n`;
-                codeGenere += `    executer_traitement_local()\n`;
-            } else if (langageCible === "javascript") {
-                codeGenere = `/* ==========================================================\n`;
-                codeGenere += ` * CODE STRUCTURÉ GÉNÉRÉ EN LOCAL (JAVASCRIPT)\n`;
-                codeGenere += ` * Source de référence : ${modeleTrouve.source}\n`;
-                codeGenere += ` * ========================================================== */\n\n`;
-                codeGenere += `function executerTraitementLocal(param = null) {\n`;
-                codeGenere += `    try {\n`;
-                codeGenere += `${blocLogique}\n`;
-                codeGenere += `    } catch (erreur) {\n`;
-                codeGenere += `        console.error("Erreur lors de l'exécution :", erreur);\n`;
-                codeGenere += `    }\n`;
-                codeGenere += `}\n\n`;
-                codeGenere += `// Appel de test\n`;
-                codeGenere += `executerTraitementLocal();\n`;
-            } else if (langageCible === "html") {
-                codeGenere = `<!-- Structure HTML générée depuis ${modeleTrouve.source} -->\n`;
-                codeGenere += `<div class="conteneur-local">\n`;
-                codeGenere += `${blocLogique}\n`;
-                codeGenere += `</div>\n`;
+            if (meilleursMatchs.length > 0) {
+                // Prendre des blocs parmi les meilleurs résultats pertinents trouvés
+                meilleursMatchs.slice(0, 3).forEach(match => {
+                    sourcesUtilisees.add(match.item.source);
+                    // Extraction brute des patterns pertinents
+                    const echantillons = match.item.patterns.sort(() => 0.5 - Math.random()).slice(0, 6);
+                    lignesAssemblees.push(...echantillons);
+                });
             } else {
-                codeGenere = `-- Requête SQL / Modèle généré depuis ${modeleTrouve.source}\n`;
-                codeGenere += `${modeleTrouve.patterns.join('\n')};\n`;
+                // Fallback si aucun mot-clé direct ne matche : sélection aléatoire dans la mémoire du langage
+                const candidats = memoireCode.filter(item => item.source.toLowerCase().endsWith(langageCible === 'python' ? '.py' : '.js'));
+                const sourceChoisie = candidats.length > 0 ? candidats[Math.floor(Math.random() * candidats.length)] : memoireCode[Math.floor(Math.random() * memoireCode.length)];
+                sourcesUtilisees.add(sourceChoisie.source);
+                lignesAssemblees = sourceChoisie.patterns.slice(0, 10);
             }
+
+            // Génération finale purement basée sur les données extraites
+            let codeGenere = `# Synthèse dynamique depuis la mémoire [Sources : ${Array.from(sourcesUtilisees).join(', ')}]\n\n`;
+            codeGenere += lignesAssemblees.join('\n');
 
             container.textContent = codeGenere;
             feedbackBox.classList.add('visible');
-            document.getElementById('feedbackFilename').value = "modele_" + modeleTrouve.source;
+            document.getElementById('feedbackFilename').value = "synthese_dynamique." + (langageCible === 'python' ? 'py' : 'js');
             jouerSonSucces();
         }
 
