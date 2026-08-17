@@ -2,47 +2,53 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Apprenti Codeur - Tableau de Bord & Moteur Local</title>
+    <title>Apprenti Codeur - Studio & Entraîneur Local</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: #121212; color: #e0e0e0; margin: 0; padding: 20px; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #121212; color: #e0e0e0; margin: 0; padding: 20px; line-height: 1.5; }
         
         /* BARRE DE NAVIGATION ET MENU HAMBURGER */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; max-width: 950px; margin: 0 auto 20px auto; border-bottom: 1px solid #333; padding-bottom: 15px; }
-        .top-bar h1 { margin: 0; font-size: 22px; color: #007acc; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; max-width: 950px; margin: 0 auto 20px auto; border-bottom: 1px solid #2a2a2a; padding-bottom: 15px; }
+        .top-bar h1 { margin: 0; font-size: 22px; color: #4ec9b0; display: flex; align-items: center; gap: 8px; }
         .nav-tabs { display: flex; gap: 10px; align-items: center; }
-        .nav-tab { background: #252526; border: 1px solid #444; color: #ccc; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .nav-tab { background: #1e1e1e; border: 1px solid #333; color: #aaa; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+        .nav-tab:hover { background: #252526; color: #fff; }
         .nav-tab.active { background: #007acc; color: white; border-color: #007acc; }
-        .hamburger-btn { font-size: 22px; background: none; border: none; color: white; cursor: pointer; padding: 0 10px; }
+        .hamburger-btn { font-size: 20px; background: #1e1e1e; border: 1px solid #333; color: #fff; cursor: pointer; padding: 6px 12px; border-radius: 6px; transition: 0.2s; }
+        .hamburger-btn:hover { background: #2a2a2a; }
         
         /* MENU COULISSANT (DRAWER) */
-        .drawer { position: fixed; top: 0; right: -350px; width: 330px; height: 100%; background: #1e1e1e; border-left: 1px solid #444; box-shadow: -5px 0 15px rgba(0,0,0,0.5); z-index: 1000; padding: 20px; transition: right 0.3s ease; overflow-y: auto; }
+        .drawer { position: fixed; top: 0; right: -360px; width: 340px; height: 100%; background: #181818; border-left: 1px solid #333; box-shadow: -10px 0 30px rgba(0,0,0,0.6); z-index: 1000; padding: 25px; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; }
         .drawer.open { right: 0; }
-        .drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2a2a; padding-bottom: 12px; margin-bottom: 20px; }
+        .drawer-header h3 { margin: 0; color: #4ec9b0; }
         .close-btn { background: none; border: none; color: #888; font-size: 20px; cursor: pointer; }
+        .close-btn:hover { color: #fff; }
 
         /* STRUCTURE GLOBALE */
         .container { max-width: 950px; margin: auto; }
-        .box { border: 1px solid #444; padding: 20px; margin: 15px 0; border-radius: 8px; background: #1e1e1e; }
+        .box { border: 1px solid #2a2a2a; padding: 22px; margin: 15px 0; border-radius: 10px; background: #181818; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        input, textarea, button { padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #555; background: #333; color: white; width: 100%; }
-        button { cursor: pointer; background: #007acc; border: none; font-weight: bold; width: auto; }
+        input, textarea, button { padding: 10px 14px; margin: 6px 0; border-radius: 6px; border: 1px solid #3a3a3a; background: #222; color: white; width: 100%; font-family: inherit; }
+        input:focus, textarea:focus { outline: none; border-color: #007acc; }
+        button { cursor: pointer; background: #007acc; border: none; font-weight: 600; width: auto; transition: background 0.2s; }
         button:hover { background: #005999; }
-        pre { background: #000; padding: 15px; border-radius: 5px; overflow-x: auto; height: 180px; font-size: 12px; }
-        .success { background: #28a745; width: 100%; font-size: 15px; }
-        .success:hover { background: #218838; }
+        pre { background: #0b0b0b; padding: 15px; border-radius: 6px; overflow-x: auto; height: 160px; font-size: 12px; border: 1px solid #222; color: #ce9178; }
+        .success { background: #2ea043; width: 100%; font-size: 14px; }
+        .success:hover { background: #238636; }
 
         /* DASHBOARD STATS & COULEURS LANGAGES */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
-        .stat-card { background: #252526; border: 1px solid #333; padding: 15px; border-radius: 6px; text-align: center; }
-        .stat-number { font-size: 24px; font-weight: bold; color: #4ec9b0; margin-top: 5px; }
-        .chart-container { background: #252526; padding: 15px; border-radius: 6px; margin-top: 15px; border: 1px solid #333; max-height: 250px; overflow-y: auto; }
-        .bar-wrapper { margin: 8px 0; }
-        .bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 3px; }
-        .bar-bg { background: #333; border-radius: 4px; overflow: hidden; height: 12px; width: 100%; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: #202020; border: 1px solid #2a2a2a; padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-card div:first-child { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-number { font-size: 26px; font-weight: bold; color: #4ec9b0; margin-top: 5px; }
+        .chart-container { background: #202020; padding: 18px; border-radius: 8px; margin-top: 15px; border: 1px solid #2a2a2a; max-height: 260px; overflow-y: auto; }
+        .bar-wrapper { margin: 10px 0; }
+        .bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; color: #ccc; }
+        .bar-bg { background: #2a2a2a; border-radius: 4px; overflow: hidden; height: 10px; width: 100%; }
         .bar-fill { height: 100%; width: 0%; transition: width 0.4s ease; }
 
         .bar-py { background: #3572A5; }
@@ -57,11 +63,15 @@
         .bar-php { background: #4F5D95; }
         .bar-go { background: #00ADD8; }
 
-        /* INTERFACE ÉPURÉE DU GÉNÉRATEUR */
-        .prompt-container { background: #1e1e1e; border: 1px solid #007acc; border-radius: 8px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-        .prompt-textarea { width: 100%; height: 100px; background: #121212; border: 1px solid #444; border-radius: 6px; padding: 15px; color: #fff; font-size: 15px; resize: vertical; }
-        .prompt-textarea:focus { outline: none; border-color: #007acc; }
-        .output-code { background: #000; color: #4ec9b0; border: 1px solid #333; padding: 20px; border-radius: 6px; min-height: 250px; font-family: 'Consolas', monospace; font-size: 13px; white-space: pre-wrap; word-break: break-all; overflow-x: auto; margin-top: 15px; }
+        /* INTERFACE GÉNÉRATEUR & ENTRAÎNEMENT */
+        .prompt-container { background: #181818; border: 1px solid #2a2a2a; border-radius: 10px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .prompt-textarea { width: 100%; height: 90px; background: #121212; border: 1px solid #3a3a3a; border-radius: 6px; padding: 12px; color: #fff; font-size: 14px; resize: vertical; }
+        .output-code { background: #0b0b0b; color: #4ec9b0; border: 1px solid #2a2a2a; padding: 20px; border-radius: 8px; min-height: 200px; font-family: 'Consolas', 'Courier New', monospace; font-size: 13px; white-space: pre-wrap; word-break: break-all; overflow-x: auto; margin-top: 15px; }
+        
+        /* ZONE DE FEEDBACK ENTRAÎNEUR */
+        .feedback-box { margin-top: 20px; background: #202020; border: 1px solid #2a2a2a; padding: 15px; border-radius: 8px; display: none; }
+        .feedback-box.visible { display: block; }
+        .action-row { display: flex; gap: 10px; margin-top: 12px; }
     </style>
 </head>
 <body>
@@ -71,7 +81,7 @@
         <h1>🧠 Apprenti Codeur</h1>
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="changerOnglet('apprentissage')">📊 Studio Apprentissage</button>
-            <button class="nav-tab" onclick="changerOnglet('generateur')">⚡ Générateur de Code</button>
+            <button class="nav-tab" onclick="changerOnglet('generateur')">⚡ Générateur & Entraînement</button>
             <button class="hamburger-btn" onclick="toggleDrawer()">☰</button>
         </div>
     </div>
@@ -84,23 +94,23 @@
         </div>
 
         <div style="margin-bottom: 20px;">
-            <h4>📥 Charger une Mémoire (JSON)</h4>
+            <h4 style="margin:0 0 8px 0; color:#ccc; font-size:14px;">📥 Charger une Mémoire (JSON)</h4>
             <input type="file" id="jsonFileInput" accept=".json" onchange="chargerMemoireJSON(event)">
         </div>
 
-        <hr style="border-color: #333;">
+        <hr style="border-color: #2a2a2a;">
 
         <div style="margin-bottom: 20px;">
-            <h4>✍️ Ajout Manuel Rapide</h4>
+            <h4 style="margin:0 0 8px 0; color:#ccc; font-size:14px;">✍️ Ajout Manuel Rapide</h4>
             <input type="text" id="manualName" placeholder="Nom du fichier (ex: snippet.js)">
             <textarea id="manualCode" rows="3" placeholder="Collez un bout de code..."></textarea>
-            <button onclick="ajouterMemoireManuelle()" style="background: #28a745; width: 100%;">Ajouter à la mémoire</button>
+            <button onclick="ajouterMemoireManuelle()" style="background: #2ea043; width: 100%; margin-top: 8px;">Ajouter à la mémoire</button>
         </div>
 
-        <hr style="border-color: #333;">
+        <hr style="border-color: #2a2a2a;">
 
         <button onclick="sauvegarderMemoireJSON()" class="success" style="margin-bottom: 10px;">💾 Télécharger la Mémoire (JSON)</button>
-        <button onclick="reinitialiserMemoire()" style="background: #dc3545; width: 100%;">🗑️ Vider la Mémoire RAM</button>
+        <button onclick="reinitialiserMemoire()" style="background: #da3633; width: 100%;">🗑️ Vider la Mémoire RAM</button>
     </div>
 
     <div class="container">
@@ -109,7 +119,7 @@
         <div id="tab-apprentissage" class="tab-content active">
             
             <div class="box">
-                <h2>📊 Statistiques sous le capot</h2>
+                <h2 style="margin-top: 0; color: #fff; font-size: 18px;">📊 Statistiques sous le capot</h2>
                 <div class="stats-grid">
                     <div class="stat-card"><div>Fichiers Analysés</div><div id="statFiles" class="stat-number">0</div></div>
                     <div class="stat-card"><div>Lignes Traitées</div><div id="statLines" class="stat-number">0</div></div>
@@ -117,7 +127,7 @@
                 </div>
 
                 <div class="chart-container">
-                    <div style="font-weight: bold; margin-bottom: 8px;">Répartition par Langage</div>
+                    <div style="font-weight: 600; margin-bottom: 10px; color: #ddd; font-size: 14px;">Répartition par Langage</div>
                     <div class="bar-wrapper"><div class="bar-label"><span>Python (.py)</span><span id="countPy">0 fichiers</span></div><div class="bar-bg"><div id="barPy" class="bar-fill bar-py"></div></div></div>
                     <div class="bar-wrapper"><div class="bar-label"><span>JavaScript (.js)</span><span id="countJs">0 fichiers</span></div><div class="bar-bg"><div id="barJs" class="bar-fill bar-js"></div></div></div>
                     <div class="bar-wrapper"><div class="bar-label"><span>Google Apps Script (.gs)</span><span id="countGs">0 fichiers</span></div><div class="bar-bg"><div id="barGs" class="bar-fill bar-gs"></div></div></div>
@@ -133,22 +143,36 @@
             </div>
 
             <div class="box">
-                <h3>1. Ingestion Massive (ZIP Local)</h3>
+                <h3 style="margin-top:0; font-size:16px;">📥 Ingestion Massive (ZIP Local)</h3>
                 <input type="file" id="zipInput" accept=".zip">
-                <p><small>Prend en charge tous les langages configurés.</small></p>
+                <p style="margin-bottom:0;"><small style="color: #888;">Prend en charge tous les langages configurés ci-dessus.</small></p>
             </div>
 
-            <h3>Journal d'apprentissage :</h3>
+            <h3 style="font-size: 16px; margin-top: 20px;">Journal d'apprentissage :</h3>
             <pre id="log"></pre>
         </div>
 
-        <!-- FENÊTRE 2 : GÉNÉRATEUR -->
+        <!-- FENÊTRE 2 : GÉNÉRATEUR & ENTRAÎNEMENT -->
         <div id="tab-generateur" class="tab-content">
             <div class="prompt-container">
-                <h2 style="color: #007acc; margin-top: 0;">⚡ Générateur de Code Local</h2>
+                <h2 style="color: #4ec9b0; margin-top: 0; font-size: 18px;">⚡ Générateur & Mode Entraîneur</h2>
                 <textarea id="userInput" class="prompt-textarea" placeholder="Que voulez-vous générer ? (ex: en python, créer une fonction de validation...)"></textarea>
-                <button onclick="genererCodeLocal()" style="margin-top: 15px; padding: 12px 25px; font-size: 15px;">🚀 Générer par synthèse locale</button>
+                <button onclick="genererCodeLocal()" style="margin-top: 10px; padding: 10px 20px; font-size: 14px;">🚀 Générer par synthèse locale</button>
+                
                 <div id="resultatGeneration" class="output-code">/* Le code généré apparaîtra ici... */</div>
+
+                <!-- ZONE DE FEEDBACK POUR L'ENTRAÎNEMENT -->
+                <div id="feedbackBox" class="feedback-box">
+                    <h4 style="margin: 0 0 8px 0; color: #4ec9b0; font-size: 14px;">🎓 Espace Entraîneur (Feedback)</h4>
+                    <p style="margin: 0 0 10px 0; font-size: 12px; color: #aaa;">Copiez ce code pour le tester avec Gemini, puis injectez la version corrigée ou validée directement dans la mémoire de l'app.</p>
+                    
+                    <button onclick="copierCodeGenere()" style="background: #2b2b2b; border: 1px solid #444; width: 100%; margin-bottom: 8px;">📋 Copier le code généré</button>
+                    
+                    <input type="text" id="feedbackFilename" placeholder="Nom du fichier (ex: correction_fonction.py)">
+                    <textarea id="feedbackCode" rows="3" placeholder="Collez ici la correction validée par Gemini..."></textarea>
+                    
+                    <button onclick="reinjecterCorrection()" style="background: #2ea043; width: 100%;">✨ Réinjecter la correction dans la mémoire</button>
+                </div>
             </div>
         </div>
 
@@ -298,17 +322,16 @@
         function genererCodeLocal() {
             const query = document.getElementById('userInput').value.toLowerCase().trim();
             const container = document.getElementById('resultatGeneration');
+            const feedbackBox = document.getElementById('feedbackBox');
             
             if(!query) return container.textContent = "⚠️ Veuillez entrer une demande.";
             if(memoireCode.length === 0) return container.textContent = "⚠️ Mémoire vide. Veuillez ingérer des fichiers ou un ZIP.";
 
-            // Détection intelligente du langage ciblé par la requête
             let langageCible = "python";
             if (query.includes('javascript') || query.includes('js')) langageCible = "javascript";
             else if (query.includes('html')) langageCible = "html";
             else if (query.includes('sql')) langageCible = "sql";
 
-            // Recherche d'un modèle structurel correspondant dans la mémoire
             let modeleTrouve = memoireCode.find(item => {
                 const fn = item.source.toLowerCase();
                 if (langageCible === "python" && fn.endsWith('.py')) return true;
@@ -318,7 +341,6 @@
                 return false;
             }) || memoireCode[0];
 
-            // Extraction de patterns de la mémoire pour composer le code
             let extraits = modeleTrouve.patterns.slice(0, 6).join('\n    ');
 
             let codeGenere = `/* --- CODE GÉNÉRÉ PAR SYNTHÈSE LOCALE (${langageCible.toUpperCase()}) --- */\n`;
@@ -342,6 +364,24 @@
             }
 
             container.textContent = codeGenere;
+            feedbackBox.classList.add('visible');
+            document.getElementById('feedbackFilename').value = modeleTrouve.source;
+        }
+
+        function copierCodeGenere() {
+            const codeText = document.getElementById('resultatGeneration').textContent;
+            navigator.clipboard.writeText(codeText).then(() => {
+                alert("📋 Code copié dans le presse-papier ! Vous pouvez le coller ici pour test.");
+            });
+        }
+
+        function reinjecterCorrection() {
+            const name = document.getElementById('feedbackFilename').value.trim() || "correction.txt";
+            const code = document.getElementById('feedbackCode').value;
+            if(!code) return alert("Veuillez entrer le code corrigé.");
+            analyserEtStocker(code, name);
+            document.getElementById('feedbackCode').value = "";
+            alert("✨ Correction réinjectée avec succès dans la mémoire de l'application !");
         }
 
         document.getElementById('zipInput').addEventListener('change', async (e) => {
