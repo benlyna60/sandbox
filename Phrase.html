@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>IA Française — Mémoire Sémantique V5.2</title>
 <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-<script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
 
 <style>
 :root{
@@ -4008,12 +4007,17 @@ let historiquePivots3D=[];
 let scene3D=null;
 let camera3D=null;
 let renderer3D=null;
-let controls3D=null;
 let raycaster3D=null;
 let souris3D=new (window.THREE?THREE.Vector2:Object)();
 let animation3DId=null;
 let noeudsCliquables3D=[];
 let survolActuel3D=null;
+
+let etatCamera3D={distance:7.8,azimut:.5,polar:1.15};
+let glisseActif3D=false;
+let dernierX3D=0;
+let dernierY3D=0;
+let distanceGlissee3D=0;
 
 const CONFIG_3D={
     rayonMin:1.6,
@@ -4040,93 +4044,200 @@ function initScene3D(){
         return;
     }
 
-    const wrap=
-        document.getElementById("canvas3dWrap");
+    try{
 
-    const largeur=
-        wrap.clientWidth||700;
+        const wrap=
+            document.getElementById("canvas3dWrap");
 
-    const hauteur=
-        wrap.clientHeight||390;
+        const largeur=
+            wrap.clientWidth||700;
 
-    scene3D=new THREE.Scene();
+        const hauteur=
+            wrap.clientHeight||390;
 
-    camera3D=new THREE.PerspectiveCamera(
-        50,largeur/hauteur,.1,100
+        scene3D=new THREE.Scene();
+
+        camera3D=new THREE.PerspectiveCamera(
+            50,largeur/hauteur,.1,100
+        );
+
+        mettreAJourCamera3D();
+
+
+        renderer3D=new THREE.WebGLRenderer({
+            antialias:true,
+            alpha:true
+        });
+
+        renderer3D.setPixelRatio(
+            Math.min(window.devicePixelRatio||1,2)
+        );
+
+        renderer3D.setSize(largeur,hauteur);
+
+        renderer3D.setClearColor(0x000000,0);
+
+        renderer3D.domElement.style.touchAction="none";
+
+        wrap.insertBefore(
+            renderer3D.domElement,
+            wrap.firstChild
+        );
+
+
+        scene3D.add(
+            new THREE.AmbientLight(0xffffff,.75)
+        );
+
+        const lumiere=
+            new THREE.DirectionalLight(0xffffff,.6);
+
+        lumiere.position.set(4,6,5);
+
+        scene3D.add(lumiere);
+
+
+        raycaster3D=new THREE.Raycaster();
+
+
+        attacherControles3D();
+
+
+        boucleAnimation3D();
+
+    }
+    catch(erreur){
+
+        console.error(erreur);
+
+        document.getElementById("canvas3dWrap").innerHTML=
+            "<div class='empty-state'>"+
+            "<span class='ic'>⚠️</span>"+
+            "Le moteur 3D n'a pas pu démarrer : "+
+            escapeHTML(erreur.message||"erreur inconnue")+
+            "</div>";
+    }
+}
+
+
+function mettreAJourCamera3D(){
+
+    if(!camera3D)return;
+
+    const d=etatCamera3D.distance;
+
+    const p=etatCamera3D.polar;
+
+    const a=etatCamera3D.azimut;
+
+    camera3D.position.set(
+        d*Math.sin(p)*Math.sin(a),
+        d*Math.cos(p),
+        d*Math.sin(p)*Math.cos(a)
     );
 
-    camera3D.position.set(0,1.4,7.5);
+    camera3D.lookAt(0,0,0);
+}
 
 
-    renderer3D=new THREE.WebGLRenderer({
-        antialias:true,
-        alpha:true
+function attacherControles3D(){
+
+    const el=renderer3D.domElement;
+
+    el.style.cursor="grab";
+
+    el.addEventListener("pointerdown",e=>{
+
+        glisseActif3D=true;
+
+        distanceGlissee3D=0;
+
+        dernierX3D=e.clientX;
+
+        dernierY3D=e.clientY;
+
+        el.style.cursor="grabbing";
+
+        try{el.setPointerCapture(e.pointerId);}catch(err){}
     });
 
-    renderer3D.setPixelRatio(
-        Math.min(window.devicePixelRatio||1,2)
-    );
+    el.addEventListener("pointermove",e=>{
 
-    renderer3D.setSize(largeur,hauteur);
+        if(glisseActif3D){
 
-    renderer3D.setClearColor(0x000000,0);
+            const dx=e.clientX-dernierX3D;
 
-    wrap.insertBefore(
-        renderer3D.domElement,
-        wrap.firstChild
-    );
+            const dy=e.clientY-dernierY3D;
 
+            distanceGlissee3D+=Math.abs(dx)+Math.abs(dy);
 
-    controls3D=new THREE.OrbitControls(
-        camera3D,
-        renderer3D.domElement
-    );
+            etatCamera3D.azimut-=dx*.006;
 
-    controls3D.enableDamping=true;
+            etatCamera3D.polar=
+                Math.min(
+                    Math.max(
+                        etatCamera3D.polar-dy*.006,
+                        .2
+                    ),
+                    Math.PI-.2
+                );
 
-    controls3D.dampingFactor=.08;
+            mettreAJourCamera3D();
 
-    controls3D.minDistance=2.5;
+            dernierX3D=e.clientX;
 
-    controls3D.maxDistance=14;
-
-    controls3D.target.set(0,0,0);
-
-
-    scene3D.add(
-        new THREE.AmbientLight(0xffffff,.75)
-    );
-
-    const lumiere=
-        new THREE.DirectionalLight(0xffffff,.6);
-
-    lumiere.position.set(4,6,5);
-
-    scene3D.add(lumiere);
-
-
-    raycaster3D=new THREE.Raycaster();
-
-
-    renderer3D.domElement.addEventListener(
-        "click",
-        gererClic3D
-    );
-
-    renderer3D.domElement.addEventListener(
-        "mousemove",
-        gererSurvol3D
-    );
-
-    renderer3D.domElement.addEventListener(
-        "mouseleave",
-        ()=>{
-            document.getElementById("tooltip3D").style.display="none";
+            dernierY3D=e.clientY;
         }
-    );
 
+        gererSurvol3D(e);
+    });
 
-    boucleAnimation3D();
+    el.addEventListener("pointerup",()=>{
+
+        glisseActif3D=false;
+
+        el.style.cursor="grab";
+    });
+
+    el.addEventListener("pointercancel",()=>{
+
+        glisseActif3D=false;
+
+        el.style.cursor="grab";
+    });
+
+    el.addEventListener("pointerleave",()=>{
+
+        glisseActif3D=false;
+
+        el.style.cursor="grab";
+
+        document.getElementById("tooltip3D").style.display="none";
+    });
+
+    el.addEventListener("wheel",e=>{
+
+        e.preventDefault();
+
+        etatCamera3D.distance=
+            Math.min(
+                Math.max(
+                    etatCamera3D.distance+e.deltaY*.004,
+                    2.5
+                ),
+                15
+            );
+
+        mettreAJourCamera3D();
+
+    },{passive:false});
+
+    el.addEventListener("click",e=>{
+
+        if(distanceGlissee3D>6)return;
+
+        gererClic3D(e);
+    });
 }
 
 
@@ -4134,8 +4245,6 @@ function boucleAnimation3D(){
 
     animation3DId=
         requestAnimationFrame(boucleAnimation3D);
-
-    if(controls3D)controls3D.update();
 
     if(renderer3D&&scene3D&&camera3D){
 
@@ -4505,10 +4614,6 @@ function construireGraphe3D(centre,animerVol){
     if(animerVol){
 
         volerVersCentre3D();
-
-    }else{
-
-        controls3D.target.set(0,0,0);
     }
 
 
@@ -4602,54 +4707,60 @@ function animerEchelle(objet,cible,duree){
 
 function volerVersCentre3D(){
 
-    if(!controls3D||!camera3D)return;
+    if(!camera3D)return;
 
-    const departCam=camera3D.position.clone();
+    const depart=etatCamera3D.distance;
 
-    const departCible=controls3D.target.clone();
-
-    const distance=departCam.length()||6;
-
-    const nouvelleCam=
-        departCam.clone().normalize().multiplyScalar(
-            Math.min(Math.max(distance,4),7)
-        );
-
-    const debut=performance.now();
+    const proche=Math.max(2.6,depart*.72);
 
     const duree=CONFIG_3D.dureeTransition;
 
-    controls3D.enabled=false;
+    const debut=performance.now();
 
-    function etape(t){
+    function ease(x){
 
-        const progres=
-            Math.min(1,(t-debut)/duree);
+        return x<.5
+            ?2*x*x
+            :1-Math.pow(-2*x+2,2)/2;
+    }
 
-        const ease=
-            progres<.5
-            ?2*progres*progres
-            :1-Math.pow(-2*progres+2,2)/2;
+    function etapeAvant(t){
 
-        camera3D.position.lerpVectors(
-            departCam,nouvelleCam,ease
-        );
+        const progres=Math.min(1,(t-debut)/duree);
 
-        controls3D.target.lerpVectors(
-            departCible,new THREE.Vector3(0,0,0),ease
-        );
+        etatCamera3D.distance=
+            depart+(proche-depart)*ease(progres);
+
+        mettreAJourCamera3D();
 
         if(progres<1){
 
-            requestAnimationFrame(etape);
+            requestAnimationFrame(etapeAvant);
 
         }else{
 
-            controls3D.enabled=true;
+            const debut2=performance.now();
+
+            function etapeRetour(t2){
+
+                const progres2=Math.min(1,(t2-debut2)/duree);
+
+                etatCamera3D.distance=
+                    proche+(depart-proche)*ease(progres2);
+
+                mettreAJourCamera3D();
+
+                if(progres2<1){
+
+                    requestAnimationFrame(etapeRetour);
+                }
+            }
+
+            requestAnimationFrame(etapeRetour);
         }
     }
 
-    requestAnimationFrame(etape);
+    requestAnimationFrame(etapeAvant);
 }
 
 
