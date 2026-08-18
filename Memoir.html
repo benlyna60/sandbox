@@ -3,191 +3,255 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>IA Française — Mémoire Sémantique V6</title>
+
+<title>IA Française V6 — Mémoire Cognitive</title>
 
 <style>
+
 :root{
-    --bg:#0b0d12;
-    --panel:#12151c;
-    --panel2:#0a0c10;
-    --line:#232833;
-    --text:#e7ebf1;
-    --dim:#8a93a3;
+    --bg:#090b10;
+    --panel:#12161e;
+    --panel2:#0c0f15;
+    --line:#252b36;
+
+    --text:#e8edf4;
+    --dim:#8993a4;
+
     --accent:#4fd1c5;
-    --accent2:#7c9cff;
-    --good:#3ecf6e;
-    --warn:#f0b93a;
-    --bad:#ff6b6b;
+    --blue:#7c9cff;
+    --green:#3ecf6e;
+    --yellow:#f0b93a;
+    --red:#ff6b6b;
+    --purple:#b58cff;
+
     --mono:"JetBrains Mono","SFMono-Regular",Consolas,monospace;
     --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
 
-html,body{height:100%}
+html,body{
+    height:100%;
+}
 
 body{
     margin:0;
+    padding-bottom:78px;
+
     background:
-        radial-gradient(1200px 600px at 50% -10%,#14202033,transparent),
+        radial-gradient(
+            1000px 500px at 50% -10%,
+            #14202044,
+            transparent
+        ),
         var(--bg);
+
     color:var(--text);
     font-family:var(--sans);
-    padding-bottom:76px;
 }
 
 .wrap{
     width:min(780px,100%);
     margin:auto;
-    padding:16px 14px 8px;
+    padding:16px 14px 10px;
 }
 
-/* HEADER */
+/* =========================================================
+HEADER
+========================================================= */
 
 .hdr{
     position:sticky;
     top:0;
-    z-index:20;
-    background:rgba(11,13,18,.94);
-    backdrop-filter:blur(8px);
+    z-index:50;
+
+    background:rgba(9,11,16,.94);
+    backdrop-filter:blur(10px);
+
     border-bottom:1px solid var(--line);
+
     padding:10px 14px;
 }
 
 .hdr-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
     width:min(780px,100%);
     margin:auto;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:10px;
 }
 
 .hdr-title{
     display:flex;
     align-items:center;
     gap:8px;
-    font-weight:700;
-    font-size:.95rem;
+
+    font-weight:800;
+    font-size:.94rem;
 }
 
-.hdr-title .dot{
-    width:8px;
-    height:8px;
+.dot{
+    width:9px;
+    height:9px;
     border-radius:50%;
     background:var(--dim);
 }
 
-.hdr-title .dot.ready{background:var(--good)}
-.hdr-title .dot.learning{
-    background:var(--accent2);
-    animation:pulse 1.4s infinite;
+.dot.ready{
+    background:var(--green);
 }
-.hdr-title .dot.warning{background:var(--warn)}
-.hdr-title .dot.error{background:var(--bad)}
+
+.dot.learning{
+    background:var(--blue);
+    animation:pulse 1.3s infinite;
+}
+
+.dot.error{
+    background:var(--red);
+}
 
 @keyframes pulse{
     0%,100%{opacity:1}
-    50%{opacity:.35}
+    50%{opacity:.3}
 }
 
 .hdr-mini{
     display:flex;
-    gap:10px;
+    gap:12px;
+
     font-family:var(--mono);
     font-size:.68rem;
+
     color:var(--dim);
 }
 
-.hdr-mini b{color:var(--accent)}
+.hdr-mini b{
+    color:var(--accent);
+}
 
-/* TABS */
+/* =========================================================
+TABS
+========================================================= */
 
 .tabbar{
     position:fixed;
-    bottom:0;
     left:0;
     right:0;
-    z-index:30;
+    bottom:0;
+
+    z-index:100;
+
     display:flex;
-    background:rgba(10,12,16,.97);
-    backdrop-filter:blur(10px);
+
+    background:rgba(9,11,15,.97);
+    backdrop-filter:blur(12px);
+
     border-top:1px solid var(--line);
-    padding:4px 4px calc(4px + env(safe-area-inset-bottom));
+
+    padding:
+        4px
+        4px
+        calc(4px + env(safe-area-inset-bottom));
 }
 
 .tab{
     flex:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:2px;
-    padding:8px 2px 6px;
-    background:none;
+
     border:none;
+    background:none;
+
     color:var(--dim);
+
+    padding:7px 2px 6px;
+
     font-size:.60rem;
     font-family:var(--sans);
+
     border-radius:10px;
 }
 
 .tab .ic{
-    font-size:1.12rem;
+    display:block;
+    font-size:1.15rem;
     line-height:1;
+    margin-bottom:2px;
 }
 
 .tab.active{
     color:var(--accent);
-    background:#ffffff08;
+    background:#ffffff09;
 }
 
-/* PANELS */
+/* =========================================================
+VIEWS
+========================================================= */
 
-.view{display:none}
-.view.active{display:block}
+.view{
+    display:none;
+}
+
+.view.active{
+    display:block;
+}
+
+/* =========================================================
+PANELS
+========================================================= */
 
 .panel{
     background:var(--panel);
+
     border:1px solid var(--line);
     border-radius:14px;
-    padding:16px;
+
+    padding:15px;
+
     margin-bottom:12px;
 }
 
 .panel h2{
-    font-size:.92rem;
-    margin:0 0 12px;
+    margin:0 0 11px;
+
+    font-size:.91rem;
+
     display:flex;
     align-items:center;
     gap:7px;
 }
 
-.hint{
-    color:var(--dim);
-    font-size:.77rem;
-    line-height:1.5;
-    margin-bottom:10px;
-}
-
-/* BUTTONS */
+/* =========================================================
+BUTTONS
+========================================================= */
 
 button{
     border:1px solid var(--line);
     border-radius:10px;
-    padding:13px 14px;
+
+    padding:12px 13px;
+
     color:var(--text);
-    background:#191d26;
+    background:#191e27;
+
+    font-weight:700;
+    font-size:.82rem;
+
     cursor:pointer;
-    font-weight:600;
-    font-size:.84rem;
+
     -webkit-tap-highlight-color:transparent;
 }
 
-button:active{transform:scale(.98)}
+button:active{
+    transform:scale(.985);
+}
+
 button:disabled{
     opacity:.4;
     cursor:not-allowed;
-    transform:none;
 }
 
 .btn-block{
@@ -200,192 +264,272 @@ button:disabled{
     gap:8px;
 }
 
-.btn-row button{flex:1}
+.btn-row button{
+    flex:1;
+}
 
 .primary{
-    background:var(--accent2);
-    border-color:var(--accent2);
+    background:var(--blue);
+    border-color:var(--blue);
     color:#080b10;
 }
 
 .success{
-    background:var(--good);
-    border-color:var(--good);
-    color:#080b10;
-}
-
-.danger{
-    background:#3a1a1a;
-    border-color:#5c2626;
-    color:#ffb4b4;
+    background:var(--green);
+    border-color:var(--green);
+    color:#071009;
 }
 
 .warning{
-    background:#3a3017;
-    border-color:#62501e;
-    color:#ffe5a0;
+    background:#3a2c10;
+    border-color:#70571e;
+    color:#ffd97b;
 }
 
-.secondary{
-    background:#191d26;
+.danger{
+    background:#35191c;
+    border-color:#61262b;
+    color:#ffb4b8;
 }
 
-/* STATUS */
+.purple{
+    background:#281b3c;
+    border-color:#4b3470;
+    color:#d9c5ff;
+}
+
+/* =========================================================
+STATUS
+========================================================= */
 
 .status{
-    border-radius:12px;
-    padding:12px 13px;
-    margin-bottom:12px;
     border:1px solid var(--line);
-    background:var(--panel);
+    border-radius:12px;
+
+    padding:12px 13px;
+
+    margin-bottom:12px;
+
+    font-size:.82rem;
     line-height:1.5;
-    font-size:.83rem;
 }
 
-.status.ready{border-left:3px solid var(--good)}
-.status.learning{border-left:3px solid var(--accent2)}
-.status.warning{border-left:3px solid var(--warn)}
-.status.error{border-left:3px solid var(--bad)}
+.status.ready{
+    border-left:3px solid var(--green);
+}
+
+.status.learning{
+    border-left:3px solid var(--blue);
+}
+
+.status.warning{
+    border-left:3px solid var(--yellow);
+}
+
+.status.error{
+    border-left:3px solid var(--red);
+}
 
 .status-title{
-    font-weight:700;
+    font-weight:800;
     margin-bottom:3px;
 }
 
-/* FILE */
+/* =========================================================
+FILE
+========================================================= */
 
 .file-info{
     background:var(--panel2);
+
     border:1px solid var(--line);
     border-radius:10px;
+
     padding:10px 11px;
-    margin-top:5px;
-    font-size:.76rem;
+
+    font-size:.75rem;
     line-height:1.65;
 }
 
 .file-name{
     color:var(--accent);
-    word-break:break-all;
     font-family:var(--mono);
+    word-break:break-all;
 }
 
-/* GRID */
+/* =========================================================
+GRID
+========================================================= */
 
 .grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:8px;
+    gap:7px;
 }
 
 .stat{
     background:var(--panel2);
+
     border:1px solid var(--line);
-    padding:11px 7px;
     border-radius:10px;
+
+    padding:10px 6px;
+
     text-align:center;
 }
 
 .stat-label{
     color:var(--dim);
     font-size:.59rem;
-    letter-spacing:.3px;
+    letter-spacing:.35px;
 }
 
 .stat-value{
     color:var(--accent);
-    font-size:.98rem;
-    font-weight:700;
-    margin-top:3px;
+
     font-family:var(--mono);
+    font-weight:800;
+
+    font-size:.96rem;
+
+    margin-top:3px;
 }
 
-/* FORM */
+/* =========================================================
+INPUTS
+========================================================= */
 
 input[type=text],
 select{
     width:100%;
+
     background:var(--panel2);
     color:var(--text);
+
     border:1px solid var(--line);
     border-radius:9px;
-    padding:12px;
-    margin-bottom:10px;
-    font-size:.85rem;
+
+    padding:11px;
+
+    margin-bottom:9px;
+
+    font-size:.84rem;
 }
 
-input[type=text]:focus,
+input:focus,
 select:focus{
-    outline:2px solid var(--accent2);
+    outline:2px solid var(--blue);
     outline-offset:1px;
 }
 
 input[type=range]{
     width:100%;
-    accent-color:var(--accent2);
+    accent-color:var(--blue);
 }
 
-.small{
-    color:var(--dim);
-    font-size:.74rem;
-    line-height:1.55;
-}
+/* =========================================================
+OUTPUT
+========================================================= */
 
 .output{
     background:var(--panel2);
+
     border:1px solid var(--line);
     border-radius:10px;
-    padding:15px;
+
+    padding:14px;
+
     min-height:70px;
+
     color:var(--accent);
+
     line-height:1.6;
     word-break:break-word;
 }
 
-/* LOG */
+/* =========================================================
+LOG
+========================================================= */
 
 .log{
     background:var(--panel2);
+
     border:1px solid var(--line);
     border-radius:10px;
-    padding:10px;
-    height:170px;
+
+    height:180px;
+
     overflow:auto;
+
+    padding:9px;
+
     font-family:var(--mono);
     font-size:.68rem;
-    line-height:1.55;
+    line-height:1.5;
 }
 
 .log-line{
-    border-bottom:1px solid #ffffff08;
     padding:3px 0;
+    border-bottom:1px solid #ffffff08;
     color:var(--dim);
 }
 
-.log-line:last-child{color:var(--text)}
+.log-line:last-child{
+    color:var(--text);
+}
 
-/* BARS */
+/* =========================================================
+BADGES
+========================================================= */
+
+.badge{
+    display:inline-block;
+
+    padding:4px 8px;
+
+    margin:0 4px 4px 0;
+
+    border-radius:20px;
+
+    background:#ffffff09;
+
+    border:1px solid var(--line);
+
+    font-size:.69rem;
+}
+
+/* =========================================================
+BARS
+========================================================= */
 
 .bar-row{
     display:flex;
     align-items:center;
+
     gap:7px;
+
     margin-bottom:7px;
 }
 
 .bar-label{
-    width:92px;
+    width:90px;
+
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    font-size:.74rem;
+
+    font-size:.72rem;
 }
 
 .bar-track{
     flex:1;
+
     height:8px;
-    background:#ffffff0d;
+
+    background:#ffffff0c;
+
     border-radius:5px;
+
     overflow:hidden;
 }
 
@@ -395,45 +539,83 @@ input[type=range]{
 }
 
 .bar-number{
-    width:56px;
+    width:58px;
+
     text-align:right;
+
     color:var(--dim);
-    font-size:.66rem;
+
+    font-size:.65rem;
+
     font-family:var(--mono);
 }
 
-/* SEMANTIC */
+/* =========================================================
+SEMANTIC
+========================================================= */
 
 .semantic{
     background:var(--panel2);
+
     border:1px solid var(--line);
     border-radius:10px;
+
     padding:13px;
+
+    font-size:.78rem;
     line-height:1.7;
-    font-size:.80rem;
 }
 
-.semantic b{color:var(--accent2)}
+.semantic b{
+    color:var(--blue);
+}
 
-.badge{
-    display:inline-block;
-    padding:5px 9px;
-    border-radius:20px;
-    background:#ffffff0d;
-    margin:0 5px 5px 0;
-    font-size:.70rem;
-    color:var(--text);
+/* =========================================================
+COGNITIVE PROFILE
+========================================================= */
+
+.cognitive-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+}
+
+.cognitive-card{
+    background:var(--panel2);
+
     border:1px solid var(--line);
+    border-radius:10px;
+
+    padding:11px;
 }
 
-/* GRAPH */
+.cognitive-card b{
+    display:block;
+
+    margin-bottom:3px;
+
+    font-size:.76rem;
+}
+
+.cognitive-card span{
+    color:var(--dim);
+    font-size:.7rem;
+}
+
+/* =========================================================
+GRAPH
+========================================================= */
 
 .graph{
     position:relative;
-    height:min(68vh,430px);
+
+    height:min(70vh,430px);
+
     background:var(--panel2);
+
     border:1px solid var(--line);
     border-radius:12px;
+
     overflow:hidden;
 }
 
@@ -442,100 +624,71 @@ input[type=range]{
     height:100%;
 }
 
-.node{cursor:pointer}
-
 .legend{
     display:flex;
-    gap:12px;
     flex-wrap:wrap;
+    gap:10px;
+
     color:var(--dim);
+
     font-size:.68rem;
+
     margin-top:8px;
 }
 
-/* MEMORY HEALTH */
+/* =========================================================
+SMALL
+========================================================= */
 
-.health{
-    border:1px solid var(--line);
-    background:var(--panel2);
-    border-radius:10px;
-    padding:12px;
-}
-
-.health-row{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom:8px;
-    font-size:.74rem;
-}
-
-.health-row:last-child{margin-bottom:0}
-
-.health-value{
-    font-family:var(--mono);
-    color:var(--accent);
-}
-
-.progress{
-    width:100%;
-    height:7px;
-    background:#ffffff0d;
-    border-radius:6px;
-    overflow:hidden;
-    margin:4px 0 10px;
-}
-
-.progress > div{
-    height:100%;
-    background:var(--accent);
-    width:0%;
-}
-
-/* ARCHITECTURE */
-
-.arch-item{
-    margin-bottom:12px;
-}
-
-.arch-item b{
-    color:var(--accent2);
-    display:block;
-    margin-bottom:3px;
-    font-size:.82rem;
-}
-
-/* EMPTY */
-
-.empty-state{
-    text-align:center;
-    padding:26px 10px;
+.small{
     color:var(--dim);
-    font-size:.84rem;
+    font-size:.72rem;
+    line-height:1.55;
 }
 
-.empty-state .ic{
-    font-size:1.8rem;
-    display:block;
-    margin-bottom:6px;
+.hint{
+    color:var(--dim);
+    font-size:.76rem;
+    line-height:1.55;
+    margin-bottom:10px;
 }
 
-/* DESKTOP */
+.empty{
+    text-align:center;
+
+    padding:24px 10px;
+
+    color:var(--dim);
+
+    font-size:.8rem;
+}
 
 @media(min-width:600px){
+
     .grid{
         grid-template-columns:repeat(6,1fr);
     }
+
+    .cognitive-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
 }
+
 </style>
 </head>
 
 <body>
 
+<!-- =========================================================
+HEADER
+========================================================= -->
+
 <div class="hdr">
+
     <div class="hdr-row">
+
         <div class="hdr-title">
-            <span class="dot" id="hdrDot"></span>
+            <span id="hdrDot" class="dot"></span>
             IA Française V6
         </div>
 
@@ -543,82 +696,109 @@ input[type=range]{
             <span>Tok <b id="hdrTokens">0</b></span>
             <span>Voc <b id="hdrVocab">0</b></span>
         </div>
+
     </div>
+
 </div>
+
 
 <div class="wrap">
 
 <!-- =========================================================
-     MÉMOIRE
+MEMOIRE
 ========================================================= -->
 
 <div class="view active" id="view-memoire">
 
     <div class="panel">
-        <h2>💾 Gestion de la mémoire V6</h2>
 
-        <button class="secondary btn-block" onclick="ouvrirFichier()">
+        <h2>💾 Mémoire V6</h2>
+
+        <button class="secondary btn-block"
+                onclick="ouvrirFichier()">
             📂 Charger une mémoire JSON
         </button>
 
         <input
             id="fichierMemoire"
             type="file"
-            accept=".json,.json.gz,application/json,application/gzip"
+            accept=".json,application/json"
             style="display:none"
         >
 
-        <button class="secondary btn-block" onclick="creerNouvelleMemoire()">
-            🆕 Créer une nouvelle mémoire
-        </button>
-
-        <button class="primary btn-block" onclick="sauvegarderMemoire()">
-            💾 Exporter la mémoire JSON
-        </button>
-
-        <button class="secondary btn-block" onclick="sauvegarderMemoireGzip()">
-            🗜️ Exporter mémoire compressée
+        <button
+            class="secondary btn-block"
+            onclick="creerNouvelleMemoire()">
+            🆕 Nouvelle mémoire
         </button>
 
         <div class="btn-row">
-            <button onclick="sauvegardeLocale()">⚡ Sauvegarde locale</button>
-            <button onclick="restaurerLocale()">↩️ Restaurer locale</button>
+
+            <button
+                class="primary"
+                onclick="sauvegarderMemoire()">
+                💾 Sauvegarder
+            </button>
+
+            <button
+                class="purple"
+                onclick="sauvegarderSnapshot()">
+                🛡️ Point restauration
+            </button>
+
         </div>
 
-        <div class="file-info">
-            <div>
-                État :
-                <strong id="etatMemoire">🔴 Aucune mémoire</strong>
+        <div style="margin-top:9px">
+
+            <div class="file-info">
+
+                <div>
+                    État :
+                    <strong id="etatMemoire">
+                        🔴 Aucune mémoire
+                    </strong>
+                </div>
+
+                <div>
+                    Fichier :
+                    <span id="nomFichier"
+                          class="file-name">
+                        Aucun fichier
+                    </span>
+                </div>
+
+                <div>
+                    Version :
+                    <span id="versionMemoire">—</span>
+                </div>
+
             </div>
 
-            <div>
-                Fichier :
-                <span id="nomFichier" class="file-name">
-                    Aucun fichier chargé
-                </span>
-            </div>
-
-            <div>
-                Version :
-                <span id="versionMemoire">—</span>
-            </div>
-
-            <div>
-                Dernière optimisation :
-                <span id="derniereOptimisation">Jamais</span>
-            </div>
         </div>
+
     </div>
 
-    <div id="status" class="status warning">
-        <div class="status-title">🟡 Initialisation</div>
-        Crée une mémoire ou charge un JSON existant.
+
+    <div id="status"
+         class="status warning">
+
+        <div class="status-title">
+            🟡 Initialisation
+        </div>
+
+        Charge une mémoire existante ou crée une nouvelle mémoire.
+
     </div>
+
+
+    <!-- STATISTIQUES -->
 
     <div class="panel">
-        <h2>📊 Mémoire générale</h2>
+
+        <h2>📊 État de la mémoire</h2>
 
         <div class="grid">
+
             <div class="stat">
                 <div class="stat-label">TOKENS</div>
                 <div id="statTokens" class="stat-value">0</div>
@@ -630,12 +810,12 @@ input[type=range]{
             </div>
 
             <div class="stat">
-                <div class="stat-label">2-GRAMS</div>
+                <div class="stat-label">2-GR.</div>
                 <div id="stat2" class="stat-value">0</div>
             </div>
 
             <div class="stat">
-                <div class="stat-label">3-GRAMS</div>
+                <div class="stat-label">3-GR.</div>
                 <div id="stat3" class="stat-value">0</div>
             </div>
 
@@ -648,87 +828,145 @@ input[type=range]{
                 <div class="stat-label">RELATIONS</div>
                 <div id="statRelations" class="stat-value">0</div>
             </div>
+
         </div>
+
     </div>
 
+
+    <!-- COGNITION -->
+
     <div class="panel">
-        <h2>🧠 Santé de la mémoire</h2>
 
-        <div class="health">
+        <h2>🧠 État cognitif</h2>
 
-            <div class="health-row">
-                <span>Vocabulaire</span>
-                <span id="healthVocab" class="health-value">0%</span>
+        <div class="cognitive-grid">
+
+            <div class="cognitive-card">
+                <b>🟢 Fortes</b>
+                <span id="strongCount">0</span>
             </div>
 
-            <div class="progress">
-                <div id="barVocab"></div>
+            <div class="cognitive-card">
+                <b>🟡 Moyennes</b>
+                <span id="mediumCount">0</span>
             </div>
 
-            <div class="health-row">
-                <span>2-grams</span>
-                <span id="health2" class="health-value">0%</span>
+            <div class="cognitive-card">
+                <b>🔵 Faibles</b>
+                <span id="weakCount">0</span>
             </div>
 
-            <div class="progress">
-                <div id="bar2"></div>
+            <div class="cognitive-card">
+                <b>🟣 Hypothèses</b>
+                <span id="hypothesisCount">0</span>
             </div>
 
-            <div class="health-row">
-                <span>3-grams</span>
-                <span id="health3" class="health-value">0%</span>
-            </div>
-
-            <div class="progress">
-                <div id="bar3"></div>
-            </div>
-
-            <div class="health-row">
-                <span>Relations sémantiques</span>
-                <span id="healthRel" class="health-value">0%</span>
-            </div>
-
-            <div class="progress">
-                <div id="barRel"></div>
-            </div>
-
-            <div class="health-row">
-                <span>État</span>
-                <span id="healthEtat" class="health-value">NORMAL</span>
-            </div>
         </div>
+
     </div>
 
+
+    <!-- MAINTENANCE -->
+
     <div class="panel">
+
+        <h2>🛠️ Maintenance cognitive</h2>
+
+        <div class="hint">
+            Ces opérations sont séparées afin de ne pas modifier
+            brutalement une grosse mémoire. Le diagnostic ne supprime rien.
+        </div>
+
+        <button
+            class="secondary btn-block"
+            onclick="diagnostiquerMemoire()">
+            🔎 Tester la mémoire actuelle
+        </button>
+
+        <button
+            class="warning btn-block"
+            onclick="optimiserMemoire()">
+            ⚙️ Optimiser sans supprimer les connaissances
+        </button>
+
+        <button
+            class="purple btn-block"
+            onclick="relanceIntelligente()">
+            🔁 Relance intelligente
+        </button>
+
+        <button
+            class="success btn-block"
+            onclick="consoliderMemoire()">
+            🧠 Consolider les connaissances
+        </button>
+
+        <button
+            class="danger btn-block"
+            onclick="oubliControle()">
+            🧹 Oubli contrôlé des relations faibles
+        </button>
+
+    </div>
+
+
+    <!-- TOP -->
+
+    <div class="panel">
+
         <h2>📚 Vocabulaire dominant</h2>
 
         <div id="topMots">
-            <div class="empty-state">
-                <span class="ic">📭</span>
-                Aucun mot appris pour l'instant.
+
+            <div class="empty">
+                📭 Aucun mot appris.
             </div>
+
         </div>
+
+    </div>
+
+
+    <!-- DIAGNOSTIC -->
+
+    <div class="panel">
+
+        <h2>🩺 Diagnostic</h2>
+
+        <div id="diagnostic"
+             class="semantic">
+
+            Aucun diagnostic exécuté.
+
+        </div>
+
     </div>
 
 </div>
 
 
 <!-- =========================================================
-     APPRENTISSAGE
+APPRENTISSAGE
 ========================================================= -->
 
 <div class="view" id="view-apprentissage">
 
     <div class="panel">
-        <h2>📚 Apprentissage V6</h2>
+
+        <h2>📚 Apprentissage</h2>
 
         <div class="hint">
-            Le moteur apprend progressivement. La mémoire n'est pas simplement
-            agrandie indéfiniment : V6 renforce les informations utiles,
-            réduit les relations faibles et évite l'explosion inutile de la mémoire.
+
+            Le moteur apprend à partir de Wikipédia lorsque disponible,
+            sinon il utilise le corpus local. La V6 applique également
+            un système de renforcement, de contexte et de contrôle
+            de croissance.
+
         </div>
 
         <div class="btn-row">
+
             <button
                 id="btnStart"
                 class="primary"
@@ -743,88 +981,118 @@ input[type=range]{
                 disabled>
                 ⏹ Arrêter
             </button>
+
         </div>
 
-        <div style="height:6px"></div>
+        <div class="file-info"
+             style="margin-top:10px">
 
-        <button
-            id="btnOptimiser"
-            class="warning btn-block"
-            onclick="optimiserMemoire(true)">
-            🧹 Optimiser / oublier intelligemment
-        </button>
-
-        <div class="file-info">
             <div>
-                Source Wikipédia :
-                <strong id="wikiEtat">— inconnue —</strong>
+                Wikipédia :
+                <strong id="wikiEtat">
+                    — inconnue —
+                </strong>
             </div>
 
             <div>
-                Cycle :
-                <strong id="cycleActuel">0</strong>
+                Source dominante :
+                <strong id="sourceDominante">
+                    —
+                </strong>
             </div>
 
-            <div>
-                Dernière sauvegarde :
-                <strong id="autoSaveEtat">Jamais</strong>
-            </div>
         </div>
+
     </div>
 
-    <div class="panel">
-        <h2>🧠 Apprentissage intelligent</h2>
-
-        <div class="small">
-            Renforcement :
-            <strong id="renforcementEtat">ACTIF</strong>
-        </div>
-
-        <div class="small">
-            Oubli contrôlé :
-            <strong id="oubliEtat">ACTIF</strong>
-        </div>
-
-        <div class="small">
-            Relances intelligentes :
-            <strong id="relanceEtat">ACTIVES</strong>
-        </div>
-
-        <div class="small">
-            Limitation mémoire :
-            <strong id="limiteurEtat">ACTIVE</strong>
-        </div>
-    </div>
 
     <div class="panel">
+
         <h2>📡 Activité du moteur</h2>
 
-        <div id="journal" class="log">
-            <div class="log-line">Système V6 prêt.</div>
+        <div id="journal"
+             class="log">
+
+            <div class="log-line">
+                Système V6 prêt.
+            </div>
+
         </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h2>⚙️ Contrôle d'apprentissage</h2>
+
+        <label class="small">
+            Fréquence de maintenance automatique
+        </label>
+
+        <select id="maintenanceFrequence">
+
+            <option value="100">
+                Tous les 100 cycles
+            </option>
+
+            <option value="250" selected>
+                Tous les 250 cycles
+            </option>
+
+            <option value="500">
+                Tous les 500 cycles
+            </option>
+
+            <option value="1000">
+                Tous les 1000 cycles
+            </option>
+
+        </select>
+
+        <div class="small">
+            La maintenance automatique ne supprime pas le vocabulaire.
+            Elle limite surtout les relations excessives.
+        </div>
+
     </div>
 
 </div>
 
 
 <!-- =========================================================
-     GÉNÉRER
+GENERATION
 ========================================================= -->
 
 <div class="view" id="view-generer">
 
     <div class="panel">
-        <h2>🤖 Générateur intelligent V6</h2>
+
+        <h2>🤖 Génération cognitive</h2>
 
         <select id="longueur">
-            <option value="10">Phrase courte — 10 mots</option>
-            <option value="20" selected>Phrase normale — 20 mots</option>
-            <option value="30">Phrase longue — 30 mots</option>
-            <option value="50">Phrase très longue — 50 mots</option>
+
+            <option value="10">
+                Phrase courte — 10 mots
+            </option>
+
+            <option value="20" selected>
+                Phrase normale — 20 mots
+            </option>
+
+            <option value="30">
+                Phrase longue — 30 mots
+            </option>
+
+            <option value="50">
+                Phrase très longue — 50 mots
+            </option>
+
         </select>
 
+
         <div class="small">
-            Influence de la mémoire sémantique
+            Influence sémantique
         </div>
 
         <input
@@ -832,37 +1100,78 @@ input[type=range]{
             type="range"
             min="0"
             max="100"
-            value="55"
+            value="60"
         >
 
-        <div class="small" style="margin-bottom:10px">
-            <span id="forceValue">55%</span>
+        <div
+            class="small"
+            style="margin-bottom:10px">
+
+            <span id="forceValue">
+                60%
+            </span>
+
         </div>
+
+
+        <div class="small">
+            Niveau cognitif
+        </div>
+
+        <select id="niveauGeneration">
+
+            <option value="equilibre" selected>
+                Équilibré
+            </option>
+
+            <option value="fort">
+                Connaissances fortes
+            </option>
+
+            <option value="exploration">
+                Exploration faible confiance
+            </option>
+
+            <option value="contexte">
+                Contexte prioritaire
+            </option>
+
+        </select>
+
 
         <button
             id="btnGenerer"
             class="success btn-block"
             onclick="genererPhrase()"
             disabled>
-            ✨ Générer une phrase
+
+            ✨ Générer
+
         </button>
 
-        <div id="resultat" class="output">
+
+        <div
+            id="resultat"
+            class="output">
+
             En attente d'apprentissage...
+
         </div>
+
     </div>
 
 </div>
 
 
 <!-- =========================================================
-     EXPLORER
+EXPLORER
 ========================================================= -->
 
 <div class="view" id="view-explorer">
 
     <div class="panel">
-        <h2>🔎 Explorer la mémoire</h2>
+
+        <h2>🔎 Explorer une connaissance</h2>
 
         <input
             id="motRecherche"
@@ -874,30 +1183,39 @@ input[type=range]{
         <button
             class="secondary btn-block"
             onclick="explorerMot()">
+
             🔍 Explorer
+
         </button>
 
-        <div id="exploration" class="semantic">
+        <div
+            id="exploration"
+            class="semantic">
+
             Aucun mot sélectionné.
+
         </div>
+
     </div>
 
 </div>
 
 
 <!-- =========================================================
-     GRAPHE
+GRAPHE
 ========================================================= -->
 
 <div class="view" id="view-graphe">
 
     <div class="panel">
-        <h2>🕸️ Graphe sémantique V6</h2>
+
+        <h2>🕸️ Graphe cognitif</h2>
 
         <div class="hint">
-            Le graphe utilise uniquement une petite sélection des relations
-            les plus fortes. Il ne reconstruit jamais plusieurs millions de
-            relations à l'écran.
+
+            Le graphe distingue les associations fortes,
+            les associations normales et les hypothèses indirectes.
+
         </div>
 
         <input
@@ -910,84 +1228,109 @@ input[type=range]{
         <button
             class="secondary btn-block"
             onclick="construireGraphe()">
+
             🕸️ Actualiser
+
         </button>
 
-        <div id="graphe" class="graph"></div>
+        <div id="graphe"
+             class="graph">
+
+            <div class="empty">
+                🕸️ Le graphe apparaîtra après apprentissage.
+            </div>
+
+        </div>
 
         <div class="legend">
-            <span>● Concept</span>
-            <span>━━ Association</span>
-            <span>Épaisseur = force</span>
+
+            <span>● forte</span>
+            <span>● association</span>
+            <span>┄ hypothèse</span>
+
         </div>
+
     </div>
 
+
     <div class="panel">
+
         <h2>🏗️ Architecture V6</h2>
 
         <div class="arch-item">
-            <b>1. Vocabulaire</b>
-            <span class="small">
-                Fréquences des mots avec contrôle de croissance.
-            </span>
+            <b>1. Mémoire linguistique</b>
+            <div class="small">
+                Vocabulaire, 2-grams, 3-grams.
+            </div>
         </div>
 
         <div class="arch-item">
-            <b>2. Modèle 2-gramme</b>
-            <span class="small">
-                Transitions linguistiques principales.
-            </span>
+            <b>2. Mémoire sémantique</b>
+            <div class="small">
+                Associations, catégories et concepts.
+            </div>
         </div>
 
         <div class="arch-item">
-            <b>3. Modèle 3-gramme</b>
-            <span class="small">
-                Contexte local plus précis.
-            </span>
+            <b>3. Mémoire contextuelle</b>
+            <div class="small">
+                Contextes dans lesquels les mots apparaissent.
+            </div>
         </div>
 
         <div class="arch-item">
-            <b>4. Mémoire sémantique</b>
-            <span class="small">
-                Associations pondérées.
-            </span>
+            <b>4. Importance</b>
+            <div class="small">
+                Fréquence + répétition + récence + contexte +
+                diversité + pertinence conceptuelle.
+            </div>
         </div>
 
         <div class="arch-item">
-            <b>5. Concepts</b>
-            <span class="small">
-                Catégories et concepts stabilisés.
-            </span>
+            <b>5. Confiance</b>
+            <div class="small">
+                La confiance augmente avec la répétition et
+                la cohérence des associations.
+            </div>
         </div>
 
         <div class="arch-item">
             <b>6. Renforcement</b>
-            <span class="small">
-                Les relations régulièrement retrouvées deviennent plus fortes.
-            </span>
+            <div class="small">
+                Les connaissances utiles sont rejouées.
+            </div>
         </div>
 
         <div class="arch-item">
             <b>7. Oubli contrôlé</b>
-            <span class="small">
-                Les relations faibles et isolées peuvent disparaître.
-            </span>
+            <div class="small">
+                Les relations faibles et redondantes peuvent
+                être réduites sans effacer le vocabulaire.
+            </div>
         </div>
 
         <div class="arch-item">
-            <b>8. Relances intelligentes</b>
-            <span class="small">
-                Le moteur revient périodiquement sur les connaissances
-                importantes au lieu de tout réapprendre uniformément.
-            </span>
+            <b>8. Consolidation</b>
+            <div class="small">
+                Les connaissances importantes deviennent plus stables.
+            </div>
         </div>
 
         <div class="arch-item">
-            <b>9. Génération</b>
-            <span class="small">
-                Combinaison du modèle linguistique et de la mémoire sémantique.
-            </span>
+            <b>9. Hypothèses</b>
+            <div class="small">
+                Relations indirectes conservées avec une confiance faible.
+            </div>
         </div>
+
+        <div class="arch-item">
+            <b>10. Génération cognitive</b>
+            <div class="small">
+                Combine structure linguistique, contexte,
+                confiance et sémantique.
+            </div>
+        </div>
+
     </div>
 
 </div>
@@ -996,7 +1339,7 @@ input[type=range]{
 
 
 <!-- =========================================================
-     NAVIGATION
+TABBAR
 ========================================================= -->
 
 <div class="tabbar">
@@ -1004,36 +1347,46 @@ input[type=range]{
     <button
         class="tab active"
         onclick="changerOnglet('view-memoire',this)">
+
         <span class="ic">💾</span>
         Mémoire
+
     </button>
 
     <button
         class="tab"
         onclick="changerOnglet('view-apprentissage',this)">
+
         <span class="ic">📚</span>
         Appr.
+
     </button>
 
     <button
         class="tab"
         onclick="changerOnglet('view-generer',this)">
+
         <span class="ic">✨</span>
         Générer
+
     </button>
 
     <button
         class="tab"
         onclick="changerOnglet('view-explorer',this)">
+
         <span class="ic">🔎</span>
         Explorer
+
     </button>
 
     <button
         class="tab"
         onclick="changerOnglet('view-graphe',this)">
+
         <span class="ic">🕸️</span>
         Graphe
+
     </button>
 
 </div>
@@ -1042,80 +1395,48 @@ input[type=range]{
 <script>
 
 /* =========================================================
-   CONFIGURATION V6
+V6 — CONFIGURATION
 ========================================================= */
 
-/*
- V6 fonctionne avec des limites souples.
+const VERSION_MEMOIRE = 6;
 
- L'objectif n'est PAS de supprimer arbitrairement les connaissances.
+const LIMITES = {
 
- L'objectif est :
+    /* limites linguistiques */
 
- 1. garder les connaissances fortes ;
- 2. renforcer ce qui revient régulièrement ;
- 3. diminuer progressivement les relations faibles ;
- 4. empêcher les millions de petites associations inutiles
-    de faire exploser la mémoire ;
- 5. permettre de continuer à apprendre.
-*/
+    transitions2: 45,
 
-const V6 = {
+    transitions3: 28,
 
-    version: 6,
+    associations: 28,
 
-    // Sauvegarde locale IndexedDB
-    autoSaveInterval: 30000,
+    /* contexte */
 
-    // Optimisation automatique
-    optimisationCycles: 100,
+    contextesParMot: 5,
 
-    // Relance intelligente
-    relanceCycles: 25,
+    totalContextes: 120000,
 
-    // Nombre de cycles avant contrôle mémoire
-    controleCycles: 20,
+    /* hypothèses */
 
-    // Nombre de voisins conservés par mot lors d'une optimisation
-    maxAssociationsParMot: 32,
+    hypothesesMax: 5000,
 
-    // Nombre de transitions 2-grammes conservées par mot
-    maxTransitions2ParMot: 48,
+    /* focus */
 
-    // Nombre de transitions 3-grammes conservées par contexte
-    maxTransitions3ParContexte: 20,
+    focusMax: 20000,
 
-    // Seuil minimal pour conserver une relation après plusieurs oublis
-    seuilRelation: 0.18,
+    /* journal */
 
-    // Décroissance légère
-    facteurOubli: 0.985,
+    journalMax: 250,
 
-    // Renforcement
-    bonusRenforcement: 0.08,
+    /* apprentissage */
 
-    // Pour éviter des rafraîchissements DOM trop fréquents
-    rafraichissementMs: 1000,
+    maintenanceDefaut: 250
 
-    // Nombre maximum de lignes dans le journal
-    maxJournal: 250,
-
-    // Taille maximale théorique du vocabulaire
-    maxVocabulaire: 500000,
-
-    // Taille maximale souple des contextes 2-grammes
-    maxTransitions2: 3000000,
-
-    // Taille maximale souple des contextes 3-grammes
-    maxTransitions3: 1200000,
-
-    // Taille maximale souple des relations
-    maxRelations: 4000000
 };
 
 
 /* =========================================================
-   ÉTAT GLOBAL
+ETAT GLOBAL
 ========================================================= */
 
 let memoire = creerMemoire();
@@ -1126,46 +1447,49 @@ let nomMemoire = "memoire_ia_fr_v6.json";
 
 let sourceWikipediaDisponible = null;
 
-let cycleGlobal = 0;
+let cyclesApprentissage = 0;
 
-let dernierAutoSave = 0;
+let avertissementTaille = false;
 
-let dernierRafraichissement = 0;
-
-let optimisationEnCours = false;
-
-let avertissementMemoire = false;
-
-let dbPromise = null;
+let maintenanceEnCours = false;
 
 
 /* =========================================================
-   CRÉATION MÉMOIRE
+MEMOIRE V6
 ========================================================= */
 
 function creerMemoire(){
 
     return {
 
-        version:6,
-
-        meta:{
-            moteur:"IA Française",
-            versionMoteur:6,
-            dateCreation:new Date().toISOString(),
-            derniereModification:new Date().toISOString(),
-            apprentissages:0,
-            optimisations:0,
-            renforcements:0,
-            oublis:0,
-            relances:0
-        },
+        version:VERSION_MEMOIRE,
 
         statistiques:{
+
             tokens:0,
+
             phrases:0,
+
             relations:0,
-            derniersTokens:0
+
+            consolidations:0,
+
+            renforcements:0,
+
+            oublis:0,
+
+            cycles:0,
+
+            sources:{
+
+                wikipedia:0,
+
+                local:0,
+
+                import:0
+
+            }
+
         },
 
         vocabulaire:{},
@@ -1177,31 +1501,61 @@ function creerMemoire(){
         debuts:{},
 
         semantique:{
+
             categories:{},
+
             associations:{},
+
             actions:{},
+
             contextes:{},
+
             concepts:{},
+
             sentiment:{},
+
             proprietes:{}
+
+        },
+
+        cognitive:{
+
+            recence:{},
+
+            focus:{},
+
+            hypotheses:[],
+
+            dernieresRelances:0,
+
+            derniereConsolidation:0,
+
+            dernierOubli:0
+
         }
+
     };
+
 }
 
 
 /* =========================================================
-   NAVIGATION
+NAVIGATION
 ========================================================= */
 
 function changerOnglet(id,bouton){
 
-    document.querySelectorAll(".view")
+    document
+        .querySelectorAll(".view")
         .forEach(v=>v.classList.remove("active"));
 
-    document.querySelectorAll(".tab")
+    document
+        .querySelectorAll(".tab")
         .forEach(t=>t.classList.remove("active"));
 
-    document.getElementById(id).classList.add("active");
+    document
+        .getElementById(id)
+        .classList.add("active");
 
     bouton.classList.add("active");
 
@@ -1213,36 +1567,48 @@ function changerOnglet(id,bouton){
     if(id==="view-graphe"){
         construireGraphe();
     }
+
 }
 
 
 /* =========================================================
-   FICHIER
+CHARGEMENT
 ========================================================= */
 
 function ouvrirFichier(){
 
-    document.getElementById("fichierMemoire").click();
+    document
+        .getElementById("fichierMemoire")
+        .click();
+
 }
 
+
 document
-.getElementById("fichierMemoire")
-.addEventListener("change",chargerMemoire);
+    .getElementById("fichierMemoire")
+    .addEventListener(
+        "change",
+        chargerMemoire
+    );
 
-
-/* =========================================================
-   CHARGEMENT JSON
-========================================================= */
 
 async function chargerMemoire(event){
 
-    const fichier=event.target.files[0];
+    const fichier = event.target.files[0];
 
-    if(!fichier) return;
+    if(!fichier){
+        return;
+    }
 
     try{
 
-        journaliser("📂 Chargement : "+fichier.name);
+        journaliser(
+            "📂 Chargement de " +
+            fichier.name +
+            " (" +
+            formatTaille(fichier.size) +
+            ")"
+        );
 
         changerStatus(
             "learning",
@@ -1251,47 +1617,44 @@ async function chargerMemoire(event){
         );
 
         /*
-         V6 accepte JSON et JSON.GZ.
+         Important :
+         on conserve le contenu original pendant le parsing.
+         La normalisation est non destructive.
         */
 
-        let texte;
-
-        if(fichier.name.toLowerCase().endsWith(".gz")){
-
-            if(typeof DecompressionStream==="undefined"){
-
-                throw new Error(
-                    "Ce navigateur ne prend pas en charge la décompression GZIP."
-                );
-            }
-
-            const ds=new DecompressionStream("gzip");
-
-            const stream=fichier
-                .stream()
-                .pipeThrough(ds);
-
-            texte=await new Response(stream).text();
-
-        }else{
-
-            texte=await fichier.text();
-        }
+        const texte = await fichier.text();
 
         journaliser(
-            "📦 Fichier lu : "+
-            formatOctets(fichier.size)
+            "📄 JSON lu : " +
+            formatTaille(texte.length)
         );
 
-        const data=JSON.parse(texte);
+        let data;
 
-        memoire=normaliserMemoire(data);
+        try{
 
-        nomMemoire=fichier.name;
+            data = JSON.parse(texte);
 
-        cycleGlobal=0;
+        }
+        catch(e){
 
-        avertissementMemoire=false;
+            throw new Error(
+                "JSON invalide : " +
+                e.message
+            );
+
+        }
+
+        memoire = normaliserMemoire(data);
+
+        nomMemoire = fichier.name;
+
+        memoire.statistiques.sources.import =
+            Number(
+                memoire.statistiques.sources.import || 0
+            ) + 1;
+
+        initialiserCognitive();
 
         afficherInfosMemoire();
 
@@ -1299,25 +1662,24 @@ async function chargerMemoire(event){
 
         rafraichirEtatGenerer();
 
+        diagnostiquerMemoire(false);
+
         changerStatus(
             "ready",
-            "🟢 Mémoire V6 prête",
-            formatNombre(memoire.statistiques.tokens)+
-            " tokens chargés."
+            "🟢 Mémoire V6 chargée",
+            formatNombre(
+                memoire.statistiques.tokens
+            ) +
+            " tokens disponibles."
         );
 
         journaliser(
-            "✅ Mémoire chargée : "+
-            formatNombre(memoire.statistiques.tokens)+
-            " tokens."
+            "✅ Migration/chargement V6 terminée."
         );
 
-        /*
-         On demande au navigateur de libérer autant que possible
-         les variables temporaires.
-        */
-
-        texte=null;
+        journaliser(
+            "🛡️ Aucune suppression automatique effectuée."
+        );
 
     }
     catch(erreur){
@@ -1326,183 +1688,157 @@ async function chargerMemoire(event){
 
         changerStatus(
             "error",
-            "🔴 Erreur de chargement",
-            escapeHTML(erreur.message || "JSON invalide.")
+            "🔴 Échec du chargement",
+            erreur.message ||
+            "Impossible de charger la mémoire."
         );
 
         journaliser(
-            "❌ Échec : "+
-            (erreur.message || "format invalide")
+            "❌ " +
+            (
+                erreur.message ||
+                "Erreur inconnue"
+            )
         );
+
     }
 
-    event.target.value="";
+    event.target.value = "";
+
 }
 
 
 /* =========================================================
-   NORMALISATION
+NORMALISATION V4/V5 → V6
 ========================================================= */
 
 function normaliserMemoire(data){
 
-    const base=creerMemoire();
+    const base = creerMemoire();
+
+    if(!data || typeof data!=="object"){
+        return base;
+    }
+
 
     /*
-     Ancien format très simple :
+     Ancienne structure :
      memoire_mots
     */
 
-    if(data && data.memoire_mots){
+    if(data.memoire_mots){
 
-        base.statistiques.tokens=
-            Number(data.mots_appris || 0);
-
-        base.transitions2=
+        base.transitions2 =
             data.memoire_mots || {};
 
-        reconstruireVocabulaireDepuisTransitions(base);
+        base.statistiques.tokens =
+            Number(data.mots_appris || 0);
 
-        base.version=6;
+        reconstruireVocabulaireDepuisTransitions(
+            base
+        );
 
         return base;
     }
 
-    /*
-     Format V4 / V5
-    */
 
-    if(data && data.version){
-        base.version=6;
-    }
+    /* statistiques */
 
-    if(data && data.meta){
-        base.meta=Object.assign(
-            base.meta,
-            data.meta
-        );
-    }
+    if(data.statistiques){
 
-    if(data && data.statistiques){
-
-        base.statistiques=Object.assign(
+        Object.assign(
             base.statistiques,
             data.statistiques
         );
+
     }
 
-    if(data){
 
-        base.vocabulaire=
-            data.vocabulaire || {};
+    /* structures linguistiques */
 
-        base.transitions2=
-            data.transitions2 || {};
+    base.vocabulaire =
+        data.vocabulaire || {};
 
-        base.transitions3=
-            data.transitions3 || {};
+    base.transitions2 =
+        data.transitions2 || {};
 
-        base.debuts=
-            data.debuts || {};
-    }
+    base.transitions3 =
+        data.transitions3 || {};
 
-    if(data && data.semantique){
+    base.debuts =
+        data.debuts || {};
 
-        base.semantique=Object.assign(
+
+    /* sémantique */
+
+    if(data.semantique){
+
+        Object.assign(
             base.semantique,
             data.semantique
         );
+
     }
 
-    garantirStructureMemoire(base);
+
+    /* cognitive */
+
+    if(data.cognitive){
+
+        Object.assign(
+            base.cognitive,
+            data.cognitive
+        );
+
+    }
+
 
     /*
-     Les anciennes mémoires peuvent avoir des nombres
-     sous forme de chaînes.
+     compatibilité champs manquants
     */
 
-    convertirCompteurs(base);
+    base.semantique.categories =
+        base.semantique.categories || {};
 
-    /*
-     On ne fait PAS une énorme optimisation immédiatement
-     au chargement : cela pourrait bloquer le navigateur.
-    */
+    base.semantique.associations =
+        base.semantique.associations || {};
+
+    base.semantique.actions =
+        base.semantique.actions || {};
+
+    base.semantique.contextes =
+        base.semantique.contextes || {};
+
+    base.semantique.concepts =
+        base.semantique.concepts || {};
+
+    base.semantique.sentiment =
+        base.semantique.sentiment || {};
+
+    base.semantique.proprietes =
+        base.semantique.proprietes || {};
+
+
+    base.cognitive.recence =
+        base.cognitive.recence || {};
+
+    base.cognitive.focus =
+        base.cognitive.focus || {};
+
+    base.cognitive.hypotheses =
+        Array.isArray(base.cognitive.hypotheses)
+            ? base.cognitive.hypotheses
+            : [];
+
+
+    base.version = VERSION_MEMOIRE;
 
     return base;
 }
 
 
 /* =========================================================
-   GARANTIR STRUCTURE
-========================================================= */
-
-function garantirStructureMemoire(m){
-
-    m.meta=m.meta || {};
-
-    m.statistiques=m.statistiques || {};
-
-    m.vocabulaire=m.vocabulaire || {};
-
-    m.transitions2=m.transitions2 || {};
-
-    m.transitions3=m.transitions3 || {};
-
-    m.debuts=m.debuts || {};
-
-    m.semantique=m.semantique || {};
-
-    const s=m.semantique;
-
-    s.categories=s.categories || {};
-    s.associations=s.associations || {};
-    s.actions=s.actions || {};
-    s.contextes=s.contextes || {};
-    s.concepts=s.concepts || {};
-    s.sentiment=s.sentiment || {};
-    s.proprietes=s.proprietes || {};
-}
-
-
-/* =========================================================
-   CONVERSION COMPTEURS
-========================================================= */
-
-function convertirCompteurs(m){
-
-    /*
-     On ne parcourt que les structures principales.
-     Les valeurs sont converties au moment où elles sont utilisées.
-    */
-
-    for(const mot in m.vocabulaire){
-
-        const n=Number(m.vocabulaire[mot]);
-
-        if(Number.isFinite(n)){
-            m.vocabulaire[mot]=n;
-        }
-    }
-
-    for(const mot in m.debuts){
-
-        const n=Number(m.debuts[mot]);
-
-        if(Number.isFinite(n)){
-            m.debuts[mot]=n;
-        }
-    }
-
-    m.statistiques.tokens=
-        Number(m.statistiques.tokens || 0);
-
-    m.statistiques.phrases=
-        Number(m.statistiques.phrases || 0);
-}
-
-
-/* =========================================================
-   RECONSTRUCTION ANCIEN FORMAT
+RECONSTRUCTION VOCABULAIRE
 ========================================================= */
 
 function reconstruireVocabulaireDepuisTransitions(base){
@@ -1513,58 +1849,69 @@ function reconstruireVocabulaireDepuisTransitions(base){
             base.vocabulaire[mot]=0;
         }
 
-        const suivants=base.transitions2[mot];
-
-        if(!suivants || typeof suivants!=="object"){
-            continue;
-        }
+        const suivants =
+            base.transitions2[mot];
 
         for(const suivant in suivants){
 
-            const n=Number(suivants[suivant]);
+            base.vocabulaire[mot] +=
+                Number(
+                    suivants[suivant] || 0
+                );
 
-            if(Number.isFinite(n)){
-                base.vocabulaire[mot]+=n;
-            }
         }
+
     }
+
 }
 
 
 /* =========================================================
-   NOUVELLE MÉMOIRE
+NOUVELLE MEMOIRE
 ========================================================= */
 
 function creerNouvelleMemoire(){
 
-    const tokens=
-        Number(memoire.statistiques.tokens || 0);
+    const tokens =
+        Number(
+            memoire.statistiques.tokens || 0
+        );
 
     if(tokens>0){
 
-        const ok=confirm(
-            "Une mémoire contenant "+
-            formatNombre(tokens)+
-            " tokens existe actuellement.\n\n"+
-            "La mémoire en cours sera remplacée dans cette page.\n\n"+
-            "Le fichier original ne sera PAS supprimé.\n\n"+
+        const ok = confirm(
+
+            "La mémoire actuelle contient " +
+            formatNombre(tokens) +
+            " tokens.\n\n" +
+
+            "La nouvelle mémoire remplacera uniquement " +
+            "la mémoire chargée dans cette page.\n\n" +
+
+            "Le fichier JSON original ne sera PAS supprimé.\n\n" +
+
             "Continuer ?"
+
         );
 
-        if(!ok) return;
+        if(!ok){
+            return;
+        }
+
     }
 
     if(apprentissageActif){
         arreterApprentissage();
     }
 
-    memoire=creerMemoire();
+    memoire = creerMemoire();
 
-    nomMemoire="memoire_ia_fr_v6.json";
+    nomMemoire =
+        "memoire_ia_fr_v6.json";
 
-    cycleGlobal=0;
+    cyclesApprentissage=0;
 
-    avertissementMemoire=false;
+    avertissementTaille=false;
 
     afficherInfosMemoire();
 
@@ -1572,225 +1919,128 @@ function creerNouvelleMemoire(){
 
     rafraichirEtatGenerer();
 
-    document.getElementById("resultat").textContent=
+    document
+        .getElementById("resultat")
+        .textContent =
         "En attente d'apprentissage...";
 
     changerStatus(
         "ready",
-        "🟢 Nouvelle mémoire V6",
-        "La mémoire est prête."
+        "🟢 Nouvelle mémoire",
+        "Mémoire V6 prête."
     );
 
-    journaliser("🆕 Nouvelle mémoire V6 créée.");
+    journaliser(
+        "🆕 Nouvelle mémoire créée."
+    );
 
-    sauvegardeLocale();
 }
 
 
 /* =========================================================
-   INDEXEDDB
+INITIALISATION COGNITIVE
 ========================================================= */
 
-function ouvrirDB(){
+function initialiserCognitive(){
 
-    if(dbPromise){
-        return dbPromise;
+    if(!memoire.cognitive){
+        memoire.cognitive={};
     }
 
-    dbPromise=new Promise((resolve,reject)=>{
+    memoire.cognitive.recence =
+        memoire.cognitive.recence || {};
 
-        if(!window.indexedDB){
+    memoire.cognitive.focus =
+        memoire.cognitive.focus || {};
 
-            reject(
-                new Error("IndexedDB non disponible.")
-            );
+    memoire.cognitive.hypotheses =
+        Array.isArray(
+            memoire.cognitive.hypotheses
+        )
+        ? memoire.cognitive.hypotheses
+        : [];
 
-            return;
-        }
-
-        const request=indexedDB.open(
-            "IA_FRANCAISE_V6",
-            1
-        );
-
-        request.onupgradeneeded=function(){
-
-            const db=request.result;
-
-            if(!db.objectStoreNames.contains("memoire")){
-                db.createObjectStore("memoire");
-            }
-        };
-
-        request.onsuccess=function(){
-            resolve(request.result);
-        };
-
-        request.onerror=function(){
-            reject(request.error);
-        };
-    });
-
-    return dbPromise;
 }
 
 
 /* =========================================================
-   SAUVEGARDE LOCALE
-========================================================= */
-
-async function sauvegardeLocale(silencieuse=false){
-
-    try{
-
-        const db=await ouvrirDB();
-
-        const tx=db.transaction(
-            "memoire",
-            "readwrite"
-        );
-
-        const store=tx.objectStore("memoire");
-
-        store.put(
-            memoire,
-            "principale"
-        );
-
-        dernierAutoSave=Date.now();
-
-        document.getElementById("autoSaveEtat")
-            .textContent=
-            new Date().toLocaleTimeString("fr-FR");
-
-        if(!silencieuse){
-
-            journaliser(
-                "⚡ Sauvegarde locale effectuée."
-            );
-        }
-
-    }
-    catch(erreur){
-
-        if(!silencieuse){
-
-            journaliser(
-                "⚠️ Sauvegarde locale indisponible."
-            );
-        }
-    }
-}
-
-
-/* =========================================================
-   RESTAURATION LOCALE
-========================================================= */
-
-async function restaurerLocale(){
-
-    try{
-
-        const db=await ouvrirDB();
-
-        const tx=db.transaction(
-            "memoire",
-            "readonly"
-        );
-
-        const request=
-            tx.objectStore("memoire")
-            .get("principale");
-
-        request.onsuccess=function(){
-
-            if(!request.result){
-
-                journaliser(
-                    "ℹ️ Aucune sauvegarde locale."
-                );
-
-                return;
-            }
-
-            memoire=
-                normaliserMemoire(
-                    request.result
-                );
-
-            nomMemoire=
-                "memoire_locale_v6";
-
-            afficherInfosMemoire();
-
-            afficherStats();
-
-            rafraichirEtatGenerer();
-
-            journaliser(
-                "↩️ Mémoire locale restaurée : "+
-                formatNombre(
-                    memoire.statistiques.tokens
-                )+
-                " tokens."
-            );
-
-            changerStatus(
-                "ready",
-                "🟢 Mémoire restaurée",
-                "La dernière mémoire locale a été restaurée."
-            );
-        };
-
-    }
-    catch(erreur){
-
-        journaliser(
-            "❌ Impossible de restaurer la mémoire locale."
-        );
-    }
-}
-
-
-/* =========================================================
-   SAUVEGARDE JSON
+SAUVEGARDE
 ========================================================= */
 
 function sauvegarderMemoire(){
 
     try{
 
-        /*
-         Avant export :
-         mise à jour de la date.
-        */
-
-        memoire.meta.derniereModification=
-            new Date().toISOString();
-
-        const contenu=
-            JSON.stringify(memoire);
-
-        const blob=
-            new Blob(
-                [contenu],
-                {type:"application/json"}
+        const contenu =
+            JSON.stringify(
+                memoire
             );
 
-        telechargerBlob(
-            blob,
-            construireNomFichier(".json")
+        const blob =
+            new Blob(
+                [contenu],
+                {
+                    type:"application/json"
+                }
+            );
+
+        const url =
+            URL.createObjectURL(blob);
+
+        const lien =
+            document.createElement("a");
+
+        const maintenant =
+            new Date();
+
+        const date =
+
+            maintenant.getFullYear() +
+            "-" +
+            String(
+                maintenant.getMonth()+1
+            ).padStart(2,"0") +
+            "-" +
+            String(
+                maintenant.getDate()
+            ).padStart(2,"0") +
+            "_" +
+            String(
+                maintenant.getHours()
+            ).padStart(2,"0") +
+            "-" +
+            String(
+                maintenant.getMinutes()
+            ).padStart(2,"0");
+
+        lien.href=url;
+
+        lien.download =
+            "memoire_ia_fr_v6_" +
+            date +
+            ".json";
+
+        document.body.appendChild(lien);
+
+        lien.click();
+
+        lien.remove();
+
+        setTimeout(
+            ()=>{
+                URL.revokeObjectURL(url);
+            },
+            2000
         );
 
         journaliser(
-            "💾 JSON exporté : "+
-            formatOctets(blob.size)
+            "💾 Mémoire V6 sauvegardée."
         );
 
         changerStatus(
             "ready",
-            "🟢 Export terminé",
-            "Mémoire JSON exportée."
+            "🟢 Sauvegarde terminée",
+            "Le fichier JSON V6 a été généré."
         );
 
     }
@@ -1800,254 +2050,182 @@ function sauvegarderMemoire(){
 
         changerStatus(
             "error",
-            "🔴 Export impossible",
-            "La mémoire est peut-être trop volumineuse pour le navigateur."
+            "🔴 Échec sauvegarde",
+            "Le navigateur manque probablement de mémoire pour sérialiser cette taille."
         );
 
         journaliser(
-            "❌ Export JSON échoué."
+            "❌ Sauvegarde impossible : " +
+            (
+                erreur.message || ""
+            )
         );
+
     }
+
 }
 
 
 /* =========================================================
-   GZIP
+SNAPSHOT
 ========================================================= */
 
-async function sauvegarderMemoireGzip(){
+function sauvegarderSnapshot(){
 
-    if(typeof CompressionStream==="undefined"){
-
-        changerStatus(
-            "warning",
-            "🟡 GZIP indisponible",
-            "Ton navigateur ne prend pas en charge CompressionStream."
-        );
-
-        return;
-    }
+    /*
+     Point de restauration volontaire.
+     Il utilise le même mécanisme JSON mais avec un nom distinct.
+    */
 
     try{
 
-        journaliser(
-            "🗜️ Compression de la mémoire..."
-        );
-
-        const texte=JSON.stringify(memoire);
-
-        const cs=new CompressionStream("gzip");
-
-        const writer=cs.writable.getWriter();
-
-        writer.write(
-            new TextEncoder().encode(texte)
-        );
-
-        writer.close();
-
-        const buffer=
-            await new Response(
-                cs.readable
-            ).arrayBuffer();
-
-        const blob=
-            new Blob(
-                [buffer],
-                {type:"application/gzip"}
+        const contenu =
+            JSON.stringify(
+                memoire
             );
 
-        telechargerBlob(
-            blob,
-            construireNomFichier(".json.gz")
+        const blob =
+            new Blob(
+                [contenu],
+                {
+                    type:"application/json"
+                }
+            );
+
+        const url =
+            URL.createObjectURL(blob);
+
+        const lien =
+            document.createElement("a");
+
+        const date =
+            new Date()
+            .toISOString()
+            .replace(/[:.]/g,"-");
+
+        lien.href=url;
+
+        lien.download =
+            "RESTORE_V6_" +
+            date +
+            ".json";
+
+        document.body.appendChild(lien);
+
+        lien.click();
+
+        lien.remove();
+
+        setTimeout(
+            ()=>{
+                URL.revokeObjectURL(url);
+            },
+            2000
         );
 
         journaliser(
-            "🗜️ Export compressé : "+
-            formatOctets(blob.size)
-        );
-
-        changerStatus(
-            "ready",
-            "🟢 Compression terminée",
-            "La mémoire compressée a été exportée."
+            "🛡️ Point de restauration V6 créé."
         );
 
     }
-    catch(erreur){
-
-        console.error(erreur);
+    catch(e){
 
         journaliser(
-            "❌ Compression échouée."
+            "❌ Point restauration impossible : " +
+            e.message
         );
+
     }
+
 }
 
 
 /* =========================================================
-   TÉLÉCHARGEMENT
+STATUS
 ========================================================= */
 
-function telechargerBlob(blob,nom){
+function changerStatus(
+    type,
+    titre,
+    message
+){
 
-    const url=
-        URL.createObjectURL(blob);
-
-    const lien=
-        document.createElement("a");
-
-    lien.href=url;
-
-    lien.download=nom;
-
-    document.body.appendChild(lien);
-
-    lien.click();
-
-    lien.remove();
-
-    setTimeout(()=>{
-        URL.revokeObjectURL(url);
-    },2000);
-}
-
-
-function construireNomFichier(extension){
-
-    const d=new Date();
-
-    const date=
-        d.getFullYear()+"-"+
-        String(d.getMonth()+1).padStart(2,"0")+"-"+
-        String(d.getDate()).padStart(2,"0")+"_"+
-
-        String(d.getHours()).padStart(2,"0")+"-"+
-        String(d.getMinutes()).padStart(2,"0")+"-"+
-        String(d.getSeconds()).padStart(2,"0");
-
-    return "memoire_ia_fr_v6_"+date+extension;
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-function changerStatus(type,titre,message){
-
-    const el=
+    const el =
         document.getElementById("status");
 
-    el.className=
-        "status "+type;
+    el.className =
+        "status " + type;
 
-    el.innerHTML=
-        "<div class='status-title'>"+
-        titre+
-        "</div>"+
-        message;
+    el.innerHTML =
+        "<div class='status-title'>" +
+        escapeHTML(titre) +
+        "</div>" +
+        escapeHTML(message);
 
-    const dot=
+    const dot =
         document.getElementById("hdrDot");
 
-    dot.className=
-        "dot "+
+    dot.className =
+        "dot " +
         (
             type==="learning"
-            ?"learning"
-            :
-            type==="error"
-            ?"error"
-            :
-            type==="warning"
-            ?"warning"
-            :
-            type==="ready"
-            ?"ready"
-            :""
+                ? "learning"
+                : type==="error"
+                    ? "error"
+                    : type==="ready"
+                        ? "ready"
+                        : ""
         );
+
 }
 
 
 /* =========================================================
-   JOURNAL
+JOURNAL
 ========================================================= */
 
 function journaliser(message){
 
-    const journal=
+    const journal =
         document.getElementById("journal");
 
-    const ligne=
+    const ligne =
         document.createElement("div");
 
     ligne.className="log-line";
 
-    const heure=
-        new Date().toLocaleTimeString("fr-FR");
-
-    ligne.textContent=
-        "["+heure+"] "+message;
+    ligne.textContent =
+        "[" +
+        new Date().toLocaleTimeString("fr-FR") +
+        "] " +
+        message;
 
     journal.appendChild(ligne);
 
-    journal.scrollTop=
+    journal.scrollTop =
         journal.scrollHeight;
 
     while(
-        journal.children.length>
-        V6.maxJournal
+        journal.children.length >
+        LIMITES.journalMax
     ){
 
         journal.removeChild(
             journal.firstChild
         );
+
     }
+
 }
 
 
 /* =========================================================
-   INFO MÉMOIRE
-========================================================= */
-
-function afficherInfosMemoire(){
-
-    document.getElementById("nomFichier")
-        .textContent=nomMemoire;
-
-    document.getElementById("versionMemoire")
-        .textContent="v6";
-
-    document.getElementById("etatMemoire")
-        .textContent=
-        apprentissageActif
-        ?"🟡 Apprentissage"
-        :"🟢 Mémoire prête";
-
-    document.getElementById("hdrTokens")
-        .textContent=
-        formatNombre(
-            memoire.statistiques.tokens
-        );
-
-    document.getElementById("hdrVocab")
-        .textContent=
-        formatNombre(
-            Object.keys(
-                memoire.vocabulaire
-            ).length
-        );
-}
-
-
-/* =========================================================
-   TOKENIZER
+TOKENIZER
 ========================================================= */
 
 function tokenizer(texte){
 
-    return String(texte)
+    return texte
 
         .replace(/\r\n/g," ")
 
@@ -2072,14 +2250,15 @@ function tokenizer(texte){
         .split(" ")
 
         .filter(Boolean);
+
 }
 
 
 /* =========================================================
-   CORPUS LOCAL
+CORPUS LOCAL
 ========================================================= */
 
-const corpusLocal=[
+const corpusLocal = [
 
 "Le chat marche dans le jardin et regarde les oiseaux.",
 
@@ -2119,47 +2298,69 @@ const corpusLocal=[
 
 "Une phrase relie plusieurs mots pour transmettre une idée.",
 
-"Le langage permet aux personnes de communiquer et de partager leurs connaissances.",
-
-"Une ville contient des rues, des maisons, des écoles et différents services.",
-
-"Une information devient plus utile lorsqu'elle est reliée à plusieurs contextes.",
-
-"Un système intelligent doit apprendre mais aussi savoir oublier ce qui devient inutile.",
-
-"Une mémoire efficace renforce les connaissances qui reviennent régulièrement.",
-
-"Les relations faibles peuvent être réduites pour éviter une croissance excessive.",
-
-"Un modèle linguistique utilise les mots précédents pour choisir les mots suivants.",
-
-"Les concepts permettent de regrouper plusieurs mots autour d'une même idée.",
-
-"Les données importantes doivent être conservées tandis que les informations faibles peuvent disparaître."
+"Le langage permet aux personnes de communiquer et de partager leurs connaissances."
 
 ];
 
 
 /* =========================================================
-   WIKIPEDIA
+WIKIPEDIA
 ========================================================= */
 
 function afficherEtatWikipedia(){
 
-    const el=
+    const el =
         document.getElementById("wikiEtat");
 
     if(sourceWikipediaDisponible===null){
 
-        el.textContent="— inconnue —";
+        el.textContent =
+            "— inconnue —";
 
         return;
     }
 
-    el.textContent=
+    el.textContent =
         sourceWikipediaDisponible
-        ?"🟢 disponible"
-        :"🔴 indisponible — corpus local";
+            ? "🟢 disponible"
+            : "🔴 indisponible";
+
+}
+
+
+async function fetchTimeout(
+    url,
+    ms
+){
+
+    const controller =
+        new AbortController();
+
+    const timer =
+        setTimeout(
+            ()=>{
+                controller.abort();
+            },
+            ms
+        );
+
+    try{
+
+        return await fetch(
+            url,
+            {
+                signal:
+                    controller.signal
+            }
+        );
+
+    }
+    finally{
+
+        clearTimeout(timer);
+
+    }
+
 }
 
 
@@ -2167,31 +2368,29 @@ async function recupererWikipedia(){
 
     try{
 
-        const url=
-            "https://fr.wikipedia.org/w/api.php"+
-            "?action=query"+
-            "&list=random"+
-            "&rnnamespace=0"+
-            "&rnlimit=1"+
-            "&format=json"+
+        const url =
+            "https://fr.wikipedia.org/w/api.php" +
+            "?action=query" +
+            "&list=random" +
+            "&rnnamespace=0" +
+            "&rnlimit=1" +
+            "&format=json" +
             "&origin=*";
 
-        const response=
-            await fetch(
+        const response =
+            await fetchTimeout(
                 url,
-                {
-                    signal:
-                        AbortSignal.timeout(7000)
-                }
+                7000
             );
 
         if(!response.ok){
             throw new Error(
-                "HTTP "+response.status
+                "HTTP " +
+                response.status
             );
         }
 
-        const data=
+        const data =
             await response.json();
 
         if(
@@ -2199,226 +2398,234 @@ async function recupererWikipedia(){
             !data.query.random ||
             !data.query.random[0]
         ){
+
             throw new Error(
                 "Réponse Wikipédia invalide"
             );
+
         }
 
-        const titre=
+        const titre =
             data.query.random[0].title;
 
-        const url2=
-            "https://fr.wikipedia.org/w/api.php"+
-            "?action=query"+
-            "&prop=extracts"+
-            "&explaintext=1"+
-            "&titles="+
-            encodeURIComponent(titre)+
-            "&format=json"+
+        const url2 =
+            "https://fr.wikipedia.org/w/api.php" +
+            "?action=query" +
+            "&prop=extracts" +
+            "&explaintext=1" +
+            "&titles=" +
+            encodeURIComponent(titre) +
+            "&format=json" +
             "&origin=*";
 
-        const response2=
-            await fetch(
+        const response2 =
+            await fetchTimeout(
                 url2,
-                {
-                    signal:
-                        AbortSignal.timeout(7000)
-                }
+                7000
             );
 
         if(!response2.ok){
+
             throw new Error(
-                "HTTP "+response2.status
+                "HTTP " +
+                response2.status
+            );
+
+        }
+
+        const data2 =
+            await response2.json();
+
+        const pages =
+            data2.query &&
+            data2.query.pages;
+
+        if(!pages){
+            throw new Error(
+                "Pages Wikipédia absentes"
             );
         }
 
-        const data2=
-            await response2.json();
-
-        const page=
-            Object.values(
-                data2.query.pages
-            )[0];
+        const page =
+            Object.values(pages)[0];
 
         if(
             !page.extract ||
             page.extract.length<100
         ){
+
             throw new Error(
                 "Extrait trop court"
             );
+
         }
-
-        /*
-         IMPORTANT :
-         on limite le texte.
-         */
-
-        const extrait=
-            page.extract.slice(
-                0,
-                5000
-            );
 
         sourceWikipediaDisponible=true;
 
         afficherEtatWikipedia();
 
-        return extrait;
+        return page.extract.slice(
+            0,
+            4500
+        );
 
     }
-    catch(erreur){
+    catch(e){
 
         sourceWikipediaDisponible=false;
 
         afficherEtatWikipedia();
 
         return null;
+
     }
+
 }
 
 
 /* =========================================================
-   CATÉGORIES
+CATEGORIES
 ========================================================= */
 
-const categoriesConnues={
+const categoriesConnues = {
 
     animaux:[
-        "chat","chien","cheval","vache",
-        "lion","tigre","ours","loup",
-        "oiseau","poisson","souris",
-        "lapin","cochon","mouton",
-        "chèvre","éléphant","girafe",
-        "singe","poule","canard"
+        "chat","chien","cheval","vache","lion",
+        "tigre","ours","loup","oiseau","poisson",
+        "souris","lapin","cochon","mouton","chèvre",
+        "éléphant","girafe","singe","poule","canard"
     ],
 
     nourriture:[
-        "pain","fromage","viande",
-        "poisson","riz","pomme",
-        "orange","banane","légume",
-        "fruit","soupe","gâteau",
-        "chocolat","lait","eau",
+        "pain","fromage","viande","poisson","riz",
+        "pomme","orange","banane","légume","fruit",
+        "soupe","gâteau","chocolat","lait","eau",
         "café","thé"
     ],
 
     lieux:[
-        "maison","ville","village",
-        "pays","école","hôpital",
-        "bureau","rue","jardin",
-        "parc","magasin","restaurant",
-        "gare","aéroport","plage",
-        "montagne","forêt"
+        "maison","ville","village","pays","école",
+        "hôpital","bureau","rue","jardin","parc",
+        "magasin","restaurant","gare","aéroport",
+        "plage","montagne","forêt"
     ],
 
     personnes:[
-        "homme","femme","enfant",
-        "garçon","fille","père",
-        "mère","frère","soeur",
-        "ami","amie","professeur",
-        "médecin","policier","président"
+        "homme","femme","enfant","garçon","fille",
+        "père","mère","frère","soeur","ami","amie",
+        "professeur","médecin","policier","président"
     ],
 
     objets:[
-        "table","chaise","porte",
-        "fenêtre","voiture","vélo",
-        "ordinateur","téléphone",
-        "livre","stylo","sac",
-        "clé","lit","lampe"
+        "table","chaise","porte","fenêtre","voiture",
+        "vélo","ordinateur","téléphone","livre",
+        "stylo","sac","clé","lit","lampe"
     ],
 
     nature:[
-        "arbre","fleur","forêt",
-        "rivière","mer","océan",
-        "montagne","soleil","lune",
-        "pluie","neige","vent",
-        "ciel","terre"
+        "arbre","fleur","forêt","rivière","mer",
+        "océan","montagne","soleil","lune","pluie",
+        "neige","vent","ciel","terre"
     ]
+
 };
 
 
-const actionsConnues=[
+const actionsConnues = [
 
-    "manger","boire","dormir",
-    "courir","marcher","parler",
-    "regarder","voir","entendre",
-    "écouter","aimer","détester",
-    "prendre","donner","faire",
-    "dire","aller","venir",
-    "partir","arriver","vivre",
-    "travailler","jouer","lire",
-    "écrire","apprendre",
-    "enseigner","acheter","vendre",
-    "ouvrir","fermer","chercher",
-    "trouver","penser","comprendre",
-    "connaître","construire",
-    "créer","utiliser","porter",
-    "mettre","tenir","sauter",
+    "manger","boire","dormir","courir","marcher",
+    "parler","regarder","voir","entendre","écouter",
+    "aimer","détester","prendre","donner","faire",
+    "dire","aller","venir","partir","arriver",
+    "vivre","travailler","jouer","lire","écrire",
+    "apprendre","enseigner","acheter","vendre",
+    "ouvrir","fermer","chercher","trouver","penser",
+    "comprendre","connaître","construire","créer",
+    "utiliser","porter","mettre","tenir","sauter",
     "chanter","rire","pleurer"
+
 ];
 
 
 /* =========================================================
-   APPRENDRE TEXTE
+APPRENDRE
 ========================================================= */
 
-function apprendreTexte(texte){
+function apprendreTexte(
+    texte,
+    source="local"
+){
 
-    const tokens=tokenizer(texte);
+    const tokens =
+        tokenizer(texte);
 
     if(tokens.length<3){
         return 0;
     }
 
-    /*
-     V6 :
-     le texte est appris en une seule passe.
-    */
+
+    /* -------------------------
+       VOCABULAIRE
+    ------------------------- */
 
     for(const mot of tokens){
 
-        if(
-            !memoire.vocabulaire[mot] &&
-            Object.keys(memoire.vocabulaire).length>=
-            V6.maxVocabulaire
-        ){
-            continue;
-        }
-
-        memoire.vocabulaire[mot]=
+        memoire.vocabulaire[mot] =
             (
                 memoire.vocabulaire[mot] ||
                 0
-            )+1;
+            ) + 1;
+
+        /*
+         récence :
+         on ne conserve pas l'historique complet,
+         seulement le dernier passage.
+        */
+
+        memoire.cognitive.recence[mot] =
+            cyclesApprentissage;
+
+        ajouterFocus(mot);
+
     }
 
 
-    /* DÉBUTS */
+    /* -------------------------
+       DEBUTS
+    ------------------------- */
 
-    for(let i=0;i<tokens.length;i++){
+    for(
+        let i=0;
+        i<tokens.length;
+        i++
+    ){
 
         if(
             i===0 ||
-            [".","!","?"].includes(
-                tokens[i-1]
-            )
+            [".","!","?"]
+                .includes(tokens[i-1])
         ){
 
             const mot=tokens[i];
 
             if(!isPonctuation(mot)){
 
-                memoire.debuts[mot]=
+                memoire.debuts[mot] =
                     (
                         memoire.debuts[mot] ||
                         0
-                    )+1;
+                    ) + 1;
+
             }
+
         }
+
     }
 
 
-    /* 2-GRAMMES */
+    /* -------------------------
+       2-GRAMS
+    ------------------------- */
 
     for(
         let i=0;
@@ -2427,74 +2634,47 @@ function apprendreTexte(texte){
     ){
 
         const a=tokens[i];
-
         const b=tokens[i+1];
 
-        if(!memoire.transitions2[a]){
-
-            /*
-             Limiteur de croissance global.
-            */
-
-            if(
-                Object.keys(
-                    memoire.transitions2
-                ).length>=V6.maxTransitions2
-            ){
-                continue;
-            }
+        if(
+            !memoire.transitions2[a]
+        ){
 
             memoire.transitions2[a]={};
+
         }
 
-        const suivants=
-            memoire.transitions2[a];
+        memoire.transitions2[a][b] =
+            (
+                memoire.transitions2[a][b] ||
+                0
+            ) + 1;
 
         /*
-         Limite locale.
+         Limitation locale immédiate.
+         Cela empêche une seule clé de devenir énorme.
         */
 
         if(
-            !Object.prototype.hasOwnProperty.call(
-                suivants,
-                b
-            ) &&
-            Object.keys(suivants).length>=
-            V6.maxTransitions2ParMot
+            Object.keys(
+                memoire.transitions2[a]
+            ).length >
+            LIMITES.transitions2 * 2
         ){
 
-            /*
-             On remplace uniquement si le nouveau
-             candidat est intéressant.
-            */
+            limiterRelations(
+                memoire.transitions2[a],
+                LIMITES.transitions2
+            );
 
-            const faible=
-                trouverRelationFaible(
-                    suivants
-                );
-
-            if(
-                faible &&
-                Number(suivants[faible])<1
-            ){
-
-                delete suivants[faible];
-
-            }else{
-
-                continue;
-            }
         }
 
-        suivants[b]=
-            (
-                Number(suivants[b]) ||
-                0
-            )+1;
     }
 
 
-    /* 3-GRAMMES */
+    /* -------------------------
+       3-GRAMS
+    ------------------------- */
 
     for(
         let i=0;
@@ -2503,87 +2683,84 @@ function apprendreTexte(texte){
     ){
 
         const a=tokens[i];
-
         const b=tokens[i+1];
-
         const c=tokens[i+2];
 
-        const cle=a+"|"+b;
-
-        if(!memoire.transitions3[cle]){
-
-            if(
-                Object.keys(
-                    memoire.transitions3
-                ).length>=
-                V6.maxTransitions3
-            ){
-                continue;
-            }
-
-            memoire.transitions3[cle]={};
-        }
-
-        const suivants=
-            memoire.transitions3[cle];
+        const cle =
+            a+"|"+b;
 
         if(
-            !Object.prototype.hasOwnProperty.call(
-                suivants,
-                c
-            ) &&
-            Object.keys(suivants).length>=
-            V6.maxTransitions3ParContexte
+            !memoire.transitions3[cle]
         ){
 
-            const faible=
-                trouverRelationFaible(
-                    suivants
-                );
+            memoire.transitions3[cle]={};
 
-            if(
-                faible &&
-                Number(suivants[faible])<1
-            ){
-
-                delete suivants[faible];
-
-            }else{
-
-                continue;
-            }
         }
 
-        suivants[c]=
+        memoire.transitions3[cle][c] =
             (
-                Number(suivants[c]) ||
+                memoire.transitions3[cle][c] ||
                 0
-            )+1;
+            ) + 1;
+
+        if(
+            Object.keys(
+                memoire.transitions3[cle]
+            ).length >
+            LIMITES.transitions3 * 2
+        ){
+
+            limiterRelations(
+                memoire.transitions3[cle],
+                LIMITES.transitions3
+            );
+
+        }
+
     }
 
+
+    /* -------------------------
+       SEMANTIQUE
+    ------------------------- */
 
     apprendreSemantique(tokens);
 
 
-    memoire.statistiques.tokens+=
+    /* -------------------------
+       STATISTIQUES
+    ------------------------- */
+
+    memoire.statistiques.tokens +=
         tokens.length;
 
     memoire.statistiques.phrases++;
 
-    memoire.statistiques.derniersTokens=
-        tokens.length;
+    if(
+        !memoire.statistiques.sources
+    ){
 
-    memoire.meta.apprentissages++;
+        memoire.statistiques.sources={
+            wikipedia:0,
+            local:0,
+            import:0
+        };
 
-    memoire.meta.derniereModification=
-        new Date().toISOString();
+    }
+
+    memoire.statistiques.sources[source] =
+        Number(
+            memoire.statistiques.sources[source] || 0
+        ) + tokens.length;
+
 
     return tokens.length;
+
 }
 
 
 /* =========================================================
-   SÉMANTIQUE
+SEMANTIQUE
 ========================================================= */
 
 function ajouterCategorie(
@@ -2597,16 +2774,15 @@ function ajouterCategorie(
     ){
 
         memoire.semantique.categories[mot]={};
+
     }
 
-    const obj=
-        memoire.semantique.categories[mot];
-
-    obj[categorie]=
+    memoire.semantique.categories[mot][categorie] =
         (
-            Number(obj[categorie]) ||
+            memoire.semantique.categories[mot][categorie] ||
             0
-        )+poids;
+        ) + poids;
+
 }
 
 
@@ -2621,16 +2797,15 @@ function ajouterConcept(
     ){
 
         memoire.semantique.concepts[mot]={};
+
     }
 
-    const obj=
-        memoire.semantique.concepts[mot];
-
-    obj[concept]=
+    memoire.semantique.concepts[mot][concept] =
         (
-            Number(obj[concept]) ||
+            memoire.semantique.concepts[mot][concept] ||
             0
-        )+poids;
+        ) + poids;
+
 }
 
 
@@ -2640,74 +2815,46 @@ function ajouterAssociation(
     poids
 ){
 
+    if(a===b){
+        return;
+    }
+
     if(
         !memoire.semantique.associations[a]
     ){
 
-        /*
-         Protection contre une croissance
-         infinie du nombre de voisins.
-        */
-
         memoire.semantique.associations[a]={};
+
     }
 
-    const obj=
-        memoire.semantique.associations[a];
+    memoire.semantique.associations[a][b] =
+        (
+            memoire.semantique.associations[a][b] ||
+            0
+        ) + poids;
 
-    /*
-     Relation existante :
-     renforcement.
-    */
 
     if(
-        Object.prototype.hasOwnProperty.call(
-            obj,
-            b
-        )
+        Object.keys(
+            memoire.semantique.associations[a]
+        ).length >
+        LIMITES.associations * 2
     ){
 
-        obj[b]=
-            Number(obj[b])+
-            poids;
+        limiterRelations(
+            memoire.semantique.associations[a],
+            LIMITES.associations
+        );
 
-        return;
     }
 
-    /*
-     Nouvelle relation.
-    */
-
-    if(
-        Object.keys(obj).length>=
-        V6.maxAssociationsParMot
-    ){
-
-        const faible=
-            trouverRelationFaible(obj);
-
-        if(
-            faible &&
-            Number(obj[faible])<
-            poids
-        ){
-
-            delete obj[faible];
-
-        }else{
-
-            return;
-        }
-    }
-
-    obj[b]=poids;
 }
 
 
 function apprendreSemantique(tokens){
 
     /*
-     Catégories et concepts
+     catégories / concepts
     */
 
     for(const mot of tokens){
@@ -2717,9 +2864,8 @@ function apprendreSemantique(tokens){
         ){
 
             if(
-                categoriesConnues[
-                    categorie
-                ].includes(mot)
+                categoriesConnues[categorie]
+                    .includes(mot)
             ){
 
                 ajouterCategorie(
@@ -2733,8 +2879,11 @@ function apprendreSemantique(tokens){
                     categorie,
                     1
                 );
+
             }
+
         }
+
 
         if(
             actionsConnues.includes(mot)
@@ -2751,12 +2900,14 @@ function apprendreSemantique(tokens){
                 "action",
                 2
             );
+
         }
+
     }
 
 
     /*
-     Associations locales.
+     Associations locales
     */
 
     const fenetre=5;
@@ -2775,10 +2926,11 @@ function apprendreSemantique(tokens){
 
         for(
             let j=i+1;
-            j<Math.min(
-                tokens.length,
-                i+fenetre+1
-            );
+            j<
+                Math.min(
+                    tokens.length,
+                    i+fenetre+1
+                );
             j++
         ){
 
@@ -2788,10 +2940,8 @@ function apprendreSemantique(tokens){
                 continue;
             }
 
-            const distance=j-i;
-
-            const poids=
-                1/distance;
+            const poids =
+                1/(j-i);
 
             ajouterAssociation(
                 a,
@@ -2806,24 +2956,20 @@ function apprendreSemantique(tokens){
             );
 
 
-            /*
-             Renforcement conceptuel.
-            */
+            const catA =
+                memoire.semantique.categories[a]
+                || {};
 
-            const categoriesA=
-                memoire.semantique
-                .categories[a] || {};
-
-            const categoriesB=
-                memoire.semantique
-                .categories[b] || {};
+            const catB =
+                memoire.semantique.categories[b]
+                || {};
 
             for(
-                const categorie in categoriesA
+                const categorie in catA
             ){
 
                 if(
-                    categoriesB[categorie]
+                    catB[categorie]
                 ){
 
                     ajouterConcept(
@@ -2837,14 +2983,18 @@ function apprendreSemantique(tokens){
                         categorie,
                         .15
                     );
+
                 }
+
             }
+
         }
+
     }
 
 
     /*
-     Relations sujet -> action.
+     Actions
     */
 
     for(
@@ -2854,7 +3004,6 @@ function apprendreSemantique(tokens){
     ){
 
         const sujet=tokens[i];
-
         const action=tokens[i+1];
 
         if(
@@ -2866,989 +3015,371 @@ function apprendreSemantique(tokens){
             ){
 
                 memoire.semantique.actions[sujet]={};
+
             }
 
-            const obj=
-                memoire.semantique.actions[sujet];
-
-            obj[action]=
+            memoire.semantique.actions[sujet][action] =
                 (
-                    Number(obj[action]) ||
-                    0
-                )+1;
+                    memoire.semantique.actions[sujet][action]
+                    || 0
+                ) + 1;
+
         }
+
     }
+
+
+    /*
+     Contexte.
+     On ne conserve qu'un nombre limité de contextes.
+    */
+
+    apprendreContextes(tokens);
+
 }
 
 
 /* =========================================================
-   RENFORCEMENT
+CONTEXTES
 ========================================================= */
 
-function renforcerMemoire(){
-
-    let renforcements=0;
-
-    /*
-     Les relations les plus fréquentes sont
-     légèrement renforcées.
-
-     On évite de multiplier toute la mémoire.
-    */
-
-    const associations=
-        memoire.semantique.associations;
-
-    for(const mot in associations){
-
-        const relations=
-            associations[mot];
-
-        const entrees=
-            Object.entries(relations);
-
-        for(
-            const [autre,valeur]
-            of entrees
-        ){
-
-            const n=Number(valeur);
-
-            if(!Number.isFinite(n)){
-                continue;
-            }
-
-            /*
-             Renforcement logarithmique.
-             Une relation forte gagne un peu,
-             pas énormément.
-            */
-
-            if(n>=3){
-
-                relations[autre]=
-                    n+
-                    Math.min(
-                        V6.bonusRenforcement,
-                        n*.01
-                    );
-
-                renforcements++;
-            }
-        }
-    }
-
-    memoire.meta.renforcements+=
-        renforcements;
-
-    return renforcements;
-}
-
-
-/* =========================================================
-   OUBLI CONTRÔLÉ
-========================================================= */
-
-function oublierFaibles(){
-
-    let oublis=0;
-
-    const associations=
-        memoire.semantique.associations;
-
-    for(const mot in associations){
-
-        const relations=
-            associations[mot];
-
-        for(
-            const autre in relations
-        ){
-
-            let valeur=
-                Number(
-                    relations[autre]
-                );
-
-            if(!Number.isFinite(valeur)){
-                delete relations[autre];
-                oublis++;
-                continue;
-            }
-
-            /*
-             Décroissance très faible.
-            */
-
-            valeur=
-                valeur*
-                V6.facteurOubli;
-
-            /*
-             Les relations fortement renforcées
-             restent facilement au-dessus du seuil.
-            */
-
-            if(
-                valeur<
-                V6.seuilRelation
-            ){
-
-                delete relations[autre];
-
-                oublis++;
-
-            }else{
-
-                relations[autre]=valeur;
-            }
-        }
-
-        if(
-            Object.keys(relations).length===0
-        ){
-
-            delete associations[mot];
-        }
-    }
-
-
-    /*
-     2-grams faibles.
-    */
-
-    for(const mot in memoire.transitions2){
-
-        const obj=
-            memoire.transitions2[mot];
-
-        for(
-            const autre in obj
-        ){
-
-            const n=
-                Number(obj[autre]);
-
-            if(
-                !Number.isFinite(n) ||
-                n<=0
-            ){
-
-                delete obj[autre];
-
-                oublis++;
-            }
-        }
-
-        if(
-            Object.keys(obj).length===0
-        ){
-
-            delete memoire.transitions2[mot];
-        }
-    }
-
-
-    /*
-     3-grams faibles.
-    */
-
-    for(const cle in memoire.transitions3){
-
-        const obj=
-            memoire.transitions3[cle];
-
-        for(
-            const autre in obj
-        ){
-
-            const n=
-                Number(obj[autre]);
-
-            if(
-                !Number.isFinite(n) ||
-                n<=0
-            ){
-
-                delete obj[autre];
-
-                oublis++;
-            }
-        }
-
-        if(
-            Object.keys(obj).length===0
-        ){
-
-            delete memoire.transitions3[cle];
-        }
-    }
-
-
-    memoire.meta.oublis+=
-        oublis;
-
-    return oublis;
-}
-
-
-/* =========================================================
-   OPTIMISATION
-========================================================= */
-
-async function optimiserMemoire(
-    manuelle=false
-){
-
-    if(optimisationEnCours){
-        return;
-    }
-
-    optimisationEnCours=true;
-
-    journaliser(
-        "🧹 Optimisation V6 démarrée..."
-    );
-
-    changerStatus(
-        "learning",
-        "🧹 Optimisation",
-        "Nettoyage intelligent de la mémoire..."
-    );
-
-
-    await attendre(20);
-
-
-    let avantAssociations=
-        compterRelations(
-            memoire.semantique.associations
-        );
-
-    let avant2=
-        compterRelations(
-            memoire.transitions2
-        );
-
-    let avant3=
-        compterRelations(
-            memoire.transitions3
-        );
-
-
-    /*
-     1. Oubli.
-    */
-
-    const oublis=
-        oublierFaibles();
-
-
-    await attendre(10);
-
-
-    /*
-     2. Renforcement.
-    */
-
-    const renforcement=
-        renforcerMemoire();
-
-
-    await attendre(10);
-
-
-    /*
-     3. Tri des voisins.
-    */
-
-    limiterAssociations();
-
-    limiterTransitions2();
-
-    limiterTransitions3();
-
-
-    /*
-     4. Mise à jour.
-    */
-
-    memoire.meta.optimisations++;
-
-    memoire.meta.derniereModification=
-        new Date().toISOString();
-
-
-    const apresAssociations=
-        compterRelations(
-            memoire.semantique.associations
-        );
-
-    const apres2=
-        compterRelations(
-            memoire.transitions2
-        );
-
-    const apres3=
-        compterRelations(
-            memoire.transitions3
-        );
-
-
-    const gain=
-        (
-            avantAssociations+
-            avant2+
-            avant3
-        )-
-        (
-            apresAssociations+
-            apres2+
-            apres3
-        );
-
-
-    document.getElementById(
-        "derniereOptimisation"
-    ).textContent=
-        new Date().toLocaleTimeString("fr-FR");
-
-
-    afficherStats();
-
-    afficherInfosMemoire();
-
-
-    journaliser(
-        "🧹 Optimisation terminée."
-    );
-
-    journaliser(
-        "🧠 Renforcements : "+
-        formatNombre(renforcement)
-    );
-
-    journaliser(
-        "🗑️ Oublis : "+
-        formatNombre(oublis)
-    );
-
-    journaliser(
-        "📉 Relations supprimées : "+
-        formatNombre(Math.max(0,gain))
-    );
-
-
-    changerStatus(
-        "ready",
-        "🟢 Optimisation terminée",
-        "La mémoire conserve prioritairement les informations utiles."
-    );
-
-
-    optimisationEnCours=false;
-
-    /*
-     Sauvegarde locale après optimisation.
-    */
-
-    await sauvegardeLocale(true);
-}
-
-
-/* =========================================================
-   LIMITER ASSOCIATIONS
-========================================================= */
-
-function limiterAssociations(){
-
-    const associations=
-        memoire.semantique.associations;
-
-    for(const mot in associations){
-
-        const obj=
-            associations[mot];
-
-        const entries=
-            Object.entries(obj);
-
-        if(
-            entries.length<=
-            V6.maxAssociationsParMot
-        ){
-            continue;
-        }
-
-        entries.sort(
-            (a,b)=>
-                Number(b[1])-
-                Number(a[1])
-        );
-
-        const conserve=
-            entries.slice(
-                0,
-                V6.maxAssociationsParMot
-            );
-
-        const nouveau={};
-
-        for(
-            const [cle,valeur]
-            of conserve
-        ){
-
-            nouveau[cle]=valeur;
-        }
-
-        associations[mot]=nouveau;
-    }
-}
-
-
-/* =========================================================
-   LIMITER 2-GRAMS
-========================================================= */
-
-function limiterTransitions2(){
-
-    const obj=
-        memoire.transitions2;
-
-    for(const mot in obj){
-
-        const relations=obj[mot];
-
-        const entries=
-            Object.entries(relations);
-
-        if(
-            entries.length<=
-            V6.maxTransitions2ParMot
-        ){
-            continue;
-        }
-
-        entries.sort(
-            (a,b)=>
-                Number(b[1])-
-                Number(a[1])
-        );
-
-        const nouveau={};
-
-        for(
-            const [cle,valeur]
-            of entries.slice(
-                0,
-                V6.maxTransitions2ParMot
-            )
-        ){
-
-            nouveau[cle]=valeur;
-        }
-
-        obj[mot]=nouveau;
-    }
-}
-
-
-/* =========================================================
-   LIMITER 3-GRAMS
-========================================================= */
-
-function limiterTransitions3(){
-
-    const obj=
-        memoire.transitions3;
-
-    for(const cle in obj){
-
-        const relations=obj[cle];
-
-        const entries=
-            Object.entries(relations);
-
-        if(
-            entries.length<=
-            V6.maxTransitions3ParContexte
-        ){
-            continue;
-        }
-
-        entries.sort(
-            (a,b)=>
-                Number(b[1])-
-                Number(a[1])
-        );
-
-        const nouveau={};
-
-        for(
-            const [mot,valeur]
-            of entries.slice(
-                0,
-                V6.maxTransitions3ParContexte
-            )
-        ){
-
-            nouveau[mot]=valeur;
-        }
-
-        obj[cle]=nouveau;
-    }
-}
-
-
-/* =========================================================
-   RELATION LA PLUS FAIBLE
-========================================================= */
-
-function trouverRelationFaible(obj){
-
-    let cleFaible=null;
-
-    let valeurFaible=Infinity;
-
-    for(const cle in obj){
-
-        const valeur=
-            Number(obj[cle]);
-
-        if(
-            Number.isFinite(valeur) &&
-            valeur<valeurFaible
-        ){
-
-            valeurFaible=valeur;
-
-            cleFaible=cle;
-        }
-    }
-
-    return cleFaible;
-}
-
-
-/* =========================================================
-   RELANCES INTELLIGENTES
-========================================================= */
-
-function relanceIntelligente(){
-
-    /*
-     Une relance ne recrée pas toute la mémoire.
-
-     Elle sélectionne des mots importants et utilise
-     leurs associations fortes comme priorité.
-
-     Le but est de stabiliser la mémoire.
-    */
-
-    const associations=
-        memoire.semantique.associations;
-
-    const candidats=
-        Object.entries(associations)
-            .map(
-                ([mot,relations])=>{
-
-                    const force=
-                        Object.values(
-                            relations
-                        )
-                        .reduce(
-                            (a,b)=>
-                                a+
-                                Number(b||0),
-                            0
-                        );
-
-                    const freq=
-                        Number(
-                            memoire
-                            .vocabulaire[mot] ||
-                            0
-                        );
-
-                    return [
-                        mot,
-                        force+
-                        Math.log1p(freq)
-                    ];
-                }
-            )
-            .sort(
-                (a,b)=>b[1]-a[1]
-            )
-            .slice(0,50);
-
-
-    /*
-     Renforce légèrement les relations
-     centrales.
-    */
+function apprendreContextes(tokens){
 
     for(
-        const [mot]
-        of candidats
+        let i=0;
+        i<tokens.length;
+        i++
     ){
 
-        const relations=
-            associations[mot];
+        const mot=tokens[i];
 
-        if(!relations){
+        if(isPonctuation(mot)){
             continue;
         }
 
-        for(const autre in relations){
+        const gauche =
+            i>0
+                ? tokens[i-1]
+                : "";
 
-            const valeur=
-                Number(
-                    relations[autre]
-                );
+        const droite =
+            i<tokens.length-1
+                ? tokens[i+1]
+                : "";
 
-            if(
-                valeur>=1
-            ){
+        let signature="";
 
-                relations[autre]=
-                    valeur+
-                    .02;
-            }
+        const cats =
+            memoire.semantique.categories[mot]
+            || {};
+
+        const cat =
+            Object.keys(cats)[0]
+            || "general";
+
+        signature =
+            cat +
+            "|" +
+            (gauche || "_") +
+            "|" +
+            (droite || "_");
+
+
+        if(
+            !memoire.semantique.contextes[mot]
+        ){
+
+            memoire.semantique.contextes[mot]={};
+
         }
+
+        const contexte =
+            memoire.semantique.contextes[mot];
+
+        contexte[signature] =
+            (
+                contexte[signature] ||
+                0
+            ) + 1;
+
+
+        if(
+            Object.keys(contexte).length >
+            LIMITES.contextesParMot
+        ){
+
+            limiterRelations(
+                contexte,
+                LIMITES.contextesParMot
+            );
+
+        }
+
     }
 
-
-    memoire.meta.relances++;
-
-    return candidats.length;
 }
 
 
 /* =========================================================
-   APPRENTISSAGE
+FOCUS COGNITIF
 ========================================================= */
 
-async function lancerApprentissage(){
+function ajouterFocus(mot){
 
-    if(apprentissageActif){
-        return;
-    }
+    if(
+        memoire.cognitive.focus[mot]
+    ){
 
-    apprentissageActif=true;
-
-    document.getElementById(
-        "btnStart"
-    ).disabled=true;
-
-    document.getElementById(
-        "btnStop"
-    ).disabled=false;
-
-    document.getElementById(
-        "etatMemoire"
-    ).textContent=
-        "🟡 Apprentissage";
-
-
-    changerStatus(
-        "learning",
-        "🟡 Apprentissage actif",
-        "V6 apprend, renforce et contrôle sa mémoire."
-    );
-
-    journaliser(
-        "▶ Apprentissage V6 démarré."
-    );
-
-
-    while(apprentissageActif){
-
-        cycleGlobal++;
-
-        document.getElementById(
-            "cycleActuel"
-        ).textContent=
-            formatNombre(cycleGlobal);
-
-
-        let texte=null;
-
-
-        /*
-         Wikipédia environ 65 % du temps.
-        */
-
-        if(Math.random()<.65){
-
-            texte=
-                await recupererWikipedia();
-        }
-
-
-        if(!texte){
-
-            texte=
-                corpusLocal[
-                    Math.floor(
-                        Math.random()*
-                        corpusLocal.length
-                    )
-                ];
-
-            journaliser(
-                "📚 Corpus local utilisé."
-            );
-
-        }else{
-
-            journaliser(
-                "🌐 Texte Wikipédia récupéré."
-            );
-        }
-
-
-        if(!apprentissageActif){
-            break;
-        }
-
-
-        const nombre=
-            apprendreTexte(texte);
-
-
-        /*
-         Relance périodique.
-        */
-
-        if(
-            cycleGlobal%
-            V6.relanceCycles===0
-        ){
-
-            const n=
-                relanceIntelligente();
-
-            journaliser(
-                "🔁 Relance intelligente : "+
-                n+
-                " éléments stabilisés."
-            );
-        }
-
-
-        /*
-         Contrôle mémoire.
-        */
-
-        if(
-            cycleGlobal%
-            V6.controleCycles===0
-        ){
-
-            const taille=
-                mesurerMemoireLogique();
-
-            journaliser(
-                "📊 Contrôle mémoire : "+
-                taille.relations+
-                " relations."
-            );
-
-
-            if(
-                taille.relations>
-                V6.maxRelations
-            ){
-
-                journaliser(
-                    "⚠️ Limite relationnelle atteinte."
-                );
-
-                await optimiserMemoire(false);
-            }
-        }
-
-
-        /*
-         Optimisation périodique.
-        */
-
-        if(
-            cycleGlobal%
-            V6.optimisationCycles===0
-        ){
-
-            await optimiserMemoire(false);
-        }
-
-
-        /*
-         Rafraîchissement interface.
-        */
-
-        if(
-            Date.now()-
-            dernierRafraichissement>
-            V6.rafraichissementMs
-        ){
-
-            afficherStats();
-
-            afficherInfosMemoire();
-
-            rafraichirEtatGenerer();
-
-            dernierRafraichissement=
-                Date.now();
-        }
-
-
-        journaliser(
-            "🧠 +"+
-            formatNombre(nombre)+
-            " tokens."
-        );
-
-
-        /*
-         Sauvegarde automatique.
-        */
-
-        if(
-            Date.now()-
-            dernierAutoSave>
-            V6.autoSaveInterval
-        ){
-
-            await sauvegardeLocale(true);
-        }
-
-
-        /*
-         Avertissement.
-        */
-
-        if(
-            !avertissementMemoire &&
-            memoire.statistiques.tokens>
-            10000000
-        ){
-
-            avertissementMemoire=true;
-
-            journaliser(
-                "⚠️ Plus de 10 M tokens : contrôle mémoire renforcé."
-            );
-        }
-
-
-        changerStatus(
-            "learning",
-            "🟡 Apprentissage actif",
-            "Cycle "+
-            formatNombre(cycleGlobal)+
-            " — "+
-            formatNombre(
-                memoire.statistiques.tokens
-            )+
-            " tokens."
-        );
-
-
-        /*
-         Rend la main au navigateur.
-        */
-
-        await attendre(120);
-    }
-
-
-    apprentissageActif=false;
-
-    document.getElementById(
-        "btnStart"
-    ).disabled=false;
-
-    document.getElementById(
-        "btnStop"
-    ).disabled=true;
-
-    document.getElementById(
-        "etatMemoire"
-    ).textContent=
-        "🟢 Mémoire prête";
-
-
-    afficherStats();
-
-    afficherInfosMemoire();
-
-    rafraichirEtatGenerer();
-
-
-    changerStatus(
-        "ready",
-        "🟢 Apprentissage arrêté",
-        "La mémoire est conservée dans cette page et dans la sauvegarde locale."
-    );
-
-    journaliser(
-        "⏹ Apprentissage arrêté."
-    );
-
-
-    await sauvegardeLocale(true);
-}
-
-
-/* =========================================================
-   ARRÊTER
-========================================================= */
-
-function arreterApprentissage(){
-
-    if(!apprentissageActif){
-
-        journaliser(
-            "ℹ️ Aucun apprentissage actif."
-        );
+        memoire.cognitive.focus[mot] =
+            cyclesApprentissage;
 
         return;
+
     }
 
-    apprentissageActif=false;
+    const taille =
+        Object.keys(
+            memoire.cognitive.focus
+        ).length;
 
-    document.getElementById(
-        "btnStop"
-    ).disabled=true;
+    if(
+        taille <
+        LIMITES.focusMax
+    ){
 
-    journaliser(
-        "⏹ Arrêt demandé..."
-    );
+        memoire.cognitive.focus[mot] =
+            cyclesApprentissage;
+
+        return;
+
+    }
+
+    /*
+     Si le focus est plein,
+     on ne garde pas tout.
+     On ajoute seulement périodiquement.
+    */
+
+    if(
+        Math.random()<.05
+    ){
+
+        const cles =
+            Object.keys(
+                memoire.cognitive.focus
+            );
+
+        const vieille =
+            cles[
+                Math.floor(
+                    Math.random()*cles.length
+                )
+            ];
+
+        delete memoire.cognitive.focus[vieille];
+
+        memoire.cognitive.focus[mot] =
+            cyclesApprentissage;
+
+    }
+
 }
 
 
 /* =========================================================
-   ATTENTE
+PROFIL COGNITIF
 ========================================================= */
 
-function attendre(ms){
+function profilConnaissance(mot){
 
-    return new Promise(
-        resolve=>
-            setTimeout(
-                resolve,
-                ms
+    const freq =
+        Number(
+            memoire.vocabulaire[mot] || 0
+        );
+
+    const assoc =
+        memoire.semantique.associations[mot]
+        || {};
+
+    const degree =
+        Object.keys(assoc).length;
+
+    const contextes =
+        memoire.semantique.contextes[mot]
+        || {};
+
+    const nbContextes =
+        Object.keys(contextes).length;
+
+    const concepts =
+        memoire.semantique.concepts[mot]
+        || {};
+
+    const nbConcepts =
+        Object.keys(concepts).length;
+
+    const recence =
+        Number(
+            memoire.cognitive.recence[mot] || 0
+        );
+
+    const age =
+        Math.max(
+            0,
+            cyclesApprentissage-recence
+        );
+
+    const recenceScore =
+        Math.exp(
+            -age/500
+        );
+
+    const frequenceScore =
+        Math.min(
+            1,
+            Math.log1p(freq)/12
+        );
+
+    const repetitionScore =
+        Math.min(
+            1,
+            freq/50
+        );
+
+    const contexteScore =
+        Math.min(
+            1,
+            nbContextes/5
+        );
+
+    const diversiteScore =
+        Math.min(
+            1,
+            degree/25
+        );
+
+    const conceptScore =
+        Math.min(
+            1,
+            nbConcepts/4
+        );
+
+
+    /*
+     Importance globale.
+    */
+
+    const importance =
+        frequenceScore*.25 +
+        repetitionScore*.20 +
+        recenceScore*.15 +
+        contexteScore*.15 +
+        diversiteScore*.15 +
+        conceptScore*.10;
+
+
+    /*
+     Confiance.
+    */
+
+    const confiance =
+        Math.min(
+            1,
+            (
+                repetitionScore*.40 +
+                diversiteScore*.25 +
+                contexteScore*.20 +
+                conceptScore*.15
             )
-    );
+        );
+
+
+    let niveau="faible";
+
+    if(
+        importance>=.68 &&
+        confiance>=.60
+    ){
+
+        niveau="fort";
+
+    }
+    else if(
+        importance>=.35 ||
+        confiance>=.35
+    ){
+
+        niveau="moyen";
+
+    }
+
+
+    return {
+
+        frequence:freq,
+
+        degree,
+
+        contextes:nbContextes,
+
+        concepts:nbConcepts,
+
+        recenceScore,
+
+        importance,
+
+        confiance,
+
+        niveau
+
+    };
+
 }
 
 
 /* =========================================================
-   CHOIX PONDÉRÉ
+LIMITER RELATIONS
+========================================================= */
+
+function limiterRelations(
+    objet,
+    limite
+){
+
+    const cles =
+        Object.keys(objet);
+
+    if(
+        cles.length<=limite
+    ){
+
+        return;
+
+    }
+
+    cles.sort(
+        (a,b)=>
+            Number(objet[b]) -
+            Number(objet[a])
+    );
+
+    for(
+        let i=limite;
+        i<cles.length;
+        i++
+    ){
+
+        delete objet[
+            cles[i]
+        ];
+
+    }
+
+}
+
+
+/* =========================================================
+CHOIX PONDERE
 ========================================================= */
 
 function choixPondere(options){
@@ -3857,7 +3388,9 @@ function choixPondere(options){
         !options ||
         !options.length
     ){
+
         return null;
+
     }
 
     let total=0;
@@ -3867,13 +3400,13 @@ function choixPondere(options){
         of options
     ){
 
-        total+=
+        total +=
             Math.max(
                 0,
                 Number(poids)
             );
-    }
 
+    }
 
     if(total<=0){
 
@@ -3883,20 +3416,18 @@ function choixPondere(options){
                 options.length
             )
         ][0];
+
     }
 
-
-    let hasard=
-        Math.random()*
-        total;
-
+    let hasard =
+        Math.random()*total;
 
     for(
         const [mot,poids]
         of options
     ){
 
-        hasard-=
+        hasard -=
             Math.max(
                 0,
                 Number(poids)
@@ -3905,150 +3436,238 @@ function choixPondere(options){
         if(hasard<=0){
             return mot;
         }
-    }
 
+    }
 
     return options[
         options.length-1
     ][0];
+
 }
 
 
 /* =========================================================
-   SCORE SÉMANTIQUE
+SCORE SEMANTIQUE
 ========================================================= */
 
 function scoreSemantique(
     precedent,
-    candidat
+    candidat,
+    niveau="equilibre"
 ){
 
     let score=0;
 
 
-    const assoc=
-        memoire
-        .semantique
-        .associations[
+    /* association directe */
+
+    const assoc =
+        memoire.semantique.associations[
             precedent
         ];
-
 
     if(
         assoc &&
         assoc[candidat]
     ){
 
-        score+=
+        score +=
             Math.log1p(
-                Number(
-                    assoc[candidat]
-                )
-            )*
-            4;
+                assoc[candidat]
+            )*4;
+
     }
 
 
-    const cat1=
-        memoire
-        .semantique
-        .categories[
+    /* catégories communes */
+
+    const cat1 =
+        memoire.semantique.categories[
             precedent
         ] || {};
 
-
-    const cat2=
-        memoire
-        .semantique
-        .categories[
+    const cat2 =
+        memoire.semantique.categories[
             candidat
         ] || {};
-
 
     for(
         const categorie in cat1
     ){
 
-        if(cat2[categorie]){
+        if(
+            cat2[categorie]
+        ){
 
             score+=2;
+
         }
+
     }
 
 
-    const concepts1=
-        memoire
-        .semantique
-        .concepts[
+    /* concepts communs */
+
+    const con1 =
+        memoire.semantique.concepts[
             precedent
         ] || {};
 
-
-    const concepts2=
-        memoire
-        .semantique
-        .concepts[
+    const con2 =
+        memoire.semantique.concepts[
             candidat
         ] || {};
 
-
     for(
-        const concept in concepts1
+        const concept in con1
     ){
 
         if(
-            concepts2[concept]
+            con2[concept]
         ){
 
             score+=1.5;
+
         }
+
+    }
+
+
+    /* contexte */
+
+    const ctx1 =
+        memoire.semantique.contextes[
+            precedent
+        ] || {};
+
+    const ctx2 =
+        memoire.semantique.contextes[
+            candidat
+        ] || {};
+
+    for(
+        const ctx in ctx1
+    ){
+
+        if(
+            ctx2[ctx]
+        ){
+
+            score+=.8;
+
+        }
+
+    }
+
+
+    /* profil cognitif */
+
+    const profil =
+        profilConnaissance(
+            candidat
+        );
+
+    if(
+        niveau==="fort"
+    ){
+
+        score +=
+            profil.importance*3 +
+            profil.confiance*3;
+
+    }
+    else if(
+        niveau==="exploration"
+    ){
+
+        score +=
+            (1-profil.confiance)*2;
+
+    }
+    else if(
+        niveau==="contexte"
+    ){
+
+        score +=
+            Object.keys(ctx2).length;
+
+    }
+    else{
+
+        score +=
+            profil.importance*1.5 +
+            profil.confiance*1.5;
+
     }
 
 
     return score;
+
 }
 
 
 /* =========================================================
-   CHOISIR PROCHAIN
+CHOISIR PROCHAIN
 ========================================================= */
 
 function choisirProchain(
     options,
     precedent,
-    force
+    force,
+    niveau
 ){
 
     if(
         !options ||
         !options.length
     ){
+
         return null;
+
     }
 
-
-    const candidats=
+    const candidats =
         options.map(
             ([mot,frequence])=>{
 
-                const linguistique=
+                const linguistique =
                     Math.log1p(
-                        Number(
-                            frequence
-                        )
+                        Number(frequence)
                     );
 
-                const semantique=
+                const semantique =
                     scoreSemantique(
                         precedent,
+                        mot,
+                        niveau
+                    );
+
+                const profil =
+                    profilConnaissance(
                         mot
                     );
 
-                const score=
-                    linguistique*
-                    (1-force)+
-                    semantique*
-                    force;
+                let score =
+                    linguistique*(1-force) +
+                    semantique*force;
+
+
+                /*
+                 Eviter que les connaissances faibles
+                 disparaissent complètement.
+                */
+
+                if(
+                    niveau==="exploration"
+                ){
+
+                    score +=
+                        (
+                            1-profil.confiance
+                        )*2;
+
+                }
+
 
                 return [
                     mot,
@@ -4057,37 +3676,37 @@ function choisirProchain(
                         .01
                     )
                 ];
+
             }
         );
-
 
     return choixPondere(
         candidats
     );
+
 }
 
 
 /* =========================================================
-   CHOISIR DÉBUT
+DEBUT
 ========================================================= */
 
 function choisirDebut(){
 
-    const options=
+    const options =
         Object.entries(
             memoire.debuts
         );
-
 
     if(options.length){
 
         return choixPondere(
             options
         );
+
     }
 
-
-    const mots=
+    const mots =
         Object.keys(
             memoire.vocabulaire
         )
@@ -4095,36 +3714,34 @@ function choisirDebut(){
             m=>!isPonctuation(m)
         );
 
-
     if(!mots.length){
         return null;
     }
 
-
     return mots[
         Math.floor(
-            Math.random()*
-            mots.length
+            Math.random()*mots.length
         )
     ];
+
 }
 
 
 /* =========================================================
-   GÉNÉRATION
+GENERATION
 ========================================================= */
 
 function rafraichirEtatGenerer(){
 
-    const pret=
+    const pret =
         Object.keys(
             memoire.vocabulaire
         ).length>0;
 
+    document
+        .getElementById("btnGenerer")
+        .disabled=!pret;
 
-    document.getElementById(
-        "btnGenerer"
-    ).disabled=!pret;
 }
 
 
@@ -4136,43 +3753,48 @@ function genererPhrase(){
         ).length
     ){
 
-        document.getElementById(
-            "resultat"
-        ).textContent=
+        document
+            .getElementById("resultat")
+            .textContent =
             "❌ La mémoire est vide.";
 
         return;
+
     }
 
 
-    const longueur=
+    const longueur =
         Number(
-            document.getElementById(
-                "longueur"
-            ).value
+            document
+                .getElementById("longueur")
+                .value
         );
 
-
-    const force=
+    const force =
         Number(
-            document.getElementById(
-                "forceSemantique"
-            ).value
+            document
+                .getElementById("forceSemantique")
+                .value
         )/100;
 
+    const niveau =
+        document
+            .getElementById("niveauGeneration")
+            .value;
 
-    const premier=
+
+    const premier =
         choisirDebut();
-
 
     if(!premier){
 
-        document.getElementById(
-            "resultat"
-        ).textContent=
-            "❌ Impossible de démarrer.";
+        document
+            .getElementById("resultat")
+            .textContent =
+            "❌ Aucun début disponible.";
 
         return;
+
     }
 
 
@@ -4187,70 +3809,71 @@ function genererPhrase(){
         i++
     ){
 
-        const b=
+        const precedent =
             resultat[i-1];
 
-        const a=
+        const avant =
             resultat[i-2];
-
 
         let choix=null;
 
 
         /*
-         Priorité 3-gramme.
+         priorité 3-gramme
         */
 
-        if(a){
+        if(avant){
 
-            const contexte=
-                a+"|"+b;
+            const cle =
+                avant+"|"+precedent;
 
-            const transitions=
-                memoire
-                .transitions3[
-                    contexte
+            const transitions =
+                memoire.transitions3[
+                    cle
                 ];
-
 
             if(transitions){
 
-                choix=
+                choix =
                     choisirProchain(
                         Object.entries(
                             transitions
                         ),
-                        b,
-                        force
+                        precedent,
+                        force,
+                        niveau
                     );
+
             }
+
         }
 
 
         /*
-         Repli 2-gramme.
+         fallback 2-gramme
         */
 
         if(!choix){
 
-            const alternatives=
-                memoire
-                .transitions2[
-                    b
+            const alternatives =
+                memoire.transitions2[
+                    precedent
                 ];
-
 
             if(alternatives){
 
-                choix=
+                choix =
                     choisirProchain(
                         Object.entries(
                             alternatives
                         ),
-                        b,
-                        force
+                        precedent,
+                        force,
+                        niveau
                     );
+
             }
+
         }
 
 
@@ -4266,33 +3889,35 @@ function genererPhrase(){
 
         if(
             resultat.length>=8 &&
-            [".","!","?"].includes(
-                choix
-            ) &&
+            [".","!","?"]
+                .includes(choix) &&
             Math.random()<.8
         ){
 
             break;
+
         }
+
     }
 
 
-    const phrase=
+    const phrase =
         reconstruirePhrase(
             resultat
         );
 
 
-    document.getElementById(
-        "resultat"
-    ).textContent=
+    document
+        .getElementById("resultat")
+        .textContent =
         phrase ||
-        "❌ Aucune phrase générée.";
+        "❌ Impossible de générer une phrase.";
+
 }
 
 
 /* =========================================================
-   RECONSTRUIRE PHRASE
+RECONSTRUCTION
 ========================================================= */
 
 function reconstruirePhrase(tokens){
@@ -4303,7 +3928,6 @@ function reconstruirePhrase(tokens){
         ".",",","!","?",";",":",")","]"
     ];
 
-
     for(
         let i=0;
         i<tokens.length;
@@ -4312,18 +3936,16 @@ function reconstruirePhrase(tokens){
 
         const token=tokens[i];
 
-
         if(i===0){
 
             texte+=token;
 
             continue;
+
         }
 
-
-        const precedent=
+        const precedent =
             tokens[i-1];
-
 
         if(
             precedent.endsWith("'")
@@ -4332,165 +3954,1459 @@ function reconstruirePhrase(tokens){
             texte+=token;
 
             continue;
+
         }
 
-
         if(
-            sansEspace.includes(
-                token
-            )
+            sansEspace.includes(token)
         ){
 
             texte+=token;
 
             continue;
+
         }
 
-
         if(
-            ["(","[","«"].includes(
-                precedent
-            )
+            ["(","[","«"]
+                .includes(precedent)
         ){
 
             texte+=token;
 
             continue;
-        }
 
+        }
 
         texte+=" "+token;
+
     }
 
-
-    texte=
+    texte =
         texte
-        .replace(
-            /\s+/g,
-            " "
-        )
+        .replace(/\s+/g," ")
         .trim();
-
 
     if(texte){
 
-        texte=
-            texte.charAt(0).toUpperCase()+
+        texte =
+            texte.charAt(0).toUpperCase() +
             texte.slice(1);
+
     }
 
-
     return texte;
+
 }
 
 
 /* =========================================================
-   STATISTIQUES
+RELANCE INTELLIGENTE
 ========================================================= */
 
-function afficherStats(){
+async function relanceIntelligente(){
 
-    const vocab=
+    if(maintenanceEnCours){
+
+        journaliser(
+            "⏳ Une maintenance est déjà en cours."
+        );
+
+        return;
+
+    }
+
+    const focus =
+        Object.keys(
+            memoire.cognitive.focus
+        );
+
+    if(!focus.length){
+
+        journaliser(
+            "ℹ️ Aucun focus cognitif disponible."
+        );
+
+        return;
+
+    }
+
+    maintenanceEnCours=true;
+
+    changerStatus(
+        "learning",
+        "🔁 Relance intelligente",
+        "Rejeu des connaissances importantes et faibles."
+    );
+
+
+    let renforcements=0;
+
+
+    /*
+     On ne rejoue pas des millions d'éléments.
+     On travaille par petits lots.
+    */
+
+    const candidats =
+        focus
+        .map(
+            mot=>{
+
+                const p =
+                    profilConnaissance(
+                        mot
+                    );
+
+                return {
+                    mot,
+                    score:
+                        p.importance +
+                        p.confiance +
+                        Math.random()*.2
+                };
+
+            }
+        )
+        .sort(
+            (a,b)=>
+                b.score-a.score
+        )
+        .slice(
+            0,
+            300
+        );
+
+
+    for(
+        const item of candidats
+    ){
+
+        const mot =
+            item.mot;
+
+        const assoc =
+            memoire.semantique.associations[
+                mot
+            ];
+
+        if(!assoc){
+            continue;
+        }
+
+        const top =
+            Object.entries(
+                assoc
+            )
+            .sort(
+                (a,b)=>b[1]-a[1]
+            )
+            .slice(
+                0,
+                5
+            );
+
+
+        for(
+            const [voisin,poids]
+            of top
+        ){
+
+            /*
+             Renforcement modéré.
+             On ne double pas brutalement.
+            */
+
+            const bonus =
+                Math.min(
+                    .50,
+                    Number(poids)*.04
+                );
+
+            assoc[voisin] =
+                Number(
+                    assoc[voisin]
+                ) +
+                bonus;
+
+            renforcements++;
+
+        }
+
+
+        if(
+            renforcements%100===0
+        ){
+
+            await attendre(0);
+
+        }
+
+    }
+
+
+    memoire.statistiques.renforcements +=
+        renforcements;
+
+    memoire.cognitive.dernieresRelances =
+        cyclesApprentissage;
+
+
+    maintenanceEnCours=false;
+
+
+    afficherStats();
+
+    journaliser(
+        "🔁 Relance terminée : " +
+        formatNombre(
+            renforcements
+        ) +
+        " renforcements."
+    );
+
+
+    changerStatus(
+        "ready",
+        "🟢 Relance terminée",
+        "Les connaissances importantes ont été rejouées."
+    );
+
+}
+
+
+/* =========================================================
+CONSOLIDATION
+========================================================= */
+
+async function consoliderMemoire(){
+
+    if(maintenanceEnCours){
+
+        journaliser(
+            "⏳ Maintenance déjà active."
+        );
+
+        return;
+
+    }
+
+    maintenanceEnCours=true;
+
+    changerStatus(
+        "learning",
+        "🧠 Consolidation",
+        "Stabilisation des connaissances importantes."
+    );
+
+
+    const focus =
+        Object.keys(
+            memoire.cognitive.focus
+        )
+        .slice(
+            0,
+            10000
+        );
+
+
+    let total=0;
+
+
+    for(
+        const mot of focus
+    ){
+
+        const profil =
+            profilConnaissance(
+                mot
+            );
+
+        const assoc =
+            memoire.semantique.associations[
+                mot
+            ];
+
+        if(!assoc){
+            continue;
+        }
+
+
+        /*
+         Connaissance forte :
+         on conserve davantage de relations.
+        */
+
+        let limite =
+            LIMITES.associations;
+
+        if(
+            profil.niveau==="fort"
+        ){
+
+            limite += 8;
+
+        }
+        else if(
+            profil.niveau==="faible"
+        ){
+
+            limite -= 8;
+
+        }
+
+
+        limiterRelations(
+            assoc,
+            Math.max(
+                10,
+                limite
+            )
+        );
+
+
+        /*
+         Renforcement très léger.
+        */
+
+        if(
+            profil.niveau==="fort"
+        ){
+
+            const top =
+                Object.entries(
+                    assoc
+                )
+                .sort(
+                    (a,b)=>b[1]-a[1]
+                )
+                .slice(
+                    0,
+                    5
+                );
+
+            for(
+                const [voisin]
+                of top
+            ){
+
+                assoc[voisin] *=
+                    1.01;
+
+                total++;
+
+            }
+
+        }
+
+
+        if(
+            total%200===0
+        ){
+
+            await attendre(0);
+
+        }
+
+    }
+
+
+    /*
+     Relations indirectes.
+    */
+
+    creerHypothesesIndirectes(
+        focus.slice(
+            0,
+            1000
+        )
+    );
+
+
+    memoire.statistiques.consolidations++;
+
+    memoire.cognitive.derniereConsolidation =
+        cyclesApprentissage;
+
+
+    maintenanceEnCours=false;
+
+
+    afficherStats();
+
+
+    journaliser(
+        "🧠 Consolidation terminée."
+    );
+
+    journaliser(
+        "🧩 Hypothèses indirectes : " +
+        formatNombre(
+            memoire.cognitive.hypotheses.length
+        )
+    );
+
+
+    changerStatus(
+        "ready",
+        "🟢 Consolidation terminée",
+        "Les connaissances fortes ont été stabilisées."
+    );
+
+}
+
+
+/* =========================================================
+HYPOTHESES INDIRECTES
+========================================================= */
+
+function creerHypothesesIndirectes(
+    mots
+){
+
+    const hypotheses=[];
+
+
+    for(
+        const mot of mots
+    ){
+
+        const assoc =
+            memoire.semantique.associations[
+                mot
+            ];
+
+        if(!assoc){
+            continue;
+        }
+
+
+        const voisins =
+            Object.entries(
+                assoc
+            )
+            .sort(
+                (a,b)=>b[1]-a[1]
+            )
+            .slice(
+                0,
+                5
+            );
+
+
+        for(
+            let i=0;
+            i<voisins.length;
+            i++
+        ){
+
+            for(
+                let j=i+1;
+                j<voisins.length;
+                j++
+            ){
+
+                const a=
+                    voisins[i][0];
+
+                const b=
+                    voisins[j][0];
+
+                if(a===b){
+                    continue;
+                }
+
+
+                const score =
+                    Math.min(
+                        Number(
+                            voisins[i][1]
+                        ),
+                        Number(
+                            voisins[j][1]
+                        )
+                    )*.15;
+
+
+                if(score<.02){
+                    continue;
+                }
+
+
+                hypotheses.push({
+
+                    a,
+                    b,
+
+                    score,
+
+                    confiance:.25,
+
+                    type:"indirect"
+
+                });
+
+            }
+
+        }
+
+    }
+
+
+    /*
+     On conserve seulement les meilleures.
+    */
+
+    hypotheses.sort(
+        (a,b)=>
+            b.score-a.score
+    );
+
+
+    const anciennes =
+        memoire.cognitive.hypotheses
+        || [];
+
+
+    memoire.cognitive.hypotheses =
+        anciennes
+        .concat(hypotheses)
+        .sort(
+            (a,b)=>
+                b.score-a.score
+        )
+        .slice(
+            0,
+            LIMITES.hypothesesMax
+        );
+
+}
+
+
+/* =========================================================
+OUBLI CONTROLE
+========================================================= */
+
+async function oubliControle(){
+
+    if(maintenanceEnCours){
+
+        journaliser(
+            "⏳ Maintenance déjà active."
+        );
+
+        return;
+
+    }
+
+
+    const confirmation =
+        confirm(
+
+            "L'oubli contrôlé va réduire les relations " +
+            "très faibles et redondantes.\n\n" +
+
+            "Le vocabulaire et les connaissances fortes " +
+            "ne seront pas supprimés automatiquement.\n\n" +
+
+            "Continuer ?"
+
+        );
+
+
+    if(!confirmation){
+        return;
+    }
+
+
+    maintenanceEnCours=true;
+
+
+    changerStatus(
+        "learning",
+        "🧹 Oubli contrôlé",
+        "Réduction progressive des relations faibles."
+    );
+
+
+    const objets = [
+
+        {
+            nom:"2-grams",
+            data:memoire.transitions2,
+            limite:LIMITES.transitions2
+        },
+
+        {
+            nom:"3-grams",
+            data:memoire.transitions3,
+            limite:LIMITES.transitions3
+        },
+
+        {
+            nom:"Associations",
+            data:memoire.semantique.associations,
+            limite:LIMITES.associations
+        }
+
+    ];
+
+
+    let supprime=0;
+
+
+    for(
+        const bloc of objets
+    ){
+
+        const cles =
+            Object.keys(
+                bloc.data
+            );
+
+
+        for(
+            let i=0;
+            i<cles.length;
+            i++
+        ){
+
+            const cle =
+                cles[i];
+
+            const objet =
+                bloc.data[cle];
+
+            if(!objet){
+                continue;
+            }
+
+
+            const entries =
+                Object.entries(
+                    objet
+                );
+
+
+            /*
+             seuil très bas.
+             Les relations fortes restent.
+            */
+
+            for(
+                const [relation,valeur]
+                of entries
+            ){
+
+                const n =
+                    Number(valeur);
+
+                if(
+                    n<=.05
+                ){
+
+                    delete objet[
+                        relation
+                    ];
+
+                    supprime++;
+
+                }
+
+            }
+
+
+            limiterRelations(
+                objet,
+                bloc.limite
+            );
+
+
+            if(
+                i%500===0
+            ){
+
+                await attendre(0);
+
+            }
+
+        }
+
+    }
+
+
+    memoire.statistiques.oublis +=
+        supprime;
+
+    memoire.cognitive.dernierOubli =
+        cyclesApprentissage;
+
+
+    maintenanceEnCours=false;
+
+
+    afficherStats();
+
+
+    journaliser(
+        "🧹 Oubli contrôlé : " +
+        formatNombre(supprime) +
+        " relations faibles retirées."
+    );
+
+
+    changerStatus(
+        "ready",
+        "🟢 Oubli terminé",
+        "Les connaissances importantes ont été conservées."
+    );
+
+}
+
+
+/* =========================================================
+OPTIMISATION
+========================================================= */
+
+async function optimiserMemoire(){
+
+    if(maintenanceEnCours){
+
+        journaliser(
+            "⏳ Une optimisation est déjà en cours."
+        );
+
+        return;
+
+    }
+
+
+    maintenanceEnCours=true;
+
+
+    changerStatus(
+        "learning",
+        "⚙️ Optimisation",
+        "Réduction des structures trop volumineuses."
+    );
+
+
+    const blocs=[
+
+        {
+            nom:"2-grams",
+            data:memoire.transitions2,
+            limite:LIMITES.transitions2
+        },
+
+        {
+            nom:"3-grams",
+            data:memoire.transitions3,
+            limite:LIMITES.transitions3
+        },
+
+        {
+            nom:"associations",
+            data:memoire.semantique.associations,
+            limite:LIMITES.associations
+        },
+
+        {
+            nom:"contextes",
+            data:memoire.semantique.contextes,
+            limite:LIMITES.contextesParMot
+        }
+
+    ];
+
+
+    let traite=0;
+
+
+    for(
+        const bloc of blocs
+    ){
+
+        const cles =
+            Object.keys(
+                bloc.data
+            );
+
+
+        journaliser(
+            "⚙️ Optimisation " +
+            bloc.nom +
+            " : " +
+            formatNombre(
+                cles.length
+            ) +
+            " clés."
+        );
+
+
+        for(
+            let i=0;
+            i<cles.length;
+            i++
+        ){
+
+            const objet =
+                bloc.data[
+                    cles[i]
+                ];
+
+            if(
+                objet &&
+                typeof objet==="object"
+            ){
+
+                limiterRelations(
+                    objet,
+                    bloc.limite
+                );
+
+            }
+
+
+            traite++;
+
+
+            if(
+                traite%500===0
+            ){
+
+                await attendre(0);
+
+            }
+
+        }
+
+    }
+
+
+    /*
+     Focus :
+     on retire uniquement les entrées
+     très anciennes si le focus dépasse sa limite.
+    */
+
+    const focus =
+        memoire.cognitive.focus;
+
+    const focusCles =
+        Object.keys(
+            focus
+        );
+
+
+    if(
+        focusCles.length >
+        LIMITES.focusMax
+    ){
+
+        focusCles
+        .sort(
+            (a,b)=>
+                Number(focus[a]) -
+                Number(focus[b])
+        );
+
+
+        const aSupprimer =
+            focusCles.length -
+            LIMITES.focusMax;
+
+
+        for(
+            let i=0;
+            i<aSupprimer;
+            i++
+        ){
+
+            delete focus[
+                focusCles[i]
+            ];
+
+        }
+
+    }
+
+
+    maintenanceEnCours=false;
+
+
+    afficherStats();
+
+
+    journaliser(
+        "⚙️ Optimisation terminée."
+    );
+
+
+    changerStatus(
+        "ready",
+        "🟢 Optimisation terminée",
+        "Les structures ont été compactées sans effacer le vocabulaire."
+    );
+
+}
+
+
+/* =========================================================
+MAINTENANCE AUTOMATIQUE
+========================================================= */
+
+async function maintenanceAutomatique(){
+
+    if(maintenanceEnCours){
+        return;
+    }
+
+    /*
+     Maintenance légère :
+     on ne lance pas la grosse optimisation
+     à chaque cycle.
+    */
+
+    const focus =
+        Object.keys(
+            memoire.cognitive.focus
+        );
+
+
+    if(!focus.length){
+        return;
+    }
+
+
+    /*
+     Seulement les éléments du focus.
+    */
+
+    const selection =
+        focus
+        .sort(
+            ()=>Math.random()-.5
+        )
+        .slice(
+            0,
+            100
+        );
+
+
+    for(
+        const mot of selection
+    ){
+
+        const assoc =
+            memoire.semantique.associations[
+                mot
+            ];
+
+        if(assoc){
+
+            limiterRelations(
+                assoc,
+                LIMITES.associations
+            );
+
+        }
+
+    }
+
+
+    memoire.statistiques.cycles++;
+
+}
+
+
+/* =========================================================
+APPRENTISSAGE
+========================================================= */
+
+async function lancerApprentissage(){
+
+    if(apprentissageActif){
+        return;
+    }
+
+
+    apprentissageActif=true;
+
+
+    document
+        .getElementById("btnStart")
+        .disabled=true;
+
+
+    document
+        .getElementById("btnStop")
+        .disabled=false;
+
+
+    document
+        .getElementById("etatMemoire")
+        .textContent =
+        "🟡 Apprentissage";
+
+
+    changerStatus(
+        "learning",
+        "🟡 Apprentissage actif",
+        "La V6 apprend et contrôle la croissance."
+    );
+
+
+    journaliser(
+        "▶ Apprentissage V6 démarré."
+    );
+
+
+    while(
+        apprentissageActif
+    ){
+
+        cyclesApprentissage++;
+
+        memoire.statistiques.cycles =
+            cyclesApprentissage;
+
+
+        let texte=null;
+
+        let source="local";
+
+
+        if(
+            Math.random()<.65
+        ){
+
+            journaliser(
+                "🌐 Tentative Wikipédia..."
+            );
+
+            texte =
+                await recupererWikipedia();
+
+            if(texte){
+
+                source="wikipedia";
+
+            }
+
+        }
+
+
+        if(!texte){
+
+            texte =
+                corpusLocal[
+                    Math.floor(
+                        Math.random()*
+                        corpusLocal.length
+                    )
+                ];
+
+            source="local";
+
+            journaliser(
+                "📚 Corpus local."
+            );
+
+        }
+        else{
+
+            journaliser(
+                "🌐 Texte Wikipédia."
+            );
+
+        }
+
+
+        if(!apprentissageActif){
+            break;
+        }
+
+
+        const nombre =
+            apprendreTexte(
+                texte,
+                source
+            );
+
+
+        journaliser(
+            "🧠 +" +
+            formatNombre(nombre) +
+            " tokens."
+        );
+
+
+        /*
+         maintenance légère
+        */
+
+        const frequence =
+            Number(
+                document
+                    .getElementById(
+                        "maintenanceFrequence"
+                    )
+                    .value
+            );
+
+
+        if(
+            cyclesApprentissage%frequence===0
+        ){
+
+            await maintenanceAutomatique();
+
+            journaliser(
+                "⚙️ Maintenance automatique effectuée."
+            );
+
+        }
+
+
+        afficherStats();
+
+        afficherInfosMemoire();
+
+        rafraichirEtatGenerer();
+
+
+        if(
+            document
+                .getElementById(
+                    "view-graphe"
+                )
+                .classList.contains(
+                    "active"
+                )
+        ){
+
+            construireGraphe();
+
+        }
+
+
+        /*
+         avertissement.
+        */
+
+        if(
+            !avertissementTaille &&
+            memoire.statistiques.tokens>
+            300000
+        ){
+
+            avertissementTaille=true;
+
+            journaliser(
+                "⚠️ Mémoire volumineuse : " +
+                formatNombre(
+                    memoire.statistiques.tokens
+                ) +
+                " tokens."
+            );
+
+        }
+
+
+        changerStatus(
+            "learning",
+            "🟡 Apprentissage actif",
+            "Cycle " +
+            formatNombre(
+                cyclesApprentissage
+            ) +
+            " — " +
+            formatNombre(
+                memoire.statistiques.tokens
+            ) +
+            " tokens."
+        );
+
+
+        /*
+         Laisser le navigateur respirer.
+        */
+
+        await attendre(180);
+
+    }
+
+
+    apprentissageActif=false;
+
+
+    document
+        .getElementById("btnStart")
+        .disabled=false;
+
+
+    document
+        .getElementById("btnStop")
+        .disabled=true;
+
+
+    document
+        .getElementById("etatMemoire")
+        .textContent =
+        "🟢 Mémoire prête";
+
+
+    changerStatus(
+        "ready",
+        "🟢 Apprentissage arrêté",
+        "La mémoire actuelle est conservée."
+    );
+
+
+    journaliser(
+        "⏹ Apprentissage arrêté."
+    );
+
+}
+
+
+function arreterApprentissage(){
+
+    if(!apprentissageActif){
+
+        journaliser(
+            "ℹ️ Aucun apprentissage actif."
+        );
+
+        return;
+
+    }
+
+    apprentissageActif=false;
+
+    document
+        .getElementById("btnStop")
+        .disabled=true;
+
+    journaliser(
+        "⏹ Arrêt demandé..."
+    );
+
+}
+
+
+function attendre(ms){
+
+    return new Promise(
+        resolve=>
+            setTimeout(
+                resolve,
+                ms
+            )
+    );
+
+}
+
+
+/* =========================================================
+DIAGNOSTIC
+========================================================= */
+
+function diagnostiquerMemoire(
+    afficher=true
+){
+
+    const tokens =
+        Number(
+            memoire.statistiques.tokens || 0
+        );
+
+    const vocab =
         Object.keys(
             memoire.vocabulaire
         ).length;
 
-
-    const trans2=
+    const trans2 =
         compterRelations(
             memoire.transitions2
         );
 
-
-    const trans3=
+    const trans3 =
         compterRelations(
             memoire.transitions3
         );
 
-
-    const concepts=
-        Object.keys(
-            memoire.semantique.concepts
-        ).length;
-
-
-    const relations=
+    const relations =
         compterRelations(
             memoire.semantique.associations
         );
 
+    const concepts =
+        Object.keys(
+            memoire.semantique.concepts
+        ).length;
 
-    document.getElementById(
-        "statTokens"
-    ).textContent=
-        formatNombre(
-            memoire.statistiques.tokens
+    const hypotheses =
+        memoire.cognitive.hypotheses
+        .length;
+
+
+    const ratioVocab =
+        tokens>0
+            ? vocab/tokens
+            : 0;
+
+
+    const rapport = {
+
+        tokens,
+
+        vocab,
+
+        transitions2:trans2,
+
+        transitions3:trans3,
+
+        concepts,
+
+        relations,
+
+        hypotheses,
+
+        ratioVocab,
+
+        sources:
+            memoire.statistiques.sources
+
+    };
+
+
+    if(afficher){
+
+        afficherDiagnostic(
+            rapport
         );
 
-
-    document.getElementById(
-        "statVocab"
-    ).textContent=
-        formatNombre(vocab);
+    }
 
 
-    document.getElementById(
-        "stat2"
-    ).textContent=
-        formatNombre(trans2);
+    return rapport;
 
-
-    document.getElementById(
-        "stat3"
-    ).textContent=
-        formatNombre(trans3);
-
-
-    document.getElementById(
-        "statConcepts"
-    ).textContent=
-        formatNombre(concepts);
-
-
-    document.getElementById(
-        "statRelations"
-    ).textContent=
-        formatNombre(relations);
-
-
-    document.getElementById(
-        "hdrTokens"
-    ).textContent=
-        formatNombre(
-            memoire.statistiques.tokens
-        );
-
-
-    document.getElementById(
-        "hdrVocab"
-    ).textContent=
-        formatNombre(vocab);
-
-
-    afficherTopMots();
-
-    afficherSanteMemoire();
 }
 
 
 /* =========================================================
-   COMPTER RELATIONS
+AFFICHAGE DIAGNOSTIC
 ========================================================= */
 
-function compterRelations(objet){
+function afficherDiagnostic(
+    d
+){
+
+    let niveau =
+        "🟢 Bon état";
+
+    if(
+        d.relations>5000000 ||
+        d.transitions2>4000000
+    ){
+
+        niveau =
+            "🟡 Mémoire très volumineuse — optimisation recommandée.";
+
+    }
+
+
+    if(
+        d.tokens>20000000
+    ){
+
+        niveau =
+            "🔴 Très volumineuse — privilégier les opérations par lots.";
+
+    }
+
+
+    const html =
+
+        "<b>État :</b> " +
+        escapeHTML(niveau) +
+        "<br><br>" +
+
+        "<b>Tokens :</b> " +
+        formatNombre(d.tokens) +
+        "<br>" +
+
+        "<b>Vocabulaire :</b> " +
+        formatNombre(d.vocab) +
+        "<br>" +
+
+        "<b>2-grams :</b> " +
+        formatNombre(d.transitions2) +
+        "<br>" +
+
+        "<b>3-grams :</b> " +
+        formatNombre(d.transitions3) +
+        "<br>" +
+
+        "<b>Concepts :</b> " +
+        formatNombre(d.concepts) +
+        "<br>" +
+
+        "<b>Relations :</b> " +
+        formatNombre(d.relations) +
+        "<br>" +
+
+        "<b>Hypothèses :</b> " +
+        formatNombre(d.hypotheses) +
+        "<br><br>" +
+
+        "<b>Ratio vocab/tokens :</b> " +
+        (d.ratioVocab*100).toFixed(3) +
+        "%";
+
+
+    document
+        .getElementById(
+            "diagnostic"
+        )
+        .innerHTML=html;
+
+
+    journaliser(
+        "🔎 Diagnostic : " +
+        formatNombre(d.tokens) +
+        " tokens / " +
+        formatNombre(d.vocab) +
+        " mots / " +
+        formatNombre(d.relations) +
+        " relations."
+    );
+
+}
+
+
+/* =========================================================
+COMPTER RELATIONS
+========================================================= */
+
+function compterRelations(
+    objet
+){
 
     let total=0;
+
+    if(!objet){
+        return 0;
+    }
+
 
     for(
         const cle in objet
     ){
 
-        const valeur=
+        const valeur =
             objet[cle];
 
         if(
@@ -4498,184 +5414,218 @@ function compterRelations(objet){
             typeof valeur==="object"
         ){
 
-            total+=
+            total +=
                 Object.keys(
                     valeur
                 ).length;
+
         }
+
     }
 
     return total;
+
 }
 
 
 /* =========================================================
-   MESURE MÉMOIRE LOGIQUE
+STATS
 ========================================================= */
 
-function mesurerMemoireLogique(){
+function afficherStats(){
 
-    return {
+    const vocab =
+        Object.keys(
+            memoire.vocabulaire
+        ).length;
 
-        vocabulaire:
-            Object.keys(
-                memoire.vocabulaire
-            ).length,
+    const trans2 =
+        compterRelations(
+            memoire.transitions2
+        );
 
-        transitions2:
-            compterRelations(
-                memoire.transitions2
-            ),
+    const trans3 =
+        compterRelations(
+            memoire.transitions3
+        );
 
-        transitions3:
-            compterRelations(
-                memoire.transitions3
-            ),
+    const concepts =
+        Object.keys(
+            memoire.semantique.concepts
+        ).length;
 
-        relations:
-            compterRelations(
-                memoire
-                .semantique
-                .associations
-            )
-    };
+    const relations =
+        compterRelations(
+            memoire.semantique.associations
+        );
+
+
+    document
+        .getElementById("statTokens")
+        .textContent =
+        formatNombre(
+            memoire.statistiques.tokens
+        );
+
+
+    document
+        .getElementById("statVocab")
+        .textContent =
+        formatNombre(vocab);
+
+
+    document
+        .getElementById("stat2")
+        .textContent =
+        formatNombre(trans2);
+
+
+    document
+        .getElementById("stat3")
+        .textContent =
+        formatNombre(trans3);
+
+
+    document
+        .getElementById("statConcepts")
+        .textContent =
+        formatNombre(concepts);
+
+
+    document
+        .getElementById("statRelations")
+        .textContent =
+        formatNombre(relations);
+
+
+    document
+        .getElementById("hdrTokens")
+        .textContent =
+        formatNombre(
+            memoire.statistiques.tokens
+        );
+
+
+    document
+        .getElementById("hdrVocab")
+        .textContent =
+        formatNombre(vocab);
+
+
+    afficherTopMots();
+
+    afficherEtatCognitif();
+
 }
 
 
 /* =========================================================
-   SANTÉ
+ETAT COGNITIF
 ========================================================= */
 
-function afficherSanteMemoire(){
+function afficherEtatCognitif(){
 
-    const stats=
-        mesurerMemoireLogique();
-
-
-    const pv=
-        Math.min(
-            100,
-            stats.vocabulaire/
-            V6.maxVocabulaire*
-            100
+    const mots =
+        Object.keys(
+            memoire.vocabulaire
         );
 
 
-    const p2=
-        Math.min(
-            100,
-            stats.transitions2/
-            V6.maxTransitions2*
-            100
-        );
+    /*
+     Pour ne pas analyser 358k mots
+     à chaque seconde, on prend un échantillon.
+    */
+
+    const echantillon =
+        mots.length>5000
+            ? mots
+                .sort(
+                    ()=>Math.random()-.5
+                )
+                .slice(0,5000)
+            : mots;
 
 
-    const p3=
-        Math.min(
-            100,
-            stats.transitions3/
-            V6.maxTransitions3*
-            100
-        );
+    let fort=0;
+    let moyen=0;
+    let faible=0;
 
 
-    const pr=
-        Math.min(
-            100,
-            stats.relations/
-            V6.maxRelations*
-            100
-        );
+    for(
+        const mot of echantillon
+    ){
 
+        const p =
+            profilConnaissance(
+                mot
+            );
 
-    document.getElementById(
-        "healthVocab"
-    ).textContent=
-        pv.toFixed(1)+"%";
+        if(
+            p.niveau==="fort"
+        ){
 
+            fort++;
 
-    document.getElementById(
-        "health2"
-    ).textContent=
-        p2.toFixed(1)+"%";
+        }
+        else if(
+            p.niveau==="moyen"
+        ){
 
+            moyen++;
 
-    document.getElementById(
-        "health3"
-    ).textContent=
-        p3.toFixed(1)+"%";
+        }
+        else{
 
+            faible++;
 
-    document.getElementById(
-        "healthRel"
-    ).textContent=
-        pr.toFixed(1)+"%";
+        }
 
-
-    document.getElementById(
-        "barVocab"
-    ).style.width=
-        pv+"%";
-
-
-    document.getElementById(
-        "bar2"
-    ).style.width=
-        p2+"%";
-
-
-    document.getElementById(
-        "bar3"
-    ).style.width=
-        p3+"%";
-
-
-    document.getElementById(
-        "barRel"
-    ).style.width=
-        pr+"%";
-
-
-    let etat="NORMAL";
-
-
-    const maximum=
-        Math.max(
-            pv,
-            p2,
-            p3,
-            pr
-        );
-
-
-    if(maximum>=90){
-
-        etat="CRITIQUE";
-
-    }else if(maximum>=75){
-
-        etat="ÉLEVÉ";
-
-    }else if(maximum>=55){
-
-        etat="SURVEILLANCE";
     }
 
 
-    document.getElementById(
-        "healthEtat"
-    ).textContent=
-        etat;
+    document
+        .getElementById(
+            "strongCount"
+        )
+        .textContent =
+        formatNombre(fort);
+
+
+    document
+        .getElementById(
+            "mediumCount"
+        )
+        .textContent =
+        formatNombre(moyen);
+
+
+    document
+        .getElementById(
+            "weakCount"
+        )
+        .textContent =
+        formatNombre(faible);
+
+
+    document
+        .getElementById(
+            "hypothesisCount"
+        )
+        .textContent =
+        formatNombre(
+            memoire.cognitive.hypotheses.length
+        );
+
 }
 
 
 /* =========================================================
-   TOP MOTS
+TOP MOTS
 ========================================================= */
 
 function afficherTopMots(){
 
-    const mots=
+    const mots =
         Object.entries(
             memoire.vocabulaire
         )
@@ -4692,19 +5642,17 @@ function afficherTopMots(){
 
     if(!mots.length){
 
-        document.getElementById(
-            "topMots"
-        ).innerHTML=
-            "<div class='empty-state'>"+
-            "<span class='ic'>📭</span>"+
-            "Aucun mot appris pour l'instant."+
-            "</div>";
+        document
+            .getElementById("topMots")
+            .innerHTML =
+            "<div class='empty'>📭 Aucun mot appris.</div>";
 
         return;
+
     }
 
 
-    const max=
+    const max =
         Number(
             mots[0][1]
         );
@@ -4718,48 +5666,77 @@ function afficherTopMots(){
         of mots
     ){
 
-        const largeur=
+        const largeur =
             Number(nombre)/
             max*
             100;
 
 
-        html+=
-            "<div class='bar-row'>"+
-                "<div class='bar-label'>"+
-                    escapeHTML(mot)+
-                "</div>"+
-                "<div class='bar-track'>"+
-                    "<div class='bar-fill' style='width:"+
-                    largeur+
-                    "%'></div>"+
-                "</div>"+
-                "<div class='bar-number'>"+
-                    formatNombre(nombre)+
-                "</div>"+
+        const profil =
+            profilConnaissance(
+                mot
+            );
+
+
+        html +=
+
+            "<div class='bar-row'>" +
+
+            "<div class='bar-label'>" +
+            escapeHTML(mot) +
+            "</div>" +
+
+            "<div class='bar-track'>" +
+
+            "<div class='bar-fill' " +
+            "style='width:" +
+            largeur +
+            "%'></div>" +
+
+            "</div>" +
+
+            "<div class='bar-number'>" +
+            formatNombre(nombre) +
+            "</div>" +
+
+            "</div>" +
+
+            "<div class='small' " +
+            "style='margin:-4px 0 6px 97px'>" +
+
+            profil.niveau +
+            " · confiance " +
+            Math.round(
+                profil.confiance*100
+            ) +
+            "%" +
+
             "</div>";
+
     }
 
 
-    document.getElementById(
-        "topMots"
-    ).innerHTML=html;
+    document
+        .getElementById("topMots")
+        .innerHTML=html;
+
 }
 
 
 /* =========================================================
-   EXPLORATION
+EXPLORATION
 ========================================================= */
 
 function explorerMot(){
 
-    const mot=
-        document.getElementById(
-            "motRecherche"
-        )
-        .value
-        .trim()
-        .toLowerCase();
+    const mot =
+        document
+            .getElementById(
+                "motRecherche"
+            )
+            .value
+            .trim()
+            .toLowerCase();
 
 
     if(!mot){
@@ -4767,105 +5744,126 @@ function explorerMot(){
     }
 
 
-    const occurrences=
+    const occurrences =
         Number(
-            memoire.vocabulaire[mot] ||
-            0
+            memoire.vocabulaire[mot] || 0
         );
+
+
+    const profil =
+        profilConnaissance(
+            mot
+        );
+
+
+    const categories =
+        memoire.semantique.categories[
+            mot
+        ] || {};
+
+
+    const concepts =
+        memoire.semantique.concepts[
+            mot
+        ] || {};
+
+
+    const associations =
+        memoire.semantique.associations[
+            mot
+        ] || {};
+
+
+    const contextes =
+        memoire.semantique.contextes[
+            mot
+        ] || {};
 
 
     if(
         occurrences===0 &&
-        !memoire
-        .semantique
-        .associations[mot]
+        !Object.keys(associations).length
     ){
 
-        document.getElementById(
-            "exploration"
-        ).innerHTML=
-            "<b>Mot :</b> "+
-            escapeHTML(mot)+
-            "<br><br>"+
-            "Ce mot n'a pas encore été rencontré.";
+        document
+            .getElementById(
+                "exploration"
+            )
+            .innerHTML =
+
+            "<b>Mot :</b> " +
+            escapeHTML(mot) +
+            "<br><br>" +
+
+            "Ce mot n'est pas encore connu.";
 
         return;
+
     }
 
 
-    const categories=
-        memoire
-        .semantique
-        .categories[
-            mot
-        ] || {};
-
-
-    const concepts=
-        memoire
-        .semantique
-        .concepts[
-            mot
-        ] || {};
-
-
-    const associations=
-        memoire
-        .semantique
-        .associations[
-            mot
-        ] || {};
-
-
     let html=
-        "<b>Mot :</b> "+
-        escapeHTML(mot)+
-        "<br><br>";
+
+        "<b>Mot :</b> " +
+        escapeHTML(mot) +
+        "<br><br>" +
+
+        "<b>Occurrences :</b> " +
+        formatNombre(occurrences) +
+        "<br>" +
+
+        "<b>Niveau :</b> " +
+        escapeHTML(profil.niveau) +
+        "<br>" +
+
+        "<b>Importance :</b> " +
+        Math.round(
+            profil.importance*100
+        ) +
+        "%<br>" +
+
+        "<b>Confiance :</b> " +
+        Math.round(
+            profil.confiance*100
+        ) +
+        "%<br>" +
+
+        "<b>Récence :</b> " +
+        Math.round(
+            profil.recenceScore*100
+        ) +
+        "%<br><br>";
 
 
-    html+=
-        "<b>Occurrences :</b> "+
-        formatNombre(
-            occurrences
-        )+
-        "<br><br>";
-
-
-    html+=
+    html +=
         "<b>Catégories :</b><br>";
 
 
-    html+=
+    html +=
         Object.keys(categories).length
 
-        ?
-
-        Object.keys(categories)
+        ? Object.keys(categories)
             .map(
                 c=>
-                    "<span class='badge'>"+
-                    escapeHTML(c)+
+                    "<span class='badge'>" +
+                    escapeHTML(c) +
                     "</span>"
             )
             .join("")
 
-        :
-
-        "Aucune";
+        : "Aucune";
 
 
-    html+=
+    html +=
         "<br><br><b>Concepts :</b><br>";
 
 
-    const topConcepts=
+    const topConcepts =
         Object.entries(
             concepts
         )
         .sort(
-            (a,b)=>
-                Number(b[1])-
-                Number(a[1])
+            (a,b)=>b[1]-a[1]
         )
         .slice(
             0,
@@ -4873,182 +5871,191 @@ function explorerMot(){
         );
 
 
-    html+=
+    html +=
         topConcepts.length
 
-        ?
-
-        topConcepts
+        ? topConcepts
             .map(
                 x=>
-                    "<span class='badge'>"+
-                    escapeHTML(x[0])+
-                    " · "+
-                    Number(x[1]).toFixed(1)+
+                    "<span class='badge'>" +
+                    escapeHTML(x[0]) +
+                    " · " +
+                    Number(x[1]).toFixed(1) +
                     "</span>"
             )
             .join("")
 
-        :
-
-        "Aucun";
+        : "Aucun";
 
 
-    html+=
-        "<br><br><b>Associations fortes :</b><br>";
+    html +=
+        "<br><br><b>Associations :</b><br>";
 
 
-    const topAssoc=
+    const topAssoc =
         Object.entries(
             associations
         )
         .sort(
-            (a,b)=>
-                Number(b[1])-
-                Number(a[1])
+            (a,b)=>b[1]-a[1]
         )
         .slice(
             0,
-            20
+            15
         );
 
 
-    html+=
+    html +=
         topAssoc.length
 
-        ?
-
-        topAssoc
+        ? topAssoc
             .map(
                 x=>
-                    "<span class='badge'>"+
-                    escapeHTML(x[0])+
-                    " · "+
-                    Number(x[1]).toFixed(2)+
+                    "<span class='badge'>" +
+                    escapeHTML(x[0]) +
+                    " · " +
+                    Number(x[1]).toFixed(1) +
                     "</span>"
             )
             .join("")
 
-        :
-
-        "Aucune";
+        : "Aucune";
 
 
-    document.getElementById(
-        "exploration"
-    ).innerHTML=html;
+    html +=
+        "<br><br><b>Contextes :</b><br>";
 
 
-    document.getElementById(
-        "grapheRecherche"
-    ).value=mot;
+    const topContextes =
+        Object.entries(
+            contextes
+        )
+        .sort(
+            (a,b)=>b[1]-a[1]
+        )
+        .slice(
+            0,
+            5
+        );
+
+
+    html +=
+        topContextes.length
+
+        ? topContextes
+            .map(
+                x=>
+                    "<span class='badge'>" +
+                    escapeHTML(x[0]) +
+                    " · " +
+                    Number(x[1]).toFixed(0) +
+                    "</span>"
+            )
+            .join("")
+
+        : "Aucun";
+
+
+    document
+        .getElementById(
+            "exploration"
+        )
+        .innerHTML=html;
+
+
+    document
+        .getElementById(
+            "grapheRecherche"
+        )
+        .value=mot;
+
 }
 
 
 /* =========================================================
-   GRAPHE
+GRAPHE
 ========================================================= */
 
 function construireGraphe(){
 
-    const zone=
+    const zone =
         document.getElementById(
             "graphe"
         );
 
 
-    const recherche=
-        document.getElementById(
-            "grapheRecherche"
-        )
-        .value
-        .trim()
-        .toLowerCase();
+    const recherche =
+        document
+            .getElementById(
+                "grapheRecherche"
+            )
+            .value
+            .trim()
+            .toLowerCase();
 
 
-    let centre=
+    let centre =
         recherche;
 
 
     if(
         !centre ||
-        !memoire
-        .semantique
-        .associations[
+        !memoire.semantique.associations[
             centre
         ]
     ){
 
-        const candidats=
+        const candidats =
             Object.entries(
-                memoire
-                .semantique
-                .associations
+                memoire.semantique.associations
             )
             .map(
-                ([mot,relations])=>{
-
-                    const force=
-                        Object.values(
-                            relations
-                        )
-                        .reduce(
-                            (a,b)=>
-                                a+
-                                Number(b||0),
-                            0
-                        );
-
-                    return [
-                        mot,
-                        force
-                    ];
-                }
+                ([mot,relations])=>[
+                    mot,
+                    Object.keys(relations).length
+                ]
             )
             .sort(
-                (a,b)=>
-                    Number(b[1])-
-                    Number(a[1])
+                (a,b)=>b[1]-a[1]
+            )
+            .slice(
+                0,
+                20
             );
 
 
-        centre=
+        centre =
             candidats.length
-            ?
-            candidats[0][0]
-            :
-            null;
+                ? candidats[0][0]
+                : null;
+
     }
 
 
     if(!centre){
 
-        zone.innerHTML=
-            "<div class='empty-state'>"+
-            "<span class='ic'>🕸️</span>"+
-            "Le graphe apparaîtra après quelques apprentissages."+
+        zone.innerHTML =
+            "<div class='empty'>" +
+            "🕸️ Pas encore assez de connaissances." +
             "</div>";
 
         return;
+
     }
 
 
-    const relations=
-        memoire
-        .semantique
-        .associations[
+    const relations =
+        memoire.semantique.associations[
             centre
         ] || {};
 
 
-    const voisins=
+    const voisins =
         Object.entries(
             relations
         )
         .sort(
-            (a,b)=>
-                Number(b[1])-
-                Number(a[1])
+            (a,b)=>b[1]-a[1]
         )
         .slice(
             0,
@@ -5058,41 +6065,37 @@ function construireGraphe(){
 
     if(!voisins.length){
 
-        zone.innerHTML=
-            "<div class='empty-state'>"+
-            "<span class='ic'>🔍</span>"+
-            "« "+
-            escapeHTML(centre)+
-            " » n'a pas encore d'associations."+
+        zone.innerHTML =
+            "<div class='empty'>" +
+            "🔍 Aucune association connue pour « " +
+            escapeHTML(centre) +
+            " »." +
             "</div>";
 
         return;
+
     }
 
 
-    const largeur=
-        zone.clientWidth ||
-        700;
+    const largeur =
+        zone.clientWidth || 700;
+
+    const hauteur =
+        zone.clientHeight || 400;
 
 
-    const hauteur=
-        zone.clientHeight ||
-        390;
-
-
-    const cx=
+    const cx =
         largeur/2;
 
-
-    const cy=
+    const cy =
         hauteur/2;
 
 
-    let svg=
-        "<svg viewBox='0 0 "+
-        largeur+
-        " "+
-        hauteur+
+    let svg =
+        "<svg viewBox='0 0 " +
+        largeur +
+        " " +
+        hauteur +
         "'>";
 
 
@@ -5102,44 +6105,45 @@ function construireGraphe(){
     voisins.forEach(
         ([mot,poids],index)=>{
 
-            const angle=
+            const angle =
                 index/
                 Math.max(
                     voisins.length,
                     1
                 )*
-                Math.PI*
-                2;
+                Math.PI*2;
 
 
-            const rayon=
+            const rayon =
                 Math.min(
                     largeur,
                     hauteur
                 )*.32;
 
 
-            const x=
+            const x =
                 cx+
                 Math.cos(angle)*
                 rayon;
 
 
-            const y=
+            const y =
                 cy+
                 Math.sin(angle)*
                 rayon;
 
 
             positions.push({
+
                 mot,
                 poids,
                 x,
                 y
+
             });
 
 
-            const epaisseur=
+            const epaisseur =
                 Math.max(
                     1,
                     Math.min(
@@ -5149,81 +6153,168 @@ function construireGraphe(){
                 );
 
 
-            svg+=
-                "<line "+
-                "x1='"+cx+"' "+
-                "y1='"+cy+"' "+
-                "x2='"+x+"' "+
-                "y2='"+y+"' "+
-                "stroke='#2a3140' "+
-                "stroke-width='"+epaisseur+
-                "'/>";
+            svg +=
+
+                "<line " +
+                "x1='"+cx+"' " +
+                "y1='"+cy+"' " +
+                "x2='"+x+"' " +
+                "y2='"+y+"' " +
+                "stroke='#394252' " +
+                "stroke-width='"+epaisseur+"'/>";
+
         }
     );
 
 
-    svg+=
-        "<circle "+
-        "cx='"+cx+"' "+
-        "cy='"+cy+"' "+
-        "r='32' "+
+    /*
+     Hypothèses indirectes.
+    */
+
+    const hypotheses =
+        memoire.cognitive.hypotheses
+        .filter(
+            h=>
+                h.a===centre ||
+                h.b===centre
+        )
+        .slice(
+            0,
+            8
+        );
+
+
+    for(
+        const h of hypotheses
+    ){
+
+        const autre =
+            h.a===centre
+                ? h.b
+                : h.a;
+
+
+        const angle =
+            Math.random()*
+            Math.PI*2;
+
+
+        const rayon =
+            Math.min(
+                largeur,
+                hauteur
+            )*.42;
+
+
+        const x =
+            cx+
+            Math.cos(angle)*
+            rayon;
+
+
+        const y =
+            cy+
+            Math.sin(angle)*
+            rayon;
+
+
+        svg +=
+
+            "<line " +
+            "x1='"+cx+"' " +
+            "y1='"+cy+"' " +
+            "x2='"+x+"' " +
+            "y2='"+y+"' " +
+            "stroke='#b58cff' " +
+            "stroke-width='1.5' " +
+            "stroke-dasharray='5 5'/>";
+
+
+        svg +=
+
+            "<circle " +
+            "cx='"+x+"' " +
+            "cy='"+y+"' " +
+            "r='18' " +
+            "fill='#b58cff'/>";
+
+
+        svg +=
+
+            "<text " +
+            "x='"+x+"' " +
+            "y='"+(y+3)+"' " +
+            "text-anchor='middle' " +
+            "fill='#080b10' " +
+            "font-size='9'>" +
+            escapeSVG(autre) +
+            "</text>";
+
+    }
+
+
+    /*
+     centre
+    */
+
+    svg +=
+
+        "<circle " +
+        "cx='"+cx+"' " +
+        "cy='"+cy+"' " +
+        "r='32' " +
         "fill='#7c9cff'/>";
 
 
-    svg+=
-        "<text "+
-        "x='"+cx+"' "+
-        "y='"+(cy+4)+"' "+
-        "text-anchor='middle' "+
-        "fill='#0a0c10' "+
-        "font-size='13' "+
-        "font-weight='bold'>"+
-        escapeSVG(centre)+
+    svg +=
+
+        "<text " +
+        "x='"+cx+"' " +
+        "y='"+(cy+4)+"' " +
+        "text-anchor='middle' " +
+        "fill='#080b10' " +
+        "font-size='12' " +
+        "font-weight='bold'>" +
+        escapeSVG(centre) +
         "</text>";
 
 
     positions.forEach(
         node=>{
 
-            const taille=
+            const taille =
                 Math.max(
                     16,
                     Math.min(
                         27,
                         15+
                         Math.log1p(
-                            Number(
-                                node.poids
-                            )
-                        )*
-                        3
+                            node.poids
+                        )*3
                     )
                 );
 
 
-            svg+=
-                "<g class='node'>";
+            svg +=
 
-            svg+=
-                "<circle "+
-                "cx='"+node.x+"' "+
-                "cy='"+node.y+"' "+
-                "r='"+taille+"' "+
+                "<circle " +
+                "cx='"+node.x+"' " +
+                "cy='"+node.y+"' " +
+                "r='"+taille+"' " +
                 "fill='#3ecf6e'/>";
 
 
-            svg+=
-                "<text "+
-                "x='"+node.x+"' "+
-                "y='"+(node.y+4)+"' "+
-                "text-anchor='middle' "+
-                "fill='#0a0c10' "+
-                "font-size='10'>"+
-                escapeSVG(node.mot)+
+            svg +=
+
+                "<text " +
+                "x='"+node.x+"' " +
+                "y='"+(node.y+4)+"' " +
+                "text-anchor='middle' " +
+                "fill='#071009' " +
+                "font-size='9'>" +
+                escapeSVG(node.mot) +
                 "</text>";
 
-
-            svg+="</g>";
         }
     );
 
@@ -5232,32 +6323,35 @@ function construireGraphe(){
 
 
     zone.innerHTML=svg;
+
 }
 
 
 /* =========================================================
-   FORCE SÉMANTIQUE
+SLIDER
 ========================================================= */
 
 document
-.getElementById(
-    "forceSemantique"
-)
-.addEventListener(
-    "input",
-    function(){
+    .getElementById(
+        "forceSemantique"
+    )
+    .addEventListener(
+        "input",
+        function(){
 
-        document.getElementById(
-            "forceValue"
-        ).textContent=
-            this.value+
-            "%";
-    }
-);
+            document
+                .getElementById(
+                    "forceValue"
+                )
+                .textContent =
+                this.value+"%";
+
+        }
+    );
 
 
 /* =========================================================
-   REDIMENSIONNEMENT
+RESIZE
 ========================================================= */
 
 window.addEventListener(
@@ -5266,16 +6360,15 @@ window.addEventListener(
         ()=>{
             if(
                 document
-                .getElementById(
-                    "view-graphe"
-                )
-                .classList
-                .contains(
-                    "active"
-                )
+                    .getElementById(
+                        "view-graphe"
+                    )
+                    .classList
+                    .contains("active")
             ){
 
                 construireGraphe();
+
             }
         },
         250
@@ -5283,22 +6376,18 @@ window.addEventListener(
 );
 
 
-/* =========================================================
-   DEBOUNCE
-========================================================= */
-
 function debounce(
     fn,
     delai
 ){
 
-    let t;
+    let timer;
 
     return function(...args){
 
-        clearTimeout(t);
+        clearTimeout(timer);
 
-        t=
+        timer =
             setTimeout(
                 ()=>{
                     fn.apply(
@@ -5308,17 +6397,163 @@ function debounce(
                 },
                 delai
             );
+
     };
+
 }
 
 
 /* =========================================================
-   UTILITAIRES
+INFOS MEMOIRE
 ========================================================= */
 
-function isPonctuation(mot){
+function afficherInfosMemoire(){
+
+    document
+        .getElementById(
+            "nomFichier"
+        )
+        .textContent =
+        nomMemoire;
+
+
+    document
+        .getElementById(
+            "versionMemoire"
+        )
+        .textContent =
+        "v"+
+        memoire.version;
+
+
+    document
+        .getElementById(
+            "etatMemoire"
+        )
+        .textContent =
+        "🟢 Mémoire prête";
+
+
+    document
+        .getElementById(
+            "hdrTokens"
+        )
+        .textContent =
+        formatNombre(
+            memoire.statistiques.tokens
+        );
+
+
+    document
+        .getElementById(
+            "hdrVocab"
+        )
+        .textContent =
+        formatNombre(
+            Object.keys(
+                memoire.vocabulaire
+            ).length
+        );
+
+
+    afficherEtatWikipedia();
+
+
+    const sources =
+        memoire.statistiques.sources
+        || {};
+
+
+    let dominante="—";
+
+
+    if(
+        Number(sources.wikipedia||0) >
+        Number(sources.local||0)
+    ){
+
+        dominante="Wikipédia";
+
+    }
+    else if(
+        Number(sources.local||0)>0
+    ){
+
+        dominante="Corpus local";
+
+    }
+
+
+    document
+        .getElementById(
+            "sourceDominante"
+        )
+        .textContent =
+        dominante;
+
+}
+
+
+/* =========================================================
+UTILITAIRES
+========================================================= */
+
+function formatNombre(
+    nombre
+){
+
+    return Number(
+        nombre || 0
+    )
+    .toLocaleString(
+        "fr-FR"
+    );
+
+}
+
+
+function formatTaille(
+    octets
+){
+
+    if(octets<1024){
+        return octets+" o";
+    }
+
+    if(octets<1024*1024){
+
+        return (
+            octets/1024
+        ).toFixed(1)+" Ko";
+
+    }
+
+    if(
+        octets<
+        1024*1024*1024
+    ){
+
+        return (
+            octets/
+            (1024*1024)
+        ).toFixed(1)+" Mo";
+
+    }
+
+    return (
+        octets/
+        (1024*1024*1024)
+    ).toFixed(2)+" Go";
+
+}
+
+
+function isPonctuation(
+    mot
+){
 
     return [
+
         ".",
         ",",
         "!",
@@ -5331,50 +6566,15 @@ function isPonctuation(mot){
         "]",
         "«",
         "»"
+
     ].includes(mot);
+
 }
 
 
-function formatNombre(nombre){
-
-    return Number(
-        nombre||0
-    ).toLocaleString(
-        "fr-FR"
-    );
-}
-
-
-function formatOctets(octets){
-
-    const n=
-        Number(octets||0);
-
-    if(n<1024){
-        return n+" o";
-    }
-
-    if(n<1024*1024){
-        return (
-            n/1024
-        ).toFixed(1)+" Ko";
-    }
-
-    if(n<1024*1024*1024){
-        return (
-            n/
-            (1024*1024)
-        ).toFixed(1)+" Mo";
-    }
-
-    return (
-        n/
-        (1024*1024*1024)
-    ).toFixed(2)+" Go";
-}
-
-
-function escapeHTML(texte){
+function escapeHTML(
+    texte
+){
 
     return String(texte)
 
@@ -5402,10 +6602,13 @@ function escapeHTML(texte){
             /'/g,
             "&#039;"
         );
+
 }
 
 
-function escapeSVG(texte){
+function escapeSVG(
+    texte
+){
 
     return String(texte)
 
@@ -5433,12 +6636,15 @@ function escapeSVG(texte){
             /'/g,
             "&apos;"
         );
+
 }
 
 
 /* =========================================================
-   INITIALISATION
+INITIALISATION
 ========================================================= */
+
+initialiserCognitive();
 
 afficherInfosMemoire();
 
@@ -5448,104 +6654,16 @@ afficherEtatWikipedia();
 
 rafraichirEtatGenerer();
 
+journaliser(
+    "🧠 IA Française V6 initialisée."
+);
 
-/*
- Tentative de restauration automatique
- de la dernière mémoire locale.
+journaliser(
+    "🛡️ Mode non destructif activé."
+);
 
- IMPORTANT :
- cela ne remplace pas le fichier JSON.
- C'est simplement un filet de sécurité.
-*/
-
-setTimeout(
-    async ()=>{
-        try{
-
-            const db=
-                await ouvrirDB();
-
-            const tx=
-                db.transaction(
-                    "memoire",
-                    "readonly"
-                );
-
-            const request=
-                tx.objectStore(
-                    "memoire"
-                )
-                .get("principale");
-
-
-            request.onsuccess=
-                function(){
-
-                    if(
-                        request.result &&
-                        Number(
-                            request.result
-                            .statistiques
-                            .tokens || 0
-                        )>0
-                    ){
-
-                        const reprendre=
-                            confirm(
-                                "Une mémoire V6 locale a été trouvée avec "+
-                                formatNombre(
-                                    request.result
-                                    .statistiques
-                                    .tokens
-                                )+
-                                " tokens.\n\n"+
-                                "Voulez-vous la restaurer ?"
-                            );
-
-
-                        if(reprendre){
-
-                            memoire=
-                                normaliserMemoire(
-                                    request.result
-                                );
-
-                            nomMemoire=
-                                "memoire_locale_v6";
-
-
-                            afficherInfosMemoire();
-
-                            afficherStats();
-
-                            rafraichirEtatGenerer();
-
-
-                            changerStatus(
-                                "ready",
-                                "🟢 Mémoire locale restaurée",
-                                "La dernière sauvegarde locale a été restaurée."
-                            );
-
-
-                            journaliser(
-                                "↩️ Restauration automatique terminée."
-                            );
-                        }
-                    }
-                };
-
-        }
-        catch(erreur){
-
-            /*
-             Rien à faire :
-             IndexedDB est simplement indisponible.
-            */
-        }
-
-    },
-    800
+journaliser(
+    "⚙️ Optimisation contrôlée activée."
 );
 
 </script>
