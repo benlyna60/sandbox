@@ -43,15 +43,18 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
 
             const data = await response.json();
 
-            // Sécurité : on vérifie que l'API a bien renvoyé du contenu valide
             if (data && data.status === 'ok' && data.items) {
                 data.items.forEach(item => {
                     const cleanTitle = item.title ? item.title.replace(/<[^>]*>/g, '').trim() : "";
                     
-                    // On cherche le contenu là où il se trouve (description, content, ou summary)
+                    // Récupération intelligente du contenu, ou repli propre sur le titre si vide
                     let rawContent = item.description || item.content || item.summary || "";
-                    const cleanDesc = rawContent.replace(/<[^>]*>/g, '').trim();
+                    let cleanDesc = rawContent.replace(/<[^>]*>/g, '').trim();
                     
+                    if (!cleanDesc) {
+                        cleanDesc = `Article de référence : "${cleanTitle}"`;
+                    }
+
                     const signature = item.link;
 
                     if (signature && !anciensTexte.includes(signature) && !nouveauxTexte.includes(signature)) {
@@ -66,10 +69,10 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
                 });
                 console.log(`✅ Succès : ${source.nom}`);
             } else {
-                console.log(`⚠️ Flux invalide ou rejeté par l'API pour : ${source.nom}`);
+                console.log(`⚠️ Flux rejeté ou vide pour : ${source.nom}`);
             }
 
-            // 🛑 Petite pause de 400ms pour ne pas saturer l'API externe (Rate Limit)
+            // Pause de 400ms pour protéger l'API externe contre le blocage de débit
             await new Promise(resolve => setTimeout(resolve, 400));
 
         } catch (e) {
@@ -117,7 +120,7 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
     <channel>
         <title>${titrePage}</title>
         <link>https://benlyna60.github.io/sandbox/</link>
-        <description>Base d'apprentissage massive et sécurisée</description>
+        <description>Base d'apprentissage massive, robuste et structurée</description>
         ${xmlItems}
     </channel>
 </rss>`;
@@ -161,7 +164,7 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
 </html>`;
 
     fs.writeFileSync(htmlPath, pageHtml);
-    console.log(`🎉 Mise à jour terminée avec succès !`);
+    console.log(`🎉 Mise à jour terminée avec succès et sans perte de données !`);
 }
 
 async function lancerToutesLesMisesAJour() {
