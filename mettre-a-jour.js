@@ -4,25 +4,23 @@ const path = require('path');
 function extraireAnciensArticles(filePath) {
     if (!fs.existsSync(filePath)) return "";
     const contenuActuel = fs.readFileSync(filePath, 'utf8');
-    const debut = contenuActuel.indexOf('<main id="feed-container">');
-    const fin = contenuActuel.lastIndexOf('</main>');
+    const debut = contenuActuel.indexOf('<div class="mw-parser-output">');
+    const fin = contenuActuel.lastIndexOf('</div');
     if (debut !== -1 && fin !== -1) {
-        return contenuActuel.substring(debut + '<main id="feed-container">'.length, fin).trim();
+        return contenuActuel.substring(debut + '<div class="mw-parser-output">'.length, fin).trim();
     }
     return "";
 }
 
-async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) {
+async function mettreAJourPage(nomFichier, titrePage, sources) {
     const filePath = `Source/${nomFichier}`;
-    const dataPath = filePath.replace('.html', '.json'); // Fichier de données pour l'interface
     const dir = path.dirname(filePath);
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
 
-    let anciensArticlesHtml = extraireAnciensArticles(filePath);
-    let nouveauxArticlesHtml = "";
-    let listeArticlesData = [];
+    let anciensHtml = extraireAnciensArticles(filePath);
+    let nouveauxHtml = "";
 
     for (let source of sources) {
         try {
@@ -32,34 +30,15 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
 
             if (data && data.items) {
                 data.items.slice(0, 5).forEach(item => {
-                    const dateObj = new Date(item.pubDate);
-                    const isoDate = !isNaN(dateObj) ? dateObj.toISOString().split('T')[0] : "";
+                    const cleanTitle = item.title ? item.title.replace(/<[^>]*>/g, '').trim() : "";
+                    const cleanDesc = item.description ? item.description.replace(/<[^>]*>/g, '').trim() : "";
                     const signature = `href="${item.link}"`;
-                    
-                    const descriptionComplete = item.description ? item.description.replace(/<[^>]*>/g, '').trim() : "";
 
-                    if (!anciensArticlesHtml.includes(signature) && !nouveauxArticlesHtml.includes(signature)) {
-                        // Le HTML pour ton site web
-                        nouveauxArticlesHtml += `
-                    <article class="article-item" data-date="${isoDate}" data-source="${source.nom}">
-                        <header class="article-header">
-                            <span class="article-source">${source.nom}</span>
-                            <time class="article-date" datetime="${isoDate}">${item.pubDate}</time>
-                        </header>
-                        <h2 class="article-title"><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h2>
-                        <div class="article-summary">
-                            <p>${descriptionComplete}</p>
-                        </div>
-                    </article>`;
-
-                        // Les données pures pour ton autre interface
-                        listeArticlesData.push({
-                            titre: item.title,
-                            lien: item.link,
-                            date: item.pubDate,
-                            source: source.nom,
-                            texte: descriptionComplete
-                        });
+                    if (!anciensHtml.includes(signature) && !nouveauxHtml.includes(signature)) {
+                        // Structure type article encyclopédique (style Wikipédia pur)
+                        nouveauxHtml += `
+    <h2><span class="mw-headline">${cleanTitle}</span></h2>
+    <p><b>Source (${source.nom}) - Publié le ${item.pubDate} :</b> ${cleanDesc} <a href="${item.link}" target="_blank">[Lire l'article complet]</a></p>`;
                     }
                 });
             }
@@ -68,62 +47,48 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
         }
     }
 
-    const feedTotal = nouveauxArticlesHtml + "\n" + anciensArticlesHtml;
+    const contenuTotal = nouveauxHtml + "\n" + anciensHtml;
 
-    // 1. Sauvegarde du site HTML public
-    const pageComplete = `<!DOCTYPE html>
+    // Design minimaliste style Wikipédia pour que le scraper lise directement le texte brut
+    const pageWiki = `<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${titrePage} - Archives</title>
+    <title>${titrePage} - Wikipédia</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; color: #1e293b; max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.7; }
-        header.site-header { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 5px solid ${couleurPrimaire}; }
-        h1 { margin: 0; font-size: 1.5rem; color: #0f172a; }
-        .article-item { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 22px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-        .article-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.85rem; color: #64748b; }
-        .article-source { background: #e2e8f0; color: #334155; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; }
-        .article-title { margin: 0 0 10px 0; font-size: 1.15rem; }
-        .article-title a { color: ${couleurPrimaire}; text-decoration: none; }
-        .article-title a:hover { text-decoration: underline; }
-        .article-summary { font-size: 0.95rem; color: #475569; border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 12px; }
+        body { font-family: sans-serif; margin: 40px; line-height: 1.6; color: #202122; max-width: 800px; }
+        h1 { border-bottom: 1px solid #a2a9b1; padding-bottom: 5px; font-size: 1.8em; }
+        h2 { font-size: 1.3em; border-bottom: 1px solid #eaecf0; padding-bottom: 3px; margin-top: 30px; }
+        p { margin-bottom: 15px; text-align: justify; }
+        a { color: #0645ad; text-decoration: none; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <header class="site-header">
+    <div id="content">
         <h1>${titrePage}</h1>
-    </header>
-    <main id="feed-container">
-${feedTotal}
-    </main>
+        <div class="mw-parser-output">
+${contenuTotal}
+        </div>
+    </div>
 </body>
 </html>`;
 
-    fs.writeFileSync(filePath, pageComplete);
-
-    // 2. Sauvegarde du fichier de données structurées pour ton interface
-    let anciensData = [];
-    if (fs.existsSync(dataPath)) {
-        try { anciensData = JSON.parse(fs.readFileSync(dataPath, 'utf8')); } catch(e){}
-    }
-    const dataTotale = [...listeArticlesData, ...anciensData];
-    fs.writeFileSync(dataPath, JSON.stringify(dataTotale, null, 2));
-
-    console.log(`Succès : ${filePath} et ${dataPath} mis à jour !`);
+    fs.writeFileSync(filePath, pageWiki);
+    console.log(`Succès : ${filePath} généré au format Wikipédia !`);
 }
 
 async function lancerToutesLesMisesAJour() {
-    await mettreAJourPage('journal.html', 'journal.io', '#2563eb', [
-        { nom: "Le Monde Actualités", url: "https://www.lemonde.fr/rss/une.xml" },
+    await mettreAJourPage('journal.html', 'Journal d\'actualités', [
+        { nom: "Le Monde", url: "https://www.lemonde.fr/rss/une.xml" },
         { nom: "24 Heures", url: "https://www.24hoursv.ca/rss" }
     ]);
 
-    await mettreAJourPage('eco.html', 'eco.io', '#059669', [
+    await mettreAJourPage('eco.html', 'Économie et Finances', [
         { nom: "Les Echos", url: "https://www.lesechos.fr/rss/rss_une.xml" }
     ]);
 
-    await mettreAJourPage('culture.html', 'culture.io', '#7c3aed', [
+    await mettreAJourPage('culture.html', 'Culture et Société', [
         { nom: "France Culture", url: "https://www.radiofrance.fr/franceculture/rss" }
     ]);
 }
