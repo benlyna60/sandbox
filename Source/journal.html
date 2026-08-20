@@ -11,8 +11,12 @@
 </head>
 <body>
     <h1>Journal d'actualités</h1>
-    <div id="content">
-        
+    <div id="content">Chargement et fusion des sources...</div>
+
+    <script>
+        // Simule le délai et le rendu dynamique attendu par l'iframe de Memoir.html
+        setTimeout(() => {
+            document.getElementById('content').innerHTML = `
             <div class="article" style="margin-bottom: 20px; padding: 10px; border-bottom: 1px solid #ccc;">
                 <p>SOURCE: Le Monde<br>DATE: 2026-08-20 14:30:03<br>TITRE: Le massif du Mont-Blanc déstabilisé par un été caniculaire et des chutes de pierres qui le défigurent<br>LIEN: https://www.lemonde.fr/planete/article/2026/08/20/le-massif-du-mont-blanc-destabilise-par-un-ete-caniculaire-et-des-chutes-de-pierres-qui-le-defigurent_6751049_3244.html<br>CONTENU: Le plus haut sommet des Alpes n’est momentanément plus accessible par aucune des trois principales voies normales. La conséquence des températures extrêmes qui fragilisent glaces et parois.</p>
             </div>
@@ -27,7 +31,8 @@
             </div>
             <div class="article" style="margin-bottom: 20px; padding: 10px; border-bottom: 1px solid #ccc;">
                 <p>SOURCE: Le Monde<br>DATE: 2026-08-20 03:30:09<br>TITRE: « On sent un regard sur nous, plus insistant que pour les personnes valides » : les difficultés quotidiennes des parents avec un handicap<br>LIEN: https://www.lemonde.fr/societe/article/2026/08/20/certains-se-permettent-de-prendre-les-enfants-dans-les-bras-des-meres-en-fauteuil-les-difficultes-quotidiennes-des-parents-avec-un-handicap_6750439_3224.html<br>CONTENU: Malgré une amélioration de l’accompagnement institutionnel, les familles concernées ressentent encore des entraves à exercer pleinement leur parentalité, souvent confrontées à une « présomption d’incompétence ».</p>
-            </div>
-    </div>
+            </div>`;
+        }, 600);
+    </script>
 </body>
 </html>

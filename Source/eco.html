@@ -11,8 +11,13 @@
 </head>
 <body>
     <h1>Économie et Finances</h1>
-    <div id="content">
-        
-    </div>
+    <div id="content">Chargement et fusion des sources...</div>
+
+    <script>
+        // Simule le délai et le rendu dynamique attendu par l'iframe de Memoir.html
+        setTimeout(() => {
+            document.getElementById('content').innerHTML = ``;
+        }, 600);
+    </script>
 </body>
 </html>
