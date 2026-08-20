@@ -2,14 +2,14 @@ name: Mettre a jour les flux statiques
 
 on:
   schedule:
-    - cron: '0 */3 * * *' # S'exécute automatiquement toutes les 3 heures
-  workflow_dispatch: # Te permet aussi de le lancer manuellement en 1 clic quand tu veux
+    - cron: '*/5 * * * *' # S'exécute toutes les 5 minutes
+  workflow_dispatch: # Te permet aussi de le forcer à la main en 1 clic
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Autorise l'assistant à modifier et enregistrer les fichiers sur ton dépôt
+      contents: write
     steps:
       - name: Récupérer le code du dépôt
         uses: actions/checkout@v4
