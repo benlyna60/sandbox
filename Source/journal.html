@@ -3,247 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>journal.io</title>
+    <title>journal.io - Archives</title>
     <style>
         :root {
-            --bg-color: #f4f6f8;
+            --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #2d3748;
-            --text-muted: #718096;
-            --primary: #3182ce;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #2563eb;
             --border: #e2e8f0;
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.7;
-        }
-
-        header {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            color: #1a202c;
-            letter-spacing: -0.5px;
-        }
-
-        .status-box {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            background: #edf2f7;
-            padding: 6px 12px;
-            border-radius: 20px;
-        }
-
-        #loading {
-            text-align: center;
-            font-style: italic;
-            color: var(--text-muted);
-            padding: 40px;
-            background: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .article-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 22px;
-            margin-bottom: 18px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-        }
-
-        .meta-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .source-tag {
-            font-size: 0.75rem;
-            background: #ebf8ff;
-            color: #2b6cb0;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .date {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.15rem;
-        }
-
-        h3 a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        h3 a:hover {
-            text-decoration: underline;
-        }
-
-        .article-content {
-            font-size: 0.95rem;
-            color: #4a5568;
-            margin-top: 10px;
-        }
-
-        .article-content p {
-            margin-bottom: 10px;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.7; }
+        header { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        h1 { margin: 0; font-size: 1.5rem; color: #0f172a; }
+        .article-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 22px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .meta-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .source-tag { font-size: 0.75rem; background: #e2e8f0; color: #334155; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
+        .date { font-size: 0.8rem; color: var(--text-muted); }
+        h3 { margin: 0 0 10px 0; font-size: 1.15rem; }
+        h3 a { color: var(--primary); text-decoration: none; }
+        h3 a:hover { text-decoration: underline; }
+        .article-content { font-size: 0.95rem; color: #475569; margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px; }
     </style>
 </head>
 <body>
+    <header><h1>journal.io</h1></header>
+    <div id="feed-container">
 
-    <header>
-        <h1>journal.io</h1>
-        <div class="status-box">Rafraîchissement dans : <span id="timer">30:00</span></div>
-    </header>
 
-    <div id="loading">Chargement et fusion de toutes les sources (actualités et analyses)...</div>
-    <div id="feed-container"></div>
-
-    <script>
-        // Catalogue complet : Actualités générales (Titres & Contexte) + Analyses (Textes longs)
-        const sourcesRSS = [
-            // --- Textes longs / Analyses de fond ---
-            { nom: "The Conversation", url: "https://theconversation.com/fr/articles.atom" },
-            { nom: "Le Devoir (Éditoriaux)", url: "https://www.ledevoir.com/rss/sections/editoriaux.xml" },
-            { nom: "Le Devoir (Idées)", url: "https://www.ledevoir.com/rss/sections/idees.xml" },
-
-            // --- Actualités Générales (France) ---
-            { nom: "Le Monde (Une)", url: "https://www.lemonde.fr/rss/une.xml" },
-            { nom: "Le Monde (International)", url: "https://www.lemonde.fr/international/rss_full.xml" },
-            { nom: "Le Figaro (Actu)", url: "https://www.lefigaro.fr/rss/figaro_actualites.xml" },
-            { nom: "Le Figaro (Éco)", url: "https://www.lefigaro.fr/rss/figaro_economie.xml" },
-            { nom: "France Info", url: "https://www.franceinfo.fr/titres.rss" },
-            { nom: "Libération", url: "https://www.liberation.fr/arc/outbound/rss/?outputType=xml" },
-            { nom: "BFMTV", url: "https://www.bfmtv.com/rss/info/flux-rss/flux-toutes-les-actualites/" },
-            
-            // --- Actualités Générales (Québec / Canada) ---
-            { nom: "La Presse (Actu)", url: "https://www.lapresse.ca/actualites/rss" },
-            { nom: "La Presse (Affaires)", url: "https://www.lapresse.ca/affaires/rss" },
-            { nom: "Radio-Canada", url: "https://ici.radio-canada.ca/rss/41" },
-            { nom: "Journal de Montréal", url: "https://www.journaldemontreal.com/rss.xml" },
-            { nom: "Journal de Québec", url: "https://www.journaldequebec.com/rss.xml" },
-
-            // --- Sciences & Tech ---
-            { nom: "Futura Sciences", url: "https://www.futura-sciences.com/rss/actualites.xml" },
-            { nom: "Numerama", url: "https://www.numerama.com/feed/" },
-            { nom: "Sciences et Avenir", url: "https://www.sciencesetavenir.fr/rss.xml" }
-        ];
-
-        async function fetchAllFeeds() {
-            const container = document.getElementById('feed-container');
-            const loading = document.getElementById('loading');
-            let allArticles = [];
-
-            for (let source of sourcesRSS) {
-                try {
-                    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
-                    const response = await fetch(apiUrl);
-                    const data = await response.json();
-
-                    if (data.status === 'ok' && data.items) {
-                        data.items.forEach(item => {
-                            // Récupère le texte complet s'il existe (ex: The Conversation), sinon prend la description
-                            let texte = item.content || item.description || "";
-                            texte = texte.replace(/<img[^>]*>/gi, ""); // Nettoyage images
-
-                            allArticles.push({
-                                sourceName: source.nom,
-                                title: item.title,
-                                link: item.link,
-                                pubDate: new Date(item.pubDate),
-                                content: texte
-                            });
-                        });
-                    }
-                } catch (e) {
-                    console.error(`Impossible de charger ${source.nom}:`, e);
-                }
-            }
-
-            // Trier du plus récent au plus ancien
-            allArticles.sort((a, b) => b.pubDate - a.pubDate);
-
-            container.innerHTML = '';
-            loading.style.display = 'none';
-
-            if (allArticles.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:20px;">Aucun article disponible pour le moment.</p>';
-                return;
-            }
-
-            // Affichage de toutes les cartes unifiées
-            allArticles.forEach(art => {
-                const card = document.createElement('div');
-                card.className = 'article-card';
-                
-                const dateString = isNaN(art.pubDate) ? "" : art.pubDate.toLocaleDateString('fr-FR', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                });
-                
-                const timeString = isNaN(art.pubDate) ? "" : art.pubDate.toLocaleTimeString('fr-FR', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                });
-
-                card.innerHTML = `
-                    <div class="meta-info">
-                        <span class="source-tag">${art.sourceName}</span>
-                        <span class="date">${dateString} à ${timeString}</span>
-                    </div>
-                    <h3><a href="${art.link}" target="_blank" rel="noopener noreferrer">${art.title}</a></h3>
-                    <div class="article-content">${art.content}</div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // Lancer au démarrage
-        fetchAllFeeds();
-
-        // Actualisation automatique toutes les 30 minutes
-        const updateInterval = 30 * 60 * 1000;
-        setInterval(fetchAllFeeds, updateInterval);
-
-        // Compteur visuel
-        let timeLeft = 30 * 60;
-        setInterval(() => {
-            timeLeft--;
-            if (timeLeft < 0) timeLeft = 30 * 60;
-            let mins = Math.floor(timeLeft / 60);
-            let secs = timeLeft % 60;
-            document.getElementById('timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }, 1000);
-    </script>
+    </div>
 </body>
 </html>

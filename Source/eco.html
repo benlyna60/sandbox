@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eco.io (Archives)</title>
+    <title>eco.io - Archives</title>
     <style>
         :root {
             --bg-color: #f8fafc;
@@ -13,36 +13,12 @@
             --primary: #059669;
             --border: #e2e8f0;
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.7;
-        }
-        header {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.7; }
+        header { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 25px; }
         h1 { margin: 0; font-size: 1.5rem; color: #0f172a; }
-        .controls { display: flex; gap: 10px; align-items: center; }
-        .status-box, .btn-clear { font-size: 0.85rem; color: var(--text-muted); background: #f1f5f9; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); }
-        .btn-clear { cursor: pointer; background: #fee2e2; color: #991b1b; border-color: #fecaca; }
-        .btn-clear:hover { background: #fecaca; }
-        #loading { text-align: center; font-style: italic; color: var(--text-muted); padding: 40px; background: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .article-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 22px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
         .meta-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .source-tag { font-size: 0.75rem; background: #d1fae5; color: #065f46; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
+        .source-tag { font-size: 0.75rem; background: #e2e8f0; color: #334155; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
         .date { font-size: 0.8rem; color: var(--text-muted); }
         h3 { margin: 0 0 10px 0; font-size: 1.15rem; }
         h3 a { color: var(--primary); text-decoration: none; }
@@ -51,113 +27,10 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>eco.io</h1>
-        <div class="controls">
-            <button class="btn-clear" onclick="clearHistory()">Vider l'historique</button>
-            <div class="status-box">Prochain scan dans : <span id="timer">30:00</span></div>
-        </div>
-    </header>
-    <div id="loading">Chargement et fusion avec les archives locales...</div>
-    <div id="feed-container"></div>
-    <script>
-        const sourcesRSS = [
-            { nom: "Le Figaro Économie", url: "https://www.lefigaro.fr/rss/figaro_economie.xml", type: "long" },
-            { nom: "La Presse Affaires", url: "https://www.lapresse.ca/affaires/rss", type: "long" },
-            { nom: "Radio-Canada Économie", url: "https://ici.radio-canada.ca/rss/6", type: "titre" }
-        ];
+    <header><h1>eco.io</h1></header>
+    <div id="feed-container">
 
-        const STORAGE_KEY = 'eco_io_archives';
 
-        async function fetchAllFeeds() {
-            const container = document.getElementById('feed-container');
-            const loading = document.getElementById('loading');
-            
-            // 1. Récupérer l'historique existant depuis la mémoire du navigateur
-            let savedArticles = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            let articleMap = new Map();
-
-            // Remplir la Map avec l'historique (clé unique = lien de l'article pour éviter les doublons)
-            savedArticles.forEach(art => {
-                art.pubDate = new Date(art.pubDate); // Re convertir en objet Date
-                articleMap.set(art.link, art);
-            });
-
-            // 2. Télécharger les flux frais du jour
-            for (let source of sourcesRSS) {
-                try {
-                    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
-                    const response = await fetch(apiUrl);
-                    const data = await response.json();
-                    if (data.status === 'ok' && data.items) {
-                        data.items.forEach(item => {
-                            let texteFinal = "";
-                            if (source.type === "long") {
-                                texteFinal = (item.content || item.description || "").replace(/<img[^>]*>/gi, "");
-                            }
-                            
-                            // On ajoute ou met à jour l'article dans la Map
-                            articleMap.set(item.link, {
-                                sourceName: source.nom,
-                                title: item.title,
-                                link: item.link,
-                                pubDate: new Date(item.pubDate),
-                                content: texteFinal,
-                                type: source.type
-                            });
-                        });
-                    }
-                } catch (e) { console.error(e); }
-            }
-
-            // 3. Convertir la Map en tableau et trier du plus récent au plus ancien
-            let allArticles = Array.from(articleMap.values());
-            allArticles.sort((a, b) => b.pubDate - a.pubDate);
-
-            // 4. Sauvegarder la nouvelle liste complète dans la mémoire persistante du navigateur
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(allArticles));
-
-            // 5. Affichage
-            container.innerHTML = '';
-            loading.style.display = 'none';
-
-            if (allArticles.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:20px;">Aucun article en mémoire.</p>';
-                return;
-            }
-
-            allArticles.forEach(art => {
-                const card = document.createElement('div');
-                card.className = 'article-card';
-                const dateString = isNaN(art.pubDate) ? "" : art.pubDate.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                const timeString = isNaN(art.pubDate) ? "" : art.pubDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-                
-                let htmlContent = `<div class="meta-info"><span class="source-tag">${art.sourceName}</span><span class="date">${dateString} à ${timeString}</span></div><h3><a href="${art.link}" target="_blank" rel="noopener noreferrer">${art.title}</a></h3>`;
-                if (art.type === "long" && art.content && art.content.trim() !== "") {
-                    htmlContent += `<div class="article-content">${art.content}</div>`;
-                }
-                card.innerHTML = htmlContent;
-                container.appendChild(card);
-            });
-        }
-
-        // Fonction pour réinitialiser la mémoire si besoin
-        function clearHistory() {
-            if (confirm("Voulez-vous vraiment effacer l'historique des articles enregistrés ?")) {
-                localStorage.removeItem(STORAGE_KEY);
-                location.reload();
-            }
-        }
-
-        fetchAllFeeds();
-        setInterval(fetchAllFeeds, 1800000);
-
-        let timeLeft = 1800;
-        setInterval(() => {
-            timeLeft--; if (timeLeft < 0) timeLeft = 1800;
-            let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
-            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-        }, 1000);
-    </script>
+    </div>
 </body>
 </html>
