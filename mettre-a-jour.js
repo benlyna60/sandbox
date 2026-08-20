@@ -40,7 +40,8 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
             const data = await response.json();
 
             if (data && data.items) {
-                data.items.slice(0, 5).forEach(item => {
+                // Tous les articles sont pris en compte (plus de .slice de limitation)
+                data.items.forEach(item => {
                     const cleanTitle = item.title ? item.title.replace(/<[^>]*>/g, '').trim() : "";
                     const cleanDesc = item.description ? item.description.replace(/<[^>]*>/g, '').trim() : "";
                     const signature = item.link;
@@ -55,7 +56,7 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
                             source: source.nom
                         });
 
-                        // Format texte brut ultra-lisible pour l'entraînement de modèles
+                        // Format texte brut accumulé
                         nouveauxTexte += `\n----------------------------------------\n`;
                         nouveauxTexte += `SOURCE: ${source.nom}\n`;
                         nouveauxTexte += `DATE: ${item.pubDate}\n`;
@@ -72,12 +73,11 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
 
     const texteTotal = nouveauxTexte + "\n" + anciensTexte;
 
-    // 1. Sauvegarde du fichier Texte Brut
+    // 1. Sauvegarde du fichier Texte Brut cumulé
     fs.writeFileSync(txtPath, texteTotal.trim());
 
-    // 2. Génération d'un vrai fichier XML (Flux RSS valide pour ton interface)
+    // 2. Génération du fichier XML (Flux RSS avec l'historique complet)
     let xmlItems = ``;
-    // On extrait les blocs du texte total pour alimenter le flux XML proprement
     const blocsArticles = texteTotal.split('----------------------------------------');
     blocsArticles.forEach(morceau => {
         if (morceau.trim()) {
@@ -116,7 +116,7 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
 
     fs.writeFileSync(xmlPath, fluxRssXml.trim());
 
-    // 3. Transformation du texte en blocs HTML structurés
+    // 3. Transformation en blocs HTML
     let articlesHtmlBlock = "";
     blocsArticles.forEach(morceau => {
         if (morceau.trim()) {
@@ -129,7 +129,7 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
 
     const contenuSecurise = articlesHtmlBlock.replace(/`/g, '\\`').replace(/\$/g, '\\$');
 
-    // 4. Sauvegarde du fichier HTML avec simulation dynamique pour l'iframe
+    // 4. Sauvegarde du fichier HTML
     const pageHtml = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -154,11 +154,12 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
 </html>`;
 
     fs.writeFileSync(htmlPath, pageHtml);
-    console.log(`Succès : ${htmlPath}, ${txtPath} et ${xmlPath} mis à jour !`);
+    console.log(`Succès : ${htmlPath}, ${txtPath} et ${xmlPath} mis à jour avec accumulation !`);
 }
 
 async function lancerToutesLesMisesAJour() {
     await mettreAJourPage('journal.html', 'Journal d\'actualités', [
+        { nom: "Radio-Canada", url: "https://ici.radio-canada.ca/abonnement/rss/config.code.asap" },
         { nom: "Le Monde", url: "https://www.lemonde.fr/rss/une.xml" },
         { nom: "24 Heures", url: "https://www.24hoursv.ca/rss" }
     ]);
