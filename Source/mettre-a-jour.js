@@ -1,9 +1,29 @@
 const fs = require('fs');
 
-// Fonction générique pour récupérer les flux et générer le HTML d'une page
-async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) {
-    let articlesHtml = "";
+// Fonction pour extraire les articles existants du fichier HTML afin de ne rien perdre
+function extraireAnciensArticles(filePath) {
+    if (!fs.existsSync(filePath)) return "";
+    const contenuActuel = fs.readFileSync(filePath, 'utf8');
+    
+    // On repère la zone où sont stockés les articles (entre les balises du conteneur)
+    const debut = contenuActuel.indexOf('<div id="feed-container">');
+    const fin = contenuActuel.lastIndexOf('</div>\n</body>');
+    
+    if (debut !== -1 && fin !== -1) {
+        // On récupère tout ce qui est déjà dedans
+        return contenuActuel.substring(debut + '<div id="feed-container">'.length, fin).trim();
+    }
+    return "";
+}
 
+async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) {
+    const filePath = `Source/${nomFichier}`;
+    
+    // 1. On récupère la mémoire actuelle de la page (les anciens articles)
+    let anciensArticlesHtml = extraireAnciensArticles(filePath);
+    let nouveauxArticlesHtml = "";
+
+    // 2. On va chercher les flux du web
     for (let source of sources) {
         try {
             const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
@@ -15,7 +35,12 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
                     const dateObj = new Date(item.pubDate);
                     const isoDate = !isNaN(dateObj) ? dateObj.toISOString().split('T')[0] : "";
                     
-                    articlesHtml += `
+                    // On crée une signature unique pour éviter les doublons (basée sur le lien de l'article)
+                    const signature = `href="${item.link}"`;
+                    
+                    // Si l'article n'est ni dans les nouveaux en cours, ni déjà dans les anciens, on l'ajoute
+                    if (!anciensArticlesHtml.includes(signature) && !nouveauxArticlesHtml.includes(signature)) {
+                        nouveauxArticlesHtml += `
                     <div class="article-card" data-date="${isoDate}" data-source="${source.nom}">
                         <div class="meta-info">
                             <span class="source-tag">${source.nom}</span>
@@ -24,6 +49,7 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
                         <h3><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h3>
                         <div class="article-content">${item.description || ''}</div>
                     </div>`;
+                    }
                 });
             }
         } catch (e) {
@@ -31,6 +57,10 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
         }
     }
 
+    // 3. On combine les NOUVEAUX articles tout en haut, suivis de TOUS les ANCIENS (mémoire infinie)
+    const feedTotal = nouveauxArticlesHtml + "\n" + anciensArticlesHtml;
+
+    // 4. On reconstruit la page complète
     const pageComplete = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -61,30 +91,28 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
 </head>
 <body>
     <header><h1>${titrePage}</h1></header>
-    <div id="feed-container">${articlesHtml}</div>
+    <div id="feed-container">
+${feedTotal}
+    </div>
 </body>
 </html>`;
 
-    // Écrit le fichier directement dans le dossier Source
-    fs.writeFileSync(`Source/${nomFichier}`, pageComplete);
-    console.log(`Fichier Source/${nomFichier} mis à jour !`);
+    // 5. On sauvegarde le fichier qui s'allonge un peu plus chaque jour
+    fs.writeFileSync(filePath, pageComplete);
+    console.log(`Fichier ${filePath} mis à jour avec accumulation !`);
 }
 
-// Fonction principale qui enchaîne les trois pages
 async function lancerToutesLesMisesAJour() {
-    // 1. Journal
     await mettreAJourPage('journal.html', 'journal.io', '#2563eb', [
         { nom: "Radio-Canada Actualités", url: "https://ici.radio-canada.ca/rss/1" },
         { nom: "Le Figaro Actualité", url: "https://www.lefigaro.fr/rss/figaro_actualites.xml" }
     ]);
 
-    // 2. Économie
     await mettreAJourPage('eco.html', 'eco.io', '#059669', [
         { nom: "La Presse Affaires", url: "https://www.lapresse.ca/affaires/rss" },
         { nom: "Le Figaro Économie", url: "https://www.lefigaro.fr/rss/figaro_economie.xml" }
     ]);
 
-    // 3. Culture
     await mettreAJourPage('culture.html', 'culture.io', '#7c3aed', [
         { nom: "Radio-Canada Culture", url: "https://ici.radio-canada.ca/rss/13" },
         { nom: "Le Figaro Culture", url: "https://www.lefigaro.fr/rss/figaro_culture.xml" }
