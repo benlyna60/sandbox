@@ -64,7 +64,20 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
     // 1. Sauvegarde du fichier Texte Brut
     fs.writeFileSync(txtPath, texteTotal.trim());
 
-    // 2. Sauvegarde du fichier HTML statique (avec le contenu déjà présent pour ton interface)
+    // 2. Transformation du texte en blocs HTML structurés pour ton interface
+    let articlesHtmlBlock = "";
+    const blocsArticles = texteTotal.split('----------------------------------------');
+    
+    blocsArticles.forEach(morceau => {
+        if (morceau.trim()) {
+            articlesHtmlBlock += `
+            <div class="article" style="margin-bottom: 20px; padding: 10px; border-bottom: 1px solid #ccc;">
+                <p>${morceau.trim().replace(/\n/g, '<br>')}</p>
+            </div>`;
+        }
+    });
+
+    // Sauvegarde du fichier HTML statique structuré
     const pageHtml = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -74,13 +87,12 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
         body { font-family: sans-serif; margin: 40px; line-height: 1.6; color: #202122; max-width: 800px; }
         h1 { border-bottom: 1px solid #a2a9b1; padding-bottom: 5px; }
         .article { margin-bottom: 30px; border-bottom: 1px solid #eaecf0; padding-bottom: 20px; }
-        .meta { font-size: 0.85em; color: #54595d; margin-bottom: 8px; }
     </style>
 </head>
 <body>
     <h1>${titrePage}</h1>
     <div id="content">
-        <pre style="white-space: pre-wrap; font-family: inherit;">${texteTotal}</pre>
+        ${articlesHtmlBlock}
     </div>
 </body>
 </html>`;
