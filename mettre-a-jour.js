@@ -6,6 +6,20 @@ function extraireAnciensArticles(filePath) {
     return fs.readFileSync(filePath, 'utf8');
 }
 
+// Fonction fetch sécurisée avec timeout pour éviter les blocages de flux
+async function fetchAvecTimeout(url, options = {}, timeout = 8000) {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    try {
+        const response = await fetch(url, { ...options, signal: controller.signal });
+        clearTimeout(id);
+        return response;
+    } catch (e) {
+        clearTimeout(id);
+        throw e;
+    }
+}
+
 async function mettreAJourPage(nomFichier, titrePage, sources) {
     const htmlPath = `Source/${nomFichier}`;
     const txtPath = `Source/${nomFichier.replace('.html', '.txt')}`;
@@ -20,7 +34,7 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
     for (let source of sources) {
         try {
             const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
-            const response = await fetch(apiUrl);
+            const response = await fetchAvecTimeout(apiUrl);
             const data = await response.json();
 
             if (data && data.items) {
@@ -41,16 +55,16 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
                 });
             }
         } catch (e) {
-            console.error(`Erreur sur ${source.nom}:`, e);
+            console.error(`Erreur ou délai dépassé sur ${source.nom}:`, e.message);
         }
     }
 
     const texteTotal = nouveauxTexte + "\n" + anciensTexte;
 
-    // 1. Sauvegarde du fichier Texte Brut (idéal pour l'outil d'entraînement)
+    // 1. Sauvegarde du fichier Texte Brut
     fs.writeFileSync(txtPath, texteTotal.trim());
 
-    // 2. Sauvegarde du fichier HTML classique pour ton site public
+    // 2. Sauvegarde du fichier HTML statique (avec le contenu déjà présent pour ton interface)
     const pageHtml = `<!DOCTYPE html>
 <html lang="fr">
 <head>
