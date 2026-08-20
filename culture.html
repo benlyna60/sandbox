@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>culture.io</title>
+    <style>
+        :root {
+            --bg-color: #fafaf9;
+            --card-bg: #ffffff;
+            --text-main: #292524;
+            --text-muted: #78716c;
+            --primary: #d97706;
+            --border: #e7e5e4;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.7;
+        }
+        header {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        h1 { margin: 0; font-size: 1.5rem; color: #1c1917; }
+        .status-box { font-size: 0.85rem; color: var(--text-muted); background: #f5f5f4; padding: 6px 12px; border-radius: 20px; }
+        #loading { text-align: center; font-style: italic; color: var(--text-muted); padding: 40px; background: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .article-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 22px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .meta-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .source-tag { font-size: 0.75rem; background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
+        .date { font-size: 0.8rem; color: var(--text-muted); }
+        h3 { margin: 0 0 10px 0; font-size: 1.15rem; }
+        h3 a { color: var(--primary); text-decoration: none; }
+        h3 a:hover { text-decoration: underline; }
+        .article-content { font-size: 0.95rem; color: #44403c; margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>culture.io</h1>
+        <div class="status-box">Rafraîchissement dans : <span id="timer">30:00</span></div>
+    </header>
+    <div id="loading">Chargement des flux culturels...</div>
+    <div id="feed-container"></div>
+    <script>
+        const sourcesRSS = [
+            { nom: "Le Monde Culture", url: "https://www.lemonde.fr/culture/rss_full.xml", type: "long" },
+            { nom: "Le Figaro Culture", url: "https://www.lefigaro.fr/rss/figaro_culture.xml", type: "long" },
+            { nom: "Radio-Canada Culture", url: "https://ici.radio-canada.ca/rss/12", type: "titre" },
+            { nom: "Télérama", url: "https://www.telerama.fr/rss/flux_telerama.xml", type: "titre" }
+        ];
+        async function fetchAllFeeds() {
+            const container = document.getElementById('feed-container');
+            const loading = document.getElementById('loading');
+            let allArticles = [];
+            for (let source of sourcesRSS) {
+                try {
+                    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
+                    const response = await fetch(apiUrl);
+                    const data = await response.json();
+                    if (data.status === 'ok' && data.items) {
+                        data.items.forEach(item => {
+                            let texteFinal = "";
+                            if (source.type === "long") {
+                                texteFinal = (item.content || item.description || "").replace(/<img[^>]*>/gi, "");
+                            }
+                            allArticles.push({ sourceName: source.nom, title: item.title, link: item.link, pubDate: new Date(item.pubDate), content: texteFinal, type: source.type });
+                        });
+                    }
+                } catch (e) { console.error(e); }
+            }
+            allArticles.sort((a, b) => b.pubDate - a.pubDate);
+            container.innerHTML = '';
+            loading.style.display = 'none';
+            allArticles.forEach(art => {
+                const card = document.createElement('div');
+                card.className = 'article-card';
+                const dateString = isNaN(art.pubDate) ? "" : art.pubDate.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                const timeString = isNaN(art.pubDate) ? "" : art.pubDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                let htmlContent = `<div class="meta-info"><span class="source-tag">${art.sourceName}</span><span class="date">${dateString} à ${timeString}</span></div><h3><a href="${art.link}" target="_blank" rel="noopener noreferrer">${art.title}</a></h3>`;
+                if (art.type === "long" && art.content.trim() !== "") htmlContent += `<div class="article-content">${art.content}</div>`;
+                card.innerHTML = htmlContent;
+                container.appendChild(card);
+            });
+        }
+        fetchAllFeeds();
+        setInterval(fetchAllFeeds, 1800000);
+        let timeLeft = 1800;
+        setInterval(() => {
+            timeLeft--; if (timeLeft < 0) timeLeft = 1800;
+            let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+        }, 1000);
+    </script>
+</body>
+</html>
