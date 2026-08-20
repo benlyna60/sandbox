@@ -64,8 +64,8 @@
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 20px;
+            padding: 22px;
+            margin-bottom: 18px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
@@ -73,7 +73,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .source-tag {
@@ -93,8 +93,8 @@
         }
 
         h3 {
-            margin: 0 0 15px 0;
-            font-size: 1.25rem;
+            margin: 0 0 10px 0;
+            font-size: 1.15rem;
         }
 
         h3 a {
@@ -113,7 +113,7 @@
         }
 
         .article-content p {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -124,16 +124,37 @@
         <div class="status-box">Rafraîchissement dans : <span id="timer">30:00</span></div>
     </header>
 
-    <div id="loading">Chargement des articles de fond et des analyses...</div>
+    <div id="loading">Chargement et fusion de toutes les sources (actualités et analyses)...</div>
     <div id="feed-container"></div>
 
     <script>
-        // Sélection de sources axées sur l'analyse, la recherche et les textes longs
+        // Catalogue complet : Actualités générales (Titres & Contexte) + Analyses (Textes longs)
         const sourcesRSS = [
-            { nom: "The Conversation (France)", url: "https://theconversation.com/fr/articles.atom" },
+            // --- Textes longs / Analyses de fond ---
+            { nom: "The Conversation", url: "https://theconversation.com/fr/articles.atom" },
             { nom: "Le Devoir (Éditoriaux)", url: "https://www.ledevoir.com/rss/sections/editoriaux.xml" },
             { nom: "Le Devoir (Idées)", url: "https://www.ledevoir.com/rss/sections/idees.xml" },
-            { nom: "Futura Sciences (Analyses)", url: "https://www.futura-sciences.com/rss/actualites.xml" }
+
+            // --- Actualités Générales (France) ---
+            { nom: "Le Monde (Une)", url: "https://www.lemonde.fr/rss/une.xml" },
+            { nom: "Le Monde (International)", url: "https://www.lemonde.fr/international/rss_full.xml" },
+            { nom: "Le Figaro (Actu)", url: "https://www.lefigaro.fr/rss/figaro_actualites.xml" },
+            { nom: "Le Figaro (Éco)", url: "https://www.lefigaro.fr/rss/figaro_economie.xml" },
+            { nom: "France Info", url: "https://www.franceinfo.fr/titres.rss" },
+            { nom: "Libération", url: "https://www.liberation.fr/arc/outbound/rss/?outputType=xml" },
+            { nom: "BFMTV", url: "https://www.bfmtv.com/rss/info/flux-rss/flux-toutes-les-actualites/" },
+            
+            // --- Actualités Générales (Québec / Canada) ---
+            { nom: "La Presse (Actu)", url: "https://www.lapresse.ca/actualites/rss" },
+            { nom: "La Presse (Affaires)", url: "https://www.lapresse.ca/affaires/rss" },
+            { nom: "Radio-Canada", url: "https://ici.radio-canada.ca/rss/41" },
+            { nom: "Journal de Montréal", url: "https://www.journaldemontreal.com/rss.xml" },
+            { nom: "Journal de Québec", url: "https://www.journaldequebec.com/rss.xml" },
+
+            // --- Sciences & Tech ---
+            { nom: "Futura Sciences", url: "https://www.futura-sciences.com/rss/actualites.xml" },
+            { nom: "Numerama", url: "https://www.numerama.com/feed/" },
+            { nom: "Sciences et Avenir", url: "https://www.sciencesetavenir.fr/rss.xml" }
         ];
 
         async function fetchAllFeeds() {
@@ -149,18 +170,16 @@
 
                     if (data.status === 'ok' && data.items) {
                         data.items.forEach(item => {
-                            // On récupère le contenu complet (content) ou à défaut la description
-                            let texteIntegral = item.content || item.description || "";
-                            
-                            // Nettoyage basique pour enlever les balises d'images ou scripts indésirables si besoin
-                            texteIntegral = texteIntegral.replace(/<img[^>]*>/gi, "");
+                            // Récupère le texte complet s'il existe (ex: The Conversation), sinon prend la description
+                            let texte = item.content || item.description || "";
+                            texte = texte.replace(/<img[^>]*>/gi, ""); // Nettoyage images
 
                             allArticles.push({
                                 sourceName: source.nom,
                                 title: item.title,
                                 link: item.link,
                                 pubDate: new Date(item.pubDate),
-                                content: texteIntegral
+                                content: texte
                             });
                         });
                     }
@@ -173,14 +192,14 @@
             allArticles.sort((a, b) => b.pubDate - a.pubDate);
 
             container.innerHTML = '';
-            loading.style.display ='none';
+            loading.style.display = 'none';
 
             if (allArticles.length === 0) {
                 container.innerHTML = '<p style="text-align:center; padding:20px;">Aucun article disponible pour le moment.</p>';
                 return;
             }
 
-            // Affichage des cartes avec le texte complet
+            // Affichage de toutes les cartes unifiées
             allArticles.forEach(art => {
                 const card = document.createElement('div');
                 card.className = 'article-card';
@@ -209,11 +228,14 @@
             });
         }
 
+        // Lancer au démarrage
         fetchAllFeeds();
 
+        // Actualisation automatique toutes les 30 minutes
         const updateInterval = 30 * 60 * 1000;
         setInterval(fetchAllFeeds, updateInterval);
 
+        // Compteur visuel
         let timeLeft = 30 * 60;
         setInterval(() => {
             timeLeft--;
