@@ -6,7 +6,6 @@ function extraireAnciensArticles(filePath) {
     return fs.readFileSync(filePath, 'utf8');
 }
 
-// Fonction fetch sécurisée avec timeout pour éviter les blocages de flux
 async function fetchAvecTimeout(url, options = {}, timeout = 8000) {
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);
@@ -36,15 +35,22 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
         try {
             const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
             const response = await fetchAvecTimeout(apiUrl);
+            
+            if (!response.ok) {
+                console.log(`⚠️ Source ignorée (Erreur HTTP ${response.status}) : ${source.nom}`);
+                continue;
+            }
+
             const data = await response.json();
 
-            if (data && data.items) {
+            // Sécurité : on vérifie que l'API a bien renvoyé du contenu valide et pas une erreur de l'API elle-même
+            if (data && data.status === 'ok' && data.items) {
                 data.items.forEach(item => {
                     const cleanTitle = item.title ? item.title.replace(/<[^>]*>/g, '').trim() : "";
                     const cleanDesc = item.description ? item.description.replace(/<[^>]*>/g, '').trim() : "";
                     const signature = item.link;
 
-                    if (!anciensTexte.includes(signature) && !nouveauxTexte.includes(signature)) {
+                    if (signature && !anciensTexte.includes(signature) && !nouveauxTexte.includes(signature)) {
                         nouveauxTexte += `\n----------------------------------------\n`;
                         nouveauxTexte += `CATEGORIE: ${source.categorie}\n`;
                         nouveauxTexte += `SOURCE: ${source.nom}\n`;
@@ -54,18 +60,22 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
                         nouveauxTexte += `CONTENU: ${cleanDesc}\n`;
                     }
                 });
+                console.log(`✅ Succès : ${source.nom}`);
+            } else {
+                console.log(`⚠️ Flux invalide ou rejeté par l'API pour : ${source.nom}`);
             }
         } catch (e) {
-            console.error(`Erreur ou délai dépassé sur ${source.nom}:`, e.message);
+            // Si une source plante, le script l'affiche dans les logs mais CONTINUE avec les autres !
+            console.log(`❌ Erreur sur ${source.nom}: ${e.message}`);
         }
     }
 
     const texteTotal = nouveauxTexte + "\n" + anciensTexte;
 
-    // 1. Sauvegarde du fichier Texte Brut unifié, catégorisé et cumulé
+    // 1. Sauvegarde du fichier Texte Brut unifié
     fs.writeFileSync(txtPath, texteTotal.trim());
 
-    // 2. Génération du fichier XML global avec les catégories
+    // 2. Génération du fichier XML global
     let xmlItems = ``;
     const blocsArticles = texteTotal.split('----------------------------------------');
     blocsArticles.forEach(morceau => {
@@ -100,7 +110,7 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
     <channel>
         <title>${titrePage}</title>
         <link>https://benlyna60.github.io/sandbox/</link>
-        <description>Base d'apprentissage massive, multi-sources et multi-catégories</description>
+        <description>Base d'apprentissage massive et sécurisée</description>
         ${xmlItems}
     </channel>
 </rss>`;
@@ -133,7 +143,7 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
 </head>
 <body>
     <h1>${titrePage}</h1>
-    <div id="content">Chargement de la base d'apprentissage massive...</div>
+    <div id="content">Chargement de la base d'apprentissage...</div>
 
     <script>
         setTimeout(() => {
@@ -144,13 +154,12 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
 </html>`;
 
     fs.writeFileSync(htmlPath, pageHtml);
-    console.log(`Succès : Base massive mise à jour avec toutes les sources !`);
+    console.log(`🎉 Mise à jour terminée avec succès !`);
 }
 
 async function lancerToutesLesMisesAJour() {
-    // La liste exhaustive et massive de toutes les sources fiables (Canada, France, International)
     const toutesLesSources = [
-        // --- ACTUALITÉS & MÉDIAS GÉNÉRAUX (QUÉBEC & INTERNATIONAL) ---
+        // --- ACTUALITÉS & MÉDIAS GÉNÉRAUX ---
         { nom: "Radio-Canada (Une)", categorie: "ACTUALITÉS", url: "https://ici.radio-canada.ca/abonnement/rss/config.code.asap" },
         { nom: "La Presse (Actualités)", categorie: "ACTUALITÉS", url: "https://www.lapresse.ca/rss/2" },
         { nom: "Le Devoir (Actualités)", categorie: "ACTUALITÉS", url: "https://www.ledevoir.com/rss/manchettes.xml" },
@@ -162,7 +171,6 @@ async function lancerToutesLesMisesAJour() {
         { nom: "Le Parisien", categorie: "ACTUALITÉS", url: "https://www.leparisien.fr/arc/outboundfeeds/rss/" },
         { nom: "20 Minutes", categorie: "ACTUALITÉS", url: "https://www.20minutes.fr/rss/une.xml" },
         { nom: "RFI (Actualités)", categorie: "ACTUALITÉS", url: "https://www.rfi.fr/fr/general/rss" },
-        { nom: "Euronews (Français)", categorie: "ACTUALITÉS", url: "https://arabic.euronews.com/rss?format=mrss" }, // Ajusté pour le flux FR
         { nom: "Swissinfo (Suisse)", categorie: "ACTUALITÉS", url: "https://www.swissinfo.ch/fre/rss" },
         { nom: "La Libre (Belgique)", categorie: "ACTUALITÉS", url: "https://www.lalibre.be/arc/outboundfeeds/rss/" },
         { nom: "Le Soir (Belgique)", categorie: "ACTUALITÉS", url: "https://www.lesoir.be/arc/outboundfeeds/rss/" },
