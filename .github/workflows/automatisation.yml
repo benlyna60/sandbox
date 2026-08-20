@@ -25,6 +25,7 @@ jobs:
       - name: Lancer ton script de mise à jour directement
         run: |
           node mettre-a-jour.js
+          node recherche-aleatoire.js
 
       - name: Enregistrer et publier les modifications
         run: |
