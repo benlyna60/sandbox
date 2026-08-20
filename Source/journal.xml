@@ -3,8 +3,88 @@
     <channel>
         <title>Base d'Apprentissage Massive et Globale</title>
         <link>https://benlyna60.github.io/sandbox/</link>
-        <description>Base d'apprentissage massive, multi-sources et multi-catégories</description>
+        <description>Base d'apprentissage massive et sécurisée</description>
         
+        <item>
+            <title><![CDATA[Le ministre LeBlanc reste à Washington pour clarifier les détails de l’entente avec les États-Unis]]></title>
+            <link>https://www.ledevoir.com/economie/1003001/apres-avoir-consulte-provinces-ottawa-retourne-washington</link>
+            <pubDate>2026-08-20 15:31:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Québec soupèse encore son intérêt à remettre l’alcool américain sur les tablettes de la SAQ.]]></description>
+            <source>Le Devoir (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Deux féminicides à Montréal: un homme est mort, l’autre a été arrêté]]></title>
+            <link>https://www.ledevoir.com/actualites/justice/1003100/deux-feminicides-montreal-homme-est-mort-autre-ete-arrete</link>
+            <pubDate>2026-08-20 20:19:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Deux femmes ont été tuées en trois jours dans le quartier Saint-Michel. Leurs deux conjoints étaient les suspects.]]></description>
+            <source>Le Devoir (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Poilievre invite au Canada le prince héritier iranien]]></title>
+            <link>https://www.ledevoir.com/politique/canada/1003067/poilievre-invite-canada-prince-heritier-iranien</link>
+            <pubDate>2026-08-20 19:34:26</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[La révolution islamique de 1979 a contraint la famille de M. Pahlavi à l’exil.]]></description>
+            <source>Le Devoir (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Plus de nouveautés que jamais ont été vendues le 12 août]]></title>
+            <link>https://www.ledevoir.com/lire/1003070/plus-nouveautes-jamais-ont-ete-vendues-12-aout</link>
+            <pubDate>2026-08-20 19:35:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[L’événement a été un succès, avec 16% des ventes consistant en livres frais du mois.]]></description>
+            <source>Le Devoir (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Le champ de pratique des pharmaciens sera élargi à compter du 9 décembre]]></title>
+            <link>https://www.ledevoir.com/actualites/sante/1003118/champ-pratique-pharmaciens-sera-elargi-compter-9-decembre</link>
+            <pubDate>2026-08-20 20:49:26</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Ils pourront notamment  renouveler une ordonnance sans limites.]]></description>
+            <source>Le Devoir (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Nouvelle salve de sanctions américaines contre Cuba]]></title>
+            <link>https://www.ledevoir.com/monde/ameriques/1003115/nouvelle-salve-sanctions-americaines-contre-cuba</link>
+            <pubDate>2026-08-20 20:44:37</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Le gouvernement américain exerce une pression maximale sur cette île des Caraïbes.]]></description>
+            <source>Le Devoir (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Aucune nouvelle place en CPE sous un gouvernement conservateur]]></title>
+            <link>https://www.ledevoir.com/politique/quebec/1003121/aucune-nouvelle-place-cpe-sous-gouvernement-conservateur</link>
+            <pubDate>2026-08-20 21:09:13</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Éric Duhaime tenterait aussi de bloquer la réalisation du tramway de Québec, «un mauvais projet pour la Ville».]]></description>
+            <source>Le Devoir (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Les surfaces brûlées en Europe vont se multiplier, prévient une étude]]></title>
+            <link>https://www.ledevoir.com/actualites/environnement/1003055/surfaces-brulees-europe-vont-multiplier-previent-etude</link>
+            <pubDate>2026-08-20 18:26:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Elles pourraient presque tripler d’ici 2100 si les températures mondiales continuent d’augmenter au même rythme.]]></description>
+            <source>Le Devoir (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Une coroner du Québec recommande au SPVM de revoir son recours à la force]]></title>
+            <link>https://www.ledevoir.com/actualites/societe/1003037/coroner-quebec-recommande-spvm-revoir-recours-force</link>
+            <pubDate>2026-08-20 17:37:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Une technique de contention dite « hogtie », soit pieds et poings liés, a probablement contribué au décès d’Abisay Cruz.]]></description>
+            <source>Le Devoir (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Au moins 16 morts dans des frappes russes en Ukraine, Zelensky dénonce une «escalade»]]></title>
+            <link>https://www.ledevoir.com/monde/europe/1002941/frappes-russes-ukraine-civils-morts-zelensky-denonce-escalade</link>
+            <pubDate>2026-08-20 10:54:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[À Kiev, des immeubles résidentiels ont été endommagés, mais aussi un hôpital pour enfants et une école.]]></description>
+            <source>Le Devoir (Actualités)</source>
+        </item>
         <item>
             <title><![CDATA[Le journal de 23h00 du jeudi 20 août 2026]]></title>
             <link>https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-23h00/le-journal-de-23h00-du-jeudi-20-aout-2026-2313950</link>

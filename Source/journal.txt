@@ -1,5 +1,85 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-20 15:31:00
+TITRE: Le ministre LeBlanc reste à Washington pour clarifier les détails de l’entente avec les États-Unis
+LIEN: https://www.ledevoir.com/economie/1003001/apres-avoir-consulte-provinces-ottawa-retourne-washington
+CONTENU: Québec soupèse encore son intérêt à remettre l’alcool américain sur les tablettes de la SAQ.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-20 20:19:00
+TITRE: Deux féminicides à Montréal: un homme est mort, l’autre a été arrêté
+LIEN: https://www.ledevoir.com/actualites/justice/1003100/deux-feminicides-montreal-homme-est-mort-autre-ete-arrete
+CONTENU: Deux femmes ont été tuées en trois jours dans le quartier Saint-Michel. Leurs deux conjoints étaient les suspects.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-20 19:34:26
+TITRE: Poilievre invite au Canada le prince héritier iranien
+LIEN: https://www.ledevoir.com/politique/canada/1003067/poilievre-invite-canada-prince-heritier-iranien
+CONTENU: La révolution islamique de 1979 a contraint la famille de M. Pahlavi à l’exil.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-20 19:35:00
+TITRE: Plus de nouveautés que jamais ont été vendues le 12 août
+LIEN: https://www.ledevoir.com/lire/1003070/plus-nouveautes-jamais-ont-ete-vendues-12-aout
+CONTENU: L’événement a été un succès, avec 16% des ventes consistant en livres frais du mois.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-20 20:49:26
+TITRE: Le champ de pratique des pharmaciens sera élargi à compter du 9 décembre
+LIEN: https://www.ledevoir.com/actualites/sante/1003118/champ-pratique-pharmaciens-sera-elargi-compter-9-decembre
+CONTENU: Ils pourront notamment  renouveler une ordonnance sans limites.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-20 20:44:37
+TITRE: Nouvelle salve de sanctions américaines contre Cuba
+LIEN: https://www.ledevoir.com/monde/ameriques/1003115/nouvelle-salve-sanctions-americaines-contre-cuba
+CONTENU: Le gouvernement américain exerce une pression maximale sur cette île des Caraïbes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-20 21:09:13
+TITRE: Aucune nouvelle place en CPE sous un gouvernement conservateur
+LIEN: https://www.ledevoir.com/politique/quebec/1003121/aucune-nouvelle-place-cpe-sous-gouvernement-conservateur
+CONTENU: Éric Duhaime tenterait aussi de bloquer la réalisation du tramway de Québec, «un mauvais projet pour la Ville».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-20 18:26:00
+TITRE: Les surfaces brûlées en Europe vont se multiplier, prévient une étude
+LIEN: https://www.ledevoir.com/actualites/environnement/1003055/surfaces-brulees-europe-vont-multiplier-previent-etude
+CONTENU: Elles pourraient presque tripler d’ici 2100 si les températures mondiales continuent d’augmenter au même rythme.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-20 17:37:00
+TITRE: Une coroner du Québec recommande au SPVM de revoir son recours à la force
+LIEN: https://www.ledevoir.com/actualites/societe/1003037/coroner-quebec-recommande-spvm-revoir-recours-force
+CONTENU: Une technique de contention dite « hogtie », soit pieds et poings liés, a probablement contribué au décès d’Abisay Cruz.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-20 10:54:00
+TITRE: Au moins 16 morts dans des frappes russes en Ukraine, Zelensky dénonce une «escalade»
+LIEN: https://www.ledevoir.com/monde/europe/1002941/frappes-russes-ukraine-civils-morts-zelensky-denonce-escalade
+CONTENU: À Kiev, des immeubles résidentiels ont été endommagés, mais aussi un hôpital pour enfants et une école.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-08-20 21:00:00
 TITRE: Le journal de 23h00 du jeudi 20 août 2026
