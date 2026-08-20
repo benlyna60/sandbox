@@ -64,7 +64,7 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
     // 1. Sauvegarde du fichier Texte Brut
     fs.writeFileSync(txtPath, texteTotal.trim());
 
-    // 2. Transformation du texte en blocs HTML structurés pour ton interface
+    // 2. Transformation du texte en blocs HTML structurés
     let articlesHtmlBlock = "";
     const blocsArticles = texteTotal.split('----------------------------------------');
     
@@ -77,7 +77,10 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
         }
     });
 
-    // Sauvegarde du fichier HTML statique structuré
+    // Échappement propre du HTML pour l'injection par script JavaScript
+    const contenuSecurise = articlesHtmlBlock.replace(/`/g, '\\`').replace(/\$/g, '\\$');
+
+    // 3. Sauvegarde du fichier HTML avec simulation dynamique pour l'iframe de Memoir.html
     const pageHtml = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -91,9 +94,14 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
 </head>
 <body>
     <h1>${titrePage}</h1>
-    <div id="content">
-        ${articlesHtmlBlock}
-    </div>
+    <div id="content">Chargement et fusion des sources...</div>
+
+    <script>
+        // Simule le délai et le rendu dynamique attendu par l'iframe de Memoir.html
+        setTimeout(() => {
+            document.getElementById('content').innerHTML = \`${contenuSecurise}\`;
+        }, 600);
+    </script>
 </body>
 </html>`;
 
