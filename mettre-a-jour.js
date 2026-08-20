@@ -1,17 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
-// Fonction pour extraire les articles existants du fichier HTML afin de ne rien perdre
+// Fonction pour extraire les articles existants du fichier HTML afin de ne rien perdre (mémoire infinie)
 function extraireAnciensArticles(filePath) {
     if (!fs.existsSync(filePath)) return "";
     const contenuActuel = fs.readFileSync(filePath, 'utf8');
     
-    // On repère la zone où sont stockés les articles (entre les balises du conteneur)
     const debut = contenuActuel.indexOf('<div id="feed-container">');
     const fin = contenuActuel.lastIndexOf('</div>\n</body>');
     
     if (debut !== -1 && fin !== -1) {
-        // On récupère tout ce qui est déjà dedans
         return contenuActuel.substring(debut + '<div id="feed-container">'.length, fin).trim();
     }
     return "";
@@ -20,54 +18,71 @@ function extraireAnciensArticles(filePath) {
 async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) {
     const filePath = `Source/${nomFichier}`;
     
-    // 1. On s'assure que le dossier Source existe
+    // On s'assure que le dossier Source existe
     const dir = path.dirname(filePath);
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
 
-    // 2. On récupère la mémoire actuelle de la page (les anciens articles)
     let anciensArticlesHtml = extraireAnciensArticles(filePath);
     let nouveauxArticlesHtml = "";
 
-    // 3. On va chercher les flux du web
     for (let source of sources) {
         try {
-            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
+            // Utilisation d'un proxy/passerelle public ultra-stable pour transformer le RSS en JSON propre
+            const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(source.url)}`;
             const response = await fetch(apiUrl);
-            const data = await response.json();
+            const json = await response.json();
+            
+            if (json.contents) {
+                // Parser simple de secours basé sur du texte brut XML/RSS
+                const itemMatches = json.contents.match(/<item>([\s\S]*?)<\/item>/g);
+                
+                if (itemMatches) {
+                    // On prend les 5 premiers articles de la source
+                    for (let i = 0; i < Math.min(itemMatches.length, 5); i++) {
+                        const itemXml = itemMatches[i];
+                        
+                        const titleMatch = itemXml.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/);
+                        const linkMatch = itemXml.match(/<link>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/link>/);
+                        const dateMatch = itemXml.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
+                        const descMatch = itemXml.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/);
+                        
+                        const title = titleMatch ? titleMatch[1].replace(/<[^>]*>/g, '').trim() : "Article sans titre";
+                        const link = linkMatch ? linkMatch[1].trim() : "#";
+                        const pubDateRaw = dateMatch ? dateMatch[1].trim() : new Date().toUTCString();
+                        let description = descMatch ? descMatch[1].replace(/<[^>]*>/g, '').trim() : "";
+                        
+                        // Nettoyage de la description si trop longue
+                        if (description.length > 200) {
+                            description = description.substring(0, 200) + "...";
+                        }
 
-            if (data.status === 'ok' && data.items) {
-                data.items.forEach(item => {
-                    const dateObj = new Date(item.pubDate);
-                    const isoDate = !isNaN(dateObj) ? dateObj.toISOString().split('T')[0] : "";
-                    
-                    // On crée une signature unique pour éviter les doublons (basée sur le lien de l'article)
-                    const signature = `href="${item.link}"`;
-                    
-                    // Si l'article n'est ni dans les nouveaux en cours, ni déjà dans les anciens, on l'ajoute
-                    if (!anciensArticlesHtml.includes(signature) && !nouveauxArticlesHtml.includes(signature)) {
-                        nouveauxArticlesHtml += `
+                        const dateObj = new Date(pubDateRaw);
+                        const isoDate = !isNaN(dateObj) ? dateObj.toISOString().split('T')[0] : "";
+                        const signature = `href="${link}"`;
+
+                        if (!anciensArticlesHtml.includes(signature) && !nouveauxArticlesHtml.includes(signature)) {
+                            nouveauxArticlesHtml += `
                     <div class="article-card" data-date="${isoDate}" data-source="${source.nom}">
                         <div class="meta-info">
                             <span class="source-tag">${source.nom}</span>
-                            <span class="date">${item.pubDate}</span>
+                            <span class="date">${pubDateRaw}</span>
                         </div>
-                        <h3><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h3>
-                        <div class="article-content">${item.description || ''}</div>
+                        <h3><a href="${link}" target="_blank" rel="noopener noreferrer">${title}</a></h3>
+                        <div class="article-content">${description}</div>
                     </div>`;
+                        }
                     }
-                });
+                }
             }
         } catch (e) {
             console.error(`Erreur sur ${source.nom}:`, e);
         }
     }
 
-    // 4. On combine les NOUVEAUX articles tout en haut, suivis de TOUS les ANCIENS (mémoire infinie)
     const feedTotal = nouveauxArticlesHtml + "\n" + anciensArticlesHtml;
 
-    // 5. On reconstruit la page complète
     const pageComplete = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -104,9 +119,8 @@ ${feedTotal}
 </body>
 </html>`;
 
-    // 6. On sauvegarde le fichier
     fs.writeFileSync(filePath, pageComplete);
-    console.log(`Succès : Fichier ${filePath} mis à jour avec accumulation !`);
+    console.log(`Succès : ${filePath} mis à jour avec des articles !`);
 }
 
 async function lancerToutesLesMisesAJour() {
