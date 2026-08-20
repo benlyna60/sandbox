@@ -1,0 +1,30 @@
+name: Mettre a jour les flux statiques
+
+on:
+  schedule:
+    - cron: '0 */3 * * *' # S'exécute automatiquement toutes les 3 heures
+  workflow_dispatch: # Te permet aussi de le lancer manuellement en 1 clic quand tu veux
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Autorise l'assistant à modifier et enregistrer les fichiers sur ton dépôt
+    steps:
+      - name: Récupérer le code du dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer l'environnement Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Lancer ton script de mise à jour
+        run: node mettre-a-jour.js
+
+      - name: Enregistrer et publier les modifications
+        run: |
+          git config --global user.name "Assistant Statique"
+          git config --global user.email "assistant@actions.github.com"
+          git add Source/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Mise à jour automatique des flux en dur" && git push)
