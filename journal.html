@@ -21,7 +21,7 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 20px;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         header {
@@ -64,22 +64,16 @@
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 18px 20px;
-            margin-bottom: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .article-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         .meta-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
         }
 
         .source-tag {
@@ -99,8 +93,8 @@
         }
 
         h3 {
-            margin: 0;
-            font-size: 1.1rem;
+            margin: 0 0 15px 0;
+            font-size: 1.25rem;
         }
 
         h3 a {
@@ -111,6 +105,16 @@
         h3 a:hover {
             text-decoration: underline;
         }
+
+        .article-content {
+            font-size: 0.95rem;
+            color: #4a5568;
+            margin-top: 10px;
+        }
+
+        .article-content p {
+            margin-bottom: 12px;
+        }
     </style>
 </head>
 <body>
@@ -120,35 +124,16 @@
         <div class="status-box">Rafraîchissement dans : <span id="timer">30:00</span></div>
     </header>
 
-    <div id="loading">Chargement et synchronisation des sources d'actualités...</div>
+    <div id="loading">Chargement des articles de fond et des analyses...</div>
     <div id="feed-container"></div>
 
     <script>
-        // Catalogue complet des sources RSS francophones (France & Québec)
+        // Sélection de sources axées sur l'analyse, la recherche et les textes longs
         const sourcesRSS = [
-            // --- France ---
-            { nom: "Le Monde (Une)", url: "https://www.lemonde.fr/rss/une.xml" },
-            { nom: "Le Monde (International)", url: "https://www.lemonde.fr/international/rss_full.xml" },
-            { nom: "Le Figaro (Actu)", url: "https://www.lefigaro.fr/rss/figaro_actualites.xml" },
-            { nom: "Le Figaro (Éco)", url: "https://www.lefigaro.fr/rss/figaro_economie.xml" },
-            { nom: "France Info", url: "https://www.franceinfo.fr/titres.rss" },
-            { nom: "Libération", url: "https://www.liberation.fr/arc/outbound/rss/?outputType=xml" },
-            { nom: "20 Minutes", url: "https://www.20minutes.fr/rss/une.xml" },
-            { nom: "BFMTV", url: "https://www.bfmtv.com/rss/info/flux-rss/flux-toutes-les-actualites/" },
-            
-            // --- Québec / Canada ---
-            { nom: "La Presse (Actu)", url: "https://www.lapresse.ca/actualites/rss" },
-            { nom: "La Presse (Affaires)", url: "https://www.lapresse.ca/affaires/rss" },
-            { nom: "Le Devoir", url: "https://www.ledevoir.com/rss/edi.xml" },
-            { nom: "Radio-Canada", url: "https://ici.radio-canada.ca/rss/41" },
-            { nom: "Journal de Montréal", url: "https://www.journaldemontreal.com/rss.xml" },
-            { nom: "Journal de Québec", url: "https://www.journaldequebec.com/rss.xml" },
-
-            // --- Sciences & Tech ---
-            { nom: "Futura Sciences", url: "https://www.futura-sciences.com/rss/actualites.xml" },
-            { nom: "Numerama", url: "https://www.numerama.com/feed/" },
-            { nom: "01net", url: "https://www.01net.com/feed/" },
-            { nom: "Sciences et Avenir", url: "https://www.sciencesetavenir.fr/rss.xml" }
+            { nom: "The Conversation (France)", url: "https://theconversation.com/fr/articles.atom" },
+            { nom: "Le Devoir (Éditoriaux)", url: "https://www.ledevoir.com/rss/sections/editoriaux.xml" },
+            { nom: "Le Devoir (Idées)", url: "https://www.ledevoir.com/rss/sections/idees.xml" },
+            { nom: "Futura Sciences (Analyses)", url: "https://www.futura-sciences.com/rss/actualites.xml" }
         ];
 
         async function fetchAllFeeds() {
@@ -164,11 +149,18 @@
 
                     if (data.status === 'ok' && data.items) {
                         data.items.forEach(item => {
+                            // On récupère le contenu complet (content) ou à défaut la description
+                            let texteIntegral = item.content || item.description || "";
+                            
+                            // Nettoyage basique pour enlever les balises d'images ou scripts indésirables si besoin
+                            texteIntegral = texteIntegral.replace(/<img[^>]*>/gi, "");
+
                             allArticles.push({
                                 sourceName: source.nom,
                                 title: item.title,
                                 link: item.link,
-                                pubDate: new Date(item.pubDate)
+                                pubDate: new Date(item.pubDate),
+                                content: texteIntegral
                             });
                         });
                     }
@@ -181,14 +173,14 @@
             allArticles.sort((a, b) => b.pubDate - a.pubDate);
 
             container.innerHTML = '';
-            loading.style.display = 'none';
+            loading.style.display ='none';
 
             if (allArticles.length === 0) {
                 container.innerHTML = '<p style="text-align:center; padding:20px;">Aucun article disponible pour le moment.</p>';
                 return;
             }
 
-            // Afficher uniquement le contexte (Source, Date/Heure, et le Titre)
+            // Affichage des cartes avec le texte complet
             allArticles.forEach(art => {
                 const card = document.createElement('div');
                 card.className = 'article-card';
@@ -211,19 +203,17 @@
                         <span class="date">${dateString} à ${timeString}</span>
                     </div>
                     <h3><a href="${art.link}" target="_blank" rel="noopener noreferrer">${art.title}</a></h3>
+                    <div class="article-content">${art.content}</div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        // Charger au démarrage
         fetchAllFeeds();
 
-        // Actualisation automatique toutes les 30 minutes
         const updateInterval = 30 * 60 * 1000;
         setInterval(fetchAllFeeds, updateInterval);
 
-        // Compteur visuel
         let timeLeft = 30 * 60;
         setInterval(() => {
             timeLeft--;
