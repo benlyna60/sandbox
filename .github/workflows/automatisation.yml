@@ -14,16 +14,9 @@ jobs:
       - name: Récupérer le code du dépôt
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Installer l'environnement Node.js
-        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44825db2a # v4.2.0
-        with:
-          node-version: '20'
-
-      - name: Installer les dépendances
-        run: npm install
-
-      - name: Lancer ton script de mise à jour
-        run: node mettre-a-jour.js
+      - name: Lancer ton script de mise à jour directement
+        run: |
+          node mettre-a-jour.js
 
       - name: Enregistrer et publier les modifications
         run: |
