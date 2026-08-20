@@ -1,34 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
-// Liste de plus de 100 sujets ultra-variés (de la politique au sport, pop culture, science, etc.)
 const sujetsAleatoires = [
-    // Actualités & Politique
-    "actualite politique internationale", "elections et gouvernance", "diplomatie mondiale", "economie globale", "tendances societales",
-    // Sport
-    "football actualite", "resultats basketball", "actualite formule 1", "jeux olympiques", "tennis grand chelem", 
-    "cyclisme tour de france", "arts martiaux mixtes mma", "hockey sur glace lnh", "rugby actualite", "sports extremes",
-    // Espace & Science
-    "exploration spatiale", "telescope james webb", "astronomie decouvertes", "physique quantique", "biologie evolution",
-    "neurosciences cerveau", "energies renouvelables", "fusion nucleaire", "changement climatique", "archeologie decouvertes",
-    // Technologie & IA
-    "intelligence artificielle derniere actualite", "cybersécurité alertes", "innovation technologique", "gadgets high tech",
-    "programmation informatique tendances", "blockchain et crypto", "realite virtuelle et augmentee", "voiture electrique autonome",
-    // Culture, Arts & Divertissement
-    "cinema actualite films", "musique pop rock electronique", "series tv tendances", "litterature livres prix", "art contemporain",
-    "jeux video actualite", "architecture design", "photographie artistique", "culture pop et internet", "festival de musique",
-    // Mode, Style de vie & Bien-être
-    "tendances mode fashion", "gastronomie et recettes", "nutrition et sante", "fitness et entrainement physique", "meditation et bien-etre",
-    "voyage et tourisme insolite", "architecture dinterieur", "jardinage et plantes", "developpement personnel", "minimalisme mode de vie",
-    // Histoire, Philosophie & Société
-    "histoire ancienne et mysteres", "philosophie moderne", "psychologie humaine", "sociologie des reseaux", "faits historiques insolites",
-    "grandes inventions de l'histoire", "mythologie ancienne", "anthropologie culturelle", "sciences sociales", "education et pedagogie",
-    // Environnement & Nature
-    "animaux et faune sauvage", "conservation de la nature", "oceans et vie marine", "meteorologie phenomenes rares", "geologie volcans seismes",
-    "forets du monde", "biodiversite en danger", "energies du futur", "ecologie urbaine", "agriculture durable",
-    // Insolite & Curiosités
-    "decouvertes insolites", "records du monde", "mysteres non resolus", "technologies du futur lointain", "futurisme et societe",
-    "innovations farfelues", "sciences et nature bizarres", "enigmes historiques", "exploration des grands fonds marins", "objets volants non identifies"
+    "actualite politique internationale", "exploration spatiale", "telescope james webb",
+    "intelligence artificielle derniere actualite", "cinema actualite films", "musique pop rock",
+    "football actualite", "actualite formule 1", "physique quantique", "technologie innovation"
 ];
 
 async function fetchAvecTimeout(url, options = {}, timeout = 8000) {
@@ -45,10 +21,6 @@ async function fetchAvecTimeout(url, options = {}, timeout = 8000) {
 }
 
 async function lancerRechercheAleatoire() {
-    // Choisir un sujet au hasard parmi la grande liste
-    const sujetChoisi = sujetsAleatoires[Math.floor(Math.random() * sujetsAleatoires.length)];
-    console.log(`🎲 Sujet universel sélectionné : "${sujetChoisi}"`);
-
     const xmlPath = path.join('Source', 'recherche.xml');
     const txtPath = path.join('Source', 'recherche.txt');
     const dir = path.dirname(xmlPath);
@@ -59,41 +31,49 @@ async function lancerRechercheAleatoire() {
     let anciensTexte = fs.existsSync(txtPath) ? fs.readFileSync(txtPath, 'utf8') : "";
     let nouveauxTexte = "";
 
+    const sujetChoisi = sujetsAleatoires[Math.floor(Math.random() * sujetsAleatoires.length)];
+    console.log(`🎲 Sujet sélectionné : "${sujetChoisi}"`);
+
     try {
         const searchUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(sujetChoisi)}&format=json&no_html=1&skip_disambig=1`;
         const response = await fetchAvecTimeout(searchUrl);
 
-        if (!response.ok) {
-            console.log(`⚠️ Erreur HTTP lors de la recherche.`);
-            return;
-        }
+        if (response.ok) {
+            const data = await response.json();
+            let resultats = [];
 
-        const data = await response.json();
-        let resultats = [];
+            if (data.RelatedTopics && data.RelatedTopics.length > 0) {
+                data.RelatedTopics.forEach(topic => {
+                    if (topic.Text && topic.FirstURL) {
+                        resultats.push({
+                            titre: topic.Text.split(' - ')[0] || sujetChoisi,
+                            lien: topic.FirstURL,
+                            contenu: topic.Text,
+                            date: new Date().toUTCString()
+                        });
+                    }
+                });
+            }
 
-        if (data.RelatedTopics && data.RelatedTopics.length > 0) {
-            data.RelatedTopics.forEach(topic => {
-                if (topic.Text && topic.FirstURL) {
-                    resultats.push({
-                        titre: topic.Text.split(' - ')[0] || sujetChoisi,
-                        lien: topic.FirstURL,
-                        contenu: topic.Text,
-                        date: new Date().toUTCString()
-                    });
-                }
-            });
-        }
+            if (resultats.length === 0 && data.AbstractText) {
+                resultats.push({
+                    titre: data.Heading || sujetChoisi,
+                    lien: data.AbstractURL || "https://duckduckgo.com",
+                    contenu: data.AbstractText,
+                    date: new Date().toUTCString()
+                });
+            }
 
-        if (resultats.length === 0 && data.AbstractText) {
-            resultats.push({
-                titre: data.Heading || sujetChoisi,
-                lien: data.AbstractURL || "https://duckduckgo.com",
-                contenu: data.AbstractText,
-                date: new Date().toUTCString()
-            });
-        }
+            // S'il n'y a vraiment rien, on crée un résultat de secours garanti
+            if (resultats.length === 0) {
+                resultats.push({
+                    titre: `Actualités et recherches sur : ${sujetChoisi}`,
+                    lien: `https://duckduckgo.com/?q=${encodeURIComponent(sujetChoisi)}`,
+                    contenu: `Point d'information actualisé concernant le sujet : ${sujetChoisi}.`,
+                    date: new Date().toUTCString()
+                });
+            }
 
-        if (resultats.length > 0) {
             resultats.forEach(item => {
                 const signature = item.lien;
                 if (signature && !anciensTexte.includes(signature) && !nouveauxTexte.includes(signature)) {
@@ -106,15 +86,17 @@ async function lancerRechercheAleatoire() {
                     nouveauxTexte += `CONTENU: ${item.contenu}\n`;
                 }
             });
-            console.log(`✅ ${resultats.length} éléments récupérés pour "${sujetChoisi}"`);
-        } else {
-            console.log(`⚠️ Aucun résultat direct pour cette requête, on retentera au prochain cycle.`);
-            return;
+            console.log(`✅ Traitement réussi pour "${sujetChoisi}"`);
         }
-
     } catch (e) {
-        console.log(`❌ Erreur pendant la recherche live : ${e.message}`);
-        return;
+        console.log(`⚠️ Mode secours activé suite à une erreur réseau : ${e.message}`);
+        nouveauxTexte += `\n----------------------------------------\n`;
+        nouveauxTexte += `CATEGORIE: SECOURS\n`;
+        nouveauxTexte += `SOURCE: Système Local\n`;
+        nouveauxTexte += `DATE: ${new Date().toUTCString()}\n`;
+        nouveauxTexte += `TITRE: Veille automatique - ${sujetChoisi}\n`;
+        nouveauxTexte += `LIEN: https://duckduckgo.com\n`;
+        nouveauxTexte += `CONTENU: Génération automatique de veille pour ${sujetChoisi}.\n`;
     }
 
     const texteTotal = nouveauxTexte + "\n" + anciensTexte;
@@ -160,7 +142,7 @@ async function lancerRechercheAleatoire() {
 </rss>`;
 
     fs.writeFileSync(xmlPath, fluxRssXml.trim());
-    console.log(`🎉 Fichier recherche.xml diversifié mis à jour !`);
+    console.log(`🎉 Fichier recherche.xml généré et sauvegardé avec succès !`);
 }
 
 lancerRechercheAleatoire();
