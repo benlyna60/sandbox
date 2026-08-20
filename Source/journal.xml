@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+        <title>Journal d'actualités</title>
+        <link>https://benlyna60.github.io/sandbox/</link>
+        <description>Flux unifié pour Journal d'actualités</description>
+        
+        <item>
+            <title><![CDATA[Le massif du Mont-Blanc déstabilisé par un été caniculaire et des chutes de pierres qui le défigurent]]></title>
+            <link>https://www.lemonde.fr/planete/article/2026/08/20/le-massif-du-mont-blanc-destabilise-par-un-ete-caniculaire-et-des-chutes-de-pierres-qui-le-defigurent_6751049_3244.html</link>
+            <pubDate>2026-08-20 14:30:03</pubDate>
+            <description><![CDATA[Le plus haut sommet des Alpes n’est momentanément plus accessible par aucune des trois principales voies normales. La conséquence des températures extrêmes qui fragilisent glaces et parois.]]></description>
+            <source>Le Monde</source>
+        </item>
+        <item>
+            <title><![CDATA[EN DIRECT, guerre en Ukraine : près de 40 000 personnes se sont réfugiées dans le métro de Kiev lors de l’attaque russe dans la nuit de mercredi à jeudi]]></title>
+            <link>https://www.lemonde.fr/international/live/2026/08/20/en-direct-guerre-en-ukraine-une-journee-de-deuil-prevue-vendredi-a-kiev-apres-les-attaques-russes-qui-ont-fait-16-morts-dans-la-region_6746952_3210.html</link>
+            <pubDate>2026-08-20 12:25:03</pubDate>
+            <description><![CDATA[Après les attaques russes de la nuit, les autorités dénombrent 16 morts et plus de 40 blessés. « Environ 20 immeubles résidentiels, une école, un hôpital pour enfants et une crèche ont été gravement endommagés dans la capitale », a dénoncé le service de secouristes.]]></description>
+            <source>Le Monde</source>
+        </item>
+        <item>
+            <title><![CDATA[Absence de budget et loi spéciale prolongée : l’inspection générale des finances alerte sur des « risques majeurs »]]></title>
+            <link>https://www.lemonde.fr/politique/article/2026/08/20/absence-de-budget-et-loi-speciale-prolongee-l-inspection-generale-des-finances-alerte-sur-des-risques-majeurs_6751089_823448.html</link>
+            <pubDate>2026-08-20 16:00:03</pubDate>
+            <description><![CDATA[L’inspection générale des finances a publié, jeudi 20 août, le rapport que le gouvernement lui avait demandé sur les conséquences d’une application prolongée en 2027 d’une loi de finances spéciale. Un document que l’exécutif devrait largement mobiliser pour tenter de convaincre le Parlement d’adopter un budget.]]></description>
+            <source>Le Monde</source>
+        </item>
+        <item>
+            <title><![CDATA[Défense : les exportations d’armes françaises encore à des sommets en 2025]]></title>
+            <link>https://www.lemonde.fr/economie/article/2026/08/20/defense-les-exportations-d-armes-francaises-encore-a-des-sommets-en-2025_6750975_3234.html</link>
+            <pubDate>2026-08-20 13:00:04</pubDate>
+            <description><![CDATA[Grâce notamment aux ventes de Rafale à l’Inde et de missiles, la France a exporté pour 21,2 milliards d’euros d’armements en 2025, soit autant qu’en 2024. Si elle reste le deuxième exportateur mondial d’armes, loin derrière les Etats-Unis, elle fait face à la concurrence de nouveaux pays.]]></description>
+            <source>Le Monde</source>
+        </item>
+        <item>
+            <title><![CDATA[« On sent un regard sur nous, plus insistant que pour les personnes valides » : les difficultés quotidiennes des parents avec un handicap]]></title>
+            <link>https://www.lemonde.fr/societe/article/2026/08/20/certains-se-permettent-de-prendre-les-enfants-dans-les-bras-des-meres-en-fauteuil-les-difficultes-quotidiennes-des-parents-avec-un-handicap_6750439_3224.html</link>
+            <pubDate>2026-08-20 03:30:09</pubDate>
+            <description><![CDATA[Malgré une amélioration de l’accompagnement institutionnel, les familles concernées ressentent encore des entraves à exercer pleinement leur parentalité, souvent confrontées à une « présomption d’incompétence ».]]></description>
+            <source>Le Monde</source>
+        </item>
+    </channel>
+</rss>
