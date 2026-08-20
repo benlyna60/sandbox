@@ -43,11 +43,15 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
 
             const data = await response.json();
 
-            // Sécurité : on vérifie que l'API a bien renvoyé du contenu valide et pas une erreur de l'API elle-même
+            // Sécurité : on vérifie que l'API a bien renvoyé du contenu valide
             if (data && data.status === 'ok' && data.items) {
                 data.items.forEach(item => {
                     const cleanTitle = item.title ? item.title.replace(/<[^>]*>/g, '').trim() : "";
-                    const cleanDesc = item.description ? item.description.replace(/<[^>]*>/g, '').trim() : "";
+                    
+                    // On cherche le contenu là où il se trouve (description, content, ou summary)
+                    let rawContent = item.description || item.content || item.summary || "";
+                    const cleanDesc = rawContent.replace(/<[^>]*>/g, '').trim();
+                    
                     const signature = item.link;
 
                     if (signature && !anciensTexte.includes(signature) && !nouveauxTexte.includes(signature)) {
@@ -64,8 +68,11 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
             } else {
                 console.log(`⚠️ Flux invalide ou rejeté par l'API pour : ${source.nom}`);
             }
+
+            // 🛑 Petite pause de 400ms pour ne pas saturer l'API externe (Rate Limit)
+            await new Promise(resolve => setTimeout(resolve, 400));
+
         } catch (e) {
-            // Si une source plante, le script l'affiche dans les logs mais CONTINUE avec les autres !
             console.log(`❌ Erreur sur ${source.nom}: ${e.message}`);
         }
     }
