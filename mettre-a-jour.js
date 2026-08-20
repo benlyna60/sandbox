@@ -23,6 +23,7 @@ async function fetchAvecTimeout(url, options = {}, timeout = 8000) {
 async function mettreAJourPage(nomFichier, titrePage, sources) {
     const htmlPath = `Source/${nomFichier}`;
     const txtPath = `Source/${nomFichier.replace('.html', '.txt')}`;
+    const xmlPath = `Source/${nomFichier.replace('.html', '.xml')}`;
     const dir = path.dirname(htmlPath);
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
@@ -30,6 +31,7 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
 
     let anciensTexte = extraireAnciensArticles(txtPath);
     let nouveauxTexte = "";
+    let itemsRecents = [];
 
     for (let source of sources) {
         try {
@@ -44,6 +46,15 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
                     const signature = item.link;
 
                     if (!anciensTexte.includes(signature) && !nouveauxTexte.includes(signature)) {
+                        // Stockage pour le flux XML et le texte brut
+                        itemsRecents.push({
+                            title: cleanTitle,
+                            link: item.link,
+                            pubDate: item.pubDate,
+                            description: cleanDesc,
+                            source: source.nom
+                        });
+
                         // Format texte brut ultra-lisible pour l'entraînement de modèles
                         nouveauxTexte += `\n----------------------------------------\n`;
                         nouveauxTexte += `SOURCE: ${source.nom}\n`;
@@ -64,10 +75,49 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
     // 1. Sauvegarde du fichier Texte Brut
     fs.writeFileSync(txtPath, texteTotal.trim());
 
-    // 2. Transformation du texte en blocs HTML structurés
-    let articlesHtmlBlock = "";
+    // 2. Génération d'un vrai fichier XML (Flux RSS valide pour ton interface)
+    let xmlItems = ``;
+    // On extrait les blocs du texte total pour alimenter le flux XML proprement
     const blocsArticles = texteTotal.split('----------------------------------------');
-    
+    blocsArticles.forEach(morceau => {
+        if (morceau.trim()) {
+            const lignesBloc = morceau.trim().split('\n');
+            let itemData = { source: '', date: '', titre: '', lien: '', contenu: '' };
+            lignesBloc.forEach(ligne => {
+                if (ligne.startsWith('SOURCE:')) itemData.source = ligne.replace('SOURCE:', '').trim();
+                if (ligne.startsWith('DATE:')) itemData.date = ligne.replace('DATE:', '').trim();
+                if (ligne.startsWith('TITRE:')) itemData.titre = ligne.replace('TITRE:', '').trim();
+                if (ligne.startsWith('LIEN:')) itemData.lien = ligne.replace('LIEN:', '').trim();
+                if (ligne.startsWith('CONTENU:')) itemData.contenu = ligne.replace('CONTENU:', '').trim();
+            });
+
+            if (itemData.titre && itemData.lien) {
+                xmlItems += `
+        <item>
+            <title><![CDATA[${itemData.titre}]]></title>
+            <link>${itemData.lien}</link>
+            <pubDate>${itemData.date}</pubDate>
+            <description><![CDATA[${itemData.contenu}]]></description>
+            <source>${itemData.source}</source>
+        </item>`;
+            }
+        }
+    });
+
+    const fluxRssXml = `<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+        <title>${titrePage}</title>
+        <link>https://benlyna60.github.io/sandbox/</link>
+        <description>Flux unifié pour ${titrePage}</description>
+        ${xmlItems}
+    </channel>
+</rss>`;
+
+    fs.writeFileSync(xmlPath, fluxRssXml.trim());
+
+    // 3. Transformation du texte en blocs HTML structurés
+    let articlesHtmlBlock = "";
     blocsArticles.forEach(morceau => {
         if (morceau.trim()) {
             articlesHtmlBlock += `
@@ -77,10 +127,9 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
         }
     });
 
-    // Échappement propre du HTML pour l'injection par script JavaScript
     const contenuSecurise = articlesHtmlBlock.replace(/`/g, '\\`').replace(/\$/g, '\\$');
 
-    // 3. Sauvegarde du fichier HTML avec simulation dynamique pour l'iframe de Memoir.html
+    // 4. Sauvegarde du fichier HTML avec simulation dynamique pour l'iframe
     const pageHtml = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -97,7 +146,6 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
     <div id="content">Chargement et fusion des sources...</div>
 
     <script>
-        // Simule le délai et le rendu dynamique attendu par l'iframe de Memoir.html
         setTimeout(() => {
             document.getElementById('content').innerHTML = \`${contenuSecurise}\`;
         }, 600);
@@ -106,7 +154,7 @@ async function mettreAJourPage(nomFichier, titrePage, sources) {
 </html>`;
 
     fs.writeFileSync(htmlPath, pageHtml);
-    console.log(`Succès : ${htmlPath} et ${txtPath} mis à jour !`);
+    console.log(`Succès : ${htmlPath}, ${txtPath} et ${xmlPath} mis à jour !`);
 }
 
 async function lancerToutesLesMisesAJour() {
