@@ -4,17 +4,16 @@ const path = require('path');
 function extraireAnciensArticles(filePath) {
     if (!fs.existsSync(filePath)) return "";
     const contenuActuel = fs.readFileSync(filePath, 'utf8');
-    const debut = contenuActuel.indexOf('<div id="feed-container">');
-    const fin = contenuActuel.lastIndexOf('</div>\n</body>');
+    const debut = contenuActuel.indexOf('<main id="feed-container">');
+    const fin = contenuActuel.lastIndexOf('</main>');
     if (debut !== -1 && fin !== -1) {
-        return contenuActuel.substring(debut + '<div id="feed-container">'.length, fin).trim();
+        return contenuActuel.substring(debut + '<main id="feed-container">'.length, fin).trim();
     }
     return "";
 }
 
 async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) {
     const filePath = `Source/${nomFichier}`;
-    const jsonPath = filePath.replace('.html', '.json');
     const dir = path.dirname(filePath);
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
@@ -22,7 +21,6 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
 
     let anciensArticlesHtml = extraireAnciensArticles(filePath);
     let nouveauxArticlesHtml = "";
-    let listeArticlesJson = [];
 
     for (let source of sources) {
         try {
@@ -36,36 +34,21 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
                     const isoDate = !isNaN(dateObj) ? dateObj.toISOString().split('T')[0] : "";
                     const signature = `href="${item.link}"`;
                     
-                    // Texte complet non coupé pour l'interface d'apprentissage
                     const descriptionComplete = item.description ? item.description.replace(/<[^>]*>/g, '').trim() : "";
-                    
-                    // Version légèrement tronquée pour l'affichage visuel des cartes HTML si besoin
-                    let descriptionHtml = descriptionComplete;
-                    if (descriptionHtml.length > 250) {
-                        descriptionHtml = descriptionHtml.substring(0, 250) + "...";
-                    }
 
                     if (!anciensArticlesHtml.includes(signature) && !nouveauxArticlesHtml.includes(signature)) {
-                        // 1. Génération du bloc HTML pour ton site
+                        // Structure ultra-propre style Wikipédia (balises sémantiques standard)
                         nouveauxArticlesHtml += `
-                    <div class="article-card" data-date="${isoDate}" data-source="${source.nom}">
-                        <div class="meta-info">
-                            <span class="source-tag">${source.nom}</span>
-                            <span class="date">${item.pubDate}</span>
+                    <article class="article-item" data-date="${isoDate}" data-source="${source.nom}">
+                        <header class="article-header">
+                            <span class="article-source">${source.nom}</span>
+                            <time class="article-date" datetime="${isoDate}">${item.pubDate}</time>
+                        </header>
+                        <h2 class="article-title"><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h2>
+                        <div class="article-summary">
+                            <p>${descriptionComplete}</p>
                         </div>
-                        <h3><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h3>
-                        <div class="article-content">${descriptionHtml}</div>
-                    </div>`;
-
-                        // 2. Enregistrement des données brutes structurées pour ton interface d'apprentissage
-                        listeArticlesJson.push({
-                            titre: item.title,
-                            lien: item.link,
-                            date: item.pubDate,
-                            dateIso: isoDate,
-                            source: source.nom,
-                            contenu: descriptionComplete
-                        });
+                    </article>`;
                     }
                 });
             }
@@ -76,7 +59,7 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
 
     const feedTotal = nouveauxArticlesHtml + "\n" + anciensArticlesHtml;
 
-    // Reconstruction de la page HTML (ton design inchangé)
+    // Page HTML style encyclopédie/Wikipédia, parfaitement lisible pour les humains et les robots
     const pageComplete = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -84,49 +67,30 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${titrePage} - Archives</title>
     <style>
-        :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --primary: ${couleurPrimaire};
-            --border: #e2e8f0;
-        }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.7; }
-        header { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; color: #1e293b; max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.7; }
+        header.site-header { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 5px solid ${couleurPrimaire}; }
         h1 { margin: 0; font-size: 1.5rem; color: #0f172a; }
-        .article-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 22px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-        .meta-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .source-tag { font-size: 0.75rem; background: #e2e8f0; color: #334155; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
-        .date { font-size: 0.8rem; color: var(--text-muted); }
-        h3 { margin: 0 0 10px 0; font-size: 1.15rem; }
-        h3 a { color: var(--primary); text-decoration: none; }
-        h3 a:hover { text-decoration: underline; }
-        .article-content { font-size: 0.95rem; color: #475569; margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px; }
+        .article-item { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 22px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .article-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.85rem; color: #64748b; }
+        .article-source { background: #e2e8f0; color: #334155; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; }
+        .article-title { margin: 0 0 10px 0; font-size: 1.15rem; }
+        .article-title a { color: ${couleurPrimaire}; text-decoration: none; }
+        .article-title a:hover { text-decoration: underline; }
+        .article-summary { font-size: 0.95rem; color: #475569; border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 12px; }
     </style>
 </head>
 <body>
-    <header><h1>${titrePage}</h1></header>
-    <div id="feed-container">
+    <header class="site-header">
+        <h1>${titrePage}</h1>
+    </header>
+    <main id="feed-container">
 ${feedTotal}
-    </div>
+    </main>
 </body>
 </html>`;
 
-    // Sauvegarde du HTML pour ton site web
     fs.writeFileSync(filePath, pageComplete);
-
-    // Sauvegarde du fichier JSON propre pour ton interface d'apprentissage (avec fusion des anciens si besoin)
-    let anciensJson = [];
-    if (fs.existsSync(jsonPath)) {
-        try {
-            anciensJson = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-        } catch (err) { anciensJson = []; }
-    }
-    const jsonTotal = [...listeArticlesJson, ...anciensJson];
-    fs.writeFileSync(jsonPath, JSON.stringify(jsonTotal, null, 2));
-
-    console.log(`Succès : ${filePath} et ${jsonPath} mis à jour !`);
+    console.log(`Succès : ${filePath} mis à jour au format standard !`);
 }
 
 async function lancerToutesLesMisesAJour() {
