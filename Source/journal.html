@@ -5,71 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>journal.io - Archives</title>
     <style>
-        :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --primary: #2563eb;
-            --border: #e2e8f0;
-        }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.7; }
-        header { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; color: #1e293b; max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.7; }
+        header.site-header { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 5px solid #2563eb; }
         h1 { margin: 0; font-size: 1.5rem; color: #0f172a; }
-        .article-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 22px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-        .meta-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .source-tag { font-size: 0.75rem; background: #e2e8f0; color: #334155; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
-        .date { font-size: 0.8rem; color: var(--text-muted); }
-        h3 { margin: 0 0 10px 0; font-size: 1.15rem; }
-        h3 a { color: var(--primary); text-decoration: none; }
-        h3 a:hover { text-decoration: underline; }
-        .article-content { font-size: 0.95rem; color: #475569; margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px; }
+        .article-item { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 22px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .article-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.85rem; color: #64748b; }
+        .article-source { background: #e2e8f0; color: #334155; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; }
+        .article-title { margin: 0 0 10px 0; font-size: 1.15rem; }
+        .article-title a { color: #2563eb; text-decoration: none; }
+        .article-title a:hover { text-decoration: underline; }
+        .article-summary { font-size: 0.95rem; color: #475569; border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 12px; }
     </style>
 </head>
 <body>
-    <header><h1>journal.io</h1></header>
-    <div id="feed-container">
+    <header class="site-header">
+        <h1>journal.io</h1>
+    </header>
+    <main id="feed-container">
 
-<div class="article-card" data-date="2026-08-20" data-source="Le Monde Actualités">
-                        <div class="meta-info">
-                            <span class="source-tag">Le Monde Actualités</span>
-                            <span class="date">2026-08-20 04:30:07</span>
+                    <article class="article-item" data-date="2026-08-20" data-source="Le Monde Actualités">
+                        <header class="article-header">
+                            <span class="article-source">Le Monde Actualités</span>
+                            <time class="article-date" datetime="2026-08-20">2026-08-20 04:30:07</time>
+                        </header>
+                        <h2 class="article-title"><a href="https://www.lemonde.fr/politique/article/2026/08/20/presidentielle-2027-jean-luc-melenchon-entre-radicalite-et-besoin-de-rassembler-reve-d-un-duel-avec-l-extreme-droite_6750546_823448.html" target="_blank" rel="noopener noreferrer">Présidentielle 2027 : Jean-Luc Mélenchon, entre radicalité et besoin de rassembler, rêve d’un duel avec l’extrême droite</a></h2>
+                        <div class="article-summary">
+                            <p>Le leader de La France insoumise interviendra dans la Drôme, lors des journées d’été du mouvement, qui ont lieu du jeudi 20 au dimanche 23 août. Sans rien céder sur son programme, il tente d’apparaître rassurant et fédérateur en vue d’un possible second tour contre Marine Le Pen.</p>
                         </div>
-                        <h3><a href="https://www.lemonde.fr/politique/article/2026/08/20/presidentielle-2027-jean-luc-melenchon-entre-radicalite-et-besoin-de-rassembler-reve-d-un-duel-avec-l-extreme-droite_6750546_823448.html" target="_blank" rel="noopener noreferrer">Présidentielle 2027 : Jean-Luc Mélenchon, entre radicalité et besoin de rassembler, rêve d’un duel avec l’extrême droite</a></h3>
-                        <div class="article-content">Le leader de La France insoumise interviendra dans la Drôme, lors des journées d’été du mouvement, qui ont lieu du jeudi 20 au dimanche 23 août. Sans rien céder sur son programme, il tente d’apparaîtr...</div>
-                    </div>
-                    <div class="article-card" data-date="2026-08-20" data-source="Le Monde Actualités">
-                        <div class="meta-info">
-                            <span class="source-tag">Le Monde Actualités</span>
-                            <span class="date">2026-08-20 03:30:47</span>
+                    </article>
+                    <article class="article-item" data-date="2026-08-20" data-source="Le Monde Actualités">
+                        <header class="article-header">
+                            <span class="article-source">Le Monde Actualités</span>
+                            <time class="article-date" datetime="2026-08-20">2026-08-20 03:30:47</time>
+                        </header>
+                        <h2 class="article-title"><a href="https://www.lemonde.fr/economie/article/2026/08/20/aux-etats-unis-la-demande-de-capitaux-pour-l-ia-et-la-defense-provoque-un-debut-de-crise-de-la-dette_6750441_3234.html" target="_blank" rel="noopener noreferrer">Aux Etats-Unis, la demande de capitaux pour l’IA et la défense provoque un début de crise de la dette</a></h2>
+                        <div class="article-summary">
+                            <p>Le déficit budgétaire américain, qui continue de se creuser, et les investissements colossaux dans l’intelligence artificielle alimentent une hausse des taux d’intérêt sur le marché de la dette. Le Trésor s’efforce d’apaiser les craintes des investisseurs.</p>
                         </div>
-                        <h3><a href="https://www.lemonde.fr/economie/article/2026/08/20/aux-etats-unis-la-demande-de-capitaux-pour-l-ia-et-la-defense-provoque-un-debut-de-crise-de-la-dette_6750441_3234.html" target="_blank" rel="noopener noreferrer">Aux Etats-Unis, la demande de capitaux pour l’IA et la défense provoque un début de crise de la dette</a></h3>
-                        <div class="article-content">Le déficit budgétaire américain, qui continue de se creuser, et les investissements colossaux dans l’intelligence artificielle alimentent une hausse des taux d’intérêt sur le marché de la dette. Le Tr...</div>
-                    </div>
-                    <div class="article-card" data-date="2026-08-20" data-source="Le Monde Actualités">
-                        <div class="meta-info">
-                            <span class="source-tag">Le Monde Actualités</span>
-                            <span class="date">2026-08-20 09:29:44</span>
+                    </article>
+                    <article class="article-item" data-date="2026-08-20" data-source="Le Monde Actualités">
+                        <header class="article-header">
+                            <span class="article-source">Le Monde Actualités</span>
+                            <time class="article-date" datetime="2026-08-20">2026-08-20 09:29:44</time>
+                        </header>
+                        <h2 class="article-title"><a href="https://www.lemonde.fr/international/article/2026/08/20/canicule-en-allemagne-14-000-morts-liees-a-la-chaleur-cet-ete_6750821_3210.html" target="_blank" rel="noopener noreferrer">Canicule : 14 000 morts liées à la chaleur recensés cet été en Allemagne, près de 4 500 en Espagne</a></h2>
+                        <div class="article-summary">
+                            <p>Les personnes âgées de 75 ans et plus ont été les plus touchées en Allemagne, selon le rapport hebdomadaire de l’Institut Robert Koch. Tandis que l’Espagne a connu son mois de juillet le plus chaud, à égalité avec 2022, selon l’agence météorologique.</p>
                         </div>
-                        <h3><a href="https://www.lemonde.fr/international/article/2026/08/20/canicule-en-allemagne-14-000-morts-liees-a-la-chaleur-cet-ete_6750821_3210.html" target="_blank" rel="noopener noreferrer">Canicule : 14 000 morts liées à la chaleur recensés cet été en Allemagne, près de 4 500 en Espagne</a></h3>
-                        <div class="article-content">Les personnes âgées de 75 ans et plus ont été les plus touchées en Allemagne, selon le rapport hebdomadaire de l’Institut Robert Koch. Tandis que l’Espagne a connu son mois de juillet le plus chaud, à...</div>
-                    </div>
-                    <div class="article-card" data-date="2026-08-20" data-source="Le Monde Actualités">
-                        <div class="meta-info">
-                            <span class="source-tag">Le Monde Actualités</span>
-                            <span class="date">2026-08-20 03:59:32</span>
+                    </article>
+                    <article class="article-item" data-date="2026-08-20" data-source="Le Monde Actualités">
+                        <header class="article-header">
+                            <span class="article-source">Le Monde Actualités</span>
+                            <time class="article-date" datetime="2026-08-20">2026-08-20 03:59:32</time>
+                        </header>
+                        <h2 class="article-title"><a href="https://www.lemonde.fr/international/article/2026/08/20/natalie-harp-l-assistante-fervente-qui-murmure-a-l-oreille-de-donald-trump-et-agite-tout-washington_6750475_3210.html" target="_blank" rel="noopener noreferrer">Natalie Harp, l’assistante fervente qui murmure à l’oreille de Donald Trump et agite tout Washington</a></h2>
+                        <div class="article-summary">
+                            <p>La collaboratrice de 35 ans, entièrement dévouée au président américain, gère ses comptes sociaux et lui sert de filtre d’informations. Cette relation spéciale est devenue un sujet politique depuis qu’un sénateur y a fait allusion, s’attirant une violente réplique de la Maison Blanche.</p>
                         </div>
-                        <h3><a href="https://www.lemonde.fr/international/article/2026/08/20/natalie-harp-l-assistante-fervente-qui-murmure-a-l-oreille-de-donald-trump-et-agite-tout-washington_6750475_3210.html" target="_blank" rel="noopener noreferrer">Natalie Harp, l’assistante fervente qui murmure à l’oreille de Donald Trump et agite tout Washington</a></h3>
-                        <div class="article-content">La collaboratrice de 35 ans, entièrement dévouée au président américain, gère ses comptes sociaux et lui sert de filtre d’informations. Cette relation spéciale est devenue un sujet politique depuis qu...</div>
-                    </div>
-                    <div class="article-card" data-date="2026-08-20" data-source="Le Monde Actualités">
-                        <div class="meta-info">
-                            <span class="source-tag">Le Monde Actualités</span>
-                            <span class="date">2026-08-20 08:33:26</span>
+                    </article>
+                    <article class="article-item" data-date="2026-08-20" data-source="Le Monde Actualités">
+                        <header class="article-header">
+                            <span class="article-source">Le Monde Actualités</span>
+                            <time class="article-date" datetime="2026-08-20">2026-08-20 08:33:26</time>
+                        </header>
+                        <h2 class="article-title"><a href="https://www.lemonde.fr/international/live/2026/08/20/en-direct-guerre-en-ukraine-le-bilan-monte-a-14-morts-a-kiev-et-dans-sa-region-apres-les-attaques-russes-de-la-nuit_6746952_3210.html" target="_blank" rel="noopener noreferrer">EN DIRECT, guerre en Ukraine : le bilan continue de s’alourdir à Kiev et dans sa région après les attaques russes de la nuit</a></h2>
+                        <div class="article-summary">
+                            <p>Les autorités dénombrent 16 morts et plus de 40 blessés. « Environ 20 immeubles résidentiels, une école, un hôpital pour enfants et une crèche ont été gravement endommagés dans la capitale », a dénoncé le service de secouristes.</p>
                         </div>
-                        <h3><a href="https://www.lemonde.fr/international/live/2026/08/20/en-direct-guerre-en-ukraine-le-bilan-monte-a-14-morts-a-kiev-et-dans-sa-region-apres-les-attaques-russes-de-la-nuit_6746952_3210.html" target="_blank" rel="noopener noreferrer">EN DIRECT, guerre en Ukraine : le bilan continue de s’alourdir à Kiev et dans sa région après les attaques russes de la nuit</a></h3>
-                        <div class="article-content">Les autorités dénombrent 16 morts et plus de 40 blessés. « Environ 20 immeubles résidentiels, une école, un hôpital pour enfants et une crèche ont été gravement endommagés dans la capitale », a dénonc...</div>
-                    </div>
-    </div>
+                    </article>
+
+    </main>
 </body>
 </html>
