@@ -14,6 +14,7 @@ function extraireAnciensArticles(filePath) {
 
 async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) {
     const filePath = `Source/${nomFichier}`;
+    const dataPath = filePath.replace('.html', '.json'); // Fichier de données pour l'interface
     const dir = path.dirname(filePath);
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
@@ -21,6 +22,7 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
 
     let anciensArticlesHtml = extraireAnciensArticles(filePath);
     let nouveauxArticlesHtml = "";
+    let listeArticlesData = [];
 
     for (let source of sources) {
         try {
@@ -37,7 +39,7 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
                     const descriptionComplete = item.description ? item.description.replace(/<[^>]*>/g, '').trim() : "";
 
                     if (!anciensArticlesHtml.includes(signature) && !nouveauxArticlesHtml.includes(signature)) {
-                        // Structure ultra-propre style Wikipédia (balises sémantiques standard)
+                        // Le HTML pour ton site web
                         nouveauxArticlesHtml += `
                     <article class="article-item" data-date="${isoDate}" data-source="${source.nom}">
                         <header class="article-header">
@@ -49,6 +51,15 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
                             <p>${descriptionComplete}</p>
                         </div>
                     </article>`;
+
+                        // Les données pures pour ton autre interface
+                        listeArticlesData.push({
+                            titre: item.title,
+                            lien: item.link,
+                            date: item.pubDate,
+                            source: source.nom,
+                            texte: descriptionComplete
+                        });
                     }
                 });
             }
@@ -59,7 +70,7 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
 
     const feedTotal = nouveauxArticlesHtml + "\n" + anciensArticlesHtml;
 
-    // Page HTML style encyclopédie/Wikipédia, parfaitement lisible pour les humains et les robots
+    // 1. Sauvegarde du site HTML public
     const pageComplete = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -90,7 +101,16 @@ ${feedTotal}
 </html>`;
 
     fs.writeFileSync(filePath, pageComplete);
-    console.log(`Succès : ${filePath} mis à jour au format standard !`);
+
+    // 2. Sauvegarde du fichier de données structurées pour ton interface
+    let anciensData = [];
+    if (fs.existsSync(dataPath)) {
+        try { anciensData = JSON.parse(fs.readFileSync(dataPath, 'utf8')); } catch(e){}
+    }
+    const dataTotale = [...listeArticlesData, ...anciensData];
+    fs.writeFileSync(dataPath, JSON.stringify(dataTotale, null, 2));
+
+    console.log(`Succès : ${filePath} et ${dataPath} mis à jour !`);
 }
 
 async function lancerToutesLesMisesAJour() {
