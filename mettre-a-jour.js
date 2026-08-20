@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 // Fonction pour extraire les articles existants du fichier HTML afin de ne rien perdre
 function extraireAnciensArticles(filePath) {
@@ -19,11 +20,17 @@ function extraireAnciensArticles(filePath) {
 async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) {
     const filePath = `Source/${nomFichier}`;
     
-    // 1. On récupère la mémoire actuelle de la page (les anciens articles)
+    // 1. On s'assure que le dossier Source existe
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+
+    // 2. On récupère la mémoire actuelle de la page (les anciens articles)
     let anciensArticlesHtml = extraireAnciensArticles(filePath);
     let nouveauxArticlesHtml = "";
 
-    // 2. On va chercher les flux du web
+    // 3. On va chercher les flux du web
     for (let source of sources) {
         try {
             const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
@@ -57,10 +64,10 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
         }
     }
 
-    // 3. On combine les NOUVEAUX articles tout en haut, suivis de TOUS les ANCIENS (mémoire infinie)
+    // 4. On combine les NOUVEAUX articles tout en haut, suivis de TOUS les ANCIENS (mémoire infinie)
     const feedTotal = nouveauxArticlesHtml + "\n" + anciensArticlesHtml;
 
-    // 4. On reconstruit la page complète
+    // 5. On reconstruit la page complète
     const pageComplete = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -97,9 +104,9 @@ ${feedTotal}
 </body>
 </html>`;
 
-    // 5. On sauvegarde le fichier qui s'allonge un peu plus chaque jour
+    // 6. On sauvegarde le fichier
     fs.writeFileSync(filePath, pageComplete);
-    console.log(`Fichier ${filePath} mis à jour avec accumulation !`);
+    console.log(`Succès : Fichier ${filePath} mis à jour avec accumulation !`);
 }
 
 async function lancerToutesLesMisesAJour() {
