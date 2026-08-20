@@ -1,14 +1,727 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
     <channel>
-        <title>Journal d'actualités</title>
+        <title>Base d'Apprentissage Massive et Globale</title>
         <link>https://benlyna60.github.io/sandbox/</link>
-        <description>Flux unifié pour Journal d'actualités</description>
+        <description>Base d'apprentissage massive, multi-sources et multi-catégories</description>
         
+        <item>
+            <title><![CDATA[Le journal de 23h00 du jeudi 20 août 2026]]></title>
+            <link>https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-23h00/le-journal-de-23h00-du-jeudi-20-aout-2026-2313950</link>
+            <pubDate>2026-08-20 21:00:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[]]></description>
+            <source>France Info (Fil info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Le journal de 22h00 du jeudi 20 août 2026]]></title>
+            <link>https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-22h00/le-journal-de-22h00-du-jeudi-20-aout-2026-3080635</link>
+            <pubDate>2026-08-20 20:00:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[]]></description>
+            <source>France Info (Fil info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Le 20/Minuit du jeudi 20 août 2026]]></title>
+            <link>https://www.radiofrance.fr/franceinfo/podcasts/le-20-minuit/le-20-minuit-du-jeudi-20-aout-2026-8895857</link>
+            <pubDate>2026-08-20 18:00:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[]]></description>
+            <source>France Info (Fil info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Le journal de 19h00 du jeudi 20 août 2026]]></title>
+            <link>https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-19h00/le-journal-de-19h00-du-jeudi-20-aout-2026-6289601</link>
+            <pubDate>2026-08-20 17:00:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[]]></description>
+            <source>France Info (Fil info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Le journal de 18h00 du jeudi 20 août 2026]]></title>
+            <link>https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-18h00/le-journal-de-18h00-du-jeudi-20-aout-2026-3999141</link>
+            <pubDate>2026-08-20 16:00:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[]]></description>
+            <source>France Info (Fil info)</source>
+        </item>
+        <item>
+            <title><![CDATA[L’info de l’Histoire du jeudi 20 août 2026]]></title>
+            <link>https://www.radiofrance.fr/franceinfo/podcasts/l-info-de-l-histoire/l-info-de-l-histoire-du-jeudi-20-aout-2026-3712310</link>
+            <pubDate>2026-08-20 15:22:10</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[]]></description>
+            <source>France Info (Fil info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Le journal de 17h00 du jeudi 20 août 2026]]></title>
+            <link>https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-17h00/le-journal-de-17h00-du-jeudi-20-aout-2026-4982063</link>
+            <pubDate>2026-08-20 15:00:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[]]></description>
+            <source>France Info (Fil info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Le 17/20 du jeudi 20 août 2026]]></title>
+            <link>https://www.radiofrance.fr/franceinfo/podcasts/le-17-20/le-17-20-du-jeudi-20-aout-2026-1522797</link>
+            <pubDate>2026-08-20 15:00:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[]]></description>
+            <source>France Info (Fil info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Eric Serra et composer pour James Bond : "On m'a déroulé un tapis rouge"]]></title>
+            <link>https://www.radiofrance.fr/franceinfo/podcasts/le-monde-d-elodie/le-monde-d-elodie-du-jeudi-20-aout-2026-9034179</link>
+            <pubDate>2026-08-20 13:22:40</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Le musicien et compositeur Eric Serra est l'invité exceptionnel toute cette semaine du Monde d'Elodie, pour la sortie de son album, "Space Projekt U.M.O." et sa tournée dans toute la France, à partir de novembre, Eric Serra Live. Épisode 4 : "James Bond" et "Le Cinquième élément".]]></description>
+            <source>France Info (Fil info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Bientôt chez vous du jeudi 20 août 2026]]></title>
+            <link>https://www.radiofrance.fr/franceinfo/podcasts/bientot-chez-vous/bientot-chez-vous-du-jeudi-20-aout-2026-1855624</link>
+            <pubDate>2026-08-20 13:20:10</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[]]></description>
+            <source>France Info (Fil info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Cisjordanie: la France, l'Allemagne, le Royaume-Uni et l'Italie appellent à "mettre fin à l'expansion des colonies"]]></title>
+            <link>https://www.bfmtv.com/international/europe/cisjordanie-la-france-l-allemagne-le-royaume-uni-et-l-italie-appellent-a-mettre-fin-a-l-expansion-des-colonies_AD-202608200606.html</link>
+            <pubDate>2026-08-20 21:28:12</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Plusieurs pays européens appellent Israël à "retirer immédiatement" les appels d'offres lancés concernant la construction de logements au cœur d'un projet d'extension colonial israélien sur un territoire de 12 kilomètres carrés à l'est de Jérusalem.]]></description>
+            <source>BFMTV (Info)</source>
+        </item>
+        <item>
+            <title><![CDATA[USS Lincoln: le porte-avions américain est enfin remplacé]]></title>
+            <link>https://www.bfmtv.com/international/moyen-orient/iran/video-uss-lincoln-le-porte-avions-americain-est-enfin-remplace_VN-202608200605.html</link>
+            <pubDate>2026-08-20 21:19:52</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Présent en mer depuis plus de 200 jours, les conditions de vie à l'intérieur du porte-avions américain se sont fortement dégradées ces derniers jours. À tel point que la polémique enflait aux États-Unis. Il est désormais remplacé par l'USS George Washington, dans le cadre de la guerre en Iran.]]></description>
+            <source>BFMTV (Info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Après avoir passé 25 minutes bloquées la tête en bas dans un manège, deux adolescentes américaines obtiennent 275.000 euros de dédommagement]]></title>
+            <link>https://www.bfmtv.com/international/amerique-nord/etats-unis/apres-avoir-passe-25-minutes-bloquees-la-tete-en-bas-dans-un-manege-deux-adolescentes-americaines-obtiennent-275-000-euros-de-dedommagement_AN-202608200604.html</link>
+            <pubDate>2026-08-20 21:18:25</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Aux États-Unis, un dysfonctionnement a provoqué le blocage du bras de l'attraction, maintenant les passagers à 30 mètres de hauteur, la tête en bas, pendant 25 minutes.]]></description>
+            <source>BFMTV (Info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Ce que l'on sait de l'arsenal nucléaire de la Corée du Nord]]></title>
+            <link>https://www.bfmtv.com/international/asie/coree-nord/video-ce-que-l-on-sait-de-l-arsenal-nucleaire-de-la-coree-du-nord_VN-202608200589.html</link>
+            <pubDate>2026-08-20 20:51:15</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[La Corée du Nord a tiré une dizaine de missiles balistiques ce jeudi 20 août, a déclaré l'armée de la Corée du Sud. Les tirs ont eu lieu quelques heures après que Donald Trump a affirmé qu'il rencontrerait le dirigeant nord-coréen Kim Jong Un cette année.]]></description>
+            <source>BFMTV (Info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Tunisie: manifestation contre le gouvernement et les pénuries d'eau]]></title>
+            <link>https://www.bfmtv.com/international/afrique/tunisie/video-tunisie-manifestation-contre-le-gouvernement-et-les-penuries-d-eau_VN-202608200587.html</link>
+            <pubDate>2026-08-20 20:48:11</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Des centaines de Tunisiens ont manifesté jeudi 20 août à Tunis contre le président Kais Saied, dénonçant les coupures d'électricité et les pénuries d'eau potable.]]></description>
+            <source>BFMTV (Info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Accord commercial Canada-USA: "Nous sommes très proches", affirme le ministre canadien Dominic LeBlanc]]></title>
+            <link>https://www.bfmtv.com/international/amerique-nord/etats-unis/video-accord-commercial-canada-usa-nous-sommes-tres-proches-affirme-le-ministre-canadien-dominic-le-blanc_VN-202608200585.html</link>
+            <pubDate>2026-08-20 20:41:31</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Le Canada et les États-Unis sont "très proches" d'un accord commercial qui pourrait contribuer à réduire des mois de tarifs douaniers, bien que du travail reste à accomplir, a déclaré jeudi 20 août Dominic LeBlanc, ministre du Commerce intérieur du Canada.]]></description>
+            <source>BFMTV (Info)</source>
+        </item>
+        <item>
+            <title><![CDATA["L’animal broutait un peu trop proche du bord": un taureau meurt après avoir chuté d'une vingtaine de mètres en Bretagne]]></title>
+            <link>https://www.bfmtv.com/animaux/l-animal-broutait-un-peu-trop-proche-du-bord-un-taureau-meurt-apres-avoir-chute-d-une-vingtaine-de-metres-en-bretagne_AN-202608200581.html</link>
+            <pubDate>2026-08-20 20:39:14</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[La scène a été aperçue par une riveraine et ses colocataires, qui ont ensuite retrouvé l'animal dans le jardin d'une maison.]]></description>
+            <source>BFMTV (Info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Harry et Meghan de retour au Royaume-Uni: les raisons qui ont poussé le couple à quitter Los Angeles]]></title>
+            <link>https://www.bfmtv.com/international/video-harry-et-meghan-de-retour-au-royaume-uni-les-raisons-qui-ont-pousse-le-couple-a-quitter-los-angeles_VN-202608200583.html</link>
+            <pubDate>2026-08-20 20:39:00</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Harry et Meghan, ainsi que leurs enfants Archie et Lilibet, vont revenir vivre au Royaume-Uni d'ici la fin du mois. Un revirement de situation après des années de critiques envers la couronne britannique qui pose des questions.]]></description>
+            <source>BFMTV (Info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Harry et Meghan de retour au Royaume-Uni: un accueil mitigé chez les Britanniques]]></title>
+            <link>https://www.bfmtv.com/international/video-harry-et-meghan-de-retour-au-royaume-uni-un-accueil-mitige-chez-les-britanniques_VN-202608200582.html</link>
+            <pubDate>2026-08-20 20:35:57</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Harry et Meghan, ainsi que leurs enfants Archie et Lilibet, vont revenir vivre au Royaume-Uni d'ici la fin du mois. Un revirement de situation après des années de critiques envers la couronne britannique qui pose des questions.]]></description>
+            <source>BFMTV (Info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Guerre en Ukraine: le mois de juillet a été le plus meurtrier pour les civils ukrainiens depuis mai 2022]]></title>
+            <link>https://www.bfmtv.com/international/asie/russie/video-guerre-en-ukraine-le-mois-de-juillet-a-ete-le-plus-meurtrier-pour-les-civils-ukrainiens-depuis-mai-2022_VN-202608200580.html</link>
+            <pubDate>2026-08-20 20:26:34</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Au moins 16 personnes ont été tuées jeudi à Kiev et dans sa région dans une nouvelle frappe massive de drones et de missiles russes, le président Volodymyr Zelensky accusant Moscou de pousser à "l'escalade" au moment où l'Ukraine manque de moyens d'interception.]]></description>
+            <source>BFMTV (Info)</source>
+        </item>
+        <item>
+            <title><![CDATA[Après 74 jours d'absence, Paul Biya est de retour au Cameroun]]></title>
+            <link>https://www.rfi.fr/fr/afrique/20260820-apr%C3%A8s-74-jours-d-absence-paul-biya-est-de-retour-au-cameroun</link>
+            <pubDate>2026-08-20 16:23:36</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Le président du Cameroun, Paul Biya, est de retour à Yaoundé après 74 jours passés hors du pays. Aucune annonce officielle de la présidence n'avait annoncé sa venue, mais le chef d'État de 93 ans a, comme pressenti, atterri dans la capitale camerounaise après un vol depuis la Suisse. Un retour au pays à enjeu, alors que les spéculations sur son état de santé étaient alimentées par son absence.]]></description>
+            <source>RFI (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[EN DIRECT - Moyen-Orient: l'armée américaine déploie un nouveau porte-avions dans la région]]></title>
+            <link>https://www.rfi.fr/fr/moyen-orient/20260820-en-direct-moyen-orient-donald-trump-menace-de-terribles-r%C3%A9percussions-%C3%A9conomiques-tout-pays-qui-aiderait-l-iran</link>
+            <pubDate>2026-08-20 04:12:32</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[L'armée américaine a annoncé jeudi l'arrivée d'un nouveau porte-avions au Moyen-Orient, en remplacement de l'Abraham Lincoln dont le long déploiement en mer depuis des mois avait suscité des inquiétudes sur les conditions de vie de l'équipage. Suivez notre direct.]]></description>
+            <source>RFI (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Paris, Berlin, Londres, et Rome appellent à «mettre fin à l'expansion des colonies en Cisjordanie»]]></title>
+            <link>https://www.rfi.fr/fr/moyen-orient/20260820-paris-berlin-londres-et-rome-appellent-%C3%A0-mettre-fin-%C3%A0-l-expansion-des-colonies-en-cisjordanie</link>
+            <pubDate>2026-08-20 18:57:40</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[La France, l'Italie, le Royaume-Uni et l'Allemagne ont appelé jeudi 20 août 2026 Israël à « mettre fin à l'expansion des colonies en Cisjordanie » et à « retirer immédiatement » les appels d'offres lancés cette semaine concernant la construction de plus de 1 200 logements pour le vaste projet E1.]]></description>
+            <source>RFI (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Le sud du Liban ravagé par les feux de forêts, Israël accusé d'incendies volontaires]]></title>
+            <link>https://www.rfi.fr/fr/moyen-orient/20260820-le-sud-du-liban-ravag%C3%A9-par-les-feux-de-for%C3%AAts-isra%C3%ABl-accus%C3%A9-d-incendies-volontaires</link>
+            <pubDate>2026-08-20 09:47:52</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Alors que l'armée israélienne continue de frapper quotidiennement le sud du pays - ses frappes au cours du week-end ayant tué 11 personnes, dont des enfants et leurs mères -, ses opérations visent aussi l'environnement et les ressources naturelles, notamment l'eau et les forêts. Ces dernières semaines, la région a été ravagée par de nombreux incendies. Habitants, ONG et membres de la sécurité civile accusent Israël de mener une politique de la terre brûlée.]]></description>
+            <source>RFI (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[En Russie, la crainte d’une nouvelle mobilisation militaire pousse les hommes à préparer leur départ]]></title>
+            <link>https://www.rfi.fr/fr/europe/20260820-en-russie-la-crainte-d-une-nouvelle-mobilisation-militaire-pousse-les-hommes-%C3%A0-pr%C3%A9parer-leur-d%C3%A9part</link>
+            <pubDate>2026-08-20 16:53:08</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Alors qu’aucune nouvelle mobilisation n’a officiellement été annoncée par Moscou, les inquiétudes progressent parmi les Russes. Relokatz, un site d’aide à l’émigration lié à l’opposant en exil Maxime Katz, affirme recevoir désormais près de 120 demandes d'informations sur comment quitter le territoire par jour, contre 10 à 20 auparavant.]]></description>
+            <source>RFI (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Israël: les ONG restent sceptiques face aux enquêtes militaires sur des meurtres survenus à Gaza]]></title>
+            <link>https://www.rfi.fr/fr/moyen-orient/20260820-isra%C3%ABl-les-ong-restent-sceptiques-face-aux-enqu%C3%AAtes-militaires-sur-des-meurtres-survenus-%C3%A0-gaza</link>
+            <pubDate>2026-08-20 15:14:41</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[L’armée israélienne a annoncé le 19 août qu’elle allait enquêter et entamer des poursuites pénales après les meurtres de la petite Hind Rajab et sa famille en 2024 et l'assassinat de 15 soignants palestiniens en mars 2025. Les deux évènements avaient suscité l’indignation de la communauté internationale. L’armée a en revanche déclaré qu’elle ne lancerait pas d’enquêtes criminelles sur trois autres attaques très médiatisées au cours desquelles les forces israéliennes ont tué des travailleurs humanitaires de World Central Kitchen et de Médecins Sans Frontières (MSF).]]></description>
+            <source>RFI (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Au moins 16 morts en Ukraine après une nuit sous les missiles russes, Zelensky dénonce une «escalade»]]></title>
+            <link>https://www.rfi.fr/fr/europe/20260820-au-moins-16-morts-en-ukraine-apr%C3%A8s-une-nuit-sous-les-missiles-russes-zelensky-d%C3%A9nonce-une-escalade</link>
+            <pubDate>2026-08-20 15:04:31</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Une nouvelle nuit de bombardements russes a fait au moins 16 morts à Kiev et dans sa région, ont affirmé jeudi les autorités ukrainiennes. Le président Volodymyr Zelensky accusant Moscou d'« investir » dans des missiles balistiques pour pousser à l'escalade.]]></description>
+            <source>RFI (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[14 000 décès liés à la chaleur en Allemagne, un record de morts et des questions]]></title>
+            <link>https://www.rfi.fr/fr/europe/20260820-14-000-d%C3%A9c%C3%A8s-li%C3%A9s-%C3%A0-la-chaleur-en-allemagne-un-record-de-morts-et-des-questions</link>
+            <pubDate>2026-08-20 17:31:20</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[L'Allemagne, frappée cet été comme une grande partie de l'Europe par des canicules intenses, a connu un été extrêmement meurtrier. Selon des estimations provisoires publiées jeudi, 14 000 décès sont imputables aux vagues de chaleur estivales. Des critiques s'élèvent contre le manque de climatisation dans les hôpitaux ou d'équipements dans les résidences pour personnes âgées et la classe politique tente de réagir.]]></description>
+            <source>RFI (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[L'Australie s'indigne de la clôture par Israël d’une enquête sur la mort à Gaza d'employés d'une ONG]]></title>
+            <link>https://www.rfi.fr/fr/moyen-orient/20260820-l-australie-s-indigne-de-la-cl%C3%B4ture-par-isra%C3%ABl-d-une-enqu%C3%AAte-sur-la-mort-%C3%A0-gaza-d-employ%C3%A9s-d-une-ong</link>
+            <pubDate>2026-08-20 17:27:27</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[En Australie, vague d'indignation après la décision d'Israël de clôturer l'enquête pénale sur la mort de l'humanitaire australienne Zomi Frankcom et de ses collègues à Gaza. Cela s'était déroulé il y a deux ans, leur convoi humanitaire avait été touché par une frappe aérienne israélienne.]]></description>
+            <source>RFI (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[LFI et Les Écologistes: la gauche ouvre le bal de la rentrée politique à huit mois de la présidentielle]]></title>
+            <link>https://www.rfi.fr/fr/france/20260820-lfi-et-les-%C3%A9cologistes-la-gauche-ouvre-le-bal-de-la-rentr%C3%A9e-politique-%C3%A0-huit-mois-de-la-pr%C3%A9sidentielle</link>
+            <pubDate>2026-08-20 17:11:56</pubDate>
+            <category>ACTUALITÉS</category>
+            <description><![CDATA[Démarrage des universités d’été ce jeudi. D’un côté, LFI et ses « Amfis » à Châteauneuf-sur-Isère, près de Valence, et non loin de là, à Grenoble, les universités des Écologistes. LFI espère transformer cet événement en une nouvelle démonstration de force, tandis que les Écologistes se réunissent dans un contexte de flou et de divisions internes à l’approche de 2027.]]></description>
+            <source>RFI (Actualités)</source>
+        </item>
+        <item>
+            <title><![CDATA[Loi sur l’interdiction des réseaux sociaux aux moins de 15 ans : où mène la censure du Conseil constitutionnel ?]]></title>
+            <link>https://theconversation.com/loi-sur-linterdiction-des-reseaux-sociaux-aux-moins-de-15-ans-ou-mene-la-censure-du-conseil-constitutionnel-290011</link>
+            <pubDate>2026-08-20 13:07:24</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[La loi, qui sera réécrite en septembre, devrait s’attacher à neutraliser les fonctionnalités toxiques plutôt que d’interdire l’ensemble des réseaux aux enfants et aux adolescents.]]></description>
+            <source>The Conversation France</source>
+        </item>
+        <item>
+            <title><![CDATA[Enquête de l’OSCE : dans les territoires ukrainiens occupés, la Russie endoctrine et militarise les enfants]]></title>
+            <link>https://theconversation.com/enquete-de-losce-dans-les-territoires-ukrainiens-occupes-la-russie-endoctrine-et-militarise-les-enfants-288958</link>
+            <pubDate>2026-08-20 13:05:34</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Même si le droit international interdit l’endoctrinement et la militarisation des enfants dans les territoires occupés, la Russie se livre ouvertement à ces pratiques en Ukraine.]]></description>
+            <source>The Conversation France</source>
+        </item>
+        <item>
+            <title><![CDATA[Quelle est la différence entre le beurre et la margarine ? Une chimiste explore leurs effets en cuisine]]></title>
+            <link>https://theconversation.com/quelle-est-la-difference-entre-le-beurre-et-la-margarine-une-chimiste-explore-leurs-effets-en-cuisine-285621</link>
+            <pubDate>2026-08-20 13:05:07</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Graisses saturées, produits ultratransformés… quelles sont les différences chimiques entre le beurre et la margarine&amp;nbsp;? Comment se comportent-ils à la cuisson et en pâtisserie&amp;nbsp;?]]></description>
+            <source>The Conversation France</source>
+        </item>
+        <item>
+            <title><![CDATA[Prunier ou abricotier ? Le marmottier, un arbre fruitier qui brouille les pistes]]></title>
+            <link>https://theconversation.com/prunier-ou-abricotier-le-marmottier-un-arbre-fruitier-qui-brouille-les-pistes-289624</link>
+            <pubDate>2026-08-20 13:04:30</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Il y a urgence à protéger la diversité génétique du marmottier, robuste et résistant face à la sécheresse. Cet arbre fruitier pourrait aider à protéger les vergers de demain.]]></description>
+            <source>The Conversation France</source>
+        </item>
+        <item>
+            <title><![CDATA[Agir contre ses principes au travail, une souffrance psychologique encore méconnue]]></title>
+            <link>https://theconversation.com/agir-contre-ses-principes-au-travail-une-souffrance-psychologique-encore-meconnue-288017</link>
+            <pubDate>2026-08-20 13:03:41</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Être contraint de privilégier les intérêts de son entreprise au détriment de ses convictions peut laisser des séquelles durables. Cette «&amp;nbsp;blessure morale&amp;nbsp;» reste pourtant peu prise en compte dans le monde du travail.]]></description>
+            <source>The Conversation France</source>
+        </item>
+        <item>
+            <title><![CDATA[Est-ce que vous jouez avec votre chat ou est-ce que vous êtes juste en train de l’embêter ?]]></title>
+            <link>https://theconversation.com/est-ce-que-vous-jouez-avec-votre-chat-ou-est-ce-que-vous-etes-juste-en-train-de-lembeter-290022</link>
+            <pubDate>2026-08-20 13:02:47</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Ce que beaucoup de gens considèrent comme un «&amp;nbsp;jeu&amp;nbsp;» n’en est parfois pas du tout pour le chat. En réalité, ces interactions pourraient être source de stress pour lui.]]></description>
+            <source>The Conversation France</source>
+        </item>
+        <item>
+            <title><![CDATA[Vin, huile, profits : le véritable rôle des intendantes dans les fermes romaines]]></title>
+            <link>https://theconversation.com/vin-huile-profits-le-veritable-role-des-intendantes-dans-les-fermes-romaines-287595</link>
+            <pubDate>2026-08-20 13:02:23</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Qui produisait le vin de la Rome antique&amp;nbsp;? Les sources suggèrent que les «&amp;nbsp;vilicae&amp;nbsp;», les intendantes des domaines, étaient bien plus que des gestionnaires du foyer&amp;nbsp;: elles supervisaient les vendanges, la vinification, les rituels religieux et la transformation des récoltes.]]></description>
+            <source>The Conversation France</source>
+        </item>
+        <item>
+            <title><![CDATA[Nouveaux sports : d’où vient le succès du padel ?]]></title>
+            <link>https://theconversation.com/nouveaux-sports-dou-vient-le-succes-du-padel-285490</link>
+            <pubDate>2026-08-20 13:01:58</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Né au Mexique dans les années&amp;nbsp;1970, le padel est l’un des sports qui évoluent le plus vite en France. Cet essor répond-il aux nouvelles attentes des sportifs amateurs&amp;nbsp;?]]></description>
+            <source>The Conversation France</source>
+        </item>
+        <item>
+            <title><![CDATA[Pourquoi la génération Z est tombée amoureuse de la photographie argentique]]></title>
+            <link>https://theconversation.com/pourquoi-la-generation-z-est-tombee-amoureuse-de-la-photographie-argentique-287644</link>
+            <pubDate>2026-08-20 08:18:31</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Longtemps considérée comme condamnée par le numérique, la photographie argentique connaît un spectaculaire retour en grâce. Un engouement porté par la génération&amp;nbsp;Z, qui y voit une façon d’échapper aux algorithmes.]]></description>
+            <source>The Conversation France</source>
+        </item>
+        <item>
+            <title><![CDATA[Les plantes, aussi, ont besoin de gestes barrières : l’enjeu mondial de la biosécurité]]></title>
+            <link>https://theconversation.com/les-plantes-aussi-ont-besoin-de-gestes-barrieres-lenjeu-mondial-de-la-biosecurite-286478</link>
+            <pubDate>2026-08-20 07:40:43</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[La lutte contre les maladies émergentes des plantes est une question très peu médiatisée. Pourtant, chacun de nous peut oeuvrer contre ces fléaux à travers des gestes simples.]]></description>
+            <source>The Conversation France</source>
+        </item>
+        <item>
+            <title><![CDATA[Fanny Karatchodjoukova]]></title>
+            <link>https://lejournal.cnrs.fr/blog-auteurs/fanny-karatchodjoukova</link>
+            <pubDate>2023-06-12 09:24:23</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[responsable de la médiation scientifique pour la campagne océanographique APERO, à l'Institut Méditerranéen d'Océanologie à Marseille. Read time: 0 min]]></description>
+            <source>CNRS Le Journal</source>
+        </item>
+        <item>
+            <title><![CDATA[Par le réseau de communicants du CNRS]]></title>
+            <link>https://lejournal.cnrs.fr/blog-auteurs/par-le-reseau-de-communicants-du-cnrs</link>
+            <pubDate>2023-06-09 10:57:48</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Read time: 0 min]]></description>
+            <source>CNRS Le Journal</source>
+        </item>
+        <item>
+            <title><![CDATA[Cécile Michel]]></title>
+            <link>https://lejournal.cnrs.fr/blog-auteurs/cecile-michel</link>
+            <pubDate>2023-04-04 14:01:43</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Assyriologue, directrice de recherche au CNRS dans le laboratoire Archéologies et Sciences de l’AntiquitéRead time: 0 min]]></description>
+            <source>CNRS Le Journal</source>
+        </item>
+        <item>
+            <title><![CDATA[Armelle Leclerc, responsable de la communication de CNRS Sciences humaines &amp; sociales, et Natacha Collomb, anthropologue CNRS à l’Institut d’ethnologie et d’anthropologie sociale (IDEAS).]]></title>
+            <link>https://lejournal.cnrs.fr/blog-auteurs/armelle-leclerc-responsable-de-la-communication-de-cnrs-sciences-humaines-sociales-et</link>
+            <pubDate>2023-03-16 13:12:58</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Read time: 0 min]]></description>
+            <source>CNRS Le Journal</source>
+        </item>
+        <item>
+            <title><![CDATA[Ce blog collaboratif rassemble des contributions issues des 10 instituts thématiques du CNRS.]]></title>
+            <link>https://lejournal.cnrs.fr/blog-auteurs/ce-blog-collaboratif-rassemble-des-contributions-issues-des-10-instituts-thematiques-du</link>
+            <pubDate>2021-06-08 04:51:14</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Read time: 0 min]]></description>
+            <source>CNRS Le Journal</source>
+        </item>
+        <item>
+            <title><![CDATA[La rédaction de CNRS le journal]]></title>
+            <link>https://lejournal.cnrs.fr/blog-auteurs/la-redaction-de-cnrs-le-journal-1</link>
+            <pubDate>2020-03-24 15:30:45</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Read time: 0 min]]></description>
+            <source>CNRS Le Journal</source>
+        </item>
+        <item>
+            <title><![CDATA[Luce Lebart]]></title>
+            <link>https://lejournal.cnrs.fr/blog-auteurs/luce-lebart</link>
+            <pubDate>2019-06-14 09:02:48</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[est historienne de la photographie, commissaire de l’exposition La saga des inventions, à Arles, et chercheuse et correspondante française pour la collection Archive of Modern Conflict.Read time: 0 min]]></description>
+            <source>CNRS Le Journal</source>
+        </item>
+        <item>
+            <title><![CDATA[Plus d'informations sur l'équipe de rédaction et le comité éditorial : www.dialogueseconomiques.fr/a-propos]]></title>
+            <link>https://lejournal.cnrs.fr/blog-auteurs/plus-dinformations-sur-lequipe-de-redaction-et-le-comite-editorial</link>
+            <pubDate>2018-12-21 13:33:46</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Read time: 0 min]]></description>
+            <source>CNRS Le Journal</source>
+        </item>
+        <item>
+            <title><![CDATA[La rédaction de CNRS le journal]]></title>
+            <link>https://lejournal.cnrs.fr/blog-auteurs/la-redaction-de-cnrs-le-journal-0</link>
+            <pubDate>2018-07-02 15:59:37</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Read time: 0 min]]></description>
+            <source>CNRS Le Journal</source>
+        </item>
+        <item>
+            <title><![CDATA[Les journalistes scientifiques de l’École supérieure de journalisme (ESJ) de Lille]]></title>
+            <link>https://lejournal.cnrs.fr/blog-auteurs/les-journalistes-scientifiques-de-lecole-superieure-de-journalisme-esj-de-lille</link>
+            <pubDate>2018-06-08 14:15:13</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Read time: 0 min]]></description>
+            <source>CNRS Le Journal</source>
+        </item>
+        <item>
+            <title><![CDATA[A little Big Bang: Bowling-pin-shaped nuclei shed new light on the universe's first moments]]></title>
+            <link>https://phys.org/news/2026-08-big-bowling-pin-nuclei-universe.html</link>
+            <pubDate>2026-08-20 16:20:05</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[What happened in the first moments of the universe—before the building blocks of life and the world we know today came into existence? Physicists at the CERN research facility in Switzerland are trying to answer this question by recreating some of the extreme conditions that prevailed in the universe during its earliest history. Now, researchers from the Niels Bohr Institute, together with colleagues from the international ALICE collaboration, have come one step closer to understanding those conditions.]]></description>
+            <source>Phys.org</source>
+        </item>
+        <item>
+            <title><![CDATA[3D imaging and machine learning improve noncontact weight estimation of frozen skipjack tuna]]></title>
+            <link>https://phys.org/news/2026-08-3d-imaging-machine-noncontact-weight.html</link>
+            <pubDate>2026-08-20 16:20:01</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Accurately determining fish body size and weight is essential for fisheries resource management and seafood processing; however, measuring large quantities of fish is labor-intensive, and results may vary among operators.]]></description>
+            <source>Phys.org</source>
+        </item>
+        <item>
+            <title><![CDATA[Neanderthal hips challenge long-standing hypothesis of a trade-off between childbirth and bipedal walking]]></title>
+            <link>https://phys.org/news/2026-08-neanderthal-hips-hypothesis-childbirth-bipedal.html</link>
+            <pubDate>2026-08-20 16:10:02</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[The most prominent difference between human male and female skeletons is the pelvis, which anthropologists often use to determine the sex of ancient remains. Scientists have long believed the human pelvis evolved mainly as a compromise between walking on two legs and giving birth to large-brained babies. This idea is known as the Obstetrical Dilemma Hypothesis.]]></description>
+            <source>Phys.org</source>
+        </item>
+        <item>
+            <title><![CDATA[International review standardizes selenosugar nomenclature and selenium metabolism]]></title>
+            <link>https://phys.org/news/2026-08-international-standardizes-selenosugar-nomenclature-selenium.html</link>
+            <pubDate>2026-08-20 16:00:11</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Selenosugars are the major urinary metabolites responsible for the physiological excretion of selenium. Understanding selenium metabolism relies on accurately detecting and identifying selenosugars. However, research has been hindered by inconsistent terminology used for selenosugars, varying analytical practices and an incomplete understanding of the biological pathway for selenosugar biosynthesis.]]></description>
+            <source>Phys.org</source>
+        </item>
+        <item>
+            <title><![CDATA[Illuminating the limits of the international unit of light, the candela]]></title>
+            <link>https://phys.org/news/2026-08-illuminating-limits-international-candela.html</link>
+            <pubDate>2026-08-20 16:00:09</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[The candela, the international unit of light in use for almost a century, forms the basis of photometry. According to a new study, measurements derived from it systematically misjudge the brightness of colored light sources and depart markedly from human perception.]]></description>
+            <source>Phys.org</source>
+        </item>
+        <item>
+            <title><![CDATA[Nanoparticle combines two strategies to speed up the healing of chronic wounds]]></title>
+            <link>https://phys.org/news/2026-08-nanoparticle-combines-strategies-chronic-wounds.html</link>
+            <pubDate>2026-08-20 15:40:07</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Researchers at the University of São Paulo (USP) in Ribeirão Preto, Brazil, have developed a nanoparticle that can address the various factors hindering the healing of chronic wounds, which include ulcers associated with diabetes and pressure ulcers common among bedridden individuals. These wounds, which may persist for months or even years, affect about 1% to 2% of the population and represent a significant public health concern because they increase the risk of infection and amputation and significantly impair patients' quality of life.]]></description>
+            <source>Phys.org</source>
+        </item>
+        <item>
+            <title><![CDATA[Fertilizer prices and shortages are hamstringing our farmers. But we have other options]]></title>
+            <link>https://phys.org/news/2026-08-fertilizer-prices-shortages-hamstringing-farmers.html</link>
+            <pubDate>2026-08-20 15:40:01</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[When was the last time you bought a loaf of bread?]]></description>
+            <source>Phys.org</source>
+        </item>
+        <item>
+            <title><![CDATA[Designing supramolecular therapies to cross the blood-brain barrier]]></title>
+            <link>https://phys.org/news/2026-08-supramolecular-therapies-blood-brain-barrier.html</link>
+            <pubDate>2026-08-20 15:20:03</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[A new Northwestern Medicine study has uncovered key molecular design principles that could help supramolecular therapeutics cross the blood-brain barrier, a major challenge for this novel approach to treating neurological disorders.]]></description>
+            <source>Phys.org</source>
+        </item>
+        <item>
+            <title><![CDATA[The first wave of bird flu is the worst: What can Australia learn from overseas?]]></title>
+            <link>https://phys.org/news/2026-08-bird-flu-worst-australia-overseas.html</link>
+            <pubDate>2026-08-20 15:20:01</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[Hundreds of dead birds are now being reported as the lethal H5N1 strain of bird flu begins to spread across Australia. Government reports show the virus is circulating in resident birds.]]></description>
+            <source>Phys.org</source>
+        </item>
+        <item>
+            <title><![CDATA[Tobacco companies helped flood the federal comment process that stalled menthol cigarette ban]]></title>
+            <link>https://phys.org/news/2026-08-tobacco-companies-federal-comment-stalled.html</link>
+            <pubDate>2026-08-20 15:00:06</pubDate>
+            <category>UNIVERSITÉ & RECHERCHE</category>
+            <description><![CDATA[When the U.S. Food and Drug Administration (FDA) proposed banning menthol cigarettes and flavored cigars in 2022, nearly 250,000 public comments flooded in—a record response that led the Biden administration to delay a final decision.]]></description>
+            <source>Phys.org</source>
+        </item>
+        <item>
+            <title><![CDATA[Kiev sous une pluie de missiles balistiques]]></title>
+            <link>https://www.lemonde.fr/liberons-les-crayons/article/2026/08/20/kiev-sous-une-pluie-de-missiles-balistiques_6751010_6598835.html</link>
+            <pubDate>2026-08-20 13:48:58</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[Au moins seize personnes sont mortes dans les bombardements russes sur Kiev dans la nuit du 19 au 20 juillet. Vu par Arend Van Dam (Pays-Bas).]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[« Sous Trump, mener un projet sur Israël et la Palestine à l’université est une épreuve institutionnelle »]]></title>
+            <link>https://www.lemonde.fr/idees/article/2026/08/20/sous-trump-mener-un-projet-sur-israel-et-la-palestine-a-l-universite-est-une-epreuve-institutionnelle_6750860_3232.html</link>
+            <pubDate>2026-08-20 10:00:11</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[L’historienne de l’art et professeure d’études judaïques américaine Katharina Galor raconte, dans une tribune au « Monde », comment une exposition de dessins d’enfants palestiniens et israéliens fait débat à l’université Brown, à Providence, dans l’Etat du Rhode Island, où elle enseigne.]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[Procès de Meta : la société contre l’avidité des plateformes]]></title>
+            <link>https://www.lemonde.fr/idees/article/2026/08/20/proces-de-meta-la-societe-contre-l-avidite-des-plateformes_6750822_3232.html</link>
+            <pubDate>2026-08-20 09:30:10</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[Depuis le 18 août, 29 Etats américains poursuivent la firme de Mark Zuckerberg, propriétaire d’Instagram et de Facebook. Ce procès marquera une prise de conscience sociétale salutaire, comparable au retournement de l’opinion contre les cigarettiers il y a trente ans]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[Piratage du site des impôts : « La crédibilité de l’Etat français est mise à mal quand il échoue à protéger l’une de ses forteresses les plus régaliennes »]]></title>
+            <link>https://www.lemonde.fr/idees/article/2026/08/20/piratage-du-site-des-impots-la-credibilite-de-l-etat-francais-est-mise-a-mal-quand-il-echoue-a-proteger-l-une-de-ses-forteresses-les-plus-regaliennes_6750680_3232.html</link>
+            <pubDate>2026-08-20 06:30:01</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[Le piratage des données de 678 000 contribuables est un sujet plus politique que technique, et qui illustre le bilan des dix ans du numérique en France, analyse, dans une tribune au « Monde », Jean-Baptiste Soufron, avocat et ancien secrétaire général du Conseil national du numérique.]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[Présidentielle 2027 : « Le vote utile qu’espère mobiliser Jean-Luc Mélenchon n’aura plus le même sens qu’en 2022 »]]></title>
+            <link>https://www.lemonde.fr/idees/article/2026/08/20/presidentielle-2027-le-vote-utile-qu-espere-mobiliser-jean-luc-melenchon-n-aura-plus-le-meme-sens-qu-en-2022_6750478_3232.html</link>
+            <pubDate>2026-08-20 04:00:03</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[Le candidat de La France insoumise entend s’installer en tête des sondages à gauche et, ce faisant, rallier les électeurs de son camp afin d’accéder au second tour, mais ceux-ci sont divisés sur sa personnalité comme sur sa capacité à battre l’extrême droite, explique le politiste Antoine Bristielle, dans une tribune au « Monde ».]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[« Fjord », Palme d’or 2026 : « Cristian Mungiu prête le prestige du cinéma au registre de la lutte contre le politiquement correct »]]></title>
+            <link>https://www.lemonde.fr/idees/article/2026/08/19/fjord-palme-d-or-2026-cristian-mungiu-prete-le-prestige-du-cinema-au-registre-de-la-lutte-contre-le-politiquement-correct_6749882_3232.html</link>
+            <pubDate>2026-08-19 14:10:03</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[Dans une tribune au « Monde », le politiste roumain Cristian Pirvulescu estime qu’en choisissant une fois de plus un sujet très clivant politiquement, tout en refusant d’en tirer un verdict moral, le cinéaste cultive une ambiguïté qui fait le jeu des milieux réactionnaires.]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[« Il est aussi faux de faire des réseaux sociaux la cause unique du mal-être adolescent que de nier leur capacité à l’amplifier »]]></title>
+            <link>https://www.lemonde.fr/idees/article/2026/08/19/il-est-aussi-faux-de-faire-des-reseaux-sociaux-la-cause-unique-du-mal-etre-adolescent-que-de-nier-leur-capacite-a-l-amplifier_6749869_3232.html</link>
+            <pubDate>2026-08-19 12:49:14</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[Notre responsabilité d’adulte n’est pas d’abandonner nos adolescents dans les espaces numériques, ni de les en tenir à l’écart, car la santé mentale de notre jeunesse mérite mieux qu’un affrontement entre technophiles et technophobes, analyse le pédopsychiatre Pierre Fourneret, dans une tribune au « Monde ».]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[« Le massacre de Muttur au Sri Lanka demeure, vingt ans plus tard,  l’un des exemples les plus frappants de l’impunité des attaques contre les travailleurs humanitaires »]]></title>
+            <link>https://www.lemonde.fr/idees/article/2026/08/19/le-massacre-de-muttur-au-sri-lanka-demeure-vingt-ans-plus-tard-l-un-des-exemples-les-plus-frappants-de-l-impunite-des-attaques-contre-les-travailleurs-humanitaire_6749820_3232.html</link>
+            <pubDate>2026-08-19 10:30:03</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[En 2006, en pleine guerre civile sri-lankaise, 17 travailleurs d’Action contre la faim étaient exécutés à bout portant, alors qu’ils fournissaient de l’eau potable à des populations. Depuis, l’action humanitaire s’en est trouvé bouleversée, analysent deux conseillers juridiques qui, dans une tribune au « Monde », enjoignent aux Etats de protéger une profession très dangereuse.]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[Reconnaître le courage des femmes d’Afghanistan]]></title>
+            <link>https://www.lemonde.fr/idees/article/2026/08/19/reconnaitre-le-courage-des-femmes-d-afghanistan_6749813_3232.html</link>
+            <pubDate>2026-08-19 09:30:06</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[Cinq ans après le retour au pouvoir des talibans par la force, marqué depuis par l’extrême violence de l’effacement des femmes dans le pays, comment comprendre la normalisation amorcée du régime sur la scène internationale ? L’Europe doit respecter ses principes et agir de manière collective, sous peine de connaître la faillite morale et la déchéance géopolitique dans cette partie du monde.]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[Meta AI lance une app macOS et se connecte à Facebook et Instagram]]></title>
+            <link>https://www.blogdumoderateur.com/meta-ai-lance-app-macos-connecte-facebook-instagram/</link>
+            <pubDate>2026-08-20 08:36:07</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[L'assistant de Meta dispose désormais d'une application macOS, avec partage de fenêtre et dictée système. En parallèle, il se connecte aux données des comptes professionnels sur le web, sur mobile et sur Mac.]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[WordPress 7.1 est disponible : ce qui change pour l’édition et la gestion des médias]]></title>
+            <link>https://www.blogdumoderateur.com/wordpress-7-1-disponible-nouveautes/</link>
+            <pubDate>2026-08-20 06:56:17</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Cette nouvelle version de WordPress enrichit l'éditeur, avec des styles adaptés à chaque écran, deux nouveaux blocs et des notes enrichies pour améliorer la collaboration.]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[Google Trends déploie de nouvelles cartes interactives pour visualiser les tendances]]></title>
+            <link>https://www.blogdumoderateur.com/google-trends-cartes-interactives-visualiser-tendances/</link>
+            <pubDate>2026-08-19 15:00:21</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[La section "Explorer" de Google Trends s'offre une nouvelle fonctionnalité. Google y déploie des cartes interactives pensées pour repérer plus vite les écarts d'intérêt d'une région à l'autre.]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[23 % de taux de clic en moins : les AI Overviews font déjà des dégâts en France]]></title>
+            <link>https://www.blogdumoderateur.com/23-pourcent-taux-clic-moins-ai-overviews-degats-france/</link>
+            <pubDate>2026-08-19 13:26:32</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Ahrefs a comparé les données Search Console de 963 domaines français depuis le déploiement du 22 juillet. Les sites, dont plus d'une requête sur cinq déclenche un résumé IA, décrochent nettement.]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[App Store : ce qui change pour les développeurs européens au 1er octobre 2026]]></title>
+            <link>https://www.blogdumoderateur.com/app-store-ce-qui-change-developpeurs-europeens-1er-octobre-2026/</link>
+            <pubDate>2026-08-19 09:03:43</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Apple annonce de nouvelles conditions commerciales pour les développeurs européens, applicables au 1er octobre. La firme dit "régler ainsi ses désaccords avec la Commission européenne sur la distribution alternative".]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[En France, 62 % des décideurs IT prévoient d’augmenter leurs effectifs malgré l’IA]]></title>
+            <link>https://www.blogdumoderateur.com/france-62-pourcent-decideurs-it-prevoient-augmenter-effectifs-malgre-ia/</link>
+            <pubDate>2026-08-19 05:00:36</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Le volet français du rapport annuel de Box, mené auprès de 406 décideurs informatiques, situe l'Hexagone au-dessus des États-Unis et du Japon sur les perspectives d'embauche.]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[Gemini : le guide pour comprendre tous les outils, modèles et fonctionnalités]]></title>
+            <link>https://www.blogdumoderateur.com/gemini-guide-comprendre-outils-modeles-fonctionnalites/</link>
+            <pubDate>2026-08-19 05:00:18</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Google a fait de Gemini la couche IA de tout son écosystème. On fait le point sur les outils, les modèles et les fonctionnalités qui le composent.]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[SEO : Google déploie une mise à jour de ses algorithmes (August 2026 spam update)]]></title>
+            <link>https://www.blogdumoderateur.com/seo-google-august-2026-spam-update/</link>
+            <pubDate>2026-08-18 22:30:26</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Google a lancé le déploiement de l'August 2026 Spam Update, sa troisième mise à jour antispam de l'année. L'opération devrait s'étaler sur quelques jours.]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[OpenAI propose une version de ChatGPT dédiée aux mineurs, entre apprentissage et garde-fous]]></title>
+            <link>https://www.blogdumoderateur.com/openai-version-chatgpt-mineurs-apprentissage-garde-fous/</link>
+            <pubDate>2026-08-18 13:21:38</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[OpenAI réunit dans une même interface ses protections destinées aux mineurs. Au menu, un mode Étudier programmable, des rappels de pause et des notifications parentales élargies aux troubles alimentaires.]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[YouTube : pourquoi le nombre de vues affiché va changer dès le 24 août]]></title>
+            <link>https://www.blogdumoderateur.com/youtube-pourquoi-nombre-vues-change-24-aout/</link>
+            <pubDate>2026-08-18 08:37:34</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[À partir du 24 août 2026, YouTube comptabilisera une vue dès qu'une vidéo commencera à être lue, quel que soit son format.]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[Telegram veut sa propre extension de nom de domaine, le .gram, pour créer des millions de nouvelles adresses web]]></title>
+            <link>https://siecledigital.fr/2026/08/20/telegram-veut-sa-propre-extension-de-nom-de-domaine-le-gram-pour-creer-des-millions-de-nouvelles-adresses-web/</link>
+            <pubDate>2026-08-20 14:57:17</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Sur son compte X, Pavel Durov a précisé que sa société avait fait cette demande pour que Telegram ne dépende de personne. L’ICANN (organisme international qui gère les extensions Internet) devra étudier son souhait d’obtenir le domaine .gram. Si cela est validé, un nom d’utilisateur sera automatiquement associé à une adresse web. Le potentiel est […]]]></description>
+            <source>Siècle Digital</source>
+        </item>
+        <item>
+            <title><![CDATA[L’Europe fait plier Apple qui revoit en profondeur les règles de son App Store]]></title>
+            <link>https://siecledigital.fr/2026/08/20/leurope-fait-plier-apple-qui-revoit-en-profondeur-les-regles-de-son-app-store/</link>
+            <pubDate>2026-08-20 14:48:23</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Sous la pression de l’Europe, Apple accepte finalement de se conformer au Digital Markets Act. Pour cela, l’entreprise va imposer de nouvelles règles aux développeurs qui distribuent leurs applications sur les appareils de la marque.  Apple abandonne la taxe Core Technology Fee Après un long conflit avec la Commission européenne, Apple a fini par accepter de […]]]></description>
+            <source>Siècle Digital</source>
+        </item>
+        <item>
+            <title><![CDATA[Piratages en série en France, le gouvernement lance une nouvelle riposte]]></title>
+            <link>https://siecledigital.fr/2026/08/20/piratages-en-serie-en-france-le-gouvernement-lance-une-nouvelle-riposte/</link>
+            <pubDate>2026-08-20 14:43:50</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Les impôts français ne sont pas hermétiques aux cyberattaques. Depuis la fin juin, des personnes malveillantes ont réussi à exploiter trois comptes. Grâce à leur mode opératoire, elles ont pénétré les systèmes de la Direction générale des finances publiques. Ce sont près de 678 000 contribuables qui sont concernés. Ces hackers ont dérobé les données […]]]></description>
+            <source>Siècle Digital</source>
+        </item>
+        <item>
+            <title><![CDATA[L’Europe a raté le virage du numérique, Christine Lagarde craint qu’elle fasse la même erreur avec l’IA]]></title>
+            <link>https://siecledigital.fr/2026/08/20/leurope-a-rate-le-virage-du-numerique-christine-lagarde-craint-quelle-fasse-la-meme-erreur-avec-lia/</link>
+            <pubDate>2026-08-20 14:39:56</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Ce n’est pas la première fois qu’un tel constat est fait. La présidente de la Banque centrale européenne estime que l’Europe n’est pas à la page. Elle a partagé son avis lors d’une réunion du Forum économique mondial à Genève. Selon Christine Lagarde, ce sont les États-Unis et la Chine qui s’en sortent très bien […]]]></description>
+            <source>Siècle Digital</source>
+        </item>
+        <item>
+            <title><![CDATA[La publicité arrive dans ChatGPT en France dès le 24 août, voici ce qui va changer]]></title>
+            <link>https://siecledigital.fr/2026/08/20/la-publicite-arrive-dans-chatgpt-en-france-des-le-24-aout-voici-ce-qui-va-changer/</link>
+            <pubDate>2026-08-20 14:36:09</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[À partir du 24 août prochain, OpenAI va intégrer de la publicité dans ChatGPT auprès des utilisateurs français. Une annonce qui inquiète les utilisateurs même si l’entreprise promet que cela n’influencera pas les réponses de l’IA. Après une série de tests aux États-Unis, la publicité arrive en Europe Après plusieurs tests réalisés aux États-Unis depuis […]]]></description>
+            <source>Siècle Digital</source>
+        </item>
+        <item>
+            <title><![CDATA[Meta collecte trois fois plus de données sur vous qu’Apple ou Microsoft]]></title>
+            <link>https://siecledigital.fr/2026/08/20/meta-collecte-trois-fois-plus-de-donnees-sur-vous-quapple-ou-microsoft/</link>
+            <pubDate>2026-08-20 14:33:04</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Cinq géants ont été étudiés lors de cette analyse. Meta détient un catalogue assez faible de 12 apps par rapport aux 44 de Google. Par contre, il y en a une seule pour Apple. Surfshark a eu l’occasion d’analyser 25 catégories sur les 35 disponibles. Google a 17 types contre 12 pour Amazon, 8 pour […]]]></description>
+            <source>Siècle Digital</source>
+        </item>
+        <item>
+            <title><![CDATA[Pourquoi Google rachète 10 millions de dollars les mails et données internes d’une compagnie aérienne en faillite]]></title>
+            <link>https://siecledigital.fr/2026/08/19/pour-ameliorer-son-ia-google-met-10-millions-de-dollars-sur-les-donnees-dune-entreprise-en-faillite/</link>
+            <pubDate>2026-08-19 13:13:36</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Spirit Airlines a rencontré des difficultés après le Covid. Elle a donc été placée en faillite en août 2025. Ses avions ont cessé de voler en mai 2026. Toutefois, la compagnie low cost avait encore ses données à vendre. Un document judiciaire publié en août révèle que Google a remporté aux enchères l’intégralité des archives […]]]></description>
+            <source>Siècle Digital</source>
+        </item>
+        <item>
+            <title><![CDATA[Après les impôts, les mêmes hackers s’attaquent à l’Éducation nationale et auraient volé les données de plus d’un million d’élèves]]></title>
+            <link>https://siecledigital.fr/2026/08/19/apres-les-impots-les-memes-hackers-sattaquent-a-leducation-nationale-et-auraient-vole-les-donnees-de-plus-dun-million-deleves/</link>
+            <pubDate>2026-08-19 13:09:39</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Après avoir piraté les informations fiscales de 678 000 contribuables, le duo de hackers ZeroBytes s’est infiltré dans les systèmes du ministère de l’Éducation nationale pour voler les données de plus d’un million d’élèves. Après les impôts, les hackers ciblent l’Éducation nationale  Le duo de hackers ZeroBytes est à l’origine d’une nouvelle attaque contre l’Éducation […]]]></description>
+            <source>Siècle Digital</source>
+        </item>
+        <item>
+            <title><![CDATA[OpenAI lance une version de ChatGPT spécialement conçue pour les adolescents]]></title>
+            <link>https://siecledigital.fr/2026/08/19/openai-lance-une-version-de-chatgpt-specialement-concue-pour-les-adolescents/</link>
+            <pubDate>2026-08-19 13:06:27</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Sam Altman voulait traiter les adultes comme des adultes. C’est dans cette logique qu’OpenAI développait un mode dédié sur ChatGPT. Ce projet a été mis en pause en mars. Toutefois, quelques mois plus tard, l’entreprise a pris une autre direction. ChatGPT for Teens a été lancé mardi, avec des systèmes pensés pour les 13-17 ans. […]]]></description>
+            <source>Siècle Digital</source>
+        </item>
+        <item>
+            <title><![CDATA[Reddit teste la transformation de ses publications en contenus vidéo et audio]]></title>
+            <link>https://siecledigital.fr/2026/08/19/reddit-teste-la-transformation-de-ses-publications-en-contenus-video-et-audio/</link>
+            <pubDate>2026-08-19 13:03:17</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Sur TikTok et Instagram, des créateurs tournent des vidéos avec des threads Reddit. Une voix de synthèse est utilisée par-dessus les images de cuisine ou de jeux vidéo. Ces contenus génèrent des millions de vues. Reddit a donc décidé de ne pas laisser les autres monétiser son contenu. C’est pour cette raison que la plateforme […]]]></description>
+            <source>Siècle Digital</source>
+        </item>
         <item>
             <title><![CDATA[François d’Assise, apôtre de la paix universelle : quand le saint en croisade a rencontré le sultan]]></title>
             <link>https://www.lemonde.fr/series-d-ete/article/2026/08/20/francois-d-assise-apotre-de-la-paix-universelle-quand-le-saint-en-croisade-a-rencontre-le-sultan_6750974_3451060.html</link>
             <pubDate>2026-08-20 13:00:06</pubDate>
+            <category></category>
             <description><![CDATA[« François d’Assise, le saint contemporain » (4/6). Le religieux, combattant parmi les croisés, aurait traversé en 1219 les lignes ennemies pour se retrouver devant le sultan Al-Kamil. L’anecdote l’érigera en précurseur du dialogue entre l’islam et le christianisme.]]></description>
             <source>Le Monde</source>
         </item>
@@ -16,6 +729,7 @@
             <title><![CDATA[Un nouveau porte-avions américain, l’USS « George-Washington », est arrivé au Moyen-Orient]]></title>
             <link>https://www.lemonde.fr/international/article/2026/08/20/un-nouveau-porte-avions-americain-l-uss-george-washington-est-arrive-au-moyen-orient-annonce-l-armee-etats-unienne_6751055_3210.html</link>
             <pubDate>2026-08-20 15:34:55</pubDate>
+            <category></category>
             <description><![CDATA[Le navire vient remplacer l’« Abraham-Lincoln », déployé en mer depuis huit mois, et dont les conditions de vie de l’équipage avaient suscité l’inquiétude aux Etats-Unis.]]></description>
             <source>Le Monde</source>
         </item>
@@ -23,6 +737,7 @@
             <title><![CDATA[En Cisjordanie, un conseil de colons israéliens annonce le retour dans la colonie de Kadim évacuée en 2005]]></title>
             <link>https://www.lemonde.fr/international/article/2026/08/20/en-cisjordanie-un-conseil-de-colons-israeliens-annonce-le-retour-dans-la-colonie-de-kadim-evacuee-en-2005_6751052_3210.html</link>
             <pubDate>2026-08-20 15:17:47</pubDate>
+            <category></category>
             <description><![CDATA[Le Conseil régional de Samarie, qui administre les colonies israéliennes du nord de la Cisjordanie occupée, a affirmé que 30 familles s’installaient dans la colonie de Kadim, évacuées il y a vingt et un ans dans le cadre du plan de désengagement de l’ancien premier ministre Ariel Sharon.]]></description>
             <source>Le Monde</source>
         </item>
@@ -30,6 +745,7 @@
             <title><![CDATA[« Derrière les crédits de la culture se joue la capacité de la France à transmettre une histoire commune »]]></title>
             <link>https://www.lemonde.fr/idees/article/2026/08/20/derriere-les-credits-de-la-culture-se-joue-la-capacite-de-la-france-a-transmettre-une-histoire-commune_6751088_3232.html</link>
             <pubDate>2026-08-20 16:00:05</pubDate>
+            <category></category>
             <description><![CDATA[La question culturelle ne concerne pas que les artistes, le public ou la vie économique, elle joue aussi un rôle démocratique central, explique le secrétaire général de la CFDT-Culture, Alexis Fritche, qui, dans une tribune au « Monde », appelle à défaire les choix budgétaires du gouvernement.]]></description>
             <source>Le Monde</source>
         </item>
@@ -37,6 +753,7 @@
             <title><![CDATA[« A la caserne, nous n’avons pas l’habitude de dire nos sentiments. Là, c’est tout l’inverse » : le pot de départ avec gyrophares d’Olivier, pompier professionnel]]></title>
             <link>https://www.lemonde.fr/series-d-ete/article/2026/08/20/a-la-caserne-nous-n-avons-pas-l-habitude-de-dire-nos-sentiments-la-c-est-tout-l-inverse-le-pot-de-depart-avec-gyrophares-d-olivier-pompier-professionnel_6751090_3451060.html</link>
             <pubDate>2026-08-20 16:00:15</pubDate>
+            <category></category>
             <description><![CDATA[« Bon vent ! » (16/18). Olivier Dibling a raccroché son casque en avril. Pour le dernier jour de sa carrière, l’adjudant-chef de 59 ans a droit à un drôle de bizutage… et à des hommages émus.]]></description>
             <source>Le Monde</source>
         </item>
@@ -44,6 +761,7 @@
             <title><![CDATA[Le massif du Mont-Blanc déstabilisé par un été caniculaire et des chutes de pierres qui le défigurent]]></title>
             <link>https://www.lemonde.fr/planete/article/2026/08/20/le-massif-du-mont-blanc-destabilise-par-un-ete-caniculaire-et-des-chutes-de-pierres-qui-le-defigurent_6751049_3244.html</link>
             <pubDate>2026-08-20 14:30:03</pubDate>
+            <category></category>
             <description><![CDATA[Le plus haut sommet des Alpes n’est momentanément plus accessible par aucune des trois principales voies normales. La conséquence des températures extrêmes qui fragilisent glaces et parois.]]></description>
             <source>Le Monde</source>
         </item>
@@ -51,6 +769,7 @@
             <title><![CDATA[EN DIRECT, guerre en Ukraine : près de 40 000 personnes se sont réfugiées dans le métro de Kiev lors de l’attaque russe dans la nuit de mercredi à jeudi]]></title>
             <link>https://www.lemonde.fr/international/live/2026/08/20/en-direct-guerre-en-ukraine-une-journee-de-deuil-prevue-vendredi-a-kiev-apres-les-attaques-russes-qui-ont-fait-16-morts-dans-la-region_6746952_3210.html</link>
             <pubDate>2026-08-20 12:25:03</pubDate>
+            <category></category>
             <description><![CDATA[Après les attaques russes de la nuit, les autorités dénombrent 16 morts et plus de 40 blessés. « Environ 20 immeubles résidentiels, une école, un hôpital pour enfants et une crèche ont été gravement endommagés dans la capitale », a dénoncé le service de secouristes.]]></description>
             <source>Le Monde</source>
         </item>
@@ -58,6 +777,7 @@
             <title><![CDATA[Absence de budget et loi spéciale prolongée : l’inspection générale des finances alerte sur des « risques majeurs »]]></title>
             <link>https://www.lemonde.fr/politique/article/2026/08/20/absence-de-budget-et-loi-speciale-prolongee-l-inspection-generale-des-finances-alerte-sur-des-risques-majeurs_6751089_823448.html</link>
             <pubDate>2026-08-20 16:00:03</pubDate>
+            <category></category>
             <description><![CDATA[L’inspection générale des finances a publié, jeudi 20 août, le rapport que le gouvernement lui avait demandé sur les conséquences d’une application prolongée en 2027 d’une loi de finances spéciale. Un document que l’exécutif devrait largement mobiliser pour tenter de convaincre le Parlement d’adopter un budget.]]></description>
             <source>Le Monde</source>
         </item>
@@ -65,6 +785,7 @@
             <title><![CDATA[Défense : les exportations d’armes françaises encore à des sommets en 2025]]></title>
             <link>https://www.lemonde.fr/economie/article/2026/08/20/defense-les-exportations-d-armes-francaises-encore-a-des-sommets-en-2025_6750975_3234.html</link>
             <pubDate>2026-08-20 13:00:04</pubDate>
+            <category></category>
             <description><![CDATA[Grâce notamment aux ventes de Rafale à l’Inde et de missiles, la France a exporté pour 21,2 milliards d’euros d’armements en 2025, soit autant qu’en 2024. Si elle reste le deuxième exportateur mondial d’armes, loin derrière les Etats-Unis, elle fait face à la concurrence de nouveaux pays.]]></description>
             <source>Le Monde</source>
         </item>
@@ -72,6 +793,7 @@
             <title><![CDATA[« On sent un regard sur nous, plus insistant que pour les personnes valides » : les difficultés quotidiennes des parents avec un handicap]]></title>
             <link>https://www.lemonde.fr/societe/article/2026/08/20/certains-se-permettent-de-prendre-les-enfants-dans-les-bras-des-meres-en-fauteuil-les-difficultes-quotidiennes-des-parents-avec-un-handicap_6750439_3224.html</link>
             <pubDate>2026-08-20 03:30:09</pubDate>
+            <category></category>
             <description><![CDATA[Malgré une amélioration de l’accompagnement institutionnel, les familles concernées ressentent encore des entraves à exercer pleinement leur parentalité, souvent confrontées à une « présomption d’incompétence ».]]></description>
             <source>Le Monde</source>
         </item>
