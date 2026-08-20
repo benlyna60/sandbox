@@ -1,0 +1,5 @@
+headers:
+  - scope:
+      path: "Source/*.html"
+    values:
+      Access-Control-Allow-Origin: "*"
