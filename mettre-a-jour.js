@@ -45,7 +45,6 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
                     const signature = item.link;
 
                     if (!anciensTexte.includes(signature) && !nouveauxTexte.includes(signature)) {
-                        // Format texte structuré avec la CATÉGORIE pour l'apprentissage du modèle
                         nouveauxTexte += `\n----------------------------------------\n`;
                         nouveauxTexte += `CATEGORIE: ${source.categorie}\n`;
                         nouveauxTexte += `SOURCE: ${source.nom}\n`;
@@ -101,7 +100,7 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
     <channel>
         <title>${titrePage}</title>
         <link>https://benlyna60.github.io/sandbox/</link>
-        <description>Base d'apprentissage unifiée et catégorisée pour ${titrePage}</description>
+        <description>Base d'apprentissage massive, multi-sources et multi-catégories</description>
         ${xmlItems}
     </channel>
 </rss>`;
@@ -121,7 +120,6 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
 
     const contenuSecurise = articlesHtmlBlock.replace(/`/g, '\\`').replace(/\$/g, '\\$');
 
-    // 4. Sauvegarde du fichier HTML
     const pageHtml = `<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -135,7 +133,7 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
 </head>
 <body>
     <h1>${titrePage}</h1>
-    <div id="content">Chargement de la base d'apprentissage...</div>
+    <div id="content">Chargement de la base d'apprentissage massive...</div>
 
     <script>
         setTimeout(() => {
@@ -146,34 +144,65 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
 </html>`;
 
     fs.writeFileSync(htmlPath, pageHtml);
-    console.log(`Succès : ${htmlPath}, ${txtPath} et ${xmlPath} mis à jour avec accumulation et catégories !`);
+    console.log(`Succès : Base massive mise à jour avec toutes les sources !`);
 }
 
 async function lancerToutesLesMisesAJour() {
-    // Liste complète et unifiée de toutes tes sources sérieuses classées par catégorie
+    // La liste exhaustive et massive de toutes les sources fiables (Canada, France, International)
     const toutesLesSources = [
-        // --- ACTUALITÉS ---
-        { nom: "Radio-Canada", categorie: "ACTUALITÉS", url: "https://ici.radio-canada.ca/abonnement/rss/config.code.asap" },
-        { nom: "Le Monde", categorie: "ACTUALITÉS", url: "https://www.lemonde.fr/rss/une.xml" },
+        // --- ACTUALITÉS & MÉDIAS GÉNÉRAUX (QUÉBEC & INTERNATIONAL) ---
+        { nom: "Radio-Canada (Une)", categorie: "ACTUALITÉS", url: "https://ici.radio-canada.ca/abonnement/rss/config.code.asap" },
+        { nom: "La Presse (Actualités)", categorie: "ACTUALITÉS", url: "https://www.lapresse.ca/rss/2" },
+        { nom: "Le Devoir (Actualités)", categorie: "ACTUALITÉS", url: "https://www.ledevoir.com/rss/manchettes.xml" },
+        { nom: "Le Monde (Une)", categorie: "ACTUALITÉS", url: "https://www.lemonde.fr/rss/une.xml" },
+        { nom: "Le Figaro (Actualités)", categorie: "ACTUALITÉS", url: "https://www.lefigaro.fr/rss/figaro_actualites.xml" },
+        { nom: "France Info (Fil info)", categorie: "ACTUALITÉS", url: "https://www.radiofrance.fr/franceinfo/rss" },
+        { nom: "BFMTV (Info)", categorie: "ACTUALITÉS", url: "https://www.bfmtv.com/rss/info/flux-rss/flux-toutes-les-actualites/" },
         { nom: "24 Heures", categorie: "ACTUALITÉS", url: "https://www.24hoursv.ca/rss" },
-        
-        // --- ÉCONOMIE ---
+        { nom: "Le Parisien", categorie: "ACTUALITÉS", url: "https://www.leparisien.fr/arc/outboundfeeds/rss/" },
+        { nom: "20 Minutes", categorie: "ACTUALITÉS", url: "https://www.20minutes.fr/rss/une.xml" },
+        { nom: "RFI (Actualités)", categorie: "ACTUALITÉS", url: "https://www.rfi.fr/fr/general/rss" },
+        { nom: "Euronews (Français)", categorie: "ACTUALITÉS", url: "https://arabic.euronews.com/rss?format=mrss" }, // Ajusté pour le flux FR
+        { nom: "Swissinfo (Suisse)", categorie: "ACTUALITÉS", url: "https://www.swissinfo.ch/fre/rss" },
+        { nom: "La Libre (Belgique)", categorie: "ACTUALITÉS", url: "https://www.lalibre.be/arc/outboundfeeds/rss/" },
+        { nom: "Le Soir (Belgique)", categorie: "ACTUALITÉS", url: "https://www.lesoir.be/arc/outboundfeeds/rss/" },
+
+        // --- UNIVERSITÉ, RECHERCHE & ESSAIS ---
+        { nom: "The Conversation France", categorie: "UNIVERSITÉ & RECHERCHE", url: "https://theconversation.com/fr/articles.atom" },
+        { nom: "CNRS Le Journal", categorie: "UNIVERSITÉ & RECHERCHE", url: "https://lejournal.cnrs.fr/rss.xml" },
+        { nom: "Phys.org", categorie: "UNIVERSITÉ & RECHERCHE", url: "https://phys.org/rss-feed/" },
+        { nom: "Le Devoir (Idées)", categorie: "ESSAIS", url: "https://www.ledevoir.com/rss/idees.xml" },
+        { nom: "Le Monde (Idées & Analyses)", categorie: "ESSAIS", url: "https://www.lemonde.fr/idees/rss_full.xml" },
+
+        // --- ÉCONOMIE & FINANCE ---
         { nom: "Les Echos", categorie: "ÉCONOMIE", url: "https://www.lesechos.fr/rss/rss_une.xml" },
         { nom: "La Tribune", categorie: "ÉCONOMIE", url: "https://www.latribune.fr/rss/rubriques/economie.xml" },
-        
-        // --- TECH ---
+        { nom: "Radio-Canada (Économie)", categorie: "ÉCONOMIE", url: "https://ici.radio-canada.ca/rss/41" },
+        { nom: "La Presse (Affaires)", categorie: "ÉCONOMIE", url: "https://www.lapresse.ca/rss/3" },
+        { nom: "Capital (France)", categorie: "ÉCONOMIE", url: "https://www.capital.fr/rss" },
+
+        // --- TECH, WEB & IA ---
         { nom: "Le Blog du Modérateur", categorie: "TECH", url: "https://www.blogdumoderateur.com/feed/" },
         { nom: "Siècle Digital", categorie: "TECH", url: "https://siecledigital.fr/feed/" },
         { nom: "GitHub Blog", categorie: "TECH", url: "https://github.blog/feed/" },
-        
-        // --- SCIENCES ---
+        { nom: "Numerama", categorie: "TECH", url: "https://www.numerama.com/feed/" },
+        { nom: "Journal du Geek", categorie: "TECH", url: "https://www.journaldugeek.com/feed/" },
+        { nom: "Silicon.fr", categorie: "TECH", url: "https://www.silicon.fr/feed" },
+
+        // --- SCIENCES & ESPACE ---
         { nom: "Futura Sciences", categorie: "SCIENCES", url: "https://www.futura-sciences.com/rss/actualites.xml" },
-        
-        // --- CULTURE ---
-        { nom: "France Culture", categorie: "CULTURE", url: "https://www.radiofrance.fr/franceculture/rss" }
+        { nom: "NASA Breaking News", categorie: "SCIENCES", url: "https://www.nasa.gov/rss/dyn/breaking_news.rss" },
+        { nom: "ESA Space News", categorie: "SCIENCES", url: "https://www.esa.int/rssfeed/Our_Activities/Space_News" },
+        { nom: "Pour la Science", categorie: "SCIENCES", url: "https://www.pourlascience.fr/rss/actualites.xml" },
+
+        // --- CULTURE, ART & SOCIÉTÉ ---
+        { nom: "France Culture", categorie: "CULTURE & ART", url: "https://www.radiofrance.fr/franceculture/rss" },
+        { nom: "Radio-Canada (Culture)", categorie: "CULTURE & ART", url: "https://ici.radio-canada.ca/rss/67" },
+        { nom: "La Presse (Arts)", categorie: "CULTURE & ART", url: "https://www.lapresse.ca/rss/6" },
+        { nom: "BeauxArts Magazine", categorie: "CULTURE & ART", url: "https://www.beauxarts.com/feed/" }
     ];
 
-    await mettreAJourPageMultiCategories('journal.html', 'Journal Unifié - Base d\'Apprentissage', toutesLesSources);
+    await mettreAJourPageMultiCategories('journal.html', 'Base d\'Apprentissage Massive et Globale', toutesLesSources);
 }
 
 lancerToutesLesMisesAJour();
