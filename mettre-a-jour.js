@@ -1,14 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-// Fonction pour extraire les articles existants du fichier HTML afin de ne rien perdre (mémoire infinie)
 function extraireAnciensArticles(filePath) {
     if (!fs.existsSync(filePath)) return "";
     const contenuActuel = fs.readFileSync(filePath, 'utf8');
-    
     const debut = contenuActuel.indexOf('<div id="feed-container">');
     const fin = contenuActuel.lastIndexOf('</div>\n</body>');
-    
     if (debut !== -1 && fin !== -1) {
         return contenuActuel.substring(debut + '<div id="feed-container">'.length, fin).trim();
     }
@@ -17,8 +14,6 @@ function extraireAnciensArticles(filePath) {
 
 async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) {
     const filePath = `Source/${nomFichier}`;
-    
-    // On s'assure que le dossier Source existe
     const dir = path.dirname(filePath);
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
@@ -29,52 +24,35 @@ async function mettreAJourPage(nomFichier, titrePage, couleurPrimaire, sources) 
 
     for (let source of sources) {
         try {
-            // Utilisation d'un proxy/passerelle public ultra-stable pour transformer le RSS en JSON propre
-            const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(source.url)}`;
+            // Utilisation d'un service de conversion RSS vers JSON direct et officiel
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`;
             const response = await fetch(apiUrl);
-            const json = await response.json();
-            
-            if (json.contents) {
-                // Parser simple de secours basé sur du texte brut XML/RSS
-                const itemMatches = json.contents.match(/<item>([\s\S]*?)<\/item>/g);
-                
-                if (itemMatches) {
-                    // On prend les 5 premiers articles de la source
-                    for (let i = 0; i < Math.min(itemMatches.length, 5); i++) {
-                        const itemXml = itemMatches[i];
-                        
-                        const titleMatch = itemXml.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/);
-                        const linkMatch = itemXml.match(/<link>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/link>/);
-                        const dateMatch = itemXml.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
-                        const descMatch = itemXml.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/);
-                        
-                        const title = titleMatch ? titleMatch[1].replace(/<[^>]*>/g, '').trim() : "Article sans titre";
-                        const link = linkMatch ? linkMatch[1].trim() : "#";
-                        const pubDateRaw = dateMatch ? dateMatch[1].trim() : new Date().toUTCString();
-                        let description = descMatch ? descMatch[1].replace(/<[^>]*>/g, '').trim() : "";
-                        
-                        // Nettoyage de la description si trop longue
-                        if (description.length > 200) {
-                            description = description.substring(0, 200) + "...";
-                        }
+            const data = await response.json();
 
-                        const dateObj = new Date(pubDateRaw);
-                        const isoDate = !isNaN(dateObj) ? dateObj.toISOString().split('T')[0] : "";
-                        const signature = `href="${link}"`;
+            if (data && data.items) {
+                // On boucle sur les articles récupérés
+                data.items.slice(0, 5).forEach(item => {
+                    const dateObj = new Date(item.pubDate);
+                    const isoDate = !isNaN(dateObj) ? dateObj.toISOString().split('T')[0] : "";
+                    const signature = `href="${item.link}"`;
+                    
+                    let description = item.description ? item.description.replace(/<[^>]*>/g, '').trim() : "";
+                    if (description.length > 200) {
+                        description = description.substring(0, 200) + "...";
+                    }
 
-                        if (!anciensArticlesHtml.includes(signature) && !nouveauxArticlesHtml.includes(signature)) {
-                            nouveauxArticlesHtml += `
+                    if (!anciensArticlesHtml.includes(signature) && !nouveauxArticlesHtml.includes(signature)) {
+                        nouveauxArticlesHtml += `
                     <div class="article-card" data-date="${isoDate}" data-source="${source.nom}">
                         <div class="meta-info">
                             <span class="source-tag">${source.nom}</span>
-                            <span class="date">${pubDateRaw}</span>
+                            <span class="date">${item.pubDate}</span>
                         </div>
-                        <h3><a href="${link}" target="_blank" rel="noopener noreferrer">${title}</a></h3>
+                        <h3><a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a></h3>
                         <div class="article-content">${description}</div>
                     </div>`;
-                        }
                     }
-                }
+                });
             }
         } catch (e) {
             console.error(`Erreur sur ${source.nom}:`, e);
@@ -120,23 +98,22 @@ ${feedTotal}
 </html>`;
 
     fs.writeFileSync(filePath, pageComplete);
-    console.log(`Succès : ${filePath} mis à jour avec des articles !`);
+    console.log(`Succès : ${filePath} mis à jour !`);
 }
 
 async function lancerToutesLesMisesAJour() {
+    // Utilisation de flux RSS standards alternatifs extrêmement stables et ouverts
     await mettreAJourPage('journal.html', 'journal.io', '#2563eb', [
-        { nom: "Radio-Canada Actualités", url: "https://ici.radio-canada.ca/rss/1" },
-        { nom: "Le Figaro Actualité", url: "https://www.lefigaro.fr/rss/figaro_actualites.xml" }
+        { nom: "Le Monde Actualités", url: "https://www.lemonde.fr/rss/une.xml" },
+        { nom: "24 Heures", url: "https://www.24hoursv.ca/rss" }
     ]);
 
     await mettreAJourPage('eco.html', 'eco.io', '#059669', [
-        { nom: "La Presse Affaires", url: "https://www.lapresse.ca/affaires/rss" },
-        { nom: "Le Figaro Économie", url: "https://www.lefigaro.fr/rss/figaro_economie.xml" }
+        { nom: "Les Echos", url: "https://www.lesechos.fr/rss/rss_une.xml" }
     ]);
 
     await mettreAJourPage('culture.html', 'culture.io', '#7c3aed', [
-        { nom: "Radio-Canada Culture", url: "https://ici.radio-canada.ca/rss/13" },
-        { nom: "Le Figaro Culture", url: "https://www.lefigaro.fr/rss/figaro_culture.xml" }
+        { nom: "France Culture", url: "https://www.radiofrance.fr/franceculture/rss" }
     ]);
 }
 
