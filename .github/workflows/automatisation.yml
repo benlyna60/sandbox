@@ -2,8 +2,8 @@ name: Mettre a jour les flux statiques
 
 on:
   schedule:
-    - cron: '*/5 * * * *' # S'exécute toutes les 5 minutes
-  workflow_dispatch: # Te permet aussi de le forcer à la main en 1 clic
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
 
 jobs:
   build:
