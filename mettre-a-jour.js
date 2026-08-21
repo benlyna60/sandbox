@@ -19,6 +19,13 @@ async function fetchAvecTimeout(url, options = {}, timeout = 8000) {
     }
 }
 
+// Fonction de nettoyage pour éviter les plantages XML dus aux balises/caractères bruts
+function nettoyerPourCdata(texte) {
+    if (!texte) return "";
+    // On retire les balises HTML parasites et on évite de casser les blocs CDATA
+    return texte.replace(/<[^>]*>/g, '').replace(/]]>/g, ']]]]><![CDATA[>').trim();
+}
+
 async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
     const htmlPath = `Source/${nomFichier}`;
     const txtPath = `Source/${nomFichier.replace('.html', '.txt')}`;
@@ -45,11 +52,10 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
 
             if (data && data.status === 'ok' && data.items) {
                 data.items.forEach(item => {
-                    const cleanTitle = item.title ? item.title.replace(/<[^>]*>/g, '').trim() : "";
+                    const cleanTitle = nettoyerPourCdata(item.title);
                     
-                    // Récupération intelligente du contenu, ou repli propre sur le titre si vide
                     let rawContent = item.description || item.content || item.summary || "";
-                    let cleanDesc = rawContent.replace(/<[^>]*>/g, '').trim();
+                    let cleanDesc = nettoyerPourCdata(rawContent);
                     
                     if (!cleanDesc) {
                         cleanDesc = `Article de référence : "${cleanTitle}"`;
@@ -72,7 +78,6 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
                 console.log(`⚠️ Flux rejeté ou vide pour : ${source.nom}`);
             }
 
-            // Pause de 400ms pour protéger l'API externe contre le blocage de débit
             await new Promise(resolve => setTimeout(resolve, 400));
 
         } catch (e) {
@@ -80,12 +85,13 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
         }
     }
 
+    // On fusionne proprement les nouveautés avec ton historique existant (rien n'est écrasé)
     const texteTotal = nouveauxTexte + "\n" + anciensTexte;
 
     // 1. Sauvegarde du fichier Texte Brut unifié
     fs.writeFileSync(txtPath, texteTotal.trim());
 
-    // 2. Génération du fichier XML global
+    // 2. Génération du fichier XML global sécurisé avec CDATA
     let xmlItems = ``;
     const blocsArticles = texteTotal.split('----------------------------------------');
     blocsArticles.forEach(morceau => {
