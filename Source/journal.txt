@@ -1,5 +1,149 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-21 20:01:03
+TITRE: Un homme accusé de meurtre pour la mort d’une femme lundi dans Saint-Michel
+LIEN: https://www.ledevoir.com/actualites/justice/1003304/homme-accuse-meurtre-mort-femme-lundi-saint-michel
+CONTENU: Betoven Étienne, 35 ans, a été accusé du meurtre de Kerline Jean et de voies de fait sur une autre femme.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-21 22:00:08
+TITRE: «Si mauvais qu’il en devient génial», le film «Niu Lai» secoue le box-office chinois
+LIEN: https://www.ledevoir.com/culture/cinema/1003334/si-mauvais-il-devient-genial-film-niu-lai-secoue-box-office-chinois
+CONTENU: Le film est l’œuvre d’une mère et son fils, qui l’ont animé image par image pendant cinq ans et ont composé la musique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-21 08:00:00
+TITRE: Les Québécois préfèrent une réduction des services pour atteindre l’équilibre budgétaire
+LIEN: https://www.ledevoir.com/economie/1003163/quebecois-preferent-reduction-services-atteindre-equilibre-budgetaire
+CONTENU: Un consensus se dégage cependant sur l’importance d’équilibrer le budget du gouvernement, selon une étude.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-21 20:28:32
+TITRE: Les trois actus du 21 août
+LIEN: https://www.ledevoir.com/actualites/1003310/trois-actus-21-aout
+CONTENU: Le PQ abolirait Santé Québec, bientôt les tarifs de 50% et un ado prévoyait une attaque haineuse: ce qu’il faut retenir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-21 20:07:00
+TITRE: La Cour suprême autorise, pour l’instant, les travaux de la salle de bal de Trump
+LIEN: https://www.ledevoir.com/monde/etats-unis/1003307/travaux-salle-bal-trump-peuvent-reprendre-temporairement-dit-cour-supreme
+CONTENU: Avec le «complexe militaire» intégré aux travaux, le gouvernement avançait l’argument de la sécurité nationale.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-21 04:00:00
+TITRE: «La consigne, c’est l’avenir»
+LIEN: https://www.ledevoir.com/opinion/chroniques/1003061/consigne-c-est-avenir
+CONTENU: Chacun trouve-t-il son compte dans les centres Consignaction? Sourires, ricanement sarcastique: bonne blague, Madame.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-21 11:58:00
+TITRE: Simon Jolin-Barrette sollicitera un nouveau mandat
+LIEN: https://www.ledevoir.com/politique/quebec/1003208/simon-jolin-barrette-sollicite-nouveau-mandat
+CONTENU: Dans les derniers jours, des rumeurs laissaient croire que le ministre de la Justice ne serait pas de la course.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-21 17:11:00
+TITRE: Le PQ abolirait Santé Québec pour décentraliser le réseau
+LIEN: https://www.ledevoir.com/politique/quebec/1003259/pq-abolirait-sante-quebec-decentraliser-reseau
+CONTENU: Paul St-Pierre Plamondon dit vouloir réinvestir les économies ainsi réalisées dans les soins à la population.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-21 21:40:01
+TITRE: Hydrogel platform uses vitamin B2 and blue light to simplify living tissue models
+LIEN: https://phys.org/news/2026-08-hydrogel-platform-vitamin-b2-blue.html
+CONTENU: Researchers at Tampere University have developed a versatile hydrogel platform that makes it easier to create customized biomaterials for tissue engineering, disease modeling, drug discovery and regenerative medicine. Their plug-and-play crosslinking technology enables the design of a wide range of hydrogels in which biological molecules, such as proteins, peptides and nucleic acids, can be incorporated under gentle, cell-friendly conditions. The paper is published in the journal Cell Reports Physical Science.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-21 21:20:01
+TITRE: Climate change could triple the price of wheat
+LIEN: https://phys.org/news/2026-08-climate-triple-price-wheat.html
+CONTENU: Bread, pasta and breakfast cereals may seem far removed from dry fields in North America, Europe or Asia. Yet when water shortages hit several of the world's most important wheat-growing regions simultaneously, the consequences can be felt all the way to supermarket shelves and bakery aisles.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-21 21:00:03
+TITRE: Your high school friends may shape whether you become an entrepreneur decades later
+LIEN: https://phys.org/news/2026-08-high-school-friends-entrepreneur-decades.html
+CONTENU: With more young Canadians considering self-employment amid a high youth unemployment rate, entrepreneurship programs are facing growing demand. Applications to Futurpreneur, the national organization that finances young Canadian entrepreneurs, rose 50% last quarter, compared with 15% growth a year earlier.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-21 21:00:01
+TITRE: Complex odors prove easier to map than expected with machine learning
+LIEN: https://phys.org/news/2026-08-complex-odors-easier-machine.html
+CONTENU: If you want to describe a particular color, you could look to the Pantone color wheel to find its exact hue, saturation and brightness, and how it compares with other colors. But nothing like that has existed for complex odors.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-21 20:40:02
+TITRE: Laser-cut aluminum foil could replace costly terahertz polarizers
+LIEN: https://phys.org/news/2026-08-laser-aluminum-foil-terahertz-polarizers.html
+CONTENU: When physicists at the ARC Centre for Transformative Meta-Optical Systems (TMOS) needed a key component for their terahertz experiments, they ran into a frustrating problem—they needed tiny optical devices, known as wire-grid polarizers, but these cost thousands of dollars each.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-21 20:20:01
+TITRE: Scientists map hair follicle formation in spacetime, advancing understanding of how organs develop
+LIEN: https://phys.org/news/2026-08-scientists-hair-follicle-formation-spacetime.html
+CONTENU: In a new research report, scientists at Johns Hopkins Medicine say they have developed a technology that allows them to capture a 3D molecular "snapshot" of hundreds of hair follicles as they develop and then reconstruct the fourth dimension—time—to create a stop-motion animation of how this organ forms. The research was published in the journal Cell.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-21 20:00:07
+TITRE: Inside the race to prepare cities for extreme heat
+LIEN: https://phys.org/news/2026-08-cities-extreme.html
+CONTENU: A sea of corrugated metal roofs stretches into the distance across an informal settlement in Makassar, Indonesia.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-21 20:00:04
+TITRE: Iron hydride enters an exotic state of matter under Earth's inner-core conditions
+LIEN: https://phys.org/news/2026-08-iron-hydride-exotic-state-earth.html
+CONTENU: Earth's inner core, composed primarily of iron with a small percentage of light elements, may enter a superionic state at extreme pressure and temperature, according to experimental results from researchers at Science Tokyo. Using laser-heated and electrically wired diamond-anvil cells, the researchers identified experimental signatures of superionic iron hydride at conditions relevant to Earth's core. These findings provide new insights into the composition and dynamics of Earth's deep interior.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-21 19:40:04
+TITRE: New Monte Carlo method accelerates simulations of densely entangled polymer melts
+LIEN: https://phys.org/news/2026-08-monte-carlo-method-simulations-densely.html
+CONTENU: Long polymer chains are everywhere: in synthetic materials, soft matter, biological systems such as chromosomes, and mathematical models of filaments and knots. When many such chains are densely packed, they form what physicists call a polymer melt. In this crowded environment, each chain is constrained by the others around it. These entanglements are central to the behavior of polymeric materials, but they also make the systems extremely difficult to simulate. As chain length increases, the time needed to obtain a new independent configuration grows very rapidly. For very large systems, conventional simulations can therefore become computationally prohibitive.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-21 19:20:03
+TITRE: Realistic solid-state model brings fractons in quantum spin liquids closer to detection
+LIEN: https://phys.org/news/2026-08-realistic-solid-state-fractons-quantum.html
+CONTENU: Quasiparticles arise from the complex interaction of many particles in solids; for example, we describe lattice vibrations in crystals as phonons. Fractons are exotic quasiparticles that occur at the vertices of magnetic domain walls between different spin orders. What makes them special is that they are virtually immobile and can only be displaced by other fractons. In theory, this limited mobility could be exploited to robustly store quantum information.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-08-21 22:15:06
 TITRE: EN DIRECT, guerre en Ukraine : à Kryvy Rih, une frappe russe visant un centre commercial fait au moins quinze morts, dont des enfants
