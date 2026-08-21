@@ -1,4 +1,12 @@
 ----------------------------------------
+CATEGORIE: TOUT-TERRAIN (actualite formule 1)
+SOURCE: DuckDuckGo Live
+DATE: Fri, 21 Aug 2026 11:03:00 GMT
+TITRE: Actualités et recherches sur : actualite formule 1
+LIEN: https://duckduckgo.com/?q=actualite%20formule%201
+CONTENU: Point d'information actualisé concernant le sujet : actualite formule 1.
+
+----------------------------------------
 CATEGORIE: TOUT-TERRAIN (musique pop rock)
 SOURCE: DuckDuckGo Live
 DATE: Fri, 21 Aug 2026 09:56:18 GMT
