@@ -19,10 +19,12 @@ async function fetchAvecTimeout(url, options = {}, timeout = 8000) {
     }
 }
 
-// Fonction de nettoyage pour éviter les plantages XML dus aux balises/caractères bruts
+// Fonction de nettoyage ultra-robuste pour bloquer les balises et la séquence interdite ']]>' dans les CDATA
 function nettoyerPourCdata(texte) {
     if (!texte) return "";
-    return texte.replace(/<[^>]*>/g, '').replace(/]]>/g, ']]]]><![CDATA[>').trim();
+    return texte.replace(/<[^>]*>/g, '')
+                .replace(/\]\]>/g, ']]]]><![CDATA[>')
+                .trim();
 }
 
 async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
@@ -107,7 +109,7 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
             });
 
             if (itemData.titre && itemData.lien) {
-                // Nettoyage de sécurité supplémentaire appliqué à la volée sur tout l'historique
+                // Échappement anti-crash pour les esperluettes isolées
                 const titrePropre = itemData.titre.replace(/&(?![A-Za-z#]+;)/g, '&amp;');
                 const contenuPropre = itemData.contenu.replace(/&(?![A-Za-z#]+;)/g, '&amp;');
 
