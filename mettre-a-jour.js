@@ -22,7 +22,6 @@ async function fetchAvecTimeout(url, options = {}, timeout = 8000) {
 // Fonction de nettoyage pour éviter les plantages XML dus aux balises/caractères bruts
 function nettoyerPourCdata(texte) {
     if (!texte) return "";
-    // On retire les balises HTML parasites et on évite de casser les blocs CDATA
     return texte.replace(/<[^>]*>/g, '').replace(/]]>/g, ']]]]><![CDATA[>').trim();
 }
 
@@ -85,13 +84,13 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
         }
     }
 
-    // On fusionne proprement les nouveautés avec ton historique existant (rien n'est écrasé)
+    // Fusion propre avec l'historique existant (rien n'est perdu)
     const texteTotal = nouveauxTexte + "\n" + anciensTexte;
 
     // 1. Sauvegarde du fichier Texte Brut unifié
     fs.writeFileSync(txtPath, texteTotal.trim());
 
-    // 2. Génération du fichier XML global sécurisé avec CDATA
+    // 2. Génération du fichier XML global sécurisé
     let xmlItems = ``;
     const blocsArticles = texteTotal.split('----------------------------------------');
     blocsArticles.forEach(morceau => {
@@ -108,13 +107,17 @@ async function mettreAJourPageMultiCategories(nomFichier, titrePage, sources) {
             });
 
             if (itemData.titre && itemData.lien) {
+                // Nettoyage de sécurité supplémentaire appliqué à la volée sur tout l'historique
+                const titrePropre = itemData.titre.replace(/&(?![A-Za-z#]+;)/g, '&amp;');
+                const contenuPropre = itemData.contenu.replace(/&(?![A-Za-z#]+;)/g, '&amp;');
+
                 xmlItems += `
         <item>
-            <title><![CDATA[${itemData.titre}]]></title>
+            <title><![CDATA[${titrePropre}]]></title>
             <link>${itemData.lien}</link>
             <pubDate>${itemData.date}</pubDate>
             <category>${itemData.categorie}</category>
-            <description><![CDATA[${itemData.contenu}]]></description>
+            <description><![CDATA[${contenuPropre}]]></description>
             <source>${itemData.source}</source>
         </item>`;
             }
