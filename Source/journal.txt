@@ -1,5 +1,29 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-22 04:00:00
+TITRE: «Divas», ne nous quittez pas
+LIEN: https://www.ledevoir.com/lire/1002737/divas-ne-nous-quittez-pas
+CONTENU: De Nina Simone à Céline Dion, en passant par Madonna, Beyoncé et La Callas, Martine Delvaux honore les grandes voix.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-22 04:00:00
+TITRE: «Bonne gouvernance»
+LIEN: https://www.ledevoir.com/opinion/chroniques/1003358/bonne-gouvernance
+CONTENU: La «gouvernance» canadienne est en voie de se transformer dans le sens du dogme économique imposé par les États-Unis.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-22 04:00:00
+TITRE: Le fabuleux destin de Byron Donalds
+LIEN: https://www.ledevoir.com/monde/etats-unis/1003343/fabuleux-destin-byron-donalds
+CONTENU: Soutenu par Trump, il pourrait marquer l’histoire en devenant le premier gouverneur afro-américain de la Floride.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-08-22 11:00:00
 TITRE: Le journal de 13h00 du samedi 22 août 2026
