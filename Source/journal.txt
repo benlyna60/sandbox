@@ -1,5 +1,85 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-23 18:20:00
+TITRE: Les conservateurs veulent que le gouvernement Carney divulgue l’accord rejeté
+LIEN: https://www.ledevoir.com/politique/canada/1003487/conservateurs-veulent-gouvernement-carney-divulgue-accord-rejete
+CONTENU: Si une ébauche de texte existe, elle devrait être rendue publique, croit le parti de Pierre Poilievre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-23 21:38:00
+TITRE: «L’Odyssée» devient le film de Christopher Nolan ayant réalisé le plus de recettes
+LIEN: https://www.ledevoir.com/culture/cinema/1003502/odyssee-devient-film-christopher-nolan-ayant-realise-plus-recettes
+CONTENU: Cette année, «L’Odyssée» n’est devancée que par «Spider-Man : un jour nouveau».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-23 21:03:00
+TITRE: Trump au premier rang d’un grand prix automobile dans les rues de Washington
+LIEN: https://www.ledevoir.com/monde/etats-unis/1003499/trump-premier-rang-grand-prix-automobile-rues-washington
+CONTENU: La course clôturait les célébrations du 250e anniversaire des États-Unis.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-23 20:24:00
+TITRE: Israël met en garde le Hamas après le lancement de cerfs-volants à Gaza
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1003496/israel-met-garde-hamas-apres-lancement-cerfs-volants-depuis-gaza
+CONTENU: Les engins ne transportaient pas d’explosifs, mais ravivent le souvenir de ballons incendiaires lancés ces dernières années.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-23 21:00:00
+TITRE: Le journal de 23h00 du dimanche 23 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-23h00/le-journal-de-23h00-du-dimanche-23-aout-2026-5869964
+CONTENU: Article de référence : "Le journal de 23h00 du dimanche 23 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-23 20:00:00
+TITRE: Le journal de 22h00 du dimanche 23 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-22h00/le-journal-de-22h00-du-dimanche-23-aout-2026-7067897
+CONTENU: Article de référence : "Le journal de 22h00 du dimanche 23 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-23 21:31:45
+TITRE: Arabie saoudite: l'e-sport, la nouvelle vitrine du «soft power» de Riyad
+LIEN: https://www.rfi.fr/fr/france/20260823-arabie-saoudite-l-e-sport-la-nouvelle-vitrine-du-soft-power-de-riyad
+CONTENU: Le prince héritier et dirigeant de l’Arabie saoudite, Mohammed ben Salmane (MBS), est à Paris, où il doit s'entretenir avec Emmanuel Macron ce lundi 24 août. Dimanche soir, il a assisté, déjà en compagnie du président français, à la cérémonie de clôture de la Coupe du monde d’e-sport au Grand Palais. Riyad investit massivement dans ce secteur de l'e-sport, notamment pour transformer l'image du royaume
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-23 21:15:11
+TITRE: Football: auteur d'un doublé, Ferran Torres arrache le nul pour le PSG contre Rennes
+LIEN: https://www.rfi.fr/fr/sports/20260823-football-auteur-d-un-doubl%C3%A9-ferran-torres-arrache-le-nul-pour-le-psg-contre-rennes
+CONTENU: Le Paris Saint-Germain, mal embarqué contre une équipe rennaise en tête avec deux buts d'avance à la mi-temps, a réussi à arracher le match nul (2-2) grâce à l'entrée de sa nouvelle recrue Ferran Torres, auteur d'un doublé dimanche 23 août lors de la première journée de Ligue 1.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-23 20:55:42
+TITRE: France: à Paris, l'équipe russe Spirit rayonne en clôture de la Coupe du monde d’e-sport
+LIEN: https://www.rfi.fr/fr/sports/20260823-france-%C3%A0-paris-l-%C3%A9quipe-russe-spirit-rayonne-en-cl%C3%B4ture-de-la-coupe-du-monde-d-e-sport
+CONTENU: La structure russe Spirit, menée par sa superstar Donk, a battu l'outsider turque FUT dimanche 23 août 2026, lors de la finale du jeu « Counter Strike 2 », qui clôturait la Coupe du monde de d'e-sport (EWC) 2026. Dans une Accor Arena de Bercy transformée en chaudron pour l'occasion, près d'une dizaine de milliers de spectateurs se sont massés pour une rencontre haletante.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-23 19:57:37
+TITRE: Grèce: près de 200 migrants secourus au large de la Crète et transférés vers des îles en mer d'Égée
+LIEN: https://www.rfi.fr/fr/europe/20260823-gr%C3%A8ce-pr%C3%A8s-de-200-migrants-secourus-au-large-de-la-cr%C3%A8te-et-transf%C3%A9r%C3%A9s-vers-des-%C3%AEles-en-mer-d-%C3%A9g%C3%A9e
+CONTENU: Près de 200 de migrants ont été secourus en l'espace de trois jours par la police grecque au large de la Crète entre vendredi 21 et dimanche 23 août 2026. Le ministère des Migrations indique que ces demandeurs d'asile devaient être transférés dans des centres d'accueil de deux îles en mer d'Égée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-08-23 18:33:02
 TITRE: Raphaël Glucksmann annonce être candidat à l’élection présidentielle dans le cadre de la primaire organisée avec le Parti socialiste
