@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IA Française V7 — Mémoire Cognitive</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2d;--panel2:#18233b;--text:#eaf0ff;--muted:#9aa8c7;--line:#2b3958;--accent:#68a0ff;--ok:#53d18b;--warn:#f4c95d;--bad:#ff6b7a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,-apple-system,Segoe UI,sans-serif}header{padding:20px;position:sticky;top:0;background:#0b1020ee;backdrop-filter:blur(10px);z-index:5;border-bottom:1px solid var(--line)}h1,h2,h3{margin:.2em 0 .6em}h1{font-size:24px}.tag{display:inline-block;padding:4px 8px;border:1px solid var(--line);border-radius:999px;color:var(--accent);margin-left:8px}.wrap{max-width:1400px;margin:auto;padding:16px;display:grid;gap:14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}.stat{background:var(--panel2);padding:12px;border-radius:10px}.num{font-size:22px;font-weight:700}.muted{color:var(--muted)}button,input,select,textarea{font:inherit;border-radius:9px;border:1px solid var(--line);background:#0d1528;color:var(--text);padding:9px}button{cursor:pointer;background:#172541}button:hover{border-color:var(--accent)}textarea{width:100%;min-height:150px;resize:vertical}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.row>*{flex:0 1 auto}.wide{width:100%}.log{height:180px;overflow:auto;background:#08101e;padding:10px;border-radius:9px;font-family:ui-monospace,monospace;font-size:12px;white-space:pre-wrap}.pill{padding:3px 7px;border-radius:999px;background:#243451}.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}table{width:100%;border-collapse:collapse}th,td{text-align:left;border-bottom:1px solid var(--line);padding:7px;vertical-align:top}.scroll{overflow:auto;max-height:360px}.bar{height:8px;background:#26324a;border-radius:20px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}canvas{width:100%;height:380px;background:#08101e;border-radius:10px}.small{font-size:12px}.drop{border:2px dashed var(--line);padding:20px;text-align:center;border-radius:12px}.danger{border-color:#74404a}.hidden{display:none}@media(max-width:700px){header{position:static}.wrap{padding:9px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧠 IA Française <span class="tag">V7 — Mémoire Cognitive</span></h1>
+  <div class="muted">Mémoire linguistique + concepts + relations typées + preuves + contradictions + catégories émergentes + raisonnement traçable.</div>
+</header>
+
+<main class="wrap">
+<section class="panel">
+  <h2>💾 Mémoire</h2>
+  <div class="row">
+    <input id="fileIn" type="file" accept=".json">
+    <button onclick="newMemory()">🆕 Nouvelle mémoire</button>
+    <button onclick="saveMemory()">💾 Sauvegarder</button>
+    <button onclick="backup()">🛡️ Point restauration</button>
+    <button onclick="restore()">↩ Restaurer</button>
+  </div>
+  <p id="status" class="muted">🔴 Aucune mémoire chargée</p>
+</section>
+
+<section class="panel">
+  <h2>📊 État de la mémoire</h2>
+  <div class="stats">
+    <div class="stat">TOKENS<div id="stTokens" class="num">0</div></div>
+    <div class="stat">VOCAB.<div id="stVocab" class="num">0</div></div>
+    <div class="stat">2-GR.<div id="st2" class="num">0</div></div>
+    <div class="stat">3-GR.<div id="st3" class="num">0</div></div>
+    <div class="stat">CONCEPTS<div id="stConcepts" class="num">0</div></div>
+    <div class="stat">RELATIONS<div id="stRelations" class="num">0</div></div>
+    <div class="stat">SOURCES<div id="stSources" class="num">0</div></div>
+    <div class="stat">CONTRADICTIONS<div id="stContradictions" class="num">0</div></div>
+  </div>
+</section>
+
+<section class="grid">
+<section class="panel">
+<h2>📥 1. Ingestion contrôlée</h2>
+<div class="drop" id="drop">Glisse ici un .txt, .html, .md ou .json</div>
+<input id="textFile" type="file" accept=".txt,.html,.htm,.md,.json">
+<textarea id="inputText" placeholder="Colle un texte à apprendre..."></textarea>
+<div class="row">
+<input id="sourceName" placeholder="Nom/source">
+<select id="sourceType"><option>texte_utilisateur</option><option>github</option><option>document</option><option>wikipedia</option><option>autre</option></select>
+<label><input id="sourceReliable" type="checkbox"> source fiable</label>
+<button onclick="learnText()">🧠 Apprendre et consolider</button>
+</div>
+</section>
+
+<section class="panel">
+<h2>🧩 2. Concepts & catégories émergentes</h2>
+<div id="categoryInfo" class="muted">Aucune catégorie découverte.</div>
+<button onclick="discoverCategories()">🔬 Détecter les catégories</button>
+<button onclick="rebuildConcepts()">🧠 Reconstruire les concepts</button>
+</section>
+
+<section class="panel">
+<h2>⚔️ 3. Contradictions</h2>
+<p class="muted">Les informations opposées sont conservées : aucune connaissance n'est écrasée silencieusement.</p>
+<div id="contradictionList" class="scroll">Aucune contradiction.</div>
+</section>
+
+<section class="panel">
+<h2>🧾 4. Provenance & preuves</h2>
+<div id="sourceList" class="scroll">Aucune source.</div>
+</section>
+</section>
+
+<section class="panel">
+<h2>🔗 5. Relations typées</h2>
+<div class="row">
+<input id="fromConcept" placeholder="Concept A">
+<select id="relType">
+<option>est-un</option><option>fait-partie-de</option><option>possède</option><option>contient</option>
+<option>situé-dans</option><option>cause</option><option>dépend-de</option><option>similaire-à</option>
+<option>opposé-à</option><option>utilisé-pour</option><option>créé-par</option><option>lié-à</option>
+</select>
+<input id="toConcept" placeholder="Concept B">
+<input id="relConf" type="number" min="0" max="1" step=".01" value=".70">
+<button onclick="addRelation()">➕ Ajouter</button>
+</div>
+<div class="scroll"><table><thead><tr><th>A</th><th>Relation</th><th>B</th><th>Confiance</th><th>Preuve</th></tr></thead><tbody id="relationTable"></tbody></table></div>
+</section>
+
+<section class="grid">
+<section class="panel">
+<h2>🧠 6. Trois niveaux de mémoire</h2>
+<div class="stats">
+<div class="stat">COURTE<div id="shortN" class="num">0</div></div>
+<div class="stat">TRAVAIL<div id="workN" class="num">0</div></div>
+<div class="stat">LONGUE<div id="longN" class="num">0</div></div>
+</div>
+<p class="small muted">Court terme = session récente. Travail = éléments actifs. Longue = connaissances consolidées.</p>
+</section>
+
+<section class="panel">
+<h2>📜 7. Mémoire épisodique</h2>
+<div id="episodes" class="scroll">Aucun épisode.</div>
+</section>
+
+<section class="panel">
+<h2>🎯 8. Confiance</h2>
+<div id="confidencePanel"></div>
+<button onclick="consolidate()">🧠 Consolider</button>
+<button onclick="controlledForget()">🧹 Oubli contrôlé</button>
+</section>
+</section>
+
+<section class="panel">
+<h2>🕸️ 9. Graphe cognitif</h2>
+<div class="row">
+<input id="center" placeholder="Concept central">
+<input id="depth" type="number" min="1" max="3" value="2">
+<button onclick="drawGraph()">🕸️ Actualiser</button>
+</div>
+<canvas id="graph" width="1200" height="500"></canvas>
+<p class="small muted">Les lignes épaisses représentent les relations fortes. Les relations faibles restent visibles sans être traitées comme certaines.</p>
+</section>
+
+<section class="panel">
+<h2>🔎 10. Explorer & raisonner</h2>
+<div class="row">
+<input id="query" class="wide" placeholder="Ex. Pourquoi A est lié à B ? / Que sais-tu sur Montréal ?">
+<button onclick="reason()">🧠 Analyser</button>
+</div>
+<div id="reasoning" class="panel" style="margin-top:10px">Aucune analyse.</div>
+</section>
+
+<section class="panel">
+<h2>🛠️ Maintenance cognitive</h2>
+<div class="row">
+<button onclick="diagnose()">🔎 Diagnostic</button>
+<button onclick="consolidate()">🧠 Consolidation</button>
+<button onclick="discoverCategories()">🧩 Catégorisation émergente</button>
+<button onclick="controlledForget()">🧹 Oubli contrôlé</button>
+<button onclick="rebuildConcepts()">🔧 Réindexer</button>
+</div>
+</section>
+
+<section class="panel">
+<h2>📚 Vocabulaire dominant</h2>
+<div id="vocab" class="scroll">Aucun mot appris.</div>
+</section>
+
+<section class="panel">
+<h2>📡 Journal du moteur</h2>
+<div id="log" class="log"></div>
+</section>
+</main>
+
+<script>
+"use strict";
+
+/* =========================
+   V7 — MOTEUR DE MÉMOIRE
+   ========================= */
+
+const KEY="IA_FR_V7_MEMORY";
+let M = blankMemory();
+let backupData=null;
+
+function uid(p="id"){return p+"_"+Math.random().toString(36).slice(2,9)+"_"+Date.now().toString(36)}
+function now(){return new Date().toISOString()}
+function clamp(x,a=0,b=1){return Math.max(a,Math.min(b,x))}
+function norm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9àâçéèêëîïôûùüÿœæ'-]+/gi," ").trim()}
+function words(s){return norm(s).split(/\s+/).filter(x=>x.length>=3)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+function blankMemory(){
+ return {
+  version:"V7",
+  createdAt:now(),updatedAt:now(),
+  linguistics:{tokens:0,vocab:{},grams2:{},grams3:{}},
+  concepts:{},
+  relations:[],
+  categories:{},
+  sources:{},
+  contradictions:[],
+  episodes:[],
+  shortTerm:[],
+  working:[],
+  longTerm:[],
+  hypotheses:[],
+  settings:{forgetThreshold:.18,consolidateThreshold:.62},
+  backups:[]
+ };
+}
+
+function log(x){
+ const el=document.getElementById("log");
+ el.textContent += `[${new Date().toLocaleTimeString()}] ${x}\n`;
+ el.scrollTop=el.scrollHeight;
+}
+function persist(){M.updatedAt=now();localStorage.setItem(KEY,JSON.stringify(M));renderAll()}
+function status(t,good=false){document.getElementById("status").textContent=(good?"🟢 ":"🟡 ")+t}
+
+function newMemory(){
+ if(!confirm("Créer une nouvelle mémoire ?"))return;
+ M=blankMemory();persist();status("Nouvelle mémoire V7 créée",true);log("Nouvelle mémoire initialisée.");
+}
+function saveMemory(){
+ const blob=new Blob([JSON.stringify(M,null,2)],{type:"application/json"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Memoire_V7.json";a.click();
+ log("Mémoire JSON sauvegardée.");
+}
+function backup(){
+ backupData=JSON.stringify(M);
+ M.backups.push({date:now(),size:JSON.stringify(M).length});
+ persist();log("Point de restauration créé.");
+}
+function restore(){
+ if(!backupData){alert("Aucun point de restauration en mémoire de session.");return}
+ M=JSON.parse(backupData);persist();log("Point de restauration restauré.");
+}
+document.getElementById("fileIn").addEventListener("change",e=>{
+ const f=e.target.files[0];if(!f)return;
+ const r=new FileReader();r.onload=()=>{
+  try{
+   const x=JSON.parse(r.result);
+   M=upgrade(x);persist();status("Mémoire chargée : "+(M.version||"compatible"),true);log("Mémoire importée.");
+  }catch(err){alert("JSON invalide : "+err.message)}
+ };r.readAsText(f);
+});
+
+function upgrade(x){
+ const n=blankMemory();
+ Object.assign(n,x||{});
+ for(const k of ["linguistics","concepts","categories","sources"]) if(!n[k]||typeof n[k]!=="object")n[k]=blankMemory()[k];
+ for(const k of ["relations","contradictions","episodes","shortTerm","working","longTerm","hypotheses"]) if(!Array.isArray(n[k]))n[k]=[];
+ n.version="V7";
+ return n;
+}
+
+/* 1 — INGESTION */
+function learnText(){
+ const text=document.getElementById("inputText").value.trim();
+ if(!text){alert("Ajoute un texte.");return}
+ const sourceName=document.getElementById("sourceName").value.trim()||"Source manuelle";
+ const type=document.getElementById("sourceType").value;
+ const reliable=document.getElementById("sourceReliable").checked;
+ const sid=sourceId(sourceName,type);
+ if(!M.sources[sid])M.sources[sid]={id:sid,name:sourceName,type,reliable,uses:0,createdAt:now()};
+ M.sources[sid].uses++;
+ const before=Object.keys(M.concepts).length;
+ const ts=words(text);
+ M.linguistics.tokens+=ts.length;
+ const counts={};
+ ts.forEach(w=>{M.linguistics.vocab[w]=(M.linguistics.vocab[w]||0)+1;counts[w]=(counts[w]||0)+1});
+ for(let i=0;i<ts.length-1;i++){const k=ts[i]+" "+ts[i+1];M.linguistics.grams2[k]=(M.linguistics.grams2[k]||0)+1}
+ for(let i=0;i<ts.length-2;i++){const k=ts[i]+" "+ts[i+1]+" "+ts[i+2];M.linguistics.grams3[k]=(M.linguistics.grams3[k]||0)+1}
+ const unique=[...new Set(ts)];
+ unique.forEach(w=>upsertConcept(w,counts[w],sid));
+ extractRelations(ts,sid,text);
+ discoverCategories(false);
+ const ep={id:uid("ep"),date:now(),source:sid,chars:text.length,tokens:ts.length,newConcepts:Object.keys(M.concepts).length-before,relationsAdded:0,summary:`Apprentissage de ${sourceName}`};
+ M.episodes.unshift(ep);M.shortTerm=unique.slice(0,80).map(x=>x);
+ unique.forEach(x=>{if(!M.working.includes(x))M.working.push(x)});
+ consolidate(false);
+ persist();log(`Apprentissage : ${ts.length} tokens, ${unique.length} termes uniques.`);status("Texte appris et mémoire mise à jour",true);
+}
+
+function sourceId(name,type){return norm(name)+"|"+type}
+function upsertConcept(label,freq,sid){
+ const key=norm(label);if(!key)return;
+ let c=M.concepts[key];
+ if(!c)c=M.concepts[key]={id:uid("c"),label,normalized:key,type:"concept",frequency:0,confidence:.25,importance:0,contexts:{},sources:{},firstSeen:now(),lastSeen:now(),confirmations:0,contradictionCount:0};
+ c.frequency+=freq||1;c.lastSeen=now();c.confirmations++;
+ c.sources[sid]=(c.sources[sid]||0)+1;
+ c.importance=clamp(.15+.05*Math.log1p(c.frequency)+.03*Math.min(c.confirmations,20));
+ const src=M.sources[sid];if(src&&src.reliable)c.confidence=clamp(c.confidence+.05);
+ else c.confidence=clamp(c.confidence+.02);
+}
+
+/* extraction heuristic: proximity produces weak typed relations */
+function extractRelations(ts,sid,text){
+ const stop=new Set(["dans","avec","pour","plus","moins","comme","cette","cela","être","avoir","qui","que","une","des","les","sur","par","pas","est","son","ses","aux","mais","donc","entre","leur","leurs","the","and","for","from","that","this"]);
+ let added=0;
+ for(let i=0;i<ts.length-1;i++){
+  const a=ts[i],b=ts[i+1];
+  if(stop.has(a)||stop.has(b)||a===b)continue;
+  if(Math.random()>.025)continue; // évite explosion : relations candidates seulement
+  addRelationInternal(a,"lié-à",b,.22,sid,"cooccurrence proche",true);added++;
+ }
+ // phrases simples à relations typées
+ const rules=[
+  {re:/\b(.{2,50})\s+(?:est|sont)\s+un(?:e)?\s+(.{2,40})/gi,type:"est-un"},
+  {re:/\b(.{2,50})\s+(?:fait partie de|appartient à)\s+(.{2,50})/gi,type:"fait-partie-de"},
+  {re:/\b(.{2,50})\s+(?:se trouve|est situé)\s+(?:dans|à)\s+(.{2,50})/gi,type:"situé-dans"}
+ ];
+ rules.forEach(rule=>{
+  let m;while((m=rule.re.exec(text))!==null){
+   const a=words(m[1]).slice(-3).join(" "),b=words(m[2]).slice(0,3).join(" ");
+   if(a&&b){addRelationInternal(a,rule.type,b,.52,sid,"extraction textuelle",true);added++}
+  }
+ });
+ return added;
+}
+function addRelation(){
+ const a=document.getElementById("fromConcept").value.trim(),b=document.getElementById("toConcept").value.trim();
+ if(!a||!b){alert("Remplis A et B.");return}
+ const type=document.getElementById("relType").value;
+ const conf=clamp(Number(document.getElementById("relConf").value)||.5);
+ const sid=sourceId("saisie utilisateur","texte_utilisateur");
+ if(!M.sources[sid])M.sources[sid]={id:sid,name:"saisie utilisateur",type:"texte_utilisateur",reliable:true,uses:0,createdAt:now()};
+ addRelationInternal(a,type,b,conf,sid,"relation ajoutée manuellement",false);
+ persist();log(`Relation ajoutée : ${a} —${type}→ ${b}`);
+}
+function addRelationInternal(a,type,b,conf,sid,evidence,hyp=false){
+ const A=norm(a),B=norm(b);if(!A||!B||A===B)return;
+ if(!M.concepts[A])upsertConcept(a,1,sid);if(!M.concepts[B])upsertConcept(b,1,sid);
+ let r=M.relations.find(x=>x.a===A&&x.b===B&&x.type===type);
+ if(r){
+  r.observations++;r.confidence=clamp(r.confidence+(conf-r.confidence)*.25);
+  if(sid)r.sources[sid]=(r.sources[sid]||0)+1;
+  r.lastSeen=now();
+ }else{
+  r={id:uid("r"),a:A,b:B,type,confidence:clamp(conf),observations:1,sources:{[sid]:1},evidence,hypothesis:!!hyp,firstSeen:now(),lastSeen:now()};
+  M.relations.push(r);
+ }
+ checkContradiction(r);
+}
+function checkContradiction(r){
+ const opposite={["est-un|opposé-à"]:"opposé-à",["opposé-à|est-un"]:"opposé-à",["cause|opposé-à"]:"opposé-à"};
+ const opposites={ "est-un":"opposé-à","opposé-à":"est-un","possède":"opposé-à","fait-partie-de":"opposé-à"};
+ const otype=opposites[r.type];
+ if(!otype)return;
+ const found=M.relations.find(x=>x.a===r.a&&x.b===r.b&&x.type===otype);
+ if(found&&!M.contradictions.some(c=>c.a===r.a&&c.b===r.b&&c.r1===r.id&&c.r2===found.id)){
+  M.contradictions.push({id:uid("x"),date:now(),a:r.a,b:r.b,r1:r.id,r2:found.id,status:"à examiner"});
+  M.concepts[r.a].contradictionCount++;M.concepts[r.b].contradictionCount++;
+ }
+}
+
+/* 2 — CATEGORIES ÉMERGENTES */
+function discoverCategories(show=true){
+ const concepts=Object.values(M.concepts).filter(c=>c.frequency>=2);
+ const groups={};
+ concepts.forEach(c=>{
+  const prefix=c.normalized.slice(0,2);
+  const len=c.normalized.length;
+  const key=(prefix||"xx")+"_"+(len<=5?"court":len<=9?"moyen":"long");
+  (groups[key]??=[]).push(c);
+ });
+ let made=0;
+ Object.values(groups).forEach(g=>{
+  if(g.length<3)return;
+  const members=g.slice().sort((a,b)=>b.frequency-a.frequency).slice(0,20).map(x=>x.normalized);
+  const id="emergente_"+g[0].normalized.slice(0,8);
+  if(!M.categories[id]){M.categories[id]={id,name:"Catégorie émergente — "+g[0].normalized.slice(0,2),members,confidence:.25,discoveredAt:now(),evidence:"similarité lexicale + fréquence"};made++}
+  else{M.categories[id].members=[...new Set([...M.categories[id].members,...members])]}
+ });
+ if(show)log(`Catégorisation émergente : ${made} nouvelles catégories.`);
+ renderAll();
+}
+function rebuildConcepts(){
+ const v=M.linguistics.vocab;
+ Object.keys(v).forEach(w=>{if(!M.concepts[w])upsertConcept(w,v[w],"réindexation")});
+ persist();log("Concepts réindexés.");
+}
+
+/* 6/7 — consolidation & memory tiers */
+function consolidate(show=true){
+ Object.values(M.concepts).forEach(c=>{
+  const score=clamp(c.confidence*.55+c.importance*.25+Math.min(c.confirmations/20,.2));
+  c.confidence=clamp(score+.02);
+  if(c.confidence>=M.settings.consolidateThreshold&&!M.longTerm.includes(c.normalized))M.longTerm.push(c.normalized);
+ });
+ M.working=M.working.filter(x=>M.concepts[x]&&M.concepts[x].lastSeen && (Date.now()-Date.parse(M.concepts[x].lastSeen)<1000*60*60*24*14)).slice(0,500);
+ M.shortTerm=M.shortTerm.slice(0,100);
+ persist();if(show)log("Consolidation terminée.");
+}
+function controlledForget(){
+ const threshold=M.settings.forgetThreshold;
+ const before=M.relations.length;
+ M.relations=M.relations.filter(r=>r.confidence>=threshold||r.observations>=3||!r.hypothesis);
+ const removed=before-M.relations.length;
+ M.hypotheses=M.relations.filter(r=>r.hypothesis&&r.confidence<threshold).map(r=>r.id);
+ persist();log(`Oubli contrôlé : ${removed} relation(s) faible(s) supprimée(s). Le vocabulaire et les concepts sont conservés.`);
+}
+
+/* 9 — graph */
+function neighbors(center,depth){
+ const start=norm(center);if(!start)return [];
+ const seen=new Set([start]),front=[start];
+ for(let d=0;d<depth;d++){
+  const next=[];
+  front.forEach(n=>{
+   M.relations.forEach(r=>{
+    if(r.a===n&&!seen.has(r.b)){seen.add(r.b);next.push(r.b)}
+    if(r.b===n&&!seen.has(r.a)){seen.add(r.a);next.push(r.a)}
+   })
+  });
+  front.splice(0,front.length,...next);
+ }
+ return [...seen];
+}
+function drawGraph(){
+ const cv=document.getElementById("graph"),ctx=cv.getContext("2d"),center=norm(document.getElementById("center").value);
+ ctx.clearRect(0,0,cv.width,cv.height);
+ if(!center){ctx.fillText("Entre un concept central.",20,30);return}
+ const ns=neighbors(center,Number(document.getElementById("depth").value)||2);
+ if(!ns.length){ctx.fillText("Aucun voisin.",20,30);return}
+ const pos={};const cx=cv.width/2,cy=cv.height/2;pos[center]=[cx,cy];
+ ns.filter(x=>x!==center).forEach((n,i)=>{
+  const a=i/Math.max(1,ns.length-1)*Math.PI*2;const rad=Math.min(190,100+ns.length*8);pos[n]=[cx+Math.cos(a)*rad,cy+Math.sin(a)*rad];
+ });
+ M.relations.filter(r=>pos[r.a]&&pos[r.b]).forEach(r=>{
+  const [x,y]=pos[r.a],[u,v]=pos[r.b];
+  ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(u,v);ctx.lineWidth=1+4*r.confidence;ctx.strokeStyle=r.confidence>=.65?"#68a0ff":"#59677f";ctx.stroke();
+  ctx.fillStyle="#aab6cf";ctx.font="12px system-ui";ctx.fillText(r.type,(x+u)/2,(y+v)/2);
+ });
+ Object.entries(pos).forEach(([n,p])=>{
+  ctx.beginPath();ctx.arc(p[0],p[1],n===center?25:18,0,Math.PI*2);ctx.fillStyle=n===center?"#53d18b":"#18233b";ctx.fill();ctx.strokeStyle="#68a0ff";ctx.stroke();
+  ctx.fillStyle="#eaf0ff";ctx.textAlign="center";ctx.fillText(n.slice(0,18),p[0],p[1]+4);
+ });
+}
+
+/* 10 — reasoning trace */
+function reason(){
+ const q=document.getElementById("query").value.trim(), w=words(q);
+ if(!q){return}
+ const found=new Set(w.filter(x=>M.concepts[x]));
+ const rels=M.relations.filter(r=>found.has(r.a)||found.has(r.b)).sort((a,b)=>b.confidence-a.confidence).slice(0,20);
+ const cats=Object.values(M.categories).filter(c=>c.members.some(x=>found.has(x)));
+ let html=`<h3>Analyse : ${esc(q)}</h3>`;
+ html+=`<p>Concepts reconnus : ${[...found].map(esc).join(", ")||"aucun"}</p>`;
+ html+=`<p>Je distingue ici <b>observations</b>, <b>hypothèses</b> et <b>déductions</b>. Une forte confiance n'est pas une garantie de vérité.</p>`;
+ if(rels.length){
+  html+="<h4>Chemins de connaissance</h4><ol>";
+  rels.forEach(r=>html+=`<li><b>${esc(r.a)}</b> —${esc(r.type)}→ <b>${esc(r.b)}</b> <span class="pill">${Math.round(r.confidence*100)}%</span> <span class="muted">${esc(r.evidence||"")}</span></li>`);
+  html+="</ol>";
+ }else html+="<p class='muted'>Aucune relation connue autour de la question.</p>";
+ if(cats.length)html+=`<p>Catégories émergentes : ${cats.map(c=>esc(c.name)).join(", ")}</p>`;
+ const contradictions=M.contradictions.filter(c=>found.has(c.a)||found.has(c.b));
+ if(contradictions.length)html+=`<p class="warn">⚠ ${contradictions.length} contradiction(s) associée(s) à ce sujet.</p>`;
+ document.getElementById("reasoning").innerHTML=html;
+ log(`Analyse effectuée : ${q}`);
+}
+
+/* diagnostic */
+function diagnose(){
+ const low=M.relations.filter(r=>r.confidence<.3).length;
+ const hyp=M.relations.filter(r=>r.hypothesis).length;
+ log(`Diagnostic : ${Object.keys(M.concepts).length} concepts, ${M.relations.length} relations, ${low} faibles, ${hyp} hypothèses, ${M.contradictions.length} contradictions.`);
+ status("Diagnostic terminé",true);
+}
+
+/* file text */
+document.getElementById("textFile").addEventListener("change",e=>{
+ const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>document.getElementById("inputText").value=r.result;r.readAsText(f);
+});
+const drop=document.getElementById("drop");
+["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.style.borderColor="var(--accent)"}));
+["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.style.borderColor="var(--line)"}));
+drop.addEventListener("drop",e=>{
+ const f=e.dataTransfer.files[0];if(!f)return;const r=new FileReader();r.onload=()=>document.getElementById("inputText").value=r.result;r.readAsText(f);
+});
+
+/* rendering */
+function renderAll(){
+ const L=M.linguistics;
+ stTokens.textContent=L.tokens||0;stVocab.textContent=Object.keys(L.vocab||{}).length;
+ st2.textContent=Object.keys(L.grams2||{}).length;st3.textContent=Object.keys(L.grams3||{}).length;
+ stConcepts.textContent=Object.keys(M.concepts).length;stRelations.textContent=M.relations.length;
+ stSources.textContent=Object.keys(M.sources).length;stContradictions.textContent=M.contradictions.length;
+ shortN.textContent=M.shortTerm.length;workN.textContent=M.working.length;longN.textContent=M.longTerm.length;
+ const vocab=Object.entries(L.vocab||{}).sort((a,b)=>b[1]-a[1]).slice(0,100);
+ document.getElementById("vocab").innerHTML=vocab.length?vocab.map(([w,n])=>`<span class="pill">${esc(w)} ×${n}</span> `).join(""):"Aucun mot appris.";
+ document.getElementById("sourceList").innerHTML=Object.values(M.sources).map(s=>`<div><b>${esc(s.name)}</b> <span class="pill">${esc(s.type)}</span> ${s.reliable?"<span class='ok'>fiable</span>":"<span class='warn'>non confirmée</span>"} — ${s.uses} utilisation(s)</div>`).join("")||"Aucune source.";
+ document.getElementById("contradictionList").innerHTML=M.contradictions.map(c=>`<div class="warn">⚠ ${esc(c.a)} ↔ ${esc(c.b)} <span class="muted">${new Date(c.date).toLocaleString()}</span></div>`).join("")||"Aucune contradiction.";
+ document.getElementById("relationTable").innerHTML=M.relations.slice().sort((a,b)=>b.confidence-a.confidence).slice(0,300).map(r=>{
+  const src=Object.keys(r.sources||{})[0]||"";
+  return `<tr><td>${esc(r.a)}</td><td>${esc(r.type)}</td><td>${esc(r.b)}</td><td>${Math.round(r.confidence*100)}%</td><td>${esc(r.evidence||"")} ${r.hypothesis?"<span class='warn'>hypothèse</span>":""}<br><span class='small muted'>${esc(src)}</span></td></tr>`
+ }).join("");
+ document.getElementById("episodes").innerHTML=M.episodes.slice(0,50).map(e=>`<div><b>${new Date(e.date).toLocaleString()}</b> — ${esc(e.summary)}<br><span class="muted">${e.tokens} tokens · ${e.newConcepts} concepts</span></div><hr>`).join("")||"Aucun épisode.";
+ document.getElementById("categoryInfo").innerHTML=Object.values(M.categories).map(c=>`<div><b>${esc(c.name)}</b> — ${Math.round(c.confidence*100)}%<br><span class="small muted">${c.members.slice(0,15).map(esc).join(", ")}</span></div>`).join("<hr>")||"Aucune catégorie découverte.";
+ const top=Object.values(M.concepts).sort((a,b)=>b.confidence-a.confidence).slice(0,8);
+ document.getElementById("confidencePanel").innerHTML=top.map(c=>`<div><div>${esc(c.label)} — ${Math.round(c.confidence*100)}%</div><div class="bar"><i style="width:${c.confidence*100}%"></i></div></div>`).join("")||"Aucun concept.";
+}
+
+function boot(){
+ const saved=localStorage.getItem(KEY);
+ if(saved){try{M=upgrade(JSON.parse(saved));status("Mémoire V7 locale restaurée",true);log("Mémoire locale chargée automatiquement.");}catch(e){M=blankMemory()}}
+ renderAll();
+}
+boot();
+</script>
+</body>
+</html>
