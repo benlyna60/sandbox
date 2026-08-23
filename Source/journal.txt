@@ -1,5 +1,61 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-23 14:25:10
+TITRE: L'empire des séries du dimanche 23 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-empire-des-series/l-empire-des-series-du-dimanche-23-aout-2026-8319400
+CONTENU: Article de référence : "L'empire des séries du dimanche 23 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-23 14:22:40
+TITRE: Nouveau monde du dimanche 23 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/nouveau-monde/nouveau-monde-du-dimanche-23-aout-2026-4386742
+CONTENU: Article de référence : "Nouveau monde du dimanche 23 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-23 13:20:00
+TITRE: Ivan Jayme Acosta, infirmier pendant dix ans, a lancé son restaurant à Lille pour faire découvrir la gastronomie péruvienne
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/cuisiniers-d-ailleurs/cuisiniers-d-ailleurs-du-dimanche-23-aout-2026-9787689
+CONTENU: Dans les cuisines depuis tout petit, ce chef né au Pérou a d'abord travaillé aux urgences en France, avant de se lancer dans la restauration. Avec pour objectif de partager les recettes de son pays, souvent distingué comme meilleure gastronomie au monde.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-23 12:00:00
+TITRE: Le 14/17 du dimanche 23 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-14-17-du-week-end/le-14-17-du-dimanche-23-aout-2026-9371002
+CONTENU: Article de référence : "Le 14/17 du dimanche 23 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-23 12:16:45
+TITRE: EN DIRECT - L'Iran «traverse de nombreuses difficultés», reconnaît le président Massoud Pezeshkian
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260823-en-direct-l-iran-traverse-de-nombreuses-difficult%C3%A9s-reconna%C3%AEt-le-pr%C3%A9sident-massoud-pezeshkian
+CONTENU: Alors que les États-Unis renforcent leur pression sur le régime iranien et sur l'économie du pays, le président Massoud Pezeshkian a reconnu ce 22 août que la société iranienne traversait « de nombreuses difficultés ». Déclaration au lendemain de l'appel de Washington à se joindre à sa politique de coercition économique contre Téhéran. Dans ce contexte, les exécutions se multiplient en Iran, en lien avec les manifestiopns de janvier dernier. La justice iranienne a annoncé avoir exécuté un homme ayant agi « en faveur d'Israël et des États-Unis ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-23 12:53:59
+TITRE: L’intégration des Kurdes permettra «de sortir la Syrie de la guerre civile et d'assurer la stabilité du pays»
+LIEN: https://www.rfi.fr/fr/podcasts/invit%C3%A9-international/20260823-l-int%C3%A9gration-des-kurdes-permettra-de-sortir-la-syrie-de-la-guerre-civile-et-d-assurer-la-stabilit%C3%A9-du-pays
+CONTENU: L'annonce sonne le glas des espoirs d'autonomie des Kurdes en Syrie. Le leader de cette minorité, Mazloum Abdi, a annoncé ce jeudi 20 août l'achèvement du processus d'intégration civile et militaire au sein des institutions de l'État syrien. Après des mois de négociations avec les autorités islamistes ayant renversé le président Bachar el-Assad en 2024, les Kurdes contrôlaient notamment jusqu'en début d'année, de vastes territoires riche en pétrole. Alors, quid des conséquences de cet accord en Syrie signé avec l'actuel président Ahmed al-Charaa ? On en parle avec notre invité Arthur Quesnay, chercheur sur la Syrie affilié à l’université Paris I Panthéon-Sorbonne. Coauteur du livre Syrie : anatomie d’une guerre civile CNRS éditions.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-08-23 15:00:03
+TITRE: « La République islamique d’Iran se serait sans doute déjà effondrée si elle n’était pas dotée de son corps fasciste »
+LIEN: https://www.lemonde.fr/idees/article/2026/08/23/la-republique-islamique-d-iran-se-serait-sans-doute-deja-effondree-si-elle-n-etait-pas-dotee-de-son-corps-fasciste_6754334_3232.html
+CONTENU: L’Etat tentaculaire contrôle la société à distance, pendant qu’une masse de militants armés sème la terreur sur le terrain. Ce système à deux têtes permet au régime totalitaire de se maintenir, estime le cinéaste Mehran Tamadon dans une tribune au « Monde ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-08-23 12:25:00
 TITRE: Des élections seraient «un tsunami» qui «fracturerait l’Ukraine», dit Zelensky
