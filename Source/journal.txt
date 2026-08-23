@@ -1,5 +1,53 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-23 17:00:00
+TITRE: Face aux tarifs douaniers américains, les entreprises québécoises demandent plus que des prêts
+LIEN: https://www.ledevoir.com/economie/1003484/face-tarifs-douaniers-americains-entreprises-quebecoises-demandent-plus-prets
+CONTENU: Québec a annoncé samedi deux programmes d’aide aux entreprises touchées par les nouveaux droits de douane.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-23 14:05:00
+TITRE: Les incendies de forêt en Europe révèlent des bombes enfouies pendant la guerre
+LIEN: https://www.ledevoir.com/monde/europe/1003466/incendies-foret-europe-revelent-bombes-enfouies-pendant-guerre
+CONTENU: Les bombes et munitions exposées mettent en danger les équipes chargées de lutter contre les flammes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-23 14:35:00
+TITRE: «Ça suffit !», peste Trump contre le Canada
+LIEN: https://www.ledevoir.com/politique/canada/1003469/suffit-peste-trump-contre-canada
+CONTENU: Washington met en garde Ottawa contre les effets «dévastateurs» d’un conflit commercial.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-23 15:45:00
+TITRE: À surveiller dans le monde des affaires au Canada cette semaine
+LIEN: https://www.ledevoir.com/economie/1003475/surveiller-monde-affaires-canada-cette-semaine
+CONTENU: Cinq éléments à surveiller, de la convention collective des agents de bord de WestJet aux résultats des banques.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-23 13:45:00
+TITRE: Quoi lire cette semaine?
+LIEN: https://www.ledevoir.com/lire/1003463/quoi-lire-cette-semaine
+CONTENU: Une sélection de nos critiques pour guider vos lectures de la semaine.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-23 14:55:00
+TITRE: Viser juste
+LIEN: https://www.ledevoir.com/opinion/chroniques/1003472/viser-juste
+CONTENU: L’application de contre-tarifs est une mauvaise stratégie, et mieux vaudrait des actions ciblées.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-08-23 18:00:00
 TITRE: Le 20/minuit du dimanche 23 août 2026
