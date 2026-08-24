@@ -263,10 +263,11 @@
             domainBadge.innerText = "Évaluation de la requête...";
             resultBox.innerHTML = '<span class="loading">L\'agent central analyse l\'intention et consulte la meilleure communauté...</span>';
 
-            // Modèle open-source de Hugging Face pour faire office d'agent orchestrateur
-            const modelURL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";
+            // URL originale de Hugging Face enveloppée dans un proxy CORS pour mobile
+            const targetURL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";
+            const proxyURL = "https://corsproxy.io/?" + encodeURIComponent(targetURL);
 
-            // 1. Étape d'aiguillage contextuel intelligent (Le "Maire" de la ville)
+            // 1. Étape d'aiguillage contextuel intelligent
             let detectedDomain = "Général / Affaires";
             const lowerPrompt = promptText.toLowerCase();
             
@@ -284,7 +285,7 @@
             const systemPersonality = "Tu es le Hub Central, un agent expert hautement structuré, efficace et orienté solutions. Tu vas droit au but, tes réponses sont claires, professionnelles, et formatées avec soin (utilisation de puces si nécessaire).";
 
             try {
-                const response = await fetch(modelURL, {
+                const response = await fetch(proxyURL, {
                     method: "POST",
                     headers: {
                         "Authorization": `Bearer ${hfToken}`,
@@ -310,7 +311,12 @@
 
                     resultBox.innerText = generatedText;
                 } else {
-                    resultBox.innerHTML = `<span style="color: #ef4444;">Erreur : ${data.error || "Impossible de joindre le quartier sélectionné. Vérifie que ta clé API est correcte."}</span>`;
+                    // Si le modèle est en train de se réveiller sur les serveurs de Hugging Face
+                    if (data.error && data.error.includes("loading")) {
+                        resultBox.innerHTML = `<span style="color: #f59e0b;">Le modèle se réveille sur les serveurs de Hugging Face. Réessaie dans quelques secondes...</span>`;
+                    } else {
+                        resultBox.innerHTML = `<span style="color: #ef4444;">Erreur : ${data.error || "Impossible de joindre le quartier sélectionné. Vérifie que ta clé API est correcte."}</span>`;
+                    }
                 }
 
             } catch (error) {
