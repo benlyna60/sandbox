@@ -263,9 +263,8 @@
             domainBadge.innerText = "Évaluation de la requête...";
             resultBox.innerHTML = '<span class="loading">L\'agent central analyse l\'intention et consulte la meilleure communauté...</span>';
 
-            // URL originale de Hugging Face enveloppée dans un proxy CORS pour mobile
-            const targetURL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";
-            const proxyURL = "https://corsproxy.io/?" + encodeURIComponent(targetURL);
+            // URL officielle directe de l'API Hugging Face
+            const modelURL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";
 
             // 1. Étape d'aiguillage contextuel intelligent
             let detectedDomain = "Général / Affaires";
@@ -285,7 +284,7 @@
             const systemPersonality = "Tu es le Hub Central, un agent expert hautement structuré, efficace et orienté solutions. Tu vas droit au but, tes réponses sont claires, professionnelles, et formatées avec soin (utilisation de puces si nécessaire).";
 
             try {
-                const response = await fetch(proxyURL, {
+                const response = await fetch(modelURL, {
                     method: "POST",
                     headers: {
                         "Authorization": `Bearer ${hfToken}`,
