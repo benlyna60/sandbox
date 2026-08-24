@@ -1,5 +1,133 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 13:17:57
+TITRE: EN DIRECT, guerre en Ukraine : « La Russie tentera une escalade contre les pays européens afin de les dissuader d’aider l’Ukraine », a prévenu Emmanuel Macron lors de la réunion de la coalition des volontaires
+LIEN: https://www.lemonde.fr/international/live/2026/08/24/en-direct-guerre-en-ukraine-lors-de-sa-visite-a-kiev-le-president-du-conseil-europeen-antonio-costa-reaffirme-que-l-ue-est-prete-a-accueillir-l-ukraine-en-son-sein_6753793_3210.html
+CONTENU: « Il est clair que les pays de l’OTAN seront ciblés et que les provocations se multiplieront », a estimé lundi le président français, exhortant à « rester calme et continuer » d’aider Kiev.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 04:00:12
+TITRE: La GPA pour les étrangers aux Etats-Unis mise à mal par Donald Trump
+LIEN: https://www.lemonde.fr/international/article/2026/08/24/la-gpa-pour-les-etrangers-aux-etats-unis-mise-a-mal-par-donald-trump_6754849_3210.html
+CONTENU: Un récent décret supprime le droit à la citoyenneté pour les enfants nés après une gestation pour autrui lorsque les parents d’intention sont étrangers. Dans le viseur de Washington, les Chinois, qui sont les plus nombreux à avoir recours à cette pratique, devant les Français.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 15:44:50
+TITRE: Bally Bagayoko, maire de Saint-Denis, visé par une enquête pour détournement de fonds publics concernant son emploi à la RATP
+LIEN: https://www.lemonde.fr/societe/article/2026/08/24/bally-bagayoko-maire-de-saint-denis-vise-par-une-enquete-pour-detournement-de-fonds-publics-concernant-son-emploi-a-la-ratp_6755547_3224.html
+CONTENU: Cette enquête préliminaire vise à « procéder aux vérifications utiles concernant les conditions d’emploi » de M. Bagayoko à la régie des transports parisiens, selon le PNF.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 14:30:11
+TITRE: Le mégafeu en Gironde, énième révélateur de la vulnérabilité des réseaux télécoms
+LIEN: https://www.lemonde.fr/economie/article/2026/08/24/le-megafeu-en-gironde-enieme-revelateur-de-la-vulnerabilite-des-reseaux-telecoms_6755475_3234.html
+CONTENU: L’incendie parti de Saumos n’a pas épargné les infrastructures Internet fixe et de téléphonie mobile. Ce sinistre hors norme pose une nouvelle fois la question de l’adaptation des réseaux aux catastrophes et événements climatiques extrêmes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 15:42:16
+TITRE: Interdiction du téléphone portable au lycée : la mesure « pourra être effective dès la rentrée », assure le gouvernement
+LIEN: https://www.lemonde.fr/societe/article/2026/08/24/interdiction-du-telephone-portable-au-lycee-la-mesure-pourra-etre-effective-des-la-rentree-assure-le-gouvernement_6755546_3224.html
+CONTENU: Malgré une volonté de l’exécutif de voir la mesure appliquer au plus vite, des doutes existent sur sa mise en place : les établissements doivent modifier leur règlement intérieur, ce qui suppose de consulter plusieurs instances. Mais des lycées n’ont pas été en mesure de mener cette procédure pour cause de fermeture durant l’été.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 15:00:08
+TITRE: En Savoie, des montagnes saturées d’activités pendant l’été : « On est content d’accueillir les vacanciers, mais on arrive à une limite, aussi »
+LIEN: https://www.lemonde.fr/planete/article/2026/08/24/en-savoie-des-montagnes-saturees-d-activites-pendant-l-ete-on-est-content-d-accueillir-les-vacanciers-mais-on-arrive-a-une-limite-aussi_6755510_3244.html
+CONTENU: Dans les départements de Savoie et de Haute-Savoie, les conflits d’usage se multiplient en juillet et en août. Certaines collectivités misent sur le dialogue et la régulation.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 14:51:03
+TITRE: Donald Trump menace le Canada, en affirmant que les voitures qui y sont produites seront taxées à 50 % dès le 1ᵉʳ janvier 2027
+LIEN: https://www.lemonde.fr/economie/article/2026/08/24/donald-trump-menace-le-canada-en-affirmant-que-les-voitures-qui-y-sont-produites-seront-taxees-a-50-des-le-1-janvier-2027_6755508_3234.html
+CONTENU: En pleines tensions commerciales avec son voisin d’Amérique du Nord, le président américain a mis de l’huile sur le feu, en menaçant l’industrie automobile. Cette surtaxe s’ajouterait à celles entrées en vigueur à la fin de la semaine dernière, qui concernent environ 28 milliards de dollars canadiens de marchandises.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 15:08:39
+TITRE: Intelligence artificielle : les publicités arrivent sur ChatGPT en France
+LIEN: https://www.lemonde.fr/economie/article/2026/08/24/intelligence-artificielle-les-publicites-arrivent-sur-chatgpt-en-france_6755543_3234.html
+CONTENU: A partir du lundi 24 août, les annonceurs peuvent payer pour faire apparaître leur marque à côté des réponses de l’assistant IA d’OpenAI, qui veut diversifier ses revenus.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-08-24 15:43:24
+TITRE: Comment est fabriqué un billet de banque ? Dans les coulisses de la Banque de France depuis Napoléon Bonaparte
+LIEN: https://theconversation.com/comment-est-fabrique-un-billet-de-banque-dans-les-coulisses-de-la-banque-de-france-depuis-napoleon-bonaparte-285174
+CONTENU: Retour historique et pratique sur l’art et l’industrie fiduciaires avec les billets émis par la Banque de France, du papier à l’illustration par les plus grands artistes, en passant par l’impression sur les presses à taille-douce.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-08-24 15:42:16
+TITRE: Comment la pollution de l’eau peut modifier les maladies parasitaires qui nous affectent
+LIEN: https://theconversation.com/comment-la-pollution-de-leau-peut-modifier-les-maladies-parasitaires-qui-nous-affectent-286409
+CONTENU: Les polluants présents dans les écosystèmes peuvent avoir des effets inattendus –&amp;nbsp;et difficiles à mettre en évidence&amp;nbsp;– sur les parasites. Avec des effets en matière de santé publique, qui restent à évaluer.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-08-24 15:40:08
+TITRE: Langue populaire, langue savante : des différences à reconsidérer pour mieux lutter contre les inégalités scolaires
+LIEN: https://theconversation.com/langue-populaire-langue-savante-des-differences-a-reconsiderer-pour-mieux-lutter-contre-les-inegalites-scolaires-287822
+CONTENU: Loin d’être la version sommaire de la langue savante, la langue populaire est tout aussi complexe et introduit un autre rapport à la parole. Le comprendre ne permettrait-il pas de mieux accueillir tous les élèves en classe&amp;nbsp;?
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-08-24 15:39:51
+TITRE: Vers une consigne pour les bouteilles en plastique ? Face à un problème complexe, gare aux solutions simplistes
+LIEN: https://theconversation.com/vers-une-consigne-pour-les-bouteilles-en-plastique-face-a-un-probleme-complexe-gare-aux-solutions-simplistes-285960
+CONTENU: Les plastiques&amp;nbsp;? Une multitude de matériaux et de réalités différentes. Face à ce tableau complexe, la réponse ne saurait être ni universelle ni exclusivement technique.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-08-24 15:39:14
+TITRE: Entre conflits armés et El Niño, la dangereuse convergence des crises en mer Rouge
+LIEN: https://theconversation.com/entre-conflits-armes-et-el-nino-la-dangereuse-convergence-des-crises-en-mer-rouge-290123
+CONTENU: Guerres régionales et El&amp;nbsp;Niño conjuguent leurs effets en mer Rouge, menaçant d’aggraver l’insécurité alimentaire de populations déjà fragilisées par les conflits.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-08-24 15:38:41
+TITRE: Djen Djen : ce qu’un port algérien révèle des mutations des routes maritimes mondiales
+LIEN: https://theconversation.com/djen-djen-ce-quun-port-algerien-revele-des-mutations-des-routes-maritimes-mondiales-289933
+CONTENU: À Djen Djen, en Algérie, 200&amp;nbsp;conteneurs ont changé de navire sans passer par le marché algérien&amp;nbsp;: une première qui offre au port un nouveau rôle dans les flux maritimes internationaux.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-08-24 15:22:57
+TITRE: Comment ajouter The Conversation à vos sources préférées sur Google
+LIEN: https://theconversation.com/comment-ajouter-the-conversation-a-vos-sources-preferees-sur-google-290091
+CONTENU: Google vous permet désormais de mettre en avant les médias auxquels vous faites confiance. Découvrez comment ajouter The Conversation à vos sources préférées.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-08-24 13:40:49
+TITRE: Mieux diagnostiquer et prendre en charge les règles douloureuses dès l’adolescence
+LIEN: https://theconversation.com/mieux-diagnostiquer-et-prendre-en-charge-les-regles-douloureuses-des-ladolescence-290110
+CONTENU: Chez les adolescentes, on déplore un retard dans la prise en charge des règles douloureuses, ou dysménorrhée. Or, celles-ci peuvent être le signe de maladies gynécologiques comme l’endométriose.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-08-24 09:00:00
 TITRE: Le poids du patrimoine dans l’économie freine la mobilité sociale, selon une étude
