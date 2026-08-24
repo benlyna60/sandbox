@@ -1,5 +1,253 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-24 04:00:00
+TITRE: Derrière les élections américaines, une véritable «industrie de la donnée»
+LIEN: https://www.ledevoir.com/monde/etats-unis/1003532/derriere-elections-americaines-veritable-industrie-donnee
+CONTENU: Aux États-Unis, les outils d’IA sont déjà déployés à grande échelle et ils transforment la manière de faire campagne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-24 04:00:00
+TITRE: Roger LeMoyne et les ambiguïtés du réel
+LIEN: https://www.ledevoir.com/culture/arts-visuels/1003391/roger-lemoyne-ambiguites-reel
+CONTENU: «Une photographie, ce n’est pas voir une fois et être certain qu’on a tout vu, qu’on a tout compris.»
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-24 04:00:00
+TITRE: Du bois brûlé à la mousse biodégradable
+LIEN: https://www.ledevoir.com/economie/1003538/bois-brule-mousse-biodegradable
+CONTENU: Une entreprise autochtone transforme des résidus forestiers en emballages et en isolant.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-24 04:00:00
+TITRE: Qui boit l’encre
+LIEN: https://www.ledevoir.com/opinion/chroniques/1003529/boit-encre
+CONTENU: Devant la beauté que je reçois, je me sens souvent débordée d’un savoir qui se transmet encore trop difficilement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-24 04:00:00
+TITRE: Des canicules (géo)politiques
+LIEN: https://www.ledevoir.com/opinion/chroniques/1003541/canicules-geo-politiques
+CONTENU: L’environnement est devenu un enjeu économique et stratégique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-24 04:00:00
+TITRE: Céline Dion et les couches sales
+LIEN: https://www.ledevoir.com/opinion/chroniques/1003517/celine-dion-couches-sales
+CONTENU: Qui sait où la vie peut mener?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-24 04:00:00
+TITRE: De faits et d’opinions
+LIEN: https://www.ledevoir.com/opinion/idees/1003520/faits-opinions
+CONTENU: Je ne sais pas ce que sera le journalisme demain; je sais ce que je voudrais qu’il soit, une activité de service public.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-24 04:00:00
+TITRE: «L’école, champ de bataille»: l’art de peindre l’intolérance en milieu scolaire
+LIEN: https://www.ledevoir.com/lire/1003394/ecole-champ-bataille-art-peindre-intolerance-milieu-scolaire
+CONTENU: Le chercheur Francis Dupuis-Déri raconte comment les écoles, au Québec et ailleurs, sont devenues un champ de bataille.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-24 04:00:00
+TITRE: Il ne sera pas possible de protéger 30% du territoire de chaque région, prévient la SNAP Québec
+LIEN: https://www.ledevoir.com/actualites/environnement/1003514/il-ne-sera-pas-possible-proteger-30-territoire-chaque-region-previent-snap-quebec
+CONTENU: L’organisation propose des «cibles régionales» pour faire progresser la protection de la biodiversité.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-24 04:00:00
+TITRE: Projet Montréal «demande des comptes» à l’administration Martinez Ferrada
+LIEN: https://www.ledevoir.com/politique/montreal/1003511/projet-montreal-demande-comptes-administration-martinez-ferrada
+CONTENU: La mairesse doit obtenir des engagements des cinq partis en campagne électorale au Québec, fait valoir Ericka Alneus.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 03:30:36
+TITRE: Présidentielle 2027 : la bataille des gauches irréconciliables est lancée
+LIEN: https://www.lemonde.fr/politique/article/2026/08/24/presidentielle-2027-la-bataille-des-gauches-irreconciliables-est-lancee_6754812_823448.html
+CONTENU: Lors de l’université d’été de La France insoumise, où il a prononcé un discours très centré sur la planification écologique, Jean-Luc Mélenchon a multiplié les appels du pied pour attirer les Ecologistes. Son rival à gauche, Raphaël Glucksmann a, lui, annoncé sa candidature au « 20 heures » de TF1.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 01:29:31
+TITRE: Le géant de l’ultra-fast-fashion Shein confirme son entrée en Bourse à Hongkong en septembre
+LIEN: https://www.lemonde.fr/economie/article/2026/08/24/le-geant-de-l-ultra-fast-fashion-shein-confirme-son-entree-en-bourse-a-hongkong-en-septembre_6754706_3234.html
+CONTENU: Fondée en Chine et désormais basée à Singapour, l’entreprise, régulièrement critiquée pour son modèle de production et de consommation, revendique 273 millions de clients dans le monde, dont 23 millions en France.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-23 22:45:39
+TITRE: Ligue 1 : le PSG arrache le nul à Rennes grâce à Ferran Torres, Lille démarre fort, courte victoire pour Monaco
+LIEN: https://www.lemonde.fr/sport/article/2026/08/24/ligue-1-le-psg-arrache-le-nul-a-rennes-grace-a-ferran-torres-lille-demarre-fort-courte-victoire-pour-monaco_6754673_3242.html
+CONTENU: Contraint de disputer son premier match de la saison loin du Parc des Princes en raison de l’état de sa pelouse, le champion de France a longtemps couru après le score avant d’être relancé par ses recrues estivales.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 04:29:24
+TITRE: EN DIRECT, guerre en Ukraine : les principaux soutiens européens de Kiev se réunissent lundi, sur fond d’intensification des frappes
+LIEN: https://www.lemonde.fr/international/live/2026/08/24/en-direct-guerre-en-ukraine-les-principaux-soutiens-europeens-de-kiev-se-reunissent-lundi-sur-fond-d-intensification-des-frappes_6753793_3210.html
+CONTENU: Cette rencontre des Etats membres de la « coalition des volontaires », organisée le jour du 35e anniversaire de la proclamation de l’indépendance de l’Ukraine, sera coprésidée par le Royaume-Uni, la France et l’Allemagne. Le président du Conseil européen, Antonio Costa, y est attendu.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-24 05:23:30
+TITRE: Ces destins qui font l'info du lundi 24 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/ces-destins-qui-font-l-info/ces-destins-qui-font-l-info-du-lundi-24-aout-2026-7628797
+CONTENU: Article de référence : "Ces destins qui font l'info du lundi 24 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-24 05:19:40
+TITRE: Attention aux sites qui affirment qu'il est possible de savoir dans quelle classe est votre enfant avant la rentrée scolaire
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-vrai-ou-faux/le-vrai-ou-faux-du-lundi-24-aout-2026-7085527
+CONTENU: Plusieurs sites promettent de révéler, avant la rentrée, quelle classe votre enfant va intégrer. Il s'agit de sites frauduleux.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-24 05:05:00
+TITRE: Ça dit quoi ?
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/ca-dit-quoi/ca-dit-quoi-7460471
+CONTENU: Article de référence : "Ça dit quoi ?"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-24 05:00:00
+TITRE: Le 7/10 du lundi 24 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-7-10/le-7-10-du-lundi-24-aout-2026-5469119
+CONTENU: Article de référence : "Le 7/10 du lundi 24 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-24 05:00:00
+TITRE: Le journal de 7h00 du lundi 24 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-7h00/le-journal-de-7h00-du-lundi-24-aout-2026-6382774
+CONTENU: Article de référence : "Le journal de 7h00 du lundi 24 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-24 04:56:00
+TITRE: Après son triomphe à Cincinnati, Arthur Fils peut-il rêver d'un Grand Chelem ?
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/apres-son-triomphe-a-cincinnati-arthur-fils-peut-il-rever-d-un-grand-chelem-8040518
+CONTENU: Vainqueur du Masters 1000 de Cincinnati à 22 ans, le numéro 1 français Arthur Fils s'affirme parmi les meilleurs joueurs mondiaux avant le début de l'US Open.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-24 04:53:00
+TITRE: Le billet sciences du lundi 24 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-billet-sciences-de-bill-francois/le-billet-sciences-du-lundi-24-aout-2026-7340002
+CONTENU: Article de référence : "Le billet sciences du lundi 24 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-24 04:50:30
+TITRE: franceinfo monde du lundi 24 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/franceinfo-monde/franceinfo-monde-du-lundi-24-aout-2026-4337619
+CONTENU: Article de référence : "franceinfo monde du lundi 24 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-24 04:46:00
+TITRE: "On a préféré se dire que la vie continuait" : de rescapé du Bataclan à l'Ultra-Trail du Mont-Blanc, le défi de Pierre Cabon, paraplégique
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-choix-de-franceinfo/le-choix-franceinfo-du-lundi-24-aout-2026-8005079
+CONTENU: Après avoir perdu l'usage de ses jambes lors de l'attentat du Bataclan, Pierre Cabon a décidé de participer à plusieurs grands événements sportifs, notamment une épreuve de l'UTMB.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-24 04:22:40
+TITRE: Ils ont fait l'actu du lundi 24 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/ils-ont-fait-l-actu/ils-ont-fait-l-actu-du-lundi-24-aout-2026-8864941
+CONTENU: Article de référence : "Ils ont fait l'actu du lundi 24 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-24 05:35:34
+TITRE: Allemagne: le parti d'extrême droite AfD aux portes du pouvoir en Saxe-Anhalt
+LIEN: https://www.rfi.fr/fr/europe/20260824-allemagne-le-parti-d-extr%C3%AAme-droite-afd-aux-portes-du-pouvoir-en-saxe-anhaltau
+CONTENU: Alors que les électeurs de ce Land de l'est du pays sont appelés aux urnes pour des élections régionales le 6 septembre, l'Alternative pour l’Allemagne (AfD) pourrait y remporter une majorité et accéder ainsi au pouvoir. Il s’agirait d’une première dans le pays pour un parti d’extrême droite depuis la fin de la Seconde Guerre mondiale.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-24 03:07:25
+TITRE: Ebola en RDC: la Croix-Rouge s'inquiète d'une multiplication des attaques contre ses volontaires
+LIEN: https://www.rfi.fr/fr/afrique/20260824-ebola-en-rdc-la-croix-rouge-s-inqui%C3%A8te-d-une-multiplication-des-attaques-contre-ses-volontaires
+CONTENU: Au centième jour de l'épidémie, dimanche 23 août, l'organisation affirme que neuf de ses volontaires ont été blessés, certaines de ses ambulances endommagées, et du matériel d’intervention lui appartenant saccagé. Alors que le virus continue de progresser, le mouvement rappelle que chaque incident contre ses personnels rend plus difficile la lutte contre la maladie.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-24 03:08:16
+TITRE: Tchad: Ndjamena dénonce une nouvelle incursion de l'armée soudanaise sur son sol
+LIEN: https://www.rfi.fr/fr/afrique/20260824-tchad-ndjamena-d%C3%A9nonce-une-nouvelle-incursion-de-l-arm%C3%A9e-soudanaise-sur-son-sol
+CONTENU: Selon l'état-major général de l'armée tchadienne, des drones et des avions des forces soudanaises ont poursuivi et bombardé en territoire tchadien des colonnes de véhicules partis de Libye, dans la soirée du jeudi 20 août. Si aucune information n'a été donnée sur l'identité de leurs passagers, l'hypothèse la plus probable est celles de combattants qui faisait route vers le Soudan pour aller renforcer les Forces de soutien rapide (FSR), affirme le chercheur Remadji Hoinathy.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-23 23:41:26
+TITRE: Tennis: à Cincinnati, Arthur Fils signe la première victoire française dans un Masters 1000 depuis 2014
+LIEN: https://www.rfi.fr/fr/sports/20260823-tennis-%C3%A0-cincinnati-arthur-fils-signe-la-premi%C3%A8re-victoire-fran%C3%A7aise-dans-un-masters-1000-depuis-2014
+CONTENU: À tout juste une semaine du coup d'envoi de l'US Open, le droitier de 22 ans a battu en finale du tournoi l'Américain Frances Tiafoe en trois sets, dimanche 23 août, décrochant ainsi le plus beau titre de sa jeune carrière.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-24 04:37:17
+TITRE: "Pourquoi ont-ils été enfermés?": la mère d’un Vénézuélien mort dans le séisme après son expulsion des États-Unis témoigne
+LIEN: https://www.rfi.fr/fr/am%C3%A9riques/20260824-pourquoi-ont-ils-%C3%A9t%C3%A9-enferm%C3%A9s-la-m%C3%A8re-d-un-v%C3%A9n%C3%A9zu%C3%A9lien-mort-dans-le-s%C3%A9isme-apr%C3%A8s-son-expulsions-des-%C3%A9tat-unis-t%C3%A9moigne
+CONTENU: Il y a deux mois jour pour jour, deux puissants séismes frappaient le Venezuela coup sur coup, à quelques secondes d'écart seulement. Bilan : plus de 6 000 morts et des quartiers entiers rayés de la carte, comme dans la ville balnéaire de La Guaira. Parmi les personnes décédées, il y avait aussi une centaine de passagers d'un vol arrivé des États-Unis la veille du séisme. Des Vénézuéliens expulsés par Washington au nom de la politique migratoire voulue par Donald Trump. Ils sont morts pendant le tremblement de terre, enfermés dans un batiment des très redoutés services de renseignements vénézuéliens.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-08-24 04:01:04
+TITRE: « Si une interdiction d’accès aux réseaux sociaux est anticonstitutionnelle, la protection des mineurs nécessite que les discours de haine soient interdits »
+LIEN: https://www.lemonde.fr/idees/article/2026/08/24/si-une-interdiction-d-acces-aux-reseaux-sociaux-est-anticonstitutionnelle-la-protection-des-mineurs-necessite-que-les-discours-de-haine-soient-interdits_6754856_3232.html
+CONTENU: Première source d’information des jeunes et modalité de réalisation de leurs droits culturels fondamentaux, les réseaux socionumériques méritent d’être mieux régulés, estime Sophie Jehel, professeure à l’université Paris-VIII, dans une tribune au « Monde ».
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-08-24 05:00:04
+TITRE: Retour de vacances : comment trier efficacement ses messages avec l’IA ?
+LIEN: https://www.blogdumoderateur.com/retour-vacances-comment-trier-efficacement-messages-ia/
+CONTENU: Gmail, Outlook et Slack ont étoffé leurs fonctionnalités IA de tri et de synthèse des messages ces derniers mois. Voici comment les utiliser, avec leurs conditions d'accès et leurs limites.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-08-23 22:52:29
 TITRE: Rennes 2-2 PSG : "Je suis énervé..." ce qui a irrité Luis Enrique
