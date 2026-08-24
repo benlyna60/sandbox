@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub Central - Assistant Intelligent</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --border-color: #1f2937;
+            --badge-bg: #1e1b4b;
+            --badge-text: #818cf8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            padding: 24px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            font-size: 1.05rem;
+        }
+
+        /* La Barre Magique */
+        .magic-bar-form {
+            display: flex;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 8px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .magic-bar-form:focus-within {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .magic-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.05rem;
+            padding: 14px 18px;
+            outline: none;
+        }
+
+        .magic-input::placeholder {
+            color: #4b5563;
+        }
+
+        .magic-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0 24px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .magic-button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Badge du domaine détecté */
+        .route-info {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .domain-badge {
+            background-color: var(--badge-bg);
+            color: var(--badge-text);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Zone de résultat */
+        .result-box {
+            margin-top: 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 24px;
+            text-align: left;
+            min-height: 120px;
+            max-height: 450px;
+            overflow-y: auto;
+            display: none;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-size: 0.98rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .loading {
+            color: var(--text-muted);
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Panneau de configuration de la clé API (discret) */
+        .settings-panel {
+            margin-top: 40px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .settings-input {
+            flex: 1;
+            background: #0b0f19;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-color);
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .settings-btn {
+            background-color: #374151;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .settings-btn:hover {
+            background-color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Hub Central</h1>
+        <p class="subtitle">Posez votre question. L'agent route et orchestre l'expertise en arrière-plan.</p>
+
+        <!-- Formulaire de la barre magique -->
+        <div class="magic-bar-form">
+            <input type="text" id="userPrompt" class="magic-input" placeholder="Ex: Écris un script, analyse ce texte, ou résous un problème..." autocomplete="off">
+            <button id="submitBtn" class="magic-button" onclick="sendToHub()">Générer</button>
+        </div>
+
+        <!-- Indicateur du quartier/domaine sélectionné par l'agent -->
+        <div id="routeInfo" class="route-info">
+            Quartier ciblé : <span id="domainBadge" class="domain-badge">Analyse...</span>
+        </div>
+
+        <!-- Boîte de résultat -->
+        <div id="resultBox" class="result-box"></div>
+
+        <!-- Panneau discret pour enregistrer la clé API dans le navigateur (Local) -->
+        <div class="settings-panel">
+            <span style="color: var(--text-muted);">Clé API Hugging Face :</span>
+            <input type="password" id="apiKeyInput" class="settings-input" placeholder="Colle ta clé ici (ex: hf_...)">
+            <button class="settings-btn" onclick="saveApiKey()">Enregistrer</button>
+        </div>
+    </div>
+
+    <script>
+        // Charger la clé enregistrée dans le navigateur au démarrage si elle existe
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedToken = localStorage.getItem('hf_user_token');
+            if (savedToken) {
+                document.getElementById('apiKeyInput').value = savedToken;
+            }
+        });
+
+        // Fonction pour sauvegarder la clé localement dans le navigateur
+        function saveApiKey() {
+            const token = document.getElementById('apiKeyInput').value.trim();
+            if (token) {
+                localStorage.setItem('hf_user_token', token);
+                alert("Clé API enregistrée localement dans ton navigateur !");
+            } else {
+                localStorage.removeItem('hf_user_token');
+                alert("Clé supprimée.");
+            }
+        }
+
+        // Permettre de lancer la recherche en appuyant sur la touche "Entrée"
+        document.getElementById("userPrompt").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                sendToHub();
+            }
+        });
+
+        async function sendToHub() {
+            const promptInput = document.getElementById('userPrompt');
+            const resultBox = document.getElementById('resultBox');
+            const routeInfo = document.getElementById('routeInfo');
+            const domainBadge = document.getElementById('domainBadge');
+            const promptText = promptInput.value.trim();
+
+            if (!promptText) return;
+
+            // Récupérer la clé depuis le stockage local du navigateur
+            const hfToken = localStorage.getItem('hf_user_token');
+            if (!hfToken) {
+                resultBox.style.display = 'block';
+                resultBox.innerHTML = '<span style="color: #ef4444;">Erreur : Veuillez d\'abord entrer et enregistrer votre clé API Hugging Face dans le panneau tout en bas de la page.</span>';
+                return;
+            }
+
+            // Afficher l'interface de chargement
+            resultBox.style.display = 'block';
+            routeInfo.style.opacity = '1';
+            domainBadge.innerText = "Évaluation de la requête...";
+            resultBox.innerHTML = '<span class="loading">L\'agent central analyse l\'intention et consulte la meilleure communauté...</span>';
+
+            // Modèle open-source de Hugging Face pour faire office d'agent orchestrateur
+            const modelURL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2";
+
+            // 1. Étape d'aiguillage contextuel intelligent (Le "Maire" de la ville)
+            let detectedDomain = "Général / Affaires";
+            const lowerPrompt = promptText.toLowerCase();
+            
+            if (lowerPrompt.includes("code") || lowerPrompt.includes("script") || lowerPrompt.includes("fonction") || lowerPrompt.includes("html") || lowerPrompt.includes("javascript") || lowerPrompt.includes("python")) {
+                detectedDomain = "Communauté Code & Tech";
+            } else if (lowerPrompt.includes("chiffr") || lowerPrompt.includes("calcul") || lowerPrompt.includes("budget") || lowerPrompt.includes("comptabl")) {
+                detectedDomain = "Communauté Finances & Chiffres";
+            } else if (lowerPrompt.includes("rédig") || lowerPrompt.includes("texte") || lowerPrompt.includes("e-mail") || lowerPrompt.includes("lettre")) {
+                detectedDomain = "Communauté Rédaction & Affaires";
+            }
+            
+            domainBadge.innerText = detectedDomain;
+
+            // 2. Personnalisation dynamique injectée à la volée
+            const systemPersonality = "Tu es le Hub Central, un agent expert hautement structuré, efficace et orienté solutions. Tu vas droit au but, tes réponses sont claires, professionnelles, et formatées avec soin (utilisation de puces si nécessaire).";
+
+            try {
+                const response = await fetch(modelURL, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${hfToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        inputs: `[INST] ${systemPersonality}\n\nRequête utilisateur (${detectedDomain}) : ${promptText} [/INST]`,
+                        parameters: { 
+                            max_new_tokens: 600,
+                            temperature: 0.7
+                        }
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.length > 0) {
+                    let generatedText = data[0].generated_text || JSON.stringify(data);
+                    
+                    if (generatedText.includes("[/INST]")) {
+                        generatedText = generatedText.split("[/INST]")[1].trim();
+                    }
+
+                    resultBox.innerText = generatedText;
+                } else {
+                    resultBox.innerHTML = `<span style="color: #ef4444;">Erreur : ${data.error || "Impossible de joindre le quartier sélectionné. Vérifie que ta clé API est correcte."}</span>`;
+                }
+
+            } catch (error) {
+                resultBox.innerHTML = `<span style="color: #ef4444;">Erreur réseau : ${error.message}</span>`;
+            }
+        }
+    </script>
+
+</body>
+</html>
