@@ -719,7 +719,10 @@ async function send(){
   }
 }
 
-/* ---------- Clavier ---------- */
+/* ---------- Clavier & Clics ---------- */
+
+// Ajout du déclencheur manquant pour le bouton Envoyer :
+$("sendBtn").addEventListener("click", send);
 
 $("input").addEventListener("keydown",e=>{
 
