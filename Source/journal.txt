@@ -1,5 +1,53 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-25 03:30:34
+TITRE: Faute de solution militaire, Donald Trump mise sur l’asphyxie économique pour vaincre l’Iran
+LIEN: https://www.lemonde.fr/international/article/2026/08/25/faute-de-solution-militaire-donald-trump-mise-sur-l-asphyxie-economique-pour-vaincre-l-iran_6756122_3210.html
+CONTENU: A l’approche des élections de mi-mandat, la Maison Blanche privilégie la pression économique à l’engagement militaire. Une soixantaine d’entités, personnes et navires iraniens ont été ajoutés à la liste des sanctions, a annoncé, lundi, le secrétaire au Trésor, Scott Bessent. Téhéran a réagi en parlant de « terrorisme économique ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-25 03:00:09
+TITRE: Les Européens condamnent la stratégie de la terreur russe en Ukraine
+LIEN: https://www.lemonde.fr/international/article/2026/08/25/les-europeens-condamnent-la-strategie-de-la-terreur-russe-en-ukraine_6756021_3210.html
+CONTENU: Réunis, lundi, autour de Volodymyr Zelensky pour une conférence de la coalition des volontaires, les dirigeants du Vieux Continent ont réitéré leurs marques de soutien, militaires et financières, à Kiev, et dénoncé l’intensification des frappes de la Russie contre les civils.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-25 03:15:02
+TITRE: A l’occasion de la visite du prince héritier saoudien « MBS », un projet « colossal » de parc d’attractions près de Paris a été dévoilé
+LIEN: https://www.lemonde.fr/international/article/2026/08/25/a-l-occasion-de-la-visite-du-prince-heritier-saoudien-mbs-un-projet-colossal-de-parc-d-attractions-pres-de-paris-a-ete-devoile_6756088_3210.html
+CONTENU: La venue en France de Mohammed Ben Salman, alors que se tenait, lundi, un premier conseil du partenariat stratégique franco-saoudien, a été scandée par diverses annonces commerciales et considérations diplomatiques.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-25 03:00:20
+TITRE: Nos idées de séries : « Blood Sacrifice », « Le Rouge et le Noir », « Lanterns » « The Shards »…
+LIEN: https://www.lemonde.fr/culture/article/2026/08/25/nos-idees-de-series-blood-sacrifice-le-rouge-et-le-noir-lanterns-the-shards_6756055_3246.html
+CONTENU: En cette deuxième quinzaine du mois d’août, La Matinale vous propose une sélection de séries à découvrir sur petit écran, avec notamment un rendez-vous avec Green Lantern, l’un des plus anciens super-héros américains.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-25 02:28:56
+TITRE: Orages : un incendie, probablement déclenché par la foudre, a entraîné 200 évacuations spontanées en Corse
+LIEN: https://www.lemonde.fr/planete/article/2026/08/25/orages-un-incendie-probablement-declenche-par-la-foudre-a-entraine-200-evacuations-spontanees-en-corse_6755856_3245.html
+CONTENU: Des vents violents se sont abattus, pendant la nuit de lundi à mardi, sur Alata, près d’Ajaccio. Les habitants ont commencé à regagner leur domicile et le feu est « quasiment fixé », selon les autorités.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-24 23:51:14
+TITRE: Sophie Adenot effectue, mardi, sa deuxième sortie dans l’espace pour parachever le changement d’une antenne
+LIEN: https://www.lemonde.fr/sciences/article/2026/08/25/sophie-adenot-effectue-mardi-sa-deuxieme-sortie-dans-l-espace-pour-parachever-le-changement-d-une-antenne_6755922_1650684.html
+CONTENU: Des difficultés avaient contraint, il y a une semaine, l’astronaute française à finir sa première sortie hors de la Station spatiale internationale (ISS) sans avoir pu aller au bout de sa mission avec son binôme, l’Américain Anil Menon.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-08-24 13:30:00
 TITRE: «Avançons» : la CAQ dévoile son slogan électoral
