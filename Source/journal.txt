@@ -1,5 +1,349 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-25 17:52:00
+TITRE: Un million d’enfants pourraient mourir de malnutrition en Afghanistan, alerte l’UNICEF
+LIEN: https://www.ledevoir.com/monde/asie/1003952/million-enfants-pourraient-mourir-malnutrition-afghanistan-alerte-unicef
+CONTENU: Près de 14 millions d’Afghans sont en situation de faim aiguë, souligne pour sa part le Programme alimentaire mondial.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-25 13:48:15
+TITRE: Les partis politiques pressés de renforcer les services sociaux à l’aube des élections
+LIEN: https://www.ledevoir.com/actualites/sante/1003883/partis-politiques-presses-renforcer-services-sociaux-aube-elections
+CONTENU: L’Ordre des travailleurs sociaux  propose cinq pistes pour renforcer les services offerts au Québec.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-25 17:17:30
+TITRE: Files d’attente à Téhéran devant des stations-service après l’annonce de sanctions américaines
+LIEN: https://www.ledevoir.com/monde/1003937/files-attente-teheran-devant-stations-service-apres-annonce-sanctions-americaines
+CONTENU: Les Iraniens s’inquiètent des conséquences de ces nouvelles sanctions.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-25 18:04:00
+TITRE: Mort de la légende de la musique country Dolly Parton
+LIEN: https://www.ledevoir.com/culture/musique/1003964/mort-legende-musique-country-dolly-parton
+CONTENU: Elle avait 80 ans.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-25 04:00:00
+TITRE: Des mythes alimentaires viraux passés au crible
+LIEN: https://www.ledevoir.com/interactif/2026-08-25/mythes-alimentaires/index.html
+CONTENU: Cures de détox, diètes carnées, suppléments miracles… la désinformation alimentaire pullule sur le Web.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-25 17:56:00
+TITRE: «Une sale semaine» pour les souverainistes, selon Charles Milliard
+LIEN: https://www.ledevoir.com/politique/quebec/1003958/sale-semaine-souverainistes-selon-charles-milliard
+CONTENU: Les tensions commerciales entre Ottawa et Washington sont loin d’être favorables pour le mouvement, selon lui.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-25 04:00:00
+TITRE: Rafael Payare et Alisa Weilerstein, le boxeur et la cavalière
+LIEN: https://www.ledevoir.com/culture/musique/1003772/rafael-payare-alisa-weilerstein-boxeur-cavaliere
+CONTENU: Entrevue avec le directeur musical de l’OSM et la réputée violoncelliste, en marge de leur tournée européenne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-25 17:00:00
+TITRE: Le journal de 19h00 du mardi 25 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-19h00/le-journal-de-19h00-du-mardi-25-aout-2026-3558883
+CONTENU: Article de référence : "Le journal de 19h00 du mardi 25 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-25 16:00:00
+TITRE: Le journal de 18h00 du mardi 25 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-18h00/le-journal-de-18h00-du-mardi-25-aout-2026-5173153
+CONTENU: Article de référence : "Le journal de 18h00 du mardi 25 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-25 15:42:00
+TITRE: L'exposition des jeunes enfants à des bruits élevés de circulation peut nuire à leur développement, selon une étude
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/l-exposition-des-jeunes-enfants-a-des-bruits-eleves-de-circulation-peut-nuire-a-leur-developpement-selon-une-etude-7518694
+CONTENU: Selon une enquête récente publiée dans "The Lancet", le bruit excessif de la circulation nuit au développement des enfants. Les chercheurs soulignent une hausse des problèmes relationnels et des troubles de l'attention chez ceux exposés dès le plus jeune âge.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-25 15:22:10
+TITRE: "En marche" : le mouvement lancé par Emmanuel Macron
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-info-de-l-histoire/l-info-de-l-histoire-du-mardi-25-aout-2026-4532393
+CONTENU: Cet été, Fabrice d'Almeida sonde les slogans des élections présidentielles sous la Ve République. De quoi se rafraîchir la mémoire avant l'élection de 2027. Aujourd'hui, retour sur les élections de 2017, avec Emmanuel Macron et le nom de son mouvement : "En marche !"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-25 15:00:00
+TITRE: Le journal de 17h00 du mardi 25 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-17h00/le-journal-de-17h00-du-mardi-25-aout-2026-4909808
+CONTENU: Article de référence : "Le journal de 17h00 du mardi 25 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-25 15:00:00
+TITRE: Le 17/20 du mardi 25 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-17-20/le-17-20-du-mardi-25-aout-2026-8026672
+CONTENU: Les invités du 25 août 2026
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-25 13:47:00
+TITRE: Deuxième sortie dans l'espace de Sophie Adenot : "Le cerveau nous envoie un signal de mort", explique Thomas Pesquet
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/deuxieme-sortie-dans-l-espace-de-sophie-adenot-le-cerveau-nous-envoie-un-signal-de-mort-explique-thomas-pesquet-1108307
+CONTENU: Une semaine après sa première sortie, la Française Sophie Adenot rempile pour tenter de finir la mission. Pour franceinfo, Thomas Pesquet, astronaute de l’Agence spatiale européenne, se remémore les sensations et les enjeux d'une sortie dans l'espace.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-25 13:45:00
+TITRE: Tornade dans l'Aude : "Le ciel se déchaîne, on ressent une force écrasante", raconte un chasseur d'orages
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/tornade-dans-l-aude-le-ciel-se-dechaine-on-ressent-une-force-ecrasante-raconte-un-chasseur-d-orages-3531988
+CONTENU: Après la tornade qui s'est abattue sur le village de Pomas, lundi, faisant 39 blessés et des dégâts matériels impressionnants, Mathieu Brochier, vidéaste, directeur du festival chasseurs d'orages à Bron, revient sur franceinfo sur ce phénomène météorologique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-25 18:55:39
+TITRE: Candidats à la présidentielle: "Lesquels sont vraiment à la hauteur?", s'interroge Henri Guaino
+LIEN: https://www.bfmtv.com/replay-emissions/100-mabrouk/video-candidats-a-la-presidentielle-lesquels-sont-vraiment-a-la-hauteur-s-interroge-henri-guaino_VN-202608250775.html
+CONTENU: Henri Guaino, ancien conseiller de Nicolas Sarkozy, était l'invité de BFMTV ce mardi 25 août
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-25 18:55:22
+TITRE: Un mort dans un accident à l'aéroport de Montréal lors d'opérations au sol avant un vol pour Paris
+LIEN: https://www.bfmtv.com/economie/entreprises/aeronautique/un-mort-dans-un-accident-a-l-aeroport-de-montreal-lors-d-operations-au-sol-avant-un-vol-pour-paris_AD-202608250774.html
+CONTENU: La personne décédée travaillait pour une société de services aéroportuaires. L'accident est survenu "dans le cadre des opérations au sol précédant le départ d'un vol" de la compagnie French Bee à destination de Paris-Orly, a fait savoir l'entreprise. Les circonstances du drame restent à établir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-25 18:53:59
+TITRE: En grève de la faim pour dénoncer la sérophobie, deux militants séropositifs vont être reçus par Aurore Bergé
+LIEN: https://www.bfmtv.com/politique/gouvernement/en-greve-de-la-faim-pour-denoncer-la-serophobie-deux-militants-seropositifs-vont-etre-recus-par-aurore-berge_AD-202608250773.html
+CONTENU: Deux militants séropositifs seront reçus par la ministre Aurore Bergé le 2 septembre prochain. Ils ont entamé une grève de la faim pour dénoncer la "sérophobie" dont ils sont victimes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-25 18:51:46
+TITRE: "Une vraie perte pour des millions de personnes": Donald Trump annonce mettre les drapeaux en berne après la mort de Dolly Parton
+LIEN: https://www.bfmtv.com/international/amerique-nord/etats-unis/donald-trump/une-vraie-perte-pour-des-millions-de-personnes-donald-trump-annonce-mettre-les-drapeaux-en-berne-apres-la-mort-de-dolly-parton_AD-202608250770.html
+CONTENU: Le président des États-Unis a réagi à la mort de la légende américaine de la musique country Dolly Parton ce mardi, estimant qu''il n'y a "jamais eu personne comme elle, et il n'y en aura jamais".
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-25 18:50:54
+TITRE: Présidentielle 2027: "Cette campagne s'annonce très décevante", observe Henri Guaino
+LIEN: https://www.bfmtv.com/replay-emissions/100-mabrouk/video-presidentielle-2027-cette-campagne-s-annonce-tres-decevante-observe-henri-guaino_VN-202608250772.html
+CONTENU: Henri Guaino, ancien conseiller de Nicolas Sarkozy, était l'invité de BFMTV ce mardi 25 août
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-25 18:49:18
+TITRE: "La richesse est produite par les travailleurs", déclare Aurélien Taché, député LFI
+LIEN: https://www.bfmtv.com/replay-emissions/100-mabrouk/video-la-richesse-est-produite-par-les-travailleurs-declare-aurelien-tache-depute-lfi_VN-202608250771.html
+CONTENU: Mathilde Panot, présidente du groupe La France insoumise à l’Assemblée nationale, était l'invitée du Face-à-Face de ce mardi 25 août sur BFMTV et RMC. Elle a été notamment interrogée sur les taxations des milliardaires en cas d'accession au pouvoir de La France insoumise.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-25 18:44:48
+TITRE: Un projet d'au moins 100 milliards de dollars permettant "d'effectuer plus de 30 vols Starship par jour": SpaceX annonce vouloir construire le plus grand site de lancement de la planète en Louisiane
+LIEN: https://www.bfmtv.com/economie/entreprises/un-projet-d-au-moins-100-milliards-de-dollars-permettant-d-effectuer-plus-de-30-vols-starship-par-jour-space-x-annonce-vouloir-construire-le-plus-grand-site-de-lancement-de-la-planete-en-louisiane_AD-202608250764.html
+CONTENU: L'entreprise d'Elon Musk a annoncé vouloir construire à partir de 2027 une base spatiale en Lousiane pour effectuer un premier lancement deux ans plus tard.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-25 18:44:24
+TITRE: États-Unis: la police de l’immigration arrête une femme équatorienne et sa fille dans leur chambre d'hôpital
+LIEN: https://www.bfmtv.com/international/amerique-nord/etats-unis/video-etats-unis-la-police-de-l-immigration-arrete-une-femme-equatorienne-et-sa-fille-dans-leur-chambre-d-hopital_VN-202608250766.html
+CONTENU: La mère de 39 ans et sa fille de 19 ans étaient soignées dans un hôpital de Floride après un accident de voiture.  La police de l’immigration a débarqué dans leur chambre d’hôpital pour les arrêter et les placer en détention ce jeudi 20 août.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-25 18:38:45
+TITRE: "Il y a une culture à gauche de la haine des riches", estime Alexandre Avril, maire UDR de Salbris
+LIEN: https://www.bfmtv.com/replay-emissions/100-mabrouk/video-il-y-a-une-culture-a-gauche-de-la-haine-des-riches-estime-alexandre-avril-maire-udr-de-salbris_VN-202608250763.html
+CONTENU: Mathilde Panot, présidente du groupe La France insoumise à l’Assemblée nationale, était l'invitée du Face-à-Face de ce mardi 25 août sur BFMTV et RMC. Elle a été notamment interrogée sur les taxations des milliardaires en cas d'accession au pouvoir de La France insoumise.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-25 18:37:50
+TITRE: Opérations d'ingérence: la Russie accuse les candidats à la présidentielle française d'agiter la "menace russe"
+LIEN: https://www.bfmtv.com/international/asie/russie/operations-d-ingerence-la-russie-accuse-les-candidats-a-la-presidentielle-francaise-d-agiter-la-menace-russe_AD-202608250761.html
+CONTENU: Une série d'opérations de déstabilisation, attribuées à des réseaux prorusses, ont visé plusieurs candidats à la présidentielle ces derniers mois. Le Kremlin nie en bloc.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-25 15:38:59
+TITRE: Le Canada répond à Washington et annonce jusqu'à 50% de droits de douane sur des produits américains
+LIEN: https://www.rfi.fr/fr/am%C3%A9riques/20260825-le-canada-r%C3%A9pond-%C3%A0-washington-et-annonce-jusqu-%C3%A0-50-de-droits-de-douane-sur-des-produits-am%C3%A9ricains
+CONTENU: Le Canada a annoncé ce mardi 25 août 2026 ses mesures de riposte face aux droits de douane imposés par les États-Unis. Le gouvernement indique que des surtaxes allant de 15% à 50% seront mises en place sur des produits américains à compter du 8 septembre prochain.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-25 15:56:51
+TITRE: L'Union européenne indique considérer «avec intérêt» une éventuelle candidature d’adhésion de l'Arménie
+LIEN: https://www.rfi.fr/fr/europe/20260825-l-union-europ%C3%A9enne-indique-consid%C3%A9rer-avec-int%C3%A9r%C3%AAt-une-%C3%A9ventuelle-candidature-d-adh%C3%A9sion-de-l-arm%C3%A9nie
+CONTENU: L'Arménie se rapproche un peu plus de l'Union européenne. Le Premier ministre Nikol Pachinian a annoncé lundi 24 août que son pays pourrait bientôt déposer sa candidature d'adhésion aux 27. Une perspective saluée par Bruxelles, qui a indiqué ce mardi 25 août 2026 l'examiner « avec intérêt ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-25 16:31:07
+TITRE: Grève «historique» des médecins au Paraguay: pénurie de moyens, salaires gelés et système de santé en crise
+LIEN: https://www.rfi.fr/fr/am%C3%A9riques/20260825-gr%C3%A8ve-historique-des-m%C3%A9decins-au-paraguay-p%C3%A9nurie-de-moyens-salaires-gel%C3%A9s-et-syst%C3%A8me-de-sant%C3%A9-en-crise
+CONTENU: Au Paraguay, des milliers de médecins ont entamé une grève, lundi 24 août, pour dénoncer des conditions de travail dramatiques : manque de matériel, salaires gelés depuis 2012 et - pour certains même - absence de couverture santé. Une mobilisation historique qui révèle l’ampleur de la crise du système de santé du pays. Le Paraguay est l'un des pays d'Amérique latine qui investit le moins dans le secteur.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-25 16:17:40
+TITRE: États-Unis: le Nevada attaque l’administration Trump en justice contre les restrictions de consommation d'eau
+LIEN: https://www.rfi.fr/fr/am%C3%A9riques/20260825-%C3%A9tats-unis-le-nevada-attaque-l-administration-trump-en-justice-contre-les-restrictions-de-consommation-d-eau
+CONTENU: Le Nevada a engagé lundi 24 août une action en justice contre l’administration Trump pour contester les restrictions d’eau imposées à trois États riverains du fleuve Colorado. Situé dans l’Ouest américain et ayant Las Vegas pour plus grande ville, cet État est particulièrement dépendant du fleuve, dont le niveau est historiquement bas et qui est menacé par le changement climatique. Une bataille judiciaire se joue entre Républicains pour tenter de faire revenir l'eau du fleuv
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-25 15:13:48
+TITRE: Chine: condamné pour avoir caricaturé Mao, l'artiste Gao Zhen écope de trois ans de prison
+LIEN: https://www.rfi.fr/fr/asie-pacifique/20260825-chine-condamn%C3%A9-pour-avoir-caricatur%C3%A9-mao-l-artiste-gao-zhen-%C3%A9cope-de-trois-ans-de-prison
+CONTENU: Gao Zhen, artiste chinois, a été condamné ce mardi 25 août 2026 pour des oeuvres réalisées avec son frère il y a une quinzaine d'années, se moquant ouvertement de l'ancien dirigeant chinois Mao Zedong. Le plasticien, résident aux États-Unis mais incarcéré en Chine a été jugé coupable de « diffamation de héros et des martyrs », en vertu d'une loi interdisant la critique contre les anciens dirigeants du pays. Une nouvelle étape dans l'intensification de la répression de la liberté d'expression sous Xi Jinping.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-25 18:20:08
+TITRE: New workflow helps ecologists measure how individual animals use their habitat
+LIEN: https://phys.org/news/2026-08-workflow-ecologists-individual-animals-habitat.html
+CONTENU: A researcher has developed a new, reproducible workflow that lets ecologists measure, in a standardized way, how individual animals within a species differ in their habitat use, based on GPS tracking data. The tool was developed by Dr. Elina Takola of the Department of Computational Landscape Ecology at the UFZ—Helmholtz Centre for Environmental Research.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-25 18:20:07
+TITRE: Wildfires don't just pollute the air, rain may turn its smoke into fertilizer
+LIEN: https://phys.org/news/2026-08-wildfires-dont-pollute-air-fertilizer.html
+CONTENU: Wildfire smoke is usually discussed as an airborne pollutant and a threat to human health. But when smoke and rain coincide, nutrients released by burned landscapes rain back down. A new study finds that smoke-rain events can deliver large bursts of nitrogen, phosphorus and potassium—three nutrients essential to life—across ecosystems in the United States. As wildfires become more frequent, these nutrient pulses could become an increasingly important and largely overlooked ecological consequence of fire.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-25 18:10:01
+TITRE: Gamma-ray signal could be long awaited evidence for WIMPs
+LIEN: https://phys.org/news/2026-08-gamma-ray-awaited-evidence-wimps.html
+CONTENU: Dark matter is known to make up roughly 85% of all mass in the universe, as evidenced by the way galaxies spin and how galaxy clusters are held together under gravity. Yet despite decades of searching, physicists have never managed to detect the elusive substance directly.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-25 18:00:12
+TITRE: Bioinspired nanoparticles deliver gene editing to lower 'bad' cholesterol
+LIEN: https://phys.org/news/2026-08-bioinspired-nanoparticles-gene-bad-cholesterol.html
+CONTENU: Researchers from the Yong Loo Lin School of Medicine, National University of Singapore (NUS Medicine), and Tianjin Medical University General Hospital have developed a bioinspired lipid nanoparticle (LNP) that can deliver gene-editing machinery to the liver and reduce low-density lipoprotein (LDL) cholesterol, commonly known as "bad" cholesterol. The nanoparticles reduced LDL and total cholesterol by more than 20% after two doses, while showing fewer signs of inflammation and toxicity than comparator formulations. The findings were published in the Journal of Controlled Release.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-25 18:00:07
+TITRE: Scientists resurrect ancient proteins, offering new antibiotic leads
+LIEN: https://phys.org/news/2026-08-scientists-resurrect-ancient-proteins-antibiotic.html
+CONTENU: University of Oregon biologists have resurrected prehistoric proteins up to 160 million years old that carry natural antimicrobial properties. The revived molecules could inspire the design of new treatments for antibiotic-resistant infections, a pressing global health issue.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-25 17:40:05
+TITRE: Lunar soil reads as a cosmic time capsule for exploding stars
+LIEN: https://phys.org/news/2026-08-lunar-soil-cosmic-capsule-stars.html
+CONTENU: When a star reaches its final stages of life, it ends in a bright, powerful explosion called a supernova and scatters material across the universe. A new study led by a University of Hawai'i at Mānoa researcher has discovered that the moon's mixed-up soil can be read as a cosmic time capsule for exploding stars. The work is published in the journal Physical Review Letters.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-25 17:40:03
+TITRE: From flames to haze, wildfire smoke transforms as it travels, and it can harm your health in different ways
+LIEN: https://phys.org/news/2026-08-flames-haze-wildfire-health-ways.html
+CONTENU: As wildfire smoke plumes travel thousands of miles, sunlight and atmospheric chemistry bleach their color, strip away their campfire aroma and add them to the mix of urban smog.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-25 17:30:01
+TITRE: Moving turtle nests to save the eggs can have hidden consequences
+LIEN: https://phys.org/news/2026-08-turtle-eggs-hidden-consequences.html
+CONTENU: Moving threatened sea turtle nests to cooler, safer parts of the beach can save entire clutches from rising tides and extreme heat, but new research suggests it may have hidden consequences for the hatchlings that emerge.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-25 17:20:07
+TITRE: A 'super El Niño' could make India's monsoon drier yet more dangerous
+LIEN: https://phys.org/news/2026-08-super-el-nio-india-monsoon.html
+CONTENU: India is currently in the middle of its summer monsoon, but this year's rainfall presents an interesting paradox. Much of the country has received less rain than usual so far, yet has still been hit by severe floods and landslides. In the southern state of Kerala, for example, devastating floods occurred despite the overall monsoon rainfall remaining well below average.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-25 17:20:05
+TITRE: Naked photobombing comet found in public image
+LIEN: https://phys.org/news/2026-08-naked-photobombing-comet-image.html
+CONTENU: Sometimes images are released before anyone realizes they have been photobombed, meaning something unexpected showed up in the background. A team of researchers found a naked photobombing comet in publicly available archival data from the Subaru Telescope, resulting not in mirth but in serious scientific discoveries.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-08-25 16:00:18
+TITRE: Irène Pereira, philosophe : « On souhaite que les jeunes se mobilisent, mais on ne les forme qu’à voter et pas à être des défenseurs des droits humains et environnementaux »
+LIEN: https://www.lemonde.fr/idees/article/2026/08/25/irene-pereira-philosophe-on-souhaite-que-les-jeunes-se-mobilisent-mais-on-ne-les-forme-qu-a-voter-et-pas-a-etre-des-defenseurs-des-droits-humains-et-environnementaux_6756605_3232.html
+CONTENU: La spécialiste de l’éducation défend, dans un entretien au « Monde », une approche « écopédagogique » permettant aux jeunes, dont l’avenir s’écrit sous le signe de la crise climatique, d’agir en connaissance des inégalités environnementales et de leurs droits.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-08-25 13:00:05
+TITRE: « On ne peut pas arroser une forêt » : en Suisse, une méthode sylvicole d’avenir préserve de la canicule et des incendies
+LIEN: https://www.lemonde.fr/series-d-ete/article/2026/08/25/on-ne-peut-pas-arroser-une-foret-en-suisse-une-methode-sylvicole-d-avenir-preserve-de-la-canicule-et-des-incendies_6756581_3451060.html
+CONTENU: « Permis d’espérer » (2/6). Alors que de trop nombreuses forêts européennes sont transformées en usines à bois par la monoculture et les coupes rases, la Confédération helvétique expérimente une technique ancestrale qui favorise la fraîcheur et la biodiversité.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-08-25 15:24:01
+TITRE: AI Overviews : ce que les premières mesures de visibilité des médias français révèlent
+LIEN: https://www.blogdumoderateur.com/ai-overviews-premieres-mesures-visibilite-medias-francais-revelent/
+CONTENU: The Black Room a mesuré 25 000 requêtes sur Google France. La presse dite "people et féminine" domine les citations de presse mais, tous domaines confondus, Wikipédia est cité plus souvent que l'ensemble des titres français.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-08-25 15:39:20
 TITRE: Droits de douane : le Canada riposte et annonce des surtaxes de 15 % à 50 % sur une série de produits américains dès le 8 septembre
