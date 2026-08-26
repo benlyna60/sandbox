@@ -1,84 +1,854 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html><html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chœur Domino - Apprentissage en Chaîne</title>
-    <style>
-        body { font-family: sans-serif; max-width: 650px; margin: 20px auto; padding: 0 15px; background: #f4f4f9; color: #333; }
-        textarea { width: 100%; height: 120px; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { background: #007BFF; color: white; border: none; padding: 10px 15px; font-size: 16px; border-radius: 4px; cursor: pointer; margin-top: 10px; }
-        button:hover { background: #0056b3; }
-        .output-box { background: white; padding: 15px; border-radius: 4px; border: 1px solid #ddd; margin-top: 15px; }
-        .word-item { background: #e9ecef; margin: 10px 0; padding: 12px; border-radius: 4px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-        .copied { background: #28a745 !important; }
-        .info-container { flex-grow: 1; overflow: hidden; }
-        .prompt-text { font-family: monospace; font-size: 12px; color: #555; background: #fff; padding: 4px 6px; border-radius: 3px; border: 1px solid #ccc; display: block; margin-top: 4px; word-break: break-word; }
-        .copy-btn { margin-top: 0; white-space: nowrap; }
-    </style>
-</head>
-<body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chœur Domino — Générateur de lots</title><style>
+* {
+    box-sizing: border-box;
+}
 
-    <h2>🔗 Générateur d'Effet Domino</h2>
-    <p>Collez votre texte de base ci-dessous :</p>
-    
-    <textarea id="inputText">le chat dort sur le tapis. le chien court dans le jardin. l'oiseau chante dans l'arbre.</textarea>
-    <br>
-    <button onclick="processText()">1. Extraire les mots et créer les prompts</button>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f4f8;
+    color: #222;
+}
 
-    <div id="results" class="output-box" style="display:none;">
-        <h3>Prompts générés (cliquez pour copier) :</h3>
-        <div id="wordList"></div>
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #666;
+    margin-top: 0;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+}
+
+textarea {
+    width: 100%;
+    min-height: 180px;
+    resize: vertical;
+    padding: 14px;
+    border: 1px solid #ccd3dc;
+    border-radius: 8px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input, select {
+    width: 100%;
+    margin-top: 6px;
+    padding: 10px;
+    border: 1px solid #ccd3dc;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 15px;
+    background: #1677ff;
+    color: white;
+}
+
+button:hover {
+    background: #075dcc;
+}
+
+button.secondary {
+    background: #444;
+}
+
+button.green {
+    background: #159447;
+}
+
+button.orange {
+    background: #e78300;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.stat {
+    background: #f5f7fa;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+}
+
+.stat strong {
+    display: block;
+    font-size: 23px;
+    margin-bottom: 4px;
+}
+
+.concepts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 10px;
+}
+
+.concept {
+    background: #e8f1ff;
+    color: #075dcc;
+    padding: 7px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.prompt {
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-top: 12px;
+    border-radius: 8px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.prompt-number {
+    font-weight: bold;
+    color: #1677ff;
+    margin-bottom: 7px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.actions button {
+    margin-top: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.notice {
+    background: #fff7df;
+    border-left: 4px solid #e7a900;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#status {
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+@media(max-width:600px) {
+    .container {
+        padding: 12px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+</style></head><body><div class="container"><h1>🔗 Chœur Domino</h1>
+<p class="subtitle">
+    Générateur de matière textuelle par lots
+</p>
+
+<div class="card">
+
+    <h2>1. Texte source</h2>
+
+    <textarea id="inputText">Le chat dort sur le tapis.
+
+Le chien court dans le jardin.
+L'oiseau chante dans l'arbre.</textarea>
+
+    <div class="controls">
+
+        <div>
+            <label>Nombre de textes</label>
+            <input id="batchSize" type="number" min="1" max="100" value="10">
+        </div>
+
+        <div>
+            <label>Longueur</label>
+            <select id="length">
+                <option value="short">Court</option>
+                <option value="medium" selected>Moyen</option>
+                <option value="long">Long</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Mode</label>
+            <select id="mode">
+                <option value="balanced" selected>Équilibré</option>
+                <option value="explore">Exploration</option>
+                <option value="deep">Approfondissement</option>
+                <option value="relations">Relations</option>
+            </select>
+        </div>
+
     </div>
 
-    <script>
-        function processText() {
-            let text = document.getElementById('inputText').value.toLowerCase();
-            let cleaned = text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
-            let words = cleaned.split(/\s+/);
-            
-            let stopWords = ['le', 'la', 'les', 'un', 'une', 'des', 'et', 'ou', 'dans', 'sur', 'sous', 'de', 'du', 'au', 'aux', 'ce', 'cette'];
-            let uniqueWords = [...new Set(words)].filter(w => w.length > 2 && !stopWords.includes(w));
+    <button onclick="generateBatch()">
+        🚀 Générer le lot
+    </button>
 
-            let wordListDiv = document.getElementById('wordList');
-            wordListDiv.innerHTML = "";
+    <div id="status"></div>
 
-            uniqueWords.forEach(word => {
-                let promptText = `Écris un texte très simple de 3 phrases en français sur le thème "${word}", dans le même style simple et descriptif que le texte de base.`;
-                
-                let div = document.createElement('div');
-                div.className = 'word-item';
-                
-                let info = document.createElement('div');
-                info.className = 'info-container';
-                info.innerHTML = `<strong>${word}</strong><span class="prompt-text">${promptText}</span>`;
-                
-                let btn = document.createElement('button');
-                btn.innerText = "Copier";
-                btn.className = "copy-btn";
-                
-                // Utilisation de l'API Clipboard officielle sur HTTPS (GitHub Pages)
-                btn.onclick = function() {
-                    navigator.clipboard.writeText(promptText).then(() => {
-                        btn.innerText = "Copié !";
-                        btn.classList.add("copied");
-                        setTimeout(() => {
-                            btn.innerText = "Copier";
-                            btn.classList.remove("copied");
-                        }, 2000);
-                    }).catch(err => {
-                        alert("Erreur de copie");
-                    });
-                };
+</div>
 
-                div.appendChild(info);
-                div.appendChild(btn);
-                wordListDiv.appendChild(div);
-            });
 
-            document.getElementById('results').style.display = 'block';
+<div id="analysisCard" class="card hidden">
+
+    <h2>🧠 Analyse du texte</h2>
+
+    <div class="stats">
+
+        <div class="stat">
+            <strong id="wordCount">0</strong>
+            mots
+        </div>
+
+        <div class="stat">
+            <strong id="conceptCount">0</strong>
+            concepts
+        </div>
+
+        <div class="stat">
+            <strong id="promptCount">0</strong>
+            textes
+        </div>
+
+    </div>
+
+    <h3>Concepts sélectionnés</h3>
+
+    <div id="concepts" class="concepts"></div>
+
+</div>
+
+
+<div id="resultsCard" class="card hidden">
+
+    <h2>📚 Lot de textes</h2>
+
+    <div class="notice">
+        Les textes ci-dessous sont conçus comme matière première
+        pour ton autre interface. Tu peux copier tout le lot en une seule fois.
+    </div>
+
+    <div class="actions">
+
+        <button class="green" onclick="copyAll()">
+            📋 Copier tout
+        </button>
+
+        <button class="secondary" onclick="copyClean()">
+            📄 Copier sans numéros
+        </button>
+
+        <button class="orange" onclick="downloadTXT()">
+            💾 Télécharger TXT
+        </button>
+
+    </div>
+
+    <div id="prompts"></div>
+
+</div>
+
+</div><script>
+
+const stopWords = new Set([
+
+    "alors","au","aucuns","aussi","autre",
+    "avant","avec","avoir","bon","car",
+    "ce","cela","ces","cet","cette",
+    "comme","comment","dans","de","des",
+    "du","dedans","dehors","depuis","doit",
+    "donc","dos","droite","elle","elles",
+    "en","encore","est","et","eu",
+    "fait","font","hors","ici","il",
+    "ils","je","juste","la","le","les",
+    "leur","leurs","lui","ma","mais",
+    "me","mes","moi","mon","moins",
+    "même","ne","nos","notre","nous",
+    "on","ou","par","pas","peu",
+    "pour","pourquoi","quand","que",
+    "quel","quelle","quelles","quels",
+    "qui","sa","sans","se","sera",
+    "ses","si","sont","sur","ta",
+    "te","tes","toi","ton","tous",
+    "tout","trop","tu","un","une",
+    "vos","votre","vous","y"
+]);
+
+
+/*
+    Nettoyage du texte
+*/
+
+function cleanText(text) {
+
+    return text
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9À-ÿ\s'-]/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+}
+
+
+/*
+    Extraction des mots importants
+*/
+
+function extractWords(text) {
+
+    const cleaned = cleanText(text);
+
+    const words = cleaned
+        .split(/\s+/)
+        .map(w => w.replace(/^['-]+|['-]+$/g, ""))
+        .filter(w =>
+            w.length >= 4 &&
+            !stopWords.has(w) &&
+            !/^\d+$/.test(w)
+        );
+
+    const frequency = {};
+
+    words.forEach(word => {
+
+        frequency[word] =
+            (frequency[word] || 0) + 1;
+
+    });
+
+    return Object.entries(frequency)
+        .sort((a,b) => b[1] - a[1])
+        .map(x => x[0]);
+
+}
+
+
+/*
+    Regroupement simple des variantes.
+*/
+
+function normalizeConcept(word) {
+
+    let w = word.toLowerCase();
+
+    if (w.endsWith("es") && w.length > 5)
+        w = w.slice(0,-2);
+
+    else if (w.endsWith("s") && w.length > 5)
+        w = w.slice(0,-1);
+
+    return w;
+
+}
+
+
+/*
+    Création d'une liste de concepts.
+*/
+
+function buildConcepts(words, maxConcepts) {
+
+    const concepts = [];
+    const seen = new Set();
+
+    words.forEach(word => {
+
+        const concept = normalizeConcept(word);
+
+        if (!seen.has(concept)) {
+
+            seen.add(concept);
+            concepts.push(word);
+
         }
-    </script>
 
-</body>
+    });
+
+    return concepts.slice(0, maxConcepts);
+
+}
+
+
+/*
+    Génération des thèmes.
+*/
+
+function buildThemes(concepts, mode, count) {
+
+    const themes = [];
+
+    if (concepts.length === 0)
+        return themes;
+
+    for (let i = 0; i < count; i++) {
+
+        const a = concepts[i % concepts.length];
+
+        const b =
+            concepts[(i + 1) % concepts.length];
+
+        const c =
+            concepts[(i + 2) % concepts.length];
+
+        if (mode === "explore") {
+
+            themes.push(
+                `Le concept "${a}" et ses caractéristiques principales`
+            );
+
+        }
+
+        else if (mode === "deep") {
+
+            themes.push(
+                `Approfondissement du concept "${a}" : fonctionnement, caractéristiques, exemples et contexte`
+            );
+
+        }
+
+        else if (mode === "relations") {
+
+            themes.push(
+                `Relation entre "${a}", "${b}" et "${c}"`
+            );
+
+        }
+
+        else {
+
+            const types = [
+
+                `Le concept "${a}" et ses caractéristiques`,
+                `Le rôle de "${a}" dans son contexte`,
+                `Les relations entre "${a}" et "${b}"`,
+                `Exemples simples liés à "${a}"`,
+                `Différentes façons de comprendre "${a}"`
+
+            ];
+
+            themes.push(
+                types[i % types.length]
+            );
+
+        }
+
+    }
+
+    return themes;
+
+}
+
+
+/*
+    Construction des prompts.
+*/
+
+function createPrompt(theme, source, length) {
+
+    let instruction;
+
+    if (length === "short") {
+
+        instruction =
+        "Écris un texte de 3 à 4 phrases.";
+
+    }
+
+    else if (length === "long") {
+
+        instruction =
+        "Écris un texte explicatif de 8 à 10 phrases.";
+
+    }
+
+    else {
+
+        instruction =
+        "Écris un texte explicatif de 5 à 7 phrases.";
+
+    }
+
+    return `${instruction}
+
+Le texte doit être en français clair, naturel et factuel.
+
+Sujet :
+${theme}
+
+Utilise les informations pertinentes du texte source ci-dessous comme contexte, mais ne copie pas simplement le texte source.
+
+Texte source :
+${source}
+
+Le résultat doit être autonome et apporter de l'information utile sur le sujet.
+Ne parle pas de cette consigne et ne produis pas de liste de mots.`;
+
+}
+
+
+/*
+    Génération principale.
+*/
+
+function generateBatch() {
+
+    const source =
+        document.getElementById("inputText").value.trim();
+
+    if (!source) {
+
+        alert("Ajoute d'abord un texte.");
+        return;
+
+    }
+
+    let batchSize =
+        parseInt(document.getElementById("batchSize").value);
+
+    batchSize =
+        Math.max(1, Math.min(100, batchSize));
+
+    const mode =
+        document.getElementById("mode").value;
+
+    const length =
+        document.getElementById("length").value;
+
+
+    const words = extractWords(source);
+
+    /*
+        Important :
+        on limite volontairement le nombre
+        de concepts analysés.
+    */
+
+    const maxConcepts =
+        Math.min(
+            20,
+            Math.max(5, Math.ceil(Math.sqrt(words.length * 3)))
+        );
+
+
+    const concepts =
+        buildConcepts(words, maxConcepts);
+
+
+    const themes =
+        buildThemes(concepts, mode, batchSize);
+
+
+    const prompts =
+        themes.map(theme =>
+            createPrompt(theme, source, length)
+        );
+
+
+    document.getElementById("wordCount").textContent =
+        source.split(/\s+/).filter(Boolean).length;
+
+    document.getElementById("conceptCount").textContent =
+        concepts.length;
+
+    document.getElementById("promptCount").textContent =
+        prompts.length;
+
+
+    /*
+        Affichage des concepts
+    */
+
+    const conceptsDiv =
+        document.getElementById("concepts");
+
+    conceptsDiv.innerHTML = "";
+
+    concepts.forEach(concept => {
+
+        const span =
+            document.createElement("span");
+
+        span.className = "concept";
+        span.textContent = concept;
+
+        conceptsDiv.appendChild(span);
+
+    });
+
+
+    /*
+        Affichage des prompts
+    */
+
+    const promptsDiv =
+        document.getElementById("prompts");
+
+    promptsDiv.innerHTML = "";
+
+    prompts.forEach((prompt, index) => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "prompt";
+
+        div.innerHTML = `
+            <div class="prompt-number">
+                Texte ${index + 1}
+            </div>
+            ${escapeHTML(prompt)}
+        `;
+
+        promptsDiv.appendChild(div);
+
+    });
+
+
+    /*
+        Sauvegarde temporaire
+    */
+
+    window.currentPrompts = prompts;
+
+
+    document.getElementById("analysisCard")
+        .classList.remove("hidden");
+
+    document.getElementById("resultsCard")
+        .classList.remove("hidden");
+
+
+    document.getElementById("status").textContent =
+        `✓ ${prompts.length} textes préparés à partir de ${concepts.length} concepts.`;
+
+}
+
+
+/*
+    Copie de tout le lot.
+*/
+
+function copyAll() {
+
+    if (!window.currentPrompts ||
+        !window.currentPrompts.length) {
+
+        return;
+
+    }
+
+    const text =
+        window.currentPrompts
+            .map((p, i) =>
+                `===== TEXTE ${i + 1} =====\n\n${p}`
+            )
+            .join("\n\n");
+
+
+    navigator.clipboard.writeText(text)
+        .then(() => {
+
+            showCopied("✓ Tout le lot a été copié.");
+
+        })
+        .catch(() => {
+
+            fallbackCopy(text);
+
+        });
+
+}
+
+
+/*
+    Copie sans numéros.
+*/
+
+function copyClean() {
+
+    if (!window.currentPrompts)
+        return;
+
+    const text =
+        window.currentPrompts.join("\n\n");
+
+
+    navigator.clipboard.writeText(text)
+        .then(() => {
+
+            showCopied("✓ Texte copié sans numéros.");
+
+        })
+        .catch(() => {
+
+            fallbackCopy(text);
+
+        });
+
+}
+
+
+/*
+    Téléchargement TXT.
+*/
+
+function downloadTXT() {
+
+    if (!window.currentPrompts)
+        return;
+
+    const text =
+        window.currentPrompts
+            .map((p, i) =>
+                `===== TEXTE ${i + 1} =====\n\n${p}`
+            )
+            .join("\n\n");
+
+
+    const blob =
+        new Blob([text], {
+            type: "text/plain;charset=utf-8"
+        });
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+    a.download =
+        "choeur-domino-lot.txt";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/*
+    Fallback de copie.
+*/
+
+function fallbackCopy(text) {
+
+    const area =
+        document.createElement("textarea");
+
+    area.value = text;
+
+    document.body.appendChild(area);
+
+    area.select();
+
+    try {
+
+        document.execCommand("copy");
+
+        showCopied("✓ Copié.");
+
+    } catch {
+
+        alert(
+            "La copie automatique n'est pas disponible. Sélectionne le texte manuellement."
+        );
+
+    }
+
+    area.remove();
+
+}
+
+
+/*
+    Petit message.
+*/
+
+function showCopied(message) {
+
+    const status =
+        document.getElementById("status");
+
+    status.textContent = message;
+
+    setTimeout(() => {
+
+        status.textContent = "";
+
+    }, 3000);
+
+}
+
+
+/*
+    Sécurité affichage HTML.
+*/
+
+function escapeHTML(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+</script></body>
 </html>
