@@ -2,481 +2,779 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chœur Domino — Générateur de lots</title><style>
-* {
-    box-sizing: border-box;
+<title>Chœur Domino V3</title><style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eef2f7;
+    color:#20252b;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f1f4f8;
-    color: #222;
+.container{
+    width:min(1000px,94%);
+    margin:20px auto;
 }
 
-.container {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
+header{
+    background:#111827;
+    color:white;
+    padding:22px;
+    border-radius:16px;
+    margin-bottom:18px;
 }
 
-h1 {
-    margin-bottom: 5px;
+header h1{
+    margin:0 0 7px;
 }
 
-.subtitle {
-    color: #666;
-    margin-top: 0;
+header p{
+    margin:0;
+    color:#cbd5e1;
 }
 
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+.card{
+    background:white;
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 4px 18px rgba(0,0,0,.07);
 }
 
-textarea {
-    width: 100%;
-    min-height: 180px;
-    resize: vertical;
-    padding: 14px;
-    border: 1px solid #ccd3dc;
-    border-radius: 8px;
-    font-size: 15px;
-    line-height: 1.5;
+textarea{
+    width:100%;
+    min-height:190px;
+    resize:vertical;
+    border:1px solid #ccd3dd;
+    border-radius:10px;
+    padding:14px;
+    font-size:15px;
+    line-height:1.55;
+    outline:none;
 }
 
-.controls {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 12px;
-    margin-top: 15px;
+textarea:focus,
+input:focus,
+select:focus{
+    border-color:#2563eb;
 }
 
-label {
-    font-weight: bold;
-    font-size: 14px;
+.controls{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:12px;
+    margin-top:15px;
 }
 
-input, select {
-    width: 100%;
-    margin-top: 6px;
-    padding: 10px;
-    border: 1px solid #ccd3dc;
-    border-radius: 7px;
-    font-size: 14px;
+label{
+    display:block;
+    font-size:13px;
+    font-weight:bold;
 }
 
-button {
-    border: none;
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 15px;
-    cursor: pointer;
-    margin-top: 15px;
-    background: #1677ff;
-    color: white;
+input,select{
+    width:100%;
+    margin-top:6px;
+    padding:11px;
+    border:1px solid #ccd3dd;
+    border-radius:8px;
+    background:white;
 }
 
-button:hover {
-    background: #075dcc;
+button{
+    border:0;
+    border-radius:9px;
+    padding:12px 16px;
+    margin-top:14px;
+    background:#2563eb;
+    color:white;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
-button.secondary {
-    background: #444;
+button:hover{
+    opacity:.9;
 }
 
-button.green {
-    background: #159447;
+button.dark{background:#111827}
+button.green{background:#15803d}
+button.orange{background:#c56a00}
+button.gray{background:#64748b}
+button.red{background:#b91c1c}
+
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
 }
 
-button.orange {
-    background: #e78300;
+.actions button{
+    margin-top:0;
 }
 
-.stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 10px;
-    margin-top: 15px;
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:10px;
 }
 
-.stat {
-    background: #f5f7fa;
-    border-radius: 8px;
-    padding: 12px;
-    text-align: center;
+.stat{
+    background:#f3f6fa;
+    border-radius:10px;
+    padding:14px;
+    text-align:center;
 }
 
-.stat strong {
-    display: block;
-    font-size: 23px;
-    margin-bottom: 4px;
+.stat strong{
+    display:block;
+    font-size:25px;
 }
 
-.concepts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-top: 10px;
+.concepts{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
 }
 
-.concept {
-    background: #e8f1ff;
-    color: #075dcc;
-    padding: 7px 10px;
-    border-radius: 20px;
-    font-size: 13px;
+.concept{
+    background:#e8f0ff;
+    color:#174ea6;
+    border-radius:20px;
+    padding:7px 11px;
+    font-size:13px;
 }
 
-.prompt {
-    background: #f7f7f7;
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-top: 12px;
-    border-radius: 8px;
-    line-height: 1.5;
-    white-space: pre-wrap;
+.progress{
+    height:10px;
+    background:#e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:12px;
 }
 
-.prompt-number {
-    font-weight: bold;
-    color: #1677ff;
-    margin-bottom: 7px;
+.progress div{
+    height:100%;
+    width:0;
+    background:#2563eb;
+    transition:.3s;
 }
 
-.actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+.item{
+    border:1px solid #dde2e8;
+    border-radius:11px;
+    padding:15px;
+    margin-top:12px;
+    background:#fafbfc;
 }
 
-.actions button {
-    margin-top: 0;
+.item-title{
+    font-weight:bold;
+    margin-bottom:8px;
 }
 
-.hidden {
-    display: none;
+.item-text{
+    white-space:pre-wrap;
+    line-height:1.55;
+    font-size:14px;
 }
 
-.notice {
-    background: #fff7df;
-    border-left: 4px solid #e7a900;
-    padding: 12px;
-    margin-top: 15px;
-    border-radius: 5px;
-    font-size: 14px;
+.badge{
+    display:inline-block;
+    font-size:11px;
+    padding:4px 7px;
+    border-radius:10px;
+    background:#e5e7eb;
+    margin-left:5px;
 }
 
-#status {
-    margin-top: 12px;
-    font-weight: bold;
+.notice{
+    padding:12px;
+    background:#fff7df;
+    border-left:4px solid #e3a500;
+    border-radius:7px;
+    font-size:13px;
+    margin-bottom:15px;
 }
 
-@media(max-width:600px) {
-    .container {
-        padding: 12px;
+.status{
+    margin-top:12px;
+    font-weight:bold;
+}
+
+.hidden{
+    display:none;
+}
+
+.small{
+    font-size:12px;
+    color:#687386;
+}
+
+textarea.output{
+    min-height:320px;
+    margin-top:15px;
+}
+
+@media(max-width:600px){
+    .container{
+        width:96%;
+        margin:10px auto;
     }
 
-    button {
-        width: 100%;
+    header,.card{
+        padding:15px;
     }
 }
-</style></head><body><div class="container"><h1>🔗 Chœur Domino</h1>
-<p class="subtitle">
-    Générateur de matière textuelle par lots
-</p>
+</style></head><body><div class="container"><header>
+    <h1>🧠 Chœur Domino V3</h1>
+    <p>
+        Générateur contrôlé de matière textuelle pour alimenter une autre interface.
+    </p>
+</header><!-- SOURCE --><div class="card"><h2>1. Texte source</h2><textarea id="source">Le chat dort sur le tapis. Le chien court dans le jardin. L'oiseau chante dans l'arbre. Les animaux ont besoin d'un environnement adapté à leurs comportements. Le sommeil permet au chat de récupérer et de rester en bonne santé.</textarea><div class="controls"><div>
+<label>Nombre de productions</label>
+<input id="amount" type="number" min="1" max="100" value="10">
+</div><div>
+<label>Longueur</label>
+<select id="length">
+<option value="short">Courte</option>
+<option value="medium" selected>Moyenne</option>
+<option value="long">Longue</option>
+</select>
+</div><div>
+<label>Mode d'exploration</label>
+<select id="mode">
+<option value="balanced" selected>Équilibré</option>
+<option value="knowledge">Connaissances</option>
+<option value="relations">Relations</option>
+<option value="causes">Causes / conséquences</option>
+<option value="examples">Exemples</option>
+<option value="deep">Approfondissement</option>
+</select>
+</div><div>
+<label>Niveau</label>
+<select id="level">
+<option value="1" selected>Niveau 1 — Découverte</option>
+<option value="2">Niveau 2 — Approfondissement</option>
+<option value="3">Niveau 3 — Connexions</option>
+<option value="4">Niveau 4 — Exploration</option>
+</select>
+</div></div><button onclick="startGeneration()">
+🚀 Construire le lot
+</button><div id="status" class="status"></div><div class="progress">
+<div id="progressBar"></div>
+</div></div><!-- ANALYSE --><div id="analysis" class="card hidden"><h2>🔎 Analyse</h2><div class="stats"><div class="stat">
+<strong id="words">0</strong>
+mots
+</div><div class="stat">
+<strong id="sentences">0</strong>
+phrases
+</div><div class="stat">
+<strong id="conceptNumber">0</strong>
+concepts
+</div><div class="stat">
+<strong id="productionNumber">0</strong>
+productions
+</div></div><h3>Concepts retenus</h3><div id="concepts" class="concepts"></div></div><!-- RESULTATS --><div id="results" class="card hidden"><h2>📚 Matière générée</h2><div class="notice">
+Chaque production correspond à une demande autonome que tu peux envoyer
+à ton autre interface. Les thèmes sont volontairement diversifiés pour
+éviter de produire 50 fois la même chose.
+</div><div class="actions"><button class="green" onclick="copyAll()">
+📋 Copier tout
+</button><button class="dark" onclick="copyClean()">
+📄 Copier proprement
+</button><button class="orange" onclick="downloadTXT()">
+💾 Télécharger TXT
+</button><button class="gray" onclick="newCycle()">
+🔄 Nouveau cycle
+</button><button class="red" onclick="clearHistory()">
+🗑️ Réinitialiser l'historique
+</button></div><div id="items"></div></div><!-- BLOC GLOBAL --><div id="globalCard" class="card hidden"><h2>📦 Bloc prêt pour l'autre interface</h2><p class="small">
+Ce bloc contient uniquement les productions. Tu peux le copier en une seule fois.
+</p><textarea id="globalOutput" class="output" readonly></textarea><button class="green" onclick="copyClean()">
+📋 Copier le bloc
+</button></div></div><script>
 
-<div class="card">
-
-    <h2>1. Texte source</h2>
-
-    <textarea id="inputText">Le chat dort sur le tapis.
-
-Le chien court dans le jardin.
-L'oiseau chante dans l'arbre.</textarea>
-
-    <div class="controls">
-
-        <div>
-            <label>Nombre de textes</label>
-            <input id="batchSize" type="number" min="1" max="100" value="10">
-        </div>
-
-        <div>
-            <label>Longueur</label>
-            <select id="length">
-                <option value="short">Court</option>
-                <option value="medium" selected>Moyen</option>
-                <option value="long">Long</option>
-            </select>
-        </div>
-
-        <div>
-            <label>Mode</label>
-            <select id="mode">
-                <option value="balanced" selected>Équilibré</option>
-                <option value="explore">Exploration</option>
-                <option value="deep">Approfondissement</option>
-                <option value="relations">Relations</option>
-            </select>
-        </div>
-
-    </div>
-
-    <button onclick="generateBatch()">
-        🚀 Générer le lot
-    </button>
-
-    <div id="status"></div>
-
-</div>
-
-
-<div id="analysisCard" class="card hidden">
-
-    <h2>🧠 Analyse du texte</h2>
-
-    <div class="stats">
-
-        <div class="stat">
-            <strong id="wordCount">0</strong>
-            mots
-        </div>
-
-        <div class="stat">
-            <strong id="conceptCount">0</strong>
-            concepts
-        </div>
-
-        <div class="stat">
-            <strong id="promptCount">0</strong>
-            textes
-        </div>
-
-    </div>
-
-    <h3>Concepts sélectionnés</h3>
-
-    <div id="concepts" class="concepts"></div>
-
-</div>
+/* =========================================================
+   CHŒUR DOMINO V3
+   MOTEUR LOCAL
+========================================================= */
 
 
-<div id="resultsCard" class="card hidden">
+/* -----------------------------
+   STOP WORDS
+----------------------------- */
 
-    <h2>📚 Lot de textes</h2>
+const STOP_WORDS = new Set([
 
-    <div class="notice">
-        Les textes ci-dessous sont conçus comme matière première
-        pour ton autre interface. Tu peux copier tout le lot en une seule fois.
-    </div>
+"alors","aucun","aucune","aussi","autre","autres",
+"avec","avoir","avant","apres","après","beaucoup",
+"car","cela","celle","celles","celui","ceux",
+"comme","comment","dans","dedans","dehors",
+"depuis","des","du","donc","elle","elles",
+"en","encore","entre","est","et","eux",
+"fait","faire","fois","font","hors","ici",
+"il","ils","je","juste","la","le","les",
+"leur","leurs","lui","ma","mais","me","mes",
+"moi","mon","moins","même","ne","nos",
+"notre","nous","on","ont","ou","par","pas",
+"peu","plus","pour","pourquoi","quand",
+"que","quel","quelle","quelles","quels",
+"qui","quoi","sa","sans","se","sera",
+"ses","si","son","sont","sur","ta","te",
+"tes","toi","ton","tous","tout","très",
+"tu","un","une","vos","votre","vous",
+"y","dans","sous","chez","vers","entre"
 
-    <div class="actions">
-
-        <button class="green" onclick="copyAll()">
-            📋 Copier tout
-        </button>
-
-        <button class="secondary" onclick="copyClean()">
-            📄 Copier sans numéros
-        </button>
-
-        <button class="orange" onclick="downloadTXT()">
-            💾 Télécharger TXT
-        </button>
-
-    </div>
-
-    <div id="prompts"></div>
-
-</div>
-
-</div><script>
-
-const stopWords = new Set([
-
-    "alors","au","aucuns","aussi","autre",
-    "avant","avec","avoir","bon","car",
-    "ce","cela","ces","cet","cette",
-    "comme","comment","dans","de","des",
-    "du","dedans","dehors","depuis","doit",
-    "donc","dos","droite","elle","elles",
-    "en","encore","est","et","eu",
-    "fait","font","hors","ici","il",
-    "ils","je","juste","la","le","les",
-    "leur","leurs","lui","ma","mais",
-    "me","mes","moi","mon","moins",
-    "même","ne","nos","notre","nous",
-    "on","ou","par","pas","peu",
-    "pour","pourquoi","quand","que",
-    "quel","quelle","quelles","quels",
-    "qui","sa","sans","se","sera",
-    "ses","si","sont","sur","ta",
-    "te","tes","toi","ton","tous",
-    "tout","trop","tu","un","une",
-    "vos","votre","vous","y"
 ]);
 
 
-/*
-    Nettoyage du texte
-*/
+/* -----------------------------
+   MOTS TROP GÉNÉRIQUES
+----------------------------- */
 
-function cleanText(text) {
+const GENERIC = new Set([
+
+"chose","choses","texte","textes",
+"information","informations","personne",
+"personnes","manière","maniere",
+"fois","temps","partie","parties",
+"élément","elements","éléments",
+"exemple","exemples","sujet",
+"sujets","monde","cas","type",
+"types"
+
+]);
+
+
+/* -----------------------------
+   EXTRACTION
+----------------------------- */
+
+function tokenize(text){
 
     return text
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9À-ÿ\s'-]/gi, " ")
-        .replace(/\s+/g, " ")
-        .trim();
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[^a-z0-9À-ÿ\s'-]/gi," ")
+        .split(/\s+/)
+        .map(x => x.trim())
+        .filter(Boolean);
 
 }
 
 
-/*
-    Extraction des mots importants
-*/
+/* -----------------------------
+   FRÉQUENCE
+----------------------------- */
 
-function extractWords(text) {
+function wordFrequency(text){
 
-    const cleaned = cleanText(text);
-
-    const words = cleaned
-        .split(/\s+/)
-        .map(w => w.replace(/^['-]+|['-]+$/g, ""))
-        .filter(w =>
-            w.length >= 4 &&
-            !stopWords.has(w) &&
-            !/^\d+$/.test(w)
-        );
-
-    const frequency = {};
+    const words = tokenize(text);
+    const freq = {};
 
     words.forEach(word => {
 
-        frequency[word] =
-            (frequency[word] || 0) + 1;
+        if(
+            word.length >= 4 &&
+            !STOP_WORDS.has(word) &&
+            !GENERIC.has(word) &&
+            !/^\d+$/.test(word)
+        ){
+
+            freq[word] = (freq[word] || 0) + 1;
+
+        }
 
     });
 
-    return Object.entries(frequency)
-        .sort((a,b) => b[1] - a[1])
-        .map(x => x[0]);
+    return freq;
 
 }
 
 
-/*
-    Regroupement simple des variantes.
-*/
+/* -----------------------------
+   NORMALISATION
+----------------------------- */
 
-function normalizeConcept(word) {
+function normalizeWord(word){
 
     let w = word.toLowerCase();
 
-    if (w.endsWith("es") && w.length > 5)
-        w = w.slice(0,-2);
+    if(w.length > 6){
 
-    else if (w.endsWith("s") && w.length > 5)
-        w = w.slice(0,-1);
+        if(w.endsWith("es"))
+            w = w.slice(0,-2);
+
+        else if(w.endsWith("s"))
+            w = w.slice(0,-1);
+
+    }
 
     return w;
 
 }
 
 
-/*
-    Création d'une liste de concepts.
-*/
+/* -----------------------------
+   EXTRACTION DES CONCEPTS
+----------------------------- */
 
-function buildConcepts(words, maxConcepts) {
+function extractConcepts(text){
 
-    const concepts = [];
+    const freq = wordFrequency(text);
+
+    const candidates =
+        Object.entries(freq)
+        .map(([word,count]) => {
+
+            let score = count;
+
+            if(word.length >= 7)
+                score += 0.5;
+
+            return {
+                word,
+                count,
+                score,
+                normalized:normalizeWord(word)
+            };
+
+        })
+        .sort((a,b)=>b.score-a.score);
+
+
+    const result = [];
     const seen = new Set();
 
-    words.forEach(word => {
+    for(const item of candidates){
 
-        const concept = normalizeConcept(word);
+        if(seen.has(item.normalized))
+            continue;
 
-        if (!seen.has(concept)) {
+        seen.add(item.normalized);
+        result.push(item.word);
 
-            seen.add(concept);
-            concepts.push(word);
+        /*
+            On limite volontairement.
+            Plus le texte est grand, plus la limite augmente,
+            mais lentement.
+        */
 
-        }
+        const limit =
+            Math.min(
+                30,
+                Math.max(
+                    8,
+                    Math.ceil(Math.sqrt(candidates.length * 4))
+                )
+            );
 
-    });
+        if(result.length >= limit)
+            break;
 
-    return concepts.slice(0, maxConcepts);
+    }
+
+    return result;
 
 }
 
 
-/*
-    Génération des thèmes.
-*/
+/* -----------------------------
+   DÉTECTION DES PHRASES
+----------------------------- */
 
-function buildThemes(concepts, mode, count) {
+function sentenceCount(text){
+
+    return text
+        .split(/[.!?]+/)
+        .map(x=>x.trim())
+        .filter(Boolean)
+        .length;
+
+}
+
+
+/* -----------------------------
+   HISTORIQUE
+----------------------------- */
+
+const HISTORY_KEY =
+"choeur_domino_v3_history";
+
+function loadHistory(){
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(HISTORY_KEY) || "[]"
+        );
+
+    }catch{
+
+        return [];
+
+    }
+
+}
+
+function saveHistory(history){
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(history.slice(-1000))
+    );
+
+}
+
+
+/* -----------------------------
+   CRÉATION DES ANGLES
+----------------------------- */
+
+const ANGLES = [
+
+"Définition simple",
+"Caractéristiques principales",
+"Fonctionnement",
+"Rôle",
+"Utilité",
+"Contexte",
+"Origine",
+"Causes",
+"Conséquences",
+"Avantages",
+"Limites",
+"Exemple concret",
+"Situation réelle",
+"Comparaison",
+"Différence avec un concept proche",
+"Relation avec un autre concept",
+"Interaction entre plusieurs concepts",
+"Évolution",
+"Problème associé",
+"Solution possible",
+"Erreur fréquente",
+"Point important à retenir",
+"Question que ce concept permet de résoudre",
+"Application pratique",
+"Approfondissement"
+
+];
+
+
+/* -----------------------------
+   MODES
+----------------------------- */
+
+function getAngles(mode){
+
+    if(mode==="knowledge")
+        return [
+            "Définition simple",
+            "Caractéristiques principales",
+            "Fonctionnement",
+            "Contexte",
+            "Origine",
+            "Évolution",
+            "Point important à retenir"
+        ];
+
+    if(mode==="relations")
+        return [
+            "Relation avec un autre concept",
+            "Interaction entre plusieurs concepts",
+            "Différence avec un concept proche",
+            "Influence réciproque",
+            "Conséquence d'une relation",
+            "Exemple de relation"
+        ];
+
+    if(mode==="causes")
+        return [
+            "Causes",
+            "Conséquences",
+            "Relation de cause à effet",
+            "Facteurs qui influencent le phénomène",
+            "Évolution",
+            "Exemple concret"
+        ];
+
+    if(mode==="examples")
+        return [
+            "Exemple concret",
+            "Situation réelle",
+            "Application pratique",
+            "Cas simple",
+            "Cas différent",
+            "Erreur fréquente"
+        ];
+
+    if(mode==="deep")
+        return [
+            "Définition approfondie",
+            "Fonctionnement",
+            "Causes",
+            "Conséquences",
+            "Limites",
+            "Comparaison",
+            "Application",
+            "Évolution",
+            "Question avancée"
+        ];
+
+    return ANGLES;
+
+}
+
+
+/* -----------------------------
+   CONSTRUCTION DES THÈMES
+----------------------------- */
+
+function buildThemes(
+    concepts,
+    amount,
+    mode,
+    level
+){
+
+    const history = loadHistory();
+
+    const angles = getAngles(mode);
 
     const themes = [];
 
-    if (concepts.length === 0)
+    if(!concepts.length)
         return themes;
 
-    for (let i = 0; i < count; i++) {
 
-        const a = concepts[i % concepts.length];
+    let attempts = 0;
 
-        const b =
-            concepts[(i + 1) % concepts.length];
+    while(
+        themes.length < amount &&
+        attempts < amount * 20
+    ){
 
-        const c =
-            concepts[(i + 2) % concepts.length];
+        attempts++;
 
-        if (mode === "explore") {
-
-            themes.push(
-                `Le concept "${a}" et ses caractéristiques principales`
-            );
-
-        }
-
-        else if (mode === "deep") {
-
-            themes.push(
-                `Approfondissement du concept "${a}" : fonctionnement, caractéristiques, exemples et contexte`
-            );
-
-        }
-
-        else if (mode === "relations") {
-
-            themes.push(
-                `Relation entre "${a}", "${b}" et "${c}"`
-            );
-
-        }
-
-        else {
-
-            const types = [
-
-                `Le concept "${a}" et ses caractéristiques`,
-                `Le rôle de "${a}" dans son contexte`,
-                `Les relations entre "${a}" et "${b}"`,
-                `Exemples simples liés à "${a}"`,
-                `Différentes façons de comprendre "${a}"`
-
+        const concept =
+            concepts[
+                Math.floor(
+                    Math.random()*concepts.length
+                )
             ];
 
-            themes.push(
-                types[i % types.length]
-            );
+        let second = null;
+
+        if(concepts.length > 1){
+
+            second =
+                concepts[
+                    Math.floor(
+                        Math.random()*concepts.length
+                    )
+                ];
+
+            if(second === concept)
+                second = null;
+
+        }
+
+        let angle =
+            angles[
+                Math.floor(
+                    Math.random()*angles.length
+                )
+            ];
+
+
+        let theme;
+
+
+        /* NIVEAU 1 */
+
+        if(level==="1"){
+
+            theme =
+            `${angle} du concept "${concept}"`;
+
+        }
+
+
+        /* NIVEAU 2 */
+
+        else if(level==="2"){
+
+            theme =
+            `Approfondissement : ${angle.toLowerCase()} du concept "${concept}"`;
+
+        }
+
+
+        /* NIVEAU 3 */
+
+        else if(level==="3"){
+
+            if(second){
+
+                theme =
+                `${angle} entre "${concept}" et "${second}"`;
+
+            }else{
+
+                theme =
+                `${angle} du concept "${concept}"`;
+
+            }
+
+        }
+
+
+        /* NIVEAU 4 */
+
+        else{
+
+            if(second){
+
+                theme =
+                `Exploration approfondie de "${concept}" et de sa relation avec "${second}" — ${angle.toLowerCase()}`;
+
+            }else{
+
+                theme =
+                `Exploration approfondie de "${concept}" — ${angle.toLowerCase()}`;
+
+            }
+
+        }
+
+
+        /*
+            Anti-répétition.
+        */
+
+        const signature =
+            theme
+            .toLowerCase()
+            .replace(/[^a-z0-9à-ÿ]+/gi," ")
+            .trim();
+
+
+        const alreadyUsed =
+            history.some(x=>x.signature===signature) ||
+            themes.some(x=>x.signature===signature);
+
+
+        if(!alreadyUsed){
+
+            themes.push({
+                theme,
+                signature
+            });
 
         }
 
@@ -487,325 +785,394 @@ function buildThemes(concepts, mode, count) {
 }
 
 
-/*
-    Construction des prompts.
-*/
+/* -----------------------------
+   CONSTRUCTION DU PROMPT
+----------------------------- */
 
-function createPrompt(theme, source, length) {
+function buildPrompt(
+    theme,
+    source,
+    length,
+    index
+){
 
-    let instruction;
+    let lengthInstruction;
 
-    if (length === "short") {
+    if(length==="short"){
 
-        instruction =
+        lengthInstruction =
         "Écris un texte de 3 à 4 phrases.";
 
     }
 
-    else if (length === "long") {
+    else if(length==="long"){
 
-        instruction =
-        "Écris un texte explicatif de 8 à 10 phrases.";
-
-    }
-
-    else {
-
-        instruction =
-        "Écris un texte explicatif de 5 à 7 phrases.";
+        lengthInstruction =
+        "Écris un texte de 9 à 12 phrases.";
 
     }
 
-    return `${instruction}
+    else{
 
-Le texte doit être en français clair, naturel et factuel.
+        lengthInstruction =
+        "Écris un texte de 5 à 7 phrases.";
 
-Sujet :
+    }
+
+
+    return {
+
+        title:`SOURCE ${String(index).padStart(3,"0")}`,
+
+        text:
+`${lengthInstruction}
+
+Écris en français clair, naturel et factuel.
+
+THÈME :
 ${theme}
 
-Utilise les informations pertinentes du texte source ci-dessous comme contexte, mais ne copie pas simplement le texte source.
-
-Texte source :
+CONTEXTE DISPONIBLE :
 ${source}
 
-Le résultat doit être autonome et apporter de l'information utile sur le sujet.
-Ne parle pas de cette consigne et ne produis pas de liste de mots.`;
+OBJECTIF :
+Produire une nouvelle pièce de connaissance autonome.
+
+RÈGLES :
+- Ne copie pas le texte source.
+- Reformule avec tes propres mots.
+- Apporte des informations pertinentes.
+- Reste centré sur le thème.
+- Évite les répétitions inutiles.
+- N'invente pas de faits présentés comme certains.
+- Ne parle pas de ces instructions.
+- Ne produis pas une liste de mots.
+
+FORMAT :
+Un texte continu en français.`
+    };
 
 }
 
 
-/*
-    Génération principale.
-*/
+/* -----------------------------
+   GÉNÉRATION
+----------------------------- */
 
-function generateBatch() {
+function startGeneration(){
 
     const source =
-        document.getElementById("inputText").value.trim();
+        document.getElementById("source").value.trim();
 
-    if (!source) {
+    if(!source){
 
-        alert("Ajoute d'abord un texte.");
+        alert("Ajoute un texte source.");
         return;
 
     }
 
-    let batchSize =
-        parseInt(document.getElementById("batchSize").value);
 
-    batchSize =
-        Math.max(1, Math.min(100, batchSize));
+    let amount =
+        parseInt(
+            document.getElementById("amount").value
+        ) || 10;
+
+    amount =
+        Math.max(1,Math.min(100,amount));
+
 
     const mode =
         document.getElementById("mode").value;
+
+    const level =
+        document.getElementById("level").value;
 
     const length =
         document.getElementById("length").value;
 
 
-    const words = extractWords(source);
-
-    /*
-        Important :
-        on limite volontairement le nombre
-        de concepts analysés.
-    */
-
-    const maxConcepts =
-        Math.min(
-            20,
-            Math.max(5, Math.ceil(Math.sqrt(words.length * 3)))
-        );
-
-
     const concepts =
-        buildConcepts(words, maxConcepts);
+        extractConcepts(source);
 
 
     const themes =
-        buildThemes(concepts, mode, batchSize);
-
-
-    const prompts =
-        themes.map(theme =>
-            createPrompt(theme, source, length)
+        buildThemes(
+            concepts,
+            amount,
+            mode,
+            level
         );
 
 
-    document.getElementById("wordCount").textContent =
-        source.split(/\s+/).filter(Boolean).length;
+    const prompts =
+        themes.map(
+            (item,index)=>
+                buildPrompt(
+                    item.theme,
+                    source,
+                    length,
+                    index+1
+                )
+        );
 
-    document.getElementById("conceptCount").textContent =
+
+    window.currentPrompts =
+        prompts;
+
+    window.currentSource =
+        source;
+
+
+    /* statistiques */
+
+    document.getElementById("words").textContent =
+        tokenize(source).length;
+
+    document.getElementById("sentences").textContent =
+        sentenceCount(source);
+
+    document.getElementById("conceptNumber").textContent =
         concepts.length;
 
-    document.getElementById("promptCount").textContent =
+    document.getElementById("productionNumber").textContent =
         prompts.length;
 
 
-    /*
-        Affichage des concepts
-    */
+    /* concepts */
 
     const conceptsDiv =
         document.getElementById("concepts");
 
     conceptsDiv.innerHTML = "";
 
-    concepts.forEach(concept => {
+    concepts.forEach(concept=>{
 
         const span =
             document.createElement("span");
 
-        span.className = "concept";
-        span.textContent = concept;
+        span.className="concept";
+        span.textContent=concept;
 
         conceptsDiv.appendChild(span);
 
     });
 
 
-    /*
-        Affichage des prompts
-    */
+    /* résultats */
 
-    const promptsDiv =
-        document.getElementById("prompts");
+    renderPrompts(prompts);
 
-    promptsDiv.innerHTML = "";
 
-    prompts.forEach((prompt, index) => {
+    document.getElementById("analysis")
+        .classList.remove("hidden");
+
+    document.getElementById("results")
+        .classList.remove("hidden");
+
+    document.getElementById("globalCard")
+        .classList.remove("hidden");
+
+
+    updateGlobalOutput();
+
+    document.getElementById("status").textContent =
+        `✓ ${prompts.length} productions préparées à partir de ${concepts.length} concepts.`;
+
+    document.getElementById("progressBar").style.width =
+        `${Math.min(100,(prompts.length/amount)*100)}%`;
+
+
+    /* sauvegarde historique */
+
+    const history = loadHistory();
+
+    prompts.forEach(p=>{
+
+        history.push({
+            signature:
+                p.text
+                .split("\n")[3]
+                ?.toLowerCase()
+                .replace(/[^a-z0-9à-ÿ]+/gi," ")
+                .trim()
+                || p.text.slice(0,100),
+
+            date:new Date().toISOString()
+        });
+
+    });
+
+    saveHistory(history);
+
+}
+
+
+/* -----------------------------
+   AFFICHAGE
+----------------------------- */
+
+function renderPrompts(prompts){
+
+    const container =
+        document.getElementById("items");
+
+    container.innerHTML="";
+
+
+    prompts.forEach((p,index)=>{
 
         const div =
             document.createElement("div");
 
-        div.className = "prompt";
+        div.className="item";
 
-        div.innerHTML = `
-            <div class="prompt-number">
-                Texte ${index + 1}
+        div.innerHTML=`
+            <div class="item-title">
+                ${escapeHTML(p.title)}
+                <span class="badge">
+                    lot
+                </span>
             </div>
-            ${escapeHTML(prompt)}
+
+            <div class="item-text">
+                ${escapeHTML(p.text)}
+            </div>
         `;
 
-        promptsDiv.appendChild(div);
+        container.appendChild(div);
 
     });
 
-
-    /*
-        Sauvegarde temporaire
-    */
-
-    window.currentPrompts = prompts;
+}
 
 
-    document.getElementById("analysisCard")
-        .classList.remove("hidden");
+/* -----------------------------
+   BLOC GLOBAL
+----------------------------- */
 
-    document.getElementById("resultsCard")
-        .classList.remove("hidden");
+function updateGlobalOutput(){
+
+    if(!window.currentPrompts)
+        return;
 
 
-    document.getElementById("status").textContent =
-        `✓ ${prompts.length} textes préparés à partir de ${concepts.length} concepts.`;
+    const text =
+        window.currentPrompts
+        .map(p =>
+            `===== ${p.title} =====\n\n${p.text}`
+        )
+        .join("\n\n");
+
+
+    document.getElementById("globalOutput")
+        .value=text;
 
 }
 
 
-/*
-    Copie de tout le lot.
-*/
+/* -----------------------------
+   COPIE TOUT
+----------------------------- */
 
-function copyAll() {
+function copyAll(){
 
-    if (!window.currentPrompts ||
-        !window.currentPrompts.length) {
-
+    if(!window.currentPrompts?.length)
         return;
+
+
+    const text =
+        window.currentPrompts
+        .map(p =>
+            `===== ${p.title} =====\n\n${p.text}`
+        )
+        .join("\n\n");
+
+
+    copyText(
+        text,
+        "✓ Lot complet copié."
+    );
+
+}
+
+
+/* -----------------------------
+   COPIE PROPRE
+----------------------------- */
+
+function copyClean(){
+
+    if(!window.currentPrompts?.length)
+        return;
+
+
+    const text =
+        window.currentPrompts
+        .map(p => p.text)
+        .join("\n\n");
+
+
+    copyText(
+        text,
+        "✓ Bloc propre copié."
+    );
+
+}
+
+
+/* -----------------------------
+   COPIE COMPATIBLE
+----------------------------- */
+
+function copyText(text,message){
+
+    if(
+        navigator.clipboard &&
+        window.isSecureContext
+    ){
+
+        navigator.clipboard
+            .writeText(text)
+            .then(()=>{
+                setStatus(message);
+            })
+            .catch(()=>{
+                fallbackCopy(text,message);
+            });
+
+    }else{
+
+        fallbackCopy(text,message);
 
     }
 
-    const text =
-        window.currentPrompts
-            .map((p, i) =>
-                `===== TEXTE ${i + 1} =====\n\n${p}`
-            )
-            .join("\n\n");
-
-
-    navigator.clipboard.writeText(text)
-        .then(() => {
-
-            showCopied("✓ Tout le lot a été copié.");
-
-        })
-        .catch(() => {
-
-            fallbackCopy(text);
-
-        });
-
 }
 
 
-/*
-    Copie sans numéros.
-*/
-
-function copyClean() {
-
-    if (!window.currentPrompts)
-        return;
-
-    const text =
-        window.currentPrompts.join("\n\n");
-
-
-    navigator.clipboard.writeText(text)
-        .then(() => {
-
-            showCopied("✓ Texte copié sans numéros.");
-
-        })
-        .catch(() => {
-
-            fallbackCopy(text);
-
-        });
-
-}
-
-
-/*
-    Téléchargement TXT.
-*/
-
-function downloadTXT() {
-
-    if (!window.currentPrompts)
-        return;
-
-    const text =
-        window.currentPrompts
-            .map((p, i) =>
-                `===== TEXTE ${i + 1} =====\n\n${p}`
-            )
-            .join("\n\n");
-
-
-    const blob =
-        new Blob([text], {
-            type: "text/plain;charset=utf-8"
-        });
-
-
-    const url =
-        URL.createObjectURL(blob);
-
-
-    const a =
-        document.createElement("a");
-
-    a.href = url;
-    a.download =
-        "choeur-domino-lot.txt";
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    a.remove();
-
-    URL.revokeObjectURL(url);
-
-}
-
-
-/*
-    Fallback de copie.
-*/
-
-function fallbackCopy(text) {
+function fallbackCopy(text,message){
 
     const area =
         document.createElement("textarea");
 
-    area.value = text;
+    area.value=text;
+
+    area.style.position="fixed";
+    area.style.left="-9999px";
 
     document.body.appendChild(area);
 
+    area.focus();
     area.select();
 
-    try {
+    try{
 
         document.execCommand("copy");
+        setStatus(message);
 
-        showCopied("✓ Copié.");
-
-    } catch {
+    }catch{
 
         alert(
-            "La copie automatique n'est pas disponible. Sélectionne le texte manuellement."
+            "La copie automatique n'est pas disponible."
         );
 
     }
@@ -815,38 +1182,135 @@ function fallbackCopy(text) {
 }
 
 
-/*
-    Petit message.
-*/
+/* -----------------------------
+   TÉLÉCHARGEMENT
+----------------------------- */
 
-function showCopied(message) {
+function downloadTXT(){
 
-    const status =
-        document.getElementById("status");
+    if(!window.currentPrompts?.length)
+        return;
 
-    status.textContent = message;
 
-    setTimeout(() => {
+    const text =
+        window.currentPrompts
+        .map(p =>
+            `===== ${p.title} =====\n\n${p.text}`
+        )
+        .join("\n\n");
 
-        status.textContent = "";
 
-    }, 3000);
+    const blob =
+        new Blob(
+            [text],
+            {
+                type:"text/plain;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const a =
+        document.createElement("a");
+
+    a.href=url;
+    a.download=
+        `choeur-domino-cycle-${Date.now()}.txt`;
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+    setStatus("✓ Fichier TXT créé.");
 
 }
 
 
-/*
-    Sécurité affichage HTML.
-*/
+/* -----------------------------
+   NOUVEAU CYCLE
+----------------------------- */
 
-function escapeHTML(text) {
+function newCycle(){
 
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    if(!window.currentSource){
+
+        alert(
+            "Construis d'abord un premier lot."
+        );
+
+        return;
+
+    }
+
+
+    startGeneration();
+
+}
+
+
+/* -----------------------------
+   HISTORIQUE
+----------------------------- */
+
+function clearHistory(){
+
+    if(
+        confirm(
+            "Réinitialiser l'historique anti-répétition ?"
+        )
+    ){
+
+        localStorage.removeItem(HISTORY_KEY);
+
+        setStatus(
+            "✓ Historique réinitialisé."
+        );
+
+    }
+
+}
+
+
+/* -----------------------------
+   STATUS
+----------------------------- */
+
+function setStatus(message){
+
+    const el =
+        document.getElementById("status");
+
+    el.textContent=message;
+
+    setTimeout(()=>{
+
+        if(el.textContent===message)
+            el.textContent="";
+
+    },3500);
+
+}
+
+
+/* -----------------------------
+   SÉCURITÉ HTML
+----------------------------- */
+
+function escapeHTML(text){
+
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
