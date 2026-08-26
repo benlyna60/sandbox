@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chœur Domino - Apprentissage en Chaîne</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 0 15px; background: #f4f4f9; color: #333; }
+        textarea { width: 100%; height: 120px; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #007BFF; color: white; border: none; padding: 10px 15px; font-size: 16px; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #0056b3; }
+        .output-box { background: white; padding: 15px; border-radius: 4px; border: 1px solid #ddd; margin-top: 15px; }
+        .word-item { background: #e9ecef; margin: 5px 0; padding: 8px; border-radius: 3px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+        code { background: #fff; padding: 2px 5px; border: 1px solid #ccc; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <h2>🔗 Générateur d'Effet Domino (Français)</h2>
+    <p>Collez votre texte de base ci-dessous :</p>
+    
+    <textarea id="inputText">le chat dort sur le tapis. le chien court dans le jardin. l'oiseau chante dans l'arbre.</textarea>
+    <br>
+    <button onclick="processText()">1. Extraire les mots et créer les prompts</button>
+
+    <div id="results" class="output-box" style="display:none;">
+        <h3>Mots clés extraits et prompts générés :</h3>
+        <div id="wordList"></div>
+    </div>
+
+    <script>
+        function processText() {
+            let text = document.getElementById('inputText').value.toLowerCase();
+            // Nettoyage basique et découpage par mots
+            let cleaned = text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+            let words = cleaned.split(/\s+/);
+            
+            // Filtrer les mots trop communs (petits mots de liaison) et garder les uniques
+            let stopWords = ['le', 'la', 'les', 'un', 'une', 'des', 'et', 'ou', 'dans', 'sur', 'sous', 'de', 'du', 'au', 'aux', 'ce', 'cette'];
+            let uniqueWords = [...new Set(words)].filter(w => w.length > 2 && !stopWords.includes(w));
+
+            let wordListDiv = document.getElementById('wordList');
+            wordListDiv.innerHTML = "";
+
+            uniqueWords.forEach(word => {
+                let promptText = `Écris un texte très simple de 3 phrases en français sur le thème "${word}", dans le même style simple et descriptif que le texte de base.`;
+                
+                let div = document.createElement('div');
+                div.className = 'word-item';
+                div.innerHTML = `<span><strong>${word}</strong></span> <button onclick="navigator.clipboard.writeText('${promptText}')">Copier le prompt</button>`;
+                wordListDiv.appendChild(div);
+            });
+
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
