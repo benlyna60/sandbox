@@ -5,18 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chœur Domino - Apprentissage en Chaîne</title>
     <style>
-        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 0 15px; background: #f4f4f9; color: #333; }
-        textarea { width: 100%; height: 120px; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; }
+        body { font-family: sans-serif; max-width: 650px; margin: 20px auto; padding: 0 15px; background: #f4f4f9; color: #333; }
+        textarea { width: 100%; height: 120px; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         button { background: #007BFF; color: white; border: none; padding: 10px 15px; font-size: 16px; border-radius: 4px; cursor: pointer; margin-top: 10px; }
         button:hover { background: #0056b3; }
         .output-box { background: white; padding: 15px; border-radius: 4px; border: 1px solid #ddd; margin-top: 15px; }
-        .word-item { background: #e9ecef; margin: 5px 0; padding: 8px; border-radius: 3px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
-        code { background: #fff; padding: 2px 5px; border: 1px solid #ccc; font-size: 12px; }
+        .word-item { background: #e9ecef; margin: 10px 0; padding: 12px; border-radius: 4px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        .copied { background: #28a745 !important; }
+        .info-container { flex-grow: 1; overflow: hidden; }
+        .prompt-text { font-family: monospace; font-size: 12px; color: #555; background: #fff; padding: 4px 6px; border-radius: 3px; border: 1px solid #ccc; display: block; margin-top: 4px; word-break: break-word; }
+        .copy-btn { margin-top: 0; white-space: nowrap; }
     </style>
 </head>
 <body>
 
-    <h2>🔗 Générateur d'Effet Domino (Français)</h2>
+    <h2>🔗 Générateur d'Effet Domino</h2>
     <p>Collez votre texte de base ci-dessous :</p>
     
     <textarea id="inputText">le chat dort sur le tapis. le chien court dans le jardin. l'oiseau chante dans l'arbre.</textarea>
@@ -24,18 +27,16 @@
     <button onclick="processText()">1. Extraire les mots et créer les prompts</button>
 
     <div id="results" class="output-box" style="display:none;">
-        <h3>Mots clés extraits et prompts générés :</h3>
+        <h3>Prompts générés (cliquez pour copier) :</h3>
         <div id="wordList"></div>
     </div>
 
     <script>
         function processText() {
             let text = document.getElementById('inputText').value.toLowerCase();
-            // Nettoyage basique et découpage par mots
             let cleaned = text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
             let words = cleaned.split(/\s+/);
             
-            // Filtrer les mots trop communs (petits mots de liaison) et garder les uniques
             let stopWords = ['le', 'la', 'les', 'un', 'une', 'des', 'et', 'ou', 'dans', 'sur', 'sous', 'de', 'du', 'au', 'aux', 'ce', 'cette'];
             let uniqueWords = [...new Set(words)].filter(w => w.length > 2 && !stopWords.includes(w));
 
@@ -47,7 +48,31 @@
                 
                 let div = document.createElement('div');
                 div.className = 'word-item';
-                div.innerHTML = `<span><strong>${word}</strong></span> <button onclick="navigator.clipboard.writeText('${promptText}')">Copier le prompt</button>`;
+                
+                let info = document.createElement('div');
+                info.className = 'info-container';
+                info.innerHTML = `<strong>${word}</strong><span class="prompt-text">${promptText}</span>`;
+                
+                let btn = document.createElement('button');
+                btn.innerText = "Copier";
+                btn.className = "copy-btn";
+                
+                // Utilisation de l'API Clipboard officielle sur HTTPS (GitHub Pages)
+                btn.onclick = function() {
+                    navigator.clipboard.writeText(promptText).then(() => {
+                        btn.innerText = "Copié !";
+                        btn.classList.add("copied");
+                        setTimeout(() => {
+                            btn.innerText = "Copier";
+                            btn.classList.remove("copied");
+                        }, 2000);
+                    }).catch(err => {
+                        alert("Erreur de copie");
+                    });
+                };
+
+                div.appendChild(info);
+                div.appendChild(btn);
                 wordListDiv.appendChild(div);
             });
 
