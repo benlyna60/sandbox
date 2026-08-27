@@ -1,210 +1,264 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Chœur Domino V4.1</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Chœur Domino V5 — LLM Local</title>
 
 <style>
+
+*{
+    box-sizing:border-box;
+}
+
 body{
-    font-family:Arial,Helvetica,sans-serif;
     margin:0;
+    font-family:Arial,Helvetica,sans-serif;
     background:#eef2f7;
-    color:#17202a
+    color:#17202a;
 }
 
 .wrap{
-    max-width:1050px;
+    max-width:1100px;
     margin:auto;
-    padding:16px
+    padding:16px;
 }
 
 .card{
-    background:#fff;
-    padding:16px;
-    margin:12px 0;
-    border-radius:14px;
-    box-shadow:0 3px 14px #0001
+    background:white;
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:0 4px 18px rgba(0,0,0,.08);
+}
+
+h1,h2,h3{
+    margin-top:0;
 }
 
 textarea{
     width:100%;
     min-height:150px;
-    box-sizing:border-box;
-    padding:12px;
+    resize:vertical;
+    padding:13px;
     border:1px solid #ccd3dd;
-    border-radius:9px;
+    border-radius:10px;
     font-size:15px;
-    line-height:1.5
+    line-height:1.5;
 }
 
 button,
 select,
 input{
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #ccd3dd
+    border:1px solid #cbd5e1;
+    border-radius:9px;
+    padding:10px 12px;
+    font-size:14px;
 }
 
 button{
-    background:#2563eb;
-    color:#fff;
     border:0;
-    font-weight:700;
+    background:#2563eb;
+    color:white;
+    font-weight:bold;
     cursor:pointer;
-    margin-top:10px
 }
 
 button:hover{
-    opacity:.9
+    opacity:.9;
+}
+
+button:disabled{
+    opacity:.45;
+    cursor:not-allowed;
 }
 
 .row{
     display:flex;
     flex-wrap:wrap;
     gap:8px;
-    margin-top:10px
+    margin-top:10px;
 }
 
 .grid{
     display:grid;
     grid-template-columns:
-        repeat(auto-fit,minmax(180px,1fr));
-    gap:9px
+        repeat(auto-fit,minmax(210px,1fr));
+    gap:10px;
+}
+
+.stat{
+    background:#f8fafc;
+    padding:14px;
+    border-radius:10px;
+    text-align:center;
+    flex:1;
+    min-width:100px;
+}
+
+.stat b{
+    display:block;
+    font-size:23px;
 }
 
 .item{
-    padding:12px;
-    border:1px solid #d9dee7;
-    border-radius:10px;
     background:#f8fafc;
-    cursor:pointer
+    border:1px solid #dbe2ea;
+    border-radius:11px;
+    padding:13px;
+    cursor:pointer;
 }
 
 .item:hover{
-    box-shadow:0 3px 10px #0001
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
 .selected{
     outline:2px solid #2563eb;
-    background:#eef5ff
+    background:#eff6ff;
 }
 
 .pill{
     display:inline-block;
     padding:6px 9px;
-    border-radius:15px;
-    background:#eef2f7;
     margin:3px;
-    font-size:12px
+    border-radius:20px;
+    background:#e8edf4;
+    font-size:12px;
 }
 
-.prompt{
+.prompt,
+.output{
     white-space:pre-wrap;
     background:#f8fafc;
-    padding:13px;
-    border-radius:9px;
-    border:1px solid #ddd;
-    max-height:500px;
+    border:1px solid #dce3eb;
+    border-radius:10px;
+    padding:14px;
+    line-height:1.55;
+    max-height:600px;
     overflow:auto;
-    line-height:1.55
-}
-
-.stat{
-    padding:12px;
-    background:#f5f6f8;
-    border-radius:9px;
-    min-width:100px;
-    text-align:center
-}
-
-.stat b{
-    display:block;
-    font-size:22px
 }
 
 .muted{
-    color:#667085;
-    font-size:12px;
-    line-height:1.5
+    color:#64748b;
+    font-size:13px;
+    line-height:1.5;
 }
 
 .hidden{
-    display:none
-}
-
-.danger{
-    background:#b91c1c
+    display:none;
 }
 
 .green{
-    background:#15803d
+    background:#15803d;
 }
 
 .orange{
-    background:#c56a00
+    background:#c56a00;
 }
 
-.dark{
-    background:#111827
+.red{
+    background:#b91c1c;
 }
 
 .purple{
-    background:#7c3aed
+    background:#7c3aed;
 }
 
-.level{
-    height:40px;
-    margin:5px auto;
-    border-radius:9px;
-    text-align:center;
-    padding-top:10px;
-    background:#edf2ff
+.dark{
+    background:#111827;
 }
 
-.l1{width:95%}
-.l2{width:78%}
-.l3{width:61%}
-.l4{width:44%}
-.l5{width:29%}
-
-.good{
-    border-left:5px solid #15803d
+.cyan{
+    background:#0891b2;
 }
 
-.warn{
-    border-left:5px solid #c56a00
+.status{
+    padding:12px;
+    background:#f1f5f9;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+.progress{
+    width:100%;
+    height:12px;
+    background:#e2e8f0;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.progressBar{
+    width:0%;
+    height:100%;
+    background:#2563eb;
+    transition:.3s;
 }
 
 .urgent{
-    border-left:5px solid #b91c1c
+    border-left:5px solid #b91c1c;
 }
+
+.strong{
+    border-left:5px solid #15803d;
+}
+
+.medium{
+    border-left:5px solid #c56a00;
+}
+
+.weak{
+    border-left:5px solid #64748b;
+}
+
+.autoBox{
+    background:#eef6ff;
+    border:1px solid #bfdbfe;
+}
+
+.warning{
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+}
+
+.success{
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+}
+
+.level{
+    margin:6px auto;
+    height:38px;
+    padding:10px;
+    text-align:center;
+    border-radius:9px;
+    background:#e8eefc;
+}
+
+.l1{width:100%}
+.l2{width:85%}
+.l3{width:70%}
+.l4{width:55%}
+.l5{width:40%}
 
 @media(max-width:600px){
 
     .wrap{
-        width:96%;
-        padding:8px
+        padding:8px;
     }
 
     .card{
-        padding:13px
+        padding:13px;
     }
-
-    .l1{width:100%}
-    .l2{width:90%}
-    .l3{width:80%}
-    .l4{width:70%}
-    .l5{width:60%}
 
     button{
-        width:100%
+        width:100%;
     }
 
-    .stat{
-        flex:1
-    }
 }
+
 </style>
 </head>
 
@@ -212,200 +266,216 @@ button:hover{
 
 <div class="wrap">
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
+<!-- ================================================= -->
+<!-- HEADER -->
+<!-- ================================================= -->
 
 <div class="card">
 
-<h1>🧠 Chœur Domino V4.1</h1>
+<h1>🧠 Chœur Domino V5</h1>
 
 <p>
-Une pyramide d'apprentissage qui transforme progressivement
-les textes en concepts, relations, poids, priorités et prompts.
+Pyramide de connaissances + mémoire sémantique +
+LLM local directement dans le navigateur.
 </p>
 
-<p class="muted">
-Le système fonctionne localement dans le navigateur.
-La mémoire est conservée automatiquement.
-</p>
+<div class="status">
 
+<b>🤖 État du LLM :</b>
+
+<span id="llmStatus">
+Non chargé
+</span>
+
+<div class="progress">
+<div
+id="progressBar"
+class="progressBar">
+</div>
 </div>
 
+<div
+id="progressText"
+class="muted">
+Le modèle sera téléchargé uniquement lorsque tu appuieras
+sur « Charger le LLM ».
+</div>
 
-<!-- =====================================================
-     TEXTE SOURCE
-===================================================== -->
-
-<div class="card">
-
-<h2>1. 🌱 Texte source</h2>
-
-<p class="muted">
-Colle ici le texte de départ.
-Ce texte constitue la base initiale.
-Les résultats générés ensuite ne doivent PAS être remis ici.
-</p>
-
-<textarea id="source">Le chat dort sur le tapis. Le chien court dans le jardin. Les animaux ont besoin d'un environnement adapté à leurs comportements. Le sommeil permet au chat de récupérer. Le comportement dépend aussi de l'environnement et des besoins de l'animal.</textarea>
+</div>
 
 <div class="row">
 
-<label>
-Concepts visibles
-<input
-    id="limit"
-    type="number"
-    min="5"
-    max="40"
-    value="15">
-</label>
+<button
+id="loadBtn"
+onclick="loadLLM()">
 
-<label>
-Longueur
-<select id="len">
+🤖 Charger le LLM local
 
-<option value="short">
-3 à 4 phrases
-</option>
+</button>
 
-<option value="medium" selected>
-5 à 7 phrases
-</option>
+<button
+onclick="testLLM()"
+id="testBtn"
+disabled>
 
-<option value="long">
-8 à 12 phrases
-</option>
+🧪 Tester le LLM
 
-</select>
-</label>
+</button>
 
-<label>
-Mode
-<select id="mode">
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- SOURCE -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>🌱 1. Texte source</h2>
+
+<p class="muted">
+
+Le texte initial sert à créer la base de la mémoire.
+Les textes générés automatiquement seront ajoutés ensuite
+sans remplacer cette base.
+
+</p>
+
+<textarea id="source">
+
+Les animaux ont besoin d'un environnement adapté à leurs besoins.
+Le comportement d'un animal dépend de son environnement.
+Le sommeil permet au corps de récupérer.
+Le repos influence le comportement et l'activité.
+Les relations entre l'environnement, le sommeil et le comportement
+peuvent être étudiées sous plusieurs angles.
+
+</textarea>
+
+<div class="row">
+
+<button onclick="buildBase()">
+🚀 Construire la base
+</button>
+
+<select id="generationMode">
 
 <option value="balanced">
-Équilibré
+⚖️ Équilibré
 </option>
 
 <option value="deep">
-Approfondir
+🧠 Approfondissement
 </option>
 
 <option value="relations">
-Relations
-</option>
-
-<option value="examples">
-Exemples
+🔗 Relations
 </option>
 
 <option value="causes">
-Causes / conséquences
+↔️ Causes / conséquences
+</option>
+
+<option value="examples">
+💡 Exemples
 </option>
 
 </select>
-</label>
+
+<select id="textLength">
+
+<option value="short">
+Court
+</option>
+
+<option value="medium" selected>
+Moyen
+</option>
+
+<option value="long">
+Long
+</option>
+
+</select>
 
 </div>
 
-<button onclick="start()">
-🚀 Construire / enrichir la pyramide
-</button>
-
-<div id="msg" class="muted"></div>
-
 </div>
 
 
-<!-- =====================================================
-     TABLEAU
-===================================================== -->
+<!-- ================================================= -->
+<!-- STATS -->
+<!-- ================================================= -->
 
-<div id="dash" class="card hidden">
+<div
+id="statsCard"
+class="card hidden">
 
-<h2>📊 Tableau de pilotage</h2>
+<h2>📊 Mémoire</h2>
 
 <div class="row">
 
 <div class="stat">
-<b id="nw">0</b>
+<b id="statWords">0</b>
 mots
 </div>
 
 <div class="stat">
-<b id="nc">0</b>
+<b id="statConcepts">0</b>
 concepts
 </div>
 
 <div class="stat">
-<b id="nl">0</b>
-liens
+<b id="statLinks">0</b>
+relations
 </div>
 
 <div class="stat">
-<b id="nt">0</b>
+<b id="statTexts">0</b>
 textes
 </div>
 
 <div class="stat">
-<b id="ni">0</b>
+<b id="statIngest">0</b>
 ingestions
 </div>
 
 <div class="stat">
-<b id="lv">1</b>
+<b id="statLevel">1</b>
 niveau
 </div>
 
 </div>
 
-<p class="muted">
-Les poids sont calculés à partir de la présence,
-des répétitions, des connexions et de la consolidation.
-</p>
-
 </div>
 
 
-<!-- =====================================================
-     PYRAMIDE
-===================================================== -->
+<!-- ================================================= -->
+<!-- PYRAMIDE -->
+<!-- ================================================= -->
 
-<div id="pyr" class="card hidden">
+<div
+id="pyramidCard"
+class="card hidden">
 
-<h2>🔻 Pyramide d'apprentissage</h2>
+<h2>🔻 Pyramide</h2>
 
 <div class="level l5">
 🌐 Synthèse
-</div>
-
-<div style="text-align:center">
-▲
 </div>
 
 <div class="level l4">
 🕸️ Réseau
 </div>
 
-<div style="text-align:center">
-▲
-</div>
-
 <div class="level l3">
-🔗 Connexions
-</div>
-
-<div style="text-align:center">
-▲
+🔗 Relations
 </div>
 
 <div class="level l2">
 🧠 Approfondissement
-</div>
-
-<div style="text-align:center">
-▲
 </div>
 
 <div class="level l1">
@@ -415,130 +485,189 @@ des répétitions, des connexions et de la consolidation.
 </div>
 
 
-<!-- =====================================================
-     RECOMMANDATIONS
-===================================================== -->
+<!-- ================================================= -->
+<!-- AUTO -->
+<!-- ================================================= -->
 
-<div id="recommend" class="card hidden">
+<div
+id="autoCard"
+class="card hidden autoBox">
 
-<h2>🧭 Priorités automatiques</h2>
+<h2>🤖 Apprentissage automatique</h2>
 
-<p class="muted">
-Le système choisit les concepts qui peuvent le mieux
-équilibrer et développer la mémoire.
+<p>
+
+Le LLM peut maintenant générer directement les textes
+au lieu de simplement produire un prompt.
+
 </p>
 
-<div id="recs"></div>
+<div class="row">
+
+<button
+id="autoOneBtn"
+onclick="autoOne()"
+class="purple"
+disabled>
+
+⚡ Générer 1 texte
+
+</button>
+
+<button
+id="autoThreeBtn"
+onclick="autoThree()"
+class="cyan"
+disabled>
+
+🔄 Générer jusqu'à 3 textes
+
+</button>
+
+<button
+id="stopBtn"
+onclick="stopAuto()"
+class="red"
+disabled>
+
+🛑 Arrêter
+
+</button>
+
+</div>
+
+<p
+id="autoStatus"
+class="muted">
+Le LLM doit être chargé.
+</p>
 
 </div>
 
 
-<!-- =====================================================
-     CATÉGORIES
-===================================================== -->
+<!-- ================================================= -->
+<!-- RECOMMANDATIONS -->
+<!-- ================================================= -->
 
-<div id="lists" class="card hidden">
+<div
+id="recommendCard"
+class="card hidden">
 
-<h2>🗂️ Concepts</h2>
+<h2>🧭 Prochains concepts recommandés</h2>
+
+<p class="muted">
+
+Le système cherche à équilibrer la mémoire :
+importance + connexions + manque de consolidation +
+potentiel d'apprentissage.
+
+</p>
+
+<div
+id="recommendations">
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- CATÉGORIES -->
+<!-- ================================================= -->
+
+<div
+id="categoryCard"
+class="card hidden">
+
+<h2>🗂️ État des concepts</h2>
 
 <div class="row">
 
-<button onclick="showCat('strong')">
+<button onclick="showCategory('strong')">
 🟢 Forts
 </button>
 
-<button onclick="showCat('medium')">
+<button onclick="showCategory('medium')">
 🟡 Moyens
 </button>
 
-<button onclick="showCat('weak')">
+<button onclick="showCategory('weak')">
 🔴 Faibles
 </button>
 
-<button onclick="showCat('explore')">
+<button onclick="showCategory('explore')">
 🔵 À explorer
 </button>
 
-<button onclick="showCat('urgent')" class="danger">
+<button
+onclick="showCategory('urgent')"
+class="red">
+
 🚨 Urgents
+
 </button>
-
-<button onclick="showCat('all')" class="dark">
-Tous
-</button>
-
-</div>
-
-<p id="catTitle"></p>
-
-<div id="concepts" class="grid"></div>
-
-</div>
-
-
-<!-- =====================================================
-     CONCEPT SÉLECTIONNÉ
-===================================================== -->
-
-<div id="selected" class="card hidden">
-
-<h2>🎯 Concept sélectionné</h2>
-
-<div id="sel"></div>
-
-<h3>🔗 Concepts liés</h3>
-
-<div id="links"></div>
-
-<h3>📌 Phrases connues</h3>
-
-<div id="sentences"></div>
-
-<p class="muted">
-Objectif conseillé :
-environ 3 ingestions différentes par concept.
-Une nouvelle ingestion est utile lorsqu'elle apporte
-du vocabulaire, des relations ou des informations nouvelles.
-</p>
 
 <button
-    class="purple"
-    onclick="makePrompt()">
+onclick="showCategory('all')"
+class="dark">
 
-⚡ Générer le prochain prompt
+Tous
 
 </button>
 
 </div>
 
+<h3 id="categoryTitle">
+Tous les concepts
+</h3>
 
-<!-- =====================================================
-     PROMPT
-===================================================== -->
+<div
+id="conceptGrid"
+class="grid">
+</div>
 
-<div id="promptCard" class="card hidden">
+</div>
 
-<h2>
-🤖 Prompt prêt à injecter
-</h2>
 
-<p class="muted">
-Copie ce prompt dans ton autre interface.
-</p>
+<!-- ================================================= -->
+<!-- CONCEPT -->
+<!-- ================================================= -->
 
-<div id="prompt" class="prompt"></div>
+<div
+id="conceptCard"
+class="card hidden">
+
+<h2>🎯 Concept actuel</h2>
+
+<div id="selectedConcept">
+</div>
+
+<h3>🔗 Relations</h3>
+
+<div id="selectedRelations">
+</div>
+
+<h3>📚 Phrases déjà connues</h3>
+
+<div id="selectedSentences">
+</div>
 
 <div class="row">
 
-<button onclick="copyPrompt()">
-📋 Copier le prompt
+<button
+onclick="generateLocalText()"
+class="purple"
+id="generateBtn"
+disabled>
+
+🤖 Générer avec le LLM
+
 </button>
 
 <button
-    class="green"
-    onclick="show('resultCard')">
+onclick="generatePrompt()">
 
-📥 J'ai le résultat
+📋 Générer le prompt manuel
+
 </button>
 
 </div>
@@ -546,102 +675,172 @@ Copie ce prompt dans ton autre interface.
 </div>
 
 
-<!-- =====================================================
-     RÉSULTAT
-===================================================== -->
+<!-- ================================================= -->
+<!-- LLM OUTPUT -->
+<!-- ================================================= -->
 
-<div id="resultCard" class="card hidden">
+<div
+id="llmOutputCard"
+class="card hidden">
 
-<h2>
-📥 Résultat de l'autre interface
-</h2>
+<h2>📄 Texte généré par le LLM</h2>
+
+<div
+id="llmOutput"
+class="output">
+</div>
+
+<div class="row">
+
+<button
+onclick="absorbGenerated()"
+class="green">
+
+🧠 Absorber dans la mémoire
+
+</button>
+
+<button
+onclick="copyGenerated()">
+
+📋 Copier le texte
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MANUAL PROMPT -->
+<!-- ================================================= -->
+
+<div
+id="promptCard"
+class="card hidden">
+
+<h2>🤖 Prompt manuel</h2>
+
+<div
+id="prompt"
+class="prompt">
+</div>
+
+<button onclick="copyPrompt()">
+📋 Copier
+</button>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- RESULTAT EXTERNE -->
+<!-- ================================================= -->
+
+<div
+id="externalCard"
+class="card hidden">
+
+<h2>📥 Résultat de l'autre interface</h2>
 
 <p class="muted">
-C'est ici que tu colles la réponse produite par ton autre IA.
-Ne la remets pas dans le texte source.
+
+Si tu utilises ton autre IA, colle ici son résultat.
+Le grand texte source n'est jamais remplacé.
+
 </p>
 
 <textarea
-    id="result"
-    placeholder="Colle ici le résultat généré par l'autre interface...">
+id="externalResult"
+placeholder="Colle ici le résultat...">
 </textarea>
 
 <button
-    class="green"
-    onclick="ingest()">
+onclick="absorbExternal()"
+class="green">
 
-🧠 Absorber ce résultat
+🧠 Absorber le résultat externe
 
 </button>
-
-<div id="ingestMsg" class="muted"></div>
 
 </div>
 
 
-<!-- =====================================================
-     NOUVEL APPRENTISSAGE
-===================================================== -->
+<!-- ================================================= -->
+<!-- NOUVEAU -->
+<!-- ================================================= -->
 
-<div id="newCard" class="card hidden">
+<div
+id="newKnowledgeCard"
+class="card hidden success">
 
 <h2>
 ✨ Ce que la mémoire vient d'apprendre
 </h2>
 
-<div id="new"></div>
+<div id="newKnowledge">
+</div>
 
 </div>
 
 
-<!-- =====================================================
-     CHEMIN
-===================================================== -->
+<!-- ================================================= -->
+<!-- HISTORIQUE -->
+<!-- ================================================= -->
 
-<div id="pathCard" class="card hidden">
+<div
+id="historyCard"
+class="card hidden">
 
-<h2>
-🧭 Chemin d'apprentissage
-</h2>
+<h2>🧭 Parcours</h2>
 
-<div id="path"></div>
+<div id="history">
+</div>
 
 </div>
 
 
-<!-- =====================================================
-     EXPORT
-===================================================== -->
+<!-- ================================================= -->
+<!-- EXPORT -->
+<!-- ================================================= -->
 
-<div id="export" class="card hidden">
+<div
+id="exportCard"
+class="card hidden">
 
-<h2>
-📦 Export
-</h2>
+<h2>📦 Export</h2>
 
 <div class="row">
 
 <button
-    class="green"
-    onclick="copyKnowledge()">
+onclick="copyKnowledge">
 
-📋 Copier toute la connaissance
+📋 Copier la mémoire
 
 </button>
 
 <button
-    class="orange"
-    onclick="download()">
+onclick="downloadMemory"
+class="orange">
 
 💾 Télécharger TXT
 
 </button>
 
 <button
-    class="danger"
-    onclick="resetAll()">
+onclick="downloadJSON"
+class="cyan">
 
-🗑️ Effacer la mémoire
+🗄️ Télécharger JSON
+
+</button>
+
+<button
+onclick="resetMemory"
+class="red">
+
+🗑️ Effacer mémoire
 
 </button>
 
@@ -652,17 +851,58 @@ Ne la remets pas dans le texte source.
 </div>
 
 
-<script>
+<script type="module">
+
+/* =====================================================
+   WEBLLM
+===================================================== */
+
+import * as webllm
+from "https://esm.run/@mlc-ai/web-llm";
+
+
+/*
+   Version légère :
+
+   Qwen2.5 0.5B Instruct
+   quantification WebGPU / MLC
+
+   Le dépôt utilisé fournit une version
+   spécialement préparée pour WebLLM.
+*/
+
+const MODEL_ID =
+"qwen2.5-0.5b-instruct-custom";
+
+const MODEL_URL =
+"https://huggingface.co/rubenz-org/qwen2-5-0-5b-instruct-mlc";
+
+const MODEL_LIB =
+"https://raw.githubusercontent.com/mlc-ai/binary-mlc-llm-libs/main/Qwen2.5-0.5B-Instruct-q4f32_1-MLC-1k.wasm";
+
+
+let engine=null;
+
+let loading=false;
+
+let autoRunning=false;
+
+let selected=null;
+
+let generatedText="";
+
 
 /* =====================================================
    MÉMOIRE
 ===================================================== */
 
-const KEY = "choeur_domino_v41";
+const STORAGE =
+"choeur_domino_v5";
 
 
-const STOP = new Set(
-`
+const STOP_WORDS =
+new Set(`
+
 alors aucun aucune aussi autre autres avec avoir
 avant après apres beaucoup car cela celle celles celui
 ceux comme comment dans dedans dehors depuis des du donc
@@ -672,109 +912,393 @@ moi mon moins même meme ne nos notre nous on ont ou par pas
 peu plus pour pourquoi quand que quel quelle quelles quels
 qui quoi sa sans se sera ses si son sont sur ta te tes toi
 ton tous tout très tres tu un une vos votre vous y chez vers
-sous cette ces cet c'est
-`
-.split(/\s+/)
-);
+sous cette ces cet
+
+`.split(/\s+/));
 
 
-function freshMemory(){
+let memory=loadMemory();
+
+
+function emptyMemory(){
 
     return {
 
-        version:"4.1",
-
-        sources:[],
+        version:"5.0",
 
         concepts:[],
 
         links:[],
 
+        sources:[],
+
         texts:[],
 
-        history:[],
-
-        currentSource:null,
-
-        currentConcept:null
+        history:[]
 
     };
 
 }
 
 
-function load(){
+function loadMemory(){
 
     try{
 
         return Object.assign(
-            freshMemory(),
+            emptyMemory(),
             JSON.parse(
-                localStorage.getItem(KEY) || "{}"
+                localStorage.getItem(STORAGE)
+                || "{}"
             )
         );
 
     }catch(e){
 
-        return freshMemory();
+        return emptyMemory();
 
     }
 
 }
 
 
-let M = load();
-
-let selected = null;
-
-let promptText = "";
-
-
-/* =====================================================
-   SAUVEGARDE
-===================================================== */
-
 function save(){
 
     localStorage.setItem(
-        KEY,
-        JSON.stringify(M)
+        STORAGE,
+        JSON.stringify(memory)
     );
 
 }
 
 
 /* =====================================================
-   NORMALISATION
+   WEBGPU
 ===================================================== */
 
-function norm(s){
+async function checkWebGPU(){
 
-    return String(s)
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g,"");
+    if(!navigator.gpu){
+
+        throw new Error(
+            "WebGPU n'est pas disponible dans ce navigateur."
+        );
+
+    }
+
+    const adapter =
+        await navigator.gpu.requestAdapter();
+
+    if(!adapter){
+
+        throw new Error(
+            "Aucun adaptateur WebGPU disponible."
+        );
+
+    }
 
 }
 
 
-function toks(s){
+/* =====================================================
+   CHARGEMENT LLM
+===================================================== */
 
-    return norm(s)
-        .replace(/[^a-z0-9à-ÿ\s'-]/gi," ")
+window.loadLLM=async function(){
+
+    if(engine){
+        return;
+    }
+
+    if(loading){
+        return;
+    }
+
+    loading=true;
+
+    const status =
+        document.getElementById(
+            "llmStatus"
+        );
+
+    const progress =
+        document.getElementById(
+            "progressBar"
+        );
+
+    const text =
+        document.getElementById(
+            "progressText"
+        );
+
+    const btn =
+        document.getElementById(
+            "loadBtn"
+        );
+
+    try{
+
+        btn.disabled=true;
+
+        status.textContent=
+            "Vérification de WebGPU...";
+
+        await checkWebGPU();
+
+
+        status.textContent=
+            "Téléchargement / préparation du modèle...";
+
+
+        const appConfig={
+
+            model_list:[
+
+                {
+
+                    model:MODEL_URL,
+
+                    model_id:MODEL_ID,
+
+                    model_lib:MODEL_LIB,
+
+                    overrides:{
+
+                        context_window_size:2048,
+
+                        prefill_chunk_size:512
+
+                    }
+
+                }
+
+            ]
+
+        };
+
+
+        engine =
+            await webllm.CreateMLCEngine(
+
+                MODEL_ID,
+
+                {
+
+                    appConfig,
+
+                    initProgressCallback:
+                    report=>{
+
+                        let p=0;
+
+                        if(
+                            typeof report.progress==="number"
+                        ){
+
+                            p=
+                                Math.round(
+                                    report.progress*100
+                                );
+
+                        }
+
+
+                        progress.style.width=
+                            p+"%";
+
+
+                        text.textContent=
+                            report.text
+                            ||
+                            "Chargement du modèle...";
+
+                    }
+
+                }
+
+            );
+
+
+        status.textContent=
+            "🟢 LLM local prêt";
+
+        progress.style.width=
+            "100%";
+
+        text.textContent=
+            "Le modèle est chargé et peut générer des textes.";
+
+        document
+            .getElementById("testBtn")
+            .disabled=false;
+
+        document
+            .getElementById("autoOneBtn")
+            .disabled=false;
+
+        document
+            .getElementById("autoThreeBtn")
+            .disabled=false;
+
+        document
+            .getElementById("generateBtn")
+            .disabled=false;
+
+        document
+            .getElementById("autoStatus")
+            .textContent=
+            "🟢 Prêt à générer.";
+
+    }catch(error){
+
+        console.error(error);
+
+        status.textContent=
+            "🔴 Impossible de charger le LLM";
+
+        text.textContent=
+            error.message
+            +
+            " — Vérifie que ChromeOS/WebGPU est disponible.";
+
+        btn.disabled=false;
+
+        alert(
+            "Le LLM n'a pas pu démarrer.\n\n"
+            +
+            error.message
+        );
+
+    }finally{
+
+        loading=false;
+
+    }
+
+};
+
+
+/* =====================================================
+   TEST
+===================================================== */
+
+window.testLLM=async function(){
+
+    if(!engine){
+
+        alert(
+            "Charge d'abord le LLM."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const response =
+            await engine.chat.completions.create({
+
+                messages:[
+
+                    {
+
+                        role:"system",
+
+                        content:
+                        "Tu es un petit moteur de génération de texte en français. Réponds simplement."
+
+                    },
+
+                    {
+
+                        role:"user",
+
+                        content:
+                        "Écris trois phrases simples sur le sommeil."
+
+                    }
+
+                ],
+
+                temperature:.7,
+
+                max_tokens:120
+
+            });
+
+
+        generatedText=
+            response.choices[0]
+            ?.message
+            ?.content
+            ||
+            "";
+
+
+        document
+            .getElementById("llmOutput")
+            .textContent=
+            generatedText;
+
+
+        show(
+            "llmOutputCard"
+        );
+
+
+    }catch(error){
+
+        alert(
+            "Erreur LLM : "+
+            error.message
+        );
+
+    }
+
+};
+
+
+/* =====================================================
+   TEXTE
+===================================================== */
+
+function normalize(s){
+
+    return String(s)
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        );
+
+}
+
+
+function tokenize(s){
+
+    return normalize(s)
+        .replace(
+            /[^a-z0-9à-ÿ\s'-]/gi,
+            " "
+        )
         .split(/\s+/)
         .filter(Boolean);
 
 }
 
 
-function wordNorm(w){
+function stemWord(w){
 
-    let x =
-        norm(w)
-        .replace(/[^a-z0-9'-]/g,"");
+    let x=normalize(w)
+        .replace(
+            /[^a-z0-9'-]/g,
+            ""
+        );
 
-    if(x.length > 6){
+    if(x.length>6){
 
         if(x.endsWith("es"))
             x=x.slice(0,-2);
@@ -789,66 +1313,75 @@ function wordNorm(w){
 }
 
 
-function sentences(s){
+function getWords(text){
 
-    return String(s)
-        .replace(/\r/g,"")
-        .split(/(?<=[.!?])\s+|\n+/)
-        .map(x=>x.trim())
-        .filter(x=>x.length>10);
+    const freq={};
 
-}
+    tokenize(text)
+    .forEach(w=>{
 
+        const x=
+            stemWord(w);
 
-/* =====================================================
-   EXTRACTION
-===================================================== */
-
-function words(s){
-
-    let f={};
-
-    toks(s).forEach(w=>{
-
-        let x=wordNorm(w);
 
         if(
             x.length>=4 &&
-            !STOP.has(x) &&
-            !/^[0-9]+$/.test(x)
+            !STOP_WORDS.has(x) &&
+            !/^\d+$/.test(x)
         ){
 
-            f[x]=(f[x]||0)+1;
+            freq[x]=
+                (freq[x]||0)+1;
 
         }
 
     });
 
+
     return Object
-        .entries(f)
-        .map(([word,count])=>({
-            word,
-            count
-        }))
+        .entries(freq)
+        .map(
+            ([word,count])=>({
+                word,
+                count
+            })
+        )
         .sort(
-            (a,b)=>b.count-a.count
+            (a,b)=>
+                b.count-a.count
+        );
+
+}
+
+
+function getSentences(text){
+
+    return String(text)
+        .replace(/\r/g,"")
+        .split(
+            /(?<=[.!?])\s+|\n+/
+        )
+        .map(
+            s=>s.trim()
+        )
+        .filter(
+            s=>s.length>10
         );
 
 }
 
 
 /* =====================================================
-   CONCEPTS
+   CONCEPT
 ===================================================== */
 
-function concept(w){
-
-    let id=wordNorm(w);
+function getConcept(id,name){
 
     let c=
-        M.concepts.find(
+        memory.concepts.find(
             x=>x.id===id
         );
+
 
     if(!c){
 
@@ -856,31 +1389,33 @@ function concept(w){
 
             id,
 
-            name:w,
+            name:name||id,
 
             weight:0,
 
             appearances:0,
 
-            sourceHits:0,
-
             ingestions:0,
 
             links:0,
+
+            related:[],
 
             sentences:[],
 
             history:[],
 
-            related:[],
+            created:Date.now(),
 
             lastSeen:Date.now()
 
         };
 
-        M.concepts.push(c);
+
+        memory.concepts.push(c);
 
     }
+
 
     return c;
 
@@ -888,7 +1423,7 @@ function concept(w){
 
 
 /* =====================================================
-   LIENS
+   LIEN
 ===================================================== */
 
 function addLink(a,b,evidence=""){
@@ -896,15 +1431,21 @@ function addLink(a,b,evidence=""){
     if(!a || !b || a===b)
         return;
 
-    let id=
+
+    const ids=
         [a,b]
-        .sort()
-        .join("::");
+        .sort();
+
+
+    const id=
+        ids.join("::");
+
 
     let l=
-        M.links.find(
+        memory.links.find(
             x=>x.id===id
         );
+
 
     if(!l){
 
@@ -912,9 +1453,9 @@ function addLink(a,b,evidence=""){
 
             id,
 
-            a,
+            a:ids[0],
 
-            b,
+            b:ids[1],
 
             weight:0,
 
@@ -922,9 +1463,11 @@ function addLink(a,b,evidence=""){
 
         };
 
-        M.links.push(l);
+
+        memory.links.push(l);
 
     }
+
 
     l.weight++;
 
@@ -934,13 +1477,18 @@ function addLink(a,b,evidence=""){
         !l.evidence.includes(evidence)
     ){
 
-        l.evidence.push(evidence);
+        l.evidence.push(
+            evidence
+        );
 
     }
 
 
-    let A=concept(a);
-    let B=concept(b);
+    const A=
+        getConcept(a);
+
+    const B=
+        getConcept(b);
 
 
     if(!A.related)
@@ -957,51 +1505,73 @@ function addLink(a,b,evidence=""){
         B.related.push(a);
 
 
-    A.links=A.related.length;
-    B.links=B.related.length;
+    A.links=
+        A.related.length;
+
+    B.links=
+        B.related.length;
 
 }
 
 
 /* =====================================================
-   ANALYSE TEXTE
+   ANALYSE
 ===================================================== */
 
-function analyze(text){
+function analyzeText(
+    text,
+    parentId=null
+){
 
-    let arr=words(text);
+    const words=
+        getWords(text);
 
-    let limit=
-        Math.max(
-            20,
-            Number(
-                document.getElementById("limit").value
-            ) || 15
+    const sentences=
+        getSentences(text);
+
+
+    const before=
+        new Set(
+            memory.concepts
+            .map(
+                c=>c.id
+            )
         );
 
-    let ss=sentences(text);
 
-    let found=[];
+    words
+    .slice(0,80)
+    .forEach(item=>{
 
-
-    arr
-    .slice(0,limit*3)
-    .forEach(it=>{
-
-        let c=concept(it.word);
-
-        c.appearances += it.count;
-
-        c.weight += it.count;
-
-        c.lastSeen=Date.now();
+        const id=
+            stemWord(
+                item.word
+            );
 
 
-        ss.forEach(s=>{
+        const c=
+            getConcept(
+                id,
+                item.word
+            );
+
+
+        c.appearances +=
+            item.count;
+
+        c.weight +=
+            item.count;
+
+        c.lastSeen=
+            Date.now();
+
+
+        sentences.forEach(s=>{
 
             if(
-                norm(s).includes(
-                    norm(it.word)
+                normalize(s)
+                .includes(
+                    normalize(item.word)
                 )
             ){
 
@@ -1017,44 +1587,44 @@ function analyze(text){
 
         });
 
-
-        if(!found.includes(c))
-            found.push(c);
-
     });
 
 
     /*
-       Liens par cooccurrence.
+       Relations par cooccurrence.
     */
 
-    ss.forEach(s=>{
+    sentences.forEach(s=>{
 
-        let a=[
-            ...new Set(
-                words(s)
-                .map(
-                    x=>wordNorm(x.word)
+        const ids=
+            [
+                ...new Set(
+                    getWords(s)
+                    .slice(0,25)
+                    .map(
+                        x=>stemWord(
+                            x.word
+                        )
+                    )
                 )
-            )
-        ];
+            ];
 
 
         for(
             let i=0;
-            i<a.length;
+            i<ids.length;
             i++
         ){
 
             for(
                 let j=i+1;
-                j<a.length;
+                j<ids.length;
                 j++
             ){
 
                 addLink(
-                    a[i],
-                    a[j],
+                    ids[i],
+                    ids[j],
                     s
                 );
 
@@ -1065,18 +1635,46 @@ function analyze(text){
     });
 
 
-    return found;
+    /*
+       Connexion au concept parent.
+    */
+
+    if(parentId){
+
+        const after=
+            memory.concepts
+            .filter(
+                c=>!before.has(c.id)
+            );
+
+
+        after.forEach(
+            c=>
+                addLink(
+                    parentId,
+                    c.id,
+                    text
+                )
+        );
+
+    }
+
+
+    return memory.concepts
+        .filter(
+            c=>!before.has(c.id)
+        );
 
 }
 
 
 /* =====================================================
-   DÉMARRAGE
+   BASE
 ===================================================== */
 
-function start(){
+window.buildBase=function(){
 
-    let text=
+    const text=
         document
         .getElementById("source")
         .value
@@ -1086,7 +1684,7 @@ function start(){
     if(!text){
 
         alert(
-            "Colle un texte source."
+            "Ajoute un texte source."
         );
 
         return;
@@ -1094,30 +1692,21 @@ function start(){
     }
 
 
-    let id=
-        "SRC-"+Date.now();
-
-
-    M.sources.push({
-
-        id,
+    memory.sources.push({
 
         text,
 
-        words:
-            toks(text).length,
-
         date:
-            new Date().toISOString()
+            new Date()
+            .toISOString(),
+
+        words:
+            tokenize(text).length
 
     });
 
 
-    M.currentSource=id;
-
-
-    let found=
-        analyze(text);
+    analyzeText(text);
 
 
     save();
@@ -1125,111 +1714,103 @@ function start(){
     render();
 
 
-    document
-        .getElementById("msg")
-        .textContent=
-        "✓ Base analysée : "+
-        found.length+
-        " concepts candidats.";
-
-}
-
-
-/* =====================================================
-   NIVEAU
-===================================================== */
-
-function level(){
-
-    return Math.min(
-        5,
-        1+
-        Math.floor(
-            M.texts.length/3
-        )
+    alert(
+        "✓ Base construite."
     );
 
-}
+};
 
 
 /* =====================================================
-   MÉTRIQUES
+   METRIQUES
 ===================================================== */
 
 function metrics(c){
 
-    let maxWeight=
+    const maxWeight=
         Math.max(
             1,
-            ...M.concepts
-                .map(x=>x.weight)
+            ...memory.concepts
+            .map(
+                x=>x.weight
+            )
         );
 
 
-    let maxLinks=
+    const maxLinks=
         Math.max(
             1,
-            ...M.concepts
-                .map(x=>x.links)
+            ...memory.concepts
+            .map(
+                x=>x.links
+            )
         );
 
 
-    let density=
+    const strength=
         Math.min(
             1,
-            c.links/maxLinks
+            (
+                c.weight/maxWeight
+            )*.5
+            +
+            (
+                c.links/maxLinks
+            )*.25
+            +
+            Math.min(
+                1,
+                c.ingestions/3
+            )*.25
         );
 
 
-    let consolidation=
+    const lack=
+        1-
         Math.min(
             1,
             c.ingestions/3
         );
 
 
-    let strength=
-        (
-            (c.weight/maxWeight)*0.45
-            +
-            density*0.30
-            +
-            consolidation*0.25
+    const centrality=
+        Math.min(
+            1,
+            c.links/maxLinks
         );
 
 
-    let under=
-        1-consolidation;
+    const urgency=
+        (
+            lack*.4
+            +
+            centrality*.35
+            +
+            (c.links>=3?.25:0)
+        );
 
 
-    let urgency=0;
-
-
-    if(
-        c.links>=2 &&
-        under>0.3
-    ){
-
-        urgency=0.35;
-
-    }
-
-
-    let priority=
-        strength*0.45
-        +
-        under*0.25
-        +
-        density*0.20
-        +
-        urgency;
+    const priority=
+        (
+            strength*.4
+            +
+            lack*.25
+            +
+            centrality*.2
+            +
+            urgency*.15
+        );
 
 
     return {
 
         strength,
 
-        under,
+        lack,
+
+        centrality,
+
+        urgency,
 
         priority
 
@@ -1239,28 +1820,30 @@ function metrics(c){
 
 
 /* =====================================================
-   CATÉGORISATION
+   CATEGORIE
 ===================================================== */
 
 function category(c){
 
-    let m=metrics(c);
+    const m=
+        metrics(c);
 
 
     if(
-        m.priority>.78
+        m.priority>=.72 &&
+        c.ingestions<3
     )
         return "urgent";
 
 
     if(
-        m.strength>.62
+        m.strength>=.62
     )
         return "strong";
 
 
     if(
-        m.strength>.36
+        m.strength>=.35
     )
         return "medium";
 
@@ -1270,100 +1853,25 @@ function category(c){
 }
 
 
-/* =====================================================
-   LABEL
-===================================================== */
+function categoryLabel(c){
 
-function label(c){
+    const x=
+        category(c);
 
-    let x=category(c);
-
-
-    if(x==="strong")
-        return "🟢 Fort";
-
-    if(x==="medium")
-        return "🟡 Moyen";
-
-    if(x==="weak")
-        return "🔴 Faible";
 
     if(x==="urgent")
         return "🚨 Urgent";
 
 
-    return "🔵 À explorer";
-
-}
-
-
-/* =====================================================
-   RENDER GLOBAL
-===================================================== */
-
-function render(){
-
-    show("dash");
-
-    show("pyr");
-
-    show("lists");
-
-    show("export");
+    if(x==="strong")
+        return "🟢 Fort";
 
 
-    let totalWords=
-        M.sources.reduce(
-            (a,x)=>a+x.words,
-            0
-        )
-        +
-        M.texts.reduce(
-            (a,x)=>a+x.words,
-            0
-        );
+    if(x==="medium")
+        return "🟡 Moyen";
 
 
-    document
-        .getElementById("nw")
-        .textContent=totalWords;
-
-
-    document
-        .getElementById("nc")
-        .textContent=
-        M.concepts.length;
-
-
-    document
-        .getElementById("nl")
-        .textContent=
-        M.links.length;
-
-
-    document
-        .getElementById("nt")
-        .textContent=
-        M.texts.length;
-
-
-    document
-        .getElementById("ni")
-        .textContent=
-        M.texts.length;
-
-
-    document
-        .getElementById("lv")
-        .textContent=
-        level();
-
-
-    recommend();
-
-    showCat("all");
-
-    path();
+    return "🔴 Faible";
 
 }
 
@@ -1374,36 +1882,47 @@ function render(){
 
 function recommend(){
 
-    let a=
-        M.concepts
-        .map(c=>({
+    const list=
+        memory.concepts
+        .map(
+            c=>({
 
-            c,
+                c,
 
-            m:metrics(c)
+                m:metrics(c)
 
-        }))
+            })
+        )
         .sort(
-            (x,y)=>
-                y.m.priority-
-                x.m.priority
+            (a,b)=>
+                b.m.priority-
+                a.m.priority
         )
         .slice(0,3);
 
 
     document
-        .getElementById("recs")
+        .getElementById(
+            "recommendations"
+        )
         .innerHTML=
-        a.length
-        ?
-        a.map(
+        list.map(
             (x,i)=>`
 
             <div
-                class="item ${i===0?'selected':''}"
-                onclick="selectConcept('${esc(x.c.id)}')">
+            class="item ${
+                i===0
+                ?"selected"
+                :""
+            }"
+            onclick="
+                window.selectConcept(
+                    '${escapeHtml(x.c.id)}'
+                )
+            ">
 
                 <b>
+
                 ${
                     i===0
                     ?"🥇"
@@ -1413,113 +1932,99 @@ function recommend(){
                     :
                     "🥉"
                 }
-                ${esc(x.c.name)}
+
+                ${escapeHtml(
+                    x.c.name
+                )}
+
                 </b>
 
                 <div class="muted">
 
-                ${label(x.c)}
+                ${categoryLabel(x.c)}
                 · poids ${x.c.weight.toFixed(1)}
                 · ${x.c.links} liens
-                · ingestions ${x.c.ingestions}/3
+                · ${x.c.ingestions}/3 ingestions
 
                 </div>
 
                 <div class="muted">
 
-                ${reason(x.c)}
+                ${
+                    x.c.ingestions<3
+                    ?
+                    "Encore intéressant à consolider."
+                    :
+                    "Déjà bien consolidé."
+                }
 
                 </div>
 
             </div>
 
             `
-        ).join("")
-        :
-        "Aucun concept pour le moment.";
+        )
+        .join("");
 
 }
 
 
 /* =====================================================
-   RAISON RECOMMANDATION
+   CATÉGORIES UI
 ===================================================== */
 
-function reason(c){
+window.showCategory=function(type){
 
-    let m=metrics(c);
+    let list;
 
 
-    if(
-        c.ingestions<3 &&
-        c.links>=2
-    ){
+    if(type==="all"){
 
-        return
-        "Prioritaire : beaucoup de connexions mais encore peu consolidé.";
+        list=
+            memory.concepts;
+
+    }else if(type==="explore"){
+
+        list=
+            memory.concepts
+            .filter(
+                c=>c.ingestions===0
+            );
+
+    }else if(type==="urgent"){
+
+        list=
+            memory.concepts
+            .filter(
+                c=>
+                    category(c)==="urgent"
+            );
+
+    }else{
+
+        list=
+            memory.concepts
+            .filter(
+                c=>
+                    category(c)===type
+            );
 
     }
 
 
-    if(
-        m.under>.5
-    ){
-
-        return
-        "À explorer : peu d'ingestions, potentiel important.";
-
-    }
-
-
-    if(
-        c.links>=5
-    ){
-
-        return
-        "Fort potentiel de connexion avec le réseau.";
-
-    }
-
-
-    return
-        "Bon candidat pour équilibrer la mémoire.";
-
-}
-
-
-/* =====================================================
-   CATÉGORIES
-===================================================== */
-
-function showCat(type){
-
-    let a=
-        M.concepts
-        .filter(c=>{
-
-            if(type==="all")
-                return true;
-
-
-            if(type==="explore")
-                return c.ingestions===0;
-
-
-            if(type==="urgent")
-                return metrics(c).priority>.78;
-
-
-            return category(c)===type;
-
-        })
+    list=
+        list
+        .slice()
         .sort(
-            (x,y)=>
-                metrics(y).priority-
-                metrics(x).priority
+            (a,b)=>
+                metrics(b).priority-
+                metrics(a).priority
         );
 
 
-    let titles={
+    const names={
+
+        all:"Tous les concepts",
 
         strong:"🟢 Concepts forts",
 
@@ -1529,73 +2034,76 @@ function showCat(type){
 
         explore:"🔵 Concepts à explorer",
 
-        urgent:"🚨 Concepts urgents",
-
-        all:"Tous les concepts"
+        urgent:"🚨 Concepts urgents"
 
     };
 
 
     document
-        .getElementById("catTitle")
+        .getElementById(
+            "categoryTitle"
+        )
         .textContent=
-        titles[type];
+        names[type];
 
 
     document
-        .getElementById("concepts")
+        .getElementById(
+            "conceptGrid"
+        )
         .innerHTML=
-        a.map(
+        list
+        .map(
             c=>`
 
             <div
-                class="item ${
-                    selected===c.id
-                    ?"selected"
-                    :""
-                }"
-                onclick="selectConcept('${esc(c.id)}')">
+            class="item ${
+                selected===c.id
+                ?"selected"
+                :""
+            }"
+            onclick="
+                window.selectConcept(
+                    '${escapeHtml(c.id)}'
+                )
+            ">
 
                 <b>
-                ${esc(c.name)}
+                ${escapeHtml(c.name)}
                 </b>
 
                 <div class="muted">
 
-                ${label(c)}
+                ${categoryLabel(c)}
                 · poids ${c.weight.toFixed(1)}
                 · liens ${c.links}
-                · ${c.ingestions}/3 ingestions
+                · ${c.ingestions}/3
 
                 </div>
 
             </div>
 
             `
-        ).join("")
+        )
+        .join("")
         ||
-        `
-        <p class="muted">
-        Aucun concept dans cette catégorie.
-        </p>
-        `;
+        "<p class='muted'>Aucun concept.</p>";
 
-}
+};
 
 
 /* =====================================================
-   SÉLECTION
+   SELECTION
 ===================================================== */
 
-function selectConcept(id){
+window.selectConcept=function(id){
 
     selected=id;
 
-    M.currentConcept=id;
 
-
-    let c=
-        M.concepts.find(
+    const c=
+        memory.concepts
+        .find(
             x=>x.id===id
         );
 
@@ -1604,11 +2112,12 @@ function selectConcept(id){
         return;
 
 
-    let rel=
+    const relations=
         (c.related||[])
         .map(
             id=>
-                M.concepts.find(
+                memory.concepts
+                .find(
                     x=>x.id===id
                 )
         )
@@ -1620,20 +2129,25 @@ function selectConcept(id){
 
 
     document
-        .getElementById("sel")
+        .getElementById(
+            "selectedConcept"
+        )
         .innerHTML=`
 
         <div class="item selected">
 
             <b>
-            ${esc(c.name)}
+            ${escapeHtml(c.name)}
             </b>
 
             <div class="muted">
 
-            ${label(c)}
+            ${categoryLabel(c)}
+
             · poids ${c.weight.toFixed(1)}
-            · ${c.links} liens
+
+            · ${c.links} relations
+
             · ${c.ingestions}/3 ingestions
 
             </div>
@@ -1644,117 +2158,72 @@ function selectConcept(id){
 
 
     document
-        .getElementById("links")
+        .getElementById(
+            "selectedRelations"
+        )
         .innerHTML=
-        rel
-        .slice(0,15)
+        relations
+        .slice(0,20)
         .map(
-            x=>
+            r=>
             `<span class="pill">
-                ${esc(x.name)}
-             </span>`
+            ${escapeHtml(r.name)}
+            </span>`
         )
         .join("")
         ||
-        `<span class="muted">
-            Aucun lien fort détecté.
-         </span>`;
+        "<span class='muted'>Aucune relation.</span>";
 
 
     document
-        .getElementById("sentences")
+        .getElementById(
+            "selectedSentences"
+        )
         .innerHTML=
         c.sentences
         .slice(-8)
         .map(
             s=>
             `<div class="item">
-                ${esc(s)}
-             </div>`
+            ${escapeHtml(s)}
+            </div>`
         )
         .join("")
         ||
-        `<span class="muted">
-            Aucune phrase.
-         </span>`;
+        "<span class='muted'>Aucune phrase.</span>";
 
 
-    show("selected");
-
-    save();
-
-}
+    show(
+        "conceptCard"
+    );
 
 
-/* =====================================================
-   ANGLE DU PROMPT
-===================================================== */
-
-function angle(c){
-
-    let mode=
-        document
-        .getElementById("mode")
-        .value;
-
-
-    let rel=
-        (c.related||[])
-        .map(
-            id=>
-                M.concepts.find(
-                    x=>x.id===id
-                )
+    document
+        .getElementById(
+            "conceptCard"
         )
-        .filter(Boolean)
-        .sort(
-            (a,b)=>
-                b.weight-a.weight
-        );
+        .scrollIntoView({
+            behavior:"smooth"
+        });
 
 
-    if(mode==="deep")
-        return
-        `l'approfondissement de "${c.name}"`;
+    showCategory(
+        "all"
+    );
 
-
-    if(mode==="relations")
-        return
-        `la relation entre "${c.name}" et ${
-            rel[0]
-            ?
-            `"${rel[0].name}"`
-            :
-            "les concepts voisins"
-        }`;
-
-
-    if(mode==="examples")
-        return
-        `des exemples concrets liés à "${c.name}"`;
-
-
-    if(mode==="causes")
-        return
-        `les causes, conséquences et facteurs liés à "${c.name}"`;
-
-
-    return
-        `un approfondissement équilibré de "${c.name}" avec ses concepts voisins`;
-
-}
+};
 
 
 /* =====================================================
-   GÉNÉRATION PROMPT
+   CONSTRUIRE PROMPT
 ===================================================== */
 
-function makePrompt(){
+window.generatePrompt=function(){
 
     if(!selected){
 
         alert(
-            "Choisis un concept."
+            "Sélectionne un concept."
         );
 
         return;
@@ -1762,17 +2231,19 @@ function makePrompt(){
     }
 
 
-    let c=
-        M.concepts.find(
+    const c=
+        memory.concepts
+        .find(
             x=>x.id===selected
         );
 
 
-    let rel=
+    const relations=
         (c.related||[])
         .map(
             id=>
-                M.concepts.find(
+                memory.concepts
+                .find(
                     x=>x.id===id
                 )
         )
@@ -1781,106 +2252,610 @@ function makePrompt(){
             (a,b)=>
                 b.weight-a.weight
         )
-        .slice(0,6);
+        .slice(0,7);
 
 
-    let lengths={
+    const length=
+        document
+        .getElementById(
+            "textLength"
+        )
+        .value;
 
-        short:"3 à 4",
 
-        medium:"5 à 7",
+    const lengths={
 
-        long:"8 à 12"
+        short:"3 à 4 phrases",
+
+        medium:"5 à 7 phrases",
+
+        long:"8 à 12 phrases"
 
     };
 
 
-    let len=
-        lengths[
-            document
-            .getElementById("len")
-            .value
-        ];
+    const prompt=
 
+`CHŒUR DOMINO — APPROFONDISSEMENT
 
-    promptText=
+Concept central :
+${c.name}
 
-`MISSION CHŒUR DOMINO — PASSAGE ${c.ingestions+1}
-
-CONCEPT CENTRAL :
-"${c.name}"
-
-OBJECTIF :
-Produire ${angle(c)}.
-
-CONCEPTS LIÉS DÉJÀ DÉTECTÉS :
+Relations connues :
 ${
-    rel
-    .map(x=>x.name)
+    relations
+    .map(
+        x=>x.name
+    )
+    .join(", ")
+    ||
+    "aucune"
+}
+
+Poids actuel :
+${c.weight}
+
+Ingestions :
+${c.ingestions}/3
+
+Objectif :
+Produire ${lengths[length]} de texte original
+sur le concept central.
+
+Le texte doit :
+
+- apporter de nouvelles informations ;
+- utiliser naturellement les concepts liés ;
+- créer de nouvelles relations possibles ;
+- éviter de répéter exactement les informations déjà connues ;
+- rester clair et factuel ;
+- être écrit en français ;
+- ne pas parler de cette consigne ;
+- ne pas produire une simple liste de mots.
+
+Phrases déjà connues :
+${
+    c.sentences
+    .slice(-5)
+    .join(" ")
+}
+
+Produis uniquement le nouveau texte.`;
+
+
+
+    document
+        .getElementById(
+            "prompt"
+        )
+        .textContent=
+        prompt;
+
+
+    show(
+        "promptCard"
+    );
+
+};
+
+
+/* =====================================================
+   GENERATION LLM
+===================================================== */
+
+async function generateTextForConcept(){
+
+    if(!engine){
+
+        throw new Error(
+            "Le LLM n'est pas chargé."
+        );
+
+    }
+
+
+    if(!selected){
+
+        throw new Error(
+            "Aucun concept sélectionné."
+        );
+
+    }
+
+
+    const c=
+        memory.concepts
+        .find(
+            x=>x.id===selected
+        );
+
+
+    const relations=
+        (c.related||[])
+        .map(
+            id=>
+                memory.concepts
+                .find(
+                    x=>x.id===id
+                )
+        )
+        .filter(Boolean)
+        .sort(
+            (a,b)=>
+                b.weight-a.weight
+        )
+        .slice(0,8);
+
+
+    const mode=
+        document
+        .getElementById(
+            "generationMode"
+        )
+        .value;
+
+
+    const length=
+        document
+        .getElementById(
+            "textLength"
+        )
+        .value;
+
+
+    const lengthText={
+
+        short:"3 à 4 phrases",
+
+        medium:"5 à 7 phrases",
+
+        long:"8 à 12 phrases"
+
+    }[length];
+
+
+    const objective={
+
+        balanced:
+        "approfondir le concept de manière équilibrée et créer de nouvelles relations",
+
+        deep:
+        "approfondir fortement le concept et expliquer ses dimensions importantes",
+
+        relations:
+        "explorer les relations entre le concept central et les concepts voisins",
+
+        causes:
+        "explorer les causes, conséquences, facteurs et mécanismes",
+
+        examples:
+        "produire des exemples et situations concrètes permettant de mieux comprendre le concept"
+
+    }[mode];
+
+
+    const known=
+        c.sentences
+        .slice(-5)
+        .join(" ");
+
+
+    const system=
+
+`Tu es le moteur de génération de connaissances de Chœur Domino.
+
+Tu travailles en français.
+
+Ton objectif est de produire de petits textes autonomes
+qui apportent de nouvelles informations.
+
+Ne copie pas le texte connu.
+Ne répète pas inutilement les mêmes phrases.
+N'invente pas des faits précis lorsque tu n'en es pas sûr.
+Utilise naturellement les concepts liés.
+Crée potentiellement de nouvelles relations sémantiques.
+
+Réponds uniquement avec le texte à apprendre.`;
+
+
+    const user=
+
+`Concept central :
+${c.name}
+
+Objectif :
+${objective}
+
+Longueur :
+${lengthText}
+
+Concepts déjà liés :
+${
+    relations
+    .map(
+        x=>x.name
+    )
     .join(", ")
     ||
     "aucun"
 }
 
-CONTEXTE CONNU :
-${
-    c.sentences
-    .slice(-5)
-    .join(" ")
-    ||
-    "aucun"
-}
+Contexte déjà connu :
+${known || "aucun"}
 
-CONSIGNES :
-
-- Écris un texte original en français de ${len} phrases.
-- Apporte de l'information nouvelle.
-- Ne répète pas simplement le contexte connu.
-- Utilise naturellement les concepts liés lorsqu'ils sont pertinents.
-- Explique les relations utiles.
-- Ne parle pas de cette consigne.
-- Ne parle pas de Chœur Domino.
-- Ne donne pas une simple liste de mots.
-- N'invente pas de faits comme certains lorsqu'ils ne le sont pas.
-- Le texte doit être autonome et exploitable comme connaissance.
-
-BUT :
-
-Renforcer le concept avec un contexte différent afin que
-l'autre mémoire puisse apprendre des concepts, des poids,
-des relations sémantiques et des n-grammes sans simplement
-surpondérer une copie identique.`;
+Écris maintenant un nouveau texte original.`;
 
 
-    document
-        .getElementById("prompt")
-        .textContent=
-        promptText;
 
+    const response=
+        await engine
+        .chat
+        .completions
+        .create({
 
-    show("promptCard");
+            messages:[
 
-    show("resultCard");
+                {
+                    role:"system",
+                    content:system
+                },
 
+                {
+                    role:"user",
+                    content:user
+                }
 
-    document
-        .getElementById("promptCard")
-        .scrollIntoView({
-            behavior:"smooth"
+            ],
+
+            temperature:.7,
+
+            max_tokens:
+                length==="short"
+                ?160
+                :
+                length==="medium"
+                ?260
+                :
+                400
+
         });
+
+
+    return response
+        .choices[0]
+        ?.message
+        ?.content
+        ?.trim()
+        ||
+        "";
 
 }
 
 
 /* =====================================================
-   INGESTION
+   GENERATION LOCALE
 ===================================================== */
 
-function ingest(){
+window.generateLocalText=async function(){
 
-    let text=
+    if(!engine){
+
+        alert(
+            "Charge d'abord le LLM."
+        );
+
+        return;
+
+    }
+
+
+    if(!selected){
+
+        alert(
+            "Sélectionne un concept."
+        );
+
+        return;
+
+    }
+
+
+    const status=
         document
-        .getElementById("result")
+        .getElementById(
+            "autoStatus"
+        );
+
+
+    try{
+
+        status.textContent=
+            "🤖 Génération en cours...";
+
+
+        const text=
+            await generateTextForConcept();
+
+
+        if(!text){
+
+            throw new Error(
+                "Le LLM n'a retourné aucun texte."
+            );
+
+        }
+
+
+        generatedText=text;
+
+
+        document
+            .getElementById(
+                "llmOutput"
+            )
+            .textContent=
+            text;
+
+
+        show(
+            "llmOutputCard"
+        );
+
+
+        status.textContent=
+            "🟢 Texte généré.";
+
+    }catch(error){
+
+        console.error(error);
+
+        status.textContent=
+            "🔴 Erreur de génération.";
+
+        alert(
+            error.message
+        );
+
+    }
+
+};
+
+
+/* =====================================================
+   AUTO 1
+===================================================== */
+
+window.autoOne=async function(){
+
+    if(autoRunning)
+        return;
+
+
+    autoRunning=true;
+
+
+    document
+        .getElementById(
+            "stopBtn"
+        )
+        .disabled=false;
+
+
+    document
+        .getElementById(
+            "autoOneBtn"
+        )
+        .disabled=true;
+
+
+    try{
+
+        await generateLocalText();
+
+    }finally{
+
+        autoRunning=false;
+
+        document
+            .getElementById(
+                "stopBtn"
+            )
+            .disabled=true;
+
+        document
+            .getElementById(
+                "autoOneBtn"
+            )
+            .disabled=!engine;
+
+    }
+
+};
+
+
+/* =====================================================
+   AUTO 3
+===================================================== */
+
+window.autoThree=async function(){
+
+    if(autoRunning)
+        return;
+
+
+    if(!selected){
+
+        alert(
+            "Sélectionne d'abord un concept."
+        );
+
+        return;
+
+    }
+
+
+    autoRunning=true;
+
+
+    document
+        .getElementById(
+            "stopBtn"
+        )
+        .disabled=false;
+
+
+    document
+        .getElementById(
+            "autoThreeBtn"
+        )
+        .disabled=true;
+
+
+    try{
+
+        for(
+            let i=0;
+            i<3;
+            i++
+        ){
+
+            if(!autoRunning)
+                break;
+
+
+            document
+                .getElementById(
+                    "autoStatus"
+                )
+                .textContent=
+                `🤖 Génération ${i+1}/3...`;
+
+
+            const text=
+                await generateTextForConcept();
+
+
+            if(!text)
+                break;
+
+
+            generatedText=text;
+
+
+            document
+                .getElementById(
+                    "llmOutput"
+                )
+                .textContent=
+                text;
+
+
+            show(
+                "llmOutputCard"
+            );
+
+
+            /*
+               On attend que l'utilisateur
+               absorbe chaque texte.
+
+               On ne fait donc PAS
+               trois générations silencieuses.
+            */
+
+            document
+                .getElementById(
+                    "autoStatus"
+                )
+                .textContent=
+                `✓ Génération ${i+1}/3 prête. Absorbe le texte puis continue.`;
+
+            break;
+
+        }
+
+    }catch(error){
+
+        alert(
+            error.message
+        );
+
+    }finally{
+
+        autoRunning=false;
+
+        document
+            .getElementById(
+                "stopBtn"
+            )
+            .disabled=true;
+
+        document
+            .getElementById(
+                "autoThreeBtn"
+            )
+            .disabled=!engine;
+
+    }
+
+};
+
+
+/* =====================================================
+   STOP
+===================================================== */
+
+window.stopAuto=function(){
+
+    autoRunning=false;
+
+
+    document
+        .getElementById(
+            "autoStatus"
+        )
+        .textContent=
+        "🛑 Arrêt demandé.";
+
+};
+
+
+/* =====================================================
+   ABSORBER LLM
+===================================================== */
+
+window.absorbGenerated=function(){
+
+    if(!generatedText){
+
+        alert(
+            "Aucun texte généré."
+        );
+
+        return;
+
+    }
+
+
+    absorbText(
+        generatedText,
+        "LLM local"
+    );
+
+};
+
+
+/* =====================================================
+   ABSORBER EXTERNE
+===================================================== */
+
+window.absorbExternal=function(){
+
+    const text=
+        document
+        .getElementById(
+            "externalResult"
+        )
         .value
         .trim();
 
@@ -1888,18 +2863,42 @@ function ingest(){
     if(!text){
 
         alert(
-            "Colle le résultat avant de l'absorber."
+            "Colle un résultat."
         );
 
         return;
 
     }
 
+
+    absorbText(
+        text,
+        "Autre interface"
+    );
+
+
+    document
+        .getElementById(
+            "externalResult"
+        )
+        .value="";
+
+};
+
+
+/* =====================================================
+   ABSORPTION CENTRALE
+===================================================== */
+
+function absorbText(
+    text,
+    source
+){
 
     if(!selected){
 
         alert(
-            "Sélectionne le concept auquel rattacher ce résultat."
+            "Sélectionne un concept."
         );
 
         return;
@@ -1907,107 +2906,97 @@ function ingest(){
     }
 
 
-    let before=
+    const parent=
+        memory.concepts
+        .find(
+            c=>c.id===selected
+        );
+
+
+    if(!parent)
+        return;
+
+
+    const before=
         new Set(
-            M.concepts.map(
+            memory.concepts
+            .map(
                 c=>c.id
             )
         );
 
 
-    let parent=
-        M.concepts.find(
-            x=>x.id===selected
+    const id=
+        "TXT-"+Date.now();
+
+
+    const newConcepts=
+        analyzeText(
+            text,
+            selected
         );
 
 
-    let t={
-
-        id:
-            "TXT-"+Date.now(),
-
-        text,
-
-        conceptId:
-            selected,
-
-        prompt:
-            promptText,
-
-        words:
-            toks(text).length,
-
-        date:
-            new Date().toISOString()
-
-    };
-
-
-    M.texts.push(t);
-
+    parent.ingestions++;
 
     /*
-       Renforcement du concept parent.
+       Renforcement contrôlé.
+       Une répétition ne doit pas exploser
+       le poids.
     */
-
-    parent.ingestions++;
 
     parent.weight+=2;
 
+
     parent.history.push(
-        t.id
+        id
     );
 
 
-    /*
-       Analyse du nouveau texte.
-    */
+    memory.texts.push({
 
-    analyze(text);
+        id,
+
+        parent:selected,
+
+        source,
+
+        text,
+
+        words:
+            tokenize(text).length,
+
+        date:
+            new Date()
+            .toISOString()
+
+    });
 
 
-    /*
-       Concepts nouveaux.
-    */
-
-    let fresh=
-        M.concepts.filter(
+    const fresh=
+        memory.concepts
+        .filter(
             c=>!before.has(c.id)
         );
 
 
-    /*
-       Relier les nouveaux concepts
-       au concept principal.
-    */
-
-    fresh.forEach(
-        c=>
-            addLink(
-                selected,
-                c.id,
-                text
-            )
-    );
-
-
-    /*
-       Historique.
-    */
-
-    M.history.push({
+    memory.history.push({
 
         concept:selected,
 
-        newConcepts:
-            fresh.map(
-                c=>c.name
-            ),
-
-        date:t.date,
+        source,
 
         ingestion:
-            parent.ingestions
+            parent.ingestions,
+
+        newConcepts:
+            fresh.map(
+                x=>x.name
+            ),
+
+        date:
+            new Date()
+            .toISOString()
 
     });
 
@@ -2016,91 +3005,56 @@ function ingest(){
 
 
     document
-        .getElementById("result")
-        .value="";
-
-
-    document
-        .getElementById("ingestMsg")
-        .textContent=
-        `✓ Ingestion ${parent.ingestions} enregistrée. ${fresh.length} nouveau(x) concept(s).`;
-
-
-    document
-        .getElementById("new")
-        .innerHTML=
-        fresh.length
-        ?
-        fresh
-        .map(
-            c=>
-            `<span class="pill">
-                ✨ ${esc(c.name)}
-             </span>`
+        .getElementById(
+            "newKnowledge"
         )
-        .join("")
-        :
-        `<span class="muted">
-            Pas de nouveau concept majeur.
-            La mémoire a surtout renforcé
-            des concepts existants.
-         </span>`;
+        .innerHTML=`
+
+        <p>
+        <b>
+        Concept renforcé :
+        </b>
+        ${escapeHtml(parent.name)}
+        </p>
+
+        <p>
+        Ingestion :
+        <b>
+        ${parent.ingestions}/3
+        </b>
+        </p>
+
+        <p>
+        Nouveaux concepts :
+        <b>
+        ${fresh.length}
+        </b>
+        </p>
+
+        ${
+            fresh
+            .map(
+                x=>
+                `<span class="pill">
+                ✨ ${escapeHtml(x.name)}
+                </span>`
+            )
+            .join("")
+        }
+
+        `;
 
 
-    show("newCard");
+    show(
+        "newKnowledgeCard"
+    );
 
 
     render();
 
-    selectConcept(selected);
-
-}
-
-
-/* =====================================================
-   CHEMIN
-===================================================== */
-
-function path(){
-
-    if(!M.history.length)
-        return;
-
-
-    show("pathCard");
-
-
-    document
-        .getElementById("path")
-        .innerHTML=
-        M.history
-        .slice(-15)
-        .map(
-            (h,i)=>{
-
-                let c=
-                    M.concepts.find(
-                        x=>x.id===h.concept
-                    );
-
-
-                return `
-                <span class="pill">
-                ${i+1}.
-                ${esc(
-                    c
-                    ?
-                    c.name
-                    :
-                    h.concept
-                )}
-                · ingestion ${h.ingestion}
-                </span>
-                `;
-
-            }
-        )
-        .join(" → ");
+    window.selectConcept(
+        selected
+    );
 
 }
 
@@ -2112,15 +3066,12 @@ function path(){
 function buildExport(){
 
     let out=
-`CHŒUR DOMINO V4.1
-EXPORT DE CONNAISSANCE
-
-========================================
+`CHŒUR DOMINO V5
+MEMOIRE DE CONNAISSANCE
 
 `;
 
-
-    M.concepts
+    memory.concepts
     .slice()
     .sort(
         (a,b)=>
@@ -2129,36 +3080,43 @@ EXPORT DE CONNAISSANCE
     .forEach(c=>{
 
         out+=
-`CONCEPT :
-${c.name}
+`
+==============================
+CONCEPT : ${c.name}
+==============================
 
-POIDS :
-${c.weight}
+Poids : ${c.weight}
+Catégorie : ${categoryLabel(c)}
+Ingestions : ${c.ingestions}/3
+Relations : ${c.links}
 
-CATÉGORIE :
-${label(c)}
-
-INGESTIONS :
-${c.ingestions}
-
-LIENS :
+Concepts liés :
 ${
     (c.related||[])
     .join(", ")
 }
-
-========================================
 
 `;
 
     });
 
 
-    M.texts.forEach(
+    out+=
+`
+==============================
+TEXTES
+==============================
+`;
+
+
+    memory.texts.forEach(
         (t,i)=>{
 
             out+=
-`===== TEXTE ${i+1} =====
+`
+--- Texte ${i+1} ---
+Source : ${t.source}
+Concept : ${t.parent}
 
 ${t.text}
 
@@ -2173,24 +3131,37 @@ ${t.text}
 }
 
 
-/* =====================================================
-   COPIE
-===================================================== */
-
-function copyPrompt(){
-
-    copyText(promptText);
-
-}
-
-
-function copyKnowledge(){
+window.copyKnowledge=function(){
 
     copyText(
         buildExport()
     );
 
-}
+};
+
+
+window.copyGenerated=function(){
+
+    copyText(
+        generatedText
+    );
+
+};
+
+
+window.copyPrompt=function(){
+
+    const p=
+        document
+        .getElementById(
+            "prompt"
+        )
+        .textContent;
+
+
+    copyText(p);
+
+};
 
 
 function copyText(text){
@@ -2224,7 +3195,7 @@ function copyText(text){
 
 function fallbackCopy(text){
 
-    let area=
+    const area=
         document.createElement(
             "textarea"
         );
@@ -2232,9 +3203,9 @@ function fallbackCopy(text){
 
     area.value=text;
 
-    document.body.appendChild(
-        area
-    );
+    document
+        .body
+        .appendChild(area);
 
     area.select();
 
@@ -2250,14 +3221,16 @@ function fallbackCopy(text){
 
 
 /* =====================================================
-   TÉLÉCHARGEMENT
+   DOWNLOAD TXT
 ===================================================== */
 
-function download(){
+window.downloadMemory=function(){
 
-    let blob=
+    const blob=
         new Blob(
-            [buildExport()],
+            [
+                buildExport()
+            ],
             {
                 type:
                 "text/plain;charset=utf-8"
@@ -2265,13 +3238,13 @@ function download(){
         );
 
 
-    let url=
+    const url=
         URL.createObjectURL(
             blob
         );
 
 
-    let a=
+    const a=
         document.createElement(
             "a"
         );
@@ -2280,13 +3253,12 @@ function download(){
     a.href=url;
 
     a.download=
-        "choeur-domino-v41.txt";
+        "choeur-domino-v5.txt";
 
 
     document
         .body
         .appendChild(a);
-
 
     a.click();
 
@@ -2294,35 +3266,88 @@ function download(){
 
     URL.revokeObjectURL(url);
 
-}
+};
+
+
+/* =====================================================
+   DOWNLOAD JSON
+===================================================== */
+
+window.downloadJSON=function(){
+
+    const blob=
+        new Blob(
+            [
+                JSON.stringify(
+                    memory,
+                    null,
+                    2
+                )
+            ],
+            {
+                type:
+                "application/json"
+            }
+        );
+
+
+    const url=
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const a=
+        document.createElement(
+            "a"
+        );
+
+
+    a.href=url;
+
+    a.download=
+        "choeur-domino-v5-memory.json";
+
+
+    document
+        .body
+        .appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+};
 
 
 /* =====================================================
    RESET
 ===================================================== */
 
-function resetAll(){
+window.resetMemory=function(){
 
     if(
         !confirm(
-            "Effacer toute la mémoire locale de Chœur Domino ?"
+            "Effacer toute la mémoire Chœur Domino ?"
         )
     )
         return;
 
 
     localStorage.removeItem(
-        KEY
+        STORAGE
     );
 
 
     location.reload();
 
-}
+};
 
 
 /* =====================================================
-   UTILITAIRES
+   UI
 ===================================================== */
 
 function show(id){
@@ -2335,12 +3360,16 @@ function show(id){
 }
 
 
-function esc(s){
+/* =====================================================
+   ESCAPE
+===================================================== */
 
-    return String(s)
+function escapeHtml(value){
+
+    return String(value)
         .replace(
-            /[&<>'"]/g,
-            x=>({
+            /[&<>"']/g,
+            char=>({
 
                 "&":"&amp;",
 
@@ -2348,23 +3377,169 @@ function esc(s){
 
                 ">":"&gt;",
 
-                "'":"&#39;",
+                '"':"&quot;",
 
-                '"':"&quot;"
+                "'":"&#39;"
 
-            }[x])
+            }[char])
         );
 
 }
 
 
 /* =====================================================
-   INITIALISATION
+   RENDER
+===================================================== */
+
+function render(){
+
+    if(
+        memory.concepts.length===0
+    )
+        return;
+
+
+    show("statsCard");
+
+    show("pyramidCard");
+
+    show("autoCard");
+
+    show("recommendCard");
+
+    show("categoryCard");
+
+    show("historyCard");
+
+    show("exportCard");
+
+
+    const sourceWords=
+        memory.sources
+        .reduce(
+            (a,x)=>
+                a+
+                (x.words||0),
+            0
+        );
+
+
+    const textWords=
+        memory.texts
+        .reduce(
+            (a,x)=>
+                a+
+                (x.words||0),
+            0
+        );
+
+
+    document
+        .getElementById(
+            "statWords"
+        )
+        .textContent=
+        sourceWords+
+        textWords;
+
+
+    document
+        .getElementById(
+            "statConcepts"
+        )
+        .textContent=
+        memory.concepts.length;
+
+
+    document
+        .getElementById(
+            "statLinks"
+        )
+        .textContent=
+        memory.links.length;
+
+
+    document
+        .getElementById(
+            "statTexts"
+        )
+        .textContent=
+        memory.texts.length;
+
+
+    document
+        .getElementById(
+            "statIngest"
+        )
+        .textContent=
+        memory.texts.length;
+
+
+    document
+        .getElementById(
+            "statLevel"
+        )
+        .textContent=
+        Math.min(
+            5,
+            1+
+            Math.floor(
+                memory.texts.length/3
+            )
+        );
+
+
+    recommend();
+
+    showCategory(
+        "all"
+    );
+
+
+    document
+        .getElementById(
+            "history"
+        )
+        .innerHTML=
+        memory.history
+        .slice(-20)
+        .map(
+            (h,i)=>`
+
+            <span class="pill">
+
+            ${i+1}.
+            ${
+                escapeHtml(
+                    h.concept
+                )
+            }
+
+            ·
+            ${h.ingestion}/3
+
+            ·
+            ${
+                h.source
+            }
+
+            </span>
+
+            `
+        )
+        .join("");
+
+}
+
+
+/* =====================================================
+   INIT
 ===================================================== */
 
 render();
 
+
 </script>
 
 </body>
-</html>
+    </html>
