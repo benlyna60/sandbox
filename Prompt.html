@@ -1,54 +1,76 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chœur Domino V3</title><style>
+<title>Chœur Domino V4 — Pyramide d'apprentissage</title>
+
+<style>
 *{box-sizing:border-box}
+
+:root{
+    --bg:#eef2f7;
+    --card:#ffffff;
+    --text:#18202a;
+    --muted:#687384;
+    --border:#dce2e9;
+    --blue:#2563eb;
+    --green:#15803d;
+    --orange:#c56a00;
+    --red:#b91c1c;
+    --purple:#7c3aed;
+}
 
 body{
     margin:0;
-    font-family:Arial,sans-serif;
-    background:#eef2f7;
-    color:#20252b;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 .container{
-    width:min(1000px,94%);
-    margin:20px auto;
+    width:min(1050px,95%);
+    margin:18px auto 50px;
 }
 
 header{
     background:#111827;
     color:white;
     padding:22px;
-    border-radius:16px;
+    border-radius:18px;
     margin-bottom:18px;
 }
 
 header h1{
-    margin:0 0 7px;
+    margin:0 0 8px;
+    font-size:25px;
 }
 
 header p{
     margin:0;
     color:#cbd5e1;
+    line-height:1.5;
 }
 
 .card{
-    background:white;
-    border-radius:14px;
-    padding:20px;
+    background:var(--card);
+    border-radius:15px;
+    padding:19px;
     margin-bottom:18px;
     box-shadow:0 4px 18px rgba(0,0,0,.07);
 }
 
+h2{
+    margin-top:0;
+}
+
 textarea{
     width:100%;
-    min-height:190px;
+    min-height:170px;
     resize:vertical;
-    border:1px solid #ccd3dd;
+    border:1px solid var(--border);
     border-radius:10px;
-    padding:14px;
+    padding:13px;
     font-size:15px;
     line-height:1.55;
     outline:none;
@@ -57,14 +79,14 @@ textarea{
 textarea:focus,
 input:focus,
 select:focus{
-    border-color:#2563eb;
+    border-color:var(--blue);
 }
 
 .controls{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-    gap:12px;
-    margin-top:15px;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:11px;
+    margin-top:13px;
 }
 
 label{
@@ -73,11 +95,12 @@ label{
     font-weight:bold;
 }
 
-input,select{
+input,
+select{
     width:100%;
     margin-top:6px;
-    padding:11px;
-    border:1px solid #ccd3dd;
+    padding:10px;
+    border:1px solid var(--border);
     border-radius:8px;
     background:white;
 }
@@ -85,9 +108,9 @@ input,select{
 button{
     border:0;
     border-radius:9px;
-    padding:12px 16px;
-    margin-top:14px;
-    background:#2563eb;
+    padding:11px 15px;
+    margin-top:13px;
+    background:var(--blue);
     color:white;
     font-size:14px;
     font-weight:bold;
@@ -98,11 +121,12 @@ button:hover{
     opacity:.9;
 }
 
+button.green{background:var(--green)}
+button.orange{background:var(--orange)}
+button.red{background:var(--red)}
+button.purple{background:var(--purple)}
 button.dark{background:#111827}
-button.green{background:#15803d}
-button.orange{background:#c56a00}
 button.gray{background:#64748b}
-button.red{background:#b91c1c}
 
 .actions{
     display:flex;
@@ -114,198 +138,617 @@ button.red{background:#b91c1c}
     margin-top:0;
 }
 
-.stats{
+.hidden{
+    display:none!important;
+}
+
+.status{
+    margin-top:12px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.small{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.5;
+}
+
+
+/* =========================
+   PYRAMIDE
+========================= */
+
+.pyramid{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:7px;
+    padding:10px 0 15px;
+}
+
+.level{
+    min-height:65px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:10px;
+    position:relative;
+}
+
+.level1{width:94%;background:#f1f5ff}
+.level2{width:78%;background:#f5f1ff}
+.level3{width:62%;background:#f8f1ff}
+.level4{width:46%;background:#fff6e8}
+.level5{width:31%;background:#ecfdf3}
+
+.level strong{
+    display:block;
+    font-size:15px;
+}
+
+.level span{
+    display:block;
+    margin-top:4px;
+    font-size:11px;
+    color:var(--muted);
+}
+
+
+/* =========================
+   CONCEPTS
+========================= */
+
+.concept-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
     gap:10px;
 }
 
-.stat{
-    background:#f3f6fa;
+.concept-card{
+    border:1px solid var(--border);
+    border-radius:11px;
+    padding:13px;
+    background:#fafbfc;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.concept-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.concept-card.selected{
+    border:2px solid var(--blue);
+    background:#eef5ff;
+}
+
+.concept-name{
+    font-weight:bold;
+    font-size:16px;
+}
+
+.concept-meta{
+    margin-top:6px;
+    font-size:11px;
+    color:var(--muted);
+}
+
+.score{
+    height:6px;
+    background:#e5e7eb;
     border-radius:10px;
-    padding:14px;
+    margin-top:9px;
+    overflow:hidden;
+}
+
+.score div{
+    height:100%;
+    background:var(--blue);
+    width:0;
+}
+
+
+/* =========================
+   LIENS
+========================= */
+
+.link-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.link-pill{
+    padding:8px 11px;
+    border-radius:20px;
+    background:#f1f5f9;
+    border:1px solid var(--border);
+    font-size:12px;
+}
+
+
+/* =========================
+   PROMPT
+========================= */
+
+.prompt-box{
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-radius:11px;
+    padding:15px;
+    white-space:pre-wrap;
+    line-height:1.55;
+    font-size:14px;
+    max-height:500px;
+    overflow:auto;
+}
+
+
+/* =========================
+   STATISTIQUES
+========================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:9px;
+}
+
+.stat{
+    background:#f4f6f9;
+    border-radius:10px;
+    padding:12px;
     text-align:center;
 }
 
 .stat strong{
     display:block;
-    font-size:25px;
+    font-size:24px;
 }
 
-.concepts{
+
+/* =========================
+   CHEMIN
+========================= */
+
+.path{
     display:flex;
     flex-wrap:wrap;
-    gap:8px;
-    margin-top:12px;
+    gap:6px;
+    align-items:center;
 }
 
-.concept{
+.path-item{
     background:#e8f0ff;
     color:#174ea6;
-    border-radius:20px;
-    padding:7px 11px;
-    font-size:13px;
-}
-
-.progress{
-    height:10px;
-    background:#e5e7eb;
-    border-radius:10px;
-    overflow:hidden;
-    margin-top:12px;
-}
-
-.progress div{
-    height:100%;
-    width:0;
-    background:#2563eb;
-    transition:.3s;
-}
-
-.item{
-    border:1px solid #dde2e8;
-    border-radius:11px;
-    padding:15px;
-    margin-top:12px;
-    background:#fafbfc;
-}
-
-.item-title{
-    font-weight:bold;
-    margin-bottom:8px;
-}
-
-.item-text{
-    white-space:pre-wrap;
-    line-height:1.55;
-    font-size:14px;
-}
-
-.badge{
-    display:inline-block;
-    font-size:11px;
-    padding:4px 7px;
-    border-radius:10px;
-    background:#e5e7eb;
-    margin-left:5px;
-}
-
-.notice{
-    padding:12px;
-    background:#fff7df;
-    border-left:4px solid #e3a500;
-    border-radius:7px;
-    font-size:13px;
-    margin-bottom:15px;
-}
-
-.status{
-    margin-top:12px;
-    font-weight:bold;
-}
-
-.hidden{
-    display:none;
-}
-
-.small{
+    padding:7px 10px;
+    border-radius:18px;
     font-size:12px;
-    color:#687386;
 }
 
-textarea.output{
-    min-height:320px;
-    margin-top:15px;
+.arrow{
+    color:#9aa3af;
 }
+
+
+/* =========================
+   HISTORIQUE
+========================= */
+
+.history-item{
+    border-left:4px solid var(--blue);
+    padding:10px 12px;
+    margin-top:9px;
+    background:#f8fafc;
+    border-radius:5px;
+}
+
+.history-title{
+    font-weight:bold;
+}
+
+.history-text{
+    margin-top:5px;
+    font-size:12px;
+    color:var(--muted);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media(max-width:600px){
+
     .container{
         width:96%;
-        margin:10px auto;
+        margin-top:10px;
     }
 
-    header,.card{
-        padding:15px;
+    .card{
+        padding:14px;
+    }
+
+    header{
+        padding:17px;
+    }
+
+    .level1{width:100%}
+    .level2{width:90%}
+    .level3{width:80%}
+    .level4{width:70%}
+    .level5{width:60%}
+
+    button{
+        width:100%;
+    }
+
+    .actions button{
+        width:100%;
     }
 }
-</style></head><body><div class="container"><header>
-    <h1>🧠 Chœur Domino V3</h1>
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>🧠 Chœur Domino V4</h1>
     <p>
-        Générateur contrôlé de matière textuelle pour alimenter une autre interface.
+        Pyramide d'apprentissage progressive : choisis un concept,
+        le système construit automatiquement la prochaine étape.
     </p>
-</header><!-- SOURCE --><div class="card"><h2>1. Texte source</h2><textarea id="source">Le chat dort sur le tapis. Le chien court dans le jardin. L'oiseau chante dans l'arbre. Les animaux ont besoin d'un environnement adapté à leurs comportements. Le sommeil permet au chat de récupérer et de rester en bonne santé.</textarea><div class="controls"><div>
-<label>Nombre de productions</label>
-<input id="amount" type="number" min="1" max="100" value="10">
-</div><div>
-<label>Longueur</label>
-<select id="length">
-<option value="short">Courte</option>
-<option value="medium" selected>Moyenne</option>
-<option value="long">Longue</option>
+</header>
+
+
+<!-- =====================================================
+     SOURCE
+===================================================== -->
+
+<div class="card">
+
+<h2>1. 🌱 Commencer par la base</h2>
+
+<p class="small">
+Colle ton texte initial. Le système va chercher les concepts,
+les relations et les phrases dans lesquelles ils apparaissent.
+</p>
+
+<textarea id="sourceInput">Le chat dort sur le tapis. Le chien court dans le jardin. L'oiseau chante dans l'arbre. Les animaux ont besoin d'un environnement adapté à leurs comportements. Le sommeil permet au chat de récupérer et de rester en bonne santé.</textarea>
+
+<div class="controls">
+
+<div>
+<label>Nombre de concepts visibles</label>
+<input id="conceptLimit" type="number" min="5" max="30" value="12">
+</div>
+
+<div>
+<label>Longueur du texte demandé</label>
+<select id="textLength">
+<option value="short">3 à 4 phrases</option>
+<option value="medium" selected>5 à 7 phrases</option>
+<option value="long">8 à 12 phrases</option>
 </select>
-</div><div>
-<label>Mode d'exploration</label>
-<select id="mode">
-<option value="balanced" selected>Équilibré</option>
-<option value="knowledge">Connaissances</option>
-<option value="relations">Relations</option>
-<option value="causes">Causes / conséquences</option>
-<option value="examples">Exemples</option>
+</div>
+
+<div>
+<label>Niveau actuel</label>
+<select id="learningMode">
+<option value="discovery">Découverte</option>
 <option value="deep">Approfondissement</option>
+<option value="relations">Relations</option>
+<option value="examples">Exemples</option>
+<option value="causes">Causes / conséquences</option>
 </select>
-</div><div>
-<label>Niveau</label>
-<select id="level">
-<option value="1" selected>Niveau 1 — Découverte</option>
-<option value="2">Niveau 2 — Approfondissement</option>
-<option value="3">Niveau 3 — Connexions</option>
-<option value="4">Niveau 4 — Exploration</option>
-</select>
-</div></div><button onclick="startGeneration()">
-🚀 Construire le lot
-</button><div id="status" class="status"></div><div class="progress">
-<div id="progressBar"></div>
-</div></div><!-- ANALYSE --><div id="analysis" class="card hidden"><h2>🔎 Analyse</h2><div class="stats"><div class="stat">
-<strong id="words">0</strong>
+</div>
+
+</div>
+
+<button onclick="startFromSource()">
+🚀 Construire la pyramide
+</button>
+
+<div id="sourceStatus" class="status"></div>
+
+</div>
+
+
+<!-- =====================================================
+     PYRAMIDE
+===================================================== -->
+
+<div id="pyramidCard" class="card hidden">
+
+<h2>🔻 Ta pyramide d'apprentissage</h2>
+
+<div class="pyramid">
+
+<div class="level level5">
+<div>
+<strong id="pyramidTop">🌐 Synthèse</strong>
+<span>Ce que la connaissance pourra devenir</span>
+</div>
+</div>
+
+<div>▲</div>
+
+<div class="level level4">
+<div>
+<strong>🔗 Connexions</strong>
+<span>Relations entre concepts</span>
+</div>
+</div>
+
+<div>▲</div>
+
+<div class="level level3">
+<div>
+<strong>🧠 Approfondissement</strong>
+<span>Nouvelles informations autour d'un concept</span>
+</div>
+</div>
+
+<div>▲</div>
+
+<div class="level level2">
+<div>
+<strong>🌱 Concepts</strong>
+<span>Choisis ce que tu veux développer</span>
+</div>
+</div>
+
+<div>▲</div>
+
+<div class="level level1">
+<div>
+<strong>📄 Texte source</strong>
+<span>La base de départ</span>
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     STATISTIQUES
+===================================================== -->
+
+<div id="statsCard" class="card hidden">
+
+<h2>📊 État de l'apprentissage</h2>
+
+<div class="stats">
+
+<div class="stat">
+<strong id="statWords">0</strong>
 mots
-</div><div class="stat">
-<strong id="sentences">0</strong>
-phrases
-</div><div class="stat">
-<strong id="conceptNumber">0</strong>
+</div>
+
+<div class="stat">
+<strong id="statConcepts">0</strong>
 concepts
-</div><div class="stat">
-<strong id="productionNumber">0</strong>
-productions
-</div></div><h3>Concepts retenus</h3><div id="concepts" class="concepts"></div></div><!-- RESULTATS --><div id="results" class="card hidden"><h2>📚 Matière générée</h2><div class="notice">
-Chaque production correspond à une demande autonome que tu peux envoyer
-à ton autre interface. Les thèmes sont volontairement diversifiés pour
-éviter de produire 50 fois la même chose.
-</div><div class="actions"><button class="green" onclick="copyAll()">
-📋 Copier tout
-</button><button class="dark" onclick="copyClean()">
-📄 Copier proprement
-</button><button class="orange" onclick="downloadTXT()">
+</div>
+
+<div class="stat">
+<strong id="statLinks">0</strong>
+liens
+</div>
+
+<div class="stat">
+<strong id="statTexts">0</strong>
+textes
+</div>
+
+<div class="stat">
+<strong id="statLevel">1</strong>
+niveau
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     CONCEPTS
+===================================================== -->
+
+<div id="conceptCard" class="card hidden">
+
+<h2>🌱 2. Choisis simplement un concept</h2>
+
+<p class="small">
+Tu n'as pas besoin de chercher les phrases toi-même.
+Clique seulement sur le concept que tu veux développer.
+</p>
+
+<div id="conceptGrid" class="concept-grid"></div>
+
+</div>
+
+
+<!-- =====================================================
+     CONCEPT SÉLECTIONNÉ
+===================================================== -->
+
+<div id="selectedCard" class="card hidden">
+
+<h2>🎯 Concept sélectionné</h2>
+
+<div id="selectedConcept"></div>
+
+<h3>🔗 Liens détectés</h3>
+
+<div id="selectedLinks" class="link-list"></div>
+
+<h3>📌 Phrases où le concept apparaît</h3>
+
+<div id="selectedSentences"></div>
+
+<button class="purple" onclick="generateNextPrompt()">
+⚡ Générer automatiquement le prochain prompt
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     PROMPT
+===================================================== -->
+
+<div id="promptCard" class="card hidden">
+
+<h2>🤖 3. Ton prochain prompt est prêt</h2>
+
+<p class="small">
+Tu n'as rien à rédiger. Le système a construit la demande
+à partir du concept, des liens et du contexte disponible.
+</p>
+
+<div id="promptBox" class="prompt-box"></div>
+
+<div class="actions">
+
+<button class="green" onclick="copyPrompt()">
+📋 Copier le prompt
+</button>
+
+<button class="dark" onclick="copyPromptWithLabel()">
+📦 Copier avec contexte
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     RÉSULTAT
+===================================================== -->
+
+<div id="resultCard" class="card hidden">
+
+<h2>📥 4. Colle ici le résultat obtenu</h2>
+
+<p class="small">
+Après avoir envoyé le prompt à ton autre IA, colle sa réponse ici.
+Le système va apprendre de ce nouveau texte et continuer l'arbre.
+</p>
+
+<textarea id="resultInput" placeholder="Colle ici le texte produit par ton autre interface..."></textarea>
+
+<button class="green" onclick="absorbResult()">
+🧠 Absorber et continuer l'apprentissage
+</button>
+
+<div id="resultStatus" class="status"></div>
+
+</div>
+
+
+<!-- =====================================================
+     CHEMIN
+===================================================== -->
+
+<div id="pathCard" class="card hidden">
+
+<h2>🧭 Ton chemin</h2>
+
+<div id="path" class="path"></div>
+
+</div>
+
+
+<!-- =====================================================
+     NOUVEAUX CONCEPTS
+===================================================== -->
+
+<div id="newConceptCard" class="card hidden">
+
+<h2>✨ Nouvelles découvertes</h2>
+
+<p class="small">
+Le dernier texte a été analysé. Les nouveaux concepts et relations
+sont maintenant intégrés dans l'arbre.
+</p>
+
+<div id="newConcepts" class="concept-grid"></div>
+
+</div>
+
+
+<!-- =====================================================
+     HISTORIQUE
+===================================================== -->
+
+<div id="historyCard" class="card hidden">
+
+<h2>📚 Historique du chemin</h2>
+
+<div id="history"></div>
+
+</div>
+
+
+<!-- =====================================================
+     EXPORT
+===================================================== -->
+
+<div id="exportCard" class="card hidden">
+
+<h2>📦 Export pour ton autre système</h2>
+
+<p class="small">
+Tu peux exporter toute la matière produite pendant cette session
+dans un seul fichier texte.
+</p>
+
+<div class="actions">
+
+<button class="green" onclick="copyKnowledge()">
+📋 Copier toute la matière
+</button>
+
+<button class="orange" onclick="downloadKnowledge()">
 💾 Télécharger TXT
-</button><button class="gray" onclick="newCycle()">
-🔄 Nouveau cycle
-</button><button class="red" onclick="clearHistory()">
-🗑️ Réinitialiser l'historique
-</button></div><div id="items"></div></div><!-- BLOC GLOBAL --><div id="globalCard" class="card hidden"><h2>📦 Bloc prêt pour l'autre interface</h2><p class="small">
-Ce bloc contient uniquement les productions. Tu peux le copier en une seule fois.
-</p><textarea id="globalOutput" class="output" readonly></textarea><button class="green" onclick="copyClean()">
-📋 Copier le bloc
-</button></div></div><script>
+</button>
+
+<button class="red" onclick="resetEverything()">
+🗑️ Recommencer de zéro
+</button>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<script>
 
 /* =========================================================
-   CHŒUR DOMINO V3
-   MOTEUR LOCAL
+   CHŒUR DOMINO V4
+   MOTEUR
 ========================================================= */
 
 
-/* -----------------------------
-   STOP WORDS
------------------------------ */
+/* =========================================================
+   CONFIGURATION
+========================================================= */
+
+const STORAGE_KEY =
+"choeur_domino_v4_memory";
 
 const STOP_WORDS = new Set([
 
@@ -326,91 +769,123 @@ const STOP_WORDS = new Set([
 "ses","si","son","sont","sur","ta","te",
 "tes","toi","ton","tous","tout","très",
 "tu","un","une","vos","votre","vous",
-"y","dans","sous","chez","vers","entre"
+"y","chez","vers","sous","entre","apres",
+"leurs","notamment","ainsi","dont","cette",
+"ces","cet","c'est","être","ete","été"
 
 ]);
 
 
-/* -----------------------------
-   MOTS TROP GÉNÉRIQUES
------------------------------ */
+/* =========================================================
+   ÉTAT GLOBAL
+========================================================= */
 
-const GENERIC = new Set([
+let memory = loadMemory();
 
-"chose","choses","texte","textes",
-"information","informations","personne",
-"personnes","manière","maniere",
-"fois","temps","partie","parties",
-"élément","elements","éléments",
-"exemple","exemples","sujet",
-"sujets","monde","cas","type",
-"types"
+let selectedConceptId = null;
 
-]);
+let currentPrompt = "";
+
+let currentSourceId = null;
 
 
-/* -----------------------------
-   EXTRACTION
------------------------------ */
+/* =========================================================
+   STRUCTURE MÉMOIRE
+========================================================= */
 
-function tokenize(text){
+function emptyMemory(){
 
-    return text
+    return {
+
+        version:4,
+
+        createdAt:new Date().toISOString(),
+
+        sources:[],
+
+        concepts:[],
+
+        links:[],
+
+        texts:[],
+
+        paths:[],
+
+        history:[],
+
+        currentSource:null,
+
+        currentConcept:null
+
+    };
+
+}
+
+
+function loadMemory(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(STORAGE_KEY);
+
+        if(!saved)
+            return emptyMemory();
+
+        const parsed =
+            JSON.parse(saved);
+
+        return {
+            ...emptyMemory(),
+            ...parsed
+        };
+
+    }catch{
+
+        return emptyMemory();
+
+    }
+
+}
+
+
+function saveMemory(){
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(memory)
+    );
+
+}
+
+
+/* =========================================================
+   NORMALISATION
+========================================================= */
+
+function normalizeText(text){
+
+    return String(text)
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g,"")
-        .replace(/[^a-z0-9À-ÿ\s'-]/gi," ")
-        .split(/\s+/)
-        .map(x => x.trim())
-        .filter(Boolean);
+        .replace(/[\u0300-\u036f]/g,"");
 
 }
 
-
-/* -----------------------------
-   FRÉQUENCE
------------------------------ */
-
-function wordFrequency(text){
-
-    const words = tokenize(text);
-    const freq = {};
-
-    words.forEach(word => {
-
-        if(
-            word.length >= 4 &&
-            !STOP_WORDS.has(word) &&
-            !GENERIC.has(word) &&
-            !/^\d+$/.test(word)
-        ){
-
-            freq[word] = (freq[word] || 0) + 1;
-
-        }
-
-    });
-
-    return freq;
-
-}
-
-
-/* -----------------------------
-   NORMALISATION
------------------------------ */
 
 function normalizeWord(word){
 
-    let w = word.toLowerCase();
+    let w =
+        normalizeText(word)
+        .replace(/[^a-z0-9'-]/g,"");
 
     if(w.length > 6){
 
         if(w.endsWith("es"))
-            w = w.slice(0,-2);
+            w=w.slice(0,-2);
 
         else if(w.endsWith("s"))
-            w = w.slice(0,-1);
+            w=w.slice(0,-1);
 
     }
 
@@ -419,624 +894,1429 @@ function normalizeWord(word){
 }
 
 
-/* -----------------------------
-   EXTRACTION DES CONCEPTS
------------------------------ */
+/* =========================================================
+   TOKENISATION
+========================================================= */
 
-function extractConcepts(text){
+function tokenize(text){
 
-    const freq = wordFrequency(text);
-
-    const candidates =
-        Object.entries(freq)
-        .map(([word,count]) => {
-
-            let score = count;
-
-            if(word.length >= 7)
-                score += 0.5;
-
-            return {
-                word,
-                count,
-                score,
-                normalized:normalizeWord(word)
-            };
-
-        })
-        .sort((a,b)=>b.score-a.score);
-
-
-    const result = [];
-    const seen = new Set();
-
-    for(const item of candidates){
-
-        if(seen.has(item.normalized))
-            continue;
-
-        seen.add(item.normalized);
-        result.push(item.word);
-
-        /*
-            On limite volontairement.
-            Plus le texte est grand, plus la limite augmente,
-            mais lentement.
-        */
-
-        const limit =
-            Math.min(
-                30,
-                Math.max(
-                    8,
-                    Math.ceil(Math.sqrt(candidates.length * 4))
-                )
-            );
-
-        if(result.length >= limit)
-            break;
-
-    }
-
-    return result;
-
-}
-
-
-/* -----------------------------
-   DÉTECTION DES PHRASES
------------------------------ */
-
-function sentenceCount(text){
-
-    return text
-        .split(/[.!?]+/)
+    return normalizeText(text)
+        .replace(/[^a-z0-9À-ÿ\s'-]/gi," ")
+        .split(/\s+/)
         .map(x=>x.trim())
-        .filter(Boolean)
-        .length;
+        .filter(Boolean);
 
 }
 
 
-/* -----------------------------
-   HISTORIQUE
------------------------------ */
+/* =========================================================
+   PHRASES
+========================================================= */
 
-const HISTORY_KEY =
-"choeur_domino_v3_history";
+function splitSentences(text){
 
-function loadHistory(){
-
-    try{
-
-        return JSON.parse(
-            localStorage.getItem(HISTORY_KEY) || "[]"
-        );
-
-    }catch{
-
-        return [];
-
-    }
+    return String(text)
+        .replace(/\r/g,"")
+        .split(/(?<=[.!?])\s+|\n+/)
+        .map(x=>x.trim())
+        .filter(x=>x.length>10);
 
 }
 
-function saveHistory(history){
 
-    localStorage.setItem(
-        HISTORY_KEY,
-        JSON.stringify(history.slice(-1000))
+/* =========================================================
+   EXTRACTION MOTS
+========================================================= */
+
+function extractImportantWords(text){
+
+    const words = tokenize(text);
+
+    const freq = {};
+
+    words.forEach(word=>{
+
+        const normalized =
+            normalizeWord(word);
+
+        if(
+            normalized.length >= 4 &&
+            !STOP_WORDS.has(normalized) &&
+            !/^\d+$/.test(normalized)
+        ){
+
+            freq[normalized] =
+                (freq[normalized]||0)+1;
+
+        }
+
+    });
+
+    return Object.entries(freq)
+        .map(([word,count])=>({
+
+            word,
+            count
+
+        }))
+        .sort((a,b)=>b.count-a.count);
+
+}
+
+
+/* =========================================================
+   CONCEPTS
+========================================================= */
+
+function makeConceptId(word){
+
+    return normalizeWord(word);
+
+}
+
+
+function findConcept(word){
+
+    const id =
+        makeConceptId(word);
+
+    return memory.concepts.find(
+        c=>c.id===id
     );
 
 }
 
 
-/* -----------------------------
-   CRÉATION DES ANGLES
------------------------------ */
+function ensureConcept(word){
 
-const ANGLES = [
+    const id =
+        makeConceptId(word);
 
-"Définition simple",
-"Caractéristiques principales",
-"Fonctionnement",
-"Rôle",
-"Utilité",
-"Contexte",
-"Origine",
-"Causes",
-"Conséquences",
-"Avantages",
-"Limites",
-"Exemple concret",
-"Situation réelle",
-"Comparaison",
-"Différence avec un concept proche",
-"Relation avec un autre concept",
-"Interaction entre plusieurs concepts",
-"Évolution",
-"Problème associé",
-"Solution possible",
-"Erreur fréquente",
-"Point important à retenir",
-"Question que ce concept permet de résoudre",
-"Application pratique",
-"Approfondissement"
+    if(!id)
+        return null;
 
-];
+    let concept =
+        memory.concepts.find(
+            c=>c.id===id
+        );
 
+    if(!concept){
 
-/* -----------------------------
-   MODES
------------------------------ */
+        concept = {
 
-function getAngles(mode){
+            id,
 
-    if(mode==="knowledge")
-        return [
-            "Définition simple",
-            "Caractéristiques principales",
-            "Fonctionnement",
-            "Contexte",
-            "Origine",
-            "Évolution",
-            "Point important à retenir"
-        ];
+            name:word,
 
-    if(mode==="relations")
-        return [
-            "Relation avec un autre concept",
-            "Interaction entre plusieurs concepts",
-            "Différence avec un concept proche",
-            "Influence réciproque",
-            "Conséquence d'une relation",
-            "Exemple de relation"
-        ];
+            appearances:0,
 
-    if(mode==="causes")
-        return [
-            "Causes",
-            "Conséquences",
-            "Relation de cause à effet",
-            "Facteurs qui influencent le phénomène",
-            "Évolution",
-            "Exemple concret"
-        ];
+            sourceCount:0,
 
-    if(mode==="examples")
-        return [
-            "Exemple concret",
-            "Situation réelle",
-            "Application pratique",
-            "Cas simple",
-            "Cas différent",
-            "Erreur fréquente"
-        ];
+            textCount:0,
 
-    if(mode==="deep")
-        return [
-            "Définition approfondie",
-            "Fonctionnement",
-            "Causes",
-            "Conséquences",
-            "Limites",
-            "Comparaison",
-            "Application",
-            "Évolution",
-            "Question avancée"
-        ];
+            score:0,
 
-    return ANGLES;
+            sentences:[],
+
+            related:[],
+
+            history:[]
+
+        };
+
+        memory.concepts.push(concept);
+
+    }
+
+    return concept;
 
 }
 
 
-/* -----------------------------
-   CONSTRUCTION DES THÈMES
------------------------------ */
+/* =========================================================
+   ANALYSE TEXTE
+========================================================= */
 
-function buildThemes(
-    concepts,
-    amount,
-    mode,
-    level
-){
+function analyzeText(text, sourceId){
 
-    const history = loadHistory();
+    const words =
+        extractImportantWords(text);
 
-    const angles = getAngles(mode);
+    const sentences =
+        splitSentences(text);
 
-    const themes = [];
+    const limit =
+        parseInt(
+            document.getElementById("conceptLimit").value
+        ) || 12;
 
-    if(!concepts.length)
-        return themes;
+    /*
+        On prend davantage de candidats
+        avant de sélectionner les concepts.
+    */
 
+    const candidates =
+        words.slice(
+            0,
+            Math.max(limit*3,30)
+        );
 
-    let attempts = 0;
+    const concepts = [];
 
-    while(
-        themes.length < amount &&
-        attempts < amount * 20
-    ){
-
-        attempts++;
+    candidates.forEach(item=>{
 
         const concept =
-            concepts[
-                Math.floor(
-                    Math.random()*concepts.length
-                )
-            ];
+            ensureConcept(item.word);
 
-        let second = null;
+        if(!concept)
+            return;
 
-        if(concepts.length > 1){
-
-            second =
-                concepts[
-                    Math.floor(
-                        Math.random()*concepts.length
-                    )
-                ];
-
-            if(second === concept)
-                second = null;
-
-        }
-
-        let angle =
-            angles[
-                Math.floor(
-                    Math.random()*angles.length
-                )
-            ];
-
-
-        let theme;
-
-
-        /* NIVEAU 1 */
-
-        if(level==="1"){
-
-            theme =
-            `${angle} du concept "${concept}"`;
-
-        }
-
-
-        /* NIVEAU 2 */
-
-        else if(level==="2"){
-
-            theme =
-            `Approfondissement : ${angle.toLowerCase()} du concept "${concept}"`;
-
-        }
-
-
-        /* NIVEAU 3 */
-
-        else if(level==="3"){
-
-            if(second){
-
-                theme =
-                `${angle} entre "${concept}" et "${second}"`;
-
-            }else{
-
-                theme =
-                `${angle} du concept "${concept}"`;
-
-            }
-
-        }
-
-
-        /* NIVEAU 4 */
-
-        else{
-
-            if(second){
-
-                theme =
-                `Exploration approfondie de "${concept}" et de sa relation avec "${second}" — ${angle.toLowerCase()}`;
-
-            }else{
-
-                theme =
-                `Exploration approfondie de "${concept}" — ${angle.toLowerCase()}`;
-
-            }
-
-        }
-
+        concept.appearances += item.count;
+        concept.sourceCount++;
 
         /*
-            Anti-répétition.
+            Score :
+            fréquence + longueur.
         */
 
-        const signature =
-            theme
-            .toLowerCase()
-            .replace(/[^a-z0-9à-ÿ]+/gi," ")
-            .trim();
+        concept.score +=
+            item.count +
+            Math.min(item.word.length/10,1);
+
+        /*
+            Enregistrer les phrases pertinentes.
+        */
+
+        sentences.forEach(sentence=>{
+
+            const ns =
+                normalizeText(sentence);
+
+            const nw =
+                normalizeText(item.word);
+
+            if(
+                ns.includes(" "+nw+" ") ||
+                ns.startsWith(nw+" ") ||
+                ns.endsWith(" "+nw) ||
+                ns.includes("'"+nw)
+            ){
+
+                if(
+                    !concept.sentences.includes(sentence)
+                ){
+
+                    concept.sentences.push(sentence);
+
+                }
+
+            }
+
+        });
+
+        if(!concepts.includes(concept))
+            concepts.push(concept);
+
+    });
 
 
-        const alreadyUsed =
-            history.some(x=>x.signature===signature) ||
-            themes.some(x=>x.signature===signature);
+    /*
+        Création des liens par cooccurrence
+        dans les mêmes phrases.
+    */
 
+    sentences.forEach(sentence=>{
 
-        if(!alreadyUsed){
+        const sentenceWords =
+            extractImportantWords(sentence)
+            .map(x=>normalizeWord(x.word));
 
-            themes.push({
-                theme,
-                signature
-            });
+        const unique =
+            [...new Set(sentenceWords)];
+
+        for(let i=0;i<unique.length;i++){
+
+            for(let j=i+1;j<unique.length;j++){
+
+                const a=unique[i];
+                const b=unique[j];
+
+                if(a===b)
+                    continue;
+
+                addLink(a,b,sentence);
+
+            }
 
         }
 
-    }
+    });
 
-    return themes;
+
+    saveMemory();
+
+    return concepts;
 
 }
 
 
-/* -----------------------------
-   CONSTRUCTION DU PROMPT
------------------------------ */
+/* =========================================================
+   LIENS
+========================================================= */
 
-function buildPrompt(
-    theme,
-    source,
-    length,
-    index
-){
+function linkId(a,b){
 
-    let lengthInstruction;
+    return [a,b].sort().join("::");
 
-    if(length==="short"){
+}
 
-        lengthInstruction =
-        "Écris un texte de 3 à 4 phrases.";
+
+function addLink(a,b,sentence){
+
+    if(!a || !b || a===b)
+        return;
+
+    const id =
+        linkId(a,b);
+
+    let link =
+        memory.links.find(
+            x=>x.id===id
+        );
+
+    if(!link){
+
+        link={
+
+            id,
+
+            a,
+
+            b,
+
+            weight:0,
+
+            evidence:[]
+
+        };
+
+        memory.links.push(link);
 
     }
 
-    else if(length==="long"){
+    link.weight++;
 
-        lengthInstruction =
-        "Écris un texte de 9 à 12 phrases.";
+    if(
+        sentence &&
+        !link.evidence.includes(sentence)
+    ){
 
-    }
-
-    else{
-
-        lengthInstruction =
-        "Écris un texte de 5 à 7 phrases.";
+        link.evidence.push(sentence);
 
     }
 
 
-    return {
+    const ca=ensureConcept(a);
+    const cb=ensureConcept(b);
 
-        title:`SOURCE ${String(index).padStart(3,"0")}`,
+    if(ca && !ca.related.includes(b))
+        ca.related.push(b);
 
-        text:
-`${lengthInstruction}
+    if(cb && !cb.related.includes(a))
+        cb.related.push(a);
 
-Écris en français clair, naturel et factuel.
+}
 
-THÈME :
-${theme}
 
-CONTEXTE DISPONIBLE :
-${source}
+/* =========================================================
+   SOURCE
+========================================================= */
 
-OBJECTIF :
-Produire une nouvelle pièce de connaissance autonome.
+function createSource(text){
 
-RÈGLES :
-- Ne copie pas le texte source.
-- Reformule avec tes propres mots.
-- Apporte des informations pertinentes.
-- Reste centré sur le thème.
-- Évite les répétitions inutiles.
-- N'invente pas de faits présentés comme certains.
-- Ne parle pas de ces instructions.
-- Ne produis pas une liste de mots.
+    const source={
 
-FORMAT :
-Un texte continu en français.`
+        id:
+            "SRC-"+Date.now(),
+
+        text,
+
+        createdAt:
+            new Date().toISOString(),
+
+        wordCount:
+            tokenize(text).length,
+
+        sentenceCount:
+            splitSentences(text).length
+
     };
 
+    memory.sources.push(source);
+
+    memory.currentSource =
+        source.id;
+
+    return source;
+
 }
 
 
-/* -----------------------------
-   GÉNÉRATION
------------------------------ */
+/* =========================================================
+   DÉMARRAGE
+========================================================= */
 
-function startGeneration(){
+function startFromSource(){
 
-    const source =
-        document.getElementById("source").value.trim();
+    const text =
+        document.getElementById("sourceInput")
+        .value
+        .trim();
 
-    if(!source){
+    if(!text){
 
-        alert("Ajoute un texte source.");
+        alert("Colle d'abord un texte.");
         return;
 
     }
 
 
-    let amount =
-        parseInt(
-            document.getElementById("amount").value
-        ) || 10;
+    /*
+        Nouveau texte source,
+        mais on conserve la mémoire existante.
+    */
 
-    amount =
-        Math.max(1,Math.min(100,amount));
+    const source =
+        createSource(text);
 
-
-    const mode =
-        document.getElementById("mode").value;
-
-    const level =
-        document.getElementById("level").value;
-
-    const length =
-        document.getElementById("length").value;
+    currentSourceId =
+        source.id;
 
 
     const concepts =
-        extractConcepts(source);
-
-
-    const themes =
-        buildThemes(
-            concepts,
-            amount,
-            mode,
-            level
+        analyzeText(
+            text,
+            source.id
         );
 
 
-    const prompts =
-        themes.map(
-            (item,index)=>
-                buildPrompt(
-                    item.theme,
-                    source,
-                    length,
-                    index+1
-                )
-        );
+    memory.currentConcept=null;
+
+    selectedConceptId=null;
+
+    currentPrompt="";
 
 
-    window.currentPrompts =
-        prompts;
-
-    window.currentSource =
-        source;
+    saveMemory();
 
 
-    /* statistiques */
+    updateStats();
 
-    document.getElementById("words").textContent =
-        tokenize(source).length;
+    renderConcepts();
 
-    document.getElementById("sentences").textContent =
-        sentenceCount(source);
+    renderPyramid();
 
-    document.getElementById("conceptNumber").textContent =
-        concepts.length;
+    renderPath();
 
-    document.getElementById("productionNumber").textContent =
-        prompts.length;
+    renderHistory();
 
 
-    /* concepts */
-
-    const conceptsDiv =
-        document.getElementById("concepts");
-
-    conceptsDiv.innerHTML = "";
-
-    concepts.forEach(concept=>{
-
-        const span =
-            document.createElement("span");
-
-        span.className="concept";
-        span.textContent=concept;
-
-        conceptsDiv.appendChild(span);
-
-    });
+    show("pyramidCard");
+    show("statsCard");
+    show("conceptCard");
+    show("exportCard");
+    hide("selectedCard");
+    hide("promptCard");
+    hide("resultCard");
+    hide("newConceptCard");
+    hide("pathCard");
+    hide("historyCard");
 
 
-    /* résultats */
-
-    renderPrompts(prompts);
-
-
-    document.getElementById("analysis")
-        .classList.remove("hidden");
-
-    document.getElementById("results")
-        .classList.remove("hidden");
-
-    document.getElementById("globalCard")
-        .classList.remove("hidden");
-
-
-    updateGlobalOutput();
-
-    document.getElementById("status").textContent =
-        `✓ ${prompts.length} productions préparées à partir de ${concepts.length} concepts.`;
-
-    document.getElementById("progressBar").style.width =
-        `${Math.min(100,(prompts.length/amount)*100)}%`;
-
-
-    /* sauvegarde historique */
-
-    const history = loadHistory();
-
-    prompts.forEach(p=>{
-
-        history.push({
-            signature:
-                p.text
-                .split("\n")[3]
-                ?.toLowerCase()
-                .replace(/[^a-z0-9à-ÿ]+/gi," ")
-                .trim()
-                || p.text.slice(0,100),
-
-            date:new Date().toISOString()
-        });
-
-    });
-
-    saveHistory(history);
+    document.getElementById("sourceStatus")
+        .textContent =
+        `✓ Base créée : ${source.wordCount} mots, ${concepts.length} concepts retenus.`;
 
 }
 
 
-/* -----------------------------
-   AFFICHAGE
------------------------------ */
+/* =========================================================
+   AFFICHAGE CONCEPTS
+========================================================= */
 
-function renderPrompts(prompts){
+function renderConcepts(){
+
+    const grid =
+        document.getElementById("conceptGrid");
+
+    grid.innerHTML="";
+
+
+    const concepts =
+        [...memory.concepts]
+        .sort((a,b)=>{
+
+            const as =
+                a.score +
+                a.related.length*1.5;
+
+            const bs =
+                b.score +
+                b.related.length*1.5;
+
+            return bs-as;
+
+        });
+
+
+    const limit =
+        parseInt(
+            document.getElementById("conceptLimit").value
+        ) || 12;
+
+
+    concepts
+        .slice(0,limit)
+        .forEach(concept=>{
+
+            const div =
+                document.createElement("div");
+
+            div.className=
+                "concept-card"+
+                (
+                    selectedConceptId===concept.id
+                    ?" selected"
+                    :""
+                );
+
+            const maxScore =
+                Math.max(
+                    1,
+                    ...concepts.map(c=>c.score)
+                );
+
+            const width =
+                Math.min(
+                    100,
+                    Math.max(
+                        5,
+                        concept.score/maxScore*100
+                    )
+                );
+
+
+            div.innerHTML=`
+
+                <div class="concept-name">
+                    ${escapeHTML(concept.name)}
+                </div>
+
+                <div class="concept-meta">
+                    ${concept.related.length} lien(s)
+                    · ${concept.appearances} apparition(s)
+                </div>
+
+                <div class="score">
+                    <div style="width:${width}%"></div>
+                </div>
+
+            `;
+
+
+            div.onclick=()=>{
+
+                selectConcept(concept.id);
+
+            };
+
+
+            grid.appendChild(div);
+
+        });
+
+}
+
+
+/* =========================================================
+   SÉLECTION CONCEPT
+========================================================= */
+
+function selectConcept(id){
+
+    const concept =
+        memory.concepts.find(
+            c=>c.id===id
+        );
+
+    if(!concept)
+        return;
+
+
+    selectedConceptId=id;
+
+    memory.currentConcept=id;
+
+    saveMemory();
+
+
+    const related =
+        concept.related
+        .map(id=>
+            memory.concepts.find(
+                c=>c.id===id
+            )
+        )
+        .filter(Boolean)
+        .sort(
+            (a,b)=>
+                b.score-a.score
+        );
+
+
+    document.getElementById("selectedConcept")
+        .innerHTML=`
+
+        <div class="concept-card selected">
+
+            <div class="concept-name">
+                ${escapeHTML(concept.name)}
+            </div>
+
+            <div class="concept-meta">
+                Score : ${concept.score.toFixed(1)}
+                · ${concept.appearances} apparition(s)
+                · ${related.length} lien(s)
+            </div>
+
+        </div>
+    `;
+
+
+    const links =
+        document.getElementById("selectedLinks");
+
+    links.innerHTML="";
+
+
+    if(!related.length){
+
+        links.innerHTML=
+            `<span class="small">
+                Aucun lien fort détecté pour le moment.
+             </span>`;
+
+    }else{
+
+        related.slice(0,12).forEach(other=>{
+
+            const pill =
+                document.createElement("span");
+
+            pill.className="link-pill";
+
+            pill.textContent =
+                `${concept.name} ↔ ${other.name}`;
+
+            links.appendChild(pill);
+
+        });
+
+    }
+
+
+    const sentenceDiv =
+        document.getElementById("selectedSentences");
+
+    sentenceDiv.innerHTML="";
+
+
+    const sentences =
+        concept.sentences
+        .slice(-12);
+
+
+    if(!sentences.length){
+
+        sentenceDiv.innerHTML=
+            `<p class="small">
+                Aucune phrase enregistrée.
+             </p>`;
+
+    }else{
+
+        sentences.forEach(sentence=>{
+
+            const box =
+                document.createElement("div");
+
+            box.className="history-item";
+
+            box.textContent=sentence;
+
+            sentenceDiv.appendChild(box);
+
+        });
+
+    }
+
+
+    renderConcepts();
+
+    show("selectedCard");
+
+    document
+        .getElementById("selectedCard")
+        .scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+}
+
+
+/* =========================================================
+   CHOIX DE L'ANGLE
+========================================================= */
+
+function chooseAngle(){
+
+    const mode =
+        document.getElementById("learningMode").value;
+
+    const concept =
+        memory.concepts.find(
+            c=>c.id===selectedConceptId
+        );
+
+    const related =
+        concept
+        ?
+        concept.related
+            .map(id=>
+                memory.concepts.find(
+                    c=>c.id===id
+                )
+            )
+            .filter(Boolean)
+        :
+        [];
+
+
+    if(mode==="relations" && related.length){
+
+        const other =
+            related
+            .sort(
+                (a,b)=>b.score-a.score
+            )[0];
+
+        return {
+            type:"relation",
+            text:
+            `la relation entre "${concept.name}" et "${other.name}"`,
+            other
+        };
+
+    }
+
+
+    if(mode==="deep"){
+
+        return {
+            type:"deep",
+            text:
+            `l'approfondissement de "${concept.name}"`,
+            other:null
+        };
+
+    }
+
+
+    if(mode==="examples"){
+
+        return {
+            type:"example",
+            text:
+            `des exemples concrets liés à "${concept.name}"`,
+            other:null
+        };
+
+    }
+
+
+    if(mode==="causes"){
+
+        return {
+            type:"causes",
+            text:
+            `les causes, les conséquences et les facteurs liés à "${concept.name}"`,
+            other:null
+        };
+
+    }
+
+
+    /*
+        Mode découverte :
+        alterne les angles selon le niveau.
+    */
+
+    const angles=[
+
+        `la définition et les caractéristiques de "${concept.name}"`,
+
+        `le fonctionnement de "${concept.name}"`,
+
+        `le rôle de "${concept.name}" dans son contexte`,
+
+        `des exemples liés à "${concept.name}"`,
+
+        `l'évolution de "${concept.name}"`,
+
+        `les conséquences liées à "${concept.name}"`,
+
+        `les relations entre "${concept.name}" et les concepts proches`
+
+    ];
+
+
+    const index =
+        memory.history.length %
+        angles.length;
+
+
+    return {
+        type:"discovery",
+        text:angles[index],
+        other:null
+    };
+
+}
+
+
+/* =========================================================
+   GÉNÉRATION DU PROMPT
+========================================================= */
+
+function generateNextPrompt(){
+
+    if(!selectedConceptId){
+
+        alert("Choisis d'abord un concept.");
+        return;
+
+    }
+
+
+    const concept =
+        memory.concepts.find(
+            c=>c.id===selectedConceptId
+        );
+
+    if(!concept)
+        return;
+
+
+    const angle =
+        chooseAngle();
+
+
+    const length =
+        document.getElementById("textLength").value;
+
+
+    let lengthText;
+
+    if(length==="short")
+        lengthText="3 à 4 phrases";
+
+    else if(length==="long")
+        lengthText="8 à 12 phrases";
+
+    else
+        lengthText="5 à 7 phrases";
+
+
+    /*
+        Sélection des relations importantes.
+    */
+
+    const related =
+        concept.related
+        .map(id=>
+            memory.concepts.find(
+                c=>c.id===id
+            )
+        )
+        .filter(Boolean)
+        .sort(
+            (a,b)=>b.score-a.score
+        )
+        .slice(0,5);
+
+
+    const relationText =
+        related.length
+        ?
+        related
+            .map(c=>c.name)
+            .join(", ")
+        :
+        "aucun lien secondaire clairement détecté";
+
+
+    /*
+        Phrases de contexte.
+    */
+
+    const contextSentences =
+        concept.sentences
+        .slice(-5)
+        .join(" ");
+
+
+    currentPrompt =
+
+`MISSION CHŒUR DOMINO
+
+Tu dois produire une nouvelle pièce de connaissance destinée à alimenter une mémoire d'apprentissage.
+
+CONCEPT CENTRAL :
+"${concept.name}"
+
+OBJECTIF :
+Développer ${angle.text}.
+
+CONCEPTS LIÉS DÉTECTÉS :
+${relationText}
+
+CONTEXTE EXTRAIT :
+${contextSentences || "Aucun contexte direct disponible."}
+
+LONGUEUR :
+${lengthText}
+
+RÈGLES :
+- Écris en français clair et naturel.
+- Reste centré sur le concept principal.
+- Utilise le contexte disponible sans le recopier.
+- Apporte de l'information nouvelle ou complémentaire.
+- Lorsque les concepts liés sont pertinents, explique leurs relations naturellement.
+- Évite de répéter simplement les mêmes phrases.
+- Ne parle pas de cette mission.
+- Ne donne pas une liste de mots.
+- Ne fabrique pas de faits présentés comme certains si l'information n'est pas suffisamment établie.
+- Le résultat doit pouvoir être utilisé seul comme morceau de connaissance.
+
+PRODUCTION ATTENDUE :
+Un texte continu en français de ${lengthText}.`;
+
+
+    document.getElementById("promptBox")
+        .textContent=currentPrompt;
+
+
+    show("promptCard");
+    show("resultCard");
+
+
+    document.getElementById("promptCard")
+        .scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+}
+
+
+/* =========================================================
+   ABSORPTION DU RÉSULTAT
+========================================================= */
+
+function absorbResult(){
+
+    const result =
+        document.getElementById("resultInput")
+        .value
+        .trim();
+
+
+    if(!result){
+
+        alert(
+            "Colle d'abord le texte produit par ton autre interface."
+        );
+
+        return;
+
+    }
+
+
+    if(!selectedConceptId){
+
+        alert(
+            "Aucun concept n'est actuellement sélectionné."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Enregistrer le texte.
+    */
+
+    const textId =
+        "TXT-"+Date.now();
+
+
+    const textObject={
+
+        id:textId,
+
+        text:result,
+
+        conceptId:selectedConceptId,
+
+        sourceId:currentSourceId,
+
+        prompt:currentPrompt,
+
+        createdAt:new Date().toISOString(),
+
+        wordCount:
+            tokenize(result).length,
+
+        sentenceCount:
+            splitSentences(result).length
+
+    };
+
+
+    memory.texts.push(textObject);
+
+
+    /*
+        Le concept travaillé gagne
+        en importance.
+    */
+
+    const parent =
+        memory.concepts.find(
+            c=>c.id===selectedConceptId
+        );
+
+    if(parent){
+
+        parent.textCount++;
+        parent.score+=3;
+
+        parent.history.push({
+            textId,
+            date:textObject.createdAt
+        });
+
+    }
+
+
+    /*
+        Analyse du nouveau texte.
+    */
+
+    const beforeIds =
+        new Set(
+            memory.concepts.map(c=>c.id)
+        );
+
+
+    analyzeText(
+        result,
+        textId
+    );
+
+
+    /*
+        Identifier les concepts nouveaux.
+    */
+
+    const newConcepts =
+        memory.concepts.filter(
+            c=>!beforeIds.has(c.id)
+        );
+
+
+    /*
+        Ajouter les relations entre le
+        concept parent et les concepts
+        apparus dans le résultat.
+    */
+
+    newConcepts.forEach(concept=>{
+
+        addLink(
+            selectedConceptId,
+            concept.id,
+            result
+        );
+
+    });
+
+
+    /*
+        Historique du chemin.
+    */
+
+    memory.history.push({
+
+        id:
+            "H-"+Date.now(),
+
+        conceptId:
+            selectedConceptId,
+
+        conceptName:
+            parent
+            ? parent.name
+            : selectedConceptId,
+
+        textId,
+
+        level:
+            Math.max(
+                1,
+                getCurrentLevel()
+            ),
+
+        newConcepts:
+            newConcepts.map(c=>c.name),
+
+        date:
+            new Date().toISOString()
+
+    });
+
+
+    /*
+        Préparer automatiquement les
+        nouvelles options.
+    */
+
+    saveMemory();
+
+    updateStats();
+
+    renderConcepts();
+
+    renderPath();
+
+    renderHistory();
+
+
+    show("newConceptCard");
+
+    renderNewConcepts(newConcepts);
+
+
+    /*
+        Effacer l'ancien résultat.
+    */
+
+    document.getElementById("resultInput")
+        .value="";
+
+
+    document.getElementById("resultStatus")
+        .textContent =
+        `✓ Texte absorbé. ${newConcepts.length} nouveau(x) concept(s) détecté(s).`;
+
+
+    /*
+        On garde le concept actuel mais
+        l'utilisateur peut maintenant
+        choisir la nouvelle branche.
+    */
+
+    document
+        .getElementById("newConceptCard")
+        .scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+}
+
+
+/* =========================================================
+   NOUVEAUX CONCEPTS
+========================================================= */
+
+function renderNewConcepts(concepts){
 
     const container =
-        document.getElementById("items");
+        document.getElementById("newConcepts");
 
     container.innerHTML="";
 
 
-    prompts.forEach((p,index)=>{
+    if(!concepts.length){
+
+        container.innerHTML=
+        `<div class="small">
+            Aucun concept totalement nouveau détecté.
+            Le système a surtout renforcé les concepts existants.
+         </div>`;
+
+        return;
+
+    }
+
+
+    concepts
+        .sort(
+            (a,b)=>b.score-a.score
+        )
+        .slice(0,20)
+        .forEach(concept=>{
+
+            const div =
+                document.createElement("div");
+
+            div.className="concept-card";
+
+            div.innerHTML=`
+
+                <div class="concept-name">
+                    ✨ ${escapeHTML(concept.name)}
+                </div>
+
+                <div class="concept-meta">
+                    ${concept.related.length} lien(s)
+                </div>
+
+            `;
+
+            div.onclick=()=>{
+
+                selectConcept(concept.id);
+
+            };
+
+            container.appendChild(div);
+
+        });
+
+}
+
+
+/* =========================================================
+   NIVEAU
+========================================================= */
+
+function getCurrentLevel(){
+
+    const n =
+        memory.history.length;
+
+    if(n===0)
+        return 1;
+
+    if(n<3)
+        return 2;
+
+    if(n<7)
+        return 3;
+
+    if(n<15)
+        return 4;
+
+    return 5;
+
+}
+
+
+/* =========================================================
+   STATISTIQUES
+========================================================= */
+
+function updateStats(){
+
+    const allWords =
+        memory.sources
+        .map(s=>s.wordCount)
+        .reduce((a,b)=>a+b,0)
+        +
+        memory.texts
+        .map(t=>t.wordCount)
+        .reduce((a,b)=>a+b,0);
+
+
+    document.getElementById("statWords")
+        .textContent=allWords;
+
+    document.getElementById("statConcepts")
+        .textContent=memory.concepts.length;
+
+    document.getElementById("statLinks")
+        .textContent=memory.links.length;
+
+    document.getElementById("statTexts")
+        .textContent=memory.texts.length;
+
+    document.getElementById("statLevel")
+        .textContent=getCurrentLevel();
+
+}
+
+
+/* =========================================================
+   PYRAMIDE
+========================================================= */
+
+function renderPyramid(){
+
+    const level =
+        getCurrentLevel();
+
+
+    const names=[
+
+        "🌱 Base",
+
+        "🧠 Approfondissement",
+
+        "🔗 Connexions",
+
+        "🕸️ Réseau",
+
+        "🌐 Synthèse"
+
+    ];
+
+
+    document.getElementById("pyramidTop")
+        .textContent =
+        names[Math.min(level-1,4)];
+
+}
+
+
+/* =========================================================
+   CHEMIN
+========================================================= */
+
+function renderPath(){
+
+    const container =
+        document.getElementById("path");
+
+    container.innerHTML="";
+
+
+    const history =
+        memory.history.slice(-15);
+
+
+    if(!history.length){
+
+        hide("pathCard");
+        return;
+
+    }
+
+
+    show("pathCard");
+
+
+    history.forEach((item,index)=>{
+
+        const div =
+            document.createElement("span");
+
+        div.className="path-item";
+
+        div.textContent =
+            `${item.conceptName} · N${item.level}`;
+
+        container.appendChild(div);
+
+
+        if(index<history.length-1){
+
+            const arrow =
+                document.createElement("span");
+
+            arrow.className="arrow";
+
+            arrow.textContent="→";
+
+            container.appendChild(arrow);
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   HISTORIQUE
+========================================================= */
+
+function renderHistory(){
+
+    const container =
+        document.getElementById("history");
+
+    container.innerHTML="";
+
+
+    if(!memory.history.length){
+
+        hide("historyCard");
+        return;
+
+    }
+
+
+    show("historyCard");
+
+
+    [...memory.history]
+    .reverse()
+    .slice(0,30)
+    .forEach(item=>{
 
         const div =
             document.createElement("div");
 
-        div.className="item";
+        div.className="history-item";
+
+        const date =
+            new Date(item.date)
+            .toLocaleString("fr-CA");
+
 
         div.innerHTML=`
-            <div class="item-title">
-                ${escapeHTML(p.title)}
-                <span class="badge">
-                    lot
-                </span>
+
+            <div class="history-title">
+                Niveau ${item.level} ·
+                ${escapeHTML(item.conceptName)}
             </div>
 
-            <div class="item-text">
-                ${escapeHTML(p.text)}
+            <div class="history-text">
+                ${item.newConcepts.length
+                    ? "Découvertes : "+
+                      item.newConcepts
+                      .map(escapeHTML)
+                      .join(", ")
+                    : "Aucun nouveau concept majeur détecté."
+                }
+                <br>
+                ${date}
             </div>
+
         `;
 
         container.appendChild(div);
@@ -1046,83 +2326,208 @@ function renderPrompts(prompts){
 }
 
 
-/* -----------------------------
-   BLOC GLOBAL
------------------------------ */
+/* =========================================================
+   COPIE DU PROMPT
+========================================================= */
 
-function updateGlobalOutput(){
+function copyPrompt(){
 
-    if(!window.currentPrompts)
+    if(!currentPrompt)
         return;
-
-
-    const text =
-        window.currentPrompts
-        .map(p =>
-            `===== ${p.title} =====\n\n${p.text}`
-        )
-        .join("\n\n");
-
-
-    document.getElementById("globalOutput")
-        .value=text;
-
-}
-
-
-/* -----------------------------
-   COPIE TOUT
------------------------------ */
-
-function copyAll(){
-
-    if(!window.currentPrompts?.length)
-        return;
-
-
-    const text =
-        window.currentPrompts
-        .map(p =>
-            `===== ${p.title} =====\n\n${p.text}`
-        )
-        .join("\n\n");
-
 
     copyText(
-        text,
-        "✓ Lot complet copié."
+        currentPrompt,
+        "✓ Prompt copié."
     );
 
 }
 
 
-/* -----------------------------
-   COPIE PROPRE
------------------------------ */
+function copyPromptWithLabel(){
 
-function copyClean(){
-
-    if(!window.currentPrompts?.length)
+    if(!currentPrompt)
         return;
+
+    const concept =
+        memory.concepts.find(
+            c=>c.id===selectedConceptId
+        );
 
 
     const text =
-        window.currentPrompts
-        .map(p => p.text)
-        .join("\n\n");
 
+`CHŒUR DOMINO
+CONCEPT : ${concept?.name || ""}
+
+${currentPrompt}
+
+`;
 
     copyText(
         text,
-        "✓ Bloc propre copié."
+        "✓ Prompt + contexte copié."
     );
 
 }
 
 
-/* -----------------------------
-   COPIE COMPATIBLE
------------------------------ */
+/* =========================================================
+   EXPORT CONNAISSANCE
+========================================================= */
+
+function buildKnowledgeExport(){
+
+    let output =
+`CHŒUR DOMINO V4
+EXPORT DE CONNAISSANCE
+==============================
+
+`;
+
+
+    memory.texts.forEach((text,index)=>{
+
+        const concept =
+            memory.concepts.find(
+                c=>c.id===text.conceptId
+            );
+
+
+        output +=
+`\n===== CONNAISSANCE ${index+1} =====
+
+CONCEPT :
+${concept?.name || "inconnu"}
+
+TEXTE :
+${text.text}
+
+`;
+
+    });
+
+
+    return output;
+
+}
+
+
+function copyKnowledge(){
+
+    const text =
+        buildKnowledgeExport();
+
+    copyText(
+        text,
+        "✓ Toute la matière a été copiée."
+    );
+
+}
+
+
+function downloadKnowledge(){
+
+    const text =
+        buildKnowledgeExport();
+
+
+    const blob =
+        new Blob(
+            [text],
+            {
+                type:"text/plain;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const a =
+        document.createElement("a");
+
+    a.href=url;
+
+    a.download=
+        "choeur-domino-connaissance.txt";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetEverything(){
+
+    const ok =
+        confirm(
+            "Cette action efface la mémoire locale de Chœur Domino V4. Continuer ?"
+        );
+
+    if(!ok)
+        return;
+
+
+    localStorage.removeItem(STORAGE_KEY);
+
+    memory =
+        emptyMemory();
+
+    selectedConceptId=null;
+
+    currentPrompt="";
+
+    currentSourceId=null;
+
+
+    location.reload();
+
+}
+
+
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+
+function show(id){
+
+    document
+        .getElementById(id)
+        .classList.remove("hidden");
+
+}
+
+
+function hide(id){
+
+    document
+        .getElementById(id)
+        .classList.add("hidden");
+
+}
+
+
+function escapeHTML(text){
+
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
 
 function copyText(text,message){
 
@@ -1132,13 +2537,17 @@ function copyText(text,message){
     ){
 
         navigator.clipboard
-            .writeText(text)
-            .then(()=>{
-                setStatus(message);
-            })
-            .catch(()=>{
-                fallbackCopy(text,message);
-            });
+        .writeText(text)
+        .then(()=>{
+
+            setGlobalStatus(message);
+
+        })
+        .catch(()=>{
+
+            fallbackCopy(text,message);
+
+        });
 
     }else{
 
@@ -1167,12 +2576,13 @@ function fallbackCopy(text,message){
     try{
 
         document.execCommand("copy");
-        setStatus(message);
+
+        setGlobalStatus(message);
 
     }catch{
 
         alert(
-            "La copie automatique n'est pas disponible."
+            "Impossible de copier automatiquement."
         );
 
     }
@@ -1182,137 +2592,79 @@ function fallbackCopy(text,message){
 }
 
 
-/* -----------------------------
-   TÉLÉCHARGEMENT
------------------------------ */
+function setGlobalStatus(message){
 
-function downloadTXT(){
-
-    if(!window.currentPrompts?.length)
-        return;
-
-
-    const text =
-        window.currentPrompts
-        .map(p =>
-            `===== ${p.title} =====\n\n${p.text}`
-        )
-        .join("\n\n");
-
-
-    const blob =
-        new Blob(
-            [text],
-            {
-                type:"text/plain;charset=utf-8"
-            }
-        );
-
-
-    const url =
-        URL.createObjectURL(blob);
-
-
-    const a =
-        document.createElement("a");
-
-    a.href=url;
-    a.download=
-        `choeur-domino-cycle-${Date.now()}.txt`;
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    a.remove();
-
-    URL.revokeObjectURL(url);
-
-    setStatus("✓ Fichier TXT créé.");
-
-}
-
-
-/* -----------------------------
-   NOUVEAU CYCLE
------------------------------ */
-
-function newCycle(){
-
-    if(!window.currentSource){
-
-        alert(
-            "Construis d'abord un premier lot."
-        );
-
-        return;
-
-    }
-
-
-    startGeneration();
-
-}
-
-
-/* -----------------------------
-   HISTORIQUE
------------------------------ */
-
-function clearHistory(){
-
-    if(
-        confirm(
-            "Réinitialiser l'historique anti-répétition ?"
-        )
-    ){
-
-        localStorage.removeItem(HISTORY_KEY);
-
-        setStatus(
-            "✓ Historique réinitialisé."
-        );
-
-    }
-
-}
-
-
-/* -----------------------------
-   STATUS
------------------------------ */
-
-function setStatus(message){
+    const elements=[
+        document.getElementById("sourceStatus"),
+        document.getElementById("resultStatus")
+    ];
 
     const el =
-        document.getElementById("status");
+        elements.find(x=>x);
 
-    el.textContent=message;
 
-    setTimeout(()=>{
+    if(el){
 
-        if(el.textContent===message)
-            el.textContent="";
+        el.textContent=message;
 
-    },3500);
+        setTimeout(()=>{
+
+            if(el.textContent===message)
+                el.textContent="";
+
+        },3000);
+
+    }
+
+}
+
+
+/* =========================================================
+   INITIALISATION
+========================================================= */
+
+function initialize(){
+
+    if(
+        memory.sources.length ||
+        memory.texts.length ||
+        memory.concepts.length
+    ){
+
+        show("pyramidCard");
+        show("statsCard");
+        show("conceptCard");
+        show("exportCard");
+
+        updateStats();
+        renderConcepts();
+        renderPyramid();
+        renderPath();
+        renderHistory();
+
+    }
 
 }
 
 
-/* -----------------------------
-   SÉCURITÉ HTML
------------------------------ */
+/*
+    Recalcul automatique si l'utilisateur
+    modifie la limite des concepts.
+*/
 
-function escapeHTML(text){
+document
+    .getElementById("conceptLimit")
+    .addEventListener(
+        "change",
+        ()=>{
+            renderConcepts();
+        }
+    );
 
-    return String(text)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
 
-}
+initialize();
 
-</script></body>
-</html>
+</script>
+
+</body>
+    </html>
