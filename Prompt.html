@@ -2,2663 +2,362 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mentor Autonome — Cerveau de Distillation</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🧠 Mentor Autonome V5</title>
 <style>
-*{box-sizing:border-box}
-
-body{
-    margin:0;
-    background:#eef2f6;
-    color:#18212b;
-    font-family:Arial,Helvetica,sans-serif;
-}
-
-header{
-    background:#18232d;
-    color:white;
-    padding:22px 15px;
-    text-align:center;
-}
-
-header h1{
-    margin:0 0 7px;
-    font-size:25px;
-}
-
-header p{
-    margin:0;
-    opacity:.8;
-}
-
-main{
-    max-width:1100px;
-    margin:auto;
-    padding:15px;
-}
-
-.card{
-    background:white;
-    border-radius:15px;
-    padding:18px;
-    margin-bottom:15px;
-    box-shadow:0 3px 14px rgba(0,0,0,.07);
-}
-
-h2{
-    margin-top:0;
-    font-size:20px;
-}
-
-h3{
-    margin-bottom:8px;
-}
-
-textarea,
-input,
-select{
-    width:100%;
-    border:1px solid #cbd5df;
-    border-radius:9px;
-    padding:11px;
-    font-size:14px;
-    font-family:inherit;
-}
-
-textarea{
-    min-height:150px;
-    resize:vertical;
-    line-height:1.5;
-}
-
-button{
-    border:0;
-    border-radius:8px;
-    padding:10px 14px;
-    margin:4px;
-    cursor:pointer;
-    background:#2563eb;
-    color:white;
-    font-weight:bold;
-}
-
-button:hover{
-    opacity:.88;
-}
-
-.btn-green{background:#15803d}
-.btn-orange{background:#c56a00}
-.btn-red{background:#b91c1c}
-.btn-purple{background:#7c3aed}
-.btn-dark{background:#17202a}
-.btn-gray{background:#64748b}
-.btn-small{
-    padding:6px 9px;
-    font-size:12px;
-}
-
-.row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:5px;
-    align-items:center;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:10px;
-}
-
-.stat{
-    background:#f5f7fa;
-    padding:15px;
-    border-radius:11px;
-    text-align:center;
-}
-
-.stat strong{
-    display:block;
-    font-size:26px;
-}
-
-.stat span{
-    font-size:12px;
-    color:#66717d;
-}
-
-.item{
-    background:#f7f9fb;
-    border:1px solid #dce3e9;
-    border-radius:10px;
-    padding:12px;
-    margin:8px 0;
-}
-
-.strong{
-    border-left:5px solid #15803d;
-}
-
-.medium{
-    border-left:5px solid #c56a00;
-}
-
-.weak{
-    border-left:5px solid #64748b;
-}
-
-.urgent{
-    border-left:5px solid #b91c1c;
-}
-
-.pill{
-    display:inline-block;
-    padding:5px 8px;
-    margin:2px;
-    border-radius:20px;
-    background:#e5eaf0;
-    font-size:11px;
-}
-
-.promptBox{
-    background:#101820;
-    color:#e7edf3;
-    border-radius:10px;
-    padding:14px;
-    white-space:pre-wrap;
-    line-height:1.5;
-    margin-top:8px;
-}
-
-.answerBox{
-    background:#f6f8fa;
-    border:1px solid #d7dfe7;
-    border-radius:10px;
-    padding:10px;
-    margin-top:8px;
-}
-
-.progress{
-    height:14px;
-    background:#dfe5eb;
-    border-radius:20px;
-    overflow:hidden;
-}
-
-.progressBar{
-    width:0%;
-    height:100%;
-    background:#2563eb;
-    transition:.3s;
-}
-
-.status{
-    padding:10px;
-    border-radius:9px;
-    background:#eef5ff;
-    color:#1e4f8f;
-    margin-top:10px;
-}
-
-.small{
-    color:#687481;
-    font-size:12px;
-}
-
-.center{
-    text-align:center;
-}
-
-.hidden{
-    display:none;
-}
-
-pre{
-    white-space:pre-wrap;
-    word-break:break-word;
-}
-
-.copyZone{
-    display:flex;
-    gap:6px;
-    align-items:flex-start;
-}
-
-.copyZone .promptBox{
-    flex:1;
-}
-
-.copyBtn{
-    flex-shrink:0;
-}
-
-.success{
-    background:#dcfce7;
-    color:#166534;
-    padding:8px;
-    border-radius:8px;
-}
-
-.warning{
-    background:#fff7ed;
-    color:#9a3412;
-    padding:8px;
-    border-radius:8px;
-}
-
-.danger{
-    background:#fee2e2;
-    color:#991b1b;
-    padding:8px;
-    border-radius:8px;
-}
-
-@media(max-width:600px){
-    header h1{font-size:21px}
-    main{padding:9px}
-    .card{padding:13px}
-    button{width:auto}
-}
+*{box-sizing:border-box}body{margin:0;background:#eef2f5;font-family:Arial;color:#18212b}
+main{max-width:850px;margin:auto;padding:12px}.top{background:#18232d;color:white;padding:18px;border-radius:14px;margin-bottom:12px}
+.card{background:white;padding:15px;border-radius:13px;margin:10px 0;box-shadow:0 2px 10px #0001}
+h1{margin:0;font-size:23px}h2{font-size:18px;margin-top:0}
+textarea{width:100%;min-height:130px;padding:11px;border:1px solid #ccd5dd;border-radius:9px;resize:vertical}
+button{border:0;border-radius:8px;padding:9px 12px;margin:3px;background:#2563eb;color:white;font-weight:bold;cursor:pointer}
+.green{background:#15803d}.orange{background:#c56a00}.red{background:#b91c1c}.gray{background:#64748b}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{background:#f4f6f8;padding:10px;text-align:center;border-radius:9px}.stat b{display:block;font-size:22px}
+.bar{height:12px;background:#dce2e8;border-radius:20px;overflow:hidden}.fill{height:100%;width:0;background:#2563eb}
+.item{padding:9px;margin:5px 0;background:#f5f7f9;border-radius:8px;border-left:4px solid #2563eb}
+pre{white-space:pre-wrap;word-break:break-word;background:#111a21;color:white;padding:12px;border-radius:8px}
+small{color:#687481}
+@media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
-
 <body>
-
-<header>
-    <h1>🧠 Mentor Autonome</h1>
-    <p>Cerveau local de distillation et d'organisation des connaissances</p>
-</header>
 
 <main>
 
-<!-- ===================================================== -->
-<!-- TABLEAU DE BORD -->
-<!-- ===================================================== -->
+<div class="top">
+<h1>🧠 Mentor Autonome V5</h1>
+<div id="status">🟢 Prêt</div>
+</div>
 
-<section class="card">
-
-<h2>📊 Tableau de bord</h2>
-
+<div class="card">
+<h2>📊 Progression</h2>
 <div class="grid">
-
-<div class="stat">
-<strong id="conceptCount">0</strong>
-<span>Concepts</span>
+<div class="stat"><b id="c">0</b><small>Concepts</small></div>
+<div class="stat"><b id="r">0</b><small>Relations</small></div>
+<div class="stat"><b id="e">0</b><small>Exemples</small></div>
+<div class="stat"><b id="n">0</b><small>Cycles</small></div>
+</div>
+<br>
+<div class="bar"><div id="bar" class="fill"></div></div>
+<p id="progress">0 % de progression actuelle</p>
 </div>
 
-<div class="stat">
-<strong id="relationCount">0</strong>
-<span>Relations</span>
+<div class="card">
+<h2>📚 Nourrir l'IA</h2>
+<textarea id="input" placeholder="Colle un texte, un cours, une réponse ou plusieurs textes ici..."></textarea>
+<br>
+<button onclick="learn()">🧠 Apprendre</button>
+<button class="gray" onclick="document.getElementById('input').value=''">Effacer</button>
 </div>
 
-<div class="stat">
-<strong id="exampleCount">0</strong>
-<span>Exemples</span>
+<div class="card">
+<h2>🎯 Décision automatique</h2>
+<div id="mission">Le cerveau cherche ce qu'il doit apprendre...</div>
 </div>
 
-<div class="stat">
-<strong id="sourceCount">0</strong>
-<span>Sources</span>
+<div class="card">
+<h2>🤖 Travail du petit LLM</h2>
+<p><small>Le moteur utilise les connaissances accumulées pour produire une nouvelle étape d'apprentissage.</small></p>
+<button class="green" onclick="next()">▶ Apprentissage automatique</button>
+<button class="orange" onclick="pause()">⏸ Pause</button>
+<pre id="prompt">Aucune mission.</pre>
+<button class="green" onclick="copyPrompt()">📋 Copier</button>
 </div>
 
-<div class="stat">
-<strong id="cycleCount">0</strong>
-<span>Cycles</span>
+<div class="card">
+<h2>🧠 Mémoire</h2>
+<div id="memory"></div>
+<button onclick="download()">⬇️ Télécharger la mémoire</button>
+<button class="gray" onclick="exportDataset()">📦 Dataset</button>
 </div>
 
+<div class="card">
+<h2>⚙️ Continuer</h2>
+<p><small>
+La mémoire est sauvegardée automatiquement dans le navigateur.
+Tu peux fermer puis rouvrir la page : elle reprend son état.
+</small></p>
+<button class="red" onclick="reset()">Réinitialiser</button>
 </div>
-
-<div id="globalStatus" class="status">
-🟢 Système prêt.
-</div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- NOURRIR -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>📥 1. Nourrir le cerveau</h2>
-
-<p class="small">
-Colle ici n'importe quel texte. Le cerveau extrait automatiquement les
-idées importantes et cherche les liens entre elles.
-</p>
-
-<textarea id="sourceText"
-placeholder="Colle ici un texte, un article, un cours, une note, une réponse, etc."></textarea>
-
-<div class="row">
-
-<button onclick="analyzeText()">
-🧠 Analyser le texte
-</button>
-
-<button class="btn-gray" onclick="document.getElementById('sourceText').value=''">
-Effacer
-</button>
-
-</div>
-
-<div id="analysisResult"></div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- CERVEAU -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>🧠 2. Ce que le cerveau pense actuellement</h2>
-
-<div id="brainDecision" class="item">
-Aucune décision pour le moment.
-</div>
-
-<button onclick="chooseNextMission()" class="btn-purple">
-🎯 Choisir automatiquement la prochaine mission
-</button>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- MISSION -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>🎯 3. Mission actuelle</h2>
-
-<div id="missionBox">
-
-<p class="small">
-Le cerveau choisira automatiquement un concept à approfondir.
-</p>
-
-</div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- PROMPT -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>📋 4. Prompt envoyé à l'autre interface</h2>
-
-<p class="small">
-Ce texte est fabriqué automatiquement par le cerveau. Tu n'as pas besoin
-de créer toi-même la question.
-</p>
-
-<div id="promptContainer">
-
-<div class="promptBox">
-Aucun prompt pour le moment.
-</div>
-
-</div>
-
-<div class="row">
-
-<button onclick="copyCurrentPrompt()" class="btn-green">
-📋 Copier le prompt
-</button>
-
-<button onclick="createNewPrompt()">
-🔄 Nouveau prompt
-</button>
-
-</div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- REPONSE -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>📥 5. Retour de l'autre interface</h2>
-
-<p class="small">
-Colle simplement ici la réponse produite par l'autre interface.
-Le cerveau l'intégrera automatiquement à sa mémoire.
-</p>
-
-<textarea id="mentorAnswer"
-placeholder="Colle ici la réponse obtenue..."></textarea>
-
-<div class="row">
-
-<button onclick="processAnswer()" class="btn-green">
-🧠 Intégrer la réponse
-</button>
-
-<button onclick="document.getElementById('mentorAnswer').value=''"
-class="btn-gray">
-Effacer
-</button>
-
-</div>
-
-<div id="answerStatus"></div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- PYRAMIDE -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>🔻 6. Pyramide des connaissances</h2>
-
-<div class="grid">
-
-<div>
-<h3>🟢 Forts</h3>
-<div id="strongConcepts"></div>
-</div>
-
-<div>
-<h3>🟡 Moyens</h3>
-<div id="mediumConcepts"></div>
-</div>
-
-<div>
-<h3>🔴 Faibles</h3>
-<div id="weakConcepts"></div>
-</div>
-
-<div>
-<h3>🚨 Urgents</h3>
-<div id="urgentConcepts"></div>
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- EXPLORATION -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>🧭 7. Concepts à explorer</h2>
-
-<div id="explorationList"></div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- RELATIONS -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>🔗 8. Relations découvertes</h2>
-
-<div id="relationList"></div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- EXEMPLES -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>📚 9. Exemples d'apprentissage</h2>
-
-<div id="exampleList"></div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- CYCLE -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>🔄 10. Mode automatique</h2>
-
-<p class="small">
-Le mode automatique choisit une mission, prépare un prompt, puis attend
-que tu lui donnes la réponse de l'autre interface.
-</p>
-
-<div class="progress">
-<div id="progressBar" class="progressBar"></div>
-</div>
-
-<p id="autoStatus" class="center">
-Mode automatique arrêté.
-</p>
-
-<div class="row center">
-
-<button onclick="startAutoMode()" class="btn-green">
-▶ Démarrer
-</button>
-
-<button onclick="pauseAutoMode()" class="btn-orange">
-⏸ Pause
-</button>
-
-<button onclick="stopAutoMode()" class="btn-red">
-⏹ Arrêter
-</button>
-
-</div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- MEMOIRE JSON -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>🗄️ 11. Mémoire complète</h2>
-
-<p class="small">
-Tout ce que le cerveau a construit est visible ici. Tu peux modifier
-le JSON directement.
-</p>
-
-<textarea id="jsonEditor"
-style="min-height:350px;font-family:monospace;"></textarea>
-
-<div class="row">
-
-<button onclick="applyJSON()" class="btn-green">
-✅ Appliquer les modifications
-</button>
-
-<button onclick="refreshJSON()" class="btn-gray">
-🔄 Actualiser
-</button>
-
-<button onclick="downloadMemory()" class="btn-purple">
-⬇️ Télécharger JSON
-</button>
-
-</div>
-
-<div id="jsonStatus"></div>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- DATASET -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>📦 12. Dataset pour l'entraînement</h2>
-
-<p class="small">
-Ce fichier contient les exemples question/réponse que tu pourras
-utiliser plus tard pour l'entraînement.
-</p>
-
-<button onclick="downloadDataset()" class="btn-purple">
-⬇️ Télécharger dataset JSONL
-</button>
-
-<button onclick="downloadCompleteBackup()" class="btn-orange">
-📦 Sauvegarde complète
-</button>
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- IMPORT -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>📥 13. Importer une mémoire existante</h2>
-
-<input
-type="file"
-id="jsonFile"
-accept=".json"
-onchange="importMemory(event)"
->
-
-</section>
-
-
-<!-- ===================================================== -->
-<!-- DANGER -->
-<!-- ===================================================== -->
-
-<section class="card">
-
-<h2>⚠️ Zone de réinitialisation</h2>
-
-<button onclick="resetMemory()" class="btn-red">
-🗑️ Effacer toute la mémoire
-</button>
-
-</section>
 
 </main>
 
-
 <script>
+const KEY="MENTOR_V5_MEMORY";
 
-/* =========================================================
-   CONFIGURATION
-========================================================= */
-
-const STORAGE_KEY =
-"mentor_autonome_distillation_v2";
-
-
-const STOPWORDS = new Set(`
-
-a ai aient as au aux avec après avant
-ce ceci cela cette ces
-comme comment
-dans de des du
-elle elles en entre
-est et été
-eux
-il ils
-je
-la le les
-leur leurs lui
-ma mais me mes moi mon
-ne nos notre nous
-on ont ou
-par pas pour
-que quel quelle quelles quels
-qui quoi
-sa sans se ses
-si son sont
-sous sur
-ta te tes toi ton
-tous tout toute toutes très
-tu
-un une
-vos votre vous
-y
-
-`.split(/\s+/).filter(Boolean));
-
-
-/* =========================================================
-   MEMOIRE
-========================================================= */
-
-function createMemory(){
-
-return {
-
-version:"2.0",
-
-created:new Date().toISOString(),
-
-concepts:{},
-
-relations:{},
-
-sources:[],
-
-examples:[],
-
-missions:[],
-
-cycles:0,
-
-currentMission:null,
-
-training:{
-totalExamples:0,
-lastUpdate:null
-}
-
+let M=JSON.parse(localStorage.getItem(KEY)||"null")||{
+concepts:{},relations:{},examples:[],cycles:0,mission:null
 };
 
+let running=false;
+
+const stop=new Set(`
+a ai au aux avec après avant ce cette ces comme dans de des du
+elle en entre est et eux il ils je la le les leur lui ma mais me
+mes moi mon ne nos notre nous on ont ou par pas pour que qui sa
+sans se ses si son sont sur ta te tes toi ton tout toute très tu
+un une vos votre vous
+`.split(/\s+/));
+
+function clean(s){
+return s.toLowerCase()
+.normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+.replace(/[^a-z0-9'-]/g," ");
 }
 
-
-let memory =
-loadMemory();
-
-
-function loadMemory(){
-
-try{
-
-const saved =
-localStorage.getItem(STORAGE_KEY);
-
-if(saved){
-
-const data =
-JSON.parse(saved);
-
-return normalizeMemory(data);
-
+function words(s){
+return clean(s).split(/\s+/)
+.filter(x=>x.length>3&&!stop.has(x)&&!/\d/.test(x));
 }
 
-}catch(e){
+function id(x){return x.replace(/[^a-z0-9]/g,"")}
 
-console.warn(e);
-
+function save(){
+localStorage.setItem(KEY,JSON.stringify(M));
+draw();
 }
 
-return createMemory();
-
-}
-
-
-function normalizeMemory(data){
-
-const base =
-createMemory();
-
-return {
-
-...base,
-...data,
-
-concepts:data.concepts||{},
-relations:data.relations||{},
-sources:data.sources||[],
-examples:data.examples||[],
-missions:data.missions||[],
-cycles:Number(data.cycles)||0,
-
-training:{
-...base.training,
-...(data.training||{})
-}
-
+function concept(x){
+let k=id(x);
+if(!M.concepts[k])
+M.concepts[k]={
+name:x,weight:0,relations:0,explored:0
 };
-
+return M.concepts[k];
 }
 
-
-function saveMemory(){
-
-localStorage.setItem(
-STORAGE_KEY,
-JSON.stringify(memory)
-);
-
-refreshAll();
-
+function relation(a,b){
+if(a===b)return;
+let k=[a,b].sort().join("::");
+if(!M.relations[k])
+M.relations[k]={a,b,weight:0};
+M.relations[k].weight++;
 }
 
+function learn(){
 
-/* =========================================================
-   TEXTE
-========================================================= */
+let text=document.getElementById("input").value.trim();
+if(!text)return alert("Ajoute d'abord du texte.");
 
-function normalizeText(text){
+let w=words(text);
+let unique=[...new Set(w)];
 
-return String(text)
-.toLowerCase()
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g,"");
-
-}
-
-
-function tokenize(text){
-
-return normalizeText(text)
-.replace(/[^a-z0-9'-]/g," ")
-.split(/\s+/)
-.filter(Boolean);
-
-}
-
-
-function usefulWords(text){
-
-return tokenize(text)
-.filter(word=>{
-
-return word.length>=4 &&
-!STOPWORDS.has(word) &&
-!/^\d+$/.test(word);
-
+unique.forEach(x=>{
+let c=concept(x);
+c.weight++;
 });
 
-}
-
-
-function getSentences(text){
-
-return String(text)
-.replace(/\r/g,"")
-.split(/(?<=[.!?])\s+|\n+/)
-.map(s=>s.trim())
-.filter(s=>s.length>15);
-
-}
-
-
-/* =========================================================
-   CONCEPTS
-========================================================= */
-
-function idOf(word){
-
-return normalizeText(word)
-.replace(/[^a-z0-9]/g,"");
-
-}
-
-
-function getConcept(id,name){
-
-if(!memory.concepts[id]){
-
-memory.concepts[id]={
-
-id:id,
-
-name:name||id,
-
-weight:0,
-
-occurrences:0,
-
-relations:0,
-
-explored:0,
-
-sources:0,
-
-answers:0,
-
-sentences:[],
-
-history:[],
-
-created:new Date().toISOString(),
-
-updated:new Date().toISOString()
-
-};
-
-}
-
-return memory.concepts[id];
-
-}
-
-
-/* =========================================================
-   RELATIONS
-========================================================= */
-
-function addRelation(a,b,evidence){
-
-if(!a||!b||a===b)return;
-
-const pair =
-[a,b].sort();
-
-const key =
-pair[0]+"::"+pair[1];
-
-
-if(!memory.relations[key]){
-
-memory.relations[key]={
-
-id:key,
-
-a:pair[0],
-
-b:pair[1],
-
-weight:0,
-
-evidence:[]
-
-};
-
-}
-
-const r =
-memory.relations[key];
-
-r.weight++;
-
-if(
-evidence &&
-r.evidence.length<10 &&
-!r.evidence.includes(evidence)
-){
-
-r.evidence.push(evidence);
-
-}
-
-getConcept(a).relations++;
-getConcept(b).relations++;
-
-}
-
-
-/* =========================================================
-   ANALYSE SOURCE
-========================================================= */
-
-function analyzeText(){
-
-const text =
-document.getElementById(
-"sourceText"
-).value.trim();
-
-
-if(!text){
-
-alert("Colle d'abord un texte.");
-
-return;
-
-}
-
-
-const words =
-usefulWords(text);
-
-const sents =
-getSentences(text);
-
-const frequencies={};
-
-
-words.forEach(word=>{
-
-frequencies[word]=
-(frequencies[word]||0)+1;
-
-});
-
-
-Object.entries(frequencies)
-.forEach(([word,count])=>{
-
-const id =
-idOf(word);
-
-const c =
-getConcept(id,word);
-
-c.weight+=count;
-c.occurrences+=count;
-c.sources++;
-c.updated=new Date().toISOString();
-
-});
-
-
-/*
-Cherche les concepts présents
-dans les mêmes phrases.
-*/
-
-sents.forEach(sentence=>{
-
-const ids=[
-...new Set(
-usefulWords(sentence)
-.map(idOf)
-)
-].slice(0,25);
-
-
-ids.forEach(id=>{
-
-const c=
-getConcept(id);
-
-if(
-c.sentences.length<20 &&
-!c.sentences.includes(sentence)
-){
-
-c.sentences.push(sentence);
-
-}
-
-});
-
-
-for(let i=0;i<ids.length;i++){
-
-for(let j=i+1;j<ids.length;j++){
-
-addRelation(
-ids[i],
-ids[j],
-sentence
-);
-
-}
-
-}
-
-});
-
-
-memory.sources.push({
-
-id:"SRC-"+Date.now(),
-
+for(let i=0;i<unique.length;i++)
+for(let j=i+1;j<unique.length;j++)
+relation(id(unique[i]),id(unique[j]));
+
+M.examples.push({
 date:new Date().toISOString(),
-
-words:words.length,
-
-sentences:sents.length,
-
-preview:text.substring(0,400)
-
+text:text.slice(0,3000)
 });
 
+M.cycles++;
 
-document.getElementById(
-"analysisResult"
-).innerHTML=`
+document.getElementById("input").value="";
+document.getElementById("status").textContent=
+"🟢 Nouvelle connaissance absorbée.";
 
-<div class="success">
+choose();
 
-✅ Analyse terminée.<br>
-
-${words.length} mots utiles analysés.<br>
-
-${sents.length} phrases étudiées.<br>
-
-${Object.keys(frequencies).length}
-concepts détectés.
-
-</div>
-
-`;
-
-
-memory.cycles++;
-
-saveMemory();
-
-chooseNextMission();
-
+save();
 }
 
+function choose(){
 
-/* =========================================================
-   MESURE DES CONCEPTS
-========================================================= */
+let all=Object.entries(M.concepts);
 
-function conceptMetrics(c){
-
-const concepts =
-Object.values(memory.concepts);
-
-
-const maxWeight =
-Math.max(
-1,
-...concepts.map(x=>x.weight)
-);
-
-
-const maxRelations =
-Math.max(
-1,
-...concepts.map(x=>x.relations)
-);
-
-
-const weightScore =
-c.weight/maxWeight;
-
-
-const relationScore =
-c.relations/maxRelations;
-
-
-const explorationScore =
-Math.min(1,c.explored/3);
-
-
-const understandingScore =
-Math.min(
-1,
-c.answers/3
-);
-
-
-const strength =
-weightScore*.45+
-relationScore*.25+
-explorationScore*.15+
-understandingScore*.15;
-
-
-const lack =
-1-understandingScore;
-
-
-const importance =
-weightScore*.55+
-relationScore*.25+
-.20;
-
-
-const priority =
-importance*.55+
-lack*.45;
-
-
-return {
-
-strength,
-lack,
-importance,
-priority
-
-};
-
-}
-
-
-function conceptCategory(c){
-
-const m =
-conceptMetrics(c);
-
-if(
-m.priority>.72 &&
-m.importance>.40
-){
-
-return "urgent";
-
-}
-
-if(m.strength>=.65){
-
-return "strong";
-
-}
-
-if(m.strength>=.35){
-
-return "medium";
-
-}
-
-return "weak";
-
-}
-
-
-/* =========================================================
-   CHOIX AUTOMATIQUE
-========================================================= */
-
-function chooseNextMission(){
-
-const concepts =
-Object.values(
-memory.concepts
-);
-
-
-if(!concepts.length){
-
-document.getElementById(
-"brainDecision"
-).innerHTML=
-"🟡 Le cerveau attend des connaissances.";
-
+if(!all.length){
+M.mission=null;
 return;
-
 }
 
-
-const ranked =
-concepts
-.map(c=>({
-
-concept:c,
-metrics:conceptMetrics(c)
-
-}))
-.sort(
-(a,b)=>
-b.metrics.priority-
-a.metrics.priority
-);
-
-
-const selected =
-ranked[0];
-
-
-const c =
-selected.concept;
-
-
-const m =
-selected.metrics;
-
-
-const relations =
-Object.values(
-memory.relations
-)
-.filter(
-r=>r.a===c.id||r.b===c.id
-)
-.sort(
-(a,b)=>b.weight-a.weight
-)
-.slice(0,5)
-.map(
-r=>r.a===c.id?r.b:r.a
-);
-
-
-const reason =
-m.lack>.6
-? "Le concept est important mais encore peu exploré."
-: m.relationScore>.5
-? "Le concept possède beaucoup de liens et mérite d'être approfondi."
-: "Le concept présente encore une marge d'apprentissage.";
-
-
-memory.currentMission={
-
-concept:c.id,
-
-type:chooseQuestionType(c),
-
-reason,
-
-relations,
-
-created:new Date().toISOString()
-
-};
-
-
-memory.missions.push(
-memory.currentMission
-);
-
-
-document.getElementById(
-"brainDecision"
-).innerHTML=`
-
-<div class="item urgent">
-
-<h3>🎯 Décision automatique</h3>
-
-<b>
-Le cerveau choisit :
-${escapeHTML(c.name)}
-</b>
-
-<p>
-${escapeHTML(reason)}
-</p>
-
-<p class="small">
-
-Importance :
-${Math.round(m.importance*100)}%
-
-&nbsp;·&nbsp;
-
-Priorité :
-${Math.round(m.priority*100)}%
-
-&nbsp;·&nbsp;
-
-Compréhension :
-${Math.round((1-m.lack)*100)}%
-
-</p>
-
-</div>
-
-`;
-
-
-createNewPrompt();
-
-saveMemory();
-
-}
-
-
-function chooseQuestionType(c){
-
-const m =
-conceptMetrics(c);
-
-
-if(c.answers===0)
-return "explain";
-
-if(m.lack>.7)
-return "example";
-
-if(c.relations>=4)
-return "compare";
-
-if(m.importance>.7)
-return "critical";
-
-return "synthesis";
-
-}
-
-
-/* =========================================================
-   CREATION DU PROMPT
-========================================================= */
-
-function buildPrompt(){
-
-if(!memory.currentMission)
-return "";
-
-
-const mission =
-memory.currentMission;
-
-const c =
-getConcept(mission.concept);
-
-
-const related =
-mission.relations.length
-?mission.relations
-.map(id=>{
-
-const cc =
-memory.concepts[id];
-
-return cc
-?cc.name
-:id;
-
-})
-.join(", ")
-:"aucun";
-
-
-const type =
-mission.type;
-
-
-let instruction="";
-
-
-if(type==="explain"){
-
-instruction=
-`Explique clairement le concept « ${c.name} ».`;
-
-}
-
-else if(type==="example"){
-
-instruction=
-`Explique « ${c.name} » avec plusieurs exemples concrets et faciles à comprendre.`;
-
-}
-
-else if(type==="compare"){
-
-instruction=
-`Compare « ${c.name} » avec les concepts qui lui sont liés.`;
-
-}
-
-else if(type==="critical"){
-
-instruction=
-`Analyse de manière critique « ${c.name} ». Présente les nuances, les limites et les erreurs fréquentes.`;
-
-}
-
-else{
-
-instruction=
-`Fais une synthèse approfondie autour de « ${c.name} » et de ses relations.`;
-
-}
-
-
-return `
-
-Tu es le professeur de référence d'un système d'apprentissage.
-
-Le but n'est pas seulement de donner une définition.
-Construis une réponse claire, exacte, nuancée et pédagogique.
-
-CONCEPT PRINCIPAL :
-${c.name}
-
-CONCEPTS DÉJÀ LIÉS :
-${related}
-
-MISSION :
-${instruction}
-
-Le système cherche à comprendre profondément le concept.
-Explique les liens avec les autres idées lorsque cela est pertinent.
-Évite les affirmations trop simplistes.
-Donne des exemples lorsque cela améliore la compréhension.
-
-Réponds en français clair et structuré.
-
-`.trim();
-
-}
-
-
-function createNewPrompt(){
-
-const prompt =
-buildPrompt();
-
-
-if(!prompt){
-
-document.getElementById(
-"promptContainer"
-).innerHTML=
-`<div class="promptBox">
-Aucune mission disponible.
-</div>`;
-
-return;
-
-}
-
-
-document.getElementById(
-"promptContainer"
-).innerHTML=`
-
-<div class="copyZone">
-
-<div id="currentPrompt"
-class="promptBox">${escapeHTML(prompt)}</div>
-
-<button
-class="btn-small btn-green copyBtn"
-onclick="copyCurrentPrompt()">
-📋 Copier
-</button>
-
-</div>
-
-`;
-
-}
-
-
-function copyCurrentPrompt(){
-
-const prompt =
-buildPrompt();
-
-
-if(!prompt){
-
-alert("Aucun prompt à copier.");
-
-return;
-
-}
-
-
-copyText(
-prompt,
-"Prompt copié !"
-);
-
-}
-
-
-/* =========================================================
-   REPONSE
-========================================================= */
-
-function processAnswer(){
-
-const answer =
-document.getElementById(
-"mentorAnswer"
-).value.trim();
-
-
-if(!answer){
-
-alert("Colle d'abord une réponse.");
-
-return;
-
-}
-
-
-if(!memory.currentMission){
-
-alert(
-"Aucune mission active."
-);
-
-return;
-
-}
-
-
-const mission =
-memory.currentMission;
-
-
-const c =
-getConcept(mission.concept);
-
+all.sort((a,b)=>{
+let A=a[1],B=b[1];
+let pa=(A.weight+1)/(A.explored+1);
+let pb=(B.weight+1)/(B.explored+1);
+return pb-pa;
+});
+
+let [k,c]=all[0];
 
 c.explored++;
-c.answers++;
-c.weight+=2;
-c.updated=new Date().toISOString();
 
-
-/*
-On analyse également les mots de la réponse.
-*/
-
-const words =
-usefulWords(answer);
-
-
-const frequencies={};
-
-words.forEach(w=>{
-
-frequencies[w]=
-(frequencies[w]||0)+1;
-
-});
-
-
-Object.entries(frequencies)
-.forEach(([word,count])=>{
-
-const id=
-idOf(word);
-
-const concept=
-getConcept(id,word);
-
-concept.weight+=count;
-
-concept.occurrences+=count;
-
-});
-
-
-/*
-Relie les concepts de la réponse
-au concept étudié.
-*/
-
-const responseIds=[
-...new Set(
-words.map(idOf)
-)
-].slice(0,30);
-
-
-responseIds.forEach(id=>{
-
-if(id!==c.id){
-
-addRelation(
-c.id,
-id,
-answer.substring(0,200)
-);
-
-}
-
-});
-
-
-memory.examples.push({
-
-id:"EX-"+Date.now(),
-
-concept:c.id,
-
-question:buildPrompt(),
-
-answer:answer,
-
-created:new Date().toISOString(),
-
-status:"à vérifier"
-
-});
-
-
-memory.training.totalExamples =
-memory.examples.length;
-
-memory.training.lastUpdate =
-new Date().toISOString();
-
-memory.cycles++;
-
-
-document.getElementById(
-"mentorAnswer"
-).value="";
-
-
-document.getElementById(
-"answerStatus"
-).innerHTML=`
-
-<div class="success">
-
-✅ Réponse intégrée.
-
-<br><br>
-
-Le cerveau a :
-<br>
-• renforcé « ${escapeHTML(c.name)} »
-<br>
-• analysé les nouveaux mots
-<br>
-• recherché de nouvelles relations
-<br>
-• ajouté l'exemple à la mémoire
-
-<br><br>
-
-Il peut maintenant choisir automatiquement
-la prochaine mission.
-
-</div>
-
-`;
-
-
-memory.currentMission=null;
-
-
-saveMemory();
-
-
-setTimeout(
-chooseNextMission,
-200
-);
-
-}
-
-
-/* =========================================================
-   AFFICHAGE CATEGORIES
-========================================================= */
-
-function renderCategories(){
-
-const boxes={
-
-strong:
-document.getElementById("strongConcepts"),
-
-medium:
-document.getElementById("mediumConcepts"),
-
-weak:
-document.getElementById("weakConcepts"),
-
-urgent:
-document.getElementById("urgentConcepts")
-
+M.mission={
+concept:k,
+name:c.name,
+date:new Date().toISOString()
 };
 
+document.getElementById("mission").innerHTML=
+`🎯 <b>${esc(c.name)}</b><br>
+Le système considère ce concept comme prioritaire.`;
 
-Object.values(boxes)
-.forEach(box=>box.innerHTML="");
+makePrompt();
+}
 
+function makePrompt(){
 
-Object.values(memory.concepts)
-.sort(
-(a,b)=>
-conceptMetrics(b).priority-
-conceptMetrics(a).priority
-)
-.forEach(c=>{
+if(!M.mission)return;
 
-const cat =
-conceptCategory(c);
+let c=M.mission.name;
 
-const div =
-document.createElement("div");
+let related=[];
 
-div.className=
-"item "+cat;
-
-const m =
-conceptMetrics(c);
-
-div.innerHTML=`
-
-<b>
-${escapeHTML(c.name)}
-</b>
-
-<div class="small">
-
-Poids : ${c.weight}
-<br>
-Relations : ${c.relations}
-<br>
-Exploration : ${c.explored}
-<br>
-Priorité :
-${Math.round(m.priority*100)}%
-
-</div>
-
-`;
-
-
-boxes[cat].appendChild(div);
-
+Object.values(M.relations).forEach(r=>{
+if(r.a===M.mission.concept)related.push(r.b);
+if(r.b===M.mission.concept)related.push(r.a);
 });
 
+related=related.slice(0,8).map(x=>
+M.concepts[x]?.name||x);
+
+let p=
+`Tu es un professeur expert.
+
+Approfondis automatiquement le concept :
+"${c}"
+
+Concepts actuellement liés :
+${related.join(", ")||"aucun"}
+
+Explique le concept clairement.
+Montre ses liens avec les autres idées.
+Donne des exemples.
+Signale les nuances ou limites importantes.
+Cherche à produire une connaissance réellement utile
+pour enrichir une mémoire de long terme.
+
+Réponds en français.`;
+
+document.getElementById("prompt").textContent=p;
 }
 
+function next(){
 
-/* =========================================================
-   EXPLORATION
-========================================================= */
+running=true;
 
-function renderExploration(){
+choose();
 
-const box =
-document.getElementById(
-"explorationList"
-);
-
-box.innerHTML="";
-
-
-const list =
-Object.values(memory.concepts)
-.map(c=>({
-
-c,
-m:conceptMetrics(c)
-
-}))
-.filter(x=>x.c.explored<3)
-.sort(
-(a,b)=>b.m.priority-a.m.priority
-)
-.slice(0,20);
-
-
-if(!list.length){
-
-box.innerHTML=
-"<p class='small'>Tous les concepts sont actuellement suffisamment explorés.</p>";
-
-return;
+document.getElementById("status").textContent=
+"🟢 Nouvelle mission préparée automatiquement.";
 
 }
 
+function pause(){
 
-list.forEach(x=>{
+running=false;
 
-const div =
-document.createElement("div");
-
-div.className="item";
-
-div.innerHTML=`
-
-<b>🎯 ${escapeHTML(x.c.name)}</b>
-
-<span class="pill">
-Priorité ${Math.round(x.m.priority*100)}%
-</span>
-
-<p class="small">
-
-Compréhension :
-${Math.round((1-x.m.lack)*100)}%
-
-<br>
-
-Relations :
-${x.c.relations}
-
-</p>
-
-`;
-
-box.appendChild(div);
-
-});
+document.getElementById("status").textContent=
+"⏸ Apprentissage en pause.";
 
 }
 
-
-/* =========================================================
-   RELATIONS
-========================================================= */
-
-function renderRelations(){
-
-const box =
-document.getElementById(
-"relationList"
-);
-
-box.innerHTML="";
-
-
-const relations =
-Object.values(memory.relations)
-.sort(
-(a,b)=>b.weight-a.weight
-)
-.slice(0,50);
-
-
-if(!relations.length){
-
-box.innerHTML=
-"<p class='small'>Aucune relation pour le moment.</p>";
-
-return;
-
-}
-
-
-relations.forEach(r=>{
-
-const A =
-memory.concepts[r.a];
-
-const B =
-memory.concepts[r.b];
-
-
-const div =
-document.createElement("div");
-
-div.className="item";
-
-div.innerHTML=`
-
-<b>
-${escapeHTML(A?A.name:r.a)}
-↔
-${escapeHTML(B?B.name:r.b)}
-</b>
-
-<span class="pill">
-force ${r.weight}
-</span>
-
-`;
-
-box.appendChild(div);
-
-});
-
-}
-
-
-/* =========================================================
-   EXEMPLES
-========================================================= */
-
-function renderExamples(){
-
-const box =
-document.getElementById(
-"exampleList"
-);
-
-box.innerHTML="";
-
-
-memory.examples
-.slice()
-.reverse()
-.slice(0,25)
-.forEach(ex=>{
-
-const div =
-document.createElement("div");
-
-div.className="item";
-
-div.innerHTML=`
-
-<b>
-${escapeHTML(ex.concept)}
-</b>
-
-<span class="pill">
-${escapeHTML(ex.status)}
-</span>
-
-<details>
-
-<summary>Voir le travail</summary>
-
-<p>
-<b>Question :</b>
-</p>
-
-<div class="answerBox">
-${escapeHTML(ex.question)}
-</div>
-
-<p>
-<b>Réponse :</b>
-</p>
-
-<div class="answerBox">
-${escapeHTML(ex.answer)}
-</div>
-
-</details>
-
-`;
-
-box.appendChild(div);
-
-});
-
-}
-
-
-/* =========================================================
-   DASHBOARD
-========================================================= */
-
-function refreshDashboard(){
-
-document.getElementById(
-"conceptCount"
-).textContent=
-Object.keys(memory.concepts).length;
-
-
-document.getElementById(
-"relationCount"
-).textContent=
-Object.keys(memory.relations).length;
-
-
-document.getElementById(
-"exampleCount"
-).textContent=
-memory.examples.length;
-
-
-document.getElementById(
-"sourceCount"
-).textContent=
-memory.sources.length;
-
-
-document.getElementById(
-"cycleCount"
-).textContent=
-memory.cycles;
-
-}
-
-
-function refreshJSON(){
-
-document.getElementById(
-"jsonEditor"
-).value=
-JSON.stringify(
-memory,
-null,
-2
-);
-
-}
-
-
-/* =========================================================
-   RAFRAICHISSEMENT GENERAL
-========================================================= */
-
-function refreshAll(){
-
-refreshDashboard();
-
-renderCategories();
-
-renderExploration();
-
-renderRelations();
-
-renderExamples();
-
-refreshJSON();
-
-
-if(memory.currentMission){
-
-document.getElementById(
-"brainDecision"
-).innerHTML=`
-
-<div class="item">
-
-<b>
-🎯 Mission actuelle :
-${escapeHTML(
-getConcept(
-memory.currentMission.concept
-).name
-)}
-</b>
-
-<p>
-${escapeHTML(
-memory.currentMission.reason
-)}
-</p>
-
-</div>
-
-`;
-
-createNewPrompt();
-
-}
-
-}
-
-
-/* =========================================================
-   JSON
-========================================================= */
-
-function applyJSON(){
-
-try{
-
-const parsed =
-JSON.parse(
-document.getElementById(
-"jsonEditor"
-).value
-);
-
-
-memory =
-normalizeMemory(parsed);
-
-
-localStorage.setItem(
-STORAGE_KEY,
-JSON.stringify(memory)
-);
-
-
-document.getElementById(
-"jsonStatus"
-).innerHTML=
-`<div class="success">✅ JSON appliqué avec succès.</div>`;
-
-
-refreshAll();
-
-}catch(error){
-
-document.getElementById(
-"jsonStatus"
-).innerHTML=
-`<div class="danger">❌ JSON invalide : ${escapeHTML(error.message)}</div>`;
-
-}
-
-}
-
-
-/* =========================================================
-   EXPORT
-========================================================= */
-
-function downloadMemory(){
-
-downloadFile(
-
-JSON.stringify(
-memory,
-null,
-2
-),
-
-"mentor-memory.json",
-
-"application/json"
-
-);
-
-}
-
-
-function downloadDataset(){
-
-const lines =
-memory.examples.map(ex=>{
-
-return JSON.stringify({
-
-messages:[
-
-{
-role:"system",
-
-content:
-"Tu es un mentor francophone bienveillant, clair, pédagogique et encourageant la réflexion critique."
-},
-
-{
-role:"user",
-
-content:ex.question
-},
-
-{
-role:"assistant",
-
-content:ex.answer
-}
-
-]
-
-});
-
-});
-
-
-downloadFile(
-
-lines.join("\n"),
-
-"mentor-dataset.jsonl",
-
-"application/json"
-
-);
-
-}
-
-
-function downloadCompleteBackup(){
-
-const backup={
-
-memory:memory,
-
-dataset:memory.examples,
-
-exportedAt:new Date().toISOString(),
-
-application:
-"Mentor Autonome — Cerveau de Distillation"
-
-};
-
-
-downloadFile(
-
-JSON.stringify(
-backup,
-null,
-2
-),
-
-"mentor-backup-complet.json",
-
-"application/json"
-
-);
-
-}
-
-
-function downloadFile(
-content,
-filename,
-type
-){
-
-const blob =
-new Blob(
-[content],
-{type}
-);
-
-const url =
-URL.createObjectURL(blob);
-
-const a =
-document.createElement("a");
-
-a.href=url;
-
-a.download=filename;
-
-document.body.appendChild(a);
-
-a.click();
-
-a.remove();
-
-setTimeout(
-()=>URL.revokeObjectURL(url),
-1000
-);
-
-}
-
-
-/* =========================================================
-   IMPORT
-========================================================= */
-
-function importMemory(event){
-
-const file =
-event.target.files[0];
-
-if(!file)return;
-
-
-const reader =
-new FileReader();
-
-
-reader.onload=function(){
-
-try{
-
-const parsed =
-JSON.parse(
-reader.result
-);
-
-
-memory =
-normalizeMemory(parsed);
-
-
-saveMemory();
-
-
-alert(
-"✅ Mémoire importée."
-);
-
-
-}catch(error){
-
-alert(
-"❌ Impossible de lire ce JSON."
-);
-
-}
-
-};
-
-
-reader.readAsText(file);
-
-}
-
-
-/* =========================================================
-   COPIE
-========================================================= */
-
-function copyText(text,message){
-
-if(
-navigator.clipboard &&
-window.isSecureContext
-){
-
-navigator.clipboard
-.writeText(text)
-.then(()=>{
-
-showCopyMessage(message);
-
-})
-.catch(()=>{
-
-fallbackCopy(text,message);
-
-});
-
-}else{
-
-fallbackCopy(text,message);
-
-}
-
-}
-
-
-function fallbackCopy(text,message){
-
-const area =
-document.createElement("textarea");
-
-area.value=text;
-
-area.style.position="fixed";
-area.style.left="-9999px";
-
-document.body.appendChild(area);
-
-area.select();
-
-try{
-
+function copyPrompt(){
+
+let p=document.getElementById("prompt").textContent;
+
+if(navigator.clipboard)
+navigator.clipboard.writeText(p);
+else{
+let t=document.createElement("textarea");
+t.value=p;
+document.body.appendChild(t);
+t.select();
 document.execCommand("copy");
+t.remove();
+}
 
-showCopyMessage(message);
+alert("✅ Prompt copié.");
 
-}catch(e){
+}
 
-alert(
-"Impossible de copier automatiquement."
+function draw(){
+
+let concepts=Object.keys(M.concepts).length;
+let relations=Object.keys(M.relations).length;
+let examples=M.examples.length;
+
+document.getElementById("c").textContent=concepts;
+document.getElementById("r").textContent=relations;
+document.getElementById("e").textContent=examples;
+document.getElementById("n").textContent=M.cycles;
+
+let p=Math.min(100,
+Math.round((concepts/1000)*100));
+
+document.getElementById("bar").style.width=p+"%";
+document.getElementById("progress").textContent=
+p+" % de progression actuelle";
+
+let top=Object.values(M.concepts)
+.sort((a,b)=>b.weight-a.weight)
+.slice(0,30);
+
+document.getElementById("memory").innerHTML=
+top.map(x=>
+`<div class="item">
+<b>${esc(x.name)}</b>
+· poids ${x.weight}
+· exploration ${x.explored}
+</div>`
+).join("")||"<small>Mémoire vide.</small>";
+}
+
+function download(){
+
+let blob=new Blob(
+[JSON.stringify(M,null,2)],
+{type:"application/json"}
 );
 
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download="mentor-memory.json";
+a.click();
 }
 
-area.remove();
+function exportDataset(){
 
+let data=M.examples.map(x=>JSON.stringify({
+instruction:"Enrichir la connaissance du mentor.",
+input:x.text,
+output:""
+})).join("\n");
+
+let blob=new Blob([data],
+{type:"application/json"});
+
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download="mentor-dataset.jsonl";
+a.click();
 }
 
+function reset(){
 
-function showCopyMessage(message){
-
-const old =
-document.getElementById(
-"copyMessage"
-);
-
-if(old)old.remove();
-
-
-const div =
-document.createElement("div");
-
-div.id="copyMessage";
-
-div.className="success";
-
-div.style.position="fixed";
-div.style.bottom="20px";
-div.style.right="20px";
-div.style.zIndex="9999";
-
-div.textContent=
-"✅ "+message;
-
-document.body.appendChild(div);
-
-setTimeout(
-()=>div.remove(),
-1800
-);
+if(confirm("Effacer toute la mémoire ?")){
+localStorage.removeItem(KEY);
+location.reload();
+}
 
 }
 
-
-/* =========================================================
-   MODE AUTOMATIQUE
-========================================================= */
-
-let autoRunning=false;
-let autoTimer=null;
-
-
-function startAutoMode(){
-
-if(autoRunning){
-
-return;
-
+function esc(x){
+return String(x).replace(/[&<>"']/g,m=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",
+'"':"&quot;","'":"&#039;"
+}[m]));
 }
 
+draw();
 
-autoRunning=true;
-
-
-document.getElementById(
-"autoStatus"
-).textContent=
-"🟢 Mode automatique actif. Le cerveau cherche sa prochaine mission...";
-
-
-runAutomaticCycle();
-
-}
-
-
-function runAutomaticCycle(){
-
-if(!autoRunning)return;
-
-
-chooseNextMission();
-
-
-let progress=0;
-
-
-clearInterval(autoTimer);
-
-
-autoTimer =
-setInterval(()=>{
-
-if(!autoRunning){
-
-clearInterval(autoTimer);
-
-return;
-
-}
-
-
-progress+=2;
-
-
-document.getElementById(
-"progressBar"
-).style.width=
-Math.min(progress,100)+"%";
-
-
-if(progress>=100){
-
-clearInterval(autoTimer);
-
-document.getElementById(
-"progressBar"
-).style.width="0%";
-
-
-document.getElementById(
-"autoStatus"
-).textContent=
-"🟡 Mission préparée. Le système attend maintenant la réponse de l'autre interface.";
-
-}
-
-},200);
-
-}
-
-
-function pauseAutoMode(){
-
-autoRunning=false;
-
-clearInterval(autoTimer);
-
-
-document.getElementById(
-"autoStatus"
-).textContent=
-"⏸ Mode automatique en pause.";
-
-}
-
-
-function stopAutoMode(){
-
-autoRunning=false;
-
-clearInterval(autoTimer);
-
-document.getElementById(
-"progressBar"
-).style.width="0%";
-
-
-document.getElementById(
-"autoStatus"
-).textContent=
-"⏹ Mode automatique arrêté.";
-
-}
-
-
-/* =========================================================
-   RESET
-========================================================= */
-
-function resetMemory(){
-
-const ok =
-confirm(
-"Voulez-vous vraiment effacer toute la mémoire ?"
-);
-
-if(!ok)return;
-
-
-localStorage.removeItem(
-STORAGE_KEY
-);
-
-memory =
-createMemory();
-
-
-refreshAll();
-
-
-document.getElementById(
-"brainDecision"
-).innerHTML=
-"🟢 Mémoire réinitialisée.";
-
-}
-
-
-/* =========================================================
-   SECURITE HTML
-========================================================= */
-
-function escapeHTML(value){
-
-return String(value)
-.replace(
-/[&<>"']/g,
-function(c){
-
-return {
-
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#039;"
-
-}[c];
-
-}
-);
-
-}
-
-
-/* =========================================================
-   INITIALISATION
-========================================================= */
-
-refreshAll();
+if(M.mission)makePrompt();
 
 </script>
-
 </body>
 </html>
