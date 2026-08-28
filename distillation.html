@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mentor — Laboratoire de Distillation</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#eef1f5;
+color:#18212b
+}
+
+header{
+background:#17202a;
+color:white;
+padding:20px;
+text-align:center
+}
+
+main{
+max-width:1100px;
+margin:auto;
+padding:15px
+}
+
+.card{
+background:white;
+border-radius:14px;
+padding:18px;
+margin-bottom:15px;
+box-shadow:0 3px 14px rgba(0,0,0,.08)
+}
+
+h1,h2,h3{margin-top:0}
+
+textarea{
+width:100%;
+min-height:150px;
+resize:vertical;
+padding:12px;
+border:1px solid #ccd3dc;
+border-radius:9px;
+font-size:15px;
+line-height:1.5
+}
+
+input,select{
+padding:10px;
+border:1px solid #ccd3dc;
+border-radius:8px;
+font-size:14px
+}
+
+button{
+border:0;
+border-radius:8px;
+padding:10px 14px;
+background:#2563eb;
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin:4px
+}
+
+button:hover{opacity:.9}
+
+.green{background:#15803d}
+.orange{background:#c56a00}
+.red{background:#b91c1c}
+.purple{background:#7c3aed}
+.dark{background:#17202a}
+.gray{background:#64748b}
+
+.row{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+align-items:center
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:10px
+}
+
+.stat{
+background:#f5f7fa;
+border-radius:10px;
+padding:14px;
+text-align:center
+}
+
+.stat b{
+font-size:25px;
+display:block
+}
+
+.item{
+background:#f7f9fb;
+border:1px solid #dde3ea;
+border-radius:10px;
+padding:12px;
+margin:8px 0
+}
+
+.pill{
+display:inline-block;
+background:#e6ebf1;
+border-radius:20px;
+padding:6px 9px;
+margin:3px;
+font-size:12px
+}
+
+.strong{border-left:5px solid #15803d}
+.medium{border-left:5px solid #c56a00}
+.weak{border-left:5px solid #64748b}
+.urgent{border-left:5px solid #b91c1c}
+
+pre{
+background:#101820;
+color:#dce7f2;
+padding:14px;
+border-radius:10px;
+overflow:auto;
+white-space:pre-wrap
+}
+
+.hidden{display:none}
+
+.small{
+font-size:13px;
+color:#64748b
+}
+
+.progress{
+height:12px;
+background:#e1e6ec;
+border-radius:20px;
+overflow:hidden
+}
+
+.bar{
+height:100%;
+width:0%;
+background:#2563eb;
+transition:.2s
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🧠 Laboratoire de Distillation</h1>
+<div>Construire une mémoire de qualité avant l'entraînement du mentor</div>
+</header>
+
+<main>
+
+<!-- ================================================= -->
+<!-- OBJECTIF -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>🎯 Fonction du laboratoire</h2>
+
+<p>
+Cette interface prépare les connaissances et les exemples qui serviront
+ensuite à l'entraînement du petit modèle.
+</p>
+
+<div class="grid">
+
+<div class="stat">
+<b id="conceptCount">0</b>
+Concepts
+</div>
+
+<div class="stat">
+<b id="relationCount">0</b>
+Relations
+</div>
+
+<div class="stat">
+<b id="exampleCount">0</b>
+Exemples
+</div>
+
+<div class="stat">
+<b id="sourceCount">0</b>
+Sources
+</div>
+
+<div class="stat">
+<b id="wordCount">0</b>
+Mots analysés
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- SOURCE -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>📥 1. Ajouter des connaissances</h2>
+
+<p class="small">
+Colle un texte, un article, des notes, un cours ou une réponse de qualité.
+Le système extrait automatiquement les concepts et leurs relations.
+</p>
+
+<textarea id="sourceText"
+placeholder="Colle ici ton texte..."></textarea>
+
+<div class="row">
+
+<button onclick="analyzeSource()">
+🧠 Analyser
+</button>
+
+<button onclick="clearSource()" class="gray">
+Effacer
+</button>
+
+</div>
+
+<div id="analysisStatus" class="small"></div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- PYRAMIDE -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>🔻 Mémoire conceptuelle</h2>
+
+<p class="small">
+Le système classe automatiquement les concepts selon leur présence,
+leurs relations et leur niveau d'exploration.
+</p>
+
+<div class="grid">
+
+<div>
+<h3>🟢 Forts</h3>
+<div id="strongList"></div>
+</div>
+
+<div>
+<h3>🟡 Moyens</h3>
+<div id="mediumList"></div>
+</div>
+
+<div>
+<h3>🔴 Faibles</h3>
+<div id="weakList"></div>
+</div>
+
+<div>
+<h3>🚨 Urgents</h3>
+<div id="urgentList"></div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- CONCEPTS A EXPLORER -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>🧭 Concepts à approfondir</h2>
+
+<div id="exploreList"></div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- GENERATEUR DE CAS -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>🧪 2. Générateur de cas de distillation</h2>
+
+<p class="small">
+Sélectionne un concept. L'interface construit automatiquement
+des situations que le « professeur » pourra ensuite utiliser
+pour produire les réponses de haute qualité.
+</p>
+
+<select id="conceptSelect">
+<option value="">Sélectionner un concept</option>
+</select>
+
+<select id="caseType">
+
+<option value="explain">
+Expliquer le concept
+</option>
+
+<option value="why">
+Pourquoi ?
+</option>
+
+<option value="how">
+Comment ?
+</option>
+
+<option value="example">
+Donner un exemple
+</option>
+
+<option value="compare">
+Comparer
+</option>
+
+<option value="critical">
+Réflexion critique
+</option>
+
+<option value="synthesis">
+Faire une synthèse
+</option>
+
+</select>
+
+<div class="row">
+
+<button onclick="generateCase()">
+🧪 Créer le cas
+</button>
+
+<button onclick="generateBatch()" class="purple">
+⚡ Générer 10 cas
+</button>
+
+</div>
+
+<div id="caseOutput"></div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- REPONSE PROFESSEUR -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>👨‍🏫 3. Réponse du professeur</h2>
+
+<p class="small">
+Colle ici la réponse produite par le modèle professeur.
+Elle sera associée automatiquement au cas sélectionné.
+</p>
+
+<textarea id="teacherAnswer"
+placeholder="Colle ici la réponse de haute qualité..."></textarea>
+
+<div class="row">
+
+<button onclick="addExample()" class="green">
+➕ Ajouter au dataset
+</button>
+
+<button onclick="clearTeacher()" class="gray">
+Effacer
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- DATASET -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>📚 4. Dataset de distillation</h2>
+
+<div id="datasetList"></div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- QUALITE -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>🛡️ 5. Contrôle qualité</h2>
+
+<div id="quality"></div>
+
+<button onclick="runQualityCheck()">
+🔍 Vérifier le dataset
+</button>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- JSON -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>🗄️ 6. Mémoire JSON</h2>
+
+<p class="small">
+Tu peux télécharger la mémoire, la modifier manuellement puis la réimporter.
+</p>
+
+<div class="row">
+
+<button onclick="downloadMemory()" class="green">
+⬇️ Télécharger mémoire JSON
+</button>
+
+<button onclick="downloadDataset()" class="purple">
+⬇️ Télécharger dataset JSONL
+</button>
+
+<button onclick="downloadEverything()" class="orange">
+📦 Télécharger sauvegarde complète
+</button>
+
+<label>
+<input type="file"
+id="jsonImport"
+accept=".json"
+style="display:none"
+onchange="importJSON(event)">
+<button onclick="document.getElementById('jsonImport').click()"
+class="dark">
+📥 Importer JSON
+</button>
+</label>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MEMOIRE BRUTE -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>🔧 7. Éditeur JSON</h2>
+
+<p class="small">
+Tu peux modifier directement la mémoire. Utilise « Appliquer » pour
+recharger les modifications.
+</p>
+
+<textarea id="jsonEditor"
+style="font-family:monospace;min-height:350px"></textarea>
+
+<div class="row">
+
+<button onclick="applyJSON()" class="green">
+✅ Appliquer JSON
+</button>
+
+<button onclick="refreshJSON()">
+🔄 Actualiser
+</button>
+
+</div>
+
+<div id="jsonStatus" class="small"></div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- SAUVEGARDE -->
+<!-- ================================================= -->
+
+<div class="card">
+
+<h2>💾 Sauvegarde automatique</h2>
+
+<p>
+La mémoire est sauvegardée automatiquement dans le navigateur.
+</p>
+
+<button onclick="resetAll()" class="red">
+🗑️ Tout effacer
+</button>
+
+</div>
+
+</main>
+
+
+<script>
+
+/* =====================================================
+   CONFIGURATION
+===================================================== */
+
+const STORAGE_KEY =
+"mentor_distillation_v1";
+
+
+const STOPWORDS = new Set(`
+
+a à au aux avec après avant
+car ce ceci cela celle celles
+celui ceux comme dans de des du
+elle elles en entre est et été
+et eux il ils je la le les leur
+leurs lui ma mais me mes moi mon
+ne nos notre nous on ont ou par
+pas pour pourquoi que quel quelle
+quelles quels qui quoi sa sans
+se sera ses si son sont sous sur
+ta te tes toi ton tous tout très
+tu un une vos votre vous y
+
+`.split(/\s+/));
+
+
+/* =====================================================
+   MEMOIRE
+===================================================== */
+
+function emptyMemory(){
+
+return {
+
+version:"1.0",
+
+created:new Date().toISOString(),
+
+concepts:{},
+
+relations:{},
+
+sources:[],
+
+examples:[],
+
+trainingHistory:[]
+
+};
+
+}
+
+
+let memory =
+loadMemory();
+
+
+function loadMemory(){
+
+try{
+
+const raw =
+localStorage.getItem(STORAGE_KEY);
+
+return raw
+? JSON.parse(raw)
+: emptyMemory();
+
+}catch(e){
+
+return emptyMemory();
+
+}
+
+}
+
+
+function save(){
+
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(memory)
+);
+
+refresh();
+
+}
+
+
+/* =====================================================
+   TEXTE
+===================================================== */
+
+function normalize(text){
+
+return String(text)
+.toLowerCase()
+.normalize("NFD")
+.replace(
+/[\u0300-\u036f]/g,
+""
+);
+
+}
+
+
+function tokenize(text){
+
+return normalize(text)
+.replace(
+/[^a-z0-9'-]/g,
+" "
+)
+.split(/\s+/)
+.filter(Boolean);
+
+}
+
+
+function cleanWords(text){
+
+return tokenize(text)
+.filter(word=>{
+
+return word.length >= 4 &&
+!STOPWORDS.has(word) &&
+!/^\d+$/.test(word);
+
+});
+
+}
+
+
+function sentences(text){
+
+return String(text)
+.replace(/\r/g,"")
+.split(
+/(?<=[.!?])\s+|\n+/
+)
+.map(x=>x.trim())
+.filter(x=>x.length>10);
+
+}
+
+
+/* =====================================================
+   CONCEPTS
+===================================================== */
+
+function conceptId(word){
+
+return normalize(word)
+.replace(
+/[^a-z0-9]/g,
+""
+);
+
+}
+
+
+function getConcept(id){
+
+if(!memory.concepts[id]){
+
+memory.concepts[id]={
+
+id:id,
+
+name:id,
+
+weight:0,
+
+occurrences:0,
+
+sources:0,
+
+explored:0,
+
+relations:0,
+
+sentences:[],
+
+created:new Date().toISOString(),
+
+lastSeen:new Date().toISOString()
+
+};
+
+}
+
+return memory.concepts[id];
+
+}
+
+
+function addConcept(word,count){
+
+const id =
+conceptId(word);
+
+if(!id)return;
+
+const c =
+getConcept(id);
+
+c.name =
+c.name || word;
+
+c.weight += count;
+
+c.occurrences += count;
+
+c.lastSeen =
+new Date().toISOString();
+
+return id;
+
+}
+
+
+/* =====================================================
+   RELATIONS
+===================================================== */
+
+function addRelation(a,b){
+
+if(!a || !b || a===b)
+return;
+
+const ids =
+[a,b].sort();
+
+const key =
+ids[0]+"::"+ids[1];
+
+if(!memory.relations[key]){
+
+memory.relations[key]={
+
+id:key,
+
+a:ids[0],
+
+b:ids[1],
+
+weight:0,
+
+evidence:[]
+
+};
+
+}
+
+memory.relations[key].weight++;
+
+const A =
+getConcept(ids[0]);
+
+const B =
+getConcept(ids[1]);
+
+A.relations++;
+B.relations++;
+
+}
+
+
+/* =====================================================
+   ANALYSE
+===================================================== */
+
+function analyzeSource(){
+
+const text =
+document.getElementById(
+"sourceText"
+).value.trim();
+
+
+if(!text){
+
+alert("Ajoute un texte.");
+
+return;
+
+}
+
+
+const words =
+cleanWords(text);
+
+const sents =
+sentences(text);
+
+
+const frequency={};
+
+
+words.forEach(w=>{
+
+frequency[w]=
+(frequency[w]||0)+1;
+
+});
+
+
+Object.entries(frequency)
+.forEach(([word,count])=>{
+
+const id =
+addConcept(
+word,
+count
+);
+
+const c =
+getConcept(id);
+
+c.sources++;
+
+sents.forEach(s=>{
+
+if(
+normalize(s)
+.includes(
+normalize(word)
+)
+){
+
+if(
+!c.sentences.includes(s)
+){
+
+c.sentences.push(s);
+
+}
+
+}
+
+});
+
+});
+
+
+/*
+Les mots importants apparaissant
+dans la même phrase sont reliés.
+*/
+
+sents.forEach(sentence=>{
+
+const ids =
+[
+...new Set(
+cleanWords(sentence)
+.map(conceptId)
+)
+].slice(0,30);
+
+
+for(let i=0;i<ids.length;i++){
+
+for(let j=i+1;j<ids.length;j++){
+
+addRelation(
+ids[i],
+ids[j]
+);
+
+}
+
+}
+
+});
+
+
+memory.sources.push({
+
+id:"SRC-"+Date.now(),
+
+date:new Date().toISOString(),
+
+words:words.length,
+
+sentences:sents.length,
+
+preview:text.substring(0,300)
+
+});
+
+
+document.getElementById(
+"analysisStatus"
+).textContent =
+"✅ Texte analysé : "+
+words.length+
+" mots utiles, "+
+sents.length+
+" phrases.";
+
+
+save();
+
+}
+
+
+/* =====================================================
+   CATEGORIES
+===================================================== */
+
+function metrics(c){
+
+const maxWeight =
+Math.max(
+1,
+...Object.values(memory.concepts)
+.map(x=>x.weight)
+);
+
+const maxRelations =
+Math.max(
+1,
+...Object.values(memory.concepts)
+.map(x=>x.relations)
+);
+
+
+const strength =
+(
+(c.weight/maxWeight)*.55+
+(c.relations/maxRelations)*.25+
+Math.min(
+1,
+c.explored/3
+)*.20
+);
+
+
+const exploration =
+1-Math.min(
+1,
+c.explored/3
+);
+
+
+const centrality =
+Math.min(
+1,
+c.relations/maxRelations
+);
+
+
+const priority =
+exploration*.45+
+centrality*.30+
+(1-strength)*.25;
+
+
+return {
+strength,
+exploration,
+centrality,
+priority
+};
+
+}
+
+
+function category(c){
+
+const m =
+metrics(c);
+
+if(
+m.priority>.72 &&
+c.relations>=2
+){
+
+return "urgent";
+
+}
+
+if(
+m.strength>=.62
+){
+
+return "strong";
+
+}
+
+if(
+m.strength>=.35
+){
+
+return "medium";
+
+}
+
+return "weak";
+
+}
+
+
+/* =====================================================
+   REFRESH
+===================================================== */
+
+function refresh(){
+
+const concepts =
+Object.values(
+memory.concepts
+);
+
+
+document.getElementById(
+"conceptCount"
+).textContent =
+concepts.length;
+
+
+document.getElementById(
+"relationCount"
+).textContent =
+Object.keys(
+memory.relations
+).length;
+
+
+document.getElementById(
+"exampleCount"
+).textContent =
+memory.examples.length;
+
+
+document.getElementById(
+"sourceCount"
+).textContent =
+memory.sources.length;
+
+
+document.getElementById(
+"wordCount"
+).textContent =
+concepts.reduce(
+(a,c)=>a+c.occurrences,
+0
+);
+
+
+/*
+Select
+*/
+
+const select =
+document.getElementById(
+"conceptSelect"
+);
+
+const old =
+select.value;
+
+select.innerHTML =
+"<option value=''>Sélectionner un concept</option>";
+
+
+concepts
+.sort(
+(a,b)=>b.weight-a.weight
+)
+.forEach(c=>{
+
+const option =
+document.createElement(
+"option"
+);
+
+option.value =
+c.id;
+
+option.textContent =
+c.name+
+" — poids "+
+c.weight;
+
+select.appendChild(
+option
+);
+
+});
+
+
+if(old)
+select.value=old;
+
+
+renderCategories();
+
+renderDataset();
+
+refreshJSON();
+
+}
+
+
+/* =====================================================
+   CATEGORIES UI
+===================================================== */
+
+function renderCategories(){
+
+const boxes={
+
+strong:
+document.getElementById("strongList"),
+
+medium:
+document.getElementById("mediumList"),
+
+weak:
+document.getElementById("weakList"),
+
+urgent:
+document.getElementById("urgentList")
+
+};
+
+
+Object.values(boxes)
+.forEach(x=>x.innerHTML="");
+
+
+const concepts =
+Object.values(
+memory.concepts
+)
+.sort(
+(a,b)=>
+metrics(b).priority-
+metrics(a).priority
+);
+
+
+concepts.forEach(c=>{
+
+const cat =
+category(c);
+
+const div =
+document.createElement("div");
+
+div.className=
+"item "+cat;
+
+div.innerHTML=`
+
+<b>${escapeHTML(c.name)}</b>
+
+<div class="small">
+
+Poids : ${c.weight}
+· Relations : ${c.relations}
+· Exploration : ${c.explored}/3
+
+</div>
+`;
+
+boxes[cat].appendChild(div);
+
+});
+
+
+const explore =
+document.getElementById(
+"exploreList"
+);
+
+explore.innerHTML="";
+
+
+concepts
+.filter(c=>c.explored<3)
+.slice(0,15)
+.forEach(c=>{
+
+const m =
+metrics(c);
+
+const div =
+document.createElement("div");
+
+div.className="item";
+
+div.innerHTML=`
+
+<b>🎯 ${escapeHTML(c.name)}</b>
+
+<div class="small">
+
+Priorité :
+${Math.round(m.priority*100)}%
+
+· Relations :
+${c.relations}
+
+· Exploration :
+${c.explored}/3
+
+</div>
+
+`;
+
+explore.appendChild(div);
+
+});
+
+}
+
+
+/* =====================================================
+   GENERATION CAS
+===================================================== */
+
+function generateQuestion(
+concept,
+type
+){
+
+const c =
+getConcept(concept);
+
+const relations =
+Object.values(
+memory.relations
+)
+.filter(
+r=>r.a===concept||
+r.b===concept
+)
+.map(r=>
+r.a===concept?r.b:r.a
+)
+.slice(0,6);
+
+
+const related =
+relations.length
+?relations.join(", ")
+:"aucun";
+
+
+const questions={
+
+explain:
+`Explique clairement le concept « ${c.name} ». Relie-le aux concepts suivants : ${related}.`,
+
+why:
+`Pourquoi le concept « ${c.name} » est-il important ? Explique son importance avec des exemples simples.`,
+
+how:
+`Comment fonctionne « ${c.name} » ? Présente les mécanismes essentiels de manière pédagogique.`,
+
+example:
+`Donne plusieurs exemples permettant de comprendre « ${c.name} » et explique ce qu'ils montrent.`,
+
+compare:
+`Compare « ${c.name} » avec les concepts qui lui sont liés : ${related}. Explique les ressemblances et les différences.`,
+
+critical:
+`Analyse de manière critique le concept « ${c.name} ». Présente ses limites, ses nuances et les erreurs fréquentes de compréhension.`,
+
+synthesis:
+`Fais une synthèse pédagogique autour de « ${c.name} » en reliant les concepts suivants : ${related}.`
+
+};
+
+
+return questions[type];
+
+}
+
+
+window.generateCase=function(){
+
+const concept =
+document.getElementById(
+"conceptSelect"
+).value;
+
+const type =
+document.getElementById(
+"caseType"
+).value;
+
+
+if(!concept){
+
+alert(
+"Sélectionne un concept."
+);
+
+return;
+
+}
+
+
+const question =
+generateQuestion(
+concept,
+type
+);
+
+
+document.getElementById(
+"caseOutput"
+).innerHTML=`
+
+<div class="item">
+
+<b>Question générée</b>
+
+<p>
+${escapeHTML(question)}
+</p>
+
+<div class="small">
+Le professeur doit produire la réponse de référence.
+</div>
+
+</div>
+
+`;
+
+
+/*
+On garde temporairement
+le cas courant.
+*/
+
+window.currentCase={
+concept,
+type,
+question
+};
+
+};
+
+
+/* =====================================================
+   BATCH
+===================================================== */
+
+window.generateBatch=function(){
+
+const concepts =
+Object.values(
+memory.concepts
+)
+.sort(
+(a,b)=>
+metrics(b).priority-
+metrics(a).priority
+)
+.slice(0,10);
+
+
+if(!concepts.length){
+
+alert(
+"Ajoute d'abord des connaissances."
+);
+
+return;
+
+}
+
+
+let html="";
+
+concepts.forEach((c,i)=>{
+
+const types=[
+"explain",
+"why",
+"how",
+"example",
+"critical"
+];
+
+const type =
+types[
+i%types.length
+];
+
+const question =
+generateQuestion(
+c.id,
+type
+);
+
+html+=`
+
+<div class="item">
+
+<b>
+${i+1}. ${escapeHTML(c.name)}
+</b>
+
+<p>
+${escapeHTML(question)}
+</p>
+
+</div>
+
+`;
+
+});
+
+
+document.getElementById(
+"caseOutput"
+).innerHTML=html;
+
+};
+
+
+/* =====================================================
+   AJOUT EXEMPLE
+===================================================== */
+
+window.addExample=function(){
+
+if(!window.currentCase){
+
+alert(
+"Crée d'abord un cas."
+);
+
+return;
+
+}
+
+
+const answer =
+document.getElementById(
+"teacherAnswer"
+).value.trim();
+
+
+if(!answer){
+
+alert(
+"Colle la réponse du professeur."
+);
+
+return;
+
+}
+
+
+const c =
+getConcept(
+window.currentCase.concept
+);
+
+
+c.explored++;
+
+c.weight+=2;
+
+
+const example={
+
+id:
+"EX-"+Date.now(),
+
+concept:
+c.id,
+
+type:
+window.currentCase.type,
+
+question:
+window.currentCase.question,
+
+answer:answer,
+
+quality:"non vérifiée",
+
+created:
+new Date().toISOString()
+
+};
+
+
+memory.examples.push(
+example
+);
+
+
+memory.trainingHistory.push({
+
+date:
+new Date().toISOString(),
+
+action:"example_added",
+
+concept:c.id
+
+});
+
+
+document.getElementById(
+"teacherAnswer"
+).value="";
+
+
+document.getElementById(
+"caseOutput"
+).innerHTML=
+"<div class='item green'>✅ Exemple ajouté au dataset.</div>";
+
+
+window.currentCase=null;
+
+
+save();
+
+};
+
+
+/* =====================================================
+   DATASET
+===================================================== */
+
+function renderDataset(){
+
+const box =
+document.getElementById(
+"datasetList"
+);
+
+box.innerHTML="";
+
+
+if(!memory.examples.length){
+
+box.innerHTML=
+"<p class='small'>Aucun exemple.</p>";
+
+return;
+
+}
+
+
+memory.examples
+.slice()
+.reverse()
+.slice(0,30)
+.forEach(ex=>{
+
+const div =
+document.createElement(
+"div"
+);
+
+div.className="item";
+
+
+div.innerHTML=`
+
+<b>
+${escapeHTML(ex.concept)}
+</b>
+
+<span class="pill">
+${escapeHTML(ex.type)}
+</span>
+
+<div class="small">
+${escapeHTML(ex.question)}
+</div>
+
+<details>
+
+<summary>Voir la réponse professeur</summary>
+
+<p>
+${escapeHTML(ex.answer)}
+</p>
+
+</details>
+
+`;
+
+box.appendChild(div);
+
+});
+
+}
+
+
+/* =====================================================
+   CONTROLE QUALITE
+===================================================== */
+
+window.runQualityCheck=function(){
+
+const examples =
+memory.examples;
+
+
+let empty=0;
+let short=0;
+let duplicates=0;
+
+
+const questions=new Set();
+
+
+examples.forEach(ex=>{
+
+if(!ex.question||
+!ex.answer){
+
+empty++;
+
+}
+
+if(
+ex.answer.length<80
+){
+
+short++;
+
+}
+
+const key=
+normalize(ex.question);
+
+if(questions.has(key)){
+
+duplicates++;
+
+}
+
+questions.add(key);
+
+});
+
+
+const valid =
+examples.length-
+empty;
+
+
+const score =
+examples.length
+?Math.round(
+(
+valid/examples.length*.5+
+(1-Math.min(
+1,
+short/Math.max(1,examples.length)
+))*.25+
+(1-Math.min(
+1,
+duplicates/Math.max(1,examples.length)
+))*.25
+)*100
+)
+:0;
+
+
+document.getElementById(
+"quality"
+).innerHTML=`
+
+<div class="item">
+
+<h3>
+Score de préparation : ${score}%
+</h3>
+
+<p>
+Exemples : ${examples.length}
+</p>
+
+<p>
+❌ Champs incomplets : ${empty}
+</p>
+
+<p>
+⚠️ Réponses très courtes : ${short}
+</p>
+
+<p>
+♻️ Questions dupliquées : ${duplicates}
+</p>
+
+</div>
+
+`;
+
+};
+
+
+/* =====================================================
+   JSON
+===================================================== */
+
+function refreshJSON(){
+
+document.getElementById(
+"jsonEditor"
+).value=
+JSON.stringify(
+memory,
+null,
+2
+);
+
+}
+
+
+window.applyJSON=function(){
+
+try{
+
+const parsed=
+JSON.parse(
+document.getElementById(
+"jsonEditor"
+).value
+);
+
+
+if(
+!parsed.concepts||
+!parsed.relations||
+!parsed.examples
+){
+
+throw new Error(
+"Structure JSON incomplète."
+);
+
+}
+
+
+memory=parsed;
+
+save();
+
+
+document.getElementById(
+"jsonStatus"
+).textContent=
+"✅ JSON appliqué.";
+
+}catch(e){
+
+document.getElementById(
+"jsonStatus"
+).textContent=
+"❌ JSON invalide : "+
+e.message;
+
+}
+
+};
+
+
+window.refreshJSON=
+function(){
+
+refreshJSON();
+
+document.getElementById(
+"jsonStatus"
+).textContent=
+"🔄 Éditeur actualisé.";
+
+};
+
+
+/* =====================================================
+   IMPORT
+===================================================== */
+
+window.importJSON=function(event){
+
+const file =
+event.target.files[0];
+
+if(!file)return;
+
+
+const reader =
+new FileReader();
+
+
+reader.onload=function(){
+
+try{
+
+const parsed=
+JSON.parse(
+reader.result
+);
+
+memory=parsed;
+
+save();
+
+alert(
+"✅ Mémoire importée."
+);
+
+}catch(e){
+
+alert(
+"❌ JSON invalide."
+);
+
+}
+
+};
+
+
+reader.readAsText(file);
+
+};
+
+
+/* =====================================================
+   EXPORT MEMOIRE
+===================================================== */
+
+window.downloadMemory=function(){
+
+download(
+JSON.stringify(
+memory,
+null,
+2
+),
+"mentor-memory.json",
+"application/json"
+);
+
+};
+
+
+/* =====================================================
+   EXPORT JSONL
+===================================================== */
+
+window.downloadDataset=function(){
+
+const lines =
+memory.examples.map(
+ex=>
+JSON.stringify({
+
+messages:[
+
+{
+role:"system",
+
+content:
+"Tu es un mentor francophone bienveillant, pédagogique, clair et encourageant la réflexion critique."
+},
+
+{
+role:"user",
+
+content:ex.question
+},
+
+{
+role:"assistant",
+
+content:ex.answer
+}
+
+]
+
+})
+);
+
+
+download(
+lines.join("\n"),
+"mentor-dataset.jsonl",
+"application/json"
+);
+
+};
+
+
+/* =====================================================
+   EXPORT COMPLET
+===================================================== */
+
+window.downloadEverything=function(){
+
+const packageData={
+
+memory:memory,
+
+dataset:memory.examples.map(
+ex=>({
+
+messages:[
+
+{
+role:"system",
+
+content:
+"Tu es un mentor francophone bienveillant, pédagogique, clair et encourageant la réflexion critique."
+},
+
+{
+role:"user",
+
+content:ex.question
+},
+
+{
+role:"assistant",
+
+content:ex.answer
+}
+
+]
+
+})
+),
+
+exportDate:
+new Date().toISOString()
+
+};
+
+
+download(
+JSON.stringify(
+packageData,
+null,
+2
+),
+"mentor-distillation-package.json",
+"application/json"
+);
+
+};
+
+
+/* =====================================================
+   DOWNLOAD
+===================================================== */
+
+function download(
+content,
+filename,
+type
+){
+
+const blob =
+new Blob(
+[content],
+{type}
+);
+
+const url =
+URL.createObjectURL(blob);
+
+const a =
+document.createElement("a");
+
+a.href=url;
+a.download=filename;
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+URL.revokeObjectURL(url);
+
+}
+
+
+/* =====================================================
+   OUTILS
+===================================================== */
+
+function escapeHTML(value){
+
+return String(value)
+.replace(
+/[&<>"']/g,
+c=>({
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[c])
+);
+
+}
+
+
+window.clearSource=function(){
+
+document.getElementById(
+"sourceText"
+).value="";
+
+};
+
+
+window.clearTeacher=function(){
+
+document.getElementById(
+"teacherAnswer"
+).value="";
+
+};
+
+
+window.resetAll=function(){
+
+if(
+!confirm(
+"Effacer toute la mémoire et tous les exemples ?"
+)
+)return;
+
+
+localStorage.removeItem(
+STORAGE_KEY
+);
+
+location.reload();
+
+};
+
+
+/* =====================================================
+   INITIALISATION
+===================================================== */
+
+refresh();
+
+</script>
+
+</body>
+  </html>
