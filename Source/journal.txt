@@ -1,5 +1,69 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-28 19:27:00
+TITRE: Le Groenland veut mettre en place une commission de réconciliation
+LIEN: https://www.ledevoir.com/actualites/sante/1004873/groenland-veut-mettre-place-commission-reconciliation
+CONTENU: De 1960 à 1990, plus de 4000 Inuites ont reçu un stérilet, pour la majorité sans leur consentement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-28 21:27:15
+TITRE: Les militants des droits civiques se mobilisent à Washington
+LIEN: https://www.ledevoir.com/monde/etats-unis/1004894/militants-droits-civiques-mobilisent-washington
+CONTENU: Ils dénoncent le redécoupage électoral engagé par les républicains et les restrictions au vote par correspondance.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-28 15:42:00
+TITRE: La croissance du Canada a été soutenue au deuxième trimestre, à 3,3%
+LIEN: https://www.ledevoir.com/economie/1004810/croissance-canada-ete-soutenue-deuxieme-trimestre-3-3
+CONTENU: Les craintes de récession s’éloignent, mais ces résultats ne comprennent pas l’effet des nouveaux tarifs de Trump.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-28 04:00:00
+TITRE: «La place»: fatalisme sur le Plateau
+LIEN: https://www.ledevoir.com/culture/cinema/1004624/place-fatalisme-plateau
+CONTENU: Une banale altercation dégénère en remise en question existentielle dans ce thriller aux consonances philosophiques.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-28 11:35:00
+TITRE: Presque 600 morts dans l’Himalaya, les secours sous la menace d’autres inondations
+LIEN: https://www.ledevoir.com/monde/asie/1004771/bilan-crues-soudaines-frontiere-entre-nepal-chine-alourdit-plus-550-morts
+CONTENU: Le lac formé lors de l’effondrement du glacier risque de se rompre. Parmi les 2500 disparus, on compte 30 Canadiens.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-28 04:00:00
+TITRE: Comparez les promesses et programmes des partis aux élections québécoises de 2026
+LIEN: https://www.ledevoir.com/interactif/2026-08-28/promesses-elections-quebec/index.html
+CONTENU: Consultez notre outil interactif afin de passer en revue les engagements pris depuis le début de la campagne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-28 04:00:00
+TITRE: Ainsi l’été s’en fut
+LIEN: https://www.ledevoir.com/opinion/chroniques/1004702/ainsi-ete-fut
+CONTENU: (Et le huard n’en pense pas moins.)
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-28 16:42:00
+TITRE: Le gouvernement Trump dit-il vrai sur le Canada?
+LIEN: https://www.ledevoir.com/economie/1004822/maison-blanche-dit-elle-vrai-canada
+CONTENU: «Le Devoir» décortique ses affirmations qui clament que « le Canada arnaque les États-Unis depuis des décennies ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-08-28 22:00:00
 TITRE: Émission du 28 août 2026
