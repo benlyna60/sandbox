@@ -1,5 +1,29 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-28 13:03:57
+TITRE: La guerre tarifaire pourrait modifier durablement les échanges commerciaux canado-américains
+LIEN: https://www.ledevoir.com/economie/1004780/guerre-tarifaire-pourrait-modifier-durablement-echanges-commerciaux-canado-americains
+CONTENU: Plus les entreprises seront contraintes de trouver de nouveaux marchés, plus ces marchés deviendront attractifs.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-28 17:44:00
+TITRE: Une journée « J’achète un jeu vidéo québécois » verra le jour le 14 novembre
+LIEN: https://www.ledevoir.com/culture/ecrans/1004840/journee-j-achete-jeu-video-quebecois-verra-jour-14-novembre
+CONTENU: Cette nouvelle initiative vise à « valoriser l’industrie québécoise du jeu vidéo auprès du grand public ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-28 21:14:00
+TITRE: Rien n’est facile pour les libéraux
+LIEN: https://www.ledevoir.com/politique/quebec/1004891/rien-est-facile-liberaux
+CONTENU: Charles Milliard était en terrain ami vendredi au cœur de la région de l’Estrie.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-08-28 17:25:59
 TITRE: Marine Le Pen « voit l’économie à travers l’électeur d’Hénin-Beaumont » : les réserves du patronat après la rentrée du Medef
