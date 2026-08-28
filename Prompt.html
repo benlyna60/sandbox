@@ -3,361 +3,988 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🧠 Mentor Autonome V5</title>
+<title>🧠 Mentor Autonome V6</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;background:#eef2f5;font-family:Arial;color:#18212b}
-main{max-width:850px;margin:auto;padding:12px}.top{background:#18232d;color:white;padding:18px;border-radius:14px;margin-bottom:12px}
+*{box-sizing:border-box}
+body{margin:0;background:#edf1f5;color:#17212b;font-family:Arial,sans-serif}
+main{max-width:900px;margin:auto;padding:12px}
+header{background:#17212b;color:white;padding:18px;border-radius:14px;margin-bottom:12px}
+h1{margin:0;font-size:23px}
+h2{font-size:18px;margin:0 0 10px}
 .card{background:white;padding:15px;border-radius:13px;margin:10px 0;box-shadow:0 2px 10px #0001}
-h1{margin:0;font-size:23px}h2{font-size:18px;margin-top:0}
-textarea{width:100%;min-height:130px;padding:11px;border:1px solid #ccd5dd;border-radius:9px;resize:vertical}
-button{border:0;border-radius:8px;padding:9px 12px;margin:3px;background:#2563eb;color:white;font-weight:bold;cursor:pointer}
-.green{background:#15803d}.orange{background:#c56a00}.red{background:#b91c1c}.gray{background:#64748b}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{background:#f4f6f8;padding:10px;text-align:center;border-radius:9px}.stat b{display:block;font-size:22px}
-.bar{height:12px;background:#dce2e8;border-radius:20px;overflow:hidden}.fill{height:100%;width:0;background:#2563eb}
+textarea{width:100%;min-height:120px;border:1px solid #ccd5dd;border-radius:9px;padding:10px;font:14px Arial;resize:vertical}
+button{border:0;border-radius:8px;padding:9px 13px;margin:3px;background:#2563eb;color:white;font-weight:bold;cursor:pointer}
+.green{background:#15803d}.red{background:#b91c1c}.orange{background:#c56a00}.gray{background:#64748b}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.stat{background:#f4f6f8;padding:10px;text-align:center;border-radius:9px}
+.stat b{display:block;font-size:22px}
+.bar{height:13px;background:#dce2e8;border-radius:20px;overflow:hidden}
+.fill{height:100%;width:0;background:#2563eb;transition:.3s}
+pre{white-space:pre-wrap;word-break:break-word;background:#111820;color:#e8edf2;padding:11px;border-radius:9px}
 .item{padding:9px;margin:5px 0;background:#f5f7f9;border-radius:8px;border-left:4px solid #2563eb}
-pre{white-space:pre-wrap;word-break:break-word;background:#111a21;color:white;padding:12px;border-radius:8px}
-small{color:#687481}
+small{color:#697581}
+.ok{color:#166534}.warn{color:#9a3412}.bad{color:#991b1b}
 @media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
-<body>
 
+<body>
 <main>
 
-<div class="top">
-<h1>🧠 Mentor Autonome V5</h1>
-<div id="status">🟢 Prêt</div>
+<header>
+<h1>🧠 Mentor Autonome V6</h1>
+<div id="status">⚪ En attente</div>
+</header>
+
+<section class="card">
+<h2>🤖 Petit LLM local</h2>
+
+<div id="modelStatus">
+Modèle : SmolLM2 360M · non chargé
 </div>
 
-<div class="card">
+<div class="bar">
+<div id="modelBar" class="fill"></div>
+</div>
+
+<button id="startBtn" class="green" onclick="start()">▶ DÉMARRER</button>
+<button class="red" onclick="stop()">⏹ STOP</button>
+
+<p>
+<small>
+Le premier démarrage télécharge le petit modèle.
+Ensuite le navigateur peut le conserver en cache.
+WebGPU est nécessaire.
+</small>
+</p>
+</section>
+
+
+<section class="card">
+<h2>🌱 Graine de départ</h2>
+
+<textarea id="seed"
+placeholder="Écris ton premier texte ici...&#10;&#10;Exemple : Bonjour, comment ça va ?"></textarea>
+
+<br>
+
+<button onclick="seedMemory()">📥 Ajouter à la mémoire</button>
+</section>
+
+
+<section class="card">
 <h2>📊 Progression</h2>
+
 <div class="grid">
-<div class="stat"><b id="c">0</b><small>Concepts</small></div>
-<div class="stat"><b id="r">0</b><small>Relations</small></div>
-<div class="stat"><b id="e">0</b><small>Exemples</small></div>
-<div class="stat"><b id="n">0</b><small>Cycles</small></div>
+<div class="stat"><b id="concepts">0</b><small>Concepts</small></div>
+<div class="stat"><b id="relations">0</b><small>Relations</small></div>
+<div class="stat"><b id="knowledge">0</b><small>Connaissances</small></div>
+<div class="stat"><b id="cycles">0</b><small>Cycles</small></div>
 </div>
+
 <br>
-<div class="bar"><div id="bar" class="fill"></div></div>
-<p id="progress">0 % de progression actuelle</p>
+
+<div class="bar">
+<div id="progress" class="fill"></div>
 </div>
 
-<div class="card">
-<h2>📚 Nourrir l'IA</h2>
-<textarea id="input" placeholder="Colle un texte, un cours, une réponse ou plusieurs textes ici..."></textarea>
-<br>
-<button onclick="learn()">🧠 Apprendre</button>
-<button class="gray" onclick="document.getElementById('input').value=''">Effacer</button>
+<p id="progressText">0 %</p>
+</section>
+
+
+<section class="card">
+<h2>🎯 Mission actuelle</h2>
+<div id="mission">Aucune mission.</div>
+</section>
+
+
+<section class="card">
+<h2>🤖 Réflexion du petit LLM</h2>
+
+<pre id="thinking">
+Le système attend le démarrage...
+</pre>
+
+</section>
+
+
+<section class="card">
+<h2>🧠 Dernière connaissance absorbée</h2>
+
+<div id="last">
+Aucune connaissance.
 </div>
 
-<div class="card">
-<h2>🎯 Décision automatique</h2>
-<div id="mission">Le cerveau cherche ce qu'il doit apprendre...</div>
-</div>
+</section>
 
-<div class="card">
-<h2>🤖 Travail du petit LLM</h2>
-<p><small>Le moteur utilise les connaissances accumulées pour produire une nouvelle étape d'apprentissage.</small></p>
-<button class="green" onclick="next()">▶ Apprentissage automatique</button>
-<button class="orange" onclick="pause()">⏸ Pause</button>
-<pre id="prompt">Aucune mission.</pre>
-<button class="green" onclick="copyPrompt()">📋 Copier</button>
-</div>
 
-<div class="card">
-<h2>🧠 Mémoire</h2>
+<section class="card">
+<h2>🗄️ Mémoire</h2>
+
 <div id="memory"></div>
-<button onclick="download()">⬇️ Télécharger la mémoire</button>
-<button class="gray" onclick="exportDataset()">📦 Dataset</button>
-</div>
 
-<div class="card">
-<h2>⚙️ Continuer</h2>
-<p><small>
-La mémoire est sauvegardée automatiquement dans le navigateur.
-Tu peux fermer puis rouvrir la page : elle reprend son état.
-</small></p>
-<button class="red" onclick="reset()">Réinitialiser</button>
-</div>
+<button onclick="downloadMemory()">⬇️ Télécharger JSON</button>
+<button class="gray" onclick="downloadDataset()">📦 Télécharger dataset</button>
+
+</section>
 
 </main>
 
-<script>
-const KEY="MENTOR_V5_MEMORY";
 
-let M=JSON.parse(localStorage.getItem(KEY)||"null")||{
-concepts:{},relations:{},examples:[],cycles:0,mission:null
-};
+<script type="module">
+
+/* =====================================================
+   WEBLLM
+===================================================== */
+
+import {CreateMLCEngine}
+from "https://esm.run/@mlc-ai/web-llm";
+
+
+const MODEL =
+"SmolLM2-360M-Instruct-q4f16_1-MLC";
+
+
+let engine=null;
 
 let running=false;
 
-const stop=new Set(`
-a ai au aux avec après avant ce cette ces comme dans de des du
-elle en entre est et eux il ils je la le les leur lui ma mais me
-mes moi mon ne nos notre nous on ont ou par pas pour que qui sa
-sans se ses si son sont sur ta te tes toi ton tout toute très tu
-un une vos votre vous
+let busy=false;
+
+
+/* =====================================================
+   MÉMOIRE
+===================================================== */
+
+const KEY="MENTOR_V6_MEMORY";
+
+
+let M=
+JSON.parse(
+localStorage.getItem(KEY)||"null"
+)||{
+
+concepts:{},
+
+relations:{},
+
+knowledge:[],
+
+cycles:0,
+
+seed:"",
+
+lastAnswer:"",
+
+created:new Date().toISOString()
+
+};
+
+
+/* =====================================================
+   OUTILS
+===================================================== */
+
+const stopWords=new Set(`
+a ai au aux avec après avant
+ce ceci cela cette ces
+comme dans de des du
+elle elles en entre est et été
+et eux
+il ils
+je
+la le les leur lui
+ma mais me mes moi mon
+ne nos notre nous
+on ont ou
+par pas pour
+que quel quelle quelles quels
+qui quoi
+sa sans se ses
+si son sont
+sur
+ta te tes toi ton
+tous tout toute toutes
+très tu
+un une
+vos votre vous
 `.split(/\s+/));
 
+
 function clean(s){
+
 return s.toLowerCase()
-.normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
 .replace(/[^a-z0-9'-]/g," ");
+
 }
+
 
 function words(s){
-return clean(s).split(/\s+/)
-.filter(x=>x.length>3&&!stop.has(x)&&!/\d/.test(x));
+
+return clean(s)
+.split(/\s+/)
+.filter(x=>
+x.length>3 &&
+!stopWords.has(x)
+);
+
 }
 
-function id(x){return x.replace(/[^a-z0-9]/g,"")}
+
+function conceptId(x){
+
+return x.replace(/[^a-z0-9]/g,"");
+
+}
+
 
 function save(){
-localStorage.setItem(KEY,JSON.stringify(M));
+
+localStorage.setItem(
+KEY,
+JSON.stringify(M)
+);
+
 draw();
+
 }
 
-function concept(x){
-let k=id(x);
-if(!M.concepts[k])
-M.concepts[k]={
-name:x,weight:0,relations:0,explored:0
+
+function escapeHTML(x){
+
+return String(x)
+.replace(/[&<>"']/g,m=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[m]));
+
+}
+
+
+/* =====================================================
+   EXTRACTION
+===================================================== */
+
+function extract(text){
+
+const list=words(text);
+
+const unique=[...new Set(list)];
+
+unique.forEach(word=>{
+
+const id=conceptId(word);
+
+if(!M.concepts[id]){
+
+M.concepts[id]={
+
+id,
+
+name:word,
+
+weight:0,
+
+explored:0
+
 };
-return M.concepts[k];
+
 }
 
-function relation(a,b){
-if(a===b)return;
-let k=[a,b].sort().join("::");
-if(!M.relations[k])
-M.relations[k]={a,b,weight:0};
-M.relations[k].weight++;
+M.concepts[id].weight++;
+
+});
+
+
+for(let i=0;i<unique.length;i++){
+
+for(let j=i+1;j<unique.length;j++){
+
+const a=conceptId(unique[i]);
+
+const b=conceptId(unique[j]);
+
+if(a===b)continue;
+
+const key=[a,b].sort().join("::");
+
+if(!M.relations[key]){
+
+M.relations[key]={
+
+a,b,weight:0
+
+};
+
 }
 
-function learn(){
+M.relations[key].weight++;
 
-let text=document.getElementById("input").value.trim();
-if(!text)return alert("Ajoute d'abord du texte.");
+}
 
-let w=words(text);
-let unique=[...new Set(w)];
+}
 
-unique.forEach(x=>{
-let c=concept(x);
-c.weight++;
+}
+
+
+/* =====================================================
+   GRAINE
+===================================================== */
+
+window.seedMemory=function(){
+
+const text=
+document.getElementById("seed")
+.value.trim();
+
+if(!text){
+
+alert("Écris d'abord un texte.");
+
+return;
+
+}
+
+M.seed+=
+(M.seed?"\n":"")+text;
+
+extract(text);
+
+M.knowledge.push({
+
+type:"seed",
+
+text,
+
+date:new Date().toISOString()
+
 });
 
-for(let i=0;i<unique.length;i++)
-for(let j=i+1;j<unique.length;j++)
-relation(id(unique[i]),id(unique[j]));
-
-M.examples.push({
-date:new Date().toISOString(),
-text:text.slice(0,3000)
-});
-
-M.cycles++;
-
-document.getElementById("input").value="";
-document.getElementById("status").textContent=
-"🟢 Nouvelle connaissance absorbée.";
-
-choose();
+document.getElementById("seed").value="";
 
 save();
-}
 
-function choose(){
+setStatus(
+"🟢 Graine absorbée. Prêt à apprendre automatiquement."
+);
 
-let all=Object.entries(M.concepts);
+};
 
-if(!all.length){
-M.mission=null;
-return;
-}
 
-all.sort((a,b)=>{
-let A=a[1],B=b[1];
-let pa=(A.weight+1)/(A.explored+1);
-let pb=(B.weight+1)/(B.explored+1);
+/* =====================================================
+   CHOIX DU PROCHAIN CONCEPT
+===================================================== */
+
+function chooseConcept(){
+
+const list=
+Object.values(M.concepts);
+
+if(!list.length)return null;
+
+
+list.sort((a,b)=>{
+
+const pa=
+(a.weight+1)/
+(a.explored+1);
+
+const pb=
+(b.weight+1)/
+(b.explored+1);
+
 return pb-pa;
+
 });
 
-let [k,c]=all[0];
+
+return list[0];
+
+}
+
+
+/* =====================================================
+   RELATIONS D'UN CONCEPT
+===================================================== */
+
+function related(id){
+
+return Object.values(M.relations)
+
+.filter(r=>
+r.a===id||
+r.b===id
+)
+
+.sort(
+(a,b)=>b.weight-a.weight
+)
+
+.slice(0,8)
+
+.map(r=>{
+
+const other=
+r.a===id?r.b:r.a;
+
+return M.concepts[other]?.name||other;
+
+});
+
+}
+
+
+/* =====================================================
+   PROMPT INTERNE
+===================================================== */
+
+function buildTask(c){
+
+const links=
+related(c.id);
+
+
+return `
+Tu es un petit professeur local qui aide
+un système de mémoire à apprendre.
+
+Concept principal :
+${c.name}
+
+Concepts liés :
+${links.join(", ")||"aucun"}
+
+Travail demandé :
+
+1. Explique ce concept simplement.
+2. Donne les informations importantes.
+3. Trouve ses liens avec les concepts associés.
+4. Donne un exemple concret.
+5. Indique une idée nouvelle que le système
+   pourrait explorer ensuite.
+
+Réponds en français.
+Reste factuel et clair.
+`.trim();
+
+}
+
+
+/* =====================================================
+   WEBLLM
+===================================================== */
+
+async function loadModel(){
+
+if(engine)return true;
+
+if(!navigator.gpu){
+
+throw new Error(
+"WebGPU n'est pas disponible dans ce navigateur."
+);
+
+}
+
+
+setStatus(
+"🟡 Téléchargement / chargement du petit LLM..."
+);
+
+
+engine=
+await CreateMLCEngine(
+MODEL,
+{
+
+initProgressCallback:p=>{
+
+const percent=
+Math.round(
+(p.progress||0)*100
+);
+
+document.getElementById(
+"modelBar"
+).style.width=
+percent+"%";
+
+document.getElementById(
+"modelStatus"
+).textContent=
+"Chargement du modèle : "+
+percent+"%";
+
+}
+
+}
+);
+
+
+document.getElementById(
+"modelStatus"
+).textContent=
+"🟢 SmolLM2 360M prêt";
+
+return true;
+
+}
+
+
+/* =====================================================
+   UNE PENSÉE
+===================================================== */
+
+async function think(){
+
+if(!engine)return;
+
+const c=
+chooseConcept();
+
+if(!c)return;
+
 
 c.explored++;
 
-M.mission={
-concept:k,
-name:c.name,
-date:new Date().toISOString()
-};
+const task=
+buildTask(c);
 
-document.getElementById("mission").innerHTML=
-`🎯 <b>${esc(c.name)}</b><br>
-Le système considère ce concept comme prioritaire.`;
 
-makePrompt();
+document.getElementById(
+"mission"
+).innerHTML=
+`🎯 <b>${escapeHTML(c.name)}</b>
+<br><small>
+Exploration ${c.explored}
+· ${related(c.id).length} liens
+</small>`;
+
+
+document.getElementById(
+"thinking"
+).textContent=
+"🤖 Le petit LLM réfléchit...";
+
+
+const result=
+await engine.chat.completions.create({
+
+messages:[
+
+{
+role:"system",
+
+content:
+"Tu es un professeur francophone clair, prudent et pédagogique. Tu aides une mémoire locale à organiser des connaissances."
+},
+
+{
+role:"user",
+
+content:task
+
 }
 
-function makePrompt(){
+],
 
-if(!M.mission)return;
+temperature:.35,
 
-let c=M.mission.name;
+max_tokens:450
 
-let related=[];
-
-Object.values(M.relations).forEach(r=>{
-if(r.a===M.mission.concept)related.push(r.b);
-if(r.b===M.mission.concept)related.push(r.a);
 });
 
-related=related.slice(0,8).map(x=>
-M.concepts[x]?.name||x);
 
-let p=
-`Tu es un professeur expert.
+const answer=
+result.choices[0]
+.message.content
+.trim();
 
-Approfondis automatiquement le concept :
-"${c}"
 
-Concepts actuellement liés :
-${related.join(", ")||"aucun"}
+M.lastAnswer=answer;
 
-Explique le concept clairement.
-Montre ses liens avec les autres idées.
-Donne des exemples.
-Signale les nuances ou limites importantes.
-Cherche à produire une connaissance réellement utile
-pour enrichir une mémoire de long terme.
 
-Réponds en français.`;
+M.knowledge.push({
 
-document.getElementById("prompt").textContent=p;
+type:"learned",
+
+concept:c.name,
+
+answer,
+
+date:new Date().toISOString()
+
+});
+
+
+/*
+Réinjecte la nouvelle réponse
+dans la mémoire.
+*/
+
+extract(answer);
+
+
+M.cycles++;
+
+
+document.getElementById(
+"thinking"
+).textContent=
+answer;
+
+
+document.getElementById(
+"last"
+).innerHTML=
+`
+<div class="item">
+<b>${escapeHTML(c.name)}</b>
+<br>
+${escapeHTML(answer)}
+</div>
+`;
+
+
+save();
+
 }
 
-function next(){
 
-running=true;
+/* =====================================================
+   BOUCLE INFINIE
+===================================================== */
 
-choose();
+async function loop(){
 
-document.getElementById("status").textContent=
-"🟢 Nouvelle mission préparée automatiquement.";
+while(running){
+
+if(busy){
+
+await wait(500);
+
+continue;
 
 }
 
-function pause(){
+busy=true;
+
+try{
+
+await think();
+
+}catch(error){
+
+console.error(error);
+
+setStatus(
+"🔴 Erreur : "+
+error.message
+);
 
 running=false;
 
-document.getElementById("status").textContent=
-"⏸ Apprentissage en pause.";
+break;
 
 }
 
-function copyPrompt(){
+busy=false;
 
-let p=document.getElementById("prompt").textContent;
 
-if(navigator.clipboard)
-navigator.clipboard.writeText(p);
-else{
-let t=document.createElement("textarea");
-t.value=p;
-document.body.appendChild(t);
-t.select();
-document.execCommand("copy");
-t.remove();
-}
+/*
+Petite pause entre deux cycles pour
+laisser respirer le navigateur.
+*/
 
-alert("✅ Prompt copié.");
+await wait(900);
 
 }
+
+busy=false;
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+window.start=async function(){
+
+if(running)return;
+
+
+try{
+
+await loadModel();
+
+if(
+Object.keys(M.concepts).length===0
+){
+
+const seed=
+document.getElementById("seed")
+.value.trim();
+
+if(seed){
+
+extract(seed);
+
+M.seed=seed;
+
+document.getElementById("seed").value="";
+
+}
+
+}
+
+
+if(
+Object.keys(M.concepts).length===0
+){
+
+alert(
+"Écris d'abord un petit texte de départ."
+);
+
+return;
+
+}
+
+
+running=true;
+
+
+setStatus(
+"🟢 APPRENTISSAGE CONTINU — la boucle est active"
+);
+
+
+loop();
+
+
+}catch(error){
+
+console.error(error);
+
+setStatus(
+"🔴 "+error.message
+);
+
+}
+
+};
+
+
+/* =====================================================
+   STOP
+===================================================== */
+
+window.stop=function(){
+
+running=false;
+
+setStatus(
+"⏹ Arrêté par l'utilisateur."
+);
+
+};
+
+
+/* =====================================================
+   ATTENTE
+===================================================== */
+
+function wait(ms){
+
+return new Promise(
+resolve=>setTimeout(resolve,ms)
+);
+
+}
+
+
+/* =====================================================
+   STATUT
+===================================================== */
+
+function setStatus(text){
+
+document.getElementById(
+"status"
+).textContent=text;
+
+}
+
+
+/* =====================================================
+   AFFICHAGE
+===================================================== */
 
 function draw(){
 
-let concepts=Object.keys(M.concepts).length;
-let relations=Object.keys(M.relations).length;
-let examples=M.examples.length;
+const c=
+Object.keys(M.concepts).length;
 
-document.getElementById("c").textContent=concepts;
-document.getElementById("r").textContent=relations;
-document.getElementById("e").textContent=examples;
-document.getElementById("n").textContent=M.cycles;
+const r=
+Object.keys(M.relations).length;
 
-let p=Math.min(100,
-Math.round((concepts/1000)*100));
+const k=
+M.knowledge.length;
 
-document.getElementById("bar").style.width=p+"%";
-document.getElementById("progress").textContent=
-p+" % de progression actuelle";
+document.getElementById(
+"concepts"
+).textContent=c;
 
-let top=Object.values(M.concepts)
-.sort((a,b)=>b.weight-a.weight)
-.slice(0,30);
+document.getElementById(
+"relations"
+).textContent=r;
 
-document.getElementById("memory").innerHTML=
-top.map(x=>
-`<div class="item">
-<b>${esc(x.name)}</b>
-· poids ${x.weight}
-· exploration ${x.explored}
-</div>`
-).join("")||"<small>Mémoire vide.</small>";
-}
+document.getElementById(
+"knowledge"
+).textContent=k;
 
-function download(){
+document.getElementById(
+"cycles"
+).textContent=M.cycles;
 
-let blob=new Blob(
-[JSON.stringify(M,null,2)],
-{type:"application/json"}
+
+const p=
+Math.min(
+100,
+Math.round(
+(c/1000)*100
+)
 );
 
-let a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download="mentor-memory.json";
+
+document.getElementById(
+"progress"
+).style.width=
+p+"%";
+
+
+document.getElementById(
+"progressText"
+).textContent=
+p+" % — "+
+c+
+" concepts construits";
+
+
+const top=
+Object.values(M.concepts)
+
+.sort(
+(a,b)=>b.weight-a.weight
+)
+
+.slice(0,30);
+
+
+document.getElementById(
+"memory"
+).innerHTML=
+
+top.map(x=>
+
+`<div class="item">
+<b>${escapeHTML(x.name)}</b>
+· poids ${x.weight}
+· exploré ${x.explored} fois
+</div>`
+
+).join("")
+||
+"<small>La mémoire est vide.</small>";
+
+}
+
+
+/* =====================================================
+   EXPORT
+===================================================== */
+
+window.downloadMemory=function(){
+
+const blob=
+new Blob(
+[
+JSON.stringify(M,null,2)
+],
+{
+type:"application/json"
+}
+);
+
+
+const a=
+document.createElement("a");
+
+a.href=
+URL.createObjectURL(blob);
+
+a.download=
+"mentor-memory-v6.json";
+
 a.click();
+
+};
+
+
+window.downloadDataset=function(){
+
+const lines=
+M.knowledge
+.filter(x=>x.type==="learned")
+.map(x=>
+JSON.stringify({
+
+concept:x.concept,
+
+answer:x.answer
+
+})
+)
+.join("\n");
+
+
+const blob=
+new Blob(
+[lines],
+{
+type:"application/json"
 }
+);
 
-function exportDataset(){
 
-let data=M.examples.map(x=>JSON.stringify({
-instruction:"Enrichir la connaissance du mentor.",
-input:x.text,
-output:""
-})).join("\n");
+const a=
+document.createElement("a");
 
-let blob=new Blob([data],
-{type:"application/json"});
+a.href=
+URL.createObjectURL(blob);
 
-let a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download="mentor-dataset.jsonl";
+a.download=
+"mentor-dataset-v6.jsonl";
+
 a.click();
-}
 
-function reset(){
+};
 
-if(confirm("Effacer toute la mémoire ?")){
-localStorage.removeItem(KEY);
-location.reload();
-}
 
-}
-
-function esc(x){
-return String(x).replace(/[&<>"']/g,m=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",
-'"':"&quot;","'":"&#039;"
-}[m]));
-}
+/* =====================================================
+   INITIALISATION
+===================================================== */
 
 draw();
 
-if(M.mission)makePrompt();
-
 </script>
+
 </body>
 </html>
