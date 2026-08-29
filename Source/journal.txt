@@ -1,5 +1,29 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: «24 poses (portraits)»: une véritable affaire de famille
+LIEN: https://www.ledevoir.com/culture/theatre/1004330/24-poses-portraits-veritable-affaire-famille
+CONTENU: Vingt-sept ans après sa création, la pièce de Serge Boucher est mise en scène chez Duceppe par Édith Patenaude.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: «Chambres noires»: entre l’ombre et la lumière
+LIEN: https://www.ledevoir.com/lire/1004411/chambres-noires-entre-ombre-lumiere
+CONTENU: Suivant les traces de la photographe américaine Vivian Maier, Dominique Fortier raconte son histoire «la plus fragile».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Le plafond magique du Musée d’art contemporain des Laurentides
+LIEN: https://www.ledevoir.com/culture/arts-visuels/1003706/plafond-magique-musee-art-contemporain-laurentides
+CONTENU: Il faut lever les yeux avec une «black light» pour que se révèle l’attrait le plus original du MAC LAU.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-08-29 04:00:23
 TITRE: Les canicules et les incendies redessinent la carte des vacances d’été : « On a souffert de la chaleur, on ne voulait pas faire vivre ça aux enfants »
