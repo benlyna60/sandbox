@@ -1,5 +1,85 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Les Blatter ne feront plus de pipes
+LIEN: https://www.ledevoir.com/culture/1004903/blatter-ne-feront-plus-pipes
+CONTENU: Après 119 ans d’activité, les derniers maîtres pipiers de Montréal ferment boutique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: En France, la «maternelle 4 ans» commence… à 2 ans
+LIEN: https://www.ledevoir.com/monde/europe/1004945/france-maternelle-4-ans-commence-2-ans
+CONTENU: «En faisant rentrer certains enfants à l’école plus tôt, on essaie de corriger les inégalités entre les enfants.»
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Une adoption à géométrie variable de l’IA dans le réseau scolaire
+LIEN: https://www.ledevoir.com/actualites/education/1004942/adoption-geometrie-variable-ia-reseau-scolaire
+CONTENU: Un centre de services scolaire laissera ses élèves utiliser cette technologie en classe cette année.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Qui a peur du PCQ?
+LIEN: https://www.ledevoir.com/opinion/chroniques/1004933/peur-pcq
+CONTENU: Le PQ et la CAQ ont tous les deux besoin de courtiser les électeurs d’Éric Duhaime.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Regards croisés sur la ségrégation scolaire, au Québec et en Ontario
+LIEN: https://www.ledevoir.com/actualites/education/1004939/regards-croises-segregation-scolaire-quebec-ontario
+CONTENU: L’«école à trois vitesses» n’existe pas en Ontario, mais une compétition basée sur le code postal crée des inégalités.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: «Défréchettiser» ou «détrumpiser»
+LIEN: https://www.ledevoir.com/opinion/chroniques/1004924/defrechettiser-ou-detrumpiser
+CONTENU: Pour les adversaires de la CAQ, il est urgent de miner la crédibilité économique de Christine Fréchette.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Le joker vert
+LIEN: https://www.ledevoir.com/opinion/editoriaux/1004918/joker-vert
+CONTENU: L’environnement est une carte maîtresse à jouer pour un gouvernement. Exigeante, certes, mais puissante.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: La vraie résilience financière
+LIEN: https://www.ledevoir.com/opinion/chroniques/1004912/vraie-resilience-financiere
+CONTENU: En finances personnelles, prudence, patience et discipline se nourrissent les unes les autres.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Viser le contenant, pas le contenu
+LIEN: https://www.ledevoir.com/opinion/chroniques/1004948/viser-contenant-pas-contenu
+CONTENU: On doit s’en prendre à Meta en la traitant comme ce qu’elle est: une entreprise qui nuit à la santé publique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Le Québec, seul face aux GAFAM
+LIEN: https://www.ledevoir.com/opinion/chroniques/1004906/quebec-seul-face-gafam
+CONTENU: Il faut s’y faire, l’homme qui dirige le pays n’a rien à cirer de nos velléités d’imposer notre culture aux GAFAM.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-08-29 04:00:34
 TITRE: Présidentielle 2027 : le piège du choc générationnel, entre promesses aux jeunes et peur d’irriter les retraités
