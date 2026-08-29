@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Local avec Transformers.js</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-header {
+            background: #4f46e5;
+            color: white;
+            padding: 15px 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #status {
+            font-size: 0.85rem;
+            font-weight: normal;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #fafafa;
+        }
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+        .message.user {
+            background: #4f46e5;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+        .message.bot {
+            background: #e4e6eb;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+        .chat-input-area {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            font-size: 1rem;
+        }
+        input[type="text"]:focus {
+            border-color: #4f46e5;
+        }
+        button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <span>Mini-Chat Local (IA)</span>
+            <span id="status">Chargement...</span>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot">Bonjour ! Je suis une IA qui tourne directement dans ton navigateur. Pose-moi une question (le premier chargement peut prendre un moment car je télécharge le modèle).</div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="user-input" placeholder="Écris ton message..." disabled>
+            <button id="send-btn" disabled>Envoyer</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+
+        const statusSpan = document.getElementById('status');
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        let generator = null;
+
+        async function init() {
+            try {
+                // Utilisation d'un modèle de chat léger optimisé pour le web
+                generator = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat');
+                
+                statusSpan.textContent = "Prêt";
+                statusSpan.style.background = "#10b981";
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                userInput.focus();
+            } catch (err) {
+                statusSpan.textContent = "Erreur de chargement";
+                statusSpan.style.background = "#ef4444";
+                console.error(err);
+            }
+        }
+
+        init();
+
+        async function handleSendMessage() {
+            const text = userInput.value.trim();
+            if (!text || !generator) return;
+
+            // Afficher le message de l'utilisateur
+            appendMessage(text, 'user');
+            userInput.value = '';
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+
+            // Créer un espace pour la réponse du bot
+            const botMessageDiv = appendMessage('Réflexion...', 'bot');
+
+            try {
+                // Formatage du prompt pour le modèle Chat
+                const messages = [
+                    { role: "system", content: "Tu es un assistant utile et concis." },
+                    { role: "user", content: text }
+                ];
+                
+                const prompt = generator.tokenizer.apply_chat_template(messages, { tokenize: false, add_generation_prompt: true });
+
+                const output = await generator(prompt, {
+                    max_new_tokens: 150,
+                    temperature: 0.7,
+                    do_sample: true,
+                    repetition_penalty: 1.1
+                });
+
+                // Extraction de la réponse générée (en nettoyant le prompt initial)
+                let generatedText = output[0].generated_text;
+                if (generatedText.includes('<|im_start|>assistant')) {
+                    generatedText = generatedText.split('<|im_start|>assistant').pop().trim();
+                } else {
+                    generatedText = generatedText.replace(prompt, '').trim();
+                }
+
+                botMessageDiv.textContent = generatedText;
+            } catch (err) {
+                botMessageDiv.textContent = "Oups, une erreur est survenue lors de la génération.";
+                console.error(err);
+            } finally {
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                userInput.focus();
+            }
+        }
+
+        function appendMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
+            div.textContent = text;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return div;
+        }
+
+        sendBtn.addEventListener('click', handleSendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSendMessage();
+        });
+    </script>
+</body>
+</html>
