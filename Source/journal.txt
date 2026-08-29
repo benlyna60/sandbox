@@ -1,5 +1,45 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 22:09:00
+TITRE: Le laissez-passer A-32 et l’ami de Jean Chrétien
+LIEN: https://www.ledevoir.com/politique/quebec/1005065/laissez-passer-32-ami-jean-chretien
+CONTENU: Ignorant les conventions d’usage, un résident s’est introduit dans la file des questions pour louanger Charles Milliard.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 17:00:00
+TITRE: PSPP associe immigration, débordement des écoles et crise du logement
+LIEN: https://www.ledevoir.com/politique/quebec/1005041/pspp-associe-immigration-debordement-ecoles-crise-logement
+CONTENU: Il s’en est de nouveau pris à Christine Fréchette, critiquant son bilan en immigration.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 16:00:00
+TITRE: Le gouvernement Trump sur le point de céder une petite partie du parc Yosemite
+LIEN: https://www.ledevoir.com/monde/etats-unis/1005035/gouvernement-trump-point-ceder-petite-partie-parc-yosemite
+CONTENU: Une parcelle en lisière du parc pourrait être cédée à un promoteur immobilier privé.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 19:50:00
+TITRE: Tadej Pogacar forcé d’abandonner le Tour d’Espagne
+LIEN: https://www.ledevoir.com/sports/1005053/tadej-pogacar-force-abandonner-tour-espagne
+CONTENU: Après une lourde chute, le cycliste devra subir une opération.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 21:16:47
+TITRE: La remontée de la CAQ lance le duel d’hostilités entre PSPP et Fréchette
+LIEN: https://www.ledevoir.com/politique/quebec/1005059/remontee-caq-lance-duel-hostilites-entre-pspp-frechette
+CONTENU: Paul St-Pierre Plamondon a relancé samedi le débat sur les seuils d’immigration.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-08-29 19:10:06
 TITRE: Présidentielle 2027 : le « trou de fourmi » de François Hollande, déjà en campagne
