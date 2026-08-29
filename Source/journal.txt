@@ -1,5 +1,45 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Une campagne avec Donald Trump
+LIEN: https://www.ledevoir.com/politique/quebec/1004954/campagne-donald-trump
+CONTENU: Le gouvernement Trump alimentera-t-il la bisbille  à coups de déclarations chocs ou de contre-contre-tarifs?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 15:19:00
+TITRE: Milliard propose de créer l’équipe «Efficacité Québec» pour réduire les délais bureaucratiques
+LIEN: https://www.ledevoir.com/politique/quebec/1005032/milliard-propose-creer-equipe-efficacite-quebec-reduire-delais-bureaucratiques
+CONTENU: «Le temps des Québécois a une valeur, le temps des entrepreneurs a une valeur», a lancé le chef du PLQ.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 16:16:25
+TITRE: Les affaires d’immigration pèsent lourd au calendrier de la Cour fédérale
+LIEN: https://www.ledevoir.com/politique/canada/1005038/affaires-immigration-pesent-lourd-calendrier-cour-federale
+CONTENU: Les juges et le personnel judiciaire doivent travailler le soir, la fin de semaine et  pendant leurs vacances.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Des logements «abordables intermédiaires» à 2026$ par mois
+LIEN: https://www.ledevoir.com/economie/1004972/logements-abordables-intermediaires-2026-mois
+CONTENU: Cette catégorie d’habitations «hors marché» créée par la CAQ est inaccessible aux travailleurs à revenus modestes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 17:11:35
+TITRE: Ce que veut réellement dire l’entente entre les États-Unis et le Venezuela, selon un expert
+LIEN: https://www.ledevoir.com/monde/ameriques/1005044/ce-veut-reellement-dire-entente-entre-etats-unis-venezuela-selon-expert
+CONTENU: «C’est une manière pour Donald Trump de rassurer les Américains» et rien de plus, affirme Mathieu Arès.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-08-29 13:37:15
 TITRE: EN DIRECT, présidentielle 2027 : François Hollande et Edouard Philippe s’accordent à se méfier de « ceux qui divisent », soit LFI et le RN
