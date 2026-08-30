@@ -1,5 +1,29 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-30 18:00:00
+TITRE: Le PQ se donne quatre ans pour renverser le déclin du français
+LIEN: https://www.ledevoir.com/politique/quebec/1005113/pq-donne-quatre-ans-renverser-declin-francais
+CONTENU: Il compte notamment étudier l’usage du français dans les corridors des écoles de Montréal et de Laval.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-30 18:20:00
+TITRE: À surveiller dans le monde des affaires au Canada
+LIEN: https://www.ledevoir.com/economie/1005116/surveiller-monde-affaires-canada
+CONTENU: Cinq éléments à surveiller, des résultats de Couche-Tard aux taux d’intérêt de la Banque du Canada.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-30 19:45:41
+TITRE: Christine Fréchette promet de renforcer l’aide aux femmes victimes de violence
+LIEN: https://www.ledevoir.com/politique/quebec/1005128/christine-frechette-promet-renforcer-aide-femmes-victimes-violence
+CONTENU: La CAQ compte soutenir l’aménagement de huit maisons d’hébergement de première étape.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-08-30 20:45:31
 TITRE: Immigration: "On connaît depuis longtemps les propositions du RN", déclare Pierre Jouvet, secrétaire général du PS
