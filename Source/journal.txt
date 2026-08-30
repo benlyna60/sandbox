@@ -1,5 +1,13 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-29 22:08:04
+TITRE: Thaïlande: à Bangkok, la street-food est poussée hors des trottoirs
+LIEN: https://www.rfi.fr/fr/podcasts/reportage-international/20260829-tha%C3%AFlande-%C3%A0-bangkok-la-street-food-est-pouss%C3%A9e-hors-des-trottoirs
+CONTENU: À Bangkok, les autorités souhaitent mieux encadrer les vendeurs de rue. Depuis 2022, leur nombre aurait chuté de plus de 60 % dans la capitale thaïlandaise. L’administration métropolitaine met en avant l’ordre et l’hygiène. Mais pour de nombreux vendeurs, cette réorganisation, disent-ils, risque de les couper de leurs clients, et parfois de leur seul moyen de subsistance.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-08-29 13:02:00
 TITRE: Le PCQ promet des milliers de dollars aux contribuables grâce à l’abolition de la taxe carbone
