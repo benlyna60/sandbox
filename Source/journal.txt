@@ -1,5 +1,37 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-30 21:00:00
+TITRE: Le journal de 23h00 du dimanche 30 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-23h00/le-journal-de-23h00-du-dimanche-30-aout-2026-1859099
+CONTENU: Article de référence : "Le journal de 23h00 du dimanche 30 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-30 20:00:00
+TITRE: Le journal de 22h00 du dimanche 30 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-22h00/le-journal-de-22h00-du-dimanche-30-aout-2026-5470361
+CONTENU: Article de référence : "Le journal de 22h00 du dimanche 30 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-30 22:01:24
+TITRE: EN DIRECT - Nouvelles frappes américaines sur l'Iran, les Gardiens de la Révolution appellent à «une punition» en représailles
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260830-en-direct-nouvelles-frappes-am%C3%A9ricaines-sur-l-iran-les-gardiens-de-la-r%C3%A9volution-appellent-%C3%A0-une-punition-en-repr%C3%A9sailles
+CONTENU: Les États-Unis ont mené dimanche 30 août des frappes sur l'île iranienne de Larak, située dans le stratégique détroit d'Ormuz, a annoncé le Commandement militaire américain pour le Moyen-Orient, les premières en un mois. Les Gardiens de la Révolution ont promis des représailles. Suivez notre direct.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-30 21:17:12
+TITRE: France: le gouvernement annonce intensifier la lutte contre le trafic d'espèces sauvages
+LIEN: https://www.rfi.fr/fr/environnement/20260830-france-le-gouvernement-annonce-intensifier-la-lutte-contre-le-trafic-d-esp%C3%A8ces-sauvages
+CONTENU: En France, le ministère de la Transition écologique a annoncé cette semaine de nouvelles mesures pour lutter contre le trafic d'espèces sauvages. Plus de 4 000 espèces animales et végétales dans 160 pays à travers le monde sont concernées par ce commerce criminel. Et la France, avec ses hubs maritimes et aéroportuaires, constitue l'un des carrefours de premier plan pour ce marché illégal.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-08-30 18:00:00
 TITRE: Le PQ se donne quatre ans pour renverser le déclin du français
