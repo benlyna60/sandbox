@@ -1,5 +1,125 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-30 06:00:00
+TITRE: Le journal de 8h00 du dimanche 30 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-8h00/le-journal-de-8h00-du-dimanche-30-aout-2026-1584044
+CONTENU: Article de référence : "Le journal de 8h00 du dimanche 30 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-30 05:55:40
+TITRE: J'ai testé pour vous du dimanche 30 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/j-ai-teste-pour-vous/j-ai-teste-pour-vous-du-dimanche-30-aout-2026-3100879
+CONTENU: Article de référence : "J'ai testé pour vous du dimanche 30 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-30 05:53:10
+TITRE: C'est mon boulot du dimanche 30 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/c-est-mon-boulot/c-est-mon-boulot-du-dimanche-30-aout-2026-5537711
+CONTENU: Article de référence : "C'est mon boulot du dimanche 30 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-30 05:27:40
+TITRE: Billet Sciences Epsiloon du dimanche 30 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-billet-sciences-avec-epsiloon/billet-sciences-epsiloon-du-dimanche-30-aout-2026-6920700
+CONTENU: Article de référence : "Billet Sciences Epsiloon du dimanche 30 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-30 05:22:40
+TITRE: Franceinfo Monde du dimanche 30 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/franceinfo-monde/franceinfo-monde-du-dimanche-30-aout-2026-2783088
+CONTENU: Article de référence : "Franceinfo Monde du dimanche 30 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-30 05:00:00
+TITRE: Le journal de 7h00 du dimanche 30 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-7h00/le-journal-de-7h00-du-dimanche-30-aout-2026-6974152
+CONTENU: Article de référence : "Le journal de 7h00 du dimanche 30 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-30 05:00:00
+TITRE: Le 7/10 du dimanche 30 août 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-7-10-du-week-end/le-7-10-du-dimanche-30-aout-2026-4676548
+CONTENU: Article de référence : "Le 7/10 du dimanche 30 août 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-08-30 04:50:30
+TITRE: Au Muséum national d'Histoire naturelle : Les dinosaures
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-billet-sciences/le-billet-sciences-au-museum-d-histoire-naturelle-du-dimanche-30-aout-2026-6784373
+CONTENU: Tout l'été, franceinfo vous emmène dans les coulisses du Muséum. L'institution fête ses 400 ans et ses collections continuent d'éclairer la science. Dans ce huitième épisode nous découvrons comment l'immense collection d'ossements de dinosaures inspire les innovations du 21e siècle.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-30 07:06:57
+TITRE: Inondations au Népal: hôpitaux et morgues pris d'assaut par les familles en quête de leurs proches disparus
+LIEN: https://www.rfi.fr/fr/asie-pacifique/20260830-crues-n%C3%A9pal-h%C3%B4pitaux-et-morgues-pris-assaut-familles-en-qu%C3%AAte-de-leurs-proches-disparus
+CONTENU: Pour la première fois, l'ONU a rendu le réchauffement climatique responsable de la catastrophe au Népal dans un communiqué hier samedi. Pendant ce temps, le bilan est monté à 750 morts et plus de 3 000 disparus. Des statistiques qui prennent un visage très humain à Katmandou où les morgues et les hôpitaux sont pris d'assaut par les familles.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-30 06:36:10
+TITRE: Guerre numérique entre militants pro-excision maliens et féministes ouest-africaines
+LIEN: https://www.rfi.fr/fr/afrique/20260830-excision-guerre-num%C3%A9rique-entre-militants-pro-mgf-maliens-et-f%C3%A9ministes-ouest-africaines
+CONTENU: Des vidéos de fillettes excisées au Mali postées sur les réseaux sociaux ont déclenché une mobilisation transfrontalière : campagne pro-excision assumée par des hommes influents d'un côté, riposte coordonnée de militantes ouest-africaines de l'autre, jusqu'à faire plier certains de leurs adversaires les plus virulents installés en Europe. Face à cette polémique, Bamako et Conakry choisissent le silence.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-30 05:23:45
+TITRE: Bande de Gaza: seulement 3% des terres agricoles à la fois accessibles et intactes
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260830-bande-de-gaza-seulement-3-des-terres-agricoles-%C3%A0-la-fois-accessibles-et-intactes
+CONTENU: Si la situation dans l'enclave palestinienne est moins dramatique qu'au plus fort de la guerre, les habitants peinent toujours à vivre décemment. Outre le bilan humain colossal, le secteur agricole a lui aussi été anéanti. Et aujourd'hui encore, cultiver est rendu toujours plus compliqué par Israël.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-30 05:09:23
+TITRE: Chine: Xi Jinping entame une visite au Kirghizistan pour un sommet de l'OCS puis en Égypte
+LIEN: https://www.rfi.fr/fr/asie-pacifique/20260830-chine-xi-jinping-entame-visite-kirghizistan-ocs-sommet-%C3%A9gypte
+CONTENU: À Bichkek, le président chinois participera à partir de ce dimanche au sommet de l’Organisation de coopération de Shanghai, un bloc eurasiatique que Pékin veut ériger en contrepoids à l’Occident avant de se rendre en Égypte.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-30 07:12:56
+TITRE: Espace: lancement du télescope spatial Roman pour «offrir à la Terre un nouvel atlas de l'Univers»
+LIEN: https://www.rfi.fr/fr/science/20260830-lancement-t%C3%A9lescope-spatial-roman-pour-offrir-%C3%A0-la-terre-un-nouvel-atlas-de-l-univers
+CONTENU: Ce dimanche en Floride, à 11h26 TU, plus d'une dizaine d'années de travail quitteront la terre à bord d'une fusée de SpaceX. Baptisé Nancy Grace Roman, du nom de la première astronome en chef de la Nasa, un nouveau télescope spatial sera envoyé dans l'espace depuis Cap Canaveral. Haut de 12 mètres, flanqué d'immenses panneaux solaires, Roman a un champ de vision cent fois plus large que celui de Hubble et va « offrir à la Terre un nouvel atlas de l'Univers », comme l'a promis le chef de l'agence spatiale américaine, Jared Isaacman.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-08-30 06:05:22
+TITRE: Syrie: des groupes armés bloquent l'accès aux centres d'examen d'État aux lycéens druzes
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260830-syrie-groupes-arm%C3%A9s-bloquent-acc%C3%A8s-aux-centres-d-examen-d-%C3%A9tat-aux-lyc%C3%A9ens-druzes
+CONTENU: C’est un bras de fer inédit autour des examens scolaires à Soueïda. Alors que les épreuves nationales ont débuté samedi matin, des factions armées locales bloquent l'accès aux centres d'examen de l'État pour empêcher les lycéens druzes de s'y rendre, dénonçant un piège sécuritaire de Damas. Résultat : des centaines d’élèves bloqués sur les routes et une crise institutionnelle ouverte dans le sud du pays.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-08-30 05:00:12
+TITRE: « Voilà ce que pourrait être une politique migratoire méditerranéenne : organiser ensemble la formation, le recrutement, la circulation et le retour des compétences »
+LIEN: https://www.lemonde.fr/idees/article/2026/08/30/voila-ce-que-pourrait-etre-une-politique-migratoire-mediterraneenne-organiser-ensemble-la-formation-le-recrutement-la-circulation-et-le-retour-des-competences_6760813_3232.html
+CONTENU: Après la crise à Ceuta, cet été, l’essayiste Hakim El Karoui note, dans une tribune au « Monde », les incohérences de la politique migratoire en Europe, en s’appuyant sur les données du dernier rapport du Comité d’action pour la Méditerranée, dont il est le fondateur.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-08-30 04:15:09
 TITRE: Présidentielle 2027 : à l’université d’été du PS, le duel à fleurets mouchetés d’Olivier Faure et Raphaël Glucksmann, favoris de la primaire de la gauche
