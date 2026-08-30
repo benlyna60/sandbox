@@ -1,6 +1,30 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 13:02:00
+TITRE: Le PCQ promet des milliers de dollars aux contribuables grâce à l’abolition de la taxe carbone
+LIEN: https://www.ledevoir.com/politique/quebec/1005014/pcq-promet-milliers-dollars-contribuables-grace-abolition-taxe-carbone
+CONTENU: Le parti calcule que les industries distribueront l’entièreté des sommes épargnées aux consommateurs.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 20:10:00
+TITRE: L’ex-libérale Caroline Simard portera les couleurs conservatrices dans Charlevoix
+LIEN: https://www.ledevoir.com/politique/quebec/1005056/ex-liberale-caroline-simard-portera-couleurs-conservatrices-charlevoix
+CONTENU: Elle avait vaincu l’ancienne première ministre Pauline Marois contre toute attente en 2014 dans la circonscription.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 18:56:00
+TITRE: Enquête sur les départs anticipés entourant l’accident d’avion de LaGuardia
+LIEN: https://www.ledevoir.com/actualites/transports-urbanisme/1005047/enquete-departs-anticipes-entourant-accident-avion-laguardia
+CONTENU: Deux contrôleurs aériens ont quitté leur poste plus tôt alors que l’aéroport connaissait un afflux inhabituel de vols.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
 DATE: 2026-08-29 22:09:00
 TITRE: Le laissez-passer A-32 et l’ami de Jean Chrétien
 LIEN: https://www.ledevoir.com/politique/quebec/1005065/laissez-passer-32-ami-jean-chretien
