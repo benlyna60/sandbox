@@ -1,4 +1,44 @@
 ----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Jonathan Personne met la musique dans la balance
+LIEN: https://www.ledevoir.com/culture/musique/1004558/jonathan-personne-met-musique-balance
+CONTENU: En concert avec son groupe Corridor au FME vendredi prochain, l’artiste lance aussi un cinquième album solo.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 23:37:00
+TITRE: Doug Ford dévoile un panneau au lac Ontario en riposte à Donald Trump
+LIEN: https://www.ledevoir.com/politique/canada/1005077/doug-ford-devoile-panneau-lac-ontario-riposte-donald-trump
+CONTENU: Le président américain a signé un décret visant à le rebaptiser « le lac Amérique ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Sur les planches
+LIEN: https://www.ledevoir.com/culture/theatre/1003955/planches
+CONTENU: À surveiller à la Licorne, à la station culturelle Momo, dans la ruelle Sansregret, au parc Ottawa et à la Salle Fred-Barry.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Les incontournables de la campagne électorale 2026
+LIEN: https://www.ledevoir.com/interactif/2026-08-29/vitrine-electorale-quebec/index.html
+CONTENU: Retrouvez de jour en jour le meilleur de notre couverture de la campagne électorale, réuni au même endroit.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-29 04:00:00
+TITRE: Derrière Carney, une résistance internationale à Trump se met en marche
+LIEN: https://www.ledevoir.com/monde/etats-unis/1004951/derriere-carney-resistance-internationale-trump-met-marche
+CONTENU: Voyant la facture politique du combat baisser, les forces antipopulistes s’activent désormais plus vigoureusement.
+
+----------------------------------------
 CATEGORIE: UNIVERSITÉ & RECHERCHE
 SOURCE: Phys.org
 DATE: 2026-08-30 00:30:04
