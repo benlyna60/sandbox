@@ -1,5 +1,61 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-31 08:00:00
+TITRE: L'actu du 31 août 2026
+LIEN: https://www.bfmtv.com/lyon/replay-emissions/bonjour-lyon/video-l-actu-du-31-aout-2026_VN-202608310190.html
+CONTENU: Ce 31 août 2026, tout ce qu'il faut savoir pour bien débuter la journée avec l'info proximité, le trafic, la météo et l'invité du jour présenté par Hugo Caprioli.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-31 07:59:39
+TITRE: Tout comme au collège, le téléphone portable est désormais interdit aux lycées.
+LIEN: https://www.bfmtv.com/grand-littoral/replay-emissions/bonjour-littoral/video-tout-comme-au-college-le-telephone-portable-est-desormais-interdit-aux-lycees_VN-202608310300.html
+CONTENU: C'est le grand changement de la rentrée pour les lycéens : l'interdiction du téléphone portable. Les chefs d'établissements doivent s'organiser en très peu de temps.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-31 07:53:47
+TITRE: Accident mortel dimanche soir à Roeux près d'Arras : un adolescent est mort percuté par un train
+LIEN: https://www.bfmtv.com/grand-littoral/replay-emissions/bonjour-littoral/video-accident-mortel-dimanche-soir-a-roeux-pres-d-arras-un-adolescent-est-mort-percute-par-un-train_VN-202608310296.html
+CONTENU: Accident mortel dimanche soir à Roeux près d'Arras : un adolescent de 14 ans est mort percuté par un train. Ses trois amis sont sains et saufs. Une enquête est ouverte.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-31 07:50:08
+TITRE: Crue au Népal : toujours pas de nouvelles d'une centaine d'ouvriers bloqués dans un tunnel à la frontière de la Chine
+LIEN: https://www.bfmtv.com/international/asie/crue-au-nepal-toujours-pas-de-nouvelles-d-une-centaine-d-ouvriers-bloques-dans-un-tunnel-a-la-frontiere-de-la-chine_AD-202608310292.html
+CONTENU: Plusieurs chantiers étaient en cours au nord du Népal lorsque la région a été frappée par de violentes inondations mercredi dernier. Les autorités restent toujours sans nouvelles d'une centaine d'ouvriers.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-31 07:45:07
+TITRE: Référendum sur l'immigration: "On a besoin d'une immigration de travail" estime Philippe Juvin, député LR, qui regrette qu'elle soit "très peu qualifiée" actuellement
+LIEN: https://www.bfmtv.com/politique/les-republicains/video-referendum-sur-l-immigration-on-a-besoin-d-une-immigration-de-travail-estime-philippe-juvin-depute-lr-qui-regrette-qu-elle-soit-tres-peu-qualifiee-actuellement_VN-202608310289.html
+CONTENU: Philippe Juvin, député LR des Hauts-de-Seine et rapporteur général du budget, était l'invité d'Apolline de 9 à 10 ce lundi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-31 07:40:27
+TITRE: Prix des carburants: "On a de la chance d'avoir Total", estime le député LR Philippe Juvin
+LIEN: https://www.bfmtv.com/politique/les-republicains/video-prix-des-carburants-on-a-de-la-chance-d-avoir-total-estime-le-depute-lr-philippe-juvin_VN-202608310284.html
+CONTENU: Philippe Juvin, député LR des Hauts-de-Seine et rapporteur général du budget, était l'invité d'Apolline de 9 à 10 ce lundi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-08-31 07:39:30
+TITRE: Le bilan de la fréquentation estivale du musée cinéma à Lyon
+LIEN: https://www.bfmtv.com/lyon/replay-emissions/bonjour-lyon/video-le-bilan-de-la-frequentation-estivale-du-musee-cinema-a-lyon_VN-202608310283.html
+CONTENU: Le bilan de la fréquentation estivale du musée cinéma à Lyon
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-08-31 07:30:00
 TITRE: Le 9h30/midi du lundi 31 août 2026
