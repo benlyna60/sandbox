@@ -1,4 +1,12 @@
 ----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-08-31 12:50:28
+TITRE: Chaînes WhatsApp : une nouvelle étiquette pour signaler le contenu généré par IA
+LIEN: https://www.blogdumoderateur.com/chaines-whatsapp-nouvelle-etiquette-signaler-contenu-genere-ia/
+CONTENU: WhatsApp propose désormais aux administrateurs de chaînes d'étiqueter leurs contenus générés par IA. Une fois ajoutée, la mention ne peut plus être retirée.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-08-31 11:05:00
