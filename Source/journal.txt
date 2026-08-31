@@ -1,5 +1,21 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-31 11:05:00
+TITRE: Sánchez assure que l’Espagne enquête toujours sur la crise de Ceuta, mais exonère le Maroc
+LIEN: https://www.ledevoir.com/monde/europe/1005221/sanchez-assure-espagne-enquete-toujours-crise-ceuta-mais-exonere-maroc
+CONTENU: Le premier ministre espagnol a écarté l’implication des autorités marocaines dans cet afflux migratoire inédit.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-31 10:40:00
+TITRE: Premier échange de frappes entre les États-Unis et l’Iran depuis un mois
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1005215/premier-echange-frappes-entre-etats-unis-iran-depuis-mois
+CONTENU: Jusqu’à récemment, le gouvernement Trump disait pourtant vouloir privilégier la pression économique contre Téhéran.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-08-31 10:37:43
 TITRE: EN DIRECT, guerre au Moyen-Orient : les Emirats arabes unis qualifient l’attaque iranienne d’« escalade dangereuse »
