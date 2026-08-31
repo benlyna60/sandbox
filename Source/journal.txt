@@ -1,4 +1,20 @@
 ----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-31 00:30:03
+TITRE: Using data to help wheat growers adapt to unpredictable weather
+LIEN: https://phys.org/news/2026-08-wheat-growers-unpredictable-weather.html
+CONTENU: For generations, wheat planting has followed predictable seasonal patterns. But this year, unseasonably warm weather in March and April accelerated wheat growth, pushing the crop into a vulnerable growth stage when widespread freezing temperatures hit.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-30 21:00:03
+TITRE: 'Cut-to-fuse' strategy: A new route for molecular skeletal editing
+LIEN: https://phys.org/news/2026-08-fuse-strategy-route-molecular-skeletal.html
+CONTENU: Restructuring a molecule without rebuilding it from scratch is an increasingly important goal in modern organic chemistry. Skeletal editing is an approach that helps chemists explore new chemical structures and simplify the synthesis of molecules with potential pharmaceutical applications.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-08-30 18:40:54
