@@ -1,4 +1,20 @@
 ----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-08-31 08:29:18
+TITRE: OpenAI cesse de fournir ses modèles à Cursor après son rachat par SpaceX
+LIEN: https://www.blogdumoderateur.com/openai-cesse-fournir-modeles-cursor-rachat-spacex/
+CONTENU: OpenAI a notifié à SpaceX son intention de couper l'accès à ses modèles dans Cursor, avec une date proposée au 12 novembre 2026. L'éditeur de code, racheté 60 milliards de dollars le 14 août, conserve les modèles d'Anthropic, de Google et de xAI.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-08-31 08:27:10
+TITRE: Claude Code : Anthropic relève ses limites hebdomadaires de 25 % à partir du 14 septembre
+LIEN: https://www.blogdumoderateur.com/claude-code-anthropic-releve-limites-hebdomadaires-25-pourcent/
+CONTENU: Anthropic relève durablement les quotas hebdomadaires de Claude Code de 25 %. Sans cacher une baisse réelle par rapport au bonus temporaire de 50 %, en place depuis mai.
+
+----------------------------------------
 CATEGORIE: UNIVERSITÉ & RECHERCHE
 SOURCE: Phys.org
 DATE: 2026-08-31 08:10:01
