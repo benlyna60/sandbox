@@ -1,5 +1,13 @@
 ----------------------------------------
 CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-08-31 13:35:01
+TITRE: Ce que les entreprises françaises doivent encore apprendre sur leurs clients, après la disparation du consommateur moyen
+LIEN: https://theconversation.com/ce-que-les-entreprises-francaises-doivent-encore-apprendre-sur-leurs-clients-apres-la-disparation-du-consommateur-moyen-290364
+CONTENU: La notion de consommateur moyen est caduque. La montée des inégalités notamment rend ce concept moins pertinent pour comprendre et anticiper le comportement du consommateur.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
 SOURCE: Phys.org
 DATE: 2026-08-31 14:20:07
 TITRE: Metamaterials may enable invisibility cloaks, thinner lenses and smarter wireless networks
