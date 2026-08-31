@@ -1,4 +1,20 @@
 ----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-08-31 06:00:11
+TITRE: 5 formations pour devenir développeur web et obtenir une certification
+LIEN: https://www.blogdumoderateur.com/selection-formation-developpeur-web-316/
+CONTENU: Notre sélection de formations de la semaine vous apprend les techniques du développement web avec une certification professionnelle à la clé.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-08-31 05:00:49
+TITRE: IA : les actus qu’il ne fallait pas manquer cet été
+LIEN: https://www.blogdumoderateur.com/ia-actus-ete-2026/
+CONTENU: AI Overviews en France, publicité dans ChatGPT, marquage obligatoire des contenus générés... Six mouvements ont structuré l’actualité IA entre juillet et août.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-08-31 04:00:00
