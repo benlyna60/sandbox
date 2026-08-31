@@ -1,5 +1,61 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-31 03:34:58
+TITRE: Présidentielle 2027 : la petite musique de l’union au centre pour contrer le RN et LFI
+LIEN: https://www.lemonde.fr/politique/article/2026/08/31/presidentielle-2027-la-petite-musique-de-l-union-au-centre-pour-contrer-le-rn-et-lfi_6761864_823448.html
+CONTENU: Face à la dynamique électorale du Rassemblement national et de La France insoumise, la question d’une candidature unique se pose à gauche comme dans le bloc central et à droite. L’électorat pourrait être tenté de voter utile dès le premier tour pour le candidat le plus à même d’éviter le duel redouté au second.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-31 03:30:03
+TITRE: Les nuages s’amoncellent sur l’économie française
+LIEN: https://www.lemonde.fr/economie/article/2026/08/31/les-nuages-s-amoncellent-sur-l-economie-francaise_6761862_3234.html
+CONTENU: La présentation, vendredi, par l’Insee, de plusieurs indicateurs inquiétants confirme les difficultés de l’économie tricolore : la croissance est en panne, l’inflation progresse, le pouvoir d’achat recule, et l’emploi est déprimé.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-31 04:00:14
+TITRE: Pour les admis au nouveau concours enseignant, une première rentrée entre confusion et impatience
+LIEN: https://www.lemonde.fr/societe/article/2026/08/31/pour-les-admis-au-nouveau-concours-enseignant-une-premiere-rentree-entre-confusion-et-impatience_6761900_3224.html
+CONTENU: Plus de 9 800 candidats ont été reçus aux concours dits « bac + 3 » du premier et du second degré publics et vont étrenner, à partir du 1ᵉʳ septembre, le nouveau système de formation. De nombreuses situations dérogent aux règles théoriques et certains lauréats déplorent des mutations qu’ils n’avaient pas anticipées.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-31 03:51:24
+TITRE: Au Népal, après la crue dévastatrice, des victimes inhumées avant même leur identification
+LIEN: https://www.lemonde.fr/international/article/2026/08/31/au-nepal-apres-la-crue-devastatrice-des-victimes-inhumees-avant-meme-leur-identification_6761898_3210.html
+CONTENU: Selon les derniers bilans officiels, encore provisoires, un total de 797 corps – 781 côté népalais, 16 sur le versant tibétain – a été exhumé de la boue et des décombres depuis les inondations meurtrières survenues mercredi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-31 01:49:46
+TITRE: Au moins un mort et une quinzaine de personnes recherchées après une crue éclair dans le parc du Grand Canyon, en Arizona
+LIEN: https://www.lemonde.fr/international/article/2026/08/31/une-quinzaine-de-personnes-recherchees-apres-une-crue-eclair-dans-le-parc-du-grand-canyon-en-arizona_6761762_3210.html
+CONTENU: Dimanche, au lendemain du passage d’un torrent d’eau boueuse, les autorités du parc poursuivaient les opérations d’évacuation et de recherche dans un secteur prisé des randonneurs, où plusieurs infrastructures ont été détruites.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-31 04:10:57
+TITRE: US Open : Novak Djokovic éliminé dès le premier tour, une première en Grand Chelem depuis vingt ans
+LIEN: https://www.lemonde.fr/sport/article/2026/08/31/us-open-novak-djokovic-elimine-des-le-premier-tour-une-premiere-en-grand-chelem-depuis-vingt-ans_6761905_3242.html
+CONTENU: En grande souffrance tout au long du match, l’ex-numéro un mondial a été battu par l’Argentin Mariano Navone, dimanche, au premier jour de l’édition 2026 du tournoi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-08-31 00:31:05
+TITRE: Michel Platini estime que Gianni Infantino « doit partir » de la présidence de la FIFA
+LIEN: https://www.lemonde.fr/football/article/2026/08/31/michel-platini-estime-que-gianni-infantino-doit-partir-de-la-presidence-de-la-fifa_6761729_1616938.html
+CONTENU: Ces déclarations interviennent alors que le patron de la FIFA fait face à une contestation croissante de plusieurs confédérations, notamment après son projet avorté d’ouverture de la Coupe du monde à des investisseurs privés.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-08-31 04:48:40
 TITRE: DIRECT. Guerre au Moyen-Orient: premier échange de frappes depuis un mois entre les États-Unis et l'Iran en un mois, un navire en feu dans le détroit d'Ormuz
