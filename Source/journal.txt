@@ -1,5 +1,29 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-31 04:00:00
+TITRE: La petite ville de Shannon face à la Défense nationale
+LIEN: https://www.ledevoir.com/actualites/societe/1005143/petite-ville-shannon-face-defense-nationale
+CONTENU: Un nouveau programme crée des inquiétudes dans une ville censée accueillir de nouveaux militaires et leur famille.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-31 20:45:00
+TITRE: PSPP promet un grand ménage dans la bureaucratie… sans licenciements
+LIEN: https://www.ledevoir.com/politique/quebec/1005353/pspp-promet-grand-menage-bureaucratie-abolir-poste
+CONTENU: Le chef du Parti québécois s’engage à réduire les coûts de rémunération dans le secteur public de 2,5% sur trois ans.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-08-31 20:01:46
+TITRE: Les trois actus du 31 août
+LIEN: https://www.ledevoir.com/actualites/1005344/trois-actus-31-aout
+CONTENU: Gariépy, un «bon gars»; effets des inégalités à l’école et Fréchette veut plus de privé en santé: ce qu’il faut retenir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-08-31 21:47:54
 TITRE: Le RN veut sanctionner le voile dans l'espace public: "Vous utilisez comme d'habitude le bouc émissaire parfait pour vous", dénonce Sabrina Sebaihi, députée Les Écologistes
