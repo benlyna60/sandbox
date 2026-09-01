@@ -1,5 +1,93 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-01 00:35:10
+TITRE: États-Unis: un ancien membre de gang reconnu coupable du meurtre du rappeur Tupac Shakur
+LIEN: https://www.rfi.fr/fr/am%C3%A9riques/20260901-%C3%A9tats-unis-un-ancien-membre-de-gang-reconnu-coupable-du-meurtre-du-rappeur-tupac-shakur
+CONTENU: Aux États-Unis, Duane Davis, dit « Keefe D », ancien membre des South Side Compton Crips, un gang de Los Angeles, a été reconnu coupable lundi 31 août du meurtre du rappeur américain Tupac Shakur en 1996. Trente ans après les faits, le jury d’un tribunal de Las Vegas a rendu son verdict après seulement quelques heures de délibérations, dans l’un des « cold cases » les plus célèbres de l’histoire du pays.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-01 02:20:01
+TITRE: National survey measures full financial burden of community sport in Australia
+LIEN: https://phys.org/news/2026-08-national-survey-full-financial-burden.html
+CONTENU: The cost of playing community sports in Australia is far higher than previously understood, with a new national study led by Federation University finding families spend an average of $4,567 per child each year to keep their children playing sports.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-01 02:00:01
+TITRE: Cover crops could ease the shift from perennial seed to annual crops
+LIEN: https://phys.org/news/2026-08-crops-ease-shift-perennial-seed.html
+CONTENU: Transitioning an aging perennial forage seed stand into annual cropping can be difficult, particularly when the original crop persists or weeds establish after termination. Preliminary Canadian research suggests cover crops could help by suppressing regrowth and weeds, retaining biomass and cycling nutrients.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-01 01:20:01
+TITRE: Drones take farming to new heights
+LIEN: https://phys.org/news/2026-08-drones-farming-heights.html
+CONTENU: High above the fields of the Morven Sustainability Lab, drones equipped with heat and light sensors are changing what it means to farm smarter. This month, researchers and students from the University of Virginia, NASA and the University at Buffalo tested drone technology by flying more than 100 feet (30 meters) above crops to measure plant health at UVA's 2,900-acre (1,170-hectare) research facility.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-01 00:20:01
+TITRE: Australia's reefs follow trend of global coral cover decline
+LIEN: https://phys.org/news/2026-08-australia-reefs-trend-global-coral.html
+CONTENU: Australia's coral reefs are in relatively good condition compared with coral reefs globally, although coral cover on Australian reefs has declined over the past 40 years—reflecting the global trend, a major new report has found.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-31 23:40:04
+TITRE: Important role of plastid ion channels in plant stress response identified
+LIEN: https://phys.org/news/2026-08-important-role-plastid-ion-channels.html
+CONTENU: When plants are attacked by herbivores or pathogens, they must respond rapidly while also preparing for potential future attacks. Calcium, a cellular second messenger, and the plant hormone jasmonic acid play important roles in this response. Within seconds of an injury, the plant generates calcium waves that relay information about the attack. At the same time, the synthesis of jasmonic acid is initiated in the chloroplast, triggering, through several intermediate steps, the expression of defense genes in the cell nucleus.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-31 23:20:06
+TITRE: Even small amounts of ocean plastic can affect petrel chicks
+LIEN: https://phys.org/news/2026-08-small-amounts-ocean-plastic-affect.html
+CONTENU: Ocean plastic pollution is accidentally on the menu for southern giant petrel chicks. Even small nibbles of it may affect their physiology during development, according to a study from the University of California, Davis, and Argentina's National Research Council (CONICET).
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-31 23:20:02
+TITRE: Sliding sugars offer simpler, smarter route to precision liver-targeted therapies
+LIEN: https://phys.org/news/2026-08-sugars-simpler-smarter-route-precision.html
+CONTENU: Targeted drug delivery directly to the liver has unlocked major breakthroughs across medicine, but constructing the chemical key to enter liver cells remains complex and costly. Today, researchers at Kumamoto University, in collaboration with the National University of Singapore, have unveiled a nature-inspired solution that bypasses synthetic bottlenecks by giving single sugar molecules room to move. Their findings are published in the journal Advanced Science.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-31 23:00:05
+TITRE: Even ancient bacteria possessed intercellular communication structures like humans today, study finds
+LIEN: https://phys.org/news/2026-08-ancient-bacteria-intercellular-communication-humans.html
+CONTENU: Communication between cells in plants, animals and humans takes place via specialized connecting structures. An international team led by biologists from Heinrich Heine University Düsseldorf (HHU) and involving the University of Tübingen has now discovered that the regulation of very similar structures was already present in multicellular bacteria, implying that it must have originated much earlier in the course of evolution. In their paper published in The EMBO Journal, the researchers describe how the exchange of calcium plays a central role in bacteria, just as it does in humans.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-31 22:50:01
+TITRE: AI chatbot use for emotional support tied to loneliness in students
+LIEN: https://phys.org/news/2026-08-ai-chatbot-emotional-loneliness-students.html
+CONTENU: Young people leaning on AI chatbots for emotional support or personal advice are significantly more likely to struggle with serious emotional problems, feel isolated and doubt that they truly matter to others, a new uOttawa study warns.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-08-31 22:40:06
+TITRE: Role of ethics education in accounting fraud prevention
+LIEN: https://phys.org/news/2026-08-role-ethics-accounting-fraud.html
+CONTENU: Two SUNY Polytechnic Institute (SUNY Poly) College of Business faculty members are exploring how integrating ethics and values throughout accounting and business education can better prepare students to recognize and prevent fraud in the workplace.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-08-31 17:45:00
 TITRE: La Chine, la Russie et l’Inde se réunissent pour contrer les États-Unis
