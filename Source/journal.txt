@@ -1,6 +1,14 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 11:48:58
+TITRE: La firme américaine Greenland Energy repousse son projet d’exploration pétrolière au Groenland
+LIEN: https://www.ledevoir.com/economie/1005455/firme-americaine-greenland-energy-repousse-projet-exploration-petroliere-groenland
+CONTENU: Une compagnie maritime québécoise s’apprêtait à réceptionner des cargaisons en provenance de plusieurs pays.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-01 04:00:00
 TITRE: La crise en éducation préoccupe bien peu les électeurs
 LIEN: https://www.ledevoir.com/actualites/education/1005395/crise-education-preoccupe-bien-peu-electeurs
