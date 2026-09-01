@@ -1,5 +1,29 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-01 13:00:00
+TITRE: Le 15/17 du mardi 01 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-15-17/le-15-17-du-mardi-01-septembre-2026-4042510
+CONTENU: Les invités de 15h à 17h, sur France Info radio
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-01 13:55:04
+TITRE: Un budget record pour la défense japonaise: «L'utilisation de l'IA et des drones devient vitale pour l'armée»
+LIEN: https://www.rfi.fr/fr/asie-pacifique/20260901-un-budget-record-pour-la-d%C3%A9fense-japonaise-l-utilisation-de-l-ia-et-des-drones-devient-vitale-pour-l-arm%C3%A9e
+CONTENU: Le ministère japonais de la Défense a demandé un budget record pour 2027 : 8 900 milliards de yens, l'équivalent de 48 milliards d'euros. Tokyo souhaite en particulier doper la place de l'intelligence artificielle (IA°) dans l'armée, dans un contexte, d'aggravation des tensions avec ses voisins. Céline Pajon, spécialiste du Japon et de l'Indo-Pacifique au Centre Asie de l'Institut français des relations internationales (Ifri), répond aux questions de RFI.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-01 09:13:06
+TITRE: Fast fashion: introduction en bourse compliquée pour Shein
+LIEN: https://www.rfi.fr/fr/podcasts/aujourd-hui-l-%C3%A9conomie/20260901-fast-fashion-introduction-en-bourse-compliqu%C3%A9e-pour-shein
+CONTENU: Après deux tentatives avortées sur les places de New York et Londres, le géant chinois Shein a finalement fait son entrée en bourse à Hong Kong. À peine introduit, le titre perdait près de 10% de sa valeur alors que le modèle qui a fait l’énorme succès de cette plateforme est de plus en plus contesté.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-01 11:48:58
 TITRE: La firme américaine Greenland Energy repousse son projet d’exploration pétrolière au Groenland
