@@ -405,6 +405,9 @@
                 currentWord = keys[Math.floor(Math.random() * keys.length)];
             }
 
+            // --- ANCRAGE DE L'ATTENTION À LONG TERME ---
+            let primarySubjectWord = currentWord;
+
             let responseTokens = [currentWord];
             const minTokens = 6;
             const maxTokens = 14;
@@ -426,6 +429,7 @@
                 }
 
                 const currentObj = this.getOrCreateWord(currentWord);
+                const primarySubjectObj = this.getOrCreateWord(primarySubjectWord);
 
                 if (Object.keys(combinedTransitions).length > 0) {
                     for (let [w, count] of Object.entries(combinedTransitions)) {
@@ -441,9 +445,14 @@
 
                         let grammarBonus = GrammarEngine.isGrammaticallyPlausible(currentObj.category, nextObj.category) ? 1.5 : 0.3;
                         
+                        // --- AIMANT SÉMANTIQUE (ATTENTION LONG TERME) ---
+                        // Mesure la distance au sujet initial pour maintenir la cohésion thématique au fil de la phrase
+                        let distanceToSubject = GeoMath.euclideanDistance(nextObj.vector, primarySubjectObj.vector);
+                        let semanticCohesionBonus = Math.max(0.5, 2.0 - distanceToSubject);
+
                         let earlyStopPenalty = (step < minTokens && Object.keys(combinedTransitions).length === 1) ? 0.1 : 1.0;
 
-                        let rawWeight = count * antiStutterPenalty * grammarBonus * earlyStopPenalty;
+                        let rawWeight = count * antiStutterPenalty * grammarBonus * semanticCohesionBonus * earlyStopPenalty;
                         
                         // Softmax Scalé par la Température (T)
                         let adjustedWeight = rawWeight > 0 ? Math.exp(Math.log(Math.max(rawWeight, 1e-5)) / Math.max(this.temperature, 0.05)) : 0;
@@ -490,10 +499,8 @@
                 currentWord = nextWord;
 
                 // --- GESTION DE L'ARRÊT NATUREL (FREIN D'ESSOUFFLEMENT) ---
-                // Dès que le modèle a atteint le minimum de mots, il évalue s'il doit conclure.
                 if (responseTokens.length >= minTokens) {
                     let exhaustionThreshold = 0.2;
-                    // Si le poids total faiblit ou selon un facteur d'entropie croissante, le modèle s'arrête proprement.
                     if (totalWeight < exhaustionThreshold || Math.random() < (responseTokens.length * 0.08)) {
                         break;
                     }
@@ -520,7 +527,7 @@
             if (!text.trim()) return alert("Veuillez saisir du texte !");
             engine.ingestExternalCorpusStream(text);
             updateUI();
-            appendChatMessage("Système", "Corpus indexé avec régulation anti-bégaiement matriciel (V11.5).", "engine");
+            appendChatMessage("Système", "Corpus indexé avec régulation anti-bégaiement et attention à long terme (V11.5).", "engine");
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
