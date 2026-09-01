@@ -308,6 +308,85 @@
         }
     }
 
+    /**
+     * Gestionnaire de Contexte Sémantique Avancé (Anti-Drift & Boussole Dynamique)
+     */
+    class AntiDriftContextManager {
+        constructor(lambdaDecay = 0.75, maxTokens = 14) {
+            this.lambda = lambdaDecay;
+            this.maxTokens = maxTokens;
+            
+            this.contextVector = new Float32Array(8);
+            this.anchorVector = new Float32Array(8);
+            this.initialAnchor = new Float32Array(8);
+            this.hasAnchor = false;
+        }
+
+        _normalize(vector) {
+            let sumSq = 0;
+            for (let i = 0; i < 8; i++) sumSq += vector[i] * vector[i];
+            if (sumSq > 0) {
+                const norm = Math.sqrt(sumSq);
+                for (let i = 0; i < 8; i++) vector[i] /= norm;
+            }
+        }
+
+        setQuestionAnchor(questionVector) {
+            this.initialAnchor.set(questionVector);
+            this.anchorVector.set(questionVector);
+            this.contextVector.set(questionVector);
+            
+            this._normalize(this.anchorVector);
+            this._normalize(this.contextVector);
+            this.hasAnchor = true;
+        }
+
+        updateContext(wordVector, blockType) {
+            let weight = 0.1; 
+            if (blockType === 'NOUN_ADJ' || blockType === 'VERB') {
+                weight = 1.0; 
+            }
+
+            for (let i = 0; i < 8; i++) {
+                this.contextVector[i] = (this.contextVector[i] * this.lambda) + (wordVector[i] * weight);
+            }
+            this._normalize(this.contextVector);
+
+            if (weight === 1.0) {
+                const anchorMomentum = 0.85;
+                for (let i = 0; i < 8; i++) {
+                    this.anchorVector[i] = (this.anchorVector[i] * anchorMomentum) + (wordVector[i] * (1 - anchorMomentum));
+                }
+                this._normalize(this.anchorVector);
+            }
+        }
+
+        getSearchTarget(lastWordVector, currentStep) {
+            const target = new Float32Array(8);
+            
+            if (!this.hasAnchor) {
+                target.set(lastWordVector);
+                return target;
+            }
+
+            const progress = currentStep / this.maxTokens;
+            const alpha = 1 / (1 + Math.exp(-10 * (progress - 0.5)));
+
+            const localFlux = new Float32Array(8);
+            for (let i = 0; i < 8; i++) {
+                localFlux[i] = (this.contextVector[i] + lastWordVector[i]) / 2;
+            }
+            this._normalize(localFlux);
+
+            for (let i = 0; i < 8; i++) {
+                target[i] = (alpha * this.anchorVector[i]) + ((1 - alpha) * localFlux[i]);
+            }
+            
+            this._normalize(target);
+            return target;
+        }
+    }
+
     class MetaCognitiveEngineV11_5 {
         constructor() {
             this.lexicon = {}; 
@@ -405,13 +484,15 @@
                 currentWord = keys[Math.floor(Math.random() * keys.length)];
             }
 
-            // --- ANCRAGE DE L'ATTENTION À LONG TERME ---
-            let primarySubjectWord = currentWord;
-
-            let responseTokens = [currentWord];
             const minTokens = 6;
             const maxTokens = 14;
-            // Historique de la fenêtre glissante pour casser le bégaiement matriciel
+
+            // --- INSTANCIATION DU GESTIONNAIRE DE CONTEXTE ANTIDRIFT ---
+            const contextMgr = new AntiDriftContextManager(0.75, maxTokens);
+            const promptObj = this.getOrCreateWord(currentWord);
+            contextMgr.setQuestionAnchor(promptObj.vector);
+
+            let responseTokens = [currentWord];
             const recentWindow = [currentWord];
 
             for (let step = 0; step < maxTokens; step++) {
@@ -429,32 +510,22 @@
                 }
 
                 const currentObj = this.getOrCreateWord(currentWord);
-                const primarySubjectObj = this.getOrCreateWord(primarySubjectWord);
 
                 if (Object.keys(combinedTransitions).length > 0) {
                     for (let [w, count] of Object.entries(combinedTransitions)) {
                         let nextObj = this.getOrCreateWord(w);
                         
-                        // PROTECTION ANTI-BÉGAIEMENT STRICTE : 
-                        // Interdiction absolue de répéter le mot exact qui vient d'être émis (w === currentWord)
                         if (w === currentWord) continue;
 
-                        // Pénalité de récurrence forte si le mot est déjà présent dans la fenêtre récente
                         let frequencyCount = recentWindow.filter(token => token === w).length;
                         let antiStutterPenalty = Math.pow(0.1, frequencyCount);
 
                         let grammarBonus = GrammarEngine.isGrammaticallyPlausible(currentObj.category, nextObj.category) ? 1.5 : 0.3;
                         
-                        // --- AIMANT SÉMANTIQUE (ATTENTION LONG TERME) ---
-                        // Mesure la distance au sujet initial pour maintenir la cohésion thématique au fil de la phrase
-                        let distanceToSubject = GeoMath.euclideanDistance(nextObj.vector, primarySubjectObj.vector);
-                        let semanticCohesionBonus = Math.max(0.5, 2.0 - distanceToSubject);
-
                         let earlyStopPenalty = (step < minTokens && Object.keys(combinedTransitions).length === 1) ? 0.1 : 1.0;
 
-                        let rawWeight = count * antiStutterPenalty * grammarBonus * semanticCohesionBonus * earlyStopPenalty;
+                        let rawWeight = count * antiStutterPenalty * grammarBonus * earlyStopPenalty;
                         
-                        // Softmax Scalé par la Température (T)
                         let adjustedWeight = rawWeight > 0 ? Math.exp(Math.log(Math.max(rawWeight, 1e-5)) / Math.max(this.temperature, 0.05)) : 0;
 
                         if (adjustedWeight > 0.00001) {
@@ -476,14 +547,16 @@
                     }
                 }
 
-                // Fallback spatial rigoureux anti-bégaiement
+                // --- FALLBACK SPATIAL GUIDÉ PAR LA CIBLE ANTIDRIFT ---
                 if (!nextWord) {
-                    const hits = this.memory.spatialIndex.searchNearestNeighbors(currentObj.vector, 1.8);
+                    // Utilisation de la boussole géométrique pour guider le VP-Tree
+                    const searchTarget = contextMgr.getSearchTarget(currentObj.vector, step);
+                    const hits = this.memory.spatialIndex.searchNearestNeighbors(searchTarget, 1.8);
+                    
                     const validHits = hits.filter(h => h.block.word !== currentWord && !recentWindow.includes(h.block.word));
                     if (validHits.length > 0) {
                         nextWord = validHits[Math.floor(Math.random() * validHits.length)].block.word;
                     } else if (hits.length > 0) {
-                        // Éviter à tout prix l'auto-référence directe
                         const nonSelfHits = hits.filter(h => h.block.word !== currentWord);
                         if (nonSelfHits.length > 0) {
                             nextWord = nonSelfHits[Math.floor(Math.random() * nonSelfHits.length)].block.word;
@@ -493,9 +566,13 @@
 
                 if (!nextWord) break;
 
+                // Mise à jour du registre de contexte avec le nouveau token choisi
+                const nextObj = this.getOrCreateWord(nextWord);
+                contextMgr.updateContext(nextObj.vector, nextObj.category);
+
                 responseTokens.push(nextWord);
                 recentWindow.push(nextWord);
-                if (recentWindow.length > 4) recentWindow.shift(); // Garde une trace des 4 derniers tokens
+                if (recentWindow.length > 4) recentWindow.shift();
                 currentWord = nextWord;
 
                 // --- GESTION DE L'ARRÊT NATUREL (FREIN D'ESSOUFFLEMENT) ---
@@ -527,7 +604,7 @@
             if (!text.trim()) return alert("Veuillez saisir du texte !");
             engine.ingestExternalCorpusStream(text);
             updateUI();
-            appendChatMessage("Système", "Corpus indexé avec régulation anti-bégaiement et attention à long terme (V11.5).", "engine");
+            appendChatMessage("Système", "Corpus indexé avec régulation anti-bégaiement et AntiDrift Context Manager (V11.5).", "engine");
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
