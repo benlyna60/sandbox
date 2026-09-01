@@ -549,7 +549,6 @@
 
                 // --- FALLBACK SPATIAL GUIDÉ PAR LA CIBLE ANTIDRIFT ---
                 if (!nextWord) {
-                    // Utilisation de la boussole géométrique pour guider le VP-Tree
                     const searchTarget = contextMgr.getSearchTarget(currentObj.vector, step);
                     const hits = this.memory.spatialIndex.searchNearestNeighbors(searchTarget, 1.8);
                     
@@ -565,6 +564,12 @@
                 }
 
                 if (!nextWord) break;
+
+                // --- VERROU D'ARRÊT NET (EARLY STOPPING SUR POINT FINAL / FIN DE PENSÉE) ---
+                // Si le modèle sélectionne un jeton de ponctuation finale explicite ou s'arrête net
+                if (nextWord === '.' || nextWord === 'point' || nextWord === 'fin') {
+                    break;
+                }
 
                 // Mise à jour du registre de contexte avec le nouveau token choisi
                 const nextObj = this.getOrCreateWord(nextWord);
@@ -604,7 +609,7 @@
             if (!text.trim()) return alert("Veuillez saisir du texte !");
             engine.ingestExternalCorpusStream(text);
             updateUI();
-            appendChatMessage("Système", "Corpus indexé avec régulation anti-bégaiement et AntiDrift Context Manager (V11.5).", "engine");
+            appendChatMessage("Système", "Corpus indexé avec régulation anti-bégaiement, AntiDrift et Early Stopping (V11.5).", "engine");
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
