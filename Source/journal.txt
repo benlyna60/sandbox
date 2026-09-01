@@ -1,5 +1,85 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: C’est la fin des salles de prière dans les collèges et les universités
+LIEN: https://www.ledevoir.com/actualites/education/1005392/c-est-fin-salles-priere-colleges-universites
+CONTENU: Des dispositions de la Loi sur le renforcement de la laïcité au Québec entrent en vigueur le 1er septembre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: Miri Chek cuisine ses œuvres
+LIEN: https://www.ledevoir.com/culture/arts-visuels/1005371/miri-chek-cuisine-oeuvres
+CONTENU: L’artiste multidisciplinaire s’intéresse à la façon dont des peuples et lieux sont effacés par des mécanismes virtuels.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: La lucidité libérale
+LIEN: https://www.ledevoir.com/opinion/chroniques/1005389/lucidite-liberale
+CONTENU: Un libéral est un fédéraliste avant tout. S’il faut voter pour la CAQ pour vaincre le PQ, qu’il en soit ainsi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: L’insécurité économique est une mauvaise nouvelle pour la gauche
+LIEN: https://www.ledevoir.com/opinion/idees/1005410/insecurite-economique-est-mauvaise-nouvelle-gauche
+CONTENU: Les citoyens deviennent plus altruistes et orientés vers le long terme lorsque leurs revenus augmentent.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: Préserver les budgets pour les livres, un geste concret pour l’avenir
+LIEN: https://www.ledevoir.com/opinion/libre-opinion/1005323/preserver-budgets-livres-geste-concret-avenir
+CONTENU: Ils ont un pouvoir unique, celui d’ouvrir des fenêtres sur des réalités que l’on ne connaît pas encore.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: Déreconstruire
+LIEN: https://www.ledevoir.com/opinion/chroniques/1005368/dereconstruire
+CONTENU: Que nous devons-nous les uns aux autres quand tout est en morceaux?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: L’homme du 22 août
+LIEN: https://www.ledevoir.com/opinion/editoriaux/1005320/homme-22-aout
+CONTENU: En lisant les déclarations et les discours de Carney, on décèle rapidement la posture gaullienne du personnage.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: Prendre l’état de droit au sérieux
+LIEN: https://www.ledevoir.com/opinion/chroniques/1005374/prendre-etat-droit-serieux
+CONTENU: Les démocraties doivent répondre avec fermeté à l’intimidation et aux autres actes contraires à l’état de droit.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: «Mongols», «nunuche» et «esti de voleur»: un candidat conservateur mitraillait les insultes sur X
+LIEN: https://www.ledevoir.com/actualites/1005398/mongols-nunuche-esti-voleur-candidat-conservateur-mitraillait-insultes-x
+CONTENU: L’ancien animateur de Radio X Dominique Dumas impute ses débordements à «la nature des réseaux sociaux».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: Le transport collectif est plus avantageux pour l’économie que l’automobile, selon une étude
+LIEN: https://www.ledevoir.com/actualites/transports-urbanisme/1005380/transport-collectif-est-plus-avantageux-economie-automobile-selon-etude
+CONTENU: Réduire la facture de transport devrait être un enjeu qui préoccupe les candidats à l’élection, estime une économiste.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-09-01 05:14:25
 TITRE: L’ÉDITO POLITIQUE DE GUILLAUME DARET - Le RN veut sanctionner le voile dans l'espace public: après le tollé, la prudence de Jordan Bardella qui ne veut pas d'une "police du vêtement"
