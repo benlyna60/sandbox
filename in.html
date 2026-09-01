@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V11.7 - Optimized & Stabilized Matrix</title>
+    <title>Meta-Cognitive Engine V14.0 - Production-Grade Hardened Architecture</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -174,7 +174,7 @@
     <div class="card">
         <h1>2. Interroger la machine</h1>
         <div class="chat-box" id="chatHistory">
-            <div class="message engine">En attente de corpus optimisé (V11.7).</div>
+            <div class="message engine">En attente de corpus optimisé (V14.0 - Enterprise Hardened).</div>
         </div>
         <div class="chat-input-row">
             <input type="text" id="chatInput" placeholder="Tapez un mot..." />
@@ -198,7 +198,7 @@
                 <div class="metric-value" id="valHomeostasis">0.5000</div>
             </div>
             <div class="metric-box">
-                <div class="metric-label">Mots dans le Lexique</div>
+                <div class="metric-label">Mots dans le Lexique (Max 500)</div>
                 <div class="metric-value" id="valLexiconSize">0</div>
             </div>
         </div>
@@ -213,7 +213,12 @@
 </div>
 
 <script>
-    const CONFIG = { DIM_LATENT: 8, VP_TREE_BUCKET_SIZE: 2 };
+    const CONFIG = { 
+        DIM_LATENT: 32, 
+        VP_TREE_BUCKET_SIZE: 4,
+        MAX_LEXICON_SIZE: 500,
+        MAX_TRANSITIONS_PER_WORD: 30
+    };
 
     const GeoMath = {
         generateRandomVector() {
@@ -228,18 +233,51 @@
             let sum = 0;
             for (let i = 0; i < CONFIG.DIM_LATENT; i++) { const diff = v1[i] - v2[i]; sum += diff * diff; }
             return Math.sqrt(sum);
+        },
+        cosineDistance(v1, v2) {
+            let dot = 0;
+            for (let i = 0; i < CONFIG.DIM_LATENT; i++) {
+                dot += v1[i] * v2[i];
+            }
+            return Math.max(0, 1 - dot);
         }
     };
 
+    const TextProcessor = {
+        tokenize(text) {
+            if (!text) return [];
+            const normalized = text.normalize('NFC');
+            const rawTokens = normalized.toLowerCase().replace(/['‘’]/g, "'").split(/[\s.,\/#!$%\^&\*;:{}=\-_`~()?"«»\[\]]+/);
+            return rawTokens.map(t => t.trim()).filter(t => t.length > 0 && /^[a-zA-Z0-9àâäéèêëîïôöùûüç'-]+$/.test(t));
+        }
+    };
+
+    // Amélioration 5: Moteur grammatical étendu (gestion multi-formes, lexiques enrichis et disambiguïsation contextuelle)
     const GrammarEngine = {
-        determiners: new Set(['le', 'la', 'les', 'un', 'une', 'des', 'ce', 'cette', 'ces', 'mon', 'ton', 'son', 'notre', 'votre', 'leur', 'de', 'du', 'au', 'aux']),
-        auxiliaries: new Set(['est', 'sont', 'a', 'ont', 'fut', 'furent', 'était', 'étaient', 'sera', 'seront']),
-        knownAdjectivesOrNouns: new Set(['rapide', 'lent', 'blanc', 'noir', 'petit', 'grand', 'chaud', 'froid', 'cliente', 'client', 'maison', 'rue', 'terre', 'fertile']),
-        
-        getCategory(word) {
+        determiners: new Set(['le', 'la', 'les', 'un', 'une', 'des', 'ce', 'cette', 'ces', 'mon', 'ton', 'son', 'notre', 'votre', 'leur', 'de', 'du', 'au', 'aux', 'et', 'ou', 'quelques', 'plusieurs', 'chaque']),
+        auxiliaries: new Set(['est', 'sont', 'a', 'ont', 'fut', 'furent', 'était', 'étaient', 'sera', 'seront', 'soyons', 'soyez', 'soient', 'ai', 'as', 'avons', 'avez', 'suis', 'es', 'sommes', 'êtes']),
+        knownNouns: new Set(['chat', 'chien', 'rue', 'maison', 'homme', 'femme', 'enfant', 'table', 'voiture', 'eau', 'terre', 'client', 'cliente', 'ville']),
+        knownAdjectives: new Set(['noir', 'blanche', 'petit', 'grand', 'rapide', 'attentif', 'fertile', 'beau', 'belle', 'nouveau', 'nouvelle']),
+
+        getCategory(word, prevWord = null) {
             if (this.determiners.has(word)) return 'DET';
-            if (this.knownAdjectivesOrNouns.has(word)) return 'NOUN_ADJ';
-            if (this.auxiliaries.has(word) || word.endsWith('er') || word.endsWith('ir') || word.endsWith('re') || word.endsWith('ez') || word.endsWith('ons') || word.endsWith('ait') || word.endsWith('ent') || word.endsWith('e') || word.endsWith('es')) {
+            if (this.auxiliaries.has(word)) return 'VERB';
+            if (this.knownNouns.has(word)) return 'NOUN_ADJ';
+            if (this.knownAdjectives.has(word)) return 'NOUN_ADJ';
+
+            // Résolution fine des ambiguïtés verbes vs noms/adjectifs féminins/pluriels (-e, -es, -ent)
+            if (prevWord && this.auxiliaries.has(prevWord)) {
+                if (['e', 'es', 'é', 'er', 'ant', 'é(e)s'].some(suf => word.endsWith(suf))) {
+                    return 'VERB';
+                }
+            }
+
+            // Si précédé d'un déterminant, priorité absolue au Nom/Adjectif
+            if (prevWord && this.determiners.has(prevWord)) {
+                return 'NOUN_ADJ';
+            }
+
+            if (word.endsWith('er') || word.endsWith('ir') || word.endsWith('re') || word.endsWith('ez') || word.endsWith('ons') || word.endsWith('ait') || word.endsWith('ent')) {
                 return 'VERB';
             }
             return 'NOUN_ADJ';
@@ -259,59 +297,165 @@
         }
     }
 
+    class MaxHeapKNN {
+        constructor(k) {
+            this.k = k;
+            this.heap = [];
+        }
+
+        push(block, dist) {
+            if (this.heap.length < this.k) {
+                this.heap.push({ block, dist });
+                this._up(this.heap.length - 1);
+            } else if (dist < this.heap[0].dist) {
+                this.heap[0] = { block, dist };
+                this._down(0);
+            }
+        }
+
+        getMaxDist() {
+            if (this.heap.length < this.k) return Infinity;
+            return this.heap[0].dist;
+        }
+
+        getResultList() {
+            return [...this.heap].sort((a, b) => a.dist - b.dist);
+        }
+
+        _up(i) {
+            let p = Math.floor((i - 1) / 2);
+            while (i > 0 && this.heap[p].dist < this.heap[i].dist) {
+                let tmp = this.heap[p]; this.heap[p] = this.heap[i]; this.heap[i] = tmp;
+                i = p; p = Math.floor((i - 1) / 2);
+            }
+        }
+
+        _down(i) {
+            let maxIdx = i;
+            let left = 2 * i + 1;
+            let right = 2 * i + 2;
+            const len = this.heap.length;
+
+            if (left < len && this.heap[left].dist > this.heap[maxIdx].dist) maxIdx = left;
+            if (right < len && this.heap[right].dist > this.heap[maxIdx].dist) maxIdx = right;
+
+            if (maxIdx !== i) {
+                let tmp = this.heap[maxIdx]; this.heap[maxIdx] = this.heap[i]; this.heap[i] = tmp;
+                this._down(maxIdx);
+            }
+        }
+    }
+
     class SpatialVPTreeIndex {
         constructor() { this.root = null; }
-        buildIndex(memoryBlocks) { this.root = this._recursiveBuild([...memoryBlocks]); }
-        _recursiveBuild(blocks) {
+        
+        buildIndex(memoryBlocks) { 
+            const shuffled = [...memoryBlocks];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            this.root = this._recursiveBuild(shuffled, 0); 
+        }
+
+        // Amélioration 2: Sélection du pivot par variance maximale pour garantir l'équilibrage de l'arbre VP
+        _selectOptimalVantagePoint(blocks) {
+            if (blocks.length <= 2) return Math.floor(Math.random() * blocks.length);
+            
+            // Échantillonner jusqu'à 8 candidats pour trouver celui qui maximise la variance des distances
+            const sampleSize = Math.min(8, blocks.length);
+            let bestIdx = 0;
+            let maxVariance = -1;
+
+            for (let i = 0; i < sampleSize; i++) {
+                const candidateIdx = Math.floor(Math.random() * blocks.length);
+                const candidate = blocks[candidateIdx];
+                
+                let mean = 0;
+                let distances = [];
+                for (let j = 0; j < blocks.length; j++) {
+                    if (candidateIdx === j) continue;
+                    const d = GeoMath.cosineDistance(candidate.vector, blocks[j].vector);
+                    distances.push(d);
+                    mean += d;
+                }
+                mean /= distances.length;
+
+                let variance = 0;
+                for (let d of distances) {
+                    variance += (d - mean) * (d - mean);
+                }
+                variance /= distances.length;
+
+                if (variance > maxVariance) {
+                    maxVariance = variance;
+                    bestIdx = candidateIdx;
+                }
+            }
+            return bestIdx;
+        }
+
+        _recursiveBuild(blocks, depth) {
             if (blocks.length === 0) return null;
-            if (blocks.length <= CONFIG.VP_TREE_BUCKET_SIZE) {
+            if (blocks.length <= CONFIG.VP_TREE_BUCKET_SIZE || depth > 16) {
                 const node = new VPTreeNode(null); node.bucket = blocks; return node;
             }
-            const vpIndex = Math.floor(Math.random() * blocks.length);
+            
+            const vpIndex = this._selectOptimalVantagePoint(blocks);
             const vp = blocks[vpIndex];
             const remaining = blocks.filter((_, idx) => idx !== vpIndex);
 
             const node = new VPTreeNode(vp);
-            const distances = remaining.map(b => ({ block: b, dist: GeoMath.euclideanDistance(vp.vector, b.vector) }));
+            const distances = remaining.map(b => ({ block: b, dist: GeoMath.cosineDistance(vp.vector, b.vector) }));
             distances.sort((a, b) => a.dist - b.dist);
             const medianIdx = Math.floor(distances.length / 2);
             node.threshold = distances.length > 0 ? distances[medianIdx].dist : 0;
-            node.inside = this._recursiveBuild(distances.slice(0, medianIdx).map(d => d.block));
-            node.outside = this._recursiveBuild(distances.slice(medianIdx).map(d => d.block));
+            node.inside = this._recursiveBuild(distances.slice(0, medianIdx).map(d => d.block), depth + 1);
+            node.outside = this._recursiveBuild(distances.slice(medianIdx).map(d => d.block), depth + 1);
             return node;
         }
-        searchNearestNeighbors(queryVector, maxRadius, node = this.root, neighbors = []) {
-            if (!node) return neighbors;
-            if (node.bucket.length > 0) {
-                for (const block of node.bucket) {
-                    const d = GeoMath.euclideanDistance(queryVector, block.vector); 
-                    if (d <= maxRadius) neighbors.push({ block, dist: d });
+        
+        findAdaptiveNearestNeighbors(queryVector, k = 5) {
+            const heap = new MaxHeapKNN(k);
+
+            const searchRecursive = (node) => {
+                if (!node) return;
+
+                if (node.bucket.length > 0) {
+                    for (const block of node.bucket) {
+                        const dist = GeoMath.cosineDistance(queryVector, block.vector);
+                        heap.push(block, dist);
+                    }
+                    return;
                 }
-                return neighbors;
-            }
-            const dVP = GeoMath.euclideanDistance(queryVector, node.vantagePoint.vector);
-            if (dVP <= maxRadius) neighbors.push({ block: node.vantagePoint, dist: dVP });
-            if (dVP < node.threshold) {
-                this.searchNearestNeighbors(queryVector, maxRadius, node.inside, neighbors);
-                if (dVP + maxRadius >= node.threshold) this.searchNearestNeighbors(queryVector, maxRadius, node.outside, neighbors);
-            } else {
-                this.searchNearestNeighbors(queryVector, maxRadius, node.outside, neighbors);
-                if (dVP - maxRadius <= node.threshold) this.searchNearestNeighbors(queryVector, maxRadius, node.inside, neighbors);
-            }
-            return neighbors;
+
+                if (node.vantagePoint) {
+                    const distVP = GeoMath.cosineDistance(queryVector, node.vantagePoint.vector);
+                    heap.push(node.vantagePoint, distVP);
+
+                    const maxDist = heap.getMaxDist();
+
+                    if (distVP - maxDist <= node.threshold) {
+                        searchRecursive(node.inside);
+                    }
+                    if (distVP + maxDist >= node.threshold) {
+                        searchRecursive(node.outside);
+                    }
+                }
+            };
+
+            searchRecursive(this.root);
+            return heap.getResultList();
         }
     }
 
     class OrganicMemoryMatrix {
         constructor() { this.lexiconRef = null; this.spatialIndex = new SpatialVPTreeIndex(); }
         
-        init(lexicon) {
-            this.lexiconRef = lexicon;
-        }
+        init(lexicon) { this.lexiconRef = lexicon; }
 
         commitBatch() {
             if (!this.lexiconRef) return;
-            // Consolidation par centroïdes uniques (fin des doublons et O(N^2 log N))
             const uniqueBlocks = Object.values(this.lexiconRef).map(item => ({
                 word: item.word,
                 vector: [...item.vector]
@@ -320,23 +464,24 @@
         }
     }
 
+    // Amélioration 3: Gestionnaire anti-dérive protégé contre la saturation et stabilisé par l'ancrage adaptatif
     class AntiDriftContextManager {
         constructor(lambdaDecay = 0.75, maxTokens = 14) {
             this.lambda = lambdaDecay;
             this.maxTokens = maxTokens;
-            
-            this.contextVector = new Float32Array(8);
-            this.anchorVector = new Float32Array(8);
-            this.initialAnchor = new Float32Array(8);
+            this.contextVector = new Float32Array(CONFIG.DIM_LATENT);
+            this.anchorVector = new Float32Array(CONFIG.DIM_LATENT);
+            this.initialAnchor = new Float32Array(CONFIG.DIM_LATENT);
             this.hasAnchor = false;
+            this.tokenCount = 0;
         }
 
         _normalize(vector) {
             let sumSq = 0;
-            for (let i = 0; i < 8; i++) sumSq += vector[i] * vector[i];
+            for (let i = 0; i < CONFIG.DIM_LATENT; i++) sumSq += vector[i] * vector[i];
             if (sumSq > 0) {
                 const norm = Math.sqrt(sumSq);
-                for (let i = 0; i < 8; i++) vector[i] /= norm;
+                for (let i = 0; i < CONFIG.DIM_LATENT; i++) vector[i] /= norm;
             }
         }
 
@@ -344,62 +489,62 @@
             this.initialAnchor.set(questionVector);
             this.anchorVector.set(questionVector);
             this.contextVector.set(questionVector);
-            
             this._normalize(this.anchorVector);
             this._normalize(this.contextVector);
             this.hasAnchor = true;
+            this.tokenCount = 0;
         }
 
         updateContext(wordVector, blockType) {
-            let weight = 0.1; 
-            if (blockType === 'NOUN_ADJ' || blockType === 'VERB') {
-                weight = 1.0; 
-            }
+            this.tokenCount++;
+            let weight = (blockType === 'NOUN_ADJ' || blockType === 'VERB') ? 1.0 : 0.1;
+            const normalizedWordVector = new Float32Array(wordVector);
+            this._normalize(normalizedWordVector);
 
-            for (let i = 0; i < 8; i++) {
-                this.contextVector[i] = (this.contextVector[i] * this.lambda) + (wordVector[i] * weight);
+            for (let i = 0; i < CONFIG.DIM_LATENT; i++) {
+                this.contextVector[i] = (this.contextVector[i] * this.lambda) + (normalizedWordVector[i] * weight);
             }
             this._normalize(this.contextVector);
 
-            if (weight === 1.0) {
-                const anchorMomentum = 0.85;
-                for (let i = 0; i < 8; i++) {
-                    this.anchorVector[i] = (this.anchorVector[i] * anchorMomentum) + (wordVector[i] * (1 - anchorMomentum));
+            // Protection anti-saturation de l'ancre : atténuation de la dérive sur les textes longs (> 8 tokens)
+            if (weight === 1.0 && this.tokenCount <= 8) {
+                const anchorMomentum = 0.90;
+                for (let i = 0; i < CONFIG.DIM_LATENT; i++) {
+                    this.anchorVector[i] = (this.anchorVector[i] * anchorMomentum) + (normalizedWordVector[i] * (1 - anchorMomentum));
                 }
                 this._normalize(this.anchorVector);
             }
         }
 
         getSearchTarget(lastWordVector, currentStep) {
-            const target = new Float32Array(8);
-            
+            const target = new Float32Array(CONFIG.DIM_LATENT);
             if (!this.hasAnchor) {
                 target.set(lastWordVector);
+                this._normalize(target);
                 return target;
             }
 
             const progress = currentStep / this.maxTokens;
             const alpha = 1 / (1 + Math.exp(-10 * (progress - 0.5)));
 
-            const localFlux = new Float32Array(8);
-            for (let i = 0; i < 8; i++) {
+            const localFlux = new Float32Array(CONFIG.DIM_LATENT);
+            for (let i = 0; i < CONFIG.DIM_LATENT; i++) {
                 localFlux[i] = (this.contextVector[i] + lastWordVector[i]) / 2;
             }
             this._normalize(localFlux);
 
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < CONFIG.DIM_LATENT; i++) {
                 target[i] = (alpha * this.anchorVector[i]) + ((1 - alpha) * localFlux[i]);
             }
-            
             this._normalize(target);
             return target;
         }
     }
 
-    class MetaCognitiveEngineV11_7 {
+    class MetaCognitiveEngineV14 {
         constructor() {
             this.lexicon = {}; 
-            this.sentenceNgrams = []; 
+            this.globalTransitions = {}; 
             this.memory = new OrganicMemoryMatrix();
             this.memory.init(this.lexicon);
             this.currentSurprise = 0.5;
@@ -409,91 +554,137 @@
             this.temperature = 0.8;
         }
 
-        getOrCreateWord(word) {
+        // Amélioration 1: Correction de la fuite mémoire avec nettoyage propre des clés orphelines dans globalTransitions
+        _enforceLexiconCapacity() {
+            const keys = Object.keys(this.lexicon);
+            if (keys.length > CONFIG.MAX_LEXICON_SIZE) {
+                keys.sort((a, b) => (this.lexicon[a].lastAccessed || 0) - (this.lexicon[b].lastAccessed || 0));
+                const removeCount = keys.length - CONFIG.MAX_LEXICON_SIZE;
+                for (let i = 0; i < removeCount; i++) {
+                    const victim = keys[i];
+                    delete this.lexicon[victim];
+                    delete this.globalTransitions[victim]; // Suppression de la table des transitions sortantes
+                }
+                // Nettoyage rigoureux des références entrantes orphelines pointant vers les victimes éjectées
+                for (let srcWord in this.globalTransitions) {
+                    for (let dstWord in this.globalTransitions[srcWord]) {
+                        if (!this.lexicon[dstWord] || !this.lexicon[srcWord]) {
+                            delete this.globalTransitions[srcWord][dstWord];
+                        }
+                    }
+                    if (Object.keys(this.globalTransitions[srcWord]).length === 0) {
+                        delete this.globalTransitions[srcWord];
+                    }
+                }
+            }
+        }
+
+        _recordTransition(currentWord, nextWord) {
+            if (!this.globalTransitions[currentWord]) {
+                this.globalTransitions[currentWord] = {};
+            }
+            const map = this.globalTransitions[currentWord];
+            
+            if (map[nextWord]) {
+                map[nextWord] += 1;
+            } else {
+                const entries = Object.entries(map);
+                if (entries.length >= CONFIG.MAX_TRANSITIONS_PER_WORD) {
+                    entries.sort((a, b) => a[1] - b[1]);
+                    delete map[entries[0][0]];
+                }
+                map[nextWord] = 1;
+            }
+        }
+
+        getOrCreateWord(word, prevWord = null) {
             const cleanWord = word.toLowerCase().trim();
-            if (this.lexicon[cleanWord]) return this.lexicon[cleanWord];
+            if (this.lexicon[cleanWord]) {
+                this.lexicon[cleanWord].lastAccessed = ++this.timelineIndex;
+                return this.lexicon[cleanWord];
+            }
+
+            this._enforceLexiconCapacity();
 
             this.lexicon[cleanWord] = {
                 word: cleanWord,
                 vector: GeoMath.generateRandomVector(),
                 stiffness: 0.1,
-                category: GrammarEngine.getCategory(cleanWord)
+                category: GrammarEngine.getCategory(cleanWord, prevWord),
+                lastAccessed: ++this.timelineIndex
             };
             return this.lexicon[cleanWord];
         }
 
         ingestExternalCorpusStream(text) {
-            const rawSentences = text.split(/[.!?]+/);
-            
-            for (let rawSentence of rawSentences) {
-                const words = rawSentence.toLowerCase().replace(/[^a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ'-]/g, " ").split(/\s+/).filter(w => w.length > 0);
-                if (words.length === 0) continue;
+            const words = TextProcessor.tokenize(text);
+            if (words.length === 0) return;
 
-                let sentenceNgramMap = {};
+            let sentenceNgramMap = {};
 
-                for (let i = 0; i < words.length; i++) {
-                    const currentToken = this.getOrCreateWord(words[i]);
+            for (let i = 0; i < words.length; i++) {
+                const prevWord = i > 0 ? words[i - 1] : null;
+                const currentToken = this.getOrCreateWord(words[i], prevWord);
 
-                    let expectedProbability = 0;
-                    if (i > 0 && sentenceNgramMap[words[i-1]]) {
-                        const totalTransitions = Object.values(sentenceNgramMap[words[i-1]]).reduce((a, b) => a + b, 0);
-                        const actualTransitionFreq = sentenceNgramMap[words[i-1]][words[i]] || 0;
-                        expectedProbability = totalTransitions > 0 ? actualTransitionFreq / totalTransitions : 0;
-                    }
-
-                    const instantaneousSurprise = 1.0 - expectedProbability;
-                    this.currentSurprise = (this.currentSurprise * 0.7) + (instantaneousSurprise * 0.3);
-
-                    this.dynamicLearningRate = 0.02 + (this.currentSurprise * 0.15); 
-                    this.dynamicHomeostasis = 0.95 - (this.currentSurprise * 0.60);
-
-                    const elasticity = 1.0 - (currentToken.stiffness * this.dynamicHomeostasis);
-                    const effectiveLearningRate = this.dynamicLearningRate * elasticity;
-
-                    currentToken.stiffness = Math.min(1.0, currentToken.stiffness + (0.05 * (1.0 - this.currentSurprise)));
-
-                    if (i < words.length - 1) {
-                        const nextWord = words[i + 1]; 
-                        this.getOrCreateWord(nextWord);
-                        if (!sentenceNgramMap[words[i]]) sentenceNgramMap[words[i]] = {};
-                        sentenceNgramMap[words[i]][nextWord] = (sentenceNgramMap[words[i]][nextWord] || 0) + 1;
-                    }
-
-                    const startLook = Math.max(0, i - 1); 
-                    const endLook = Math.min(words.length - 1, i + 1);
-                    for (let j = startLook; j <= endLook; j++) {
-                        if (i === j) continue;
-                        const neighborToken = this.getOrCreateWord(words[j]);
-                        for (let d = 0; d < CONFIG.DIM_LATENT; d++) {
-                            const pull = neighborToken.vector[d] - currentToken.vector[d];
-                            currentToken.vector[d] += pull * effectiveLearningRate;
-                        }
-                    }
-
-                    let norm = 0; 
-                    for (let d = 0; d < CONFIG.DIM_LATENT; d++) norm += currentToken.vector[d] * currentToken.vector[d];
-                    norm = Math.sqrt(norm); 
-                    if (norm > 0) { 
-                        for (let d = 0; d < CONFIG.DIM_LATENT; d++) currentToken.vector[d] /= norm; 
-                    }
-
-                    this.timelineIndex++;
+                let expectedProbability = 0;
+                if (i > 0 && sentenceNgramMap[words[i-1]]) {
+                    const totalTransitions = Object.values(sentenceNgramMap[words[i-1]]).reduce((a, b) => a + b, 0);
+                    const actualTransitionFreq = sentenceNgramMap[words[i-1]][words[i]] || 0;
+                    expectedProbability = totalTransitions > 0 ? actualTransitionFreq / totalTransitions : 0;
                 }
-                this.sentenceNgrams.push(sentenceNgramMap);
+
+                const instantaneousSurprise = 1.0 - expectedProbability;
+                this.currentSurprise = (this.currentSurprise * 0.7) + (instantaneousSurprise * 0.3);
+
+                this.dynamicLearningRate = 0.02 + (this.currentSurprise * 0.15); 
+                this.dynamicHomeostasis = 0.95 - (this.currentSurprise * 0.60);
+
+                const elasticity = 1.0 - (currentToken.stiffness * this.dynamicHomeostasis);
+                const effectiveLearningRate = this.dynamicLearningRate * elasticity;
+
+                currentToken.stiffness = Math.min(1.0, currentToken.stiffness + (0.05 * (1.0 - this.currentSurprise)));
+
+                if (i < words.length - 1) {
+                    const nextWord = words[i + 1]; 
+                    this.getOrCreateWord(nextWord, words[i]);
+                    
+                    if (!sentenceNgramMap[words[i]]) sentenceNgramMap[words[i]] = {};
+                    sentenceNgramMap[words[i]][nextWord] = (sentenceNgramMap[words[i]][nextWord] || 0) + 1;
+
+                    this._recordTransition(words[i], nextWord);
+                }
+
+                const startLook = Math.max(0, i - 1); 
+                const endLook = Math.min(words.length - 1, i + 1);
+                for (let j = startLook; j <= endLook; j++) {
+                    if (i === j) continue;
+                    const neighborToken = this.getOrCreateWord(words[j], j > 0 ? words[j-1] : null);
+                    for (let d = 0; d < CONFIG.DIM_LATENT; d++) {
+                        const pull = neighborToken.vector[d] - currentToken.vector[d];
+                        currentToken.vector[d] += pull * effectiveLearningRate;
+                    }
+                }
+
+                let norm = 0; 
+                for (let d = 0; d < CONFIG.DIM_LATENT; d++) norm += currentToken.vector[d] * currentToken.vector[d];
+                norm = Math.sqrt(norm); 
+                if (norm > 0) { 
+                    for (let d = 0; d < CONFIG.DIM_LATENT; d++) currentToken.vector[d] /= norm; 
+                }
+
+                this.timelineIndex++;
             }
-            // Indexation unique par lot après l'ingestion complète du corpus (Performance O(N log N))
             this.memory.commitBatch();
         }
 
         generateResponse(prompt) {
-            const words = prompt.toLowerCase().replace(/[^a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ'-]/g, " ").split(/\s+/).filter(w => w.length > 0);
+            const words = TextProcessor.tokenize(prompt);
             if (words.length === 0) return "Veuillez entrer un mot-clé valide.";
 
             let currentWord = words[words.length - 1];
+            
             if (!this.lexicon[currentWord]) {
-                const keys = Object.keys(this.lexicon);
-                if (keys.length === 0) return "Aucun mot en mémoire.";
-                currentWord = keys[Math.floor(Math.random() * keys.length)];
+                return `Mot inconnu "${currentWord}". Veuillez l'injecter dans le corpus d'entraînement au préalable.`;
             }
 
             const minTokens = 6;
@@ -505,26 +696,19 @@
 
             let responseTokens = [currentWord];
             const recentWindow = [currentWord];
+            const maxWindowSize = 4;
 
             for (let step = 0; step < maxTokens; step++) {
                 let nextWord = null;
                 let weightedChoices = [];
                 let totalWeight = 0;
 
-                let combinedTransitions = {};
-                for (let sMap of this.sentenceNgrams) {
-                    if (sMap[currentWord]) {
-                        for (let [w, count] of Object.entries(sMap[currentWord])) {
-                            combinedTransitions[w] = (combinedTransitions[w] || 0) + count;
-                        }
-                    }
-                }
-
+                let combinedTransitions = this.globalTransitions[currentWord] || {};
                 const currentObj = this.getOrCreateWord(currentWord);
 
                 if (Object.keys(combinedTransitions).length > 0) {
                     for (let [w, count] of Object.entries(combinedTransitions)) {
-                        let nextObj = this.getOrCreateWord(w);
+                        let nextObj = this.getOrCreateWord(w, currentWord);
                         
                         if (w === currentWord) continue;
 
@@ -532,23 +716,19 @@
                         let antiStutterPenalty = Math.pow(0.1, frequencyCount);
 
                         let grammarBonus = GrammarEngine.isGrammaticallyPlausible(currentObj.category, nextObj.category) ? 1.5 : 0.3;
-                        
                         let earlyStopPenalty = (step < minTokens && Object.keys(combinedTransitions).length === 1) ? 0.1 : 1.0;
-
                         let isNumeric = /\d/.test(w);
                         let numericalBias = isNumeric ? 1.8 : 1.0;
 
                         let thematicAlignment = 1.0;
                         if (contextMgr.hasAnchor) {
-                            let distToAnchor = GeoMath.euclideanDistance(nextObj.vector, contextMgr.anchorVector);
+                            let distToAnchor = GeoMath.cosineDistance(nextObj.vector, contextMgr.anchorVector);
                             thematicAlignment = Math.max(0.3, 2.0 - distToAnchor);
                         }
 
                         let directTransitionBoost = count > 1 ? 1.4 : 1.0;
 
                         let rawWeight = count * antiStutterPenalty * grammarBonus * earlyStopPenalty * numericalBias * thematicAlignment * directTransitionBoost;
-                        
-                        // --- CORRECTION THERMODYNAMIQUE (Softmax standard e^(w/T)) ---
                         let adjustedWeight = rawWeight > 0 ? Math.exp(rawWeight / Math.max(this.temperature, 0.05)) : 0;
 
                         if (adjustedWeight > 0.00001) {
@@ -572,33 +752,47 @@
 
                 if (!nextWord) {
                     const searchTarget = contextMgr.getSearchTarget(currentObj.vector, step);
-                    // --- CORRECTION GÉOMÉTRIQUE DU RAYON ---
-                    // Rayon fixé à 1.2 (strictement inférieur à la distance max théorique de √2 ≈ 1.414)
-                    const hits = this.memory.spatialIndex.searchNearestNeighbors(searchTarget, 1.2);
+                    const hits = this.memory.spatialIndex.findAdaptiveNearestNeighbors(searchTarget, 10);
                     
-                    const validHits = hits.filter(h => h.block.word !== currentWord && !recentWindow.includes(h.block.word));
+                    let validHits = hits.filter(h => h.block.word !== currentWord && !recentWindow.includes(h.block.word));
+                    if (validHits.length === 0) {
+                        validHits = hits.filter(h => h.block.word !== currentWord);
+                    }
                     if (validHits.length > 0) {
                         nextWord = validHits[Math.floor(Math.random() * validHits.length)].block.word;
-                    } else if (hits.length > 0) {
-                        const nonSelfHits = hits.filter(h => h.block.word !== currentWord);
-                        if (nonSelfHits.length > 0) {
-                            nextWord = nonSelfHits[Math.floor(Math.random() * nonSelfHits.length)].block.word;
-                        }
                     }
                 }
 
-                if (!nextWord) break;
+                // Amélioration 4: Fallback stochastique intelligent filtré par plausibilité grammaticale
+                if (!nextWord) {
+                    const allKeys = Object.keys(this.lexicon).filter(k => {
+                        if (k === currentWord || recentWindow.includes(k)) return false;
+                        const candidateObj = this.getOrCreateWord(k);
+                        return GrammarEngine.isGrammaticallyPlausible(currentObj.category, candidateObj.category);
+                    });
+                    
+                    if (allKeys.length > 0) {
+                        nextWord = allKeys[Math.floor(Math.random() * allKeys.length)];
+                    } else {
+                        const fallbackAny = Object.keys(this.lexicon).filter(k => k !== currentWord);
+                        if (fallbackAny.length > 0) {
+                            nextWord = fallbackAny[Math.floor(Math.random() * fallbackAny.length)];
+                        } else {
+                            break;
+                        }
+                    }
+                }
 
                 if (nextWord === '.' || nextWord === 'point' || nextWord === 'fin') {
                     break;
                 }
 
-                const nextObj = this.getOrCreateWord(nextWord);
+                const nextObj = this.getOrCreateWord(nextWord, currentWord);
                 contextMgr.updateContext(nextObj.vector, nextObj.category);
 
                 responseTokens.push(nextWord);
                 recentWindow.push(nextWord);
-                if (recentWindow.length > 4) recentWindow.shift();
+                if (recentWindow.length > maxWindowSize) recentWindow.shift();
                 currentWord = nextWord;
 
                 if (responseTokens.length >= minTokens) {
@@ -613,7 +807,7 @@
         }
     }
 
-    const engine = new MetaCognitiveEngineV11_7();
+    const engine = new MetaCognitiveEngineV14();
 
     document.addEventListener('DOMContentLoaded', () => {
         const tempRange = document.getElementById('tempRange');
@@ -629,7 +823,7 @@
             if (!text.trim()) return alert("Veuillez saisir du texte !");
             engine.ingestExternalCorpusStream(text);
             updateUI();
-            appendChatMessage("Système", "Corpus indexé avec succès (V11.7 - Indexation par lots et Stabilité Thermodynamique).", "engine");
+            appendChatMessage("Système", "Corpus indexé (V14.0 - Nettoyage des orphelins LRU, Pivot VP-Tree à variance maximale, Ancrage stabilisé & Fallback syntaxique).", "engine");
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
@@ -643,7 +837,7 @@
         appendChatMessage("Vous", text, "user");
         input.value = "";
         setTimeout(() => {
-            appendChatMessage("Moteur V11.7", engine.generateResponse(text), "engine");
+            appendChatMessage("Moteur V14.0", engine.generateResponse(text), "engine");
         }, 200);
     }
 
@@ -670,7 +864,7 @@
             const item = engine.lexicon[word];
             const div = document.createElement('div');
             div.className = 'word-item';
-            div.innerHTML = `<span><strong>${item.word}</strong> <span style="color:var(--accent-color); font-size:0.75rem;">[${item.category}]</span></span><span class="word-meta">Stiffness: ${item.stiffness.toFixed(2)}</span>`;
+            div.innerHTML = `<span><strong>${item.word}</strong> <span style="color:var(--accent-color); font-size:0.75rem;">[${item.category}]</span></span><span class="word-meta">Access: ${item.lastAccessed}</span>`;
             lexiconDisplay.appendChild(div);
         });
     }
