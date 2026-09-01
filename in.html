@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V11 - Custom Corpus Chat</title>
+    <title>Meta-Cognitive Engine V11.2 - Balanced Spatial & Stochastic Chat</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -229,7 +229,6 @@
     class SpatialVPTreeIndex {
         constructor() { this.root = null; }
         buildIndex(memoryBlocks) { 
-            // Copie superficielle/propre pour éviter les mutations de références circulaires
             this.root = this._recursiveBuild([...memoryBlocks]); 
         }
         _recursiveBuild(blocks) {
@@ -237,7 +236,12 @@
             if (blocks.length <= CONFIG.VP_TREE_BUCKET_SIZE) {
                 const node = new VPTreeNode(null); node.bucket = blocks; return node;
             }
-            const vp = blocks[0]; const remaining = blocks.slice(1); const node = new VPTreeNode(vp);
+            // Correction : Sélection aléatoire du pivot (Vantage Point) pour éviter la dictature du début du texte
+            const vpIndex = Math.floor(Math.random() * blocks.length);
+            const vp = blocks[vpIndex];
+            const remaining = blocks.filter((_, idx) => idx !== vpIndex);
+
+            const node = new VPTreeNode(vp);
             const distances = remaining.map(b => ({ block: b, dist: GeoMath.euclideanDistance(vp.vector, b.vector) }));
             distances.sort((a, b) => a.dist - b.dist);
             const medianIdx = Math.floor(distances.length / 2);
@@ -300,7 +304,6 @@
         }
 
         ingestExternalCorpusStream(text) {
-            // Regex élargie pour supporter les accents français et la ponctuation standard
             const words = text.toLowerCase().replace(/[^a-zA-ZàâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ'-]/g, " ").split(/\s+/).filter(w => w.length > 0);
             if (words.length === 0) return;
 
@@ -360,7 +363,6 @@
 
             let currentWord = words[words.length - 1];
             
-            // Si le dernier mot n'existe pas dans le lexique, on cherche le plus proche ou un mot aléatoire
             if (!this.lexicon[currentWord]) {
                 const keys = Object.keys(this.lexicon);
                 if (keys.length === 0) return "Aucun mot en mémoire pour répondre.";
@@ -368,37 +370,69 @@
             }
 
             let responseTokens = [currentWord];
-            const maxTokens = 8;
+            const maxTokens = 10;
+            const historyWindow = new Set([currentWord]);
 
             for (let step = 0; step < maxTokens; step++) {
                 const transitions = this.ngrams[currentWord];
                 let nextWord = null;
 
                 if (transitions && Object.keys(transitions).length > 0) {
-                    const sorted = Object.entries(transitions).sort((a, b) => b[1] - a[1]);
-                    nextWord = sorted[0][0];
-                } else {
-                    const lastObj = this.getOrCreateWord(currentWord);
-                    const hits = this.memory.spatialIndex.searchNearestNeighbors(lastObj.vector, 1.6);
-                    if (hits.length > 0) {
-                        const randomHit = hits[Math.floor(Math.random() * hits.length)];
-                        nextWord = randomHit.block.word;
+                    // Échantillonnage stochastique pondéré avec pénalité de répétition forte
+                    let weightedChoices = [];
+                    let totalWeight = 0;
+
+                    for (let [w, count] of Object.entries(transitions)) {
+                        let repetitionPenalty = historyWindow.has(w) ? 0.05 : 1.0;
+                        let weight = count * repetitionPenalty;
+                        if (weight > 0.0001) {
+                            weightedChoices.push({ word: w, weight: weight });
+                            totalWeight += weight;
+                        }
+                    }
+
+                    if (totalWeight > 0) {
+                        let r = Math.random() * totalWeight;
+                        let cumulative = 0;
+                        for (let choice of weightedChoices) {
+                            cumulative += choice.weight;
+                            if (r <= cumulative) {
+                                nextWord = choice.word;
+                                break;
+                            }
+                        }
                     }
                 }
 
-                if (!nextWord || responseTokens.includes(nextWord)) break;
+                // Fallback spatial si aucune transition n'est disponible ou si tout est pénalisé
+                if (!nextWord) {
+                    const lastObj = this.getOrCreateWord(currentWord);
+                    const hits = this.memory.spatialIndex.searchNearestNeighbors(lastObj.vector, 1.8);
+                    const validHits = hits.filter(h => !historyWindow.has(h.block.word));
+                    
+                    if (validHits.length > 0) {
+                        nextWord = validHits[Math.floor(Math.random() * validHits.length)].block.word;
+                    } else if (hits.length > 0) {
+                        nextWord = hits[Math.floor(Math.random() * hits.length)].block.word;
+                    }
+                }
+
+                if (!nextWord) break;
+
                 responseTokens.push(nextWord);
+                historyWindow.add(nextWord);
                 currentWord = nextWord;
+
+                // Condition d'arrêt naturelle sur ponctuation
+                if (['.', '!', '?'].includes(nextWord)) break;
             }
 
             return responseTokens.join(" ");
         }
     }
 
-    // Instanciation propre du moteur
     const engine = new MetaCognitiveEngineV11();
 
-    // Liaison sécurisée des écouteurs d'événements au chargement du DOM
     document.addEventListener('DOMContentLoaded', () => {
         const btnIngest = document.getElementById('btnIngest');
         const btnSend = document.getElementById('btnSend');
@@ -413,7 +447,7 @@
 
             engine.ingestExternalCorpusStream(text);
             updateUI();
-            appendChatMessage("Système", `Corpus personnalisé de ${text.split(/\s+/).length} mots ingéré avec succès. Espace topologique actualisé.`, "engine");
+            appendChatMessage("Système", `Corpus personnalisé de ${text.split(/\s+/).length} mots ingéré. Espace topologique rééquilibré et structuré.`, "engine");
         });
 
         btnSend.addEventListener('click', sendChatMessage);
@@ -434,7 +468,7 @@
 
         setTimeout(() => {
             const reply = engine.generateResponse(text);
-            appendChatMessage("Moteur V11", reply, "engine");
+            appendChatMessage("Moteur V11.2", reply, "engine");
         }, 300);
     }
 
