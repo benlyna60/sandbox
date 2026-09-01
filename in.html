@@ -146,9 +146,9 @@
     <!-- Étape 1 : Injection personnalisée -->
     <div class="card">
         <h1>1. Injectez votre propre texte d'entraînement</h1>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Effacez ce champ, collez vos propres phrases ou votre histoire, puis lancez l'apprentissage pour voir la machine construire son espace.</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Collez vos phrases ou votre histoire ci-dessous, puis lancez l'apprentissage.</p>
         <textarea id="corpusInput" placeholder="Tapez ou collez votre texte ici..."></textarea>
-        <button onclick="runIngestion()">Injecter et structurer l'espace</button>
+        <button id="btnIngest">Injecter et structurer l'espace</button>
     </div>
 
     <!-- Étape 2 : Chat interactif -->
@@ -158,8 +158,8 @@
             <div class="message engine">En attente de votre texte. Injectez un corpus ci-dessus, puis écrivez un mot ou une question pour tester ma mémoire topologique.</div>
         </div>
         <div class="chat-input-row">
-            <input type="text" id="chatInput" placeholder="Posez une question ou tapez un mot issu de votre texte..." onkeydown="if(event.key==='Enter') sendChatMessage()">
-            <button onclick="sendChatMessage()">Envoyer</button>
+            <input type="text" id="chatInput" placeholder="Posez une question ou tapez un mot issu de votre texte..." />
+            <button id="btnSend">Envoyer</button>
         </div>
     </div>
 
@@ -203,9 +203,6 @@
         REPLAY_BATCH_SIZE: 3
     };
 
-    let MASTER_LATTICE = {};
-    let TRANSITIONS_NGRAMS = {};
-
     const GeoMath = {
         generateRandomVector() {
             let vec = []; let norm = 0;
@@ -231,7 +228,10 @@
 
     class SpatialVPTreeIndex {
         constructor() { this.root = null; }
-        buildIndex(memoryBlocks) { this.root = this._recursiveBuild(memoryBlocks); }
+        buildIndex(memoryBlocks) { 
+            // Copie superficielle/propre pour éviter les mutations de références circulaires
+            this.root = this._recursiveBuild([...memoryBlocks]); 
+        }
         _recursiveBuild(blocks) {
             if (blocks.length === 0) return null;
             if (blocks.length <= CONFIG.VP_TREE_BUCKET_SIZE) {
@@ -250,7 +250,8 @@
             if (!node) return neighbors;
             if (node.bucket.length > 0) {
                 for (const block of node.bucket) {
-                    const d = GeoMath.euclideanDistance(queryVector, block.vector); if (d <= maxRadius) neighbors.push({ block, dist: d });
+                    const d = GeoMath.euclideanDistance(queryVector, block.vector); 
+                    if (d <= maxRadius) neighbors.push({ block, dist: d });
                 }
                 return neighbors;
             }
@@ -277,8 +278,8 @@
 
     class MetaCognitiveEngineV11 {
         constructor() {
-            this.lexicon = MASTER_LATTICE; 
-            this.ngrams = TRANSITIONS_NGRAMS;
+            this.lexicon = {}; 
+            this.ngrams = {};
             this.memory = new OrganicMemoryMatrix();
             this.currentSurprise = 0.5;
             this.dynamicLearningRate = 0.05;
@@ -299,7 +300,8 @@
         }
 
         ingestExternalCorpusStream(text) {
-            const words = text.toLowerCase().replace(/[^a-zA-Zàâäéèêëîïôöùûüç]/g, " ").split(/\s+/).filter(w => w.length > 0);
+            // Regex élargie pour supporter les accents français et la ponctuation standard
+            const words = text.toLowerCase().replace(/[^a-zA-ZàâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ'-]/g, " ").split(/\s+/).filter(w => w.length > 0);
             if (words.length === 0) return;
 
             for (let i = 0; i < words.length; i++) {
@@ -353,10 +355,18 @@
         }
 
         generateResponse(prompt) {
-            const words = prompt.toLowerCase().replace(/[^a-zA-Zàâäéèêëîïôöùûüç]/g, " ").split(/\s+/).filter(w => w.length > 0);
+            const words = prompt.toLowerCase().replace(/[^a-zA-ZàâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ'-]/g, " ").split(/\s+/).filter(w => w.length > 0);
             if (words.length === 0) return "Veuillez entrer un mot-clé valide.";
 
             let currentWord = words[words.length - 1];
+            
+            // Si le dernier mot n'existe pas dans le lexique, on cherche le plus proche ou un mot aléatoire
+            if (!this.lexicon[currentWord]) {
+                const keys = Object.keys(this.lexicon);
+                if (keys.length === 0) return "Aucun mot en mémoire pour répondre.";
+                currentWord = keys[Math.floor(Math.random() * keys.length)];
+            }
+
             let responseTokens = [currentWord];
             const maxTokens = 8;
 
@@ -385,19 +395,34 @@
         }
     }
 
+    // Instanciation propre du moteur
     const engine = new MetaCognitiveEngineV11();
 
-    function runIngestion() {
-        const text = document.getElementById('corpusInput').value;
-        if (!text.trim()) {
-            alert("Veuillez d'abord saisir ou coller du texte !");
-            return;
-        }
+    // Liaison sécurisée des écouteurs d'événements au chargement du DOM
+    document.addEventListener('DOMContentLoaded', () => {
+        const btnIngest = document.getElementById('btnIngest');
+        const btnSend = document.getElementById('btnSend');
+        const chatInput = document.getElementById('chatInput');
 
-        engine.ingestExternalCorpusStream(text);
-        updateUI();
-        appendChatMessage("Système", `Corpus personnalisé de ${text.split(/\s+/).length} mots ingéré. Espace topologique actualisé.`, "engine");
-    }
+        btnIngest.addEventListener('click', () => {
+            const text = document.getElementById('corpusInput').value;
+            if (!text.trim()) {
+                alert("Veuillez d'abord saisir ou coller du texte !");
+                return;
+            }
+
+            engine.ingestExternalCorpusStream(text);
+            updateUI();
+            appendChatMessage("Système", `Corpus personnalisé de ${text.split(/\s+/).length} mots ingéré avec succès. Espace topologique actualisé.`, "engine");
+        });
+
+        btnSend.addEventListener('click', sendChatMessage);
+        chatInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        });
+    });
 
     function sendChatMessage() {
         const input = document.getElementById('chatInput');
@@ -434,7 +459,7 @@
         lexiconDisplay.innerHTML = '';
 
         if (keys.length === 0) {
-            lexiconDisplay.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">Aucun mot ingéré pour l'instant.</div>';
+            lexiconDisplay.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">Aucun mot ingéré pour l\'instant.</div>';
             return;
         }
 
