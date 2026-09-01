@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V11.3 - Context & Grammar Enforced</title>
+    <title>Meta-Cognitive Engine V11.4 - Temp & Punctuation Loss Tuning</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -43,7 +43,7 @@
             color: var(--accent-color);
             font-size: 1.25rem;
         }
-        textarea, input[type="text"] {
+        textarea, input[type="text"], input[type="range"] {
             width: 100%;
             background-color: var(--bg-color);
             border: 1px solid var(--border-color);
@@ -54,6 +54,18 @@
             box-sizing: border-box;
         }
         textarea { height: 120px; resize: vertical; }
+        .control-group {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
         button {
             background-color: var(--accent-color);
             color: var(--bg-color);
@@ -113,7 +125,7 @@
             display: flex;
             gap: 10px;
         }
-        .chat-input-row input {
+        .chat-input-row input[type="text"] {
             flex-grow: 1;
             margin-top: 0;
         }
@@ -146,14 +158,23 @@
     <div class="card">
         <h1>1. Injectez votre propre texte d'entraînement</h1>
         <p style="color: var(--text-muted); font-size: 0.9rem;">Collez vos phrases (séparez-les bien par des points).</p>
-        <textarea id="corpusInput" placeholder="Ex: Le chat noir traverse la rue. Le chien blanc surveille la maison."></textarea>
+        <textarea id="corpusInput" placeholder="Ex: Le chat noir traverse la rue rapidement. Le chien blanc surveille la maison attentivement."></textarea>
+        
+        <div class="control-group">
+            <div class="control-row">
+                <span>Température de Génération (T)</span>
+                <span id="tempVal">0.80</span>
+            </div>
+            <input type="range" id="tempRange" min="0.1" max="2.0" step="0.05" value="0.80">
+        </div>
+
         <button id="btnIngest">Injecter et structurer l'espace</button>
     </div>
 
     <div class="card">
         <h1>2. Interroger la machine</h1>
         <div class="chat-box" id="chatHistory">
-            <div class="message engine">En attente de corpus cloisonné.</div>
+            <div class="message engine">En attente de corpus optimisé.</div>
         </div>
         <div class="chat-input-row">
             <input type="text" id="chatInput" placeholder="Tapez un mot..." />
@@ -210,7 +231,6 @@
         }
     };
 
-    // Heuristique grammaticale légère pour le français (POS Tagger basique)
     const GrammarEngine = {
         determiners: new Set(['le', 'la', 'les', 'un', 'une', 'des', 'ce', 'cette', 'ces', 'mon', 'ton', 'son', 'notre', 'votre', 'leur', 'de', 'du', 'au', 'aux']),
         auxiliaries: new Set(['est', 'sont', 'a', 'ont', 'fut', 'furent', 'était', 'étaient', 'sera', 'seront']),
@@ -223,10 +243,9 @@
             return 'NOUN_ADJ';
         },
 
-        // Vérifie si la transition respecte une syntaxe minimale (ex: pas 2 verbes d'affilée sans pivot, etc.)
         isGrammaticallyPlausible(prevCat, nextCat) {
-            if (prevCat === 'DET' && nextCat === 'VERB') return false; // "Le mange" -> Non
-            if (prevCat === 'VERB' && nextCat === 'VERB') return false; // "court mange" -> Non
+            if (prevCat === 'DET' && nextCat === 'VERB') return false; 
+            if (prevCat === 'VERB' && nextCat === 'VERB') return false; 
             return true;
         }
     };
@@ -289,15 +308,16 @@
         }
     }
 
-    class MetaCognitiveEngineV11_3 {
+    class MetaCognitiveEngineV11_4 {
         constructor() {
             this.lexicon = {}; 
-            this.sentenceNgrams = []; // Cloisonnement strict par phrase pour tuer le context blending
+            this.sentenceNgrams = []; 
             this.memory = new OrganicMemoryMatrix();
             this.currentSurprise = 0.5;
             this.dynamicLearningRate = 0.05;
             this.dynamicHomeostasis = 0.5;
             this.timelineIndex = 0;
+            this.temperature = 0.8;
         }
 
         getOrCreateWord(word) {
@@ -314,7 +334,6 @@
         }
 
         ingestExternalCorpusStream(text) {
-            // Découpage strict par phrases pour éliminer le context blending inter-phrases
             const rawSentences = text.split(/[.!?]+/);
             
             for (let rawSentence of rawSentences) {
@@ -351,7 +370,6 @@
                         sentenceNgramMap[words[i]][nextWord] = (sentenceNgramMap[words[i]][nextWord] || 0) + 1;
                     }
 
-                    // Attraction locale intra-phrase
                     const startLook = Math.max(0, i - 1); 
                     const endLook = Math.min(words.length - 1, i + 1);
                     for (let j = startLook; j <= endLook; j++) {
@@ -388,7 +406,8 @@
             }
 
             let responseTokens = [currentWord];
-            const maxTokens = 8;
+            const minTokens = 5; // Longueur minimale forcée pour tuer la fin prématurée
+            const maxTokens = 12;
             const historyWindow = new Set([currentWord]);
 
             for (let step = 0; step < maxTokens; step++) {
@@ -396,7 +415,6 @@
                 let weightedChoices = [];
                 let totalWeight = 0;
 
-                // Consolidation des transitions issues uniquement des phrases de la mémoire
                 let combinedTransitions = {};
                 for (let sMap of this.sentenceNgrams) {
                     if (sMap[currentWord]) {
@@ -411,13 +429,27 @@
                 if (Object.keys(combinedTransitions).length > 0) {
                     for (let [w, count] of Object.entries(combinedTransitions)) {
                         let nextObj = this.getOrCreateWord(w);
-                        let repetitionPenalty = historyWindow.has(w) ? 0.01 : 1.0;
+                        
+                        // Répétition stricte pénalisée (repetition penalty)
+                        let repetitionPenalty = historyWindow.has(w) ? 0.001 : 1.0;
                         let grammarBonus = GrammarEngine.isGrammaticallyPlausible(currentObj.category, nextObj.category) ? 1.5 : 0.2;
                         
-                        let weight = count * repetitionPenalty * grammarBonus;
-                        if (weight > 0.001) {
-                            weightedChoices.push({ word: w, weight: weight });
-                            totalWeight += weight;
+                        // Correction de la loss de fin de chaîne prématurée :
+                        // Si on n'a pas atteint la longueur minimale (minTokens), on pénalise les mots finaux de phrases (qui agissent comme des points implicites)
+                        let earlyStopPenalty = 1.0;
+                        if (step < minTokens && Object.keys(combinedTransitions).length === 1) {
+                            earlyStopPenalty = 0.1;
+                        }
+
+                        let rawWeight = count * repetitionPenalty * grammarBonus * earlyStopPenalty;
+                        
+                        // Application du Softmax Scalé par la Température (T)
+                        // weight = exp(log(rawWeight) / T)
+                        let adjustedWeight = rawWeight > 0 ? Math.exp(Math.log(Math.max(rawWeight, 1e-5)) / Math.max(this.temperature, 0.1)) : 0;
+
+                        if (adjustedWeight > 0.0001) {
+                            weightedChoices.push({ word: w, weight: adjustedWeight });
+                            totalWeight += adjustedWeight;
                         }
                     }
                 }
@@ -434,7 +466,7 @@
                     }
                 }
 
-                // Fallback spatial rigoureux si aucune transition valide
+                // Fallback spatial rigoureux tempéré
                 if (!nextWord) {
                     const hits = this.memory.spatialIndex.searchNearestNeighbors(currentObj.vector, 1.5);
                     const validHits = hits.filter(h => !historyWindow.has(h.block.word));
@@ -456,15 +488,23 @@
         }
     }
 
-    const engine = new MetaCognitiveEngineV11_3();
+    const engine = new MetaCognitiveEngineV11_4();
 
     document.addEventListener('DOMContentLoaded', () => {
+        const tempRange = document.getElementById('tempRange');
+        const tempVal = document.getElementById('tempVal');
+        
+        tempRange.addEventListener('input', (e) => {
+            engine.temperature = parseFloat(e.target.value);
+            tempVal.innerText = engine.temperature.toFixed(2);
+        });
+
         document.getElementById('btnIngest').addEventListener('click', () => {
             const text = document.getElementById('corpusInput').value;
             if (!text.trim()) return alert("Veuillez saisir du texte !");
             engine.ingestExternalCorpusStream(text);
             updateUI();
-            appendChatMessage("Système", "Corpus cloisonné et indexé avec filtres grammaticaux.", "engine");
+            appendChatMessage("Système", "Corpus indexé avec régulation de température et pénalité de fin prématurée.", "engine");
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
@@ -478,7 +518,7 @@
         appendChatMessage("Vous", text, "user");
         input.value = "";
         setTimeout(() => {
-            appendChatMessage("Moteur V11.3", engine.generateResponse(text), "engine");
+            appendChatMessage("Moteur V11.4", engine.generateResponse(text), "engine");
         }, 200);
     }
 
