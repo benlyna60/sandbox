@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V11.6 - Thematic Isolation & Matrix Stability</title>
+    <title>Meta-Cognitive Engine V11.7 - Optimized & Stabilized Matrix</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -174,7 +174,7 @@
     <div class="card">
         <h1>2. Interroger la machine</h1>
         <div class="chat-box" id="chatHistory">
-            <div class="message engine">En attente de corpus optimisé (V11.6).</div>
+            <div class="message engine">En attente de corpus optimisé (V11.7).</div>
         </div>
         <div class="chat-input-row">
             <input type="text" id="chatInput" placeholder="Tapez un mot..." />
@@ -234,9 +234,11 @@
     const GrammarEngine = {
         determiners: new Set(['le', 'la', 'les', 'un', 'une', 'des', 'ce', 'cette', 'ces', 'mon', 'ton', 'son', 'notre', 'votre', 'leur', 'de', 'du', 'au', 'aux']),
         auxiliaries: new Set(['est', 'sont', 'a', 'ont', 'fut', 'furent', 'était', 'étaient', 'sera', 'seront']),
+        knownAdjectivesOrNouns: new Set(['rapide', 'lent', 'blanc', 'noir', 'petit', 'grand', 'chaud', 'froid', 'cliente', 'client', 'maison', 'rue', 'terre', 'fertile']),
         
         getCategory(word) {
             if (this.determiners.has(word)) return 'DET';
+            if (this.knownAdjectivesOrNouns.has(word)) return 'NOUN_ADJ';
             if (this.auxiliaries.has(word) || word.endsWith('er') || word.endsWith('ir') || word.endsWith('re') || word.endsWith('ez') || word.endsWith('ons') || word.endsWith('ait') || word.endsWith('ent') || word.endsWith('e') || word.endsWith('es')) {
                 return 'VERB';
             }
@@ -301,10 +303,20 @@
     }
 
     class OrganicMemoryMatrix {
-        constructor() { this.history = []; this.spatialIndex = new SpatialVPTreeIndex(); }
-        commitToken(wordObj, timelineIndex) {
-            this.history.push({ timeline: timelineIndex, vector: [...wordObj.vector], word: wordObj.word });
-            this.spatialIndex.buildIndex(this.history);
+        constructor() { this.lexiconRef = null; this.spatialIndex = new SpatialVPTreeIndex(); }
+        
+        init(lexicon) {
+            this.lexiconRef = lexicon;
+        }
+
+        commitBatch() {
+            if (!this.lexiconRef) return;
+            // Consolidation par centroïdes uniques (fin des doublons et O(N^2 log N))
+            const uniqueBlocks = Object.values(this.lexiconRef).map(item => ({
+                word: item.word,
+                vector: [...item.vector]
+            }));
+            this.spatialIndex.buildIndex(uniqueBlocks);
         }
     }
 
@@ -384,11 +396,12 @@
         }
     }
 
-    class MetaCognitiveEngineV11_6 {
+    class MetaCognitiveEngineV11_7 {
         constructor() {
             this.lexicon = {}; 
             this.sentenceNgrams = []; 
             this.memory = new OrganicMemoryMatrix();
+            this.memory.init(this.lexicon);
             this.currentSurprise = 0.5;
             this.dynamicLearningRate = 0.05;
             this.dynamicHomeostasis = 0.5;
@@ -464,10 +477,12 @@
                         for (let d = 0; d < CONFIG.DIM_LATENT; d++) currentToken.vector[d] /= norm; 
                     }
 
-                    this.memory.commitToken(currentToken, this.timelineIndex++);
+                    this.timelineIndex++;
                 }
                 this.sentenceNgrams.push(sentenceNgramMap);
             }
+            // Indexation unique par lot après l'ingestion complète du corpus (Performance O(N log N))
+            this.memory.commitBatch();
         }
 
         generateResponse(prompt) {
@@ -523,21 +538,18 @@
                         let isNumeric = /\d/.test(w);
                         let numericalBias = isNumeric ? 1.8 : 1.0;
 
-                        // --- 1. FACTEUR D'ISOLATION THÉMATIQUE ---
-                        // Mesure la proximité du candidat par rapport à l'ancre de la question pour éviter le croisement de lignes
                         let thematicAlignment = 1.0;
                         if (contextMgr.hasAnchor) {
                             let distToAnchor = GeoMath.euclideanDistance(nextObj.vector, contextMgr.anchorVector);
                             thematicAlignment = Math.max(0.3, 2.0 - distToAnchor);
                         }
 
-                        // --- 2. RENFORCEMENT DE LA TRANSITION DIRECTE ---
-                        // Donne un boost aux liaisons fortes directes (count > 1) pour garder le verbe attaché à sa structure sémantique d'origine
                         let directTransitionBoost = count > 1 ? 1.4 : 1.0;
 
                         let rawWeight = count * antiStutterPenalty * grammarBonus * earlyStopPenalty * numericalBias * thematicAlignment * directTransitionBoost;
                         
-                        let adjustedWeight = rawWeight > 0 ? Math.exp(Math.log(Math.max(rawWeight, 1e-5)) / Math.max(this.temperature, 0.05)) : 0;
+                        // --- CORRECTION THERMODYNAMIQUE (Softmax standard e^(w/T)) ---
+                        let adjustedWeight = rawWeight > 0 ? Math.exp(rawWeight / Math.max(this.temperature, 0.05)) : 0;
 
                         if (adjustedWeight > 0.00001) {
                             weightedChoices.push({ word: w, weight: adjustedWeight });
@@ -560,7 +572,9 @@
 
                 if (!nextWord) {
                     const searchTarget = contextMgr.getSearchTarget(currentObj.vector, step);
-                    const hits = this.memory.spatialIndex.searchNearestNeighbors(searchTarget, 1.8);
+                    // --- CORRECTION GÉOMÉTRIQUE DU RAYON ---
+                    // Rayon fixé à 1.2 (strictement inférieur à la distance max théorique de √2 ≈ 1.414)
+                    const hits = this.memory.spatialIndex.searchNearestNeighbors(searchTarget, 1.2);
                     
                     const validHits = hits.filter(h => h.block.word !== currentWord && !recentWindow.includes(h.block.word));
                     if (validHits.length > 0) {
@@ -599,7 +613,7 @@
         }
     }
 
-    const engine = new MetaCognitiveEngineV11_6();
+    const engine = new MetaCognitiveEngineV11_7();
 
     document.addEventListener('DOMContentLoaded', () => {
         const tempRange = document.getElementById('tempRange');
@@ -615,7 +629,7 @@
             if (!text.trim()) return alert("Veuillez saisir du texte !");
             engine.ingestExternalCorpusStream(text);
             updateUI();
-            appendChatMessage("Système", "Corpus indexé avec Isolation Thématique et Renforcement de Transition Directe (V11.6).", "engine");
+            appendChatMessage("Système", "Corpus indexé avec succès (V11.7 - Indexation par lots et Stabilité Thermodynamique).", "engine");
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
@@ -629,7 +643,7 @@
         appendChatMessage("Vous", text, "user");
         input.value = "";
         setTimeout(() => {
-            appendChatMessage("Moteur V11.6", engine.generateResponse(text), "engine");
+            appendChatMessage("Moteur V11.7", engine.generateResponse(text), "engine");
         }, 200);
     }
 
