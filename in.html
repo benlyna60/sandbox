@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta-Cognitive Engine V11 - Custom Corpus Chat</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --chat-user: #334155;
+            --chat-engine: #1e293b;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            gap: 20px;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            margin-top: 0;
+            color: var(--accent-color);
+            font-size: 1.25rem;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        textarea { height: 120px; resize: vertical; }
+        button {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 10px;
+        }
+        button:hover { opacity: 0.9; }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .metric-box {
+            background-color: var(--bg-color);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .metric-label { font-size: 0.85rem; color: var(--text-muted); }
+        .metric-value { font-size: 1.2rem; font-weight: bold; color: var(--accent-color); }
+        
+        .chat-box {
+            height: 250px;
+            overflow-y: auto;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .message {
+            padding: 10px 14px;
+            border-radius: 8px;
+            max-width: 80%;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .message.user {
+            background-color: var(--chat-user);
+            align-self: flex-end;
+            border: 1px solid var(--border-color);
+        }
+        .message.engine {
+            background-color: var(--chat-engine);
+            align-self: flex-start;
+            border: 1px solid var(--accent-color);
+        }
+        .chat-input-row {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input-row input {
+            flex-grow: 1;
+            margin-top: 0;
+        }
+        .chat-input-row button {
+            margin-top: 0;
+        }
+        .lexicon-list {
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .word-item {
+            background-color: var(--bg-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+        }
+        .word-meta { font-size: 0.8rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Étape 1 : Injection personnalisée -->
+    <div class="card">
+        <h1>1. Injectez votre propre texte d'entraînement</h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Effacez ce champ, collez vos propres phrases ou votre histoire, puis lancez l'apprentissage pour voir la machine construire son espace.</p>
+        <textarea id="corpusInput" placeholder="Tapez ou collez votre texte ici..."></textarea>
+        <button onclick="runIngestion()">Injecter et structurer l'espace</button>
+    </div>
+
+    <!-- Étape 2 : Chat interactif -->
+    <div class="card">
+        <h1>2. Interroger la machine</h1>
+        <div class="chat-box" id="chatHistory">
+            <div class="message engine">En attente de votre texte. Injectez un corpus ci-dessus, puis écrivez un mot ou une question pour tester ma mémoire topologique.</div>
+        </div>
+        <div class="chat-input-row">
+            <input type="text" id="chatInput" placeholder="Posez une question ou tapez un mot issu de votre texte..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+            <button onclick="sendChatMessage()">Envoyer</button>
+        </div>
+    </div>
+
+    <!-- Métriques -->
+    <div class="card">
+        <h2>État Métacognitif Global</h2>
+        <div class="metrics-grid">
+            <div class="metric-box">
+                <div class="metric-label">Surprise Courante</div>
+                <div class="metric-value" id="valSurprise">0.5000</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-label">Taux d'Apprentissage</div>
+                <div class="metric-value" id="valLearningRate">0.0500</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-label">Homéostasie Synaptique</div>
+                <div class="metric-value" id="valHomeostasis">0.5000</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-label">Mots dans le Lexique</div>
+                <div class="metric-value" id="valLexiconSize">0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lexique -->
+    <div class="card">
+        <h2>Lexique Dynamique & Rigidité Synaptique</h2>
+        <div class="lexicon-list" id="lexiconDisplay">
+            <div style="color: var(--text-muted); text-align: center; padding: 20px;">Aucun mot ingéré pour l'instant.</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const CONFIG = {
+        DIM_LATENT: 8,
+        VP_TREE_BUCKET_SIZE: 2,
+        LOOK_AHEAD_DEPTH: 3,
+        REPLAY_BATCH_SIZE: 3
+    };
+
+    let MASTER_LATTICE = {};
+    let TRANSITIONS_NGRAMS = {};
+
+    const GeoMath = {
+        generateRandomVector() {
+            let vec = []; let norm = 0;
+            for (let i = 0; i < CONFIG.DIM_LATENT; i++) {
+                const val = Math.random() - 0.5; vec.push(val); norm += val * val;
+            }
+            norm = Math.sqrt(norm);
+            return vec.map(v => norm > 0 ? v / norm : 0);
+        },
+        euclideanDistance(v1, v2) {
+            let sum = 0;
+            for (let i = 0; i < CONFIG.DIM_LATENT; i++) { const diff = v1[i] - v2[i]; sum += diff * diff; }
+            return Math.sqrt(sum);
+        }
+    };
+
+    class VPTreeNode {
+        constructor(vantagePointBlock) {
+            this.vantagePoint = vantagePointBlock; this.threshold = 0;
+            this.inside = null; this.outside = null; this.bucket = [];
+        }
+    }
+
+    class SpatialVPTreeIndex {
+        constructor() { this.root = null; }
+        buildIndex(memoryBlocks) { this.root = this._recursiveBuild(memoryBlocks); }
+        _recursiveBuild(blocks) {
+            if (blocks.length === 0) return null;
+            if (blocks.length <= CONFIG.VP_TREE_BUCKET_SIZE) {
+                const node = new VPTreeNode(null); node.bucket = blocks; return node;
+            }
+            const vp = blocks[0]; const remaining = blocks.slice(1); const node = new VPTreeNode(vp);
+            const distances = remaining.map(b => ({ block: b, dist: GeoMath.euclideanDistance(vp.vector, b.vector) }));
+            distances.sort((a, b) => a.dist - b.dist);
+            const medianIdx = Math.floor(distances.length / 2);
+            node.threshold = distances.length > 0 ? distances[medianIdx].dist : 0;
+            node.inside = this._recursiveBuild(distances.slice(0, medianIdx).map(d => d.block));
+            node.outside = this._recursiveBuild(distances.slice(medianIdx).map(d => d.block));
+            return node;
+        }
+        searchNearestNeighbors(queryVector, maxRadius, node = this.root, neighbors = []) {
+            if (!node) return neighbors;
+            if (node.bucket.length > 0) {
+                for (const block of node.bucket) {
+                    const d = GeoMath.euclideanDistance(queryVector, block.vector); if (d <= maxRadius) neighbors.push({ block, dist: d });
+                }
+                return neighbors;
+            }
+            const dVP = GeoMath.euclideanDistance(queryVector, node.vantagePoint.vector);
+            if (dVP <= maxRadius) neighbors.push({ block: node.vantagePoint, dist: dVP });
+            if (dVP < node.threshold) {
+                this.searchNearestNeighbors(queryVector, maxRadius, node.inside, neighbors);
+                if (dVP + maxRadius >= node.threshold) this.searchNearestNeighbors(queryVector, maxRadius, node.outside, neighbors);
+            } else {
+                this.searchNearestNeighbors(queryVector, maxRadius, node.outside, neighbors);
+                if (dVP - maxRadius <= node.threshold) this.searchNearestNeighbors(queryVector, maxRadius, node.inside, neighbors);
+            }
+            return neighbors;
+        }
+    }
+
+    class OrganicMemoryMatrix {
+        constructor() { this.history = []; this.spatialIndex = new SpatialVPTreeIndex(); }
+        commitToken(wordObj, timelineIndex) {
+            this.history.push({ timeline: timelineIndex, vector: [...wordObj.vector], word: wordObj.word });
+            this.spatialIndex.buildIndex(this.history);
+        }
+    }
+
+    class MetaCognitiveEngineV11 {
+        constructor() {
+            this.lexicon = MASTER_LATTICE; 
+            this.ngrams = TRANSITIONS_NGRAMS;
+            this.memory = new OrganicMemoryMatrix();
+            this.currentSurprise = 0.5;
+            this.dynamicLearningRate = 0.05;
+            this.dynamicHomeostasis = 0.5;
+            this.timelineIndex = 0;
+        }
+
+        getOrCreateWord(word) {
+            const cleanWord = word.toLowerCase().trim();
+            if (this.lexicon[cleanWord]) return this.lexicon[cleanWord];
+
+            this.lexicon[cleanWord] = {
+                word: cleanWord,
+                vector: GeoMath.generateRandomVector(),
+                stiffness: 0.1
+            };
+            return this.lexicon[cleanWord];
+        }
+
+        ingestExternalCorpusStream(text) {
+            const words = text.toLowerCase().replace(/[^a-zA-Zàâäéèêëîïôöùûüç]/g, " ").split(/\s+/).filter(w => w.length > 0);
+            if (words.length === 0) return;
+
+            for (let i = 0; i < words.length; i++) {
+                const currentToken = this.getOrCreateWord(words[i]);
+
+                let expectedProbability = 0;
+                if (i > 0 && this.ngrams[words[i-1]]) {
+                    const totalTransitions = Object.values(this.ngrams[words[i-1]]).reduce((a, b) => a + b, 0);
+                    const actualTransitionFreq = this.ngrams[words[i-1]][words[i]] || 0;
+                    expectedProbability = totalTransitions > 0 ? actualTransitionFreq / totalTransitions : 0;
+                }
+
+                const instantaneousSurprise = 1.0 - expectedProbability;
+                this.currentSurprise = (this.currentSurprise * 0.7) + (instantaneousSurprise * 0.3);
+
+                this.dynamicLearningRate = 0.02 + (this.currentSurprise * 0.15); 
+                this.dynamicHomeostasis = 0.95 - (this.currentSurprise * 0.60);
+
+                const elasticity = 1.0 - (currentToken.stiffness * this.dynamicHomeostasis);
+                const effectiveLearningRate = this.dynamicLearningRate * elasticity;
+
+                currentToken.stiffness = Math.min(1.0, currentToken.stiffness + (0.05 * (1.0 - this.currentSurprise)));
+
+                if (i < words.length - 1) {
+                    const nextWord = words[i + 1]; 
+                    this.getOrCreateWord(nextWord);
+                    if (!this.ngrams[words[i]]) this.ngrams[words[i]] = {};
+                    this.ngrams[words[i]][nextWord] = (this.ngrams[words[i]][nextWord] || 0) + 1;
+                }
+
+                const startLook = Math.max(0, i - 2); 
+                const endLook = Math.min(words.length - 1, i + 2);
+                for (let j = startLook; j <= endLook; j++) {
+                    if (i === j) continue;
+                    const neighborToken = this.getOrCreateWord(words[j]);
+                    for (let d = 0; d < CONFIG.DIM_LATENT; d++) {
+                        const pull = neighborToken.vector[d] - currentToken.vector[d];
+                        currentToken.vector[d] += pull * effectiveLearningRate;
+                    }
+                }
+
+                let norm = 0; 
+                for (let d = 0; d < CONFIG.DIM_LATENT; d++) norm += currentToken.vector[d] * currentToken.vector[d];
+                norm = Math.sqrt(norm); 
+                if (norm > 0) { 
+                    for (let d = 0; d < CONFIG.DIM_LATENT; d++) currentToken.vector[d] /= norm; 
+                }
+
+                this.memory.commitToken(currentToken, this.timelineIndex++);
+            }
+        }
+
+        generateResponse(prompt) {
+            const words = prompt.toLowerCase().replace(/[^a-zA-Zàâäéèêëîïôöùûüç]/g, " ").split(/\s+/).filter(w => w.length > 0);
+            if (words.length === 0) return "Veuillez entrer un mot-clé valide.";
+
+            let currentWord = words[words.length - 1];
+            let responseTokens = [currentWord];
+            const maxTokens = 8;
+
+            for (let step = 0; step < maxTokens; step++) {
+                const transitions = this.ngrams[currentWord];
+                let nextWord = null;
+
+                if (transitions && Object.keys(transitions).length > 0) {
+                    const sorted = Object.entries(transitions).sort((a, b) => b[1] - a[1]);
+                    nextWord = sorted[0][0];
+                } else {
+                    const lastObj = this.getOrCreateWord(currentWord);
+                    const hits = this.memory.spatialIndex.searchNearestNeighbors(lastObj.vector, 1.6);
+                    if (hits.length > 0) {
+                        const randomHit = hits[Math.floor(Math.random() * hits.length)];
+                        nextWord = randomHit.block.word;
+                    }
+                }
+
+                if (!nextWord || responseTokens.includes(nextWord)) break;
+                responseTokens.push(nextWord);
+                currentWord = nextWord;
+            }
+
+            return responseTokens.join(" ");
+        }
+    }
+
+    const engine = new MetaCognitiveEngineV11();
+
+    function runIngestion() {
+        const text = document.getElementById('corpusInput').value;
+        if (!text.trim()) {
+            alert("Veuillez d'abord saisir ou coller du texte !");
+            return;
+        }
+
+        engine.ingestExternalCorpusStream(text);
+        updateUI();
+        appendChatMessage("Système", `Corpus personnalisé de ${text.split(/\s+/).length} mots ingéré. Espace topologique actualisé.`, "engine");
+    }
+
+    function sendChatMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text) return;
+
+        appendChatMessage("Vous", text, "user");
+        input.value = "";
+
+        setTimeout(() => {
+            const reply = engine.generateResponse(text);
+            appendChatMessage("Moteur V11", reply, "engine");
+        }, 300);
+    }
+
+    function appendChatMessage(sender, text, type) {
+        const history = document.getElementById('chatHistory');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${type}`;
+        msgDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
+        history.appendChild(msgDiv);
+        history.scrollTop = history.scrollHeight;
+    }
+
+    function updateUI() {
+        document.getElementById('valSurprise').innerText = engine.currentSurprise.toFixed(4);
+        document.getElementById('valLearningRate').innerText = engine.dynamicLearningRate.toFixed(4);
+        document.getElementById('valHomeostasis').innerText = engine.dynamicHomeostasis.toFixed(4);
+        
+        const keys = Object.keys(engine.lexicon);
+        document.getElementById('valLexiconSize').innerText = keys.length;
+
+        const lexiconDisplay = document.getElementById('lexiconDisplay');
+        lexiconDisplay.innerHTML = '';
+
+        if (keys.length === 0) {
+            lexiconDisplay.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">Aucun mot ingéré pour l'instant.</div>';
+            return;
+        }
+
+        keys.forEach(word => {
+            const item = engine.lexicon[word];
+            const div = document.createElement('div');
+            div.className = 'word-item';
+            div.innerHTML = `
+                <span><strong>${item.word}</strong></span>
+                <span class="word-meta">Stiffness: ${item.stiffness.toFixed(2)} | Vect: [${item.vector.map(v => v.toFixed(2)).join(', ')}]</span>
+            `;
+            lexiconDisplay.appendChild(div);
+        });
+    }
+</script>
+
+</body>
+</html>
