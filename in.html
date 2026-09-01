@@ -416,7 +416,8 @@
             const rawSentences = text.split(/[.!?]+/);
             
             for (let rawSentence of rawSentences) {
-                const words = rawSentence.toLowerCase().replace(/[^a-zA-ZàâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ'-]/g, " ").split(/\s+/).filter(w => w.length > 0);
+                // Intégration des chiffres 0-9 dans la tokenisation pour préserver les nombres entiers
+                const words = rawSentence.toLowerCase().replace(/[^a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ'-]/g, " ").split(/\s+/).filter(w => w.length > 0);
                 if (words.length === 0) continue;
 
                 let sentenceNgramMap = {};
@@ -474,7 +475,8 @@
         }
 
         generateResponse(prompt) {
-            const words = prompt.toLowerCase().replace(/[^a-zA-ZàâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ'-]/g, " ").split(/\s+/).filter(w => w.length > 0);
+            // Intégration des chiffres 0-9 dans la tokenisation du prompt
+            const words = prompt.toLowerCase().replace(/[^a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ'-]/g, " ").split(/\s+/).filter(w => w.length > 0);
             if (words.length === 0) return "Veuillez entrer un mot-clé valide.";
 
             let currentWord = words[words.length - 1];
@@ -524,7 +526,12 @@
                         
                         let earlyStopPenalty = (step < minTokens && Object.keys(combinedTransitions).length === 1) ? 0.1 : 1.0;
 
-                        let rawWeight = count * antiStutterPenalty * grammarBonus * earlyStopPenalty;
+                        // --- BIAIS DE VOCABULAIRE (LOGIT BIAS NUMÉRIQUE) ---
+                        // Boost multiplicateur de 80% sur les jetons contenant des chiffres (0 à 9)
+                        let isNumeric = /\d/.test(w);
+                        let numericalBias = isNumeric ? 1.8 : 1.0;
+
+                        let rawWeight = count * antiStutterPenalty * grammarBonus * earlyStopPenalty * numericalBias;
                         
                         let adjustedWeight = rawWeight > 0 ? Math.exp(Math.log(Math.max(rawWeight, 1e-5)) / Math.max(this.temperature, 0.05)) : 0;
 
@@ -566,7 +573,6 @@
                 if (!nextWord) break;
 
                 // --- VERROU D'ARRÊT NET (EARLY STOPPING SUR POINT FINAL / FIN DE PENSÉE) ---
-                // Si le modèle sélectionne un jeton de ponctuation finale explicite ou s'arrête net
                 if (nextWord === '.' || nextWord === 'point' || nextWord === 'fin') {
                     break;
                 }
@@ -609,7 +615,7 @@
             if (!text.trim()) return alert("Veuillez saisir du texte !");
             engine.ingestExternalCorpusStream(text);
             updateUI();
-            appendChatMessage("Système", "Corpus indexé avec régulation anti-bégaiement, AntiDrift et Early Stopping (V11.5).", "engine");
+            appendChatMessage("Système", "Corpus indexé avec support des chiffres (jeton unique), Logit Bias et Early Stopping (V11.5).", "engine");
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
