@@ -1,5 +1,69 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 15:27:00
+TITRE: «Le message est clair», lâche Mark Carney après sa victoire à Chicoutimi-Le Fjord
+LIEN: https://www.ledevoir.com/politique/canada/1005509/message-est-clair-lache-mark-carney-apres-victoire-chicoutimi-fjord
+CONTENU: Le premier ministre veut que le gouvernement américain change d’attitude avant de nouvelles négociations.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 17:07:00
+TITRE: La décision de ne pas traduire les jugements historiques de la Cour suprême est portée en appel
+LIEN: https://www.ledevoir.com/actualites/justice/1005581/decision-ne-pas-traduire-jugements-historiques-cour-supreme-portee-appel
+CONTENU: Le groupe Droits collectifs Québec conteste un jugement rendu en juin par la Cour fédérale.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 13:54:00
+TITRE: Le Programme alimentaire mondial contraint de réduire son aide de moitié en Cisjordanie
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1005482/programme-alimentaire-mondial-contraint-reduire-assistance-moitie-cisjordanie
+CONTENU: «Nous sommes à court de fonds», explique l’agence. «Quelque 200 000 personnes n’auront plus accès à une aide vitale.»
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 16:33:00
+TITRE: Le déli Schwartz’s remplace sa boisson gazeuse américaine par une alternative locale
+LIEN: https://www.ledevoir.com/economie/1005575/deli-schwartz-remplace-boisson-gazeuse-americaine-alternative-locale
+CONTENU: L’emblématique restaurant montréalais de viandes fumées adopte un soda à la cerise noire fabriqué au Québec.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 12:25:58
+TITRE: Le secrétaire américain à l’Armée de terre démissionne après des mois de tensions
+LIEN: https://www.ledevoir.com/monde/etats-unis/1005461/secretaire-americain-armee-terre-demissionne-apres-mois-tensions
+CONTENU: Ses relations avec le secrétaire à la Défense Pete Hegseth étaient notoirement mauvaises, selon les médias américains.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 14:41:00
+TITRE: Québec solidaire veut rehausser le seuil d’accueil à 70 000 immigrants permanents par an
+LIEN: https://www.ledevoir.com/actualites/immigration/1005500/quebec-solidaire-veut-rehausser-seuil-accueil-70-000-immigrants-permanents-an
+CONTENU: Un gouvernement solidaire rétablirait pour de bon le PEQ et investirait 100 millions en francisation.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 12:56:24
+TITRE: La CSN conteste à son tour la loi sur la gouvernance syndicale du ministre Boulet
+LIEN: https://www.ledevoir.com/actualites/justice/1005464/csn-conteste-tour-loi-gouvernance-syndicale-ministre-boulet
+CONTENU: La centrale syndicale demande  à la Cour supérieure de la déclarer inconstitutionnelle, invalide et inopérante.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 16:23:00
+TITRE: Le PQ s’engage lui aussi à détaxer l’achat de produits usagés
+LIEN: https://www.ledevoir.com/politique/quebec/1005572/pq-engage-lui-aussi-detaxer-achat-produits-usages
+CONTENU: La même mesure avait été proposée dimanche par le Parti conservateur du Québec.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-01 17:15:00
 TITRE: Patrick Bruel, mis en examen dans plusieurs dossiers de violences sexuelles, annule sa tournée
