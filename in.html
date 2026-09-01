@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V11.5 - Anti-Stutter & Matrix Stability</title>
+    <title>Meta-Cognitive Engine V11.6 - Thematic Isolation & Matrix Stability</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -174,7 +174,7 @@
     <div class="card">
         <h1>2. Interroger la machine</h1>
         <div class="chat-box" id="chatHistory">
-            <div class="message engine">En attente de corpus optimisé (V11.5).</div>
+            <div class="message engine">En attente de corpus optimisé (V11.6).</div>
         </div>
         <div class="chat-input-row">
             <input type="text" id="chatInput" placeholder="Tapez un mot..." />
@@ -308,9 +308,6 @@
         }
     }
 
-    /**
-     * Gestionnaire de Contexte Sémantique Avancé (Anti-Drift & Boussole Dynamique)
-     */
     class AntiDriftContextManager {
         constructor(lambdaDecay = 0.75, maxTokens = 14) {
             this.lambda = lambdaDecay;
@@ -387,7 +384,7 @@
         }
     }
 
-    class MetaCognitiveEngineV11_5 {
+    class MetaCognitiveEngineV11_6 {
         constructor() {
             this.lexicon = {}; 
             this.sentenceNgrams = []; 
@@ -416,7 +413,6 @@
             const rawSentences = text.split(/[.!?]+/);
             
             for (let rawSentence of rawSentences) {
-                // Intégration des chiffres 0-9 dans la tokenisation pour préserver les nombres entiers
                 const words = rawSentence.toLowerCase().replace(/[^a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ'-]/g, " ").split(/\s+/).filter(w => w.length > 0);
                 if (words.length === 0) continue;
 
@@ -475,7 +471,6 @@
         }
 
         generateResponse(prompt) {
-            // Intégration des chiffres 0-9 dans la tokenisation du prompt
             const words = prompt.toLowerCase().replace(/[^a-zA-Z0-9àâäéèêëîïôöùûüçÀÂÄÉÈÊËÎÏÔÖÙÛÜÇ'-]/g, " ").split(/\s+/).filter(w => w.length > 0);
             if (words.length === 0) return "Veuillez entrer un mot-clé valide.";
 
@@ -489,7 +484,6 @@
             const minTokens = 6;
             const maxTokens = 14;
 
-            // --- INSTANCIATION DU GESTIONNAIRE DE CONTEXTE ANTIDRIFT ---
             const contextMgr = new AntiDriftContextManager(0.75, maxTokens);
             const promptObj = this.getOrCreateWord(currentWord);
             contextMgr.setQuestionAnchor(promptObj.vector);
@@ -526,12 +520,22 @@
                         
                         let earlyStopPenalty = (step < minTokens && Object.keys(combinedTransitions).length === 1) ? 0.1 : 1.0;
 
-                        // --- BIAIS DE VOCABULAIRE (LOGIT BIAS NUMÉRIQUE) ---
-                        // Boost multiplicateur de 80% sur les jetons contenant des chiffres (0 à 9)
                         let isNumeric = /\d/.test(w);
                         let numericalBias = isNumeric ? 1.8 : 1.0;
 
-                        let rawWeight = count * antiStutterPenalty * grammarBonus * earlyStopPenalty * numericalBias;
+                        // --- 1. FACTEUR D'ISOLATION THÉMATIQUE ---
+                        // Mesure la proximité du candidat par rapport à l'ancre de la question pour éviter le croisement de lignes
+                        let thematicAlignment = 1.0;
+                        if (contextMgr.hasAnchor) {
+                            let distToAnchor = GeoMath.euclideanDistance(nextObj.vector, contextMgr.anchorVector);
+                            thematicAlignment = Math.max(0.3, 2.0 - distToAnchor);
+                        }
+
+                        // --- 2. RENFORCEMENT DE LA TRANSITION DIRECTE ---
+                        // Donne un boost aux liaisons fortes directes (count > 1) pour garder le verbe attaché à sa structure sémantique d'origine
+                        let directTransitionBoost = count > 1 ? 1.4 : 1.0;
+
+                        let rawWeight = count * antiStutterPenalty * grammarBonus * earlyStopPenalty * numericalBias * thematicAlignment * directTransitionBoost;
                         
                         let adjustedWeight = rawWeight > 0 ? Math.exp(Math.log(Math.max(rawWeight, 1e-5)) / Math.max(this.temperature, 0.05)) : 0;
 
@@ -554,7 +558,6 @@
                     }
                 }
 
-                // --- FALLBACK SPATIAL GUIDÉ PAR LA CIBLE ANTIDRIFT ---
                 if (!nextWord) {
                     const searchTarget = contextMgr.getSearchTarget(currentObj.vector, step);
                     const hits = this.memory.spatialIndex.searchNearestNeighbors(searchTarget, 1.8);
@@ -572,12 +575,10 @@
 
                 if (!nextWord) break;
 
-                // --- VERROU D'ARRÊT NET (EARLY STOPPING SUR POINT FINAL / FIN DE PENSÉE) ---
                 if (nextWord === '.' || nextWord === 'point' || nextWord === 'fin') {
                     break;
                 }
 
-                // Mise à jour du registre de contexte avec le nouveau token choisi
                 const nextObj = this.getOrCreateWord(nextWord);
                 contextMgr.updateContext(nextObj.vector, nextObj.category);
 
@@ -586,7 +587,6 @@
                 if (recentWindow.length > 4) recentWindow.shift();
                 currentWord = nextWord;
 
-                // --- GESTION DE L'ARRÊT NATUREL (FREIN D'ESSOUFFLEMENT) ---
                 if (responseTokens.length >= minTokens) {
                     let exhaustionThreshold = 0.2;
                     if (totalWeight < exhaustionThreshold || Math.random() < (responseTokens.length * 0.08)) {
@@ -599,7 +599,7 @@
         }
     }
 
-    const engine = new MetaCognitiveEngineV11_5();
+    const engine = new MetaCognitiveEngineV11_6();
 
     document.addEventListener('DOMContentLoaded', () => {
         const tempRange = document.getElementById('tempRange');
@@ -615,7 +615,7 @@
             if (!text.trim()) return alert("Veuillez saisir du texte !");
             engine.ingestExternalCorpusStream(text);
             updateUI();
-            appendChatMessage("Système", "Corpus indexé avec support des chiffres (jeton unique), Logit Bias et Early Stopping (V11.5).", "engine");
+            appendChatMessage("Système", "Corpus indexé avec Isolation Thématique et Renforcement de Transition Directe (V11.6).", "engine");
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
@@ -629,7 +629,7 @@
         appendChatMessage("Vous", text, "user");
         input.value = "";
         setTimeout(() => {
-            appendChatMessage("Moteur V11.5", engine.generateResponse(text), "engine");
+            appendChatMessage("Moteur V11.6", engine.generateResponse(text), "engine");
         }, 200);
     }
 
