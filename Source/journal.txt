@@ -1,5 +1,45 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: La crise en éducation préoccupe bien peu les électeurs
+LIEN: https://www.ledevoir.com/actualites/education/1005395/crise-education-preoccupe-bien-peu-electeurs
+CONTENU: Les défis sont pourtant nombreux dans les écoles, les cégeps et les universités du Québec.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: À Sutton, un festival pour tisser des liens avec le vivant
+LIEN: https://www.ledevoir.com/culture/1005404/sutton-festival-tisser-liens-vivant
+CONTENU: Le festival Pour la suite du monde ouvre une réflexion sur la mémoire, la création et la nature
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 04:00:00
+TITRE: La mince marge de manœuvre pour atteindre le déficit zéro
+LIEN: https://www.ledevoir.com/interactif/2026-08-27/scenarios-deficit-zero/index.html
+CONTENU: Quels effets auraient l’abolition de la taxe sur l’essence ou une hausse d’impôt pour les riches? À vous de voir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 11:21:56
+TITRE: Le président iranien appelle Washington à revenir à la table des négociations
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1005452/president-iranien-appelle-washington-revenir-table-negociations
+CONTENU: Les pressions et les menaces américaines «risquent de faire dérailler la voie diplomatique», affirme Massoud Pezeshkian.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-01 10:40:14
+TITRE: Le bilan de la crue dans l’Himalaya dépasse la barre des 1000 morts
+LIEN: https://www.ledevoir.com/monde/asie/1005449/bilan-crue-himalaya-depasse-barre-1000-morts
+CONTENU: Les secouristes continuent de rechercher d’éventuels survivants. 4500 personnes sont toujours portées disparues.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-01 11:00:00
 TITRE: Le journal de 13h00 du mardi 01 septembre 2026
