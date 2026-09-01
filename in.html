@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V11.4 - Temp & Punctuation Loss Tuning</title>
+    <title>Meta-Cognitive Engine V11.5 - Anti-Stutter & Matrix Stability</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -165,7 +165,7 @@
                 <span>Température de Génération (T)</span>
                 <span id="tempVal">0.80</span>
             </div>
-            <input type="range" id="tempRange" min="0.1" max="2.0" step="0.05" value="0.80">
+            <input type="range" id="tempRange" min="0.05" max="2.0" step="0.05" value="0.80">
         </div>
 
         <button id="btnIngest">Injecter et structurer l'espace</button>
@@ -174,7 +174,7 @@
     <div class="card">
         <h1>2. Interroger la machine</h1>
         <div class="chat-box" id="chatHistory">
-            <div class="message engine">En attente de corpus optimisé.</div>
+            <div class="message engine">En attente de corpus optimisé (V11.5).</div>
         </div>
         <div class="chat-input-row">
             <input type="text" id="chatInput" placeholder="Tapez un mot..." />
@@ -308,7 +308,7 @@
         }
     }
 
-    class MetaCognitiveEngineV11_4 {
+    class MetaCognitiveEngineV11_5 {
         constructor() {
             this.lexicon = {}; 
             this.sentenceNgrams = []; 
@@ -406,9 +406,10 @@
             }
 
             let responseTokens = [currentWord];
-            const minTokens = 5; // Longueur minimale forcée pour tuer la fin prématurée
-            const maxTokens = 12;
-            const historyWindow = new Set([currentWord]);
+            const minTokens = 6;
+            const maxTokens = 14;
+            // Historique de la fenêtre glissante pour casser le bégaiement matriciel
+            const recentWindow = [currentWord];
 
             for (let step = 0; step < maxTokens; step++) {
                 let nextWord = null;
@@ -430,24 +431,24 @@
                     for (let [w, count] of Object.entries(combinedTransitions)) {
                         let nextObj = this.getOrCreateWord(w);
                         
-                        // Répétition stricte pénalisée (repetition penalty)
-                        let repetitionPenalty = historyWindow.has(w) ? 0.001 : 1.0;
-                        let grammarBonus = GrammarEngine.isGrammaticallyPlausible(currentObj.category, nextObj.category) ? 1.5 : 0.2;
-                        
-                        // Correction de la loss de fin de chaîne prématurée :
-                        // Si on n'a pas atteint la longueur minimale (minTokens), on pénalise les mots finaux de phrases (qui agissent comme des points implicites)
-                        let earlyStopPenalty = 1.0;
-                        if (step < minTokens && Object.keys(combinedTransitions).length === 1) {
-                            earlyStopPenalty = 0.1;
-                        }
+                        // PROTECTION ANTI-BÉGAIEMENT STRICTE : 
+                        // Interdiction absolue de répéter le mot exact qui vient d'être émis (w === currentWord)
+                        if (w === currentWord) continue;
 
-                        let rawWeight = count * repetitionPenalty * grammarBonus * earlyStopPenalty;
-                        
-                        // Application du Softmax Scalé par la Température (T)
-                        // weight = exp(log(rawWeight) / T)
-                        let adjustedWeight = rawWeight > 0 ? Math.exp(Math.log(Math.max(rawWeight, 1e-5)) / Math.max(this.temperature, 0.1)) : 0;
+                        // Pénalité de récurrence forte si le mot est déjà présent dans la fenêtre récente
+                        let frequencyCount = recentWindow.filter(token => token === w).length;
+                        let antiStutterPenalty = Math.pow(0.1, frequencyCount);
 
-                        if (adjustedWeight > 0.0001) {
+                        let grammarBonus = GrammarEngine.isGrammaticallyPlausible(currentObj.category, nextObj.category) ? 1.5 : 0.3;
+                        
+                        let earlyStopPenalty = (step < minTokens && Object.keys(combinedTransitions).length === 1) ? 0.1 : 1.0;
+
+                        let rawWeight = count * antiStutterPenalty * grammarBonus * earlyStopPenalty;
+                        
+                        // Softmax Scalé par la Température (T)
+                        let adjustedWeight = rawWeight > 0 ? Math.exp(Math.log(Math.max(rawWeight, 1e-5)) / Math.max(this.temperature, 0.05)) : 0;
+
+                        if (adjustedWeight > 0.00001) {
                             weightedChoices.push({ word: w, weight: adjustedWeight });
                             totalWeight += adjustedWeight;
                         }
@@ -466,21 +467,26 @@
                     }
                 }
 
-                // Fallback spatial rigoureux tempéré
+                // Fallback spatial rigoureux anti-bégaiement
                 if (!nextWord) {
-                    const hits = this.memory.spatialIndex.searchNearestNeighbors(currentObj.vector, 1.5);
-                    const validHits = hits.filter(h => !historyWindow.has(h.block.word));
+                    const hits = this.memory.spatialIndex.searchNearestNeighbors(currentObj.vector, 1.8);
+                    const validHits = hits.filter(h => h.block.word !== currentWord && !recentWindow.includes(h.block.word));
                     if (validHits.length > 0) {
                         nextWord = validHits[Math.floor(Math.random() * validHits.length)].block.word;
                     } else if (hits.length > 0) {
-                        nextWord = hits[Math.floor(Math.random() * hits.length)].block.word;
+                        // Éviter à tout prix l'auto-référence directe
+                        const nonSelfHits = hits.filter(h => h.block.word !== currentWord);
+                        if (nonSelfHits.length > 0) {
+                            nextWord = nonSelfHits[Math.floor(Math.random() * nonSelfHits.length)].block.word;
+                        }
                     }
                 }
 
                 if (!nextWord) break;
 
                 responseTokens.push(nextWord);
-                historyWindow.add(nextWord);
+                recentWindow.push(nextWord);
+                if (recentWindow.length > 4) recentWindow.shift(); // Garde une trace des 4 derniers tokens
                 currentWord = nextWord;
             }
 
@@ -488,7 +494,7 @@
         }
     }
 
-    const engine = new MetaCognitiveEngineV11_4();
+    const engine = new MetaCognitiveEngineV11_5();
 
     document.addEventListener('DOMContentLoaded', () => {
         const tempRange = document.getElementById('tempRange');
@@ -504,7 +510,7 @@
             if (!text.trim()) return alert("Veuillez saisir du texte !");
             engine.ingestExternalCorpusStream(text);
             updateUI();
-            appendChatMessage("Système", "Corpus indexé avec régulation de température et pénalité de fin prématurée.", "engine");
+            appendChatMessage("Système", "Corpus indexé avec régulation anti-bégaiement matriciel (V11.5).", "engine");
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
@@ -518,7 +524,7 @@
         appendChatMessage("Vous", text, "user");
         input.value = "";
         setTimeout(() => {
-            appendChatMessage("Moteur V11.4", engine.generateResponse(text), "engine");
+            appendChatMessage("Moteur V11.5", engine.generateResponse(text), "engine");
         }, 200);
     }
 
