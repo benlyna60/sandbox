@@ -488,6 +488,16 @@
                 recentWindow.push(nextWord);
                 if (recentWindow.length > 4) recentWindow.shift(); // Garde une trace des 4 derniers tokens
                 currentWord = nextWord;
+
+                // --- GESTION DE L'ARRÊT NATUREL (FREIN D'ESSOUFFLEMENT) ---
+                // Dès que le modèle a atteint le minimum de mots, il évalue s'il doit conclure.
+                if (responseTokens.length >= minTokens) {
+                    let exhaustionThreshold = 0.2;
+                    // Si le poids total faiblit ou selon un facteur d'entropie croissante, le modèle s'arrête proprement.
+                    if (totalWeight < exhaustionThreshold || Math.random() < (responseTokens.length * 0.08)) {
+                        break;
+                    }
+                }
             }
 
             return responseTokens.join(" ") + ".";
