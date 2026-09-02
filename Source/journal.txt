@@ -1,5 +1,45 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-02 15:19:00
+TITRE: Québec solidaire veut aider plus de 25 000 Québécois à accéder à la propriété chaque année
+LIEN: https://www.ledevoir.com/politique/quebec/1005803/quebec-solidaire-veut-aider-plus-25-000-quebecois-acceder-propriete-chaque-annee
+CONTENU: Les premiers acheteurs bénéficieront d’une aide pour constituer une mise de fonds et un projet pilote verra le jour.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-02 15:59:00
+TITRE: Les infirmières devraient pouvoir prescrire davantage, plaide leur ordre
+LIEN: https://www.ledevoir.com/actualites/sante/1005830/infirmieres-devraient-pouvoir-prescrire-davantage-plaide-ordre
+CONTENU: L’OIIQ demande aux partis politiques de s’engager à ce que ce droit soit pleinement déployé.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-02 17:42:00
+TITRE: Uber annonce supprimer «environ 10%» de ses effectifs dans un mémo aux employés
+LIEN: https://www.ledevoir.com/economie/techno/1005902/uber-annonce-supprimer-environ-10-effectifs-memo-employes
+CONTENU: Avec ces plus de 3000 départs, la plateforme cherche notamment à «supprimer des niveaux hiérarchiques».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-02 10:20:00
+TITRE: La Banque du Canada maintient son taux directeur pour une septième fois consécutive
+LIEN: https://www.ledevoir.com/economie/1005740/decision-taux-directeur-banque-canada
+CONTENU: Le prolongement de la guerre au Moyen-Orient et l’escalade tarifaire avec les États-Unis viennent compliquer les choses.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-02 19:43:59
+TITRE: Québec a bloqué l’envoi des documents électoraux en anglais, dit Élections Québec
+LIEN: https://www.ledevoir.com/politique/quebec/1005953/quebec-bloque-envoi-documents-electoraux-anglais-dit-elections-quebec
+CONTENU: Les électeurs anglophones pourront scanner un code QR pour obtenir les informations dans leur langue.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-02 17:35:00
 TITRE: Les informés de franceinfo du mercredi 02 septembre 2026
