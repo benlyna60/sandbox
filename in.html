@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V15.2.1 - Production Stable</title>
+    <title>Meta-Cognitive Engine V16.1 - Ultimate Fusion</title>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -279,7 +279,6 @@
 <body>
 
 <div class="workspace">
-    <!-- COLONNE DE GAUCHE -->
     <div class="sidebar">
         <div class="card">
             <h1>1. Gestion de la Mémoire JSON</h1>
@@ -324,7 +323,7 @@
         </div>
 
         <div class="card">
-            <h2>Métriques Métacognitives V15.2.1</h2>
+            <h2>Métriques Métacognitives V16.1</h2>
             <div class="metrics-grid">
                 <div class="metric-box">
                     <div class="metric-label">Dimensions</div>
@@ -353,15 +352,14 @@
         </div>
     </div>
 
-    <!-- COLONNE DE DROITE : Dialogue Métacognitif -->
     <div class="main-panel">
         <div class="card chat-card">
-            <h1>3. Dialogue & Inférence Métacognitive V15.2.1</h1>
+            <h1>3. Dialogue & Inférence Métacognitive V16.1</h1>
             <div class="chat-box" id="chatHistory">
-                <div class="message engine">Moteur V15.2.1 initialisé. Persistance IndexedDB sécurisée, arbre VP incrémental et boucle métacognitive actifs.</div>
+                <div class="message engine">Moteur V16.1 (Fusion Ultime) initialisé. IndexedDB ultra-sécurisée, contexte global d'amorce, décodeur anti-répétition et boucle métacognitive actifs.</div>
             </div>
             <div class="chat-input-row">
-                <input type="text" id="chatInput" placeholder="Tapez une amorce (ex: Le chat...)" />
+                <input type="text" id="chatInput" placeholder="Tapez une amorce complexe (ex: Le chat gris...)" />
                 <button id="btnSend">Envoyer</button>
             </div>
         </div>
@@ -369,7 +367,21 @@
 </div>
 
 <script>
-    // --- 1. PERSISTENCE INDEXEDDB SÉCURISÉE ---
+    // --- UTILITAIRE DE PROTECTION VECTORIELLE ---
+    function safeCosineSimilarity(vecA, vecB) {
+        if (!vecA || !vecB) return 0;
+        let dotProduct = 0, normA = 0, normB = 0;
+        for (let i = 0; i < 64; i++) {
+            dotProduct += vecA[i] * vecB[i];
+            normA += vecA[i] * vecA[i];
+            normB += vecB[i] * vecB[i];
+        }
+        if (normA === 0 || normB === 0) return 0;
+        const similarity = dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        return Math.max(-1, Math.min(1, similarity));
+    }
+
+    // --- 1. PERSISTENCE INDEXEDDB ULTRA-SÉCURISÉE (V15.2) ---
     class IndustrialStorage {
         constructor(dbName = "MetaCognitiveEngineDB", storeName = "SemanticStore") {
             this.dbName = dbName;
@@ -394,7 +406,7 @@
                         resolve();
                     };
                     request.onerror = () => {
-                        console.warn("IndexedDB non disponible (mode privé ou restrictions de sécurité). Fallback mémoire vive.");
+                        console.warn("IndexedDB restreint (mode privé). Bascule en mémoire volatile.");
                         this.isAvailable = false;
                         resolve();
                     };
@@ -415,7 +427,7 @@
                     const store = tx.objectStore(this.storeName);
                     const req = store.put(value, key);
                     req.onsuccess = () => resolve();
-                    req.onerror = () => resolve(); // Non-bloquant en cas d'erreur d'écriture
+                    req.onerror = () => resolve();
                 } catch (e) {
                     resolve();
                 }
@@ -583,7 +595,130 @@
         }
     }
 
-    // --- 4. MOTEUR COGNITIF AVEC BOUCLE Méta-Cognitive ---
+    // --- 4. GESTIONNAIRE DE CONTEXTE GLOBAL & DÉCODEUR SÉQUENTIEL ---
+    class SemanticContextManager {
+        constructor(dimension = 64) {
+            this.dim = dimension;
+        }
+
+        computeGlobalAmorceVector(tokens, lexicon, tokenFrequencies) {
+            const globalVector = new Float32Array(this.dim);
+            let validTokensCount = 0;
+            let totalWeight = 0;
+
+            tokens.forEach(token => {
+                const stemmed = INDUSTRIAL_NLP_RULES.stem(token);
+                if (lexicon.has(stemmed)) {
+                    const frequency = tokenFrequencies.get(stemmed) || 1;
+                    const weight = 1 / (1 + frequency);
+                    const vec = lexicon.get(stemmed);
+
+                    for (let i = 0; i < this.dim; i++) {
+                        globalVector[i] += vec[i] * weight;
+                    }
+                    totalWeight += weight;
+                    validTokensCount++;
+                }
+            });
+
+            if (validTokensCount === 0 || totalWeight === 0) {
+                let hash = 0;
+                const seedStr = tokens.join("");
+                for (let i = 0; i < seedStr.length; i++) {
+                    hash = seedStr.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                let norm = 0;
+                for (let i = 0; i < this.dim; i++) {
+                    const x = Math.sin(hash + i) * 10000;
+                    globalVector[i] = x - Math.floor(x);
+                    norm += globalVector[i] * globalVector[i];
+                }
+                norm = Math.sqrt(norm);
+                if (norm > 0) {
+                    for (let i = 0; i < this.dim; i++) globalVector[i] /= norm;
+                }
+                return globalVector;
+            }
+
+            let norm = 0;
+            for (let i = 0; i < this.dim; i++) norm += globalVector[i] * globalVector[i];
+            norm = Math.sqrt(norm);
+            if (norm > 0) {
+                for (let i = 0; i < this.dim; i++) globalVector[i] /= norm;
+            }
+            return globalVector;
+        }
+
+        ingestCorpusWithAttention(tokens, updateContextCallback, maxWindowSize = 12) {
+            const len = tokens.length;
+            for (let i = 0; i < len; i++) {
+                const currentToken = tokens[i];
+                const limit = Math.min(len, i + maxWindowSize + 1);
+
+                for (let j = i + 1; j < limit; j++) {
+                    const targetToken = tokens[j];
+                    const distance = j - i;
+                    const attentionWeight = Math.exp(-distance / 4);
+                    updateContextCallback(currentToken, targetToken, attentionWeight);
+                }
+            }
+        }
+    }
+
+    class HistoricalDecoder {
+        constructor(slidingMemorySize = 6) {
+            this.generatedHistory = [];
+            this.maxHistory = slidingMemorySize;
+        }
+
+        getRepetitionPenalty(word) {
+            const index = this.generatedHistory.lastIndexOf(word);
+            if (index === -1) return 1.0; 
+            const recency = this.generatedHistory.length - index;
+            return 1.0 - Math.exp(-recency / 1.5);
+        }
+
+        selectNextWord(vpTreeCandidates, globalAmorceVector, currentWordVector, temperature) {
+            let bestCandidate = null;
+            let highestScore = -Infinity;
+
+            vpTreeCandidates.forEach(cand => {
+                const word = cand.item ? cand.item.word : cand.word;
+                const vector = cand.item ? cand.item.vector : cand.vector;
+                if (!vector || !word) return;
+
+                const localSim = safeCosineSimilarity(vector, currentWordVector);
+                const globalSim = safeCosineSimilarity(vector, globalAmorceVector);
+                
+                let baseScore = (localSim * 0.5) + (globalSim * 0.5);
+                const repetitionPenalty = this.getRepetitionPenalty(word);
+                let finalScore = baseScore * repetitionPenalty;
+
+                const stochasticNoise = (Math.random() - 0.5) * temperature * 0.15;
+                finalScore += stochasticNoise;
+
+                if (finalScore > highestScore) {
+                    highestScore = finalScore;
+                    bestCandidate = word;
+                }
+            });
+
+            if (bestCandidate) {
+                this.generatedHistory.push(bestCandidate);
+                if (this.generatedHistory.length > this.maxHistory) {
+                    this.generatedHistory.shift();
+                }
+            }
+
+            return bestCandidate;
+        }
+
+        clearMemory() {
+            this.generatedHistory = [];
+        }
+    }
+
+    // --- 5. MOTEUR COGNITIF ULTIME V16.1 ---
     class MetacognitiveEngine {
         constructor(dimensions = 64, maxLexiconSize = 500) {
             this.dimensions = dimensions;
@@ -593,6 +728,8 @@
             this.tokenFrequencies = new Map();
             this.vpTree = new HybridVPTree(this);
             this.storage = new IndustrialStorage();
+            this.contextManager = new SemanticContextManager(dimensions);
+            this.decoder = new HistoricalDecoder(6);
             this.baseTemperature = 0.75;
             this.lastSurpriseIndex = 0.0;
         }
@@ -624,14 +761,8 @@
         }
 
         cosineDistance(v1, v2) {
-            let dotProduct = 0, mA = 0, mB = 0;
-            for (let i = 0; i < this.dimensions; i++) {
-                dotProduct += v1[i] * v2[i];
-                mA += v1[i] * v1[i];
-                mB += v2[i] * v2[i];
-            }
-            const denom = Math.sqrt(mA) * Math.sqrt(mB);
-            return denom === 0 ? 1 : 1 - (dotProduct / denom);
+            const sim = safeCosineSimilarity(v1, v2);
+            return 1 - sim;
         }
 
         _adaptiveEviction(incomingUniqueTokens) {
@@ -657,8 +788,6 @@
 
         async trainOnCorpus(text, onProgress) {
             const tokens = INDUSTRIAL_NLP_RULES.tokenizeAndResolveGraph(text);
-            const windowSize = 4;
-
             tokens.forEach(t => this.tokenFrequencies.set(t, (this.tokenFrequencies.get(t) || 0) + 1));
             
             const uniqueSet = new Set(tokens);
@@ -671,34 +800,31 @@
                 }
             });
 
-            for (let i = 0; i < tokens.length; i++) {
-                const targetToken = tokens[i];
-                if (!this.lexicon.has(targetToken)) continue;
-                const targetVec = this.lexicon.get(targetToken);
-
-                for (let j = Math.max(0, i - windowSize); j <= Math.min(tokens.length - 1, i + windowSize); j++) {
-                    if (i === j) continue;
-                    const contextToken = tokens[j];
-                    const contextVec = this.contextVectors.get(contextToken);
-                    if (contextVec) {
-                        const weight = 1.0 / Math.abs(i - j);
-                        for (let d = 0; d < this.dimensions; d++) {
-                            targetVec[d] += contextVec[d] * weight;
-                        }
+            const updateContext = (curr, targ, weight) => {
+                const targetVec = this.lexicon.get(curr);
+                const contextVec = this.contextVectors.get(targ);
+                if (targetVec && contextVec) {
+                    for (let d = 0; d < this.dimensions; d++) {
+                        targetVec[d] += contextVec[d] * weight;
                     }
                 }
-                if (i % 40 === 0) {
-                    if (onProgress) onProgress((i / tokens.length) * 70);
-                    await yieldToMain();
-                }
-            }
+            };
 
+            this.contextManager.ingestCorpusWithAttention(tokens, updateContext, 12);
+
+            let stepCount = 0;
+            const totalTokens = tokens.length;
             for (let [token, vec] of this.lexicon.entries()) {
                 let norm = 0;
                 for (let d = 0; d < this.dimensions; d++) norm += vec[d] * vec[d];
                 norm = Math.sqrt(norm);
                 if (norm > 0) {
                     for (let d = 0; d < this.dimensions; d++) vec[d] /= norm;
+                }
+                stepCount++;
+                if (stepCount % 50 === 0) {
+                    if (onProgress) onProgress((stepCount / Math.max(totalTokens, 1)) * 70);
+                    await yieldToMain();
                 }
             }
 
@@ -729,8 +855,7 @@
             }
         }
 
-        // --- 5. INFÉRENCE AVEC BOUCLE MÉTACOGNITIVE ---
-        generateSentenceWithMetacognition(seedWord, maxSteps = 10) {
+        generateSentenceWithMetacognition(amorceText, maxSteps = 10) {
             if (this.lexicon.size === 0) {
                 return {
                     text: "Erreur : Le lexique est vide. Veuillez d'abord ingérer un corpus.",
@@ -739,53 +864,38 @@
                 };
             }
 
-            const stemmedSeed = INDUSTRIAL_NLP_RULES.stem(seedWord);
-            let activeToken = this.lexicon.has(stemmedSeed) ? stemmedSeed : Array.from(this.lexicon.keys()).find(k => k.includes(stemmedSeed));
-            
-            if (!activeToken) {
-                // Fallback aléatoire propre si le mot n'existe pas
-                const keys = Array.from(this.lexicon.keys());
-                activeToken = keys[Math.floor(Math.random() * keys.length)];
-            }
+            const rawTokens = amorceText.toLowerCase().trim().split(/\s+/).filter(t => t.length > 0);
+            if (rawTokens.length === 0) rawTokens.push("mot");
 
-            let currentVector = this.lexicon.get(activeToken);
-            const sequence = [activeToken];
+            const globalAmorceVec = this.contextManager.computeGlobalAmorceVector(rawTokens, this.lexicon, this.tokenFrequencies);
+            
+            this.decoder.clearMemory();
+            let output = [...rawTokens];
+            let currentVec = globalAmorceVec;
             let cumulativeSurprise = 0;
 
             for (let step = 0; step < maxSteps; step++) {
-                const neighbors = this.vpTree.search(currentVector, 8);
-                const candidates = neighbors.filter(n => !sequence.includes(n.item.word));
-                if (candidates.length === 0) break;
+                const candidates = this.vpTree.search(currentVec, 12);
+                if (!candidates || candidates.length === 0) break;
 
-                const meanDist = candidates.reduce((acc, curr) => acc + curr.dist, 0) / candidates.length;
-                cumulativeSurprise += meanDist;
+                const nextWord = this.decoder.selectNextWord(
+                    candidates,
+                    globalAmorceVec,
+                    currentVec,
+                    this.baseTemperature
+                );
 
-                const dynamicTemp = Math.max(0.05, this.baseTemperature * (1 + meanDist));
+                if (!nextWord || !this.lexicon.has(nextWord)) break;
 
-                let totalWeight = 0;
-                const weighted = candidates.map(c => {
-                    const weight = Math.exp(-c.dist / dynamicTemp);
-                    totalWeight += weight;
-                    return { item: c.item, weight };
-                });
+                const nextVec = this.lexicon.get(nextWord);
+                const dist = this.cosineDistance(currentVec, nextVec);
+                cumulativeSurprise += dist;
 
-                if (totalWeight === 0) break;
-
-                let r = Math.random() * totalWeight;
-                let selected = weighted[0].item;
-                for (const item of weighted) {
-                    r -= item.weight;
-                    if (r <= 0) {
-                        selected = item.item;
-                        break;
-                    }
-                }
-
-                sequence.push(selected.word);
-                currentVector = selected.vector;
+                output.push(nextWord);
+                currentVec = nextVec;
             }
 
-            this.lastSurpriseIndex = cumulativeSurprise / Math.max(sequence.length, 1);
+            this.lastSurpriseIndex = cumulativeSurprise / Math.max(output.length - rawTokens.length, 1);
             
             let metaComment = "Flux sémantique stable et cohérent.";
             if (this.lastSurpriseIndex > 0.6) {
@@ -794,7 +904,7 @@
                 metaComment = "Métacognition : Forte redondance contextuelle (convergence déterministe).";
             }
 
-            const formattedText = sequence.map(w => w.replace("__", " ")).join(" ") + ".";
+            const formattedText = output.map(w => w.replace("__", " ")).join(" ") + ".";
             return {
                 text: formattedText,
                 surprise: this.lastSurpriseIndex,
@@ -893,7 +1003,7 @@
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(engine.exportToJSON());
         const downloadAnchor = document.createElement('a');
         downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `metacognitive_memory_v15.2_${Date.now()}.json`);
+        downloadAnchor.setAttribute("download", `metacognitive_memory_v16.1_${Date.now()}.json`);
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
@@ -927,10 +1037,9 @@
         input.value = "";
         
         setTimeout(() => {
-            const firstWord = text.split(" ")[0];
-            const inference = engine.generateSentenceWithMetacognition(firstWord, 10);
+            const inference = engine.generateSentenceWithMetacognition(text, 10);
             
-            appendChatMessage("Moteur V15.2.1", inference.text, "engine");
+            appendChatMessage("Moteur V16.1", inference.text, "engine");
             appendMetaMessage(inference.metaMessage, inference.surprise);
             
             updateUI();
