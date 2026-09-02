@@ -1,4 +1,36 @@
 ----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-02 09:00:07
+TITRE: Bovine stem cells offer new approach to future cultivated steak research
+LIEN: https://phys.org/news/2026-08-bovine-stem-cells-approach-future.html
+CONTENU: Cultivated meat aims to produce meat from animal cells in the laboratory without needing to raise a living animal for meat production. It has been proposed as a potentially more sustainable alternative to conventional meat production. Yet recreating something as complex as a steak—rather than minced meat—remains a major scientific challenge.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-02 09:00:04
+TITRE: Eight-letter DNA alphabet is accurately transcribed by a natural enzyme
+LIEN: https://phys.org/news/2026-08-letter-dna-alphabet-accurately-natural.html
+CONTENU: All known life on Earth uses the same genetic alphabet, consisting of four letters. Now, researchers at the University of California San Diego have demonstrated that one of biology's most essential enzymes can accurately read and transcribe an expanded, eight-letter genetic alphabet. The findings provide important evidence that cells can process synthetic genetic information using their natural molecular machinery, advancing a long-standing goal in synthetic biology to expand the language of DNA. It could also allow scientists to custom-engineer biological systems that perform functions or produce compounds not found in nature.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-02 07:38:36
+TITRE: Global warming will exceed limit, UN says in a report that maps path to get back below danger zone
+LIEN: https://phys.org/news/2026-09-global-exceed-limit-path-danger.html
+CONTENU: In a strategic retreat in the fight against climate change, the United Nations has acknowledged that Earth has lost its chance to prevent some of the worst of global warming's harms. So now the world must figure out how to get temperatures below the danger zone and back to safety, officials say.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-02 04:00:01
+TITRE: Scientists discover the key ingredients that make birdsong pretty
+LIEN: https://phys.org/news/2026-08-scientists-key-ingredients-birdsong-pretty.html
+CONTENU: What makes birdsong beautiful? Answering this question could help us understand how soundscapes make the natural world relaxing for humans, opening the door to improving parks, upgrading the design of stressful places like waiting rooms and promoting conservation through birds with especially lovely songs.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-02 07:30:00
