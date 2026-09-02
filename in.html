@@ -565,69 +565,57 @@
         }
     }
 
+    /**
+     * Décodeur séquentiel robuste anti-boucle et anti-troncature
+     */
     class HistoricalDecoder {
-        constructor(slidingMemorySize = 8) {
+        constructor(slidingMemorySize = 12) {
             this.generatedHistory = [];
             this.maxHistory = slidingMemorySize;
-            this.alphaPenalty = 1.4;
-        }
-
-        getRepetitionPenalty(word) {
-            const index = this.generatedHistory.lastIndexOf(word);
-            if (index === -1) return 1.0; 
-            const recency = this.generatedHistory.length - index;
-            return 1.0 - Math.exp(-recency / 1.5);
         }
 
         selectNextWord(vpTreeCandidates, globalAmorceVector, currentWordVector, temperature) {
             const recentHistory = this.generatedHistory.slice(-this.maxHistory);
-            
-            // Détection du trigramme de blocage (Anti-boucle stricte)
-            let forbiddenWord = null;
-            if (recentHistory.length >= 2) {
-                const lastTwo = recentHistory.slice(-2).join(' ');
-                for (let i = 0; i < recentHistory.length - 2; i++) {
-                    if (`${recentHistory[i]} ${recentHistory[i+1]}` === lastTwo) {
-                        forbiddenWord = recentHistory[i+2];
-                        break;
-                    }
-                }
-            }
-
             const candidates = [];
 
             vpTreeCandidates.forEach(cand => {
-                const word = cand.item ? cand.item.word : cand.word;
+                // Récupération sécurisée du mot de surface complet et de son vecteur
+                const word = cand.item ? (cand.item.surface || cand.item.word) : (cand.surface || cand.word);
                 const vector = cand.item ? cand.item.vector : cand.vector;
+                
                 if (!vector || !word) return;
 
                 const localSim = safeCosineSimilarity(vector, currentWordVector);
                 const globalSim = safeCosineSimilarity(vector, globalAmorceVector);
                 
-                let baseScore = (localSim * 0.5) + (globalSim * 0.5);
-                
-                // Masque de pénalité trigramme
-                if (word === forbiddenWord) {
-                    baseScore -= 2.0; 
+                let baseScore = (localSim * 0.4) + (globalSim * 0.6);
+
+                // Pénalité de récurrence stricte basée sur l'historique récent
+                const frequencyInHistory = recentHistory.filter(w => w === word).length;
+                if (frequencyInHistory > 0) {
+                    baseScore -= (frequencyInHistory * 2.0); // Alourdi pour casser l'attraction de "musicien"
                 }
 
-                const repetitionPenalty = this.getRepetitionPenalty(word);
-                let finalScore = baseScore * repetitionPenalty;
+                // Interdiction absolue du bégaiement ou de la répétition immédiate
+                if (recentHistory.length > 0 && recentHistory[recentHistory.length - 1] === word) {
+                    baseScore -= 8.0;
+                }
 
-                const stochasticNoise = (Math.random() - 0.5) * temperature * 0.15;
-                finalScore += stochasticNoise;
+                const stochasticNoise = (Math.random() - 0.5) * temperature * 0.1;
+                let finalScore = baseScore + stochasticNoise;
 
                 candidates.push({ word, score: finalScore });
             });
 
+            // Tri décroissant selon le score ajusté
             candidates.sort((a, b) => b.score - a.score);
+            
+            // Filtrage des doublons stricts immédiats dans la liste de tri si besoin
             const validCandidates = candidates.filter(c => c.word && c.word.length > 0);
 
             if (validCandidates.length === 0) return null;
 
-            // Échantillonnage pondéré dans le top K pour garder la diversité
-            const topK = validCandidates.slice(0, Math.min(5, validCandidates.length));
-            const selected = topK[Math.floor(Math.random() * topK.length)];
+            const selected = validCandidates[0];
 
             if (selected) {
                 this.generatedHistory.push(selected.word);
@@ -655,7 +643,7 @@
             this.vpTree = new HybridVPTree(this);
             this.storage = new IndustrialStorage();
             this.contextManager = new SemanticContextManager(dimensions);
-            this.decoder = new HistoricalDecoder(8);
+            this.decoder = new HistoricalDecoder(12);
             this.baseTemperature = 0.75;
             this.lastSurpriseIndex = 0.0;
         }
@@ -756,7 +744,7 @@
 
             if (onProgress) onProgress(85);
 
-            const treeElements = Array.from(this.lexicon.entries()).map(([word, vector]) => ({ word, vector }));
+            const treeElements = Array.from(this.lexicon.entries()).map(([word, vector]) => ({ word, vector, surface: word }));
             this.vpTree.root = await this.vpTree.buildAsyncChunked(treeElements);
 
             await this.storage.save("lexicon", Array.from(this.lexicon.entries()));
@@ -770,7 +758,7 @@
                 const storedFreqs = await this.storage.load("frequencies");
                 if (storedLexicon && storedLexicon.length > 0) {
                     this.lexicon = new Map(storedLexicon);
-                    const treeElements = Array.from(this.lexicon.entries()).map(([word, vector]) => ({ word, vector }));
+                    const treeElements = Array.from(this.lexicon.entries()).map(([word, vector]) => ({ word, vector, surface: word }));
                     this.vpTree.root = await this.vpTree.buildAsyncChunked(treeElements);
                 }
                 if (storedFreqs) {
@@ -858,7 +846,7 @@
             data.lexicon.forEach(([word, vectorArray]) => {
                 this.lexicon.set(word, new Float32Array(vectorArray));
             });
-            const treeElements = Array.from(this.lexicon.entries()).map(([word, vector]) => ({ word, vector }));
+            const treeElements = Array.from(this.lexicon.entries()).map(([word, vector]) => ({ word, vector, surface: word }));
             this.vpTree.root = this.vpTree.buildAsyncChunked(treeElements);
         }
     }
