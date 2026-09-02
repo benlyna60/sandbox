@@ -1,5 +1,37 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-02 22:49:32
+TITRE: Le lac Ontario devient «lac Amérique» pour les utilisateurs américains de Google Maps
+LIEN: https://www.ledevoir.com/economie/techno/1006046/lac-ontario-devient-lac-amerique-utilisateurs-americains-google-maps
+CONTENU: Le président Trump ne peut pas forcer le Canada à changer lui aussi le nom du lac.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-02 14:55:00
+TITRE: «C’était ça ou mourir», de Thélyson Orélien, en lice au prix Goncourt
+LIEN: https://www.ledevoir.com/lire/1005794/roman-thelyson-orelien-lice-prix-goncourt
+CONTENU: Les auteurs québécois percent-ils définitivement les prix littéraires français?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-02 16:48:45
+TITRE: En visite à Gaza, Nétanyahou exclut tout recul malgré les pressions américaines
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1005863/visite-gaza-netanyahou-exclut-tout-recul-malgre-pressions-americaines
+CONTENU: Malgré le cessez-le-feu en vigueur, l’armée israélienne bombarde quasi quotidiennement la bande de Gaza.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-02 20:00:00
+TITRE: Prolonger le congé de taxe sur l’essence pourrait nuire à l’environnement et aux finances publiques
+LIEN: https://www.ledevoir.com/economie/1005965/prolonger-conge-taxe-essence-pourrait-nuire-environnement-finances-publiques
+CONTENU: La suspension a eu un effet modéré sur les finances des ménages, soulignent des experts.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-09-02 18:00:06
 TITRE: « Nétanyahou, cela fait combien d’années que tu dors ? » : en Israël, la bataille très politique de la mémoire du 7-Octobre
