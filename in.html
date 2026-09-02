@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meta-Cognitive Engine Studio V16.1 - Production Ready</title>
+  <title>Meta-Cognitive Engine Studio V16.2 - Production Ready</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     window.tailwind = window.tailwind || {};
@@ -161,15 +161,15 @@
         <button onclick="toggleSidebar(true)" class="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:text-slate-100 transition-precision focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
         </button>
-        <span class="text-sm font-semibold text-slate-200">Meta-Cognitive Studio V16.1</span>
+        <span class="text-sm font-semibold text-slate-200">Meta-Cognitive Studio V16.2</span>
       </div>
 
       <div id="logs-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
         <div class="max-w-3xl mx-auto space-y-6" id="chatHistory">
           <div class="flex justify-start">
             <div class="max-w-[85%] p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 shadow-md">
-              <span class="text-[10px] font-mono uppercase tracking-wider text-sky-400 block mb-1.5">Moteur V16.1 (Fusion Studio)</span>
-              <p class="text-sm text-slate-300 leading-relaxed font-sans">Moteur méta-cognitif initialisé avec succès. IndexedDB, décodeur anti-répétition et contexte global prêts.</p>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-sky-400 block mb-1.5">Moteur V16.2 (Fusion Studio)</span>
+              <p class="text-sm text-slate-300 leading-relaxed font-sans">Moteur méta-cognitif initialisé avec succès. IndexedDB, décodeur anti-répétition et bouton de copie rapide prêts.</p>
             </div>
           </div>
         </div>
@@ -271,7 +271,7 @@
         return Math.max(-1, Math.min(1, similarity));
     }
 
-    // --- PERSISTENCE INDEXEDDB ULTRA-SÉCURISÉE (V15.2) ---
+    // --- PERSISTENCE INDEXEDDB ULTRA-SÉCURISÉE ---
     class IndustrialStorage {
         constructor(dbName = "MetaCognitiveEngineDB", storeName = "SemanticStore") {
             this.dbName = dbName;
@@ -367,8 +367,6 @@
 
             if (clean.length <= 3) return clean;
 
-            // Désactivation de la suppression destructive du 'e' final sur les mots normaux
-            // On conserve uniquement la normalisation sûre des pluriels et verbes conjugués lourds
             return clean
                 .replace(/(é|ée|és|ées)$/, 'er')
                 .replace(/(ions|iez|erons|erez|ent)$/, '')
@@ -578,7 +576,6 @@
             const candidates = [];
 
             vpTreeCandidates.forEach(cand => {
-                // Utilisation de la forme de surface intacte (surface || word)
                 const wordObj = cand.item ? cand.item : cand;
                 const word = wordObj.surface || wordObj.word;
                 const vector = wordObj.vector;
@@ -630,13 +627,13 @@
         }
     }
 
-    // --- MOTEUR COGNITIF ULTIME V16.1 ---
+    // --- MOTEUR COGNITIF ULTIME V16.2 ---
     class MetacognitiveEngine {
         constructor(dimensions = 64, maxLexiconSize = 500) {
             this.dimensions = dimensions;
             this.maxLexiconSize = maxLexiconSize;
-            this.lexicon = new Map(); // stem -> vector
-            this.surfaceForms = new Map(); // stem -> surface string original
+            this.lexicon = new Map();
+            this.surfaceForms = new Map();
             this.contextVectors = new Map();
             this.tokenFrequencies = new Map();
             this.vpTree = new HybridVPTree(this);
@@ -819,7 +816,6 @@
 
                 if (!nextWordSurface) break;
 
-                // Retrouver le vecteur associé à la surface choisie pour continuer le parcours sémantique
                 let foundStem = null;
                 for (let [s, surf] of this.surfaceForms.entries()) {
                     if (surf === nextWordSurface) {
@@ -954,7 +950,7 @@
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(engine.exportToJSON());
         const downloadAnchor = document.createElement('a');
         downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `metacognitive_memory_v16.1_${Date.now()}.json`);
+        downloadAnchor.setAttribute("download", `metacognitive_memory_v16.2_${Date.now()}.json`);
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
@@ -993,11 +989,34 @@
         setTimeout(() => {
             const inference = engine.generateSentenceWithMetacognition(text, 10);
             
-            appendChatMessage("Moteur V16.1", inference.text, "engine");
+            appendChatMessage("Moteur V16.2", inference.text, "engine");
             appendMetaMessage(inference.metaMessage, inference.surprise);
             
             updateUI();
         }, 120);
+    }
+
+    // --- FONCTION DE COPIE RAPIDE AMÉLIORÉE ---
+    function copyToClipboard(text, buttonElement) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast("Texte copié dans le presse-papier !");
+            
+            // Animation visuelle temporaire de l'icône du bouton
+            if (buttonElement) {
+                const originalHTML = buttonElement.innerHTML;
+                buttonElement.innerHTML = `
+                    <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span class="text-emerald-400">Copié</span>
+                `;
+                setTimeout(() => {
+                    buttonElement.innerHTML = originalHTML;
+                }, 1500);
+            }
+        }).catch(err => {
+            showToast("Échec de la copie : " + err, "error");
+        });
     }
 
     function appendChatMessage(sender, text, type) {
@@ -1009,11 +1028,29 @@
             ? 'bg-slate-800/80 border-slate-700/80' 
             : 'bg-slate-900/60 border-slate-800/80';
         
-        const accentText = type === 'user' ? 'text-sky-400' : 'text-sky-400';
+        const accentText = 'text-sky-400';
+
+        // Si c'est une réponse du moteur, on ajoute le bouton de copie rapide
+        let copyButtonHTML = '';
+        if (type === 'engine' && sender.includes('Moteur')) {
+            // Échappement sécurisé des guillemets pour l'attribut HTML
+            const escapedText = text.replace(/"/g, '&quot;');
+            copyButtonHTML = `
+                <button onclick="copyToClipboard('${escapedText}', this)" class="ml-auto px-2 py-1 bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 rounded border border-slate-700/60 text-[10px] font-mono flex items-center gap-1.5 transition-precision">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                    </svg>
+                    <span>Copier</span>
+                </button>
+            `;
+        }
 
         div.innerHTML = `
-            <div class="max-w-[85%] p-4 rounded-xl border ${bubbleColor} shadow-md">
-                <span class="text-[10px] font-mono uppercase tracking-wider ${accentText} block mb-1.5">${sender}</span>
+            <div class="max-w-[85%] p-4 rounded-xl border ${bubbleColor} shadow-md flex flex-col gap-2">
+                <div class="flex items-center justify-between gap-4">
+                    <span class="text-[10px] font-mono uppercase tracking-wider ${accentText}">${sender}</span>
+                    ${copyButtonHTML}
+                </div>
                 <p class="text-sm text-slate-300 leading-relaxed font-sans">${text}</p>
             </div>
         `;
