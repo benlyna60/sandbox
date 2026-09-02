@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meta-Cognitive Engine Studio V16.1 - Production Ready</title>
-  <!-- Utilisation de la version CSS de Tailwind pour éliminer tout risque de plantage synchrone JS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     // Sécurisation de l'objet tailwind au cas où le chargement prendrait du temps
@@ -48,10 +47,8 @@
 </head>
 <body class="h-full flex flex-col font-sans antialiased overflow-hidden select-none">
 
-  <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- TIROIR LEXIQUE (DRAWER) -->
   <div id="lexicon-drawer-overlay" onclick="toggleLexiconDrawer(false)" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0"></div>
   <div id="lexicon-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
     <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/40">
@@ -77,15 +74,11 @@
     </div>
   </div>
 
-  <!-- ZONE PRINCIPALE : SPLIT SCREEN ADAPTATIF -->
   <div class="flex flex-1 overflow-hidden relative">
     
-    <!-- BACKDROP SIDEBAR (Écrans mobiles et tablettes) -->
     <div id="sidebar-overlay" onclick="toggleSidebar(false)" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden lg:hidden z-20 transition-opacity duration-300 opacity-0"></div>
 
-    <!-- 1. SIDEBAR DE CONTRÔLE -->
     <aside id="sidebar-control" class="fixed inset-y-0 left-0 w-80 border-r border-slate-800 bg-slate-900/95 lg:bg-slate-900/50 flex flex-col h-full z-30 transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out">
-      <!-- En-tête Sidebar -->
       <div class="p-4 border-b border-slate-800 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <div class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></div>
@@ -96,9 +89,7 @@
         </button>
       </div>
 
-      <!-- Conteneur des Accordéons -->
       <div class="flex-1 overflow-y-auto p-3 space-y-2">
-        <!-- CONFIGURATION MOTEUR -->
         <div class="border border-slate-800 rounded-lg bg-slate-900/40 overflow-hidden">
           <button onclick="toggleAccordion('acc-engine')" class="w-full p-3 flex items-center justify-between font-medium text-sm text-slate-300 hover:bg-slate-800/40 transition-precision focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none">
             <span>⚙️ Configuration Moteur</span>
@@ -115,7 +106,6 @@
           </div>
         </div>
 
-        <!-- INGESTION CORPUS -->
         <div class="border border-slate-800 rounded-lg bg-slate-900/40 overflow-hidden">
           <button onclick="toggleAccordion('acc-corpus')" class="w-full p-3 flex items-center justify-between font-medium text-sm text-slate-300 hover:bg-slate-800/40 transition-precision focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none">
             <span>📚 Ingestion Corpus</span>
@@ -145,7 +135,6 @@
           </div>
         </div>
 
-        <!-- GESTION JSON -->
         <div class="border border-slate-800 rounded-lg bg-slate-900/40 overflow-hidden">
           <button onclick="toggleAccordion('acc-json')" class="w-full p-3 flex items-center justify-between font-medium text-sm text-slate-300 hover:bg-slate-800/40 transition-precision focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none">
             <span>💾 Gestion Configuration JSON</span>
@@ -159,7 +148,6 @@
         </div>
       </div>
 
-      <!-- Bas de Sidebar -->
       <div class="p-3 border-t border-slate-800 bg-slate-950/40">
         <button onclick="toggleLexiconDrawer(true)" class="w-full py-2.5 bg-slate-800/50 hover:bg-sky-500/10 border border-slate-700/60 hover:border-sky-500/40 text-slate-300 hover:text-sky-400 rounded-md transition-precision text-xs font-medium flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none">
           <span>📊 Explorer le Lexique & Fréquences</span>
@@ -168,10 +156,8 @@
       </div>
     </aside>
 
-    <!-- 2. PANNEAU PRINCIPAL D'INFÉRENCE & LOGS -->
     <main class="flex-1 bg-slate-950 flex flex-col h-full relative overflow-hidden">
       
-      <!-- En-tête Mobile -->
       <div class="lg:hidden p-4 border-b border-slate-800 bg-slate-900/40 flex items-center gap-3 shrink-0">
         <button onclick="toggleSidebar(true)" class="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:text-slate-100 transition-precision focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
@@ -179,7 +165,6 @@
         <span class="text-sm font-semibold text-slate-200">Meta-Cognitive Studio V16.1</span>
       </div>
 
-      <!-- Flux de Dialogue -->
       <div id="logs-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
         <div class="max-w-3xl mx-auto space-y-6" id="chatHistory">
           <div class="flex justify-start">
@@ -191,7 +176,6 @@
         </div>
       </div>
 
-      <!-- Barre de Saisie & Actions -->
       <div class="p-4 border-t border-slate-800 bg-slate-900/30 backdrop-blur-md shrink-0">
         <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
           <div class="flex-1">
@@ -366,8 +350,9 @@
         }
     });
 
-    // --- RÈGLES LINGUISTIQUES & COMPOSÉS ---
+    // --- RÈGLES LINGUISTIQUES & COMPOSÉS ROBUSTES ---
     const INDUSTRIAL_NLP_RULES = {
+        exceptions: new Set(['dans', 'sans', 'silence', 'avec', 'pour', 'mais', 'donc', 'plus', 'sous']),
         irregulars: {
             "suis": "être", "es": "être", "est": "être", "sommes": "être", "êtes": "être", "sont": "être",
             "ai": "avoir", "as": "avoir", "a": "avoir", "avons": "avoir", "avez": "avoir", "ont": "avoir",
@@ -378,7 +363,10 @@
         stem(word) {
             if (!word) return "";
             let clean = word.toLowerCase().trim();
+            if (this.exceptions.has(clean)) return clean;
             if (this.irregulars[clean]) return this.irregulars[clean];
+
+            if (clean.length <= 3) return clean;
 
             if (clean.endsWith("ons") && !clean.endsWith("erons") && !clean.endsWith("irons")) {
                 if (clean.length > 5) return clean.replace(/ons$/, "");
@@ -393,7 +381,13 @@
         },
 
         tokenizeAndResolveGraph(text) {
-            const rawWords = text.toLowerCase().match(/[\wàâäéèêëîïôöùûüç]+/g) || [];
+            if (!text) return [];
+            const rawWords = text.toLowerCase()
+                .replace(/['’\-]/g, ' ')
+                .replace(/[^\w\sàâäéèêëîïôöùûüç]/g, '')
+                .split(/\s+/)
+                .filter(token => token.length > 0);
+            
             const tokens = [];
 
             for (let i = 0; i < rawWords.length; i++) {
@@ -413,7 +407,7 @@
                 }
 
                 if ((current === "a" || current === "ont") && next) {
-                    tokens.push(`${this.irregulars[current]}__${this.stem(next)}`);
+                    tokens.push(`${this.irregulars[current] || 'avoir'}__${this.stem(next)}`);
                     i++;
                 } else {
                     tokens.push(this.stem(current));
@@ -501,7 +495,7 @@
         }
     }
 
-    // --- GESTIONNAIRE DE CONTEXTE GLOBAL & DÉCODEUR SÉQUENTIEL ---
+    // --- GESTIONNAIRE DE CONTEXTE GLOBAL & DÉCODEUR SÉQUENTIEL AVEC ANTI-BÉGAIEMENT ---
     class SemanticContextManager {
         constructor(dimension = 64) {
             this.dim = dimension;
@@ -572,9 +566,10 @@
     }
 
     class HistoricalDecoder {
-        constructor(slidingMemorySize = 6) {
+        constructor(slidingMemorySize = 8) {
             this.generatedHistory = [];
             this.maxHistory = slidingMemorySize;
+            this.alphaPenalty = 1.4;
         }
 
         getRepetitionPenalty(word) {
@@ -585,8 +580,21 @@
         }
 
         selectNextWord(vpTreeCandidates, globalAmorceVector, currentWordVector, temperature) {
-            let bestCandidate = null;
-            let highestScore = -Infinity;
+            const recentHistory = this.generatedHistory.slice(-this.maxHistory);
+            
+            // Détection du trigramme de blocage (Anti-boucle stricte)
+            let forbiddenWord = null;
+            if (recentHistory.length >= 2) {
+                const lastTwo = recentHistory.slice(-2).join(' ');
+                for (let i = 0; i < recentHistory.length - 2; i++) {
+                    if (`${recentHistory[i]} ${recentHistory[i+1]}` === lastTwo) {
+                        forbiddenWord = recentHistory[i+2];
+                        break;
+                    }
+                }
+            }
+
+            const candidates = [];
 
             vpTreeCandidates.forEach(cand => {
                 const word = cand.item ? cand.item.word : cand.word;
@@ -597,26 +605,38 @@
                 const globalSim = safeCosineSimilarity(vector, globalAmorceVector);
                 
                 let baseScore = (localSim * 0.5) + (globalSim * 0.5);
+                
+                // Masque de pénalité trigramme
+                if (word === forbiddenWord) {
+                    baseScore -= 2.0; 
+                }
+
                 const repetitionPenalty = this.getRepetitionPenalty(word);
                 let finalScore = baseScore * repetitionPenalty;
 
                 const stochasticNoise = (Math.random() - 0.5) * temperature * 0.15;
                 finalScore += stochasticNoise;
 
-                if (finalScore > highestScore) {
-                    highestScore = finalScore;
-                    bestCandidate = word;
-                }
+                candidates.push({ word, score: finalScore });
             });
 
-            if (bestCandidate) {
-                this.generatedHistory.push(bestCandidate);
+            candidates.sort((a, b) => b.score - a.score);
+            const validCandidates = candidates.filter(c => c.word && c.word.length > 0);
+
+            if (validCandidates.length === 0) return null;
+
+            // Échantillonnage pondéré dans le top K pour garder la diversité
+            const topK = validCandidates.slice(0, Math.min(5, validCandidates.length));
+            const selected = topK[Math.floor(Math.random() * topK.length)];
+
+            if (selected) {
+                this.generatedHistory.push(selected.word);
                 if (this.generatedHistory.length > this.maxHistory) {
                     this.generatedHistory.shift();
                 }
             }
 
-            return bestCandidate;
+            return selected ? selected.word : null;
         }
 
         clearMemory() {
@@ -635,7 +655,7 @@
             this.vpTree = new HybridVPTree(this);
             this.storage = new IndustrialStorage();
             this.contextManager = new SemanticContextManager(dimensions);
-            this.decoder = new HistoricalDecoder(6);
+            this.decoder = new HistoricalDecoder(8);
             this.baseTemperature = 0.75;
             this.lastSurpriseIndex = 0.0;
         }
@@ -770,7 +790,7 @@
                 };
             }
 
-            const rawTokens = amorceText.toLowerCase().trim().split(/\s+/).filter(t => t.length > 0);
+            const rawTokens = INDUSTRIAL_NLP_RULES.tokenizeAndResolveGraph(amorceText);
             if (rawTokens.length === 0) rawTokens.push("mot");
 
             const globalAmorceVec = this.contextManager.computeGlobalAmorceVector(rawTokens, this.lexicon, this.tokenFrequencies);
@@ -781,7 +801,7 @@
             let cumulativeSurprise = 0;
 
             for (let step = 0; step < maxSteps; step++) {
-                const candidates = this.vpTree.search(currentVec, 12);
+                const candidates = this.vpTree.search(currentVec, 15);
                 if (!candidates || candidates.length === 0) break;
 
                 const nextWord = this.decoder.selectNextWord(
