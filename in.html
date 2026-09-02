@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V14.1 - Ergonomic Workspace</title>
+    <title>Meta-Cognitive Engine V14.3 - Ergonomic Workspace</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -103,6 +103,15 @@
             font-size: 0.9rem;
         }
         button:hover { opacity: 0.9; }
+        .btn-secondary {
+            background-color: var(--border-color);
+            color: var(--text-main);
+        }
+        .button-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -202,15 +211,28 @@
             border-color: var(--accent-color);
             color: var(--text-main);
         }
+        input[type="file"] {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
 <div class="workspace">
-    <!-- COLONNE DE GAUCHE : Paramètres, Corpus & Contrôles -->
+    <!-- COLONNE DE GAUCHE : Gestion Mémoire, Corpus & Contrôles -->
     <div class="sidebar">
         <div class="card">
-            <h1>1. Alimentation du Corpus</h1>
+            <h1>1. Gestion de la Mémoire JSON</h1>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px;">Sauvegardez ou restaurez l'état complet du moteur :</p>
+            <div class="button-row">
+                <button class="btn-secondary" onclick="exportMemoryJSON()" style="margin-top: 0;">Télécharger JSON</button>
+                <button class="btn-secondary" onclick="document.getElementById('importFile').click()" style="margin-top: 0;">Charger JSON</button>
+            </div>
+            <input type="file" id="importFile" accept=".json" onchange="importMemoryJSON(event)">
+        </div>
+
+        <div class="card">
+            <h1>2. Alimentation du Corpus</h1>
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px;">Collez ou injectez vos phrases d'apprentissage :</p>
             <textarea id="corpusInput" placeholder="Ex: Le chat noir traverse la rue rapidement. Le chien blanc surveille la maison attentivement."></textarea>
             
@@ -264,9 +286,9 @@
     <!-- COLONNE DE DROITE : Espace de Discussion Continu -->
     <div class="main-panel">
         <div class="card chat-card">
-            <h1>2. Dialogue Actif (Inférence en Direct)</h1>
+            <h1>3. Dialogue Actif (Inférence en Direct)</h1>
             <div class="chat-box" id="chatHistory">
-                <div class="message engine">Système prêt. Injectez un corpus à gauche, puis tapez un mot pour amorcer la discussion.</div>
+                <div class="message engine">Système prêt. Injectez un corpus à gauche, chargez une mémoire JSON, puis tapez un mot pour amorcer la discussion.</div>
             </div>
             <div class="chat-input-row">
                 <input type="text" id="chatInput" placeholder="Tapez un mot d'amorce (ex: chat, chien...)" />
@@ -309,11 +331,38 @@
         }
     };
 
+    function getLevenshteinDistance(a, b) {
+        if (a.length === 0) return b.length;
+        if (b.length === 0) return a.length;
+        let matrix = [];
+        for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+        for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+        for (let i = 1; i <= b.length; i++) {
+            for (let j = 1; j <= a.length; j++) {
+                if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j - 1] + 1,
+                        Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+                    );
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    }
+
     const TextProcessor = {
+        normalizeString(str) {
+            return str.toLowerCase()
+                      .normalize('NFD')
+                      .replace(/[\u0300-\u036f]/g, '')
+                      .replace(/['‘’]/g, "'");
+        },
         tokenize(text) {
             if (!text) return [];
             const normalized = text.normalize('NFC');
-            const rawTokens = normalized.toLowerCase().replace(/['‘’]/g, "'").split(/[\s.,\/#!$%\^&\*;:{}=\-_`~()?"«»\[\]]+/);
+            const rawTokens = normalized.replace(/['‘’]/g, "'").split(/[\s.,\/#!$%\^&\*;:{}=\-_`~()?"«»\[\]]+/);
             return rawTokens.map(t => t.trim()).filter(t => t.length > 0 && /^[a-zA-Z0-9àâäéèêëîïôöùûüç'-]+$/.test(t));
         }
     };
@@ -321,19 +370,20 @@
     const GrammarEngine = {
         determiners: new Set(['le', 'la', 'les', 'un', 'une', 'des', 'ce', 'cette', 'ces', 'mon', 'ton', 'son', 'notre', 'votre', 'leur', 'de', 'du', 'au', 'aux', 'et', 'ou', 'quelques', 'plusieurs', 'chaque']),
         auxiliaries: new Set(['est', 'sont', 'a', 'ont', 'fut', 'furent', 'était', 'étaient', 'sera', 'seront', 'soyons', 'soyez', 'soient', 'ai', 'as', 'avons', 'avez', 'suis', 'es', 'sommes', 'êtes']),
-        knownNouns: new Set(['chat', 'chien', 'rue', 'maison', 'homme', 'femme', 'enfant', 'table', 'voiture', 'eau', 'terre', 'client', 'cliente', 'ville', 'fusée', 'espace', 'ingénieur', 'moteur', 'station', 'équipage', 'satellite', 'données', 'terre']),
+        knownNouns: new Set(['chat', 'chien', 'rue', 'maison', 'homme', 'femme', 'enfant', 'table', 'voiture', 'eau', 'terre', 'client', 'cliente', 'ville', 'fusée', 'espace', 'ingénieur', 'moteur', 'station', 'équipage', 'satellite', 'données']),
         knownAdjectives: new Set(['noir', 'blanche', 'petit', 'grand', 'rapide', 'attentif', 'fertile', 'beau', 'belle', 'nouveau', 'nouvelle', 'puissant', 'infinie', 'complexe', 'international', 'remarquable', 'moderne', 'scientifiques', 'importantes']),
 
         getCategory(word, prevWord = null) {
-            if (this.determiners.has(word)) return 'DET';
-            if (this.auxiliaries.has(word)) return 'VERB';
-            if (this.knownNouns.has(word)) return 'NOUN_ADJ';
-            if (this.knownAdjectives.has(word)) return 'NOUN_ADJ';
-            if (prevWord && this.auxiliaries.has(prevWord)) {
-                if (['e', 'es', 'é', 'er', 'ant', 'é(e)s'].some(suf => word.endsWith(suf))) return 'VERB';
+            const clean = TextProcessor.normalizeString(word);
+            if (this.determiners.has(clean)) return 'DET';
+            if (this.auxiliaries.has(clean)) return 'VERB';
+            if (this.knownNouns.has(clean)) return 'NOUN_ADJ';
+            if (this.knownAdjectives.has(clean)) return 'NOUN_ADJ';
+            if (prevWord && this.auxiliaries.has(TextProcessor.normalizeString(prevWord))) {
+                if (['e', 'es', 'é', 'er', 'ant', 'é(e)s'].some(suf => clean.endsWith(suf))) return 'VERB';
             }
-            if (prevWord && this.determiners.has(prevWord)) return 'NOUN_ADJ';
-            if (word.endsWith('er') || word.endsWith('ir') || word.endsWith('re') || word.endsWith('ez') || word.endsWith('ons') || word.endsWith('ait') || word.endsWith('ent')) return 'VERB';
+            if (prevWord && this.determiners.has(TextProcessor.normalizeString(prevWord))) return 'NOUN_ADJ';
+            if (clean.endsWith('er') || clean.endsWith('ir') || clean.endsWith('re') || clean.endsWith('ez') || clean.endsWith('ons') || clean.endsWith('ait') || clean.endsWith('ent')) return 'VERB';
             return 'NOUN_ADJ';
         },
 
@@ -546,33 +596,57 @@
             }
         }
         _recordTransition(currentWord, nextWord) {
-            if (!this.globalTransitions[currentWord]) this.globalTransitions[currentWord] = {};
-            const map = this.globalTransitions[currentWord];
-            if (map[nextWord]) {
-                map[nextWord] += 1;
+            const curNorm = TextProcessor.normalizeString(currentWord);
+            const nxtNorm = TextProcessor.normalizeString(nextWord);
+            if (!this.globalTransitions[curNorm]) this.globalTransitions[curNorm] = {};
+            const map = this.globalTransitions[curNorm];
+            if (map[nxtNorm]) {
+                map[nxtNorm] += 1;
             } else {
                 if (Object.keys(map).length >= CONFIG.MAX_TRANSITIONS_PER_WORD) {
                     const entries = Object.entries(map).sort((a, b) => a[1] - b[1]);
                     delete map[entries[0][0]];
                 }
-                map[nextWord] = 1;
+                map[nxtNorm] = 1;
             }
         }
         getOrCreateWord(word, prevWord = null) {
-            const cleanWord = word.toLowerCase().trim();
-            if (this.lexicon[cleanWord]) {
-                this.lexicon[cleanWord].lastAccessed = ++this.timelineIndex;
-                return this.lexicon[cleanWord];
+            const cleanWord = word.trim();
+            const normalizedKey = TextProcessor.normalizeString(cleanWord);
+
+            if (this.lexicon[normalizedKey]) {
+                this.lexicon[normalizedKey].lastAccessed = ++this.timelineIndex;
+                return this.lexicon[normalizedKey];
             }
+
+            const knownKeys = Object.keys(this.lexicon);
+            let bestMatchKey = null;
+            let minDistance = 99;
+            const threshold = normalizedKey.length > 5 ? 2 : 1;
+
+            for (let key of knownKeys) {
+                if (Math.abs(key.length - normalizedKey.length) > 2) continue;
+                const dist = getLevenshteinDistance(normalizedKey, key);
+                if (dist < minDistance && dist <= threshold) {
+                    minDistance = dist;
+                    bestMatchKey = key;
+                }
+            }
+
+            if (bestMatchKey) {
+                this.lexicon[bestMatchKey].lastAccessed = ++this.timelineIndex;
+                return this.lexicon[bestMatchKey];
+            }
+
             this._enforceLexiconCapacity();
-            this.lexicon[cleanWord] = {
+            this.lexicon[normalizedKey] = {
                 word: cleanWord,
                 vector: GeoMath.generateRandomVector(),
                 stiffness: 0.1,
                 category: GrammarEngine.getCategory(cleanWord, prevWord),
                 lastAccessed: ++this.timelineIndex
             };
-            return this.lexicon[cleanWord];
+            return this.lexicon[normalizedKey];
         }
         ingestExternalCorpusStream(text) {
             const words = TextProcessor.tokenize(text);
@@ -581,11 +655,16 @@
             for (let i = 0; i < words.length; i++) {
                 const prevWord = i > 0 ? words[i - 1] : null;
                 const currentToken = this.getOrCreateWord(words[i], prevWord);
+                const currentNorm = TextProcessor.normalizeString(words[i]);
+
                 let expectedProbability = 0;
-                if (i > 0 && sentenceNgramMap[words[i-1]]) {
-                    const totalTransitions = Object.values(sentenceNgramMap[words[i-1]]).reduce((a, b) => a + b, 0);
-                    const actualTransitionFreq = sentenceNgramMap[words[i-1]][words[i]] || 0;
-                    expectedProbability = totalTransitions > 0 ? actualTransitionFreq / totalTransitions : 0;
+                if (i > 0) {
+                    const prevNorm = TextProcessor.normalizeString(words[i-1]);
+                    if (sentenceNgramMap[prevNorm]) {
+                        const totalTransitions = Object.values(sentenceNgramMap[prevNorm]).reduce((a, b) => a + b, 0);
+                        const actualTransitionFreq = sentenceNgramMap[prevNorm][currentNorm] || 0;
+                        expectedProbability = totalTransitions > 0 ? actualTransitionFreq / totalTransitions : 0;
+                    }
                 }
                 const instantaneousSurprise = 1.0 - expectedProbability;
                 this.currentSurprise = (this.currentSurprise * 0.7) + (instantaneousSurprise * 0.3);
@@ -598,8 +677,9 @@
                 if (i < words.length - 1) {
                     const nextWord = words[i + 1]; 
                     this.getOrCreateWord(nextWord, words[i]);
-                    if (!sentenceNgramMap[words[i]]) sentenceNgramMap[words[i]] = {};
-                    sentenceNgramMap[words[i]][nextWord] = (sentenceNgramMap[words[i]][nextWord] || 0) + 1;
+                    const nextNorm = TextProcessor.normalizeString(nextWord);
+                    if (!sentenceNgramMap[currentNorm]) sentenceNgramMap[currentNorm] = {};
+                    sentenceNgramMap[currentNorm][nextNorm] = (sentenceNgramMap[currentNorm][nextNorm] || 0) + 1;
                     this._recordTransition(words[i], nextWord);
                 }
                 const startLook = Math.max(0, i - 1), endLook = Math.min(words.length - 1, i + 1);
@@ -621,32 +701,34 @@
         generateResponse(prompt) {
             const words = TextProcessor.tokenize(prompt);
             if (words.length === 0) return "Veuillez entrer un mot-clé valide.";
-            let currentWord = words[words.length - 1];
-            if (!this.lexicon[currentWord]) {
-                return `Mot inconnu "${currentWord}". Injectez-le d'abord dans le corpus à gauche.`;
+            let currentWordObj = this.getOrCreateWord(words[words.length - 1]);
+            let currentNorm = TextProcessor.normalizeString(currentWordObj.word);
+
+            if (!this.lexicon[currentNorm]) {
+                return `Mot inconnu "${words[words.length - 1]}". Injectez-le d'abord dans le corpus à gauche.`;
             }
             const minTokens = 6, maxTokens = 14;
             const contextMgr = new AntiDriftContextManager(0.75, maxTokens);
-            contextMgr.setQuestionAnchor(this.getOrCreateWord(currentWord).vector);
-            let responseTokens = [currentWord], recentWindow = [currentWord];
+            contextMgr.setQuestionAnchor(currentWordObj.vector);
+            let responseTokens = [currentWordObj.word], recentWindow = [currentNorm];
             const maxWindowSize = 4;
 
             for (let step = 0; step < maxTokens; step++) {
-                let nextWord = null, weightedChoices = [], totalWeight = 0;
-                let combinedTransitions = this.globalTransitions[currentWord] || {};
-                const currentObj = this.getOrCreateWord(currentWord);
+                let nextWordNorm = null, weightedChoices = [], totalWeight = 0;
+                let combinedTransitions = this.globalTransitions[currentNorm] || {};
 
                 if (Object.keys(combinedTransitions).length > 0) {
-                    for (let [w, count] of Object.entries(combinedTransitions)) {
-                        if (w === currentWord) continue;
-                        let nextObj = this.getOrCreateWord(w, currentWord);
-                        let freqCount = recentWindow.filter(token => token === w).length;
+                    for (let [wNorm, count] of Object.entries(combinedTransitions)) {
+                        if (wNorm === currentNorm) continue;
+                        let nextObj = this.lexicon[wNorm];
+                        if (!nextObj) continue;
+                        let freqCount = recentWindow.filter(token => token === wNorm).length;
                         let antiStutter = Math.pow(0.1, freqCount);
-                        let grammarBonus = GrammarEngine.isGrammaticallyPlausible(currentObj.category, nextObj.category) ? 1.5 : 0.3;
+                        let grammarBonus = GrammarEngine.isGrammaticallyPlausible(currentWordObj.category, nextObj.category) ? 1.5 : 0.3;
                         let thematicAlignment = contextMgr.hasAnchor ? Math.max(0.3, 2.0 - GeoMath.cosineDistance(nextObj.vector, contextMgr.anchorVector)) : 1.0;
                         let rawWeight = count * antiStutter * grammarBonus * thematicAlignment;
                         let adjustedWeight = rawWeight > 0 ? Math.exp(rawWeight / Math.max(this.temperature, 0.05)) : 0;
-                        if (adjustedWeight > 0.00001) { weightedChoices.push({ word: w, weight: adjustedWeight }); totalWeight += adjustedWeight; }
+                        if (adjustedWeight > 0.00001) { weightedChoices.push({ norm: wNorm, word: nextObj.word, weight: adjustedWeight }); totalWeight += adjustedWeight; }
                     }
                 }
 
@@ -654,29 +736,30 @@
                     let r = Math.random() * totalWeight, cumulative = 0;
                     for (let choice of weightedChoices) {
                         cumulative += choice.weight;
-                        if (r <= cumulative) { nextWord = choice.word; break; }
+                        if (r <= cumulative) { nextWordNorm = choice.norm; break; }
                     }
                 }
 
-                if (!nextWord) {
-                    const hits = this.memory.spatialIndex.findAdaptiveNearestNeighbors(contextMgr.getSearchTarget(currentObj.vector, step), 10);
-                    let validHits = hits.filter(h => h.block.word !== currentWord && !recentWindow.includes(h.block.word));
-                    if (validHits.length === 0) validHits = hits.filter(h => h.block.word !== currentWord);
-                    if (validHits.length > 0) nextWord = validHits[Math.floor(Math.random() * validHits.length)].block.word;
+                if (!nextWordNorm) {
+                    const hits = this.memory.spatialIndex.findAdaptiveNearestNeighbors(contextMgr.getSearchTarget(currentWordObj.vector, step), 10);
+                    let validHits = hits.filter(h => TextProcessor.normalizeString(h.block.word) !== currentNorm && !recentWindow.includes(TextProcessor.normalizeString(h.block.word)));
+                    if (validHits.length === 0) validHits = hits.filter(h => TextProcessor.normalizeString(h.block.word) !== currentNorm);
+                    if (validHits.length > 0) nextWordNorm = TextProcessor.normalizeString(validHits[Math.floor(Math.random() * validHits.length)].block.word);
                 }
 
-                if (!nextWord) {
-                    const allKeys = Object.keys(this.lexicon).filter(k => k !== currentWord && !recentWindow.includes(k));
-                    if (allKeys.length > 0) nextWord = allKeys[Math.floor(Math.random() * allKeys.length)];
+                if (!nextWordNorm) {
+                    const allNorms = Object.keys(this.lexicon).filter(k => k !== currentNorm && !recentWindow.includes(k));
+                    if (allNorms.length > 0) nextWordNorm = allNorms[Math.floor(Math.random() * allNorms.length)];
                     else break;
                 }
 
-                const nextObj = this.getOrCreateWord(nextWord, currentWord);
+                const nextObj = this.lexicon[nextWordNorm];
                 contextMgr.updateContext(nextObj.vector, nextObj.category);
-                responseTokens.push(nextWord);
-                recentWindow.push(nextWord);
+                responseTokens.push(nextObj.word);
+                recentWindow.push(nextWordNorm);
                 if (recentWindow.length > maxWindowSize) recentWindow.shift();
-                currentWord = nextWord;
+                currentWordObj = nextObj;
+                currentNorm = nextWordNorm;
 
                 if (responseTokens.length >= minTokens && (totalWeight < 0.2 || Math.random() < 0.1)) break;
             }
@@ -687,7 +770,7 @@
     const engine = new MetaCognitiveEngineV14();
 
     document.addEventListener('DOMContentLoaded', () => {
-        loadPreset('animaux'); // Charger un modèle par défaut au démarrage
+        loadPreset('animaux');
         
         const tempRange = document.getElementById('tempRange');
         const tempVal = document.getElementById('tempVal');
@@ -701,12 +784,62 @@
             if (!text.trim()) return alert("Veuillez saisir du texte !");
             engine.ingestExternalCorpusStream(text);
             updateUI();
-            appendChatMessage("Système", "Corpus injecté et espace vectoriel restructuré avec succès.", "engine");
+            appendChatMessage("Système", "Corpus injecté, normalisé et espace vectoriel restructuré avec succès.", "engine");
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
         document.getElementById('chatInput').addEventListener('keydown', e => { if(e.key==='Enter') sendChatMessage(); });
     });
+
+    // Fonctions d'exportation et d'importation JSON de la mémoire
+    function exportMemoryJSON() {
+        const memoryData = {
+            version: "14.3",
+            timestamp: Date.now(),
+            lexicon: engine.lexicon,
+            globalTransitions: engine.globalTransitions,
+            timelineIndex: engine.timelineIndex,
+            currentSurprise: engine.currentSurprise
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(memoryData, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `metacognitive_memory_${Date.now()}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        appendChatMessage("Système", "Mémoire JSON téléchargée avec succès.", "engine");
+    }
+
+    function importMemoryJSON(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const parsedData = JSON.parse(e.target.result);
+                if (!parsedData.lexicon || !parsedData.globalTransitions) {
+                    throw new Error("Format JSON invalide pour le moteur métacognitif.");
+                }
+                engine.lexicon = parsedData.lexicon;
+                engine.globalTransitions = parsedData.globalTransitions;
+                engine.timelineIndex = parsedData.timelineIndex || 0;
+                engine.currentSurprise = parsedData.currentSurprise || 0.5;
+                
+                // Reconstruire immédiatement l'index spatial VP-Tree
+                engine.memory.init(engine.lexicon);
+                engine.memory.commitBatch();
+
+                updateUI();
+                appendChatMessage("Système", `Mémoire JSON restaurée avec succès (${Object.keys(engine.lexicon).length} mots chargés).`, "engine");
+            } catch (err) {
+                alert("Erreur lors de la lecture du fichier JSON : " + err.message);
+            }
+            // Réinitialiser l'input file pour permettre de recharger le même fichier si besoin
+            event.target.value = '';
+        };
+        reader.readAsText(file);
+    }
 
     function sendChatMessage() {
         const input = document.getElementById('chatInput');
@@ -715,7 +848,7 @@
         appendChatMessage("Vous", text, "user");
         input.value = "";
         setTimeout(() => {
-            appendChatMessage("Moteur V14.1", engine.generateResponse(text), "engine");
+            appendChatMessage("Moteur V14.3", engine.generateResponse(text), "engine");
         }, 150);
     }
 
@@ -742,8 +875,8 @@
             lexiconDisplay.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 10px; font-size: 0.85rem;">Aucun mot ingéré.</div>';
             return;
         }
-        keys.forEach(word => {
-            const item = engine.lexicon[word];
+        keys.forEach(normKey => {
+            const item = engine.lexicon[normKey];
             const div = document.createElement('div');
             div.className = 'word-item';
             div.innerHTML = `<span><strong>${item.word}</strong> <span style="color:var(--accent-color); font-size:0.7rem;">[${item.category}]</span></span><span class="word-meta">Acc: ${item.lastAccessed}</span>`;
