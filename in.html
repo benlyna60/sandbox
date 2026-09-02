@@ -245,7 +245,6 @@
         const arrow = document.getElementById('arrow-' + id);
         const isOpen = !content.classList.contains('hidden');
         
-        // Fermer tous les autres accordéons si souhaité, ou garder indépendant
         ['acc-engine', 'acc-corpus', 'acc-json'].forEach(accId => {
             document.getElementById(accId).classList.add('hidden');
             const arr = document.getElementById('arrow-' + accId);
@@ -311,7 +310,6 @@
                         resolve();
                     };
                     request.onerror = () => {
-                        console.warn("IndexedDB restreint (mode privé). Bascule en mémoire volatile.");
                         this.isAvailable = false;
                         resolve();
                     };
