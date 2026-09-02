@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V14.4 - Ergonomic Workspace</title>
+    <title>Meta-Cognitive Engine V14.5 - Ergonomic Workspace</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -131,10 +131,11 @@
             display: flex;
             flex-direction: column;
             height: calc(100% - 30px);
+            overflow: hidden; /* Empêche la carte elle-même de déborder */
         }
         .chat-box {
             flex-grow: 1;
-            min-height: 350px;
+            min-height: 0; /* Crucial pour que le flexbox gère correctement le défilement interne */
             overflow-y: auto;
             background-color: var(--bg-color);
             border: 1px solid var(--border-color);
@@ -219,6 +220,7 @@
 <body>
 
 <div class="workspace">
+    <!-- COLONNE DE GAUCHE : Gestion Mémoire, Corpus & Contrôles -->
     <div class="sidebar">
         <div class="card">
             <h1>1. Gestion de la Mémoire JSON</h1>
@@ -249,7 +251,10 @@
                 <input type="range" id="tempRange" min="0.05" max="2.0" step="0.05" value="0.80">
             </div>
 
-            <button id="btnIngest" style="width: 100%;">Mettre à jour le réseau</button>
+            <div class="button-row">
+                <button id="btnIngest" style="width: 100%;">Mettre à jour</button>
+                <button id="btnClearCorpus" class="btn-secondary" style="width: 100%;">Effacer texte</button>
+            </div>
         </div>
 
         <div class="card">
@@ -282,6 +287,7 @@
         </div>
     </div>
 
+    <!-- COLONNE DE DROITE : Espace de Discussion Continu -->
     <div class="main-panel">
         <div class="card chat-card">
             <h1>3. Dialogue Actif (Inférence en Direct)</h1>
@@ -700,7 +706,6 @@
             const words = TextProcessor.tokenize(prompt);
             if (words.length === 0) return "Veuillez entrer un mot-clé valide.";
             
-            // CORRECTION MULTI-MOTS : On s'appuie sur toute l'amorce pour initialiser l'ancre contextuelle
             let firstWordObj = this.getOrCreateWord(words[0]);
             let currentWordObj = this.getOrCreateWord(words[words.length - 1]);
             let currentNorm = TextProcessor.normalizeString(currentWordObj.word);
@@ -710,8 +715,6 @@
             }
             const minTokens = 6, maxTokens = 14;
             const contextMgr = new AntiDriftContextManager(0.75, maxTokens);
-            
-            // Initialisation de l'ancre avec le premier mot de l'amorce pour garder le sens global de la phrase
             contextMgr.setQuestionAnchor(firstWordObj.vector);
             
             let responseTokens = [currentWordObj.word], recentWindow = [currentNorm];
@@ -784,21 +787,28 @@
         });
 
         document.getElementById('btnIngest').addEventListener('click', () => {
-            const text = document.getElementById('corpusInput').value;
+            const textarea = document.getElementById('corpusInput');
+            const text = textarea.value;
             if (!text.trim()) return alert("Veuillez saisir du texte !");
             engine.ingestExternalCorpusStream(text);
             updateUI();
             appendChatMessage("Système", "Corpus injecté, normalisé et espace vectoriel restructuré avec succès.", "engine");
+            
+            // Vidage automatique du textarea après l'injection
+            textarea.value = "";
+        });
+
+        document.getElementById('btnClearCorpus').addEventListener('click', () => {
+            document.getElementById('corpusInput').value = "";
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
         document.getElementById('chatInput').addEventListener('keydown', e => { if(e.key==='Enter') sendChatMessage(); });
     });
 
-    // Fonctions d'exportation et d'importation JSON de la mémoire
     function exportMemoryJSON() {
         const memoryData = {
-            version: "14.4",
+            version: "14.5",
             timestamp: Date.now(),
             lexicon: engine.lexicon,
             globalTransitions: engine.globalTransitions,
@@ -830,7 +840,6 @@
                 engine.timelineIndex = parsedData.timelineIndex || 0;
                 engine.currentSurprise = parsedData.currentSurprise || 0.5;
                 
-                // Reconstruire immédiatement l'index spatial VP-Tree
                 engine.memory.init(engine.lexicon);
                 engine.memory.commitBatch();
 
@@ -851,7 +860,7 @@
         appendChatMessage("Vous", text, "user");
         input.value = "";
         setTimeout(() => {
-            appendChatMessage("Moteur V14.4", engine.generateResponse(text), "engine");
+            appendChatMessage("Moteur V14.5", engine.generateResponse(text), "engine");
         }, 150);
     }
 
@@ -861,6 +870,8 @@
         div.className = `message ${type}`;
         div.innerHTML = `<strong>${sender}:</strong> ${text}`;
         history.appendChild(div);
+        
+        // Forçage du défilement automatique vers le bas pour voir les nouveaux messages
         history.scrollTop = history.scrollHeight;
     }
 
@@ -883,7 +894,7 @@
             const div = document.createElement('div');
             div.className = 'word-item';
             div.innerHTML = `<span><strong>${item.word}</strong> <span style="color:var(--accent-color); font-size:0.7rem;">[${item.category}]</span></span><span class="word-meta">Acc: ${item.lastAccessed}</span>`;
-            lexiconDisplay.appendChild(div);
+            lexiconDisplay.lexiconDisplay_appendChild ? null : lexiconDisplay.appendChild(div);
         });
     }
 </script>
