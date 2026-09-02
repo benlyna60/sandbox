@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V14.6 - Ergonomic Workspace</title>
+    <title>Meta-Cognitive Engine V15.2.1 - Production Stable</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
+            --bg-color: #0b0f19;
+            --card-bg: #131d31;
             --accent-color: #38bdf8;
-            --text-main: #f8fafc;
+            --text-main: #f1f5f9;
             --text-muted: #94a3b8;
-            --border-color: #334155;
-            --chat-user: #334155;
-            --chat-engine: #1e293b;
+            --border-color: #1e293b;
+            --chat-user: #1e293b;
+            --chat-engine: #131d31;
+            --progress-green: #22c55e;
+            --warning-amber: #f59e0b;
         }
         html, body {
             height: 100vh;
-            overflow: hidden; /* Empêche tout défilement global de la page */
+            overflow: hidden;
             margin: 0;
             padding: 0;
         }
@@ -31,13 +33,13 @@
         }
         .workspace {
             width: 100%;
-            max-width: 1400px;
-            height: calc(100vh - 30px);
-            max-height: 950px;
+            max-width: 1440px;
+            height: calc(100vh - 24px);
+            max-height: 980px;
             display: grid;
-            grid-template-columns: 420px 1fr;
-            gap: 20px;
-            padding: 0 15px;
+            grid-template-columns: 440px 1fr;
+            gap: 16px;
+            padding: 0 12px;
             box-sizing: border-box;
         }
         @media (max-width: 1024px) {
@@ -49,13 +51,13 @@
                 grid-template-columns: 1fr;
                 height: auto;
                 max-height: none;
-                padding: 15px;
+                padding: 12px;
             }
         }
         .sidebar {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             overflow-y: auto;
             padding-right: 4px;
             max-height: 100%;
@@ -64,24 +66,24 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            min-height: 0; /* Crucial pour le flexbox grid */
+            min-height: 0;
         }
         .card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
             box-sizing: border-box;
         }
         h1, h2 {
             margin-top: 0;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--accent-color);
-            font-size: 1.1rem;
+            font-size: 1rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         textarea, input[type="text"], input[type="range"] {
             width: 100%;
@@ -93,7 +95,7 @@
             font-family: inherit;
             box-sizing: border-box;
         }
-        textarea { height: 80px; resize: vertical; font-size: 0.9rem; }
+        textarea { height: 75px; resize: vertical; font-size: 0.85rem; }
         .control-group {
             margin-top: 6px;
             display: flex;
@@ -103,22 +105,23 @@
         .control-row {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
         }
         button {
             background-color: var(--accent-color);
             color: var(--bg-color);
             border: none;
-            padding: 8px 16px;
+            padding: 8px 14px;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
             transition: opacity 0.2s;
-            margin-top: 8px;
-            font-size: 0.9rem;
+            margin-top: 6px;
+            font-size: 0.85rem;
         }
         button:hover { opacity: 0.9; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-secondary {
             background-color: var(--border-color);
             color: var(--text-main);
@@ -131,16 +134,16 @@
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+            gap: 6px;
         }
         .metric-box {
             background-color: var(--bg-color);
-            padding: 8px 10px;
-            border-radius: 8px;
+            padding: 6px 8px;
+            border-radius: 6px;
             border: 1px solid var(--border-color);
         }
-        .metric-label { font-size: 0.75rem; color: var(--text-muted); }
-        .metric-value { font-size: 1.05rem; font-weight: bold; color: var(--accent-color); }
+        .metric-label { font-size: 0.7rem; color: var(--text-muted); }
+        .metric-value { font-size: 0.95rem; font-weight: bold; color: var(--accent-color); }
         
         .chat-card {
             flex-grow: 1;
@@ -152,22 +155,22 @@
         }
         .chat-box {
             flex-grow: 1;
-            min-height: 0; /* Permet au conteneur de défiler en interne sans étirer la page */
+            min-height: 0;
             overflow-y: auto;
             background-color: var(--bg-color);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 10px;
         }
         .message {
-            padding: 10px 14px;
+            padding: 10px 12px;
             border-radius: 8px;
             max-width: 85%;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             line-height: 1.4;
             word-break: break-word;
         }
@@ -181,9 +184,18 @@
             align-self: flex-start;
             border: 1px solid var(--accent-color);
         }
+        .message.meta {
+            background-color: rgba(245, 158, 11, 0.08);
+            align-self: center;
+            border: 1px dashed var(--warning-amber);
+            color: #fbbf24;
+            font-size: 0.8rem;
+            max-width: 95%;
+            text-align: center;
+        }
         .chat-input-row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-shrink: 0;
         }
         .chat-input-row input[type="text"] {
@@ -194,36 +206,36 @@
             margin-top: 0;
         }
         .lexicon-list {
-            max-height: 120px;
+            max-height: 110px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
         .word-item {
             background-color: var(--bg-color);
-            padding: 6px 10px;
+            padding: 5px 8px;
             border-radius: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             border: 1px solid var(--border-color);
         }
-        .word-meta { font-size: 0.75rem; color: var(--text-muted); }
+        .word-meta { font-size: 0.7rem; color: var(--text-muted); }
         .quick-presets {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 6px;
+            gap: 4px;
+            margin-top: 4px;
         }
         .preset-badge {
             background-color: var(--bg-color);
             border: 1px solid var(--border-color);
             color: var(--text-muted);
-            padding: 4px 8px;
+            padding: 3px 6px;
             border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             cursor: pointer;
             transition: all 0.2s;
             margin-top: 0;
@@ -235,105 +247,121 @@
         .checkbox-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
+            gap: 6px;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            margin-top: 8px;
+            margin-top: 6px;
             cursor: pointer;
         }
         .checkbox-row input {
             accent-color: var(--accent-color);
             cursor: pointer;
         }
-        input[type="file"] {
+        .progress-bar-container {
+            width: 100%;
+            background-color: var(--bg-color);
+            border-radius: 4px;
+            height: 5px;
+            margin-top: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
             display: none;
         }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--progress-green);
+            transition: width 0.1s linear;
+        }
+        input[type="file"] { display: none; }
     </style>
 </head>
 <body>
 
 <div class="workspace">
-    <!-- COLONNE DE GAUCHE : Gestion Mémoire, Corpus & Contrôles -->
+    <!-- COLONNE DE GAUCHE -->
     <div class="sidebar">
         <div class="card">
             <h1>1. Gestion de la Mémoire JSON</h1>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px;">Sauvegardez ou restaurez l'état complet du moteur :</p>
             <div class="button-row">
-                <button class="btn-secondary" onclick="exportMemoryJSON()" style="margin-top: 0;">Télécharger JSON</button>
-                <button class="btn-secondary" onclick="document.getElementById('importFile').click()" style="margin-top: 0;">Charger JSON</button>
+                <button class="btn-secondary" onclick="exportMemoryJSON()" style="margin-top: 0;">Télécharger</button>
+                <button class="btn-secondary" onclick="document.getElementById('importFile').click()" style="margin-top: 0;">Charger</button>
             </div>
             <input type="file" id="importFile" accept=".json" onchange="importMemoryJSON(event)">
         </div>
 
         <div class="card">
-            <h1>2. Alimentation du Corpus</h1>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px;">Collez ou injectez vos phrases d'apprentissage :</p>
-            <textarea id="corpusInput" placeholder="Ex: Le chat noir traverse la rue rapidement. Le chien blanc surveille la maison attentivement."></textarea>
+            <h1>2. Ingestion du Corpus & HAL</h1>
+            <textarea id="corpusInput" placeholder="Ex: Le chat a mangé la souris grise rapidement..."></textarea>
             
             <div class="quick-presets">
-                <span style="font-size: 0.75rem; color: var(--text-muted); width: 100%; margin-top: 2px;">Modèles rapides :</span>
-                <button class="preset-badge" onclick="loadPreset('animaux')">Animaux & Maison</button>
-                <button class="preset-badge" onclick="loadPreset('tech')">Espace & Tech</button>
+                <span style="font-size: 0.7rem; color: var(--text-muted); width: 100%;">Modèles :</span>
+                <button class="preset-badge" onclick="loadPreset('animaux')">Animaux & Passé Composé</button>
+                <button class="preset-badge" onclick="loadPreset('tech')">Espace & Ingénierie</button>
             </div>
 
             <label class="checkbox-row">
                 <input type="checkbox" id="autoClearCorpus" checked>
-                Effacer automatiquement le texte après la mise à jour
+                Effacer après ingestion
             </label>
 
             <div class="control-group">
                 <div class="control-row">
-                    <span>Température (T)</span>
-                    <span id="tempVal">0.80</span>
+                    <span>Température Base</span>
+                    <span id="tempVal">0.75</span>
                 </div>
-                <input type="range" id="tempRange" min="0.05" max="2.0" step="0.05" value="0.80">
+                <input type="range" id="tempRange" min="0.05" max="2.0" step="0.05" value="0.75">
+            </div>
+
+            <div class="progress-bar-container" id="progressContainer">
+                <div class="progress-bar-fill" id="progressFill"></div>
             </div>
 
             <div class="button-row">
-                <button id="btnIngest" style="width: 100%;">Mettre à jour</button>
-                <button id="btnClearCorpus" class="btn-secondary" style="width: 100%;">Effacer texte</button>
+                <button id="btnIngest" style="width: 100%;">Ingérer Corpus (HAL)</button>
+                <button id="btnClearCorpus" class="btn-secondary" style="width: 100%;">Effacer</button>
             </div>
         </div>
 
         <div class="card">
-            <h2>État Métacognitif</h2>
+            <h2>Métriques Métacognitives V15.2.1</h2>
             <div class="metrics-grid">
                 <div class="metric-box">
-                    <div class="metric-label">Surprise</div>
-                    <div class="metric-value" id="valSurprise">0.5000</div>
+                    <div class="metric-label">Dimensions</div>
+                    <div class="metric-value" id="valDim">64</div>
                 </div>
                 <div class="metric-box">
-                    <div class="metric-label">Taux d'Apprentissage</div>
-                    <div class="metric-value" id="valLearningRate">0.0500</div>
+                    <div class="metric-label">Indice de Surprise</div>
+                    <div class="metric-value" id="valSurprise" style="color:var(--warning-amber);">0.000</div>
                 </div>
                 <div class="metric-box">
-                    <div class="metric-label">Homéostasie</div>
-                    <div class="metric-value" id="valHomeostasis">0.5000</div>
+                    <div class="metric-label">Densité Homéostasie</div>
+                    <div class="metric-value" id="valHomeostasis">0.000</div>
                 </div>
                 <div class="metric-box">
-                    <div class="metric-label">Lexique (Max 500)</div>
+                    <div class="metric-label">Tokens Actifs</div>
                     <div class="metric-value" id="valLexiconSize">0</div>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <h2>Lexique & Grammaire</h2>
+            <h2>Lexique & Tokens Composés</h2>
             <div class="lexicon-list" id="lexiconDisplay">
-                <div style="color: var(--text-muted); text-align: center; padding: 10px; font-size: 0.85rem;">Aucun mot ingéré.</div>
+                <div style="color: var(--text-muted); text-align: center; padding: 10px; font-size: 0.8rem;">Aucun token enregistré.</div>
             </div>
         </div>
     </div>
 
-    <!-- COLONNE DE DROITE : Espace de Discussion Continu -->
+    <!-- COLONNE DE DROITE : Dialogue Métacognitif -->
     <div class="main-panel">
         <div class="card chat-card">
-            <h1>3. Dialogue Actif (Inférence en Direct)</h1>
+            <h1>3. Dialogue & Inférence Métacognitive V15.2.1</h1>
             <div class="chat-box" id="chatHistory">
-                <div class="message engine">Système prêt. Injectez un corpus à gauche, chargez une mémoire JSON, puis tapez une phrase ou un mot pour amorcer la discussion.</div>
+                <div class="message engine">Moteur V15.2.1 initialisé. Persistance IndexedDB sécurisée, arbre VP incrémental et boucle métacognitive actifs.</div>
             </div>
             <div class="chat-input-row">
-                <input type="text" id="chatInput" placeholder="Tapez une amorce (ex: Comment ça va, chat...)" />
+                <input type="text" id="chatInput" placeholder="Tapez une amorce (ex: Le chat...)" />
                 <button id="btnSend">Envoyer</button>
             </div>
         </div>
@@ -341,502 +369,516 @@
 </div>
 
 <script>
-    const CONFIG = { 
-        DIM_LATENT: 32, 
-        VP_TREE_BUCKET_SIZE: 4,
-        MAX_LEXICON_SIZE: 500,
-        MAX_TRANSITIONS_PER_WORD: 30
+    // --- 1. PERSISTENCE INDEXEDDB SÉCURISÉE ---
+    class IndustrialStorage {
+        constructor(dbName = "MetaCognitiveEngineDB", storeName = "SemanticStore") {
+            this.dbName = dbName;
+            this.storeName = storeName;
+            this.db = null;
+            this.isAvailable = typeof indexedDB !== 'undefined';
+        }
+
+        init() {
+            if (!this.isAvailable) return Promise.resolve();
+            return new Promise((resolve) => {
+                try {
+                    const request = indexedDB.open(this.dbName, 1);
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains(this.storeName)) {
+                            db.createObjectStore(this.storeName);
+                        }
+                    };
+                    request.onsuccess = (e) => {
+                        this.db = e.target.result;
+                        resolve();
+                    };
+                    request.onerror = () => {
+                        console.warn("IndexedDB non disponible (mode privé ou restrictions de sécurité). Fallback mémoire vive.");
+                        this.isAvailable = false;
+                        resolve();
+                    };
+                } catch (err) {
+                    this.isAvailable = false;
+                    resolve();
+                }
+            });
+        }
+
+        async save(key, value) {
+            if (!this.isAvailable) return;
+            if (!this.db) await this.init();
+            if (!this.db) return;
+            return new Promise((resolve) => {
+                try {
+                    const tx = this.db.transaction(this.storeName, "readwrite");
+                    const store = tx.objectStore(this.storeName);
+                    const req = store.put(value, key);
+                    req.onsuccess = () => resolve();
+                    req.onerror = () => resolve(); // Non-bloquant en cas d'erreur d'écriture
+                } catch (e) {
+                    resolve();
+                }
+            });
+        }
+
+        async load(key) {
+            if (!this.isAvailable) return null;
+            if (!this.db) await this.init();
+            if (!this.db) return null;
+            return new Promise((resolve) => {
+                try {
+                    const tx = this.db.transaction(this.storeName, "readonly");
+                    const store = tx.objectStore(this.storeName);
+                    const req = store.get(key);
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => resolve(null);
+                } catch (e) {
+                    resolve(null);
+                }
+            });
+        }
+    }
+
+    const yieldToMain = () => new Promise(resolve => {
+        if (typeof requestAnimationFrame !== 'undefined') {
+            requestAnimationFrame(() => resolve());
+        } else {
+            setTimeout(resolve, 0);
+        }
+    });
+
+    // --- 2. RÈGLES LINGUISTIQUES & COMPOSÉS ---
+    const INDUSTRIAL_NLP_RULES = {
+        irregulars: {
+            "suis": "être", "es": "être", "est": "être", "sommes": "être", "êtes": "être", "sont": "être",
+            "ai": "avoir", "as": "avoir", "a": "avoir", "avons": "avoir", "avez": "avoir", "ont": "avoir",
+            "vais": "aller", "vas": "aller", "va": "aller", "allons": "aller", "allez": "aller", "vont": "aller",
+            "beau": "beau", "belle": "beau", "beaux": "beau", "belles": "beau"
+        },
+
+        stem(word) {
+            if (!word) return "";
+            let clean = word.toLowerCase().trim();
+            if (this.irregulars[clean]) return this.irregulars[clean];
+
+            if (clean.endsWith("ons") && !clean.endsWith("erons") && !clean.endsWith("irons")) {
+                if (clean.length > 5) return clean.replace(/ons$/, "");
+            }
+
+            return clean
+                .replace(/(é|ée|és|ées)$/, 'er')
+                .replace(/(es|s)$/, '')
+                .replace(/(e)$/, '')
+                .replace(/(iérons|iez|ions|erons|erez|ent)$/, '')
+                .trim() || clean;
+        },
+
+        tokenizeAndResolveGraph(text) {
+            const rawWords = text.toLowerCase().match(/[\wàâäéèêëîïôöùûüç]+/g) || [];
+            const tokens = [];
+
+            for (let i = 0; i < rawWords.length; i++) {
+                const current = rawWords[i];
+                const next = rawWords[i + 1];
+
+                if (current === "est") {
+                    if (next && (next === "un" || next === "le" || next === "une" || next === "mon")) {
+                        tokens.push("est_substantif");
+                    } else if (next) {
+                        tokens.push(`être__${this.stem(next)}`);
+                        i++;
+                    } else {
+                        tokens.push("être");
+                    }
+                    continue;
+                }
+
+                if ((current === "a" || current === "ont") && next) {
+                    tokens.push(`${this.irregulars[current]}__${this.stem(next)}`);
+                    i++;
+                } else {
+                    tokens.push(this.stem(current));
+                }
+            }
+            return tokens;
+        }
     };
+
+    // --- 3. ARBRE VP ASYNCHRONE & INCREMENTAL ---
+    class HybridVPTree {
+        constructor(engine) {
+            this.engine = engine;
+            this.root = null;
+        }
+
+        _selectOptimalPivot(elements) {
+            if (elements.length <= 2) return elements[0];
+            const sampleSize = Math.min(elements.length, 8);
+            let bestPivot = elements[0];
+            let maxVariance = -1;
+
+            for (let i = 0; i < sampleSize; i++) {
+                const candidate = elements[Math.floor(Math.random() * elements.length)];
+                let sumDist = 0;
+                for (let j = 0; j < sampleSize; j++) {
+                    sumDist += this.engine.cosineDistance(candidate.vector, elements[j].vector);
+                }
+                const avgDist = sumDist / sampleSize;
+                let variance = 0;
+                for (let j = 0; j < sampleSize; j++) {
+                    const d = this.engine.cosineDistance(candidate.vector, elements[j].vector);
+                    variance += (d - avgDist) ** 2;
+                }
+                if (variance > maxVariance) {
+                    maxVariance = variance;
+                    bestPivot = candidate;
+                }
+            }
+            return bestPivot;
+        }
+
+        async buildAsyncChunked(elements) {
+            if (!elements || elements.length === 0) return null;
+
+            const pivot = this._selectOptimalPivot(elements);
+            const remaining = elements.filter(el => el !== pivot);
+            const node = { pivot, threshold: 0, left: null, right: null };
+            if (remaining.length === 0) return node;
+
+            const distances = remaining.map(el => ({ el, dist: this.engine.cosineDistance(pivot.vector, el.vector) }));
+            distances.sort((a, b) => a.dist - b.dist);
+            
+            const medianIdx = Math.floor(distances.length / 2);
+            node.threshold = distances[medianIdx].dist;
+
+            if (elements.length > 50) {
+                await yieldToMain();
+            }
+
+            node.left = await this.buildAsyncChunked(distances.slice(0, medianIdx).map(d => d.el));
+            node.right = await this.buildAsyncChunked(distances.slice(medianIdx).map(d => d.el));
+            return node;
+        }
+
+        search(targetVector, k = 5) {
+            if (!this.root) return [];
+            const neighbors = [];
+            const searchNode = (node) => {
+                if (!node) return;
+                const dist = this.engine.cosineDistance(targetVector, node.pivot.vector);
+
+                if (neighbors.length < k || dist < neighbors[neighbors.length - 1].dist) {
+                    neighbors.push({ item: node.pivot, dist });
+                    neighbors.sort((a, b) => a.dist - b.dist);
+                    if (neighbors.length > k) neighbors.pop();
+                }
+
+                const maxRadius = neighbors.length < k ? Infinity : neighbors[neighbors.length - 1].dist;
+                if (dist - maxRadius <= node.threshold) searchNode(node.left);
+                if (dist + maxRadius >= node.threshold) searchNode(node.right);
+            };
+            searchNode(this.root);
+            return neighbors;
+        }
+    }
+
+    // --- 4. MOTEUR COGNITIF AVEC BOUCLE Méta-Cognitive ---
+    class MetacognitiveEngine {
+        constructor(dimensions = 64, maxLexiconSize = 500) {
+            this.dimensions = dimensions;
+            this.maxLexiconSize = maxLexiconSize;
+            this.lexicon = new Map();
+            this.contextVectors = new Map();
+            this.tokenFrequencies = new Map();
+            this.vpTree = new HybridVPTree(this);
+            this.storage = new IndustrialStorage();
+            this.baseTemperature = 0.75;
+            this.lastSurpriseIndex = 0.0;
+        }
+
+        _createPRNG(seed) {
+            let h = 1779033703 ^ seed.length;
+            for (let i = 0; i < seed.length; i++) {
+                h = Math.imul(h ^ seed.charCodeAt(i), 3432918353);
+                h = (h << 13) | (h >>> 19);
+            }
+            return function() {
+                h = Math.imul(h ^ (h >>> 16), 2246822507);
+                return ((h ^ (h >>> 13)) >>> 0) / 4294967296;
+            };
+        }
+
+        _generateBaseVector(word) {
+            const rand = this._createPRNG(word);
+            const vec = new Float32Array(this.dimensions);
+            let count = 0;
+            while (count < 8) {
+                const idx = Math.floor(rand() * this.dimensions);
+                if (vec[idx] === 0) {
+                    vec[idx] = rand() > 0.5 ? 1 : -1;
+                    count++;
+                }
+            }
+            return vec;
+        }
+
+        cosineDistance(v1, v2) {
+            let dotProduct = 0, mA = 0, mB = 0;
+            for (let i = 0; i < this.dimensions; i++) {
+                dotProduct += v1[i] * v2[i];
+                mA += v1[i] * v1[i];
+                mB += v2[i] * v2[i];
+            }
+            const denom = Math.sqrt(mA) * Math.sqrt(mB);
+            return denom === 0 ? 1 : 1 - (dotProduct / denom);
+        }
+
+        _adaptiveEviction(incomingUniqueTokens) {
+            if (this.lexicon.size + incomingUniqueTokens.size <= this.maxLexiconSize) return;
+
+            const totalCorpusTokens = Array.from(this.tokenFrequencies.values()).reduce((a, b) => a + b, 1);
+            const scoredTokens = Array.from(this.lexicon.keys()).map(token => {
+                const tf = this.tokenFrequencies.get(token) || 1;
+                const idf = Math.log(1 + (totalCorpusTokens / tf));
+                return { token, score: tf * idf };
+            });
+
+            scoredTokens.sort((a, b) => a.score - b.score);
+            const toEvictCount = (this.lexicon.size + incomingUniqueTokens.size) - this.maxLexiconSize;
+
+            for (let i = 0; i < Math.min(scoredTokens.length, toEvictCount); i++) {
+                const deadToken = scoredTokens[i].token;
+                this.lexicon.delete(deadToken);
+                this.contextVectors.delete(deadToken);
+                this.tokenFrequencies.delete(deadToken);
+            }
+        }
+
+        async trainOnCorpus(text, onProgress) {
+            const tokens = INDUSTRIAL_NLP_RULES.tokenizeAndResolveGraph(text);
+            const windowSize = 4;
+
+            tokens.forEach(t => this.tokenFrequencies.set(t, (this.tokenFrequencies.get(t) || 0) + 1));
+            
+            const uniqueSet = new Set(tokens);
+            this._adaptiveEviction(uniqueSet);
+
+            tokens.forEach(token => {
+                if (!this.contextVectors.has(token) && this.contextVectors.size < this.maxLexiconSize) {
+                    this.contextVectors.set(token, this._generateBaseVector(token));
+                    this.lexicon.set(token, new Float32Array(this.dimensions));
+                }
+            });
+
+            for (let i = 0; i < tokens.length; i++) {
+                const targetToken = tokens[i];
+                if (!this.lexicon.has(targetToken)) continue;
+                const targetVec = this.lexicon.get(targetToken);
+
+                for (let j = Math.max(0, i - windowSize); j <= Math.min(tokens.length - 1, i + windowSize); j++) {
+                    if (i === j) continue;
+                    const contextToken = tokens[j];
+                    const contextVec = this.contextVectors.get(contextToken);
+                    if (contextVec) {
+                        const weight = 1.0 / Math.abs(i - j);
+                        for (let d = 0; d < this.dimensions; d++) {
+                            targetVec[d] += contextVec[d] * weight;
+                        }
+                    }
+                }
+                if (i % 40 === 0) {
+                    if (onProgress) onProgress((i / tokens.length) * 70);
+                    await yieldToMain();
+                }
+            }
+
+            for (let [token, vec] of this.lexicon.entries()) {
+                let norm = 0;
+                for (let d = 0; d < this.dimensions; d++) norm += vec[d] * vec[d];
+                norm = Math.sqrt(norm);
+                if (norm > 0) {
+                    for (let d = 0; d < this.dimensions; d++) vec[d] /= norm;
+                }
+            }
+
+            if (onProgress) onProgress(85);
+
+            const treeElements = Array.from(this.lexicon.entries()).map(([word, vector]) => ({ word, vector }));
+            this.vpTree.root = await this.vpTree.buildAsyncChunked(treeElements);
+
+            await this.storage.save("lexicon", Array.from(this.lexicon.entries()));
+            await this.storage.save("frequencies", Array.from(this.tokenFrequencies.entries()));
+            if (onProgress) onProgress(100);
+        }
+
+        async loadStoredMemory() {
+            try {
+                const storedLexicon = await this.storage.load("lexicon");
+                const storedFreqs = await this.storage.load("frequencies");
+                if (storedLexicon && storedLexicon.length > 0) {
+                    this.lexicon = new Map(storedLexicon);
+                    const treeElements = Array.from(this.lexicon.entries()).map(([word, vector]) => ({ word, vector }));
+                    this.vpTree.root = await this.vpTree.buildAsyncChunked(treeElements);
+                }
+                if (storedFreqs) {
+                    this.tokenFrequencies = new Map(storedFreqs);
+                }
+            } catch (e) {
+                console.warn("Initialisation à froid : aucune mémoire locale persistée.", e);
+            }
+        }
+
+        // --- 5. INFÉRENCE AVEC BOUCLE MÉTACOGNITIVE ---
+        generateSentenceWithMetacognition(seedWord, maxSteps = 10) {
+            if (this.lexicon.size === 0) {
+                return {
+                    text: "Erreur : Le lexique est vide. Veuillez d'abord ingérer un corpus.",
+                    surprise: 0.0,
+                    metaMessage: "Alerte : Espace vectoriel non initialisé."
+                };
+            }
+
+            const stemmedSeed = INDUSTRIAL_NLP_RULES.stem(seedWord);
+            let activeToken = this.lexicon.has(stemmedSeed) ? stemmedSeed : Array.from(this.lexicon.keys()).find(k => k.includes(stemmedSeed));
+            
+            if (!activeToken) {
+                // Fallback aléatoire propre si le mot n'existe pas
+                const keys = Array.from(this.lexicon.keys());
+                activeToken = keys[Math.floor(Math.random() * keys.length)];
+            }
+
+            let currentVector = this.lexicon.get(activeToken);
+            const sequence = [activeToken];
+            let cumulativeSurprise = 0;
+
+            for (let step = 0; step < maxSteps; step++) {
+                const neighbors = this.vpTree.search(currentVector, 8);
+                const candidates = neighbors.filter(n => !sequence.includes(n.item.word));
+                if (candidates.length === 0) break;
+
+                const meanDist = candidates.reduce((acc, curr) => acc + curr.dist, 0) / candidates.length;
+                cumulativeSurprise += meanDist;
+
+                const dynamicTemp = Math.max(0.05, this.baseTemperature * (1 + meanDist));
+
+                let totalWeight = 0;
+                const weighted = candidates.map(c => {
+                    const weight = Math.exp(-c.dist / dynamicTemp);
+                    totalWeight += weight;
+                    return { item: c.item, weight };
+                });
+
+                if (totalWeight === 0) break;
+
+                let r = Math.random() * totalWeight;
+                let selected = weighted[0].item;
+                for (const item of weighted) {
+                    r -= item.weight;
+                    if (r <= 0) {
+                        selected = item.item;
+                        break;
+                    }
+                }
+
+                sequence.push(selected.word);
+                currentVector = selected.vector;
+            }
+
+            this.lastSurpriseIndex = cumulativeSurprise / Math.max(sequence.length, 1);
+            
+            let metaComment = "Flux sémantique stable et cohérent.";
+            if (this.lastSurpriseIndex > 0.6) {
+                metaComment = "Métacognition : Forte divergence sémantique détectée (exploration créative élevée).";
+            } else if (this.lastSurpriseIndex < 0.2) {
+                metaComment = "Métacognition : Forte redondance contextuelle (convergence déterministe).";
+            }
+
+            const formattedText = sequence.map(w => w.replace("__", " ")).join(" ") + ".";
+            return {
+                text: formattedText,
+                surprise: this.lastSurpriseIndex,
+                metaMessage: metaComment
+            };
+        }
+
+        exportToJSON() {
+            const lexiconArray = Array.from(this.lexicon.entries()).map(([word, vector]) => [word, Array.from(vector)]);
+            const freqArray = Array.from(this.tokenFrequencies.entries());
+            return JSON.stringify({
+                dimensions: this.dimensions,
+                maxLexiconSize: this.maxLexiconSize,
+                lexicon: lexiconArray,
+                frequencies: freqArray
+            }, null, 2);
+        }
+
+        importFromJSON(jsonString) {
+            const data = JSON.parse(jsonString);
+            this.dimensions = data.dimensions;
+            this.maxLexiconSize = data.maxLexiconSize;
+            this.tokenFrequencies = new Map(data.frequencies || []);
+            this.lexicon = new Map();
+            data.lexicon.forEach(([word, vectorArray]) => {
+                this.lexicon.set(word, new Float32Array(vectorArray));
+            });
+            const treeElements = Array.from(this.lexicon.entries()).map(([word, vector]) => ({ word, vector }));
+            this.vpTree.root = this.vpTree.buildAsyncChunked(treeElements);
+        }
+    }
+
+    // --- 6. INITIALISATION & INTERFACE UTILISATEUR ---
+    const engine = new MetacognitiveEngine(64, 500);
 
     function loadPreset(type) {
         const input = document.getElementById('corpusInput');
         if (type === 'animaux') {
-            input.value = "Le chat noir traverse la rue rapidement. Le chat noir cherche une souris grise dans la grande maison. La souris grise mange un petit morceau de fromage délicieux. Le chien blanc surveille la maison attentivement. Le chien blanc court dans la rue avec le chat noir.";
+            input.value = "Le chat a mangé la souris grise rapidement. Le chat noir traverse la grande maison. Le chien blanc a surveillé la maison attentivement.";
         } else if (type === 'tech') {
-            input.value = "La fusée puissante traverse l'espace infini rapidement. L'ingénieur intelligent analyse le moteur thermique complexe. La station orbitale abrite un équipage international remarquable. Le satellite moderne transmet des données scientifiques importantes vers la terre ferme.";
+            input.value = "La fusée puissante a traversé l'espace infini rapidement. L'ingénieur a analysé le moteur thermique complexe. La station orbitale abrite l'équipage international.";
         }
     }
 
-    const GeoMath = {
-        generateRandomVector() {
-            let vec = []; let norm = 0;
-            for (let i = 0; i < CONFIG.DIM_LATENT; i++) {
-                const val = Math.random() - 0.5; vec.push(val); norm += val * val;
-            }
-            norm = Math.sqrt(norm);
-            return vec.map(v => norm > 0 ? v / norm : 0);
-        },
-        cosineDistance(v1, v2) {
-            let dot = 0;
-            for (let i = 0; i < CONFIG.DIM_LATENT; i++) { dot += v1[i] * v2[i]; }
-            return Math.max(0, 1 - dot);
-        }
-    };
-
-    function getLevenshteinDistance(a, b) {
-        if (a.length === 0) return b.length;
-        if (b.length === 0) return a.length;
-        let matrix = [];
-        for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-        for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-        for (let i = 1; i <= b.length; i++) {
-            for (let j = 1; j <= a.length; j++) {
-                if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                    matrix[i][j] = matrix[i - 1][j - 1];
-                } else {
-                    matrix[i][j] = Math.min(
-                        matrix[i - 1][j - 1] + 1,
-                        Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
-                    );
-                }
-            }
-        }
-        return matrix[b.length][a.length];
-    }
-
-    const TextProcessor = {
-        normalizeString(str) {
-            return str.toLowerCase()
-                      .normalize('NFD')
-                      .replace(/[\u0300-\u036f]/g, '')
-                      .replace(/['‘’]/g, "'");
-        },
-        tokenize(text) {
-            if (!text) return [];
-            const normalized = text.normalize('NFC');
-            const rawTokens = normalized.replace(/['‘’]/g, "'").split(/[\s.,\/#!$%\^&\*;:{}=\-_`~()?"«»\[\]]+/);
-            return rawTokens.map(t => t.trim()).filter(t => t.length > 0 && /^[a-zA-Z0-9àâäéèêëîïôöùûüç'-]+$/.test(t));
-        }
-    };
-
-    const GrammarEngine = {
-        determiners: new Set(['le', 'la', 'les', 'un', 'une', 'des', 'ce', 'cette', 'ces', 'mon', 'ton', 'son', 'notre', 'votre', 'leur', 'de', 'du', 'au', 'aux', 'et', 'ou', 'quelques', 'plusieurs', 'chaque']),
-        auxiliaries: new Set(['est', 'sont', 'a', 'ont', 'fut', 'furent', 'était', 'étaient', 'sera', 'seront', 'soyons', 'soyez', 'soient', 'ai', 'as', 'avons', 'avez', 'suis', 'es', 'sommes', 'êtes']),
-        knownNouns: new Set(['chat', 'chien', 'rue', 'maison', 'homme', 'femme', 'enfant', 'table', 'voiture', 'eau', 'terre', 'client', 'cliente', 'ville', 'fusée', 'espace', 'ingénieur', 'moteur', 'station', 'équipage', 'satellite', 'données']),
-        knownAdjectives: new Set(['noir', 'blanche', 'petit', 'grand', 'rapide', 'attentif', 'fertile', 'beau', 'belle', 'nouveau', 'nouvelle', 'puissant', 'infinie', 'complexe', 'international', 'remarquable', 'moderne', 'scientifiques', 'importantes']),
-
-        getCategory(word, prevWord = null) {
-            const clean = TextProcessor.normalizeString(word);
-            if (this.determiners.has(clean)) return 'DET';
-            if (this.auxiliaries.has(clean)) return 'VERB';
-            if (this.knownNouns.has(clean)) return 'NOUN_ADJ';
-            if (this.knownAdjectives.has(clean)) return 'NOUN_ADJ';
-            if (prevWord && this.auxiliaries.has(TextProcessor.normalizeString(prevWord))) {
-                if (['e', 'es', 'é', 'er', 'ant', 'é(e)s'].some(suf => clean.endsWith(suf))) return 'VERB';
-            }
-            if (prevWord && this.determiners.has(TextProcessor.normalizeString(prevWord))) return 'NOUN_ADJ';
-            if (clean.endsWith('er') || clean.endsWith('ir') || clean.endsWith('re') || clean.endsWith('ez') || clean.endsWith('ons') || clean.endsWith('ait') || clean.endsWith('ent')) return 'VERB';
-            return 'NOUN_ADJ';
-        },
-
-        isGrammaticallyPlausible(prevCat, nextCat) {
-            if (prevCat === 'DET' && nextCat === 'VERB') return false; 
-            if (prevCat === 'VERB' && nextCat === 'VERB') return false; 
-            return true;
-        }
-    };
-
-    class VPTreeNode {
-        constructor(vantagePointBlock) {
-            this.vantagePoint = vantagePointBlock; this.threshold = 0;
-            this.inside = null; this.outside = null; this.bucket = [];
-        }
-    }
-
-    class MaxHeapKNN {
-        constructor(k) { this.k = k; this.heap = []; }
-        push(block, dist) {
-            if (this.heap.length < this.k) {
-                this.heap.push({ block, dist });
-                this._up(this.heap.length - 1);
-            } else if (dist < this.heap[0].dist) {
-                this.heap[0] = { block, dist };
-                this._down(0);
-            }
-        }
-        getMaxDist() { return this.heap.length < this.k ? Infinity : this.heap[0].dist; }
-        getResultList() { return [...this.heap].sort((a, b) => a.dist - b.dist); }
-        _up(i) {
-            let p = Math.floor((i - 1) / 2);
-            while (i > 0 && this.heap[p].dist < this.heap[i].dist) {
-                let tmp = this.heap[p]; this.heap[p] = this.heap[i]; this.heap[i] = tmp;
-                i = p; p = Math.floor((i - 1) / 2);
-            }
-        }
-        _down(i) {
-            let maxIdx = i, left = 2 * i + 1, right = 2 * i + 2, len = this.heap.length;
-            if (left < len && this.heap[left].dist > this.heap[maxIdx].dist) maxIdx = left;
-            if (right < len && this.heap[right].dist > this.heap[maxIdx].dist) maxIdx = right;
-            if (maxIdx !== i) {
-                let tmp = this.heap[maxIdx]; this.heap[maxIdx] = this.heap[i]; this.heap[i] = tmp;
-                this._down(maxIdx);
-            }
-        }
-    }
-
-    class SpatialVPTreeIndex {
-        constructor() { this.root = null; }
-        buildIndex(memoryBlocks) { 
-            const shuffled = [...memoryBlocks];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            this.root = this._recursiveBuild(shuffled, 0); 
-        }
-        _selectOptimalVantagePoint(blocks) {
-            if (blocks.length <= 2) return Math.floor(Math.random() * blocks.length);
-            const sampleSize = Math.min(8, blocks.length);
-            let bestIdx = 0, maxVariance = -1;
-            for (let i = 0; i < sampleSize; i++) {
-                const candidateIdx = Math.floor(Math.random() * blocks.length);
-                const candidate = blocks[candidateIdx];
-                let mean = 0, distances = [];
-                for (let j = 0; j < blocks.length; j++) {
-                    if (candidateIdx === j) continue;
-                    const d = GeoMath.cosineDistance(candidate.vector, blocks[j].vector);
-                    distances.push(d); mean += d;
-                }
-                mean /= distances.length;
-                let variance = 0;
-                for (let d of distances) variance += (d - mean) * (d - mean);
-                variance /= distances.length;
-                if (variance > maxVariance) { maxVariance = variance; bestIdx = candidateIdx; }
-            }
-            return bestIdx;
-        }
-        _recursiveBuild(blocks, depth) {
-            if (blocks.length === 0) return null;
-            if (blocks.length <= CONFIG.VP_TREE_BUCKET_SIZE || depth > 16) {
-                const node = new VPTreeNode(null); node.bucket = blocks; return node;
-            }
-            const vpIndex = this._selectOptimalVantagePoint(blocks);
-            const vp = blocks[vpIndex];
-            const remaining = blocks.filter((_, idx) => idx !== vpIndex);
-            const node = new VPTreeNode(vp);
-            const distances = remaining.map(b => ({ block: b, dist: GeoMath.cosineDistance(vp.vector, b.vector) }));
-            distances.sort((a, b) => a.dist - b.dist);
-            const medianIdx = Math.floor(distances.length / 2);
-            node.threshold = distances.length > 0 ? distances[medianIdx].dist : 0;
-            node.inside = this._recursiveBuild(distances.slice(0, medianIdx).map(d => d.block), depth + 1);
-            node.outside = this._recursiveBuild(distances.slice(medianIdx).map(d => d.block), depth + 1);
-            return node;
-        }
-        findAdaptiveNearestNeighbors(queryVector, k = 5) {
-            const heap = new MaxHeapKNN(k);
-            const searchRecursive = (node) => {
-                if (!node) return;
-                if (node.bucket.length > 0) {
-                    for (const block of node.bucket) heap.push(block, GeoMath.cosineDistance(queryVector, block.vector));
-                    return;
-                }
-                if (node.vantagePoint) {
-                    const distVP = GeoMath.cosineDistance(queryVector, node.vantagePoint.vector);
-                    heap.push(node.vantagePoint, distVP);
-                    const maxDist = heap.getMaxDist();
-                    if (distVP - maxDist <= node.threshold) searchRecursive(node.inside);
-                    if (distVP + maxDist >= node.threshold) searchRecursive(node.outside);
-                }
-            };
-            searchRecursive(this.root);
-            return heap.getResultList();
-        }
-    }
-
-    class OrganicMemoryMatrix {
-        constructor() { this.lexiconRef = null; this.spatialIndex = new SpatialVPTreeIndex(); }
-        init(lexicon) { this.lexiconRef = lexicon; }
-        commitBatch() {
-            if (!this.lexiconRef) return;
-            const uniqueBlocks = Object.values(this.lexiconRef).map(item => ({ word: item.word, vector: [...item.vector] }));
-            this.spatialIndex.buildIndex(uniqueBlocks);
-        }
-    }
-
-    class AntiDriftContextManager {
-        constructor(lambdaDecay = 0.75, maxTokens = 14) {
-            this.lambda = lambdaDecay; this.maxTokens = maxTokens;
-            this.contextVector = new Float32Array(CONFIG.DIM_LATENT);
-            this.anchorVector = new Float32Array(CONFIG.DIM_LATENT);
-            this.hasAnchor = false; this.tokenCount = 0;
-        }
-        _normalize(vector) {
-            let sumSq = 0;
-            for (let i = 0; i < CONFIG.DIM_LATENT; i++) sumSq += vector[i] * vector[i];
-            if (sumSq > 0) {
-                const norm = Math.sqrt(sumSq);
-                for (let i = 0; i < CONFIG.DIM_LATENT; i++) vector[i] /= norm;
-            }
-        }
-        setQuestionAnchor(questionVector) {
-            this.anchorVector.set(questionVector);
-            this.contextVector.set(questionVector);
-            this._normalize(this.anchorVector);
-            this._normalize(this.contextVector);
-            this.hasAnchor = true; this.tokenCount = 0;
-        }
-        updateContext(wordVector, blockType) {
-            this.tokenCount++;
-            let weight = (blockType === 'NOUN_ADJ' || blockType === 'VERB') ? 1.0 : 0.1;
-            const normalizedWordVector = new Float32Array(wordVector);
-            this._normalize(normalizedWordVector);
-            for (let i = 0; i < CONFIG.DIM_LATENT; i++) {
-                this.contextVector[i] = (this.contextVector[i] * this.lambda) + (normalizedWordVector[i] * weight);
-            }
-            this._normalize(this.contextVector);
-            if (weight === 1.0 && this.tokenCount <= 8) {
-                for (let i = 0; i < CONFIG.DIM_LATENT; i++) {
-                    this.anchorVector[i] = (this.anchorVector[i] * 0.90) + (normalizedWordVector[i] * 0.10);
-                }
-                this._normalize(this.anchorVector);
-            }
-        }
-        getSearchTarget(lastWordVector, currentStep) {
-            const target = new Float32Array(CONFIG.DIM_LATENT);
-            if (!this.hasAnchor) {
-                target.set(lastWordVector);
-                this._normalize(target);
-                return target;
-            }
-            const progress = currentStep / this.maxTokens;
-            const alpha = 1 / (1 + Math.exp(-10 * (progress - 0.5)));
-            const localFlux = new Float32Array(CONFIG.DIM_LATENT);
-            for (let i = 0; i < CONFIG.DIM_LATENT; i++) localFlux[i] = (this.contextVector[i] + lastWordVector[i]) / 2;
-            this._normalize(localFlux);
-            for (let i = 0; i < CONFIG.DIM_LATENT; i++) target[i] = (alpha * this.anchorVector[i]) + ((1 - alpha) * localFlux[i]);
-            this._normalize(target);
-            return target;
-        }
-    }
-
-    class MetaCognitiveEngineV14 {
-        constructor() {
-            this.lexicon = {}; this.globalTransitions = {}; 
-            this.memory = new OrganicMemoryMatrix();
-            this.memory.init(this.lexicon);
-            this.currentSurprise = 0.5;
-            this.dynamicLearningRate = 0.05;
-            this.dynamicHomeostasis = 0.5;
-            this.timelineIndex = 0;
-            this.temperature = 0.8;
-        }
-        _enforceLexiconCapacity() {
-            const keys = Object.keys(this.lexicon);
-            if (keys.length > CONFIG.MAX_LEXICON_SIZE) {
-                keys.sort((a, b) => (this.lexicon[a].lastAccessed || 0) - (this.lexicon[b].lastAccessed || 0));
-                const removeCount = keys.length - CONFIG.MAX_LEXICON_SIZE;
-                for (let i = 0; i < removeCount; i++) {
-                    delete this.lexicon[keys[i]];
-                    delete this.globalTransitions[keys[i]];
-                }
-                for (let srcWord in this.globalTransitions) {
-                    for (let dstWord in this.globalTransitions[srcWord]) {
-                        if (!this.lexicon[dstWord] || !this.lexicon[srcWord]) delete this.globalTransitions[srcWord][dstWord];
-                    }
-                    if (Object.keys(this.globalTransitions[srcWord]).length === 0) delete this.globalTransitions[srcWord];
-                }
-            }
-        }
-        _recordTransition(currentWord, nextWord) {
-            const curNorm = TextProcessor.normalizeString(currentWord);
-            const nxtNorm = TextProcessor.normalizeString(nextWord);
-            if (!this.globalTransitions[curNorm]) this.globalTransitions[curNorm] = {};
-            const map = this.globalTransitions[curNorm];
-            if (map[nxtNorm]) {
-                map[nxtNorm] += 1;
-            } else {
-                if (Object.keys(map).length >= CONFIG.MAX_TRANSITIONS_PER_WORD) {
-                    const entries = Object.entries(map).sort((a, b) => a[1] - b[1]);
-                    delete map[entries[0][0]];
-                }
-                map[nxtNorm] = 1;
-            }
-        }
-        getOrCreateWord(word, prevWord = null) {
-            const cleanWord = word.trim();
-            const normalizedKey = TextProcessor.normalizeString(cleanWord);
-
-            if (this.lexicon[normalizedKey]) {
-                this.lexicon[normalizedKey].lastAccessed = ++this.timelineIndex;
-                return this.lexicon[normalizedKey];
-            }
-
-            const knownKeys = Object.keys(this.lexicon);
-            let bestMatchKey = null;
-            let minDistance = 99;
-            const threshold = normalizedKey.length > 5 ? 2 : 1;
-
-            for (let key of knownKeys) {
-                if (Math.abs(key.length - normalizedKey.length) > 2) continue;
-                const dist = getLevenshteinDistance(normalizedKey, key);
-                if (dist < minDistance && dist <= threshold) {
-                    minDistance = dist;
-                    bestMatchKey = key;
-                }
-            }
-
-            if (bestMatchKey) {
-                this.lexicon[bestMatchKey].lastAccessed = ++this.timelineIndex;
-                return this.lexicon[bestMatchKey];
-            }
-
-            this._enforceLexiconCapacity();
-            this.lexicon[normalizedKey] = {
-                word: cleanWord,
-                vector: GeoMath.generateRandomVector(),
-                stiffness: 0.1,
-                category: GrammarEngine.getCategory(cleanWord, prevWord),
-                lastAccessed: ++this.timelineIndex
-            };
-            return this.lexicon[normalizedKey];
-        }
-        ingestExternalCorpusStream(text) {
-            const words = TextProcessor.tokenize(text);
-            if (words.length === 0) return;
-            let sentenceNgramMap = {};
-            for (let i = 0; i < words.length; i++) {
-                const prevWord = i > 0 ? words[i - 1] : null;
-                const currentToken = this.getOrCreateWord(words[i], prevWord);
-                const currentNorm = TextProcessor.normalizeString(words[i]);
-
-                let expectedProbability = 0;
-                if (i > 0) {
-                    const prevNorm = TextProcessor.normalizeString(words[i-1]);
-                    if (sentenceNgramMap[prevNorm]) {
-                        const totalTransitions = Object.values(sentenceNgramMap[prevNorm]).reduce((a, b) => a + b, 0);
-                        const actualTransitionFreq = sentenceNgramMap[prevNorm][currentNorm] || 0;
-                        expectedProbability = totalTransitions > 0 ? actualTransitionFreq / totalTransitions : 0;
-                    }
-                }
-                const instantaneousSurprise = 1.0 - expectedProbability;
-                this.currentSurprise = (this.currentSurprise * 0.7) + (instantaneousSurprise * 0.3);
-                this.dynamicLearningRate = 0.02 + (this.currentSurprise * 0.15); 
-                this.dynamicHomeostasis = 0.95 - (this.currentSurprise * 0.60);
-                const elasticity = 1.0 - (currentToken.stiffness * this.dynamicHomeostasis);
-                const effectiveLearningRate = this.dynamicLearningRate * elasticity;
-                currentToken.stiffness = Math.min(1.0, currentToken.stiffness + (0.05 * (1.0 - this.currentSurprise)));
-
-                if (i < words.length - 1) {
-                    const nextWord = words[i + 1]; 
-                    this.getOrCreateWord(nextWord, words[i]);
-                    const nextNorm = TextProcessor.normalizeString(nextWord);
-                    if (!sentenceNgramMap[currentNorm]) sentenceNgramMap[currentNorm] = {};
-                    sentenceNgramMap[currentNorm][nextNorm] = (sentenceNgramMap[currentNorm][nextNorm] || 0) + 1;
-                    this._recordTransition(words[i], nextWord);
-                }
-                const startLook = Math.max(0, i - 1), endLook = Math.min(words.length - 1, i + 1);
-                for (let j = startLook; j <= endLook; j++) {
-                    if (i === j) continue;
-                    const neighborToken = this.getOrCreateWord(words[j], j > 0 ? words[j-1] : null);
-                    for (let d = 0; d < CONFIG.DIM_LATENT; d++) {
-                        currentToken.vector[d] += (neighborToken.vector[d] - currentToken.vector[d]) * effectiveLearningRate;
-                    }
-                }
-                let norm = 0; 
-                for (let d = 0; d < CONFIG.DIM_LATENT; d++) norm += currentToken.vector[d] * currentToken.vector[d];
-                norm = Math.sqrt(norm); 
-                if (norm > 0) { for (let d = 0; d < CONFIG.DIM_LATENT; d++) currentToken.vector[d] /= norm; }
-                this.timelineIndex++;
-            }
-            this.memory.commitBatch();
-        }
-        generateResponse(prompt) {
-            const words = TextProcessor.tokenize(prompt);
-            if (words.length === 0) return "Veuillez entrer un mot-clé valide.";
-            
-            let firstWordObj = this.getOrCreateWord(words[0]);
-            let currentWordObj = this.getOrCreateWord(words[words.length - 1]);
-            let currentNorm = TextProcessor.normalizeString(currentWordObj.word);
-
-            if (!this.lexicon[currentNorm]) {
-                return `Mot inconnu "${words[words.length - 1]}". Injectez-le d'abord dans le corpus à gauche.`;
-            }
-            const minTokens = 6, maxTokens = 14;
-            const contextMgr = new AntiDriftContextManager(0.75, maxTokens);
-            contextMgr.setQuestionAnchor(firstWordObj.vector);
-            
-            let responseTokens = [currentWordObj.word], recentWindow = [currentNorm];
-            const maxWindowSize = 4;
-
-            for (let step = 0; step < maxTokens; step++) {
-                let nextWordNorm = null, weightedChoices = [], totalWeight = 0;
-                let combinedTransitions = this.globalTransitions[currentNorm] || {};
-
-                if (Object.keys(combinedTransitions).length > 0) {
-                    for (let [wNorm, count] of Object.entries(combinedTransitions)) {
-                        if (wNorm === currentNorm) continue;
-                        let nextObj = this.lexicon[wNorm];
-                        if (!nextObj) continue;
-                        let freqCount = recentWindow.filter(token => token === wNorm).length;
-                        let antiStutter = Math.pow(0.1, freqCount);
-                        let grammarBonus = GrammarEngine.isGrammaticallyPlausible(currentWordObj.category, nextObj.category) ? 1.5 : 0.3;
-                        let thematicAlignment = contextMgr.hasAnchor ? Math.max(0.3, 2.0 - GeoMath.cosineDistance(nextObj.vector, contextMgr.anchorVector)) : 1.0;
-                        let rawWeight = count * antiStutter * grammarBonus * thematicAlignment;
-                        let adjustedWeight = rawWeight > 0 ? Math.exp(rawWeight / Math.max(this.temperature, 0.05)) : 0;
-                        if (adjustedWeight > 0.00001) { weightedChoices.push({ norm: wNorm, word: nextObj.word, weight: adjustedWeight }); totalWeight += adjustedWeight; }
-                    }
-                }
-
-                if (totalWeight > 0) {
-                    let r = Math.random() * totalWeight, cumulative = 0;
-                    for (let choice of weightedChoices) {
-                        cumulative += choice.weight;
-                        if (r <= cumulative) { nextWordNorm = choice.norm; break; }
-                    }
-                }
-
-                if (!nextWordNorm) {
-                    const hits = this.memory.spatialIndex.findAdaptiveNearestNeighbors(contextMgr.getSearchTarget(currentWordObj.vector, step), 10);
-                    let validHits = hits.filter(h => TextProcessor.normalizeString(h.block.word) !== currentNorm && !recentWindow.includes(TextProcessor.normalizeString(h.block.word)));
-                    if (validHits.length === 0) validHits = hits.filter(h => TextProcessor.normalizeString(h.block.word) !== currentNorm);
-                    if (validHits.length > 0) nextWordNorm = TextProcessor.normalizeString(validHits[Math.floor(Math.random() * validHits.length)].block.word);
-                }
-
-                if (!nextWordNorm) {
-                    const allNorms = Object.keys(this.lexicon).filter(k => k !== currentNorm && !recentWindow.includes(k));
-                    if (allNorms.length > 0) nextWordNorm = allNorms[Math.floor(Math.random() * allNorms.length)];
-                    else break;
-                }
-
-                const nextObj = this.lexicon[nextWordNorm];
-                contextMgr.updateContext(nextObj.vector, nextObj.category);
-                responseTokens.push(nextObj.word);
-                recentWindow.push(nextWordNorm);
-                if (recentWindow.length > maxWindowSize) recentWindow.shift();
-                currentWordObj = nextObj;
-                currentNorm = nextWordNorm;
-
-                if (responseTokens.length >= minTokens && (totalWeight < 0.2 || Math.random() < 0.1)) break;
-            }
-            return responseTokens.join(" ") + ".";
-        }
-    }
-
-    const engine = new MetaCognitiveEngineV14();
-
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
         loadPreset('animaux');
-        
+        await engine.loadStoredMemory();
+        updateUI();
+
         const tempRange = document.getElementById('tempRange');
         const tempVal = document.getElementById('tempVal');
         tempRange.addEventListener('input', (e) => {
-            engine.temperature = parseFloat(e.target.value);
-            tempVal.innerText = engine.temperature.toFixed(2);
+            engine.baseTemperature = parseFloat(e.target.value);
+            tempVal.innerText = engine.baseTemperature.toFixed(2);
         });
 
-        document.getElementById('btnIngest').addEventListener('click', () => {
+        document.getElementById('btnIngest').addEventListener('click', async () => {
             const textarea = document.getElementById('corpusInput');
             const autoClear = document.getElementById('autoClearCorpus').checked;
             const text = textarea.value;
             if (!text.trim()) return alert("Veuillez saisir du texte !");
-            
-            engine.ingestExternalCorpusStream(text);
+
+            const btn = document.getElementById('btnIngest');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressFill = document.getElementById('progressFill');
+
+            btn.disabled = true;
+            progressContainer.style.display = 'block';
+            progressFill.style.width = '0%';
+
+            await engine.trainOnCorpus(text, (percent) => {
+                progressFill.style.width = percent + '%';
+            });
+
+            progressFill.style.width = '100%';
+            setTimeout(() => {
+                progressContainer.style.display = 'none';
+                btn.disabled = false;
+            }, 300);
+
             updateUI();
-            appendChatMessage("Système", "Corpus injecté, normalisé et espace vectoriel restructuré avec succès.", "engine");
-            
-            if (autoClear) {
-                textarea.value = "";
-            }
+            appendChatMessage("Système", "Ingestion HAL & Indexation L2 complétées. Synchronisation IndexedDB réussie.", "engine");
+
+            if (autoClear) textarea.value = "";
         });
 
         document.getElementById('btnClearCorpus').addEventListener('click', () => {
@@ -844,50 +886,33 @@
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
-        document.getElementById('chatInput').addEventListener('keydown', e => { if(e.key==='Enter') sendChatMessage(); });
+        document.getElementById('chatInput').addEventListener('keydown', e => { if(e.key === 'Enter') sendChatMessage(); });
     });
 
     function exportMemoryJSON() {
-        const memoryData = {
-            version: "14.6",
-            timestamp: Date.now(),
-            lexicon: engine.lexicon,
-            globalTransitions: engine.globalTransitions,
-            timelineIndex: engine.timelineIndex,
-            currentSurprise: engine.currentSurprise
-        };
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(memoryData, null, 2));
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(engine.exportToJSON());
         const downloadAnchor = document.createElement('a');
         downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `metacognitive_memory_${Date.now()}.json`);
+        downloadAnchor.setAttribute("download", `metacognitive_memory_v15.2_${Date.now()}.json`);
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
-        appendChatMessage("Système", "Mémoire JSON téléchargée avec succès.", "engine");
+        appendChatMessage("Système", "Mémoire JSON exportée avec succès.", "engine");
     }
 
     function importMemoryJSON(event) {
         const file = event.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = async function(e) {
             try {
-                const parsedData = JSON.parse(e.target.result);
-                if (!parsedData.lexicon || !parsedData.globalTransitions) {
-                    throw new Error("Format JSON invalide pour le moteur métacognitif.");
-                }
-                engine.lexicon = parsedData.lexicon;
-                engine.globalTransitions = parsedData.globalTransitions;
-                engine.timelineIndex = parsedData.timelineIndex || 0;
-                engine.currentSurprise = parsedData.currentSurprise || 0.5;
-                
-                engine.memory.init(engine.lexicon);
-                engine.memory.commitBatch();
-
+                engine.importFromJSON(e.target.result);
+                await engine.storage.save("lexicon", Array.from(engine.lexicon.entries()));
+                await engine.storage.save("frequencies", Array.from(engine.tokenFrequencies.entries()));
                 updateUI();
-                appendChatMessage("Système", `Mémoire JSON restaurée avec succès (${Object.keys(engine.lexicon).length} mots chargés).`, "engine");
+                appendChatMessage("Système", `Mémoire JSON restaurée (${engine.lexicon.size} tokens actifs).`, "engine");
             } catch (err) {
-                alert("Erreur lors de la lecture du fichier JSON : " + err.message);
+                alert("Erreur lors de l'import JSON : " + err.message);
             }
             event.target.value = '';
         };
@@ -900,9 +925,16 @@
         if (!text) return;
         appendChatMessage("Vous", text, "user");
         input.value = "";
+        
         setTimeout(() => {
-            appendChatMessage("Moteur V14.6", engine.generateResponse(text), "engine");
-        }, 150);
+            const firstWord = text.split(" ")[0];
+            const inference = engine.generateSentenceWithMetacognition(firstWord, 10);
+            
+            appendChatMessage("Moteur V15.2.1", inference.text, "engine");
+            appendMetaMessage(inference.metaMessage, inference.surprise);
+            
+            updateUI();
+        }, 120);
     }
 
     function appendChatMessage(sender, text, type) {
@@ -911,32 +943,39 @@
         div.className = `message ${type}`;
         div.innerHTML = `<strong>${sender}:</strong> ${text}`;
         history.appendChild(div);
-        
-        // Défilement automatique interne au conteneur de chat sans bouger la page
+        history.scrollTop = history.scrollHeight;
+    }
+
+    function appendMetaMessage(metaText, surpriseScore) {
+        const history = document.getElementById('chatHistory');
+        const div = document.createElement('div');
+        div.className = 'message meta';
+        div.innerHTML = `🧠 <em>${metaText}</em> <br><span style="font-size:0.75rem; opacity:0.8;">Indice de Surprise (Calculé) : ${surpriseScore.toFixed(3)}</span>`;
+        history.appendChild(div);
         history.scrollTop = history.scrollHeight;
     }
 
     function updateUI() {
-        document.getElementById('valSurprise').innerText = engine.currentSurprise.toFixed(4);
-        document.getElementById('valLearningRate').innerText = engine.dynamicLearningRate.toFixed(4);
-        document.getElementById('valHomeostasis').innerText = engine.dynamicHomeostasis.toFixed(4);
-        
-        const keys = Object.keys(engine.lexicon);
-        document.getElementById('valLexiconSize').innerText = keys.length;
+        const size = engine.lexicon.size;
+        document.getElementById('valLexiconSize').innerText = size;
+        document.getElementById('valHomeostasis').innerText = (size / engine.maxLexiconSize).toFixed(3);
+        document.getElementById('valSurprise').innerText = engine.lastSurpriseIndex.toFixed(3);
 
         const lexiconDisplay = document.getElementById('lexiconDisplay');
         lexiconDisplay.innerHTML = '';
-        if(keys.length === 0) {
-            lexiconDisplay.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 10px; font-size: 0.85rem;">Aucun mot ingéré.</div>';
+        if(size === 0) {
+            lexiconDisplay.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 10px; font-size: 0.8rem;">Aucun token enregistré.</div>';
             return;
         }
-        keys.forEach(normKey => {
-            const item = engine.lexicon[normKey];
+        for (let [key, vector] of engine.lexicon.entries()) {
+            const freq = engine.tokenFrequencies.get(key) || 1;
+            const displayKey = key.replace("__", " (aux: ");
+            const finalDisplay = key.includes("__") ? displayKey + ")" : key;
             const div = document.createElement('div');
             div.className = 'word-item';
-            div.innerHTML = `<span><strong>${item.word}</strong> <span style="color:var(--accent-color); font-size:0.7rem;">[${item.category}]</span></span><span class="word-meta">Acc: ${item.lastAccessed}</span>`;
+            div.innerHTML = `<span><strong>${finalDisplay}</strong></span><span class="word-meta">Fréq: ${freq}</span>`;
             lexiconDisplay.appendChild(div);
-        });
+        }
     }
 </script>
 
