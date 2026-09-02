@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V14.3 - Ergonomic Workspace</title>
+    <title>Meta-Cognitive Engine V14.4 - Ergonomic Workspace</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -219,7 +219,6 @@
 <body>
 
 <div class="workspace">
-    <!-- COLONNE DE GAUCHE : Gestion Mémoire, Corpus & Contrôles -->
     <div class="sidebar">
         <div class="card">
             <h1>1. Gestion de la Mémoire JSON</h1>
@@ -283,15 +282,14 @@
         </div>
     </div>
 
-    <!-- COLONNE DE DROITE : Espace de Discussion Continu -->
     <div class="main-panel">
         <div class="card chat-card">
             <h1>3. Dialogue Actif (Inférence en Direct)</h1>
             <div class="chat-box" id="chatHistory">
-                <div class="message engine">Système prêt. Injectez un corpus à gauche, chargez une mémoire JSON, puis tapez un mot pour amorcer la discussion.</div>
+                <div class="message engine">Système prêt. Injectez un corpus à gauche, chargez une mémoire JSON, puis tapez une phrase ou un mot pour amorcer la discussion.</div>
             </div>
             <div class="chat-input-row">
-                <input type="text" id="chatInput" placeholder="Tapez un mot d'amorce (ex: chat, chien...)" />
+                <input type="text" id="chatInput" placeholder="Tapez une amorce (ex: Comment ça va, chat...)" />
                 <button id="btnSend">Envoyer</button>
             </div>
         </div>
@@ -701,6 +699,9 @@
         generateResponse(prompt) {
             const words = TextProcessor.tokenize(prompt);
             if (words.length === 0) return "Veuillez entrer un mot-clé valide.";
+            
+            // CORRECTION MULTI-MOTS : On s'appuie sur toute l'amorce pour initialiser l'ancre contextuelle
+            let firstWordObj = this.getOrCreateWord(words[0]);
             let currentWordObj = this.getOrCreateWord(words[words.length - 1]);
             let currentNorm = TextProcessor.normalizeString(currentWordObj.word);
 
@@ -709,7 +710,10 @@
             }
             const minTokens = 6, maxTokens = 14;
             const contextMgr = new AntiDriftContextManager(0.75, maxTokens);
-            contextMgr.setQuestionAnchor(currentWordObj.vector);
+            
+            // Initialisation de l'ancre avec le premier mot de l'amorce pour garder le sens global de la phrase
+            contextMgr.setQuestionAnchor(firstWordObj.vector);
+            
             let responseTokens = [currentWordObj.word], recentWindow = [currentNorm];
             const maxWindowSize = 4;
 
@@ -794,7 +798,7 @@
     // Fonctions d'exportation et d'importation JSON de la mémoire
     function exportMemoryJSON() {
         const memoryData = {
-            version: "14.3",
+            version: "14.4",
             timestamp: Date.now(),
             lexicon: engine.lexicon,
             globalTransitions: engine.globalTransitions,
@@ -835,7 +839,6 @@
             } catch (err) {
                 alert("Erreur lors de la lecture du fichier JSON : " + err.message);
             }
-            // Réinitialiser l'input file pour permettre de recharger le même fichier si besoin
             event.target.value = '';
         };
         reader.readAsText(file);
@@ -848,7 +851,7 @@
         appendChatMessage("Vous", text, "user");
         input.value = "";
         setTimeout(() => {
-            appendChatMessage("Moteur V14.3", engine.generateResponse(text), "engine");
+            appendChatMessage("Moteur V14.4", engine.generateResponse(text), "engine");
         }, 150);
     }
 
