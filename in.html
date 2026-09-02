@@ -1,372 +1,277 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="h-full bg-slate-950 text-slate-100">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta-Cognitive Engine V16.1 - Ultimate Fusion</title>
-    <style>
-        :root {
-            --bg-color: #0b0f19;
-            --card-bg: #131d31;
-            --accent-color: #38bdf8;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border-color: #1e293b;
-            --chat-user: #1e293b;
-            --chat-engine: #131d31;
-            --progress-green: #22c55e;
-            --warning-amber: #f59e0b;
-        }
-        html, body {
-            height: 100vh;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .workspace {
-            width: 100%;
-            max-width: 1440px;
-            height: calc(100vh - 24px);
-            max-height: 980px;
-            display: grid;
-            grid-template-columns: 440px 1fr;
-            gap: 16px;
-            padding: 0 12px;
-            box-sizing: border-box;
-        }
-        @media (max-width: 1024px) {
-            html, body {
-                overflow-y: auto;
-                height: auto;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta-Cognitive Engine Studio V16.1 - Production Ready</title>
+  <script src="https://tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              sky: '#0ea5e9',
+              amber: '#f97316',
+              dark: '#0b0f19'
             }
-            .workspace {
-                grid-template-columns: 1fr;
-                height: auto;
-                max-height: none;
-                padding: 12px;
-            }
+          }
         }
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            overflow-y: auto;
-            padding-right: 4px;
-            max-height: 100%;
-        }
-        .main-panel {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            min-height: 0;
-        }
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-            box-sizing: border-box;
-        }
-        h1, h2 {
-            margin-top: 0;
-            margin-bottom: 8px;
-            color: var(--accent-color);
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        textarea, input[type="text"], input[type="range"] {
-            width: 100%;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            border-radius: 8px;
-            padding: 8px 10px;
-            font-family: inherit;
-            box-sizing: border-box;
-        }
-        textarea { height: 75px; resize: vertical; font-size: 0.85rem; }
-        .control-group {
-            margin-top: 6px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .control-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-        button {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            border: none;
-            padding: 8px 14px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            margin-top: 6px;
-            font-size: 0.85rem;
-        }
-        button:hover { opacity: 0.9; }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-secondary {
-            background-color: var(--border-color);
-            color: var(--text-main);
-        }
-        .button-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 6px;
-        }
-        .metric-box {
-            background-color: var(--bg-color);
-            padding: 6px 8px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-        }
-        .metric-label { font-size: 0.7rem; color: var(--text-muted); }
-        .metric-value { font-size: 0.95rem; font-weight: bold; color: var(--accent-color); }
-        
-        .chat-card {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            overflow: hidden; 
-            box-sizing: border-box;
-        }
-        .chat-box {
-            flex-grow: 1;
-            min-height: 0;
-            overflow-y: auto;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .message {
-            padding: 10px 12px;
-            border-radius: 8px;
-            max-width: 85%;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-        .message.user {
-            background-color: var(--chat-user);
-            align-self: flex-end;
-            border: 1px solid var(--border-color);
-        }
-        .message.engine {
-            background-color: var(--chat-engine);
-            align-self: flex-start;
-            border: 1px solid var(--accent-color);
-        }
-        .message.meta {
-            background-color: rgba(245, 158, 11, 0.08);
-            align-self: center;
-            border: 1px dashed var(--warning-amber);
-            color: #fbbf24;
-            font-size: 0.8rem;
-            max-width: 95%;
-            text-align: center;
-        }
-        .chat-input-row {
-            display: flex;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-        .chat-input-row input[type="text"] {
-            flex-grow: 1;
-            margin-top: 0;
-        }
-        .chat-input-row button {
-            margin-top: 0;
-        }
-        .lexicon-list {
-            max-height: 110px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .word-item {
-            background-color: var(--bg-color);
-            padding: 5px 8px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            border: 1px solid var(--border-color);
-        }
-        .word-meta { font-size: 0.7rem; color: var(--text-muted); }
-        .quick-presets {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-top: 4px;
-        }
-        .preset-badge {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 3px 6px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 0;
-        }
-        .preset-badge:hover {
-            border-color: var(--accent-color);
-            color: var(--text-main);
-        }
-        .checkbox-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 6px;
-            cursor: pointer;
-        }
-        .checkbox-row input {
-            accent-color: var(--accent-color);
-            cursor: pointer;
-        }
-        .progress-bar-container {
-            width: 100%;
-            background-color: var(--bg-color);
-            border-radius: 4px;
-            height: 5px;
-            margin-top: 6px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            display: none;
-        }
-        .progress-bar-fill {
-            height: 100%;
-            width: 0%;
-            background-color: var(--progress-green);
-            transition: width 0.1s linear;
-        }
-        input[type="file"] { display: none; }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    .transition-precision {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glow-amber {
+      box-shadow: 0 0 15px rgba(249, 115, 22, 0.4);
+    }
+    .glow-sky {
+      box-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 0.5);
+      border-radius: 3px;
+    }
+  </style>
 </head>
-<body>
+<body class="h-full flex flex-col font-sans antialiased overflow-hidden select-none">
 
-<div class="workspace">
-    <div class="sidebar">
-        <div class="card">
-            <h1>1. Gestion de la Mémoire JSON</h1>
-            <div class="button-row">
-                <button class="btn-secondary" onclick="exportMemoryJSON()" style="margin-top: 0;">Télécharger</button>
-                <button class="btn-secondary" onclick="document.getElementById('importFile').click()" style="margin-top: 0;">Charger</button>
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- TIROIR LEXIQUE (DRAWER) -->
+  <div id="lexicon-drawer-overlay" onclick="toggleLexiconDrawer(false)" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0"></div>
+  <div id="lexicon-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-slate-900 border-l border-slate-800 z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+    <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/40">
+      <div class="flex items-center gap-2">
+        <span class="text-sm font-semibold text-slate-200">📊 Lexique & Fréquences Actives</span>
+      </div>
+      <button onclick="toggleLexiconDrawer(false)" class="p-1.5 rounded text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-precision">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    <div class="p-4 grid grid-cols-2 gap-3 border-b border-slate-800 bg-brand-dark/50 text-xs font-mono">
+      <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
+        <span class="text-slate-400 block text-[10px]">Dimensions</span>
+        <span id="metric-dim" class="text-brand-sky font-bold text-sm">64</span>
+      </div>
+      <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
+        <span class="text-slate-400 block text-[10px]">Homéostasie</span>
+        <span id="metric-homeostasis" class="text-brand-amber font-bold text-sm">0.000</span>
+      </div>
+    </div>
+    <div id="lexicon-list-container" class="flex-1 overflow-y-auto p-4 space-y-2">
+      <div class="text-center text-slate-500 text-xs py-8 font-mono">Aucun jeton enregistré.</div>
+    </div>
+  </div>
+
+  <!-- ZONE PRINCIPALE : SPLIT SCREEN ADAPTATIF -->
+  <div class="flex flex-1 overflow-hidden relative">
+    
+    <!-- BACKDROP SIDEBAR (Écrans mobiles et tablettes) -->
+    <div id="sidebar-overlay" onclick="toggleSidebar(false)" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm hidden lg:hidden z-20 transition-opacity duration-300 opacity-0"></div>
+
+    <!-- 1. SIDEBAR DE CONTRÔLE -->
+    <aside id="sidebar-control" class="fixed inset-y-0 left-0 w-80 border-r border-slate-800 bg-slate-900/95 lg:bg-slate-900/50 flex flex-col h-full z-30 transform -translate-x-full lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out">
+      <!-- En-tête Sidebar -->
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-2.5 h-2.5 rounded-full bg-brand-sky animate-pulse"></div>
+          <span class="text-xs font-mono tracking-widest text-slate-400 uppercase">Studio de Contrôle</span>
+        </div>
+        <button onclick="toggleSidebar(false)" class="lg:hidden p-1 rounded text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-precision focus-visible:ring-2 focus-visible:ring-brand-sky focus-visible:outline-none">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Conteneur des Accordéons -->
+      <div class="flex-1 overflow-y-auto p-3 space-y-2">
+        <!-- CONFIGURATION MOTEUR -->
+        <div class="border border-slate-800 rounded-lg bg-brand-dark overflow-hidden">
+          <button onclick="toggleAccordion('acc-engine')" class="w-full p-3 flex items-center justify-between font-medium text-sm text-slate-300 hover:bg-slate-800/40 transition-precision focus-visible:ring-2 focus-visible:ring-brand-sky focus-visible:outline-none">
+            <span>⚙️ Configuration Moteur</span>
+            <svg id="arrow-acc-engine" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div id="acc-engine" class="p-3 border-t border-slate-800/60 space-y-4 text-xs hidden">
+            <div class="space-y-2">
+              <div class="flex justify-between font-mono">
+                <span class="text-slate-400">Température Base</span>
+                <span id="temp-val" class="text-brand-sky font-bold transition-all duration-200">0.75</span>
+              </div>
+              <input type="range" min="0.05" max="2.0" step="0.05" value="0.75" id="temp-slider" class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-sky focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-sky">
             </div>
-            <input type="file" id="importFile" accept=".json" onchange="importMemoryJSON(event)">
+          </div>
         </div>
 
-        <div class="card">
-            <h1>2. Ingestion du Corpus & HAL</h1>
-            <textarea id="corpusInput" placeholder="Ex: Le chat a mangé la souris grise rapidement..."></textarea>
-            
-            <div class="quick-presets">
-                <span style="font-size: 0.7rem; color: var(--text-muted); width: 100%;">Modèles :</span>
-                <button class="preset-badge" onclick="loadPreset('animaux')">Animaux & Passé Composé</button>
-                <button class="preset-badge" onclick="loadPreset('tech')">Espace & Ingénierie</button>
+        <!-- INGESTION CORPUS -->
+        <div class="border border-slate-800 rounded-lg bg-brand-dark overflow-hidden">
+          <button onclick="toggleAccordion('acc-corpus')" class="w-full p-3 flex items-center justify-between font-medium text-sm text-slate-300 hover:bg-slate-800/40 transition-precision focus-visible:ring-2 focus-visible:ring-brand-sky focus-visible:outline-none">
+            <span>📚 Ingestion Corpus</span>
+            <svg id="arrow-acc-corpus" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div id="acc-corpus" class="p-3 border-t border-slate-800/60 space-y-3 text-xs hidden">
+            <div>
+              <span class="text-slate-400 block mb-2 font-mono">Préréglages :</span>
+              <div class="flex flex-wrap gap-1.5">
+                <button onclick="loadPreset('animaux')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 transition-precision text-[11px] focus-visible:ring-2 focus-visible:ring-brand-sky focus-visible:outline-none">Animaux</button>
+                <button onclick="loadPreset('tech')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 transition-precision text-[11px] focus-visible:ring-2 focus-visible:ring-brand-sky focus-visible:outline-none">Tech</button>
+              </div>
             </div>
-
-            <label class="checkbox-row">
-                <input type="checkbox" id="autoClearCorpus" checked>
-                Effacer après ingestion
+            <div>
+              <textarea id="corpus-input" placeholder="Saisir ou coller le corpus d'entraînement..." class="w-full h-24 bg-slate-950 border border-slate-800 text-slate-100 rounded p-2.5 text-xs font-mono resize-none focus:outline-none focus:border-brand-sky"></textarea>
+            </div>
+            <label class="flex items-center gap-2 text-slate-400 cursor-pointer pt-1">
+              <input type="checkbox" id="auto-clear-corpus" checked class="rounded border-slate-800 bg-slate-950 text-brand-sky accent-brand-sky">
+              <span>Effacer après ingestion</span>
             </label>
-
-            <div class="control-group">
-                <div class="control-row">
-                    <span>Température Base</span>
-                    <span id="tempVal">0.75</span>
-                </div>
-                <input type="range" id="tempRange" min="0.05" max="2.0" step="0.05" value="0.75">
+            <div id="progress-container" class="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden border border-slate-800 hidden">
+              <div id="progress-fill" class="bg-emerald-500 h-full w-0 transition-all duration-100"></div>
             </div>
-
-            <div class="progress-bar-container" id="progressContainer">
-                <div class="progress-bar-fill" id="progressFill"></div>
-            </div>
-
-            <div class="button-row">
-                <button id="btnIngest" style="width: 100%;">Ingérer Corpus (HAL)</button>
-                <button id="btnClearCorpus" class="btn-secondary" style="width: 100%;">Effacer</button>
-            </div>
+            <button id="btn-ingest" class="w-full py-2 bg-brand-sky/10 hover:bg-brand-sky/20 border border-brand-sky/30 text-brand-sky font-medium rounded transition-precision focus-visible:ring-2 focus-visible:ring-brand-sky focus-visible:outline-none">
+              Ingérer le corpus actif
+            </button>
+          </div>
         </div>
 
-        <div class="card">
-            <h2>Métriques Métacognitives V16.1</h2>
-            <div class="metrics-grid">
-                <div class="metric-box">
-                    <div class="metric-label">Dimensions</div>
-                    <div class="metric-value" id="valDim">64</div>
-                </div>
-                <div class="metric-box">
-                    <div class="metric-label">Indice de Surprise</div>
-                    <div class="metric-value" id="valSurprise" style="color:var(--warning-amber);">0.000</div>
-                </div>
-                <div class="metric-box">
-                    <div class="metric-label">Densité Homéostasie</div>
-                    <div class="metric-value" id="valHomeostasis">0.000</div>
-                </div>
-                <div class="metric-box">
-                    <div class="metric-label">Tokens Actifs</div>
-                    <div class="metric-value" id="valLexiconSize">0</div>
-                </div>
-            </div>
+        <!-- GESTION JSON -->
+        <div class="border border-slate-800 rounded-lg bg-brand-dark overflow-hidden">
+          <button onclick="toggleAccordion('acc-json')" class="w-full p-3 flex items-center justify-between font-medium text-sm text-slate-300 hover:bg-slate-800/40 transition-precision focus-visible:ring-2 focus-visible:ring-brand-sky focus-visible:outline-none">
+            <span>💾 Gestion Configuration JSON</span>
+            <svg id="arrow-acc-json" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div id="acc-json" class="p-3 border-t border-slate-800/60 grid grid-cols-2 gap-2 text-xs hidden">
+            <button onclick="exportMemoryJSON()" class="py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 transition-precision focus-visible:ring-2 focus-visible:ring-brand-sky focus-visible:outline-none">Exporter JSON</button>
+            <button onclick="document.getElementById('import-file').click()" class="py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 transition-precision focus-visible:ring-2 focus-visible:ring-brand-sky focus-visible:outline-none">Importer JSON</button>
+            <input type="file" id="import-file" accept=".json" class="hidden" onchange="importMemoryJSON(event)">
+          </div>
         </div>
+      </div>
 
-        <div class="card">
-            <h2>Lexique & Tokens Composés</h2>
-            <div class="lexicon-list" id="lexiconDisplay">
-                <div style="color: var(--text-muted); text-align: center; padding: 10px; font-size: 0.8rem;">Aucun token enregistré.</div>
-            </div>
-        </div>
-    </div>
+      <!-- Bas de Sidebar -->
+      <div class="p-3 border-t border-slate-800 bg-slate-950/40">
+        <button onclick="toggleLexiconDrawer(true)" class="w-full py-2.5 bg-slate-800/50 hover:bg-brand-sky/10 border border-slate-700/60 hover:border-brand-sky/40 text-slate-300 hover:text-brand-sky rounded-md transition-precision text-xs font-medium flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-brand-sky focus-visible:outline-none">
+          <span>📊 Explorer le Lexique & Fréquences</span>
+          <span id="badge-lexicon-count" class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-400 font-mono">0 tkn</span>
+        </button>
+      </div>
+    </aside>
 
-    <div class="main-panel">
-        <div class="card chat-card">
-            <h1>3. Dialogue & Inférence Métacognitive V16.1</h1>
-            <div class="chat-box" id="chatHistory">
-                <div class="message engine">Moteur V16.1 (Fusion Ultime) initialisé. IndexedDB ultra-sécurisée, contexte global d'amorce, décodeur anti-répétition et boucle métacognitive actifs.</div>
+    <!-- 2. PANNEAU PRINCIPAL D'INFÉRENCE & LOGS -->
+    <main class="flex-1 bg-slate-950 flex flex-col h-full relative overflow-hidden">
+      
+      <!-- En-tête Mobile -->
+      <div class="lg:hidden p-4 border-b border-slate-800 bg-slate-900/40 flex items-center gap-3 shrink-0">
+        <button onclick="toggleSidebar(true)" class="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300 hover:text-slate-100 transition-precision focus-visible:ring-2 focus-visible:ring-brand-sky focus-visible:outline-none">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+        <span class="text-sm font-semibold text-slate-200">Meta-Cognitive Studio V16.1</span>
+      </div>
+
+      <!-- Flux de Dialogue -->
+      <div id="logs-container" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+        <div class="max-w-3xl mx-auto space-y-6" id="chatHistory">
+          <div class="flex justify-start">
+            <div class="max-w-[85%] p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 shadow-md">
+              <span class="text-[10px] font-mono uppercase tracking-wider text-brand-sky block mb-1.5">Moteur V16.1 (Fusion Studio)</span>
+              <p class="text-sm text-slate-300 leading-relaxed font-sans">Moteur méta-cognitif initialisé avec succès. IndexedDB, décodeur anti-répétition et contexte global prêts.</p>
             </div>
-            <div class="chat-input-row">
-                <input type="text" id="chatInput" placeholder="Tapez une amorce complexe (ex: Le chat gris...)" />
-                <button id="btnSend">Envoyer</button>
-            </div>
+          </div>
         </div>
-    </div>
-</div>
+      </div>
+
+      <!-- Barre de Saisie & Actions -->
+      <div class="p-4 border-t border-slate-800 bg-slate-900/30 backdrop-blur-md shrink-0">
+        <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
+          <div class="flex-1">
+            <input type="text" id="chatInput" placeholder="Tapez une amorce complexe (ex: Le chat gris...)" class="w-full bg-slate-900 border border-slate-800 text-slate-100 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-brand-sky transition-precision">
+          </div>
+          <button id="btnSend" class="px-6 py-3 bg-brand-sky hover:bg-sky-400 text-slate-950 font-semibold rounded-lg text-sm transition-precision shadow-lg glow-sky flex items-center justify-center gap-2">
+            <span>Générer</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
 
 <script>
+    // --- UI INTERACTION HELPERS ---
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `pointer-events-auto px-4 py-2.5 rounded-lg border text-xs font-medium shadow-lg transition-all duration-300 transform translate-y-2 opacity-0 flex items-center gap-2 ${
+            type === 'success' 
+                ? 'bg-slate-900/90 border-emerald-500/40 text-emerald-400 shadow-emerald-950/20' 
+                : 'bg-slate-900/90 border-brand-amber/40 text-brand-amber shadow-amber-950/20'
+        }`;
+        toast.innerHTML = `<span>${type === 'success' ? '✓' : '⚠️'}</span><span>${message}</span>`;
+        container.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.classList.remove('translate-y-2', 'opacity-0');
+        }, 10);
+
+        setTimeout(() => {
+            toast.classList.add('translate-y-2', 'opacity-0');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    function toggleSidebar(open) {
+        const sidebar = document.getElementById('sidebar-control');
+        const overlay = document.getElementById('sidebar-overlay');
+        if (open) {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+        } else {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+        }
+    }
+
+    function toggleAccordion(id) {
+        const content = document.getElementById(id);
+        const arrow = document.getElementById('arrow-' + id);
+        const isOpen = !content.classList.contains('hidden');
+        
+        // Fermer tous les autres accordéons si souhaité, ou garder indépendant
+        ['acc-engine', 'acc-corpus', 'acc-json'].forEach(accId => {
+            document.getElementById(accId).classList.add('hidden');
+            const arr = document.getElementById('arrow-' + accId);
+            if (arr) arr.classList.remove('rotate-180');
+        });
+
+        if (!isOpen) {
+            content.classList.remove('hidden');
+            arrow.classList.add('rotate-180');
+        }
+    }
+
+    function toggleLexiconDrawer(open) {
+        const drawer = document.getElementById('lexicon-drawer');
+        const overlay = document.getElementById('lexicon-drawer-overlay');
+        if (open) {
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            drawer.classList.remove('translate-x-full');
+        } else {
+            drawer.classList.add('translate-x-full');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+        }
+    }
+
     // --- UTILITAIRE DE PROTECTION VECTORIELLE ---
     function safeCosineSimilarity(vecA, vecB) {
         if (!vecA || !vecB) return 0;
@@ -381,7 +286,7 @@
         return Math.max(-1, Math.min(1, similarity));
     }
 
-    // --- 1. PERSISTENCE INDEXEDDB ULTRA-SÉCURISÉE (V15.2) ---
+    // --- PERSISTENCE INDEXEDDB ULTRA-SÉCURISÉE (V15.2) ---
     class IndustrialStorage {
         constructor(dbName = "MetaCognitiveEngineDB", storeName = "SemanticStore") {
             this.dbName = dbName;
@@ -460,7 +365,7 @@
         }
     });
 
-    // --- 2. RÈGLES LINGUISTIQUES & COMPOSÉS ---
+    // --- RÈGLES LINGUISTIQUES & COMPOSÉS ---
     const INDUSTRIAL_NLP_RULES = {
         irregulars: {
             "suis": "être", "es": "être", "est": "être", "sommes": "être", "êtes": "être", "sont": "être",
@@ -517,7 +422,7 @@
         }
     };
 
-    // --- 3. ARBRE VP ASYNCHRONE & INCREMENTAL ---
+    // --- ARBRE VP ASYNCHRONE & INCREMENTAL ---
     class HybridVPTree {
         constructor(engine) {
             this.engine = engine;
@@ -595,7 +500,7 @@
         }
     }
 
-    // --- 4. GESTIONNAIRE DE CONTEXTE GLOBAL & DÉCODEUR SÉQUENTIEL ---
+    // --- GESTIONNAIRE DE CONTEXTE GLOBAL & DÉCODEUR SÉQUENTIEL ---
     class SemanticContextManager {
         constructor(dimension = 64) {
             this.dim = dimension;
@@ -718,7 +623,7 @@
         }
     }
 
-    // --- 5. MOTEUR COGNITIF ULTIME V16.1 ---
+    // --- MOTEUR COGNITIF ULTIME V16.1 ---
     class MetacognitiveEngine {
         constructor(dimensions = 64, maxLexiconSize = 500) {
             this.dimensions = dimensions;
@@ -937,15 +842,17 @@
         }
     }
 
-    // --- 6. INITIALISATION & INTERFACE UTILISATEUR ---
+    // --- INITIALISATION DU MOTEUR & ÉVÉNEMENTS ---
     const engine = new MetacognitiveEngine(64, 500);
 
     function loadPreset(type) {
-        const input = document.getElementById('corpusInput');
+        const input = document.getElementById('corpus-input');
         if (type === 'animaux') {
             input.value = "Le chat a mangé la souris grise rapidement. Le chat noir traverse la grande maison. Le chien blanc a surveillé la maison attentivement.";
+            showToast("Corpus Animaux chargé avec succès");
         } else if (type === 'tech') {
             input.value = "La fusée puissante a traversé l'espace infini rapidement. L'ingénieur a analysé le moteur thermique complexe. La station orbitale abrite l'équipage international.";
+            showToast("Corpus Tech chargé avec succès");
         }
     }
 
@@ -954,25 +861,28 @@
         await engine.loadStoredMemory();
         updateUI();
 
-        const tempRange = document.getElementById('tempRange');
-        const tempVal = document.getElementById('tempVal');
+        const tempRange = document.getElementById('temp-slider');
+        const tempVal = document.getElementById('temp-val');
         tempRange.addEventListener('input', (e) => {
             engine.baseTemperature = parseFloat(e.target.value);
             tempVal.innerText = engine.baseTemperature.toFixed(2);
         });
 
-        document.getElementById('btnIngest').addEventListener('click', async () => {
-            const textarea = document.getElementById('corpusInput');
-            const autoClear = document.getElementById('autoClearCorpus').checked;
+        document.getElementById('btn-ingest').addEventListener('click', async () => {
+            const textarea = document.getElementById('corpus-input');
+            const autoClear = document.getElementById('auto-clear-corpus').checked;
             const text = textarea.value;
-            if (!text.trim()) return alert("Veuillez saisir du texte !");
+            if (!text.trim()) {
+                showToast("Veuillez saisir ou charger du texte !", "error");
+                return;
+            }
 
-            const btn = document.getElementById('btnIngest');
-            const progressContainer = document.getElementById('progressContainer');
-            const progressFill = document.getElementById('progressFill');
+            const btn = document.getElementById('btn-ingest');
+            const progressContainer = document.getElementById('progress-container');
+            const progressFill = document.getElementById('progress-fill');
 
             btn.disabled = true;
-            progressContainer.style.display = 'block';
+            progressContainer.classList.remove('hidden');
             progressFill.style.width = '0%';
 
             await engine.trainOnCorpus(text, (percent) => {
@@ -981,18 +891,15 @@
 
             progressFill.style.width = '100%';
             setTimeout(() => {
-                progressContainer.style.display = 'none';
+                progressContainer.classList.add('hidden');
                 btn.disabled = false;
             }, 300);
 
             updateUI();
+            showToast("Ingestion HAL & Indexation L2 réussies !");
             appendChatMessage("Système", "Ingestion HAL & Indexation L2 complétées. Synchronisation IndexedDB réussie.", "engine");
 
             if (autoClear) textarea.value = "";
-        });
-
-        document.getElementById('btnClearCorpus').addEventListener('click', () => {
-            document.getElementById('corpusInput').value = "";
         });
 
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
@@ -1007,6 +914,7 @@
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
+        showToast("Configuration JSON exportée");
         appendChatMessage("Système", "Mémoire JSON exportée avec succès.", "engine");
     }
 
@@ -1020,9 +928,10 @@
                 await engine.storage.save("lexicon", Array.from(engine.lexicon.entries()));
                 await engine.storage.save("frequencies", Array.from(engine.tokenFrequencies.entries()));
                 updateUI();
+                showToast("Configuration JSON importée avec succès ✓");
                 appendChatMessage("Système", `Mémoire JSON restaurée (${engine.lexicon.size} tokens actifs).`, "engine");
             } catch (err) {
-                alert("Erreur lors de l'import JSON : " + err.message);
+                showToast("Erreur lors de l'import JSON : " + err.message, "error");
             }
             event.target.value = '';
         };
@@ -1049,41 +958,65 @@
     function appendChatMessage(sender, text, type) {
         const history = document.getElementById('chatHistory');
         const div = document.createElement('div');
-        div.className = `message ${type}`;
-        div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+        div.className = `flex ${type === 'user' ? 'justify-end' : 'justify-start'}`;
+        
+        const bubbleColor = type === 'user' 
+            ? 'bg-slate-800/80 border-slate-700/80' 
+            : 'bg-slate-900/60 border-slate-800/80';
+        
+        const accentText = type === 'user' ? 'text-brand-sky' : 'text-brand-sky';
+
+        div.innerHTML = `
+            <div class="max-w-[85%] p-4 rounded-xl border ${bubbleColor} shadow-md">
+                <span class="text-[10px] font-mono uppercase tracking-wider ${accentText} block mb-1.5">${sender}</span>
+                <p class="text-sm text-slate-300 leading-relaxed font-sans">${text}</p>
+            </div>
+        `;
         history.appendChild(div);
-        history.scrollTop = history.scrollHeight;
+        const container = document.getElementById('logs-container');
+        container.scrollTop = container.scrollHeight;
     }
 
     function appendMetaMessage(metaText, surpriseScore) {
         const history = document.getElementById('chatHistory');
         const div = document.createElement('div');
-        div.className = 'message meta';
-        div.innerHTML = `🧠 <em>${metaText}</em> <br><span style="font-size:0.75rem; opacity:0.8;">Indice de Surprise (Calculé) : ${surpriseScore.toFixed(3)}</span>`;
+        div.className = 'flex justify-center';
+        div.innerHTML = `
+            <div class="max-w-[95%] p-3 rounded-lg bg-amber-500/5 border border-amber-500/20 text-amber-300 text-xs text-center space-y-1">
+                <div>🧠 <em>${metaText}</em></div>
+                <div class="text-[10px] opacity-80 font-mono">Indice de Surprise (Calculé) : ${surpriseScore.toFixed(3)}</div>
+            </div>
+        `;
         history.appendChild(div);
-        history.scrollTop = history.scrollHeight;
+        const container = document.getElementById('logs-container');
+        container.scrollTop = container.scrollHeight;
     }
 
     function updateUI() {
         const size = engine.lexicon.size;
-        document.getElementById('valLexiconSize').innerText = size;
-        document.getElementById('valHomeostasis').innerText = (size / engine.maxLexiconSize).toFixed(3);
-        document.getElementById('valSurprise').innerText = engine.lastSurpriseIndex.toFixed(3);
+        document.getElementById('badge-lexicon-count').innerText = size + ' tkn';
+        document.getElementById('metric-dim').innerText = engine.dimensions;
+        document.getElementById('metric-homeostasis').innerText = (size / engine.maxLexiconSize).toFixed(3);
 
-        const lexiconDisplay = document.getElementById('lexiconDisplay');
-        lexiconDisplay.innerHTML = '';
+        const lexiconListContainer = document.getElementById('lexicon-list-container');
+        lexiconListContainer.innerHTML = '';
         if(size === 0) {
-            lexiconDisplay.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 10px; font-size: 0.8rem;">Aucun token enregistré.</div>';
+            lexiconListContainer.innerHTML = '<div class="text-center text-slate-500 text-xs py-8 font-mono">Aucun jeton enregistré.</div>';
             return;
         }
+
         for (let [key, vector] of engine.lexicon.entries()) {
             const freq = engine.tokenFrequencies.get(key) || 1;
             const displayKey = key.replace("__", " (aux: ");
             const finalDisplay = key.includes("__") ? displayKey + ")" : key;
-            const div = document.createElement('div');
-            div.className = 'word-item';
-            div.innerHTML = `<span><strong>${finalDisplay}</strong></span><span class="word-meta">Fréq: ${freq}</span>`;
-            lexiconDisplay.appendChild(div);
+            
+            const item = document.createElement('div');
+            item.className = 'bg-slate-950 p-2.5 rounded border border-slate-800 flex items-center justify-between text-xs font-mono';
+            item.innerHTML = `
+                <span class="text-slate-200 font-medium">${finalDisplay}</span>
+                <span class="text-[10px] bg-slate-900 text-slate-400 px-2 py-0.5 rounded border border-slate-800">Fréq: ${freq}</span>
+            `;
+            lexiconListContainer.appendChild(item);
         }
     }
 </script>
