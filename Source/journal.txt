@@ -1,5 +1,61 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-03 12:15:00
+TITRE: L’Iran fait fi des menaces de Trump et bombarde des pays du Golfe
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1006124/iran-fait-fi-menaces-trump-bombarde-pays-golfe
+CONTENU: Des bases de l’armée américaine au Koweït et aux Émirats arabes unis ont notamment été visées.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-03 15:36:00
+TITRE: Le PQ veut remettre 50 millions par année aux régions minières
+LIEN: https://www.ledevoir.com/politique/quebec/1006175/pq-veut-remettre-50-millions-annee-regions-minieres
+CONTENU: Il répond ainsi partiellement à une demande formulée cette année par des maires d’Abitibi-Témiscamingue.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-03 15:44:50
+TITRE: Il ne faut pas «se résigner à voir s’affaiblir» le réseau public de santé, dit Milliard
+LIEN: https://www.ledevoir.com/politique/quebec/1006178/il-ne-faut-pas-resigner-voir-affaiblir-reseau-public-sante-dit-milliard
+CONTENU: Christine Fréchette n’est pas fédéraliste, affirme le chef libéral, elle est «opportuniste».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-03 13:34:00
+TITRE: Les voitures hybrides rechargeables plus polluantes que prévu, selon une étude
+LIEN: https://www.ledevoir.com/actualites/environnement/1006142/voitures-hybrides-rechargeables-plus-polluantes-prevu-selon-etude
+CONTENU: Elles rejetteraient  jusqu’à près de cinq fois plus de CO₂ que ne le laissent apparaître les calculs retenus par l’UE.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-03 16:25:00
+TITRE: Le mois dernier, 726 patients hospitalisés attendaient une place en CHSLD
+LIEN: https://www.ledevoir.com/actualites/sante/1006217/attente-chsld-726-patients-occupaient-lits-hopitaux-quebec
+CONTENU: Le phénomène n’est pas nouveau, mais il est chaque année en croissance.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-03 16:00:00
+TITRE: Les bijoux de famille des Habsbourg exposés à Québec
+LIEN: https://www.ledevoir.com/culture/1006199/bijoux-famille-habsbourg-exposes-quebec
+CONTENU: Caché au Canada pendant des décennies, le trésor des empereurs de l’Autriche-Hongrie sort enfin de l’ombre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-03 11:29:00
+TITRE: Rush au Centre Bell, et Neil Peart quelque part là-haut qui sourit
+LIEN: https://www.ledevoir.com/culture/musique/1006109/rush-centre-bell-neil-peart-quelque-part-haut-sourit
+CONTENU: Le premier des deux concerts montréalais du groupe aura été bien plus qu’un hommage à son regretté batteur et parolier.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-09-03 16:52:49
 TITRE: L’été 2026 devient, de très loin, le plus chaud jamais enregistré : « Battre le record de presque 1 °C sur une saison, c’est énorme »
