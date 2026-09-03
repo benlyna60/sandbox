@@ -1,5 +1,21 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-03 18:37:00
+TITRE: Le Québécois Félix Auger-Aliassime est éliminé au deuxième tour à New York
+LIEN: https://www.ledevoir.com/sports/1006250/quebecois-felix-auger-aliassime-est-elimine-deuxieme-tour-new-york
+CONTENU: Il s’est incliné en quatre manches devant Karen Khachanov.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-03 15:21:00
+TITRE: En campagne, un ministre israélien présente une brochure pour vider Gaza de ses habitants
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1006169/ministre-israelien-presente-plan-vider-gaza-habitants
+CONTENU: Itamar Ben Gvir a présenté jeudi un plan dans lequel la population palestinienne serait envoyée à l’étranger.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-03 18:30:00
 TITRE: Le 20h30/minuit du jeudi 03 septembre 2026
