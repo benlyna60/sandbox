@@ -901,7 +901,9 @@
             const globalAmorceVec = this.contextManager.computeGlobalAmorceVector(rawResolved, this.lexicon, this.tokenFrequencies);
             
             this.decoder.clearMemory();
-            let outputSurfaces = rawResolved.map(r => r.surface);
+            
+            let outputSurfaces = []; 
+            
             let currentStem = rawResolved[rawResolved.length - 1].stem;
             let currentVec = this.lexicon.has(currentStem) ? this.lexicon.get(currentStem) : globalAmorceVec;
             let cumulativeSurprise = 0;
@@ -936,16 +938,19 @@
                 currentVec = nextVec;
             }
 
-            this.lastSurpriseIndex = cumulativeSurprise / Math.max(outputSurfaces.length - rawResolved.length, 1);
+            this.lastSurpriseIndex = cumulativeSurprise / Math.max(outputSurfaces.length, 1);
             
             let metaComment = "Flux sémantique stable et cohérent.";
             if (this.lastSurpriseIndex > 0.6) {
                 metaComment = "Métacognition : Forte divergence sémantique détectée (exploration créative élevée).";
-            } else if (this.lastSurpeerIndex < 0.2) {
+            } else if (this.lastSurpriseIndex < 0.2) {
                 metaComment = "Métacognition : Forte redondance contextuelle (convergence déterministe).";
             }
 
-            const formattedText = outputSurfaces.map(w => w.replace("__", " ")).join(" ") + ".";
+            const formattedText = outputSurfaces.length > 0 
+                ? outputSurfaces.map(w => w.replace("__", " ")).join(" ") + "."
+                : "(Silence sémantique : pas de continuation trouvée dans le lexique)";
+
             return {
                 text: formattedText,
                 surprise: this.lastSurpriseIndex,
