@@ -169,7 +169,7 @@
           <div class="flex justify-start">
             <div class="max-w-[85%] p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 shadow-md">
               <span class="text-[10px] font-mono uppercase tracking-wider text-sky-400 block mb-1.5">Moteur V16.2 (Fusion Studio)</span>
-              <p class="text-sm text-slate-300 leading-relaxed font-sans">Moteur méta-cognitif initialisé avec succès. IndexedDB, décodeur anti-répétition et bouton de copie rapide prêts.</p>
+              <p class="text-sm text-slate-300 leading-relaxed font-sans">Moteur méta-cognitif initialisé avec succès. IndexedDB, décodeur anti-répétition et lemmatiseur sécurisé par cache prêts.</p>
             </div>
           </div>
         </div>
@@ -349,29 +349,70 @@
         }
     });
 
-    // --- RÈGLES LINGUISTIQUES & PRÉSERVATION DES FORMES DE SURFACE ---
-    const INDUSTRIAL_NLP_RULES = {
-        exceptions: new Set(['dans', 'sans', 'silence', 'avec', 'pour', 'mais', 'donc', 'plus', 'sous']),
-        irregulars: {
-            "suis": "être", "es": "être", "est": "être", "sommes": "être", "êtes": "être", "sont": "être",
-            "ai": "avoir", "as": "avoir", "a": "avoir", "avons": "avoir", "avez": "avoir", "ont": "avoir",
-            "vais": "aller", "vas": "aller", "va": "aller", "allons": "aller", "allez": "aller", "vont": "aller",
-            "beau": "beau", "belle": "beau", "beaux": "beau", "belles": "beau"
-        },
+    // --- LEMMATISEUR SÉCURISÉ PAR CACHE EN MÉMOIRE (BLOOM-FILTER IN-MEMORY) ---
+    class SafeCorpusLemmatizer {
+        constructor() {
+            this.corpusCache = new Set();
+            this.exceptions = new Set(['dans', 'sans', 'silence', 'avec', 'pour', 'mais', 'donc', 'plus', 'sous']);
+            this.irregulars = {
+                "suis": "être", "es": "être", "est": "être", "sommes": "être", "êtes": "être", "sont": "être",
+                "ai": "avoir", "as": "avoir", "a": "avoir", "avons": "avoir", "avez": "avoir", "ont": "avoir",
+                "vais": "aller", "vas": "aller", "va": "aller", "allons": "aller", "allez": "aller", "vont": "aller",
+                "beau": "beau", "belle": "beau", "beaux": "beau", "belles": "beau"
+            };
+        }
 
-        stem(word) {
-            if (!word) return "";
-            let clean = word.toLowerCase().trim();
-            if (this.exceptions.has(clean)) return clean;
-            if (this.irregulars[clean]) return this.irregulars[clean];
+        // Remplit le cache synchrone à partir du lexique ou des clés existantes
+        initialize(stemsIterable) {
+            this.corpusCache.clear();
+            if (!stemsIterable) return;
+            for (const item of stemsIterable) {
+                if (typeof item === 'string') {
+                    this.corpusCache.add(item.toLowerCase());
+                }
+            }
+        }
 
-            if (clean.length <= 3) return clean;
+        // Lemmatiseur synchrone intelligent validé par le corpus
+        lemmatize(word) {
+            if (!word || typeof word !== 'string') return "";
+            const cleanWord = word.toLowerCase().trim();
+            if (this.exceptions.has(cleanWord)) return cleanWord;
+            if (this.irregulars[cleanWord]) return this.irregulars[cleanWord];
 
-            return clean
-                .replace(/(é|ée|és|ées)$/, 'er')
-                .replace(/(ions|iez|erons|erez|ent)$/, '')
-                .trim() || clean;
-        },
+            // 1. Vérification exacte en mémoire (zéro latence)
+            if (this.corpusCache.has(cleanWord)) {
+                return cleanWord;
+            }
+
+            if (cleanWord.length > 3) {
+                // Gestion des pluriels courants (-s, -x)
+                if (cleanWord.endsWith('s') || cleanWord.endsWith('x')) {
+                    const base = cleanWord.slice(0, -1);
+                    if (this.corpusCache.has(base)) {
+                        return base;
+                    }
+                }
+
+                // Gestion sécurisée des flexions verbales validée par le cache
+                const suffixes = ['ent', 'ions', 'iez', 'erons', 'erez', 'é', 'ée', 'és', 'ées'];
+                for (const suffix of suffixes) {
+                    if (cleanWord.endsWith(suffix)) {
+                        const base = cleanWord.slice(0, -suffix.length);
+                        if (this.corpusCache.has(base)) {
+                            return base;
+                        }
+                        const baseEr = base + 'er';
+                        if (this.corpusCache.has(baseEr)) {
+                            return baseEr;
+                        }
+                    }
+                }
+            }
+
+            // Règle d'or absolue : si aucune base valide n'est confirmée, on retourne le mot exact (pas d'invention de mots)
+            return cleanWord;
+        }
 
         tokenizeAndResolveGraph(text) {
             if (!text) return [];
@@ -391,7 +432,7 @@
                     if (next && (next === "un" || next === "le" || next === "une" || next === "mon")) {
                         tokens.push({ surface: "est", stem: "est_substantif" });
                     } else if (next) {
-                        tokens.push({ surface: `est ${next}`, stem: `être__${this.stem(next)}` });
+                        tokens.push({ surface: `est ${next}`, stem: `être__${this.lemmatize(next)}` });
                         i++;
                     } else {
                         tokens.push({ surface: "est", stem: "être" });
@@ -400,15 +441,17 @@
                 }
 
                 if ((current === "a" || current === "ont") && next) {
-                    tokens.push({ surface: `${current} ${next}`, stem: `${this.irregulars[current] || 'avoir'}__${this.stem(next)}` });
+                    tokens.push({ surface: `${current} ${next}`, stem: `${this.irregulars[current] || 'avoir'}__${this.lemmatize(next)}` });
                     i++;
                 } else {
-                    tokens.push({ surface: current, stem: this.stem(current) });
+                    tokens.push({ surface: current, stem: this.lemmatize(current) });
                 }
             }
             return tokens;
         }
-    };
+    }
+
+    const industrialNlp = new SafeCorpusLemmatizer();
 
     // --- ARBRE VP ASYNCHRONE & INCREMENTAL ---
     class HybridVPTree {
@@ -698,7 +741,10 @@
         }
 
         async trainOnCorpus(text, onProgress) {
-            const resolvedTokens = INDUSTRIAL_NLP_RULES.tokenizeAndResolveGraph(text);
+            // Synchronisation initiale du cache avant tokenisation
+            industrialNlp.initialize(this.lexicon.keys());
+
+            const resolvedTokens = industrialNlp.tokenizeAndResolveGraph(text);
             
             resolvedTokens.forEach(t => {
                 this.tokenFrequencies.set(t.stem, (this.tokenFrequencies.get(t.stem) || 0) + 1);
@@ -714,6 +760,9 @@
                     this.surfaceForms.set(t.stem, t.surface);
                 }
             });
+
+            // Mise à jour du cache après ajout des nouveaux stems
+            industrialNlp.initialize(this.lexicon.keys());
 
             const updateContext = (currStem, targStem, weight) => {
                 const targetVec = this.lexicon.get(currStem);
@@ -768,6 +817,8 @@
                     this.lexicon = new Map(storedLexicon);
                     if (storedSurface) this.surfaceForms = new Map(storedSurface);
                     
+                    industrialNlp.initialize(this.lexicon.keys());
+
                     const treeElements = Array.from(this.lexicon.entries()).map(([stem, vector]) => ({
                         word: this.surfaceForms.get(stem) || stem,
                         surface: this.surfaceForms.get(stem) || stem,
@@ -792,7 +843,8 @@
                 };
             }
 
-            const rawResolved = INDUSTRIAL_NLP_RULES.tokenizeAndResolveGraph(amorceText);
+            industrialNlp.initialize(this.lexicon.keys());
+            const rawResolved = industrialNlp.tokenizeAndResolveGraph(amorceText);
             if (rawResolved.length === 0) rawResolved.push({ surface: "mot", stem: "mot" });
 
             const globalAmorceVec = this.contextManager.computeGlobalAmorceVector(rawResolved, this.lexicon, this.tokenFrequencies);
@@ -873,6 +925,7 @@
             data.lexicon.forEach(([stem, vectorArray]) => {
                 this.lexicon.set(stem, new Float32Array(vectorArray));
             });
+            industrialNlp.initialize(this.lexicon.keys());
             const treeElements = Array.from(this.lexicon.entries()).map(([stem, vector]) => ({
                 word: this.surfaceForms.get(stem) || stem,
                 surface: this.surfaceForms.get(stem) || stem,
@@ -1001,7 +1054,6 @@
         navigator.clipboard.writeText(text).then(() => {
             showToast("Texte copié dans le presse-papier !");
             
-            // Animation visuelle temporaire de l'icône du bouton
             if (buttonElement) {
                 const originalHTML = buttonElement.innerHTML;
                 buttonElement.innerHTML = `
@@ -1030,10 +1082,8 @@
         
         const accentText = 'text-sky-400';
 
-        // Si c'est une réponse du moteur, on ajoute le bouton de copie rapide
         let copyButtonHTML = '';
         if (type === 'engine' && sender.includes('Moteur')) {
-            // Échappement sécurisé des guillemets pour l'attribut HTML
             const escapedText = text.replace(/"/g, '&quot;');
             copyButtonHTML = `
                 <button onclick="copyToClipboard('${escapedText}', this)" class="ml-auto px-2 py-1 bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 rounded border border-slate-700/60 text-[10px] font-mono flex items-center gap-1.5 transition-precision">
