@@ -1,4 +1,20 @@
 ----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-03 08:27:49
+TITRE: IA : les meilleurs modèles pour le code et le développement web en septembre 2026
+LIEN: https://www.blogdumoderateur.com/ia-meilleurs-modeles-code-developpement-web-septembre-2026/
+CONTENU: Claude Fable 5.1 Max s’installe très largement en tête du classement général et du front-end de la WebDev Arena, mais disparaît du top 10 sur les tâches fullstack, où Qwen3.8 Max (Alibaba) prend la tête.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-03 07:56:19
+TITRE: Les avantages de la facturation électronique pour les TPE, PME et indépendants
+LIEN: https://www.blogdumoderateur.com/avantages-facturation-electronique-pour-tpe-pme-independants/
+CONTENU: La réforme de la facturation électronique est entrée en vigueur au 1er septembre 2026. Cette obligation est aussi une opportunité pour les entreprises et les indépendants.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-03 07:30:00
