@@ -107,7 +107,7 @@
 
         <div class="border border-slate-800 rounded-lg bg-slate-900/40 overflow-hidden">
           <button onclick="toggleAccordion('acc-corpus')" class="w-full p-3 flex items-center justify-between font-medium text-sm text-slate-300 hover:bg-slate-800/40 transition-precision focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none">
-            <span>📚 Ingestion Corpus</span>
+            <span>📚 Ingestion Corpus / JSON</span>
             <svg id="arrow-acc-corpus" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
           <div id="acc-corpus" class="p-3 border-t border-slate-800/60 space-y-3 text-xs hidden">
@@ -119,7 +119,7 @@
               </div>
             </div>
             <div>
-              <textarea id="corpus-input" placeholder="Saisir ou coller le corpus d'entraînement..." class="w-full h-24 bg-slate-950 border border-slate-800 text-slate-100 rounded p-2.5 text-xs font-mono resize-none focus:outline-none focus:border-sky-500"></textarea>
+              <textarea id="corpus-input" placeholder="Saisir du texte ou coller un JSON (ex: {&quot;corpus&quot;:[...]})" class="w-full h-24 bg-slate-950 border border-slate-800 text-slate-100 rounded p-2.5 text-xs font-mono resize-none focus:outline-none focus:border-sky-500"></textarea>
             </div>
             <label class="flex items-center gap-2 text-slate-400 cursor-pointer pt-1">
               <input type="checkbox" id="auto-clear-corpus" checked class="rounded border-slate-800 bg-slate-950 text-sky-500 accent-sky-500">
@@ -129,7 +129,7 @@
               <div id="progress-fill" class="bg-emerald-500 h-full w-0 transition-all duration-100"></div>
             </div>
             <button id="btn-ingest" class="w-full py-2 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 text-sky-400 font-medium rounded transition-precision focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none">
-              Ingérer le corpus actif
+              Ingérer le corpus / JSON
             </button>
           </div>
         </div>
@@ -147,10 +147,14 @@
         </div>
       </div>
 
-      <div class="p-3 border-t border-slate-800 bg-slate-950/40">
+      <div class="p-3 border-t border-slate-800 bg-slate-950/40 flex flex-col gap-2">
         <button onclick="toggleLexiconDrawer(true)" class="w-full py-2.5 bg-slate-800/50 hover:bg-sky-500/10 border border-slate-700/60 hover:border-sky-500/40 text-slate-300 hover:text-sky-400 rounded-md transition-precision text-xs font-medium flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:outline-none">
           <span>📊 Explorer le Lexique & Fréquences</span>
           <span id="badge-lexicon-count" class="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-400 font-mono">0 tkn</span>
+        </button>
+        <!-- BOUTON RESET USINE CACHÉ / DISCRET -->
+        <button onclick="factoryResetMemory()" class="w-full py-1.5 bg-transparent hover:bg-red-500/10 border border-transparent hover:border-red-500/30 text-slate-600 hover:text-red-400 rounded transition-precision text-[10px] font-mono flex items-center justify-center gap-1">
+          <span>⚠️ Réinitialisation Usine (Reset Total)</span>
         </button>
       </div>
     </aside>
@@ -190,6 +194,19 @@
   </div>
 
 <script>
+    // --- STARTER PACK JSON PAR DÉFAUT (PRÉPARÉ POUR L'INJECTION) ---
+    const DEFAULT_STARTER_PACK = {
+      "version": "1.0",
+      "domaine": "francais_fondation",
+      "corpus": [
+        "Bonjour je suis ton assistant virtuel prêt à apprendre et à échanger avec toi.",
+        "Comment puis-je t'aider aujourd'hui dans tes projets et tes analyses ?",
+        "Le chat gris traverse la rue rapidement avec le chien blanc.",
+        "Les données sont stockées dans la mémoire locale sécurisée du navigateur.",
+        "Que veux-tu faire maintenant avec ce système intelligent ?"
+      ]
+    };
+
     // --- UI INTERACTION HELPERS ---
     function showToast(message, type = 'success') {
         const container = document.getElementById('toast-container');
@@ -257,7 +274,6 @@
         }
     }
 
-    // --- UTILITAIRE DE PROTECTION VECTORIELLE ---
     function safeCosineSimilarity(vecA, vecB) {
         if (!vecA || !vecB) return 0;
         let dotProduct = 0, normA = 0, normB = 0;
@@ -271,7 +287,6 @@
         return Math.max(-1, Math.min(1, similarity));
     }
 
-    // --- PERSISTENCE INDEXEDDB ULTRA-SÉCURISÉE ---
     class IndustrialStorage {
         constructor(dbName = "MetaCognitiveEngineDB", storeName = "SemanticStore") {
             this.dbName = dbName;
@@ -339,6 +354,23 @@
                 }
             });
         }
+
+        async clearAll() {
+            if (!this.isAvailable) return;
+            if (!this.db) await this.init();
+            if (!this.db) return;
+            return new Promise((resolve) => {
+                try {
+                    const tx = this.db.transaction(this.storeName, "readwrite");
+                    const store = tx.objectStore(this.storeName);
+                    const req = store.clear();
+                    req.onsuccess = () => resolve();
+                    req.onerror = () => resolve();
+                } catch (e) {
+                    resolve();
+                }
+            });
+        }
     }
 
     const yieldToMain = () => new Promise(resolve => {
@@ -349,7 +381,6 @@
         }
     });
 
-    // --- LEMMATISEUR SÉCURISÉ PAR CACHE EN MÉMOIRE (BLOOM-FILTER IN-MEMORY) ---
     class SafeCorpusLemmatizer {
         constructor() {
             this.corpusCache = new Set();
@@ -362,7 +393,6 @@
             };
         }
 
-        // Remplit le cache synchrone à partir du lexique ou des clés existantes
         initialize(stemsIterable) {
             this.corpusCache.clear();
             if (!stemsIterable) return;
@@ -373,44 +403,32 @@
             }
         }
 
-        // Lemmatiseur synchrone intelligent validé par le corpus
         lemmatize(word) {
             if (!word || typeof word !== 'string') return "";
             const cleanWord = word.toLowerCase().trim();
             if (this.exceptions.has(cleanWord)) return cleanWord;
             if (this.irregulars[cleanWord]) return this.irregulars[cleanWord];
 
-            // 1. Vérification exacte en mémoire (zéro latence)
             if (this.corpusCache.has(cleanWord)) {
                 return cleanWord;
             }
 
             if (cleanWord.length > 3) {
-                // Gestion des pluriels courants (-s, -x)
                 if (cleanWord.endsWith('s') || cleanWord.endsWith('x')) {
                     const base = cleanWord.slice(0, -1);
-                    if (this.corpusCache.has(base)) {
-                        return base;
-                    }
+                    if (this.corpusCache.has(base)) return base;
                 }
 
-                // Gestion sécurisée des flexions verbales validée par le cache
                 const suffixes = ['ent', 'ions', 'iez', 'erons', 'erez', 'é', 'ée', 'és', 'ées'];
                 for (const suffix of suffixes) {
                     if (cleanWord.endsWith(suffix)) {
                         const base = cleanWord.slice(0, -suffix.length);
-                        if (this.corpusCache.has(base)) {
-                            return base;
-                        }
+                        if (this.corpusCache.has(base)) return base;
                         const baseEr = base + 'er';
-                        if (this.corpusCache.has(baseEr)) {
-                            return baseEr;
-                        }
+                        if (this.corpusCache.has(baseEr)) return baseEr;
                     }
                 }
             }
-
-            // Règle d'or absolue : si aucune base valide n'est confirmée, on retourne le mot exact (pas d'invention de mots)
             return cleanWord;
         }
 
@@ -423,7 +441,6 @@
                 .filter(token => token.length > 0);
             
             const tokens = [];
-
             for (let i = 0; i < rawWords.length; i++) {
                 const current = rawWords[i];
                 const next = rawWords[i + 1];
@@ -453,7 +470,6 @@
 
     const industrialNlp = new SafeCorpusLemmatizer();
 
-    // --- ARBRE VP ASYNCHRONE & INCREMENTAL ---
     class HybridVPTree {
         constructor(engine) {
             this.engine = engine;
@@ -531,7 +547,6 @@
         }
     }
 
-    // --- GESTIONNAIRE DE CONTEXTE GLOBAL & DÉCODEUR SÉQUENTIEL SÉCURISÉ ---
     class SemanticContextManager {
         constructor(dimension = 64) {
             this.dim = dimension;
@@ -670,7 +685,6 @@
         }
     }
 
-    // --- MOTEUR COGNITIF ULTIME V16.2 ---
     class MetacognitiveEngine {
         constructor(dimensions = 64, maxLexiconSize = 500) {
             this.dimensions = dimensions;
@@ -740,11 +754,35 @@
             }
         }
 
-        async trainOnCorpus(text, onProgress) {
-            // Synchronisation initiale du cache avant tokenisation
+        async trainOnCorpus(inputData, onProgress) {
+            let textToProcess = "";
+
+            // Analyse si l'input est un objet JSON structuré ou du texte brut
+            if (typeof inputData === 'string') {
+                const trimmed = inputData.trim();
+                if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+                    try {
+                        const parsed = JSON.parse(trimmed);
+                        if (parsed.corpus && Array.isArray(parsed.corpus)) {
+                            textToProcess = parsed.corpus.join(". ");
+                        } else if (Array.isArray(parsed)) {
+                            textToProcess = parsed.join(". ");
+                        } else {
+                            textToProcess = trimmed;
+                        }
+                    } catch (e) {
+                        textToProcess = trimmed;
+                    }
+                } else {
+                    textToProcess = trimmed;
+                }
+            } else if (inputData && Array.isArray(inputData.corpus)) {
+                textToProcess = inputData.corpus.join(". ");
+            }
+
             industrialNlp.initialize(this.lexicon.keys());
 
-            const resolvedTokens = industrialNlp.tokenizeAndResolveGraph(text);
+            const resolvedTokens = industrialNlp.tokenizeAndResolveGraph(textToProcess);
             
             resolvedTokens.forEach(t => {
                 this.tokenFrequencies.set(t.stem, (this.tokenFrequencies.get(t.stem) || 0) + 1);
@@ -761,7 +799,6 @@
                 }
             });
 
-            // Mise à jour du cache après ajout des nouveaux stems
             industrialNlp.initialize(this.lexicon.keys());
 
             const updateContext = (currStem, targStem, weight) => {
@@ -825,13 +862,30 @@
                         vector
                     }));
                     this.vpTree.root = await this.vpTree.buildAsyncChunked(treeElements);
+                } else {
+                    // SI LA MÉMOIRE EST TOTALEMENT VIERGE : Injection automatique du Starter Pack JSON
+                    await this.trainOnCorpus(DEFAULT_STARTER_PACK, () => {});
                 }
+
                 if (storedFreqs) {
                     this.tokenFrequencies = new Map(storedFreqs);
                 }
             } catch (e) {
-                console.warn("Initialisation à froid : aucune mémoire locale persistée.", e);
+                console.warn("Initialisation à froid : chargement du starter pack par défaut.", e);
+                await this.trainOnCorpus(DEFAULT_STARTER_PACK, () => {});
             }
+        }
+
+        async resetFactory() {
+            await this.storage.clearAll();
+            this.lexicon.clear();
+            this.surfaceForms.clear();
+            this.contextVectors.clear();
+            this.tokenFrequencies.clear();
+            this.vpTree.root = null;
+            industrialNlp.initialize([]);
+            // Ré-injecte le starter pack directement après le reset
+            await this.trainOnCorpus(DEFAULT_STARTER_PACK, () => {});
         }
 
         generateSentenceWithMetacognition(amorceText, maxSteps = 10) {
@@ -935,24 +989,41 @@
         }
     }
 
-    // --- INITIALISATION DU MOTEUR & ÉVÉNEMENTS ---
     const engine = new MetacognitiveEngine(64, 500);
 
     function loadPreset(type) {
         const input = document.getElementById('corpus-input');
         if (type === 'animaux') {
-            input.value = "Le chat a mangé la souris grise rapidement. Le chat noir traverse la grande maison. Le chien blanc a surveillé la maison attentivement.";
-            showToast("Corpus Animaux chargé avec succès");
+            input.value = JSON.stringify({
+                "domaine": "animaux",
+                "corpus": [
+                    "Le chat a mangé la souris grise rapidement.",
+                    "Le chat noir traverse la grande maison.",
+                    "Le chien blanc a surveillé la maison attentivement."
+                ]
+            }, null, 2);
+            showToast("Préréglage JSON Animaux chargé");
         } else if (type === 'tech') {
-            input.value = "La fusée puissante a traversé l'espace infini rapidement. L'ingénieur a analysé le moteur thermique complexe. La station orbitale abrite l'équipage international.";
-            showToast("Corpus Tech chargé avec succès");
+            input.value = JSON.stringify({
+                "domaine": "tech",
+                "corpus": [
+                    "La fusée puissante a traversé l'espace infini rapidement.",
+                    "L'ingénieur a analysé le moteur thermique complexe.",
+                    "La station orbitale abrite l'équipage international."
+                ]
+            }, null, 2);
+            showToast("Préréglage JSON Tech chargé");
         }
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-        loadPreset('animaux');
         await engine.loadStoredMemory();
         updateUI();
+
+        // Salutation initiale automatique (Proactivité)
+        setTimeout(() => {
+            appendChatMessage("Système", "Mémoire et socle français initialisés. Bonjour ! Je suis prêt, que veux-tu faire ou apprendre maintenant ?", "engine");
+        }, 300);
 
         const tempRange = document.getElementById('temp-slider');
         const tempVal = document.getElementById('temp-val');
@@ -966,7 +1037,7 @@
             const autoClear = document.getElementById('auto-clear-corpus').checked;
             const text = textarea.value;
             if (!text.trim()) {
-                showToast("Veuillez saisir ou charger du texte !", "error");
+                showToast("Veuillez saisir du texte ou un JSON !", "error");
                 return;
             }
 
@@ -989,8 +1060,8 @@
             }, 300);
 
             updateUI();
-            showToast("Ingestion HAL & Indexation L2 réussies !");
-            appendChatMessage("Système", "Ingestion HAL & Indexation L2 complétées. Synchronisation IndexedDB réussie.", "engine");
+            showToast("Ingestion du corpus/JSON réussie !");
+            appendChatMessage("Système", "Nouveau module de mémoire JSON ingéré et indexé avec succès.", "engine");
 
             if (autoClear) textarea.value = "";
         });
@@ -998,6 +1069,16 @@
         document.getElementById('btnSend').addEventListener('click', sendChatMessage);
         document.getElementById('chatInput').addEventListener('keydown', e => { if(e.key === 'Enter') sendChatMessage(); });
     });
+
+    async function factoryResetMemory() {
+        if (confirm("⚠️ Êtes-vous sûr de vouloir tout réinitialiser ? La mémoire locale sera effacée et remise à zéro.")) {
+            await engine.resetFactory();
+            updateUI();
+            document.getElementById('chatHistory').innerHTML = '';
+            showToast("Réinitialisation usine effectuée", "success");
+            appendChatMessage("Système", "Mémoire complètement réinitialisée. Starter pack par défaut rechargé.", "engine");
+        }
+    }
 
     function exportMemoryJSON() {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(engine.exportToJSON());
@@ -1049,11 +1130,9 @@
         }, 120);
     }
 
-    // --- FONCTION DE COPIE RAPIDE AMÉLIORÉE ---
     function copyToClipboard(text, buttonElement) {
         navigator.clipboard.writeText(text).then(() => {
             showToast("Texte copié dans le presse-papier !");
-            
             if (buttonElement) {
                 const originalHTML = buttonElement.innerHTML;
                 buttonElement.innerHTML = `
