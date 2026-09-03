@@ -293,7 +293,6 @@
     function quantizeSQ8(float32Vec) {
         const int8Vec = new Int8Array(float32Vec.length);
         for (let i = 0; i < float32Vec.length; i++) {
-            // Mapping de [-1, 1] vers [-128, 127]
             let val = Math.max(-1, Math.min(1, float32Vec[i]));
             int8Vec[i] = Math.round(val * 127);
         }
@@ -610,7 +609,7 @@
         constructor(dimensions = 64, maxLexiconSize = 50000) {
             this.dimensions = dimensions;
             this.maxLexiconSize = maxLexiconSize;
-            this.lexicon = new Map(); // Stocke des Float32Array (ou SQ8 décompressés en RAM Worker)
+            this.lexicon = new Map();
             this.surfaceForms = new Map();
             this.contextVectors = new Map();
             this.tokenFrequencies = new Map();
@@ -759,6 +758,33 @@
             if (onProgress) onProgress(100);
         }
 
+        // NOUVELLE ÉTAPE DE RÉFLEXION INTERNE EN 3 TEMPS
+        planInternalReasoning(amorceText) {
+            this.nlp.initialize(this.lexicon.keys());
+            const rawResolved = this.nlp.tokenizeAndResolveGraph(amorceText);
+            if (rawResolved.length === 0) rawResolved.push({ surface: "mot", stem: "mot" });
+
+            const globalAmorceVec = this.contextManager.computeGlobalAmorceVector(rawResolved, this.lexicon, this.tokenFrequencies);
+            const explorationCandidates = this.vpTree.search(globalAmorceVec, 8);
+            
+            let primaryAnchorStem = null;
+            if (explorationCandidates && explorationCandidates.length > 0) {
+                const bestCandidate = explorationCandidates[0].item;
+                primaryAnchorStem = bestCandidate.surface || bestCandidate.word;
+            }
+
+            return {
+                globalAmorceVec,
+                explorationCandidates,
+                primaryAnchorStem,
+                metaSteps: [
+                    "1. Analyse de l'amorce globale réussie.",
+                    `2. Exploration sémantique : ${explorationCandidates.length} notions identifiées en mémoire.`,
+                    `3. Structuration du plan : Point d'ancrage choisi -> "${primaryAnchorStem || 'libre'}"`
+                ]
+            };
+        }
+
         generateSentence(amorceText, maxSteps = 10) {
             if (this.lexicon.size === 0) {
                 return {
@@ -768,17 +794,13 @@
                 };
             }
 
-            this.nlp.initialize(this.lexicon.keys());
-            const rawResolved = this.nlp.tokenizeAndResolveGraph(amorceText);
-            if (rawResolved.length === 0) rawResolved.push({ surface: "mot", stem: "mot" });
-
-            const globalAmorceVec = this.contextManager.computeGlobalAmorceVector(rawResolved, this.lexicon, this.tokenFrequencies);
+            // ÉTAPE DE RÉFLEXION INVISIBLE INTÉGRÉE
+            const reasoningPlan = this.planInternalReasoning(amorceText);
             
             this.decoder.clearMemory();
             let outputSurfaces = []; 
             
-            let currentStem = rawResolved[rawResolved.length - 1].stem;
-            let currentVec = this.lexicon.has(currentStem) ? this.lexicon.get(currentStem) : globalAmorceVec;
+            let currentVec = reasoningPlan.globalAmorceVec;
             let cumulativeSurprise = 0;
 
             for (let step = 0; step < maxSteps; step++) {
@@ -787,7 +809,7 @@
 
                 const nextWordSurface = this.decoder.selectNextWord(
                     candidates,
-                    globalAmorceVec,
+                    reasoningPlan.globalAmorceVec,
                     currentVec,
                     this.baseTemperature
                 );
@@ -813,12 +835,7 @@
 
             const surpriseIndex = cumulativeSurprise / Math.max(outputSurfaces.length, 1);
             
-            let metaComment = "Flux sémantique stable et cohérent.";
-            if (surpriseIndex > 0.6) {
-                metaComment = "Métacognition : Forte divergence sémantique détectée (exploration créative élevée).";
-            } else if (surpriseIndex < 0.2) {
-                metaComment = "Métacognition : Forte redondance contextuelle (convergence déterministe).";
-            }
+            const fullMetaMessage = reasoningPlan.metaSteps.join(" | ");
 
             const formattedText = outputSurfaces.length > 0 
                 ? outputSurfaces.map(w => w.replace("__", " ")).join(" ") + "."
@@ -827,12 +844,11 @@
             return {
                 text: formattedText,
                 surprise: surpriseIndex,
-                metaMessage: metaComment
+                metaMessage: fullMetaMessage
             };
         }
 
         exportStateForBlockStorage() {
-            // Sérialisation en blocs binaires SQ8 (Vector Quantization) pour économiser la RAM et le stockage IndexedDB
             const lexiconQuantized = [];
             for (const [stem, vec] of this.lexicon.entries()) {
                 const sq8Vec = quantizeSQ8(vec);
@@ -856,7 +872,6 @@
 
             if (data.lexicon) {
                 data.lexicon.forEach(([stem, sq8ArrayOrVec]) => {
-                    // Supporte SQ8 (Int8Array) ou Float32Array brut
                     let vec;
                     if (sq8ArrayOrVec instanceof Int8Array || Array.isArray(sq8ArrayOrVec)) {
                         const int8 = sq8ArrayOrVec instanceof Int8Array ? sq8ArrayOrVec : new Int8Array(sq8ArrayOrVec);
@@ -921,7 +936,7 @@
     };
     `;
 
-    // --- INDEXEDDB PAR BLOCS BINAIRES (Stockage efficace par blocs) ---
+    // --- INDEXEDDB PAR BLOCS BINAIRES ---
     class IndustrialBlockStorage {
         constructor(dbName = "MetaCognitiveBlockDB", storeName = "BlockStore") {
             this.dbName = dbName;
@@ -1008,7 +1023,7 @@
         }
     }
 
-    // --- CLIENT WRAPPER POUR COMMUNIQUER AVEC LE WEB WORKER & INDEXEDDB ---
+    // --- CLIENT WRAPPER ---
     class MetacognitiveClientBridge {
         constructor() {
             const blob = new Blob([workerCode], { type: 'application/javascript' });
@@ -1079,7 +1094,6 @@
 
         async importJSONBlock(jsonString) {
             const parsed = JSON.parse(jsonString);
-            // Si c'est un export standard, on le convertit ou l'envoie direct
             const blockData = await this._send('import', parsed);
             if (blockData && blockData.size) this.lexiconSize = blockData.size;
             const exportData = await this._send('export', null);
@@ -1131,7 +1145,6 @@
         const tempRange = document.getElementById('temp-slider');
         const tempVal = document.getElementById('temp-val');
         tempRange.addEventListener('input', (e) => {
-            // Optionnel : gérer la température si besoin (stockée localement)
             tempVal.innerText = parseFloat(e.target.value).toFixed(2);
         });
 
@@ -1317,7 +1330,6 @@
             return;
         }
 
-        // Message informatif dans le tiroir du lexique pour indiquer le passage à l'échelle
         const infoNode = document.createElement('div');
         infoNode.className = 'text-[11px] text-sky-400/80 bg-sky-500/10 border border-sky-500/20 p-2 rounded mb-2 font-mono text-center';
         infoNode.innerText = '⚡ Mode haute capacité actif (50k tokens - Web Worker & SQ8)';
