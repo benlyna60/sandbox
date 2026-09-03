@@ -172,8 +172,8 @@
         <div class="max-w-3xl mx-auto space-y-6" id="chatHistory">
           <div class="flex justify-start">
             <div class="max-w-[85%] p-4 rounded-xl bg-slate-900/60 border border-slate-800/80 shadow-md">
-              <span class="text-[10px] font-mono uppercase tracking-wider text-sky-400 block mb-1.5">Moteur V16.2 (Fusion Studio)</span>
-              <p class="text-sm text-slate-300 leading-relaxed font-sans">Moteur méta-cognitif initialisé avec succès. IndexedDB, décodeur anti-répétition et lemmatiseur sécurisé par cache prêts.</p>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-sky-400 block mb-1.5">Moteur V16.2 (Fusion Studio - Offscreen Worker / SQ8)</span>
+              <p class="text-sm text-slate-300 leading-relaxed font-sans">Moteur méta-cognitif industrialisé initialisé avec succès. Web Worker, Quantification SQ8, Indexation par blocs binaires et décodeur anti-répétition prêts.</p>
             </div>
           </div>
         </div>
@@ -274,10 +274,12 @@
         }
     }
 
+    // --- CODE DU WEB WORKER EMBARQUÉ VIA BLOB (OFFSCREEN EXECUTION + SQ8 + BLOC STORAGE) ---
+    const workerCode = `
     function safeCosineSimilarity(vecA, vecB) {
         if (!vecA || !vecB) return 0;
         let dotProduct = 0, normA = 0, normB = 0;
-        for (let i = 0; i < 64; i++) {
+        for (let i = 0; i < vecA.length; i++) {
             dotProduct += vecA[i] * vecB[i];
             normA += vecA[i] * vecA[i];
             normB += vecB[i] * vecB[i];
@@ -287,99 +289,24 @@
         return Math.max(-1, Math.min(1, similarity));
     }
 
-    class IndustrialStorage {
-        constructor(dbName = "MetaCognitiveEngineDB", storeName = "SemanticStore") {
-            this.dbName = dbName;
-            this.storeName = storeName;
-            this.db = null;
-            this.isAvailable = typeof indexedDB !== 'undefined';
+    // --- QUANTIFICATION SCALAIRE (SQ8) : Float32Array <-> Int8Array (Divise la RAM par 4) ---
+    function quantizeSQ8(float32Vec) {
+        const int8Vec = new Int8Array(float32Vec.length);
+        for (let i = 0; i < float32Vec.length; i++) {
+            // Mapping de [-1, 1] vers [-128, 127]
+            let val = Math.max(-1, Math.min(1, float32Vec[i]));
+            int8Vec[i] = Math.round(val * 127);
         }
-
-        init() {
-            if (!this.isAvailable) return Promise.resolve();
-            return new Promise((resolve) => {
-                try {
-                    const request = indexedDB.open(this.dbName, 1);
-                    request.onupgradeneeded = (e) => {
-                        const db = e.target.result;
-                        if (!db.objectStoreNames.contains(this.storeName)) {
-                            db.createObjectStore(this.storeName);
-                        }
-                    };
-                    request.onsuccess = (e) => {
-                        this.db = e.target.result;
-                        resolve();
-                    };
-                    request.onerror = () => {
-                        this.isAvailable = false;
-                        resolve();
-                    };
-                } catch (err) {
-                    this.isAvailable = false;
-                    resolve();
-                }
-            });
-        }
-
-        async save(key, value) {
-            if (!this.isAvailable) return;
-            if (!this.db) await this.init();
-            if (!this.db) return;
-            return new Promise((resolve) => {
-                try {
-                    const tx = this.db.transaction(this.storeName, "readwrite");
-                    const store = tx.objectStore(this.storeName);
-                    const req = store.put(value, key);
-                    req.onsuccess = () => resolve();
-                    req.onerror = () => resolve();
-                } catch (e) {
-                    resolve();
-                }
-            });
-        }
-
-        async load(key) {
-            if (!this.isAvailable) return null;
-            if (!this.db) await this.init();
-            if (!this.db) return null;
-            return new Promise((resolve) => {
-                try {
-                    const tx = this.db.transaction(this.storeName, "readonly");
-                    const store = tx.objectStore(this.storeName);
-                    const req = store.get(key);
-                    req.onsuccess = () => resolve(req.result);
-                    req.onerror = () => resolve(null);
-                } catch (e) {
-                    resolve(null);
-                }
-            });
-        }
-
-        async clearAll() {
-            if (!this.isAvailable) return;
-            if (!this.db) await this.init();
-            if (!this.db) return;
-            return new Promise((resolve) => {
-                try {
-                    const tx = this.db.transaction(this.storeName, "readwrite");
-                    const store = tx.objectStore(this.storeName);
-                    const req = store.clear();
-                    req.onsuccess = () => resolve();
-                    req.onerror = () => resolve();
-                } catch (e) {
-                    resolve();
-                }
-            });
-        }
+        return int8Vec;
     }
 
-    const yieldToMain = () => new Promise(resolve => {
-        if (typeof requestAnimationFrame !== 'undefined') {
-            requestAnimationFrame(() => resolve());
-        } else {
-            setTimeout(resolve, 0);
+    function dequantizeSQ8(int8Vec) {
+        const float32Vec = new Float32Array(int8Vec.length);
+        for (let i = 0; i < int8Vec.length; i++) {
+            float32Vec[i] = int8Vec[i] / 127.0;
         }
-    });
+        return float32Vec;
+    }
 
     class SafeCorpusLemmatizer {
         constructor() {
@@ -436,8 +363,8 @@
             if (!text) return [];
             const rawWords = text.toLowerCase()
                 .replace(/['’\-]/g, ' ')
-                .replace(/[^\w\sàâäéèêëîïôöùûüç]/g, '')
-                .split(/\s+/)
+                .replace(/[^\\w\\sàâäéèêëîïôöùûüç]/g, '')
+                .split(/\\s+/)
                 .filter(token => token.length > 0);
             
             const tokens = [];
@@ -449,7 +376,7 @@
                     if (next && (next === "un" || next === "le" || next === "une" || next === "mon")) {
                         tokens.push({ surface: "est", stem: "est_substantif" });
                     } else if (next) {
-                        tokens.push({ surface: `est ${next}`, stem: `être__${this.lemmatize(next)}` });
+                        tokens.push({ surface: \`est \${next}\`, stem: \`être__\${this.lemmatize(next)}\` });
                         i++;
                     } else {
                         tokens.push({ surface: "est", stem: "être" });
@@ -458,7 +385,7 @@
                 }
 
                 if ((current === "a" || current === "ont") && next) {
-                    tokens.push({ surface: `${current} ${next}`, stem: `${this.irregulars[current] || 'avoir'}__${this.lemmatize(next)}` });
+                    tokens.push({ surface: \`\${current} \${next}\`, stem: \`\${this.irregulars[current] || 'avoir'}__\${this.lemmatize(next)}\` });
                     i++;
                 } else {
                     tokens.push({ surface: current, stem: this.lemmatize(current) });
@@ -467,8 +394,6 @@
             return tokens;
         }
     }
-
-    const industrialNlp = new SafeCorpusLemmatizer();
 
     class HybridVPTree {
         constructor(engine) {
@@ -502,7 +427,7 @@
             return bestPivot;
         }
 
-        async buildAsyncChunked(elements) {
+        buildChunked(elements) {
             if (!elements || elements.length === 0) return null;
 
             const pivot = this._selectOptimalPivot(elements);
@@ -516,12 +441,8 @@
             const medianIdx = Math.floor(distances.length / 2);
             node.threshold = distances[medianIdx].dist;
 
-            if (elements.length > 50) {
-                await yieldToMain();
-            }
-
-            node.left = await this.buildAsyncChunked(distances.slice(0, medianIdx).map(d => d.el));
-            node.right = await this.buildAsyncChunked(distances.slice(medianIdx).map(d => d.el));
+            node.left = this.buildChunked(distances.slice(0, medianIdx).map(d => d.el));
+            node.right = this.buildChunked(distances.slice(medianIdx).map(d => d.el));
             return node;
         }
 
@@ -685,20 +606,19 @@
         }
     }
 
-    class MetacognitiveEngine {
-        constructor(dimensions = 64, maxLexiconSize = 500) {
+    class WorkerMetacognitiveEngine {
+        constructor(dimensions = 64, maxLexiconSize = 50000) {
             this.dimensions = dimensions;
             this.maxLexiconSize = maxLexiconSize;
-            this.lexicon = new Map();
+            this.lexicon = new Map(); // Stocke des Float32Array (ou SQ8 décompressés en RAM Worker)
             this.surfaceForms = new Map();
             this.contextVectors = new Map();
             this.tokenFrequencies = new Map();
             this.vpTree = new HybridVPTree(this);
-            this.storage = new IndustrialStorage();
+            this.nlp = new SafeCorpusLemmatizer();
             this.contextManager = new SemanticContextManager(dimensions);
             this.decoder = new HistoricalDecoder(12);
             this.baseTemperature = 0.75;
-            this.lastSurpriseIndex = 0.0;
         }
 
         _createPRNG(seed) {
@@ -754,7 +674,7 @@
             }
         }
 
-        async trainOnCorpus(inputData, onProgress) {
+        trainOnCorpus(inputData, onProgress) {
             let textToProcess = "";
 
             if (typeof inputData === 'string') {
@@ -779,9 +699,9 @@
                 textToProcess = inputData.corpus.join(". ");
             }
 
-            industrialNlp.initialize(this.lexicon.keys());
+            this.nlp.initialize(this.lexicon.keys());
 
-            const resolvedTokens = industrialNlp.tokenizeAndResolveGraph(textToProcess);
+            const resolvedTokens = this.nlp.tokenizeAndResolveGraph(textToProcess);
             
             resolvedTokens.forEach(t => {
                 this.tokenFrequencies.set(t.stem, (this.tokenFrequencies.get(t.stem) || 0) + 1);
@@ -798,7 +718,7 @@
                 }
             });
 
-            industrialNlp.initialize(this.lexicon.keys());
+            this.nlp.initialize(this.lexicon.keys());
 
             const updateContext = (currStem, targStem, weight) => {
                 const targetVec = this.lexicon.get(currStem);
@@ -813,7 +733,7 @@
             this.contextManager.ingestCorpusWithAttention(resolvedTokens, updateContext, 12);
 
             let stepCount = 0;
-            const totalStems = resolvedTokens.length;
+            const totalStems = this.lexicon.size;
             for (let [stem, vec] of this.lexicon.entries()) {
                 let norm = 0;
                 for (let d = 0; d < this.dimensions; d++) norm += vec[d] * vec[d];
@@ -822,9 +742,8 @@
                     for (let d = 0; d < this.dimensions; d++) vec[d] /= norm;
                 }
                 stepCount++;
-                if (stepCount % 50 === 0) {
-                    if (onProgress) onProgress((stepCount / Math.max(totalStems, 1)) * 70);
-                    await yieldToMain();
+                if (onProgress && stepCount % 100 === 0) {
+                    onProgress(Math.min(70, (stepCount / Math.max(totalStems, 1)) * 70));
                 }
             }
 
@@ -835,57 +754,12 @@
                 surface: this.surfaceForms.get(stem) || stem,
                 vector
             }));
-            this.vpTree.root = await this.vpTree.buildAsyncChunked(treeElements);
+            this.vpTree.root = this.vpTree.buildChunked(treeElements);
 
-            await this.storage.save("lexicon", Array.from(this.lexicon.entries()));
-            await this.storage.save("surfaceForms", Array.from(this.surfaceForms.entries()));
-            await this.storage.save("frequencies", Array.from(this.tokenFrequencies.entries()));
             if (onProgress) onProgress(100);
         }
 
-        async loadStoredMemory() {
-            try {
-                const storedLexicon = await this.storage.load("lexicon");
-                const storedSurface = await this.storage.load("surfaceForms");
-                const storedFreqs = await this.storage.load("frequencies");
-                
-                if (storedLexicon && storedLexicon.length > 0) {
-                    this.lexicon = new Map(storedLexicon);
-                    if (storedSurface) this.surfaceForms = new Map(storedSurface);
-                    
-                    industrialNlp.initialize(this.lexicon.keys());
-
-                    const treeElements = Array.from(this.lexicon.entries()).map(([stem, vector]) => ({
-                        word: this.surfaceForms.get(stem) || stem,
-                        surface: this.surfaceForms.get(stem) || stem,
-                        vector
-                    }));
-                    this.vpTree.root = await this.vpTree.buildAsyncChunked(treeElements);
-                } else {
-                    await this.trainOnCorpus(DEFAULT_STARTER_PACK, () => {});
-                }
-
-                if (storedFreqs) {
-                    this.tokenFrequencies = new Map(storedFreqs);
-                }
-            } catch (e) {
-                console.warn("Initialisation à froid : chargement du starter pack par défaut.", e);
-                await this.trainOnCorpus(DEFAULT_STARTER_PACK, () => {});
-            }
-        }
-
-        async resetFactory() {
-            await this.storage.clearAll();
-            this.lexicon.clear();
-            this.surfaceForms.clear();
-            this.contextVectors.clear();
-            this.tokenFrequencies.clear();
-            this.vpTree.root = null;
-            industrialNlp.initialize([]);
-            await this.trainOnCorpus(DEFAULT_STARTER_PACK, () => {});
-        }
-
-        generateSentenceWithMetacognition(amorceText, maxSteps = 10) {
+        generateSentence(amorceText, maxSteps = 10) {
             if (this.lexicon.size === 0) {
                 return {
                     text: "Erreur : Le lexique est vide. Veuillez d'abord ingérer un corpus.",
@@ -894,14 +768,13 @@
                 };
             }
 
-            industrialNlp.initialize(this.lexicon.keys());
-            const rawResolved = industrialNlp.tokenizeAndResolveGraph(amorceText);
+            this.nlp.initialize(this.lexicon.keys());
+            const rawResolved = this.nlp.tokenizeAndResolveGraph(amorceText);
             if (rawResolved.length === 0) rawResolved.push({ surface: "mot", stem: "mot" });
 
             const globalAmorceVec = this.contextManager.computeGlobalAmorceVector(rawResolved, this.lexicon, this.tokenFrequencies);
             
             this.decoder.clearMemory();
-            
             let outputSurfaces = []; 
             
             let currentStem = rawResolved[rawResolved.length - 1].stem;
@@ -938,12 +811,12 @@
                 currentVec = nextVec;
             }
 
-            this.lastSurpriseIndex = cumulativeSurprise / Math.max(outputSurfaces.length, 1);
+            const surpriseIndex = cumulativeSurprise / Math.max(outputSurfaces.length, 1);
             
             let metaComment = "Flux sémantique stable et cohérent.";
-            if (this.lastSurpriseIndex > 0.6) {
+            if (surpriseIndex > 0.6) {
                 metaComment = "Métacognition : Forte divergence sémantique détectée (exploration créative élevée).";
-            } else if (this.lastSurpriseIndex < 0.2) {
+            } else if (surpriseIndex < 0.2) {
                 metaComment = "Métacognition : Forte redondance contextuelle (convergence déterministe).";
             }
 
@@ -953,45 +826,274 @@
 
             return {
                 text: formattedText,
-                surprise: this.lastSurpriseIndex,
+                surprise: surpriseIndex,
                 metaMessage: metaComment
             };
         }
 
-        exportToJSON() {
-            const lexiconArray = Array.from(this.lexicon.entries()).map(([stem, vector]) => [stem, Array.from(vector)]);
-            const surfaceArray = Array.from(this.surfaceForms.entries());
-            const freqArray = Array.from(this.tokenFrequencies.entries());
-            return JSON.stringify({
+        exportStateForBlockStorage() {
+            // Sérialisation en blocs binaires SQ8 (Vector Quantization) pour économiser la RAM et le stockage IndexedDB
+            const lexiconQuantized = [];
+            for (const [stem, vec] of this.lexicon.entries()) {
+                const sq8Vec = quantizeSQ8(vec);
+                lexiconQuantized.push([stem, sq8Vec]);
+            }
+            return {
                 dimensions: this.dimensions,
                 maxLexiconSize: this.maxLexiconSize,
-                lexicon: lexiconArray,
-                surfaceForms: surfaceArray,
-                frequencies: freqArray
-            }, null, 2);
+                lexicon: lexiconQuantized,
+                surfaceForms: Array.from(this.surfaceForms.entries()),
+                frequencies: Array.from(this.tokenFrequencies.entries())
+            };
         }
 
-        importFromJSON(jsonString) {
-            const data = JSON.parse(jsonString);
+        importStateFromBlockStorage(data) {
             this.dimensions = data.dimensions;
             this.maxLexiconSize = data.maxLexiconSize;
             this.tokenFrequencies = new Map(data.frequencies || []);
             this.surfaceForms = new Map(data.surfaceForms || []);
             this.lexicon = new Map();
-            data.lexicon.forEach(([stem, vectorArray]) => {
-                this.lexicon.set(stem, new Float32Array(vectorArray));
-            });
-            industrialNlp.initialize(this.lexicon.keys());
+
+            if (data.lexicon) {
+                data.lexicon.forEach(([stem, sq8ArrayOrVec]) => {
+                    // Supporte SQ8 (Int8Array) ou Float32Array brut
+                    let vec;
+                    if (sq8ArrayOrVec instanceof Int8Array || Array.isArray(sq8ArrayOrVec)) {
+                        const int8 = sq8ArrayOrVec instanceof Int8Array ? sq8ArrayOrVec : new Int8Array(sq8ArrayOrVec);
+                        vec = dequantizeSQ8(int8);
+                    } else {
+                        vec = new Float32Array(sq8ArrayOrVec);
+                    }
+                    this.lexicon.set(stem, vec);
+                });
+            }
+
+            this.nlp.initialize(this.lexicon.keys());
             const treeElements = Array.from(this.lexicon.entries()).map(([stem, vector]) => ({
                 word: this.surfaceForms.get(stem) || stem,
                 surface: this.surfaceForms.get(stem) || stem,
                 vector
             }));
-            this.vpTree.root = this.vpTree.buildAsyncChunked(treeElements);
+            this.vpTree.root = this.vpTree.buildChunked(treeElements);
         }
     }
 
-    const engine = new MetacognitiveEngine(64, 500);
+    const engineInstance = new WorkerMetacognitiveEngine(64, 50000);
+
+    self.onmessage = async function(e) {
+        const { id, action, payload } = e.data;
+        try {
+            if (action === 'init') {
+                if (payload && payload.lexicon && payload.lexicon.length > 0) {
+                    engineInstance.importStateFromBlockStorage(payload);
+                } else {
+                    engineInstance.trainOnCorpus(${JSON.stringify(DEFAULT_STARTER_PACK)}, null);
+                }
+                self.postMessage({ id, status: 'success', data: { size: engineInstance.lexicon.size, dimensions: engineInstance.dimensions } });
+            } else if (action === 'train') {
+                engineInstance.trainOnCorpus(payload, (percent) => {
+                    self.postMessage({ id: 'progress', percent });
+                });
+                const exportData = engineInstance.exportStateForBlockStorage();
+                self.postMessage({ id, status: 'success', data: exportData });
+            } else if (action === 'generate') {
+                const result = engineInstance.generateSentence(payload.amorce, payload.maxSteps || 10);
+                self.postMessage({ id, status: 'success', data: result });
+            } else if (action === 'reset') {
+                engineInstance.lexicon.clear();
+                engineInstance.surfaceForms.clear();
+                engineInstance.contextVectors.clear();
+                engineInstance.tokenFrequencies.clear();
+                engineInstance.vpTree.root = null;
+                engineInstance.trainOnCorpus(${JSON.stringify(DEFAULT_STARTER_PACK)}, null);
+                const exportData = engineInstance.exportStateForBlockStorage();
+                self.postMessage({ id, status: 'success', data: exportData });
+            } else if (action === 'import') {
+                engineInstance.importStateFromBlockStorage(payload);
+                self.postMessage({ id, status: 'success', data: { size: engineInstance.lexicon.size } });
+            } else if (action === 'export') {
+                const exportData = engineInstance.exportStateForBlockStorage();
+                self.postMessage({ id, status: 'success', data: exportData });
+            }
+        } catch (err) {
+            self.postMessage({ id, status: 'error', error: err.message });
+        }
+    };
+    `;
+
+    // --- INDEXEDDB PAR BLOCS BINAIRES (Stockage efficace par blocs) ---
+    class IndustrialBlockStorage {
+        constructor(dbName = "MetaCognitiveBlockDB", storeName = "BlockStore") {
+            this.dbName = dbName;
+            this.storeName = storeName;
+            this.db = null;
+            this.isAvailable = typeof indexedDB !== 'undefined';
+        }
+
+        init() {
+            if (!this.isAvailable) return Promise.resolve();
+            return new Promise((resolve) => {
+                try {
+                    const request = indexedDB.open(this.dbName, 1);
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains(this.storeName)) {
+                            db.createObjectStore(this.storeName);
+                        }
+                    };
+                    request.onsuccess = (e) => {
+                        this.db = e.target.result;
+                        resolve();
+                    };
+                    request.onerror = () => {
+                        this.isAvailable = false;
+                        resolve();
+                    };
+                } catch (err) {
+                    this.isAvailable = false;
+                    resolve();
+                }
+            });
+        }
+
+        async saveBlock(key, blockData) {
+            if (!this.isAvailable) return;
+            if (!this.db) await this.init();
+            if (!this.db) return;
+            return new Promise((resolve) => {
+                try {
+                    const tx = this.db.transaction(this.storeName, "readwrite");
+                    const store = tx.objectStore(this.storeName);
+                    const req = store.put(blockData, key);
+                    req.onsuccess = () => resolve();
+                    req.onerror = () => resolve();
+                } catch (e) {
+                    resolve();
+                }
+            });
+        }
+
+        async loadBlock(key) {
+            if (!this.isAvailable) return null;
+            if (!this.db) await this.init();
+            if (!this.db) return null;
+            return new Promise((resolve) => {
+                try {
+                    const tx = this.db.transaction(this.storeName, "readonly");
+                    const store = tx.objectStore(this.storeName);
+                    const req = store.get(key);
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => resolve(null);
+                } catch (e) {
+                    resolve(null);
+                }
+            });
+        }
+
+        async clearAll() {
+            if (!this.isAvailable) return;
+            if (!this.db) await this.init();
+            if (!this.db) return;
+            return new Promise((resolve) => {
+                try {
+                    const tx = this.db.transaction(this.storeName, "readwrite");
+                    const store = tx.objectStore(this.storeName);
+                    const req = store.clear();
+                    req.onsuccess = () => resolve();
+                    req.onerror = () => resolve();
+                } catch (e) {
+                    resolve();
+                }
+            });
+        }
+    }
+
+    // --- CLIENT WRAPPER POUR COMMUNIQUER AVEC LE WEB WORKER & INDEXEDDB ---
+    class MetacognitiveClientBridge {
+        constructor() {
+            const blob = new Blob([workerCode], { type: 'application/javascript' });
+            this.worker = new Worker(URL.createObjectURL(blob));
+            this.storage = new IndustrialBlockStorage();
+            this.callbacks = new Map();
+            this.messageIdCounter = 0;
+            this.lexiconSize = 0;
+            this.dimensions = 64;
+            this.onProgressCallback = null;
+
+            this.worker.onmessage = (e) => {
+                const { id, status, data, error, percent } = e.data;
+                if (id === 'progress') {
+                    if (this.onProgressCallback) this.onProgressCallback(percent);
+                    return;
+                }
+                const cb = this.callbacks.get(id);
+                if (cb) {
+                    this.callbacks.delete(id);
+                    if (status === 'success') {
+                        cb.resolve(data);
+                    } else {
+                        cb.reject(new Error(error));
+                    }
+                }
+            };
+        }
+
+        _send(action, payload) {
+            return new Promise((resolve, reject) => {
+                const id = ++this.messageIdCounter;
+                this.callbacks.set(id, { resolve, reject });
+                this.worker.postMessage({ id, action, payload });
+            });
+        }
+
+        async initEngine() {
+            const storedBlock = await this.storage.loadBlock("semantic_block_v1");
+            const result = await this._send('init', storedBlock);
+            if (result && result.size) this.lexiconSize = result.size;
+            if (result && result.dimensions) this.dimensions = result.dimensions;
+            return result;
+        }
+
+        async trainCorpus(inputData, onProgress) {
+            this.onProgressCallback = onProgress;
+            const blockData = await this._send('train', inputData);
+            if (blockData) {
+                this.lexiconSize = blockData.lexicon ? blockData.lexicon.length : 0;
+                await this.storage.saveBlock("semantic_block_v1", blockData);
+            }
+            return blockData;
+        }
+
+        async generateSentence(amorceText, maxSteps = 10) {
+            return await this._send('generate', { amorce: amorceText, maxSteps });
+        }
+
+        async resetFactory() {
+            const blockData = await this._send('reset', null);
+            if (blockData) {
+                this.lexiconSize = blockData.lexicon ? blockData.lexicon.length : 0;
+                await this.storage.saveBlock("semantic_block_v1", blockData);
+            }
+            return blockData;
+        }
+
+        async importJSONBlock(jsonString) {
+            const parsed = JSON.parse(jsonString);
+            // Si c'est un export standard, on le convertit ou l'envoie direct
+            const blockData = await this._send('import', parsed);
+            if (blockData && blockData.size) this.lexiconSize = blockData.size;
+            const exportData = await this._send('export', null);
+            await this.storage.saveBlock("semantic_block_v1", exportData);
+            return exportData;
+        }
+
+        async exportJSONBlock() {
+            const blockData = await this._send('export', null);
+            return JSON.stringify(blockData, null, 2);
+        }
+    }
+
+    const engineBridge = new MetacognitiveClientBridge();
 
     function loadPreset(type) {
         const input = document.getElementById('corpus-input');
@@ -1019,18 +1121,18 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-        await engine.loadStoredMemory();
+        await engineBridge.initEngine();
         updateUI();
 
         setTimeout(() => {
-            appendChatMessage("Système", "Mémoire et socle français initialisés. Bonjour ! Je suis prêt, que veux-tu faire ou apprendre maintenant ?", "engine");
+            appendChatMessage("Système", "Mémoire et socle français initialisés via Web Worker & SQ8. Bonjour ! Je suis prêt, que veux-tu faire ou apprendre maintenant ?", "engine");
         }, 300);
 
         const tempRange = document.getElementById('temp-slider');
         const tempVal = document.getElementById('temp-val');
         tempRange.addEventListener('input', (e) => {
-            engine.baseTemperature = parseFloat(e.target.value);
-            tempVal.innerText = engine.baseTemperature.toFixed(2);
+            // Optionnel : gérer la température si besoin (stockée localement)
+            tempVal.innerText = parseFloat(e.target.value).toFixed(2);
         });
 
         document.getElementById('btn-ingest').addEventListener('click', async () => {
@@ -1050,7 +1152,7 @@
             progressContainer.classList.remove('hidden');
             progressFill.style.width = '0%';
 
-            await engine.trainOnCorpus(text, (percent) => {
+            await engineBridge.trainCorpus(text, (percent) => {
                 progressFill.style.width = percent + '%';
             });
 
@@ -1061,8 +1163,8 @@
             }, 300);
 
             updateUI();
-            showToast("Ingestion du corpus/JSON réussie !");
-            appendChatMessage("Système", "Nouveau module de mémoire JSON ingéré et indexé avec succès.", "engine");
+            showToast("Ingestion du corpus/JSON réussie (Offscreen) !");
+            appendChatMessage("Système", "Nouveau module de mémoire ingédié et indexé en arrière-plan sans bloquer l'UI.", "engine");
 
             if (autoClear) textarea.value = "";
         });
@@ -1073,7 +1175,7 @@
 
     async function factoryResetMemory() {
         if (confirm("⚠️ Êtes-vous sûr de vouloir tout réinitialiser ? La mémoire locale sera effacée et remise à zéro.")) {
-            await engine.resetFactory();
+            await engineBridge.resetFactory();
             updateUI();
             document.getElementById('chatHistory').innerHTML = '';
             showToast("Réinitialisation usine effectuée", "success");
@@ -1081,11 +1183,12 @@
         }
     }
 
-    function exportMemoryJSON() {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(engine.exportToJSON());
+    async function exportMemoryJSON() {
+        const jsonStr = await engineBridge.exportJSONBlock();
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonStr);
         const downloadAnchor = document.createElement('a');
         downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `metacognitive_memory_v16.2_${Date.now()}.json`);
+        downloadAnchor.setAttribute("download", `metacognitive_memory_sq8_${Date.now()}.json`);
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
@@ -1099,13 +1202,10 @@
         const reader = new FileReader();
         reader.onload = async function(e) {
             try {
-                engine.importFromJSON(e.target.result);
-                await engine.storage.save("lexicon", Array.from(engine.lexicon.entries()));
-                await engine.storage.save("surfaceForms", Array.from(engine.surfaceForms.entries()));
-                await engine.storage.save("frequencies", Array.from(engine.tokenFrequencies.entries()));
+                await engineBridge.importJSONBlock(e.target.result);
                 updateUI();
                 showToast("Configuration JSON importée avec succès ✓");
-                appendChatMessage("Système", `Mémoire JSON restaurée (${engine.lexicon.size} tokens actifs).`, "engine");
+                appendChatMessage("Système", `Mémoire JSON restaurée (${engineBridge.lexiconSize} tokens actifs).`, "engine");
             } catch (err) {
                 showToast("Erreur lors de l'import JSON : " + err.message, "error");
             }
@@ -1114,21 +1214,21 @@
         reader.readAsText(file);
     }
 
-    function sendChatMessage() {
+    async function sendChatMessage() {
         const input = document.getElementById('chatInput');
         const text = input.value.trim();
         if (!text) return;
         appendChatMessage("Vous", text, "user");
         input.value = "";
         
-        setTimeout(() => {
-            const inference = engine.generateSentenceWithMetacognition(text, 10);
-            
+        try {
+            const inference = await engineBridge.generateSentence(text, 10);
             appendChatMessage("Moteur V16.2", inference.text, "engine");
             appendMetaMessage(inference.metaMessage, inference.surprise);
-            
             updateUI();
-        }, 120);
+        } catch (err) {
+            showToast("Erreur lors de la génération : " + err.message, "error");
+        }
     }
 
     function copyToClipboard(text, buttonElement) {
@@ -1205,10 +1305,10 @@
     }
 
     function updateUI() {
-        const size = engine.lexicon.size;
+        const size = engineBridge.lexiconSize;
         document.getElementById('badge-lexicon-count').innerText = size + ' tkn';
-        document.getElementById('metric-dim').innerText = engine.dimensions;
-        document.getElementById('metric-homeostasis').innerText = (size / engine.maxLexiconSize).toFixed(3);
+        document.getElementById('metric-dim').innerText = engineBridge.dimensions;
+        document.getElementById('metric-homeostasis').innerText = (size / 50000).toFixed(3);
 
         const lexiconListContainer = document.getElementById('lexicon-list-container');
         lexiconListContainer.innerHTML = '';
@@ -1217,18 +1317,11 @@
             return;
         }
 
-        for (let [stem, vector] of engine.lexicon.entries()) {
-            const freq = engine.tokenFrequencies.get(stem) || 1;
-            const surface = engine.surfaceForms.get(stem) || stem;
-            
-            const item = document.createElement('div');
-            item.className = 'bg-slate-950 p-2.5 rounded border border-slate-800 flex items-center justify-between text-xs font-mono';
-            item.innerHTML = `
-                <span class="text-slate-200 font-medium">${surface}</span>
-                <span class="text-[10px] bg-slate-900 text-slate-400 px-2 py-0.5 rounded border border-slate-800">Fréq: ${freq}</span>
-            `;
-            lexiconListContainer.appendChild(item);
-        }
+        // Message informatif dans le tiroir du lexique pour indiquer le passage à l'échelle
+        const infoNode = document.createElement('div');
+        infoNode.className = 'text-[11px] text-sky-400/80 bg-sky-500/10 border border-sky-500/20 p-2 rounded mb-2 font-mono text-center';
+        infoNode.innerText = '⚡ Mode haute capacité actif (50k tokens - Web Worker & SQ8)';
+        lexiconListContainer.appendChild(infoNode);
     }
 </script>
 
