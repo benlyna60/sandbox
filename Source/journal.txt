@@ -1,5 +1,21 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-03 10:56:00
+TITRE: Gloria Steinem, autrice et icône féministe, rend l’âme à 92 ans
+LIEN: https://www.ledevoir.com/actualites/1006100/gloria-steinem-autrice-icone-feministe-rend-ame-92-ans
+CONTENU: Sillonnant  inlassablement les États-Unis, elle  a dénoncé sans relâche les inégalités subies par les femmes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-03 10:48:45
+TITRE: La chanteuse de jazz américaine Cassandra Wilson meurt à 70 ans
+LIEN: https://www.ledevoir.com/culture/musique/1006097/chanteuse-jazz-americaine-cassandra-wilson-meurt-70-ans
+CONTENU: Autrice-compositrice-interprète et productrice, elle était réputée pour son timbre grave et expressif de contralto.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-09-03 10:22:57
 TITRE: Gloria Steinem, journaliste et icône américaine du féminisme, est morte
