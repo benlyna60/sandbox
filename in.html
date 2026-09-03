@@ -757,7 +757,6 @@
         async trainOnCorpus(inputData, onProgress) {
             let textToProcess = "";
 
-            // Analyse si l'input est un objet JSON structuré ou du texte brut
             if (typeof inputData === 'string') {
                 const trimmed = inputData.trim();
                 if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
@@ -863,7 +862,6 @@
                     }));
                     this.vpTree.root = await this.vpTree.buildAsyncChunked(treeElements);
                 } else {
-                    // SI LA MÉMOIRE EST TOTALEMENT VIERGE : Injection automatique du Starter Pack JSON
                     await this.trainOnCorpus(DEFAULT_STARTER_PACK, () => {});
                 }
 
@@ -884,7 +882,6 @@
             this.tokenFrequencies.clear();
             this.vpTree.root = null;
             industrialNlp.initialize([]);
-            // Ré-injecte le starter pack directement après le reset
             await this.trainOnCorpus(DEFAULT_STARTER_PACK, () => {});
         }
 
@@ -944,7 +941,7 @@
             let metaComment = "Flux sémantique stable et cohérent.";
             if (this.lastSurpriseIndex > 0.6) {
                 metaComment = "Métacognition : Forte divergence sémantique détectée (exploration créative élevée).";
-            } else if (this.lastSurpriseIndex < 0.2) {
+            } else if (this.lastSurpeerIndex < 0.2) {
                 metaComment = "Métacognition : Forte redondance contextuelle (convergence déterministe).";
             }
 
@@ -1020,7 +1017,6 @@
         await engine.loadStoredMemory();
         updateUI();
 
-        // Salutation initiale automatique (Proactivité)
         setTimeout(() => {
             appendChatMessage("Système", "Mémoire et socle français initialisés. Bonjour ! Je suis prêt, que veux-tu faire ou apprendre maintenant ?", "engine");
         }, 300);
