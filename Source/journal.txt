@@ -1,4 +1,28 @@
 ----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-04 08:40:13
+TITRE: Google Workspace : Gemini débarque en mode vocal dans Gmail, Docs et Keep
+LIEN: https://www.blogdumoderateur.com/google-workspace-gemini-debarque-mode-vocal-gmail-docs-keep/
+CONTENU: Trois nouvelles fonctionnalités vocales permettent désormais de chercher, rédiger et prendre des notes sans taper un mot.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-04 08:37:08
+TITRE: OpenAI lance GPT-6 Astra, son premier modèle classé au niveau de risque cyber maximal
+LIEN: https://www.blogdumoderateur.com/openai-gpt-6-astra-premier-modele-niveau-risque-cyber-maximal/
+CONTENU: Le nouveau modèle d'OpenAI est présenté comme sa meilleure IA pour l'usage autonome d'un ordinateur, le code et le travail professionnel. Ses capacités en cybersécurité lui valent des garde-fous inédits.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-04 07:07:38
+TITRE: Pourquoi la confiance va remplacer le trafic comme KPI de référence ?
+LIEN: https://www.blogdumoderateur.com/pourquoi-confiance-remplacer-trafic-kpi-reference/
+CONTENU: Dans cette tribune, Manon Chaussin, head of content marketing chez Black Pepper (CyberCité), nous livre son regard sur les signaux de confiance que les marques doivent construire face aux IA génératives.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-09-04 10:36:00
