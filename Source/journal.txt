@@ -1,5 +1,133 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 06:34:00
+TITRE: 8h30 franceinfo du vendredi 04 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/8h30-franceinfo/8h30-franceinfo-du-vendredi-04-septembre-2026-9344518
+CONTENU: Article de référence : "8h30 franceinfo du vendredi 04 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 06:00:00
+TITRE: Le journal de 8h00 du vendredi 04 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-8h00/le-journal-de-8h00-du-vendredi-04-septembre-2026-2887425
+CONTENU: Article de référence : "Le journal de 8h00 du vendredi 04 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 05:55:30
+TITRE: L'oeil de Julie du vendredi 04 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-oeil-de-julie/l-oeil-de-julie-du-vendredi-04-septembre-2026-5445641
+CONTENU: Article de référence : "L'oeil de Julie du vendredi 04 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 05:53:00
+TITRE: Édito. Face à la crise agricole, Sébastien Lecornu veut mettre les candidats à la présidentielle au pied du mur
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-edito-politique/l-edito-politique-du-vendredi-04-septembre-2026-2878443
+CONTENU: Après un été caniculaire qui a durement frappé le monde agricole, le gouvernement prépare des mesures d’aide malgré des finances contraintes. Sébastien Lecornu veut aussi faire de cette crise un enjeu de la campagne présidentielle et placer les candidats face a leurs responsabilités.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 05:50:30
+TITRE: Hugging Face, la start-up française de l'IA rachetée 13 milliards de dollars par Nvidia
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-decryptage-eco/le-billet-eco-du-vendredi-04-septembre-2026-8442428
+CONTENU: Le rachat de Hugging Face par Nvidia illustre l’importance stratégique de l’IA ouverte, dont la plateforme française est devenue une référence mondiale. Une opération qui souligne aussi la difficulté de la France à retenir ses champions technologiques.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 05:25:30
+TITRE: Le vrai ou faux du vendredi 04 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-vrai-ou-faux/le-vrai-ou-faux-du-vendredi-04-septembre-2026-2507796
+CONTENU: Article de référence : "Le vrai ou faux du vendredi 04 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 05:23:00
+TITRE: Le monde et vous du vendredi 04 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-monde-et-vous/le-monde-et-vous-du-vendredi-04-septembre-2026-7913872
+CONTENU: Article de référence : "Le monde et vous du vendredi 04 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 05:00:00
+TITRE: L'ultime Zevent, 9 millions pour les victimes des incendies et l'UFC revient à Paris : ça dit quoi ce 4 septembre ?
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/ca-dit-quoi/ca-dit-quoi-1076275
+CONTENU: Ce vendredi 4 septembre, le marathon caritatif Zevent démarre sa 10ème et dernière édition, les sinistrés des incendies se battent avec les assureurs et Salahdine Parnasse fait ses débuts à l'UFC... À Paris.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 05:00:00
+TITRE: Le journal de 7h00 du vendredi 04 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-7h00/le-journal-de-7h00-du-vendredi-04-septembre-2026-7288417
+CONTENU: Article de référence : "Le journal de 7h00 du vendredi 04 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 04:55:19
+TITRE: Mondial féminin de basket : un groupe uni et revanchard, le défi XXL des Bleues pour décrocher l'or
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/mondial-feminin-de-basket-un-groupe-uni-et-revanchard-le-defi-xxl-des-bleues-pour-decrocher-l-or-9747686
+CONTENU: Les basketteuses françaises débutent la Coupe du monde à Berlin avec l'ambition de décrocher leur premier titre mondial, malgré une préparation perturbée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-04 06:15:51
+TITRE: Dans le golfe d’Aden, la piraterie somalienne refait surface
+LIEN: https://www.rfi.fr/fr/afrique/20260904-dans-le-golfe-d-aden-la-piraterie-somalienne-refait-surface
+CONTENU: Six navires détournés depuis la mi-avril et plus de 90 marins pris en otage : la piraterie somalienne connaît un regain dans le golfe d’Aden. On reste encore loin du pic des années 2010, mais les pirates ont changé de méthodes et profitent notamment d’un redéploiement des forces navales internationales dans la région.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-04 06:01:40
+TITRE: RDC: Félix «Tshisekedi est parmi les seuls dirigeants africains qui soit aussi proche d'Israël»
+LIEN: https://www.rfi.fr/fr/podcasts/le-grand-invit%C3%A9-afrique/20260904-rdc-f%C3%A9lix-tshisekedi-est-parmi-les-seuls-dirigeants-africains-qui-soit-aussi-proche-d-isra%C3%ABl
+CONTENU: C'est la lune de miel entre la République démocratique du Congo et Israël. Après la visite cette semaine de Félix Tshisekedi dans l'État hébreu, la RDC annonce qu'elle va déplacer son ambassade en Israël de Tel Aviv à Jérusalem, tandis que l'ouverture d'une ambassade israélienne à Kinshasa est à l'étude. Que cherche le président Tshisekedi en se rapprochant d'Israël ? Jason Stearns, directeur de recherches à l'institut Ebuteli et professeur à l'université Simon Fraser à Vancouver, au Canada, répond aux questions de RFI.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-04 04:55:46
+TITRE: Au Forum de Madrid, le président argentin appelle les droites sud-américaines à «s’organiser»
+LIEN: https://www.rfi.fr/fr/am%C3%A9riques/20260904-au-forum-de-madrid-le-pr%C3%A9sident-argentin-appelle-les-droites-sud-am%C3%A9ricaines-%C3%A0-s-organiser
+CONTENU: Le Chili a accueilli jeudi 3 septembre le Forum de Madrid, un événement qui réunit chaque année des partis et organisations d’extrême droite d’Europe et d’Amérique. Pour cette 5e édition, la rencontre a eu lieu à Santiago, avec comme hôte le président chilien José Antonio Kast, membre fondateur. Les participants ont célébré « une nouvelle ère » pour le continent, après les victoires électorales ces derniers mois de dirigeants de droite et d’extrême droite en Colombie, au Pérou, en Bolivie ou encore au Honduras.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-04 06:26:15
+TITRE: Mondial féminin de basket: Jean-Aimé Toupane, le bâtisseur des Bleues
+LIEN: https://www.rfi.fr/fr/sports/20260904-mondial-f%C3%A9minin-de-basket-jean-aim%C3%A9-toupane-le-b%C3%A2tisseur-des-bleues
+CONTENU: À 68 ans, Jean Aimé Toupane, né au Sénégal, sélectionneur de l’équipe de France féminine de basket, s’apprête à conduire ses Bleues à la Coupe du monde en Allemagne (4‑13 septembre). Derrière l’objectif sportif, une obsession guide chacun de ses choix : faire du collectif la véritable star de l’équipe.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-04 03:00:09
+TITRE: Prix Ig-Nobel 2026: dix récompenses pour une science aussi sérieuse qu’amusante
+LIEN: https://www.rfi.fr/fr/europe/20260904-prix-ig-nobel-2026-dix-r%C3%A9compenses-pour-une-science-aussi-s%C3%A9rieuse-qu-amusante
+CONTENU: Avec la remise des prix Nobel, c’est l’autre rendez-vous incontournable de la communauté scientifique internationale. Les prix Ig-Nobel récompensent chaque année la science improbable, celle qui fait d’abord rire, mais aussi un peu réfléchir. 35 ans après la première édition, la cérémonie 2026 s’est tenue jeudi 3 septembre au soir à Zurich, en Suisse.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-04 05:00:16
+TITRE: Numérique : pourquoi le rebond ne profite pas encore à la rentabilité des entreprises
+LIEN: https://www.blogdumoderateur.com/numerique-pourquoi-rebond-ne-profite-pas-encore-rentabilite-entreprises/
+CONTENU: Selon l'Observatoire Numeum-Xerfi, le marché du numérique a renoué avec une croissance de l'ordre de 3 % pour 2026, portée par les éditeurs de logiciels. Mais cette reprise reste inégale.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-05 04:00:00
 TITRE: «Faire la peau»: tuer la mère
