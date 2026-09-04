@@ -1,4 +1,84 @@
 ----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-04 02:20:01
+TITRE: Your house may be a haven for wildlife. It's time we design homes with nature in mind
+LIEN: https://phys.org/news/2026-09-house-haven-wildlife-homes-nature.html
+CONTENU: Ever found a bare-nosed wombat napping under your house or heard a possum thumping around in your attic?
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-04 01:00:03
+TITRE: France recorded 'hottest summer ever': Environment minister
+LIEN: https://phys.org/news/2026-09-france-hottest-summer-environment-minister.html
+CONTENU: France experienced its hottest summer on record in 2026, marked by heat waves, drought and massive wildfires, the environment minister said Thursday.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-04 00:20:05
+TITRE: How El Nino is choking the Panama Canal
+LIEN: https://phys.org/news/2026-09-el-nino-panama-canal.html
+CONTENU: The Panama Canal will restrict the number of vessels transiting the crucial waterway from Friday for only the second time because of drought caused by the El Niño climate phenomenon.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-03 23:40:03
+TITRE: Light-triggered interface lets adhesive peel cleanly and rebond through 15 cycles
+LIEN: https://phys.org/news/2026-09-triggered-interface-adhesive-rebond.html
+CONTENU: Adhesives are essential in electronics, vehicles and other products, but they can hinder repair and recycling when bonded parts are difficult to separate cleanly. A research team led by The University of Osaka has developed a prototype light-responsive adhesive that can be selectively detached from an illuminated surface without leaving observable residue. The adhesive film can then be rebonded by heating and reused after a second ultraviolet wavelength helps reset its molecular interactions.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-03 23:40:01
+TITRE: Soft nanoscale confinement prevents ice, exposing water's liquid-to-glass transition
+LIEN: https://phys.org/news/2026-09-soft-nanoscale-confinement-ice-exposing.html
+CONTENU: An international collaboration of researchers has used ANSTO's facilities to uncover new properties of one of the most fundamental everyday materials, water, and answer an important scientific question. The findings, published in Nature Communications, have practical implications for understanding water at very low temperatures. The findings are relevant to cryopreservation of biological materials, food-freezing technologies and understanding water in living cells, where it is often confined at the nanoscale.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-03 23:20:01
+TITRE: Tiny fossils reveal big insights about ant ancestors
+LIEN: https://phys.org/news/2026-09-tiny-fossils-reveal-big-insights.html
+CONTENU: Two tiny ant fossils recovered in southern Saskatchewan are helping scientists better understand the evolutionary history of modern ants. Ant fossils dating from 72–56 million years ago are rare. What happened to insects such as ants during this period that saw a mass extinction wipe out all non-bird dinosaurs? How did that event reshape their world?
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-03 23:00:04
+TITRE: From peas to potatoes, AI identifies nearly 800 promising plant proteins for food and cosmetics
+LIEN: https://phys.org/news/2026-09-peas-potatoes-ai-proteins-food.html
+CONTENU: Scientists from Leeds' School of Food Science and Nutrition have developed an advanced AI process that can rapidly identify plant proteins capable of acting as emulsifiers from tens of millions of initial candidates. To date, it has identified nearly 800. The discovery will cut years of costly trial-and-error research and bring the next generation of plant-based foods and cosmetics closer.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-03 22:50:01
+TITRE: How an unassuming wildflower thrives in salt-laden air that kills other plants
+LIEN: https://phys.org/news/2026-09-unassuming-wildflower-salt-laden-air.html
+CONTENU: On the windswept coasts of Oregon and California lives an unassuming little plant that can withstand salty blasts that kill its inland counterparts. It's called the yellow monkeyflower. Now, researchers are beginning to understand how it manages to thrive in conditions that leave other plants burned, brown and withered.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-03 22:40:03
+TITRE: Warming seas could shrink most mollusks by 2100, but some may grow
+LIEN: https://phys.org/news/2026-09-seas-mollusks.html
+CONTENU: Research led by scientists at the University of Louisiana at Lafayette challenges a long-held assumption about the effects of climate change on marine life: Warmer oceans won't simply make animals smaller.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-03 22:40:01
+TITRE: Parliamentary motions show growing AI use, with no disclosure from MPs
+LIEN: https://phys.org/news/2026-09-parliamentary-motions-ai-disclosure-mps.html
+CONTENU: The two research teams have developed and used AI detectors trained on thousands of political motions in Sweden and the UK. What surprised the researchers was not that politicians were using AI—but that not a single one disclosed this openly.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: RFI (Actualités)
 DATE: 2026-09-03 22:15:17
