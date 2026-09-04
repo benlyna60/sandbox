@@ -1,4 +1,44 @@
 ----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 04:00:00
+TITRE: «Onslaught»: une mère et des fusils
+LIEN: https://www.ledevoir.com/culture/cinema/1006283/onslaught-mere-fusils
+CONTENU: Cette réjouissante et très «gore» série B dépeint des États-Unis trahis par leurs élites.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 10:34:12
+TITRE: Statistique Canada va publier son rapport sur l’emploi pour le mois d’août
+LIEN: https://www.ledevoir.com/economie/1006535/taux-chomage-canada-quebec-aout-statistique-canada
+CONTENU: Des économistes sondés par Reuters s’attendent à ce que le taux de chômage reste inchangé à 6,4%.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 11:24:26
+TITRE: Deux ouvriers «miraculés» sortis vivants d’un tunnel hydroélectrique au Népal
+LIEN: https://www.ledevoir.com/monde/asie/1006541/deux-ouvriers-miracules-sortis-vivants-tunnel-hydroelectrique-nepal
+CONTENU: Le bilan toujours provisoire de la catastrophe est maintenant de 1308 morts et 5624 disparus au Népal et au Tibet.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-04 10:33:04
+TITRE: Avant d’être ennemis, ils étaient amis… La bromance méconnue de Guillaume le Conquérant et Harold
+LIEN: https://theconversation.com/avant-detre-ennemis-ils-etaient-amis-la-bromance-meconnue-de-guillaume-le-conquerant-et-harold-291174
+CONTENU: Avant de s’affronter à Hastings en 1066, Guillaume de Normandie et Harold Godwinson furent alliés et compagnons d’armes. La tapisserie de Bayeux raconte aussi cette étonnante histoire d’amitié.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-04 10:32:04
+TITRE: Une étude chez la souris éclaire les changements cérébraux qui pourraient favoriser la rechute après l’arrêt de l’alcool
+LIEN: https://theconversation.com/une-etude-chez-la-souris-eclaire-les-changements-cerebraux-qui-pourraient-favoriser-la-rechute-apres-larret-de-lalcool-291181
+CONTENU: Une étude chez la souris montre que l’abstinence peut modifier l’activité cérébrale. Arrêter de boire pourrait alors paradoxalement accroître le risque de consommation compulsive.
+
+----------------------------------------
 CATEGORIE: TECH
 SOURCE: Le Blog du Modérateur
 DATE: 2026-09-04 08:40:13
