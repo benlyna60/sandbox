@@ -1,5 +1,69 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 18:30:00
+TITRE: Le 20h30/minuit du vendredi 04 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-20h30-minuit/le-20h30-minuit-du-vendredi-04-septembre-2026-5032772
+CONTENU: Article de référence : "Le 20h30/minuit du vendredi 04 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 18:00:00
+TITRE: Le journal de 20h00 du vendredi 04 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-info-a-20h00/le-journal-de-20h00-du-vendredi-04-septembre-2026-1736269
+CONTENU: Article de référence : "Le journal de 20h00 du vendredi 04 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 17:35:00
+TITRE: Plan d'urgence pour l'agriculture, l'extrême droite en Europe... Les informés de franceinfo du vendredi 4 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/franceinfo-les-informes/les-informes-de-franceinfo-du-vendredi-04-septembre-2026-5501029
+CONTENU: Tous les soirs, les informés débattent de l'actualité autour d'Hadrien Bect.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 17:00:00
+TITRE: Le journal de 19h00 du vendredi 04 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-19h00/le-journal-de-19h00-du-vendredi-04-septembre-2026-4105700
+CONTENU: Article de référence : "Le journal de 19h00 du vendredi 04 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-04 15:32:00
+TITRE: Affaire Lyhanna : une nouvelle plainte déposée contre Jérôme Barella
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/affaire-lyhanna-une-nouvelle-plainte-deposee-contre-jerome-barella-8099622
+CONTENU: Le principal suspect dans l'affaire Lyhanna, une jeune fille violée et laissée pour morte dans le Gers, est visé par une nouvelle plainte pour corruption de mineur. L'homme fait déjà l'objet de six plaintes et deux signalements pour viols ou agression sexuelle sur mineurs de moins de 15 ans.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-04 17:25:44
+TITRE: L'UE veut maintenir sa dynamique d'élargissement tout en renforçant les garde-fous
+LIEN: https://www.rfi.fr/fr/europe/20260904-l-ue-veut-maintenir-sa-dynamique-d-%C3%A9largissement-tout-en-renfor%C3%A7ant-les-garde-fous
+CONTENU: Les ministres des Affaires européennes des 27 États membres de l'Union européenne sont réunis à Dublin, vendredi 4 septembre, avec leurs homologues des pays candidats à l'adhésion. Ils discutent de l'état d'avancement des négociations, mais abordent aussi une question plus délicate : comment maintenir l'enthousiasme des populations pour l'Europe tout en préservant l'UE des mauvaises surprises après l'entrée de « mauvais élèves » dans la classe européenne ?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-04 17:37:23
+TITRE: Élections régionales en Allemagne: le parti d'extrême droite AfD mobilise le passé est-allemand
+LIEN: https://www.rfi.fr/fr/podcasts/reportage-international/20260904-%C3%A9lections-r%C3%A9gionales-en-allemagne-le-parti-d-extr%C3%AAme-droite-afd-mobilise-le-pass%C3%A9-est-allemand
+CONTENU: C'est une élection régionale très attendue qui se tiendra, dimanche 6 septembre, en Allemagne. En Saxe-Anhalt, dans l'Est du pays, l'extrême droite pourrait arriver au pouvoir pour la première fois depuis la Seconde guerre mondiale. Une des raisons du succès de l'AfD (Alternative pour l'Allemagne), créditée de plus de 40% dans les sondages, c'est le sentiment d'identité des Allemands de l'Est et les frustrations accumulées depuis la réunification, que le parti met en avant avec succès.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-04 16:19:08
+TITRE: Naufrages en Afrique: «Avec trop de passagers, un bateau peut chavirer plus brutalement»
+LIEN: https://www.rfi.fr/fr/podcasts/invit%C3%A9-afrique-midi/20260904-naufrages-en-afrique-avec-trop-de-passagers-un-bateau-peut-chavirer-plus-brutalement
+CONTENU: Le mois d'août 2026 a connu une série de naufrages extrêmement meurtriers en Afrique. Au Zimbabwe, 94 personnes ont péri dans le naufrage d'un ferry sur le lac Kariba. Quelques jours plus tard, au Nigeria, dans l'État de Sokoto, 50 personnes sont mortes dans le chavirement d'un bateau. Et plus récemment, à Kigoma, en Tanzanie, il y a eu six morts après l'incendie et l'explosion d'un bateau congolais sur le lac Tanganyika. Surcharge, manque de contrôles, formation des équipages : pourquoi ces accidents restent-ils si fréquents et si meurtriers ? Damien Chevallier, directeur de la division de la sécurité maritime à l'Organisation maritime internationale, est l'invité d'Afrique Midi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-04 17:11:26
 TITRE: La lutte à l’itinérance limitée par le déficit, selon Milliard
