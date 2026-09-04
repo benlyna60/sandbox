@@ -1,5 +1,77 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 04:00:00
+TITRE: «It Ends»: droit devant vers nulle part
+LIEN: https://www.ledevoir.com/culture/cinema/1006289/it-ends-droit-devant-vers-nulle-part
+CONTENU: Alexander Ullom propose un film d’horreur en forme de road-movie aux accents aussi insolites qu’existentialistes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 04:00:00
+TITRE: «Pénélope partout»: faire l’amour avec l’amour
+LIEN: https://www.ledevoir.com/culture/ecrans/1006445/penelope-partout-faire-amour-amour
+CONTENU: Daphnée Côté-Hallé et Rose-Marie Perreault reviennent sur la comédie noire irrévérencieuse, qui parle de solitude.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 04:00:00
+TITRE: Les partis politiques québécois pas encore prêts à montrer les dents face à Meta
+LIEN: https://www.ledevoir.com/politique/quebec/1006349/partis-politiques-quebecois-pas-encore-prets-montrer-dents-face-meta
+CONTENU: Au lieu de poursuivre Meta, ils préconisent d’autres solutions pour améliorer la santé mentale des jeunes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 15:01:43
+TITRE: QS veut doubler le budget du soutien en création artistique et un filet social pour les artistes
+LIEN: https://www.ledevoir.com/politique/quebec/1006577/qs-veut-doubler-budget-soutien-creation-artistique-filet-social-artistes
+CONTENU: La facture pour ces mesures  atteindrait 510 millions de dollars par année.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 13:33:00
+TITRE: Notre sélection polar  de septembre
+LIEN: https://www.ledevoir.com/lire/1006295/notre-selection-polar-mois-septembre
+CONTENU: Les choix de Michel Bélair et de Sonia Sarfati
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 04:00:00
+TITRE: L’influence de Gloria Steinem sur le féminisme québécois
+LIEN: https://www.ledevoir.com/actualites/societe/1006373/influence-gloria-steinem-feminisme-quebecois
+CONTENU: Les leçons d’une icône américaine sur la lutte collective médiatisée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 14:16:00
+TITRE: Les conservateurs veulent un troisième lien imparfait pour arrêter de «tourner en rond»
+LIEN: https://www.ledevoir.com/politique/quebec/1006565/conservateurs-veulent-troisieme-lien-imparfait-arreter-tourner-rond
+CONTENU: Le Parti conservateur propose un pont à haubans de trois voies entre la rive sud du fleuve et l’île d’Orléans.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-04 17:00:14
+TITRE: LFI et Renaissance, dix ans d’existence et beaucoup de points communs
+LIEN: https://www.lemonde.fr/idees/article/2026/09/04/lfi-et-renaissance-dix-ans-d-existence-et-beaucoup-de-points-communs_6765842_3232.html
+CONTENU: Dans son nouvel ouvrage, « Faire parti autrement ? », fruit de dix années d’enquête, le politiste Rémi Lefebvre s’est livré à une étude comparée de ces deux mouvements politiques plus personnalisés que les formes partisanes traditionnelles. Il s’interroge sur leur avenir.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-04 15:00:10
+TITRE: Les jeunesses indisciplinées, nouveau champ de recherches pour les historiens
+LIEN: https://www.lemonde.fr/idees/article/2026/09/04/les-jeunesses-indisciplinees-nouveau-champ-de-recherches-pour-les-historiens_6765809_3232.html
+CONTENU: Le nouveau numéro de « L’Irrégulière », revue d’histoire consacrée à l’enfance, explore les révoltes adolescentes qui, depuis deux siècles, s’expriment sporadiquement pour contester la domination adulte.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-04 16:00:00
 TITRE: Le journal de 18h00 du vendredi 04 septembre 2026
