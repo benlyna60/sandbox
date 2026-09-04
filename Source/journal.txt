@@ -1,4 +1,12 @@
 ----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-04 09:00:03
+TITRE: Molecular snapshots reveal how bacteria assemble outer membrane proteins
+LIEN: https://phys.org/news/2026-09-molecular-snapshots-reveal-bacteria-outer.html
+CONTENU: Gram-negative bacteria are responsible for several infections that are hard to treat because of their high resistance to antibiotics. These bacteria possess an outermost layer called the outer membrane that acts as a protective barrier. Serving as the cell's interface with the outside world, the outer membrane contains specialized proteins that perform multiple functions, such as nutrient transport and environmental sensing. The localization of these outer membrane proteins is achieved through the combined action of several key players, including the SurA chaperone and the β-barrel assembly machinery (BAM) complex.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-04 06:34:00
