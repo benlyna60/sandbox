@@ -1,5 +1,77 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-05 12:50:30
+TITRE: Le journal des outremers du samedi 05 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-des-outremers/le-journal-des-outremers-du-samedi-05-septembre-2026-9808898
+CONTENU: Article de référence : "Le journal des outremers du samedi 05 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-05 12:20:30
+TITRE: Luz : "Je vais rester en chantier quasiment toute ma vie"
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-invite-culture/l-invite-culture-du-samedi-05-septembre-2026-3375172
+CONTENU: Le dessinateur Luz, réchappé de l'attentat de Charlie Hebdo, publie son premier récit. Dans "Un diamant dans les gravats" (collection Ma nuit au musée chez Stock), il chemine parmi les peintres qui l'ont fasciné à Beaubourg, et avec les fantômes qui vivront toujours en lui.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-05 12:00:00
+TITRE: Le 14/17 du samedi 05 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-14-17-du-week-end/le-14-17-du-samedi-05-septembre-2026-6594166
+CONTENU: Article de référence : "Le 14/17 du samedi 05 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-05 11:31:00
+TITRE: "Là, c'est un colon, regarde" : en Cisjordanie, chassés de chez lui, un couple observe sa maison à distance par caméra
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/la-c-est-un-colon-regarde-en-cisjordanie-chasses-de-chez-lui-un-couple-observe-sa-maison-a-distance-par-camera-6296251
+CONTENU: Des dizaines de colons israéliens ont attaqué samedi, 29 août, le village palestinien de Qusra, dans le nord de la Cisjordanie occupée. Dans le village voisin de Jalud, une famille a été agressée et expulsée de son domicile par des colons.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-05 11:00:00
+TITRE: Le journal de 13h00 du samedi 05 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-13h00/le-journal-de-13h00-du-samedi-05-septembre-2026-7333114
+CONTENU: Article de référence : "Le journal de 13h00 du samedi 05 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-05 10:31:00
+TITRE: Qu'entendait-on dans les forêts sur Terre il y a plus de 150 millions d’années ?
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/qu-entendait-on-dans-les-forets-sur-terre-il-y-a-plus-de-150-millions-d-annees-7939730
+CONTENU: À partir de fossiles exceptionnellement bien conservés, des chercheurs ont reconstitué les chants de neuf espèces de grillons et de sauterelles du Jurassique. Ils viennent de publier leurs travaux dans la revue de l'Académie américaine des sciences.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-05 07:11:21
+TITRE: Niger: une semaine après la mutinerie... un conseil des ministres pour faire le point
+LIEN: https://www.rfi.fr/fr/afrique/20260905-niger-semaine-mutinerie-conseil-des-ministres-pour-faire-le-point
+CONTENU: Au Niger, nous sommes ce samedi 5 septembre une semaine après la violente mutinerie qui a secoué Niamey. Hier s'est tenu le Premier conseil des ministres depuis ces évènements. Si le général Tiani, à la tête de l'État, n'a toujours pas pris la parole, le porte-parole du gouvernement a renouvelé ses accusations de déstabilisation contre la France.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-05 12:49:58
+TITRE: France: l'ex-ministre Rachida Dati va redevenir magistrate à quelques jours de son procès pour corruption
+LIEN: https://www.rfi.fr/fr/france/20260905-france-l-ex-ministre-rachida-dati-va-redevenir-magistrate-%C3%A0-quelques-jours-de-son-proc%C3%A8s-pour-corruption
+CONTENU: L'information devrait faire du bruit. Ancienne ministre et candidate à la mairie de Paris, Rachida Dati va redevenir officiellement magistrate, à quelques jours de son procès en correctionnelle pour corruption s’ouvre le 16 septembre.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-05 11:00:08
+TITRE: « La transition agricole et alimentaire passera aussi par plus de fruits, légumes et légumes secs »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/05/la-transition-agricole-et-alimentaire-passera-aussi-par-plus-de-fruits-legumes-et-legumes-secs_6766331_3232.html
+CONTENU: Lutter contre le réchauffement climatique doit nous amener à revoir notre alimentation, rappellent l’experte en agriculture Aurélie Catallo et le chercheur en alimentation Charlie Brocard, dans une tribune au « Monde ». Ce n’est qu’à ce prix que nous pourrons adopter un système agricole plus vertueux.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-05 04:00:00
 TITRE: Taxer les riches, la «promesse chouchou» de la semaine
