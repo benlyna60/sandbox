@@ -1,5 +1,53 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 14:51:55
+TITRE: Les Louanges et Arielle Soucy éclairent notre monde au FME
+LIEN: https://www.ledevoir.com/culture/musique/1006841/louanges-arielle-soucy-eclairent-notre-monde-fme
+CONTENU: La 24e édition du Festival de musique émergente d’Abitibi-Témiscamingue bat son plein à Rouyn-Noranda jusqu’à dimanche.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 15:50:00
+TITRE: L’armée américaine a frappé trois pétroliers iraniens
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1006844/armee-americaine-dit-avoir-detruit-trois-petroliers-iraniens
+CONTENU: L’Iran continue de verrouiller le stratégique détroit d’Ormuz, et Washington poursuit son blocus des ports iraniens.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Les sondages, des instantanés ou des outils d’influence?
+LIEN: https://www.ledevoir.com/politique/quebec/1006781/sondages-instantanes-ou-outils-influence
+CONTENU: Les coups de sonde peuvent changer les perceptions des électeurs quant aux chances de chacun des partis.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Taxer les riches, proposition réaliste ou démagogie électorale?
+LIEN: https://www.ledevoir.com/politique/quebec/1006799/taxer-riches-proposition-realiste-ou-demagogie-electorale
+CONTENU: De nombreuses questions entourent cette proposition populaire à gauche. «Le Devoir» a tenté de trouver des réponses.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-05 15:13:14
+TITRE: Vers un ciel artificiel ? Ce que prévoit le droit contre la pollution du ciel nocturne
+LIEN: https://theconversation.com/vers-un-ciel-artificiel-ce-que-prevoit-le-droit-contre-la-pollution-du-ciel-nocturne-290885
+CONTENU: Saviez-vous que, dans certains pays comme le Japon, il existe des parcs naturels… de ciel nocturne&amp;nbsp;?
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-05 15:12:29
+TITRE: Notre ciel nocturne est en train de disparaître : un des enjeux du Sommet international sur l’espace 2026
+LIEN: https://theconversation.com/notre-ciel-nocturne-est-en-train-de-disparaitre-un-des-enjeux-du-sommet-international-sur-lespace-2026-290870
+CONTENU: Parmi les défis à l’ordre du jour, l’un des plus urgents et des moins médiatisés, est la préservation du ciel nocturne, aujourd’hui menacé par la prolifération des satellites.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-09-05 14:41:19
 TITRE: Guerre en Ukraine : le RN est un « cheval de Troie des impérialistes » pour Marine Tondelier, le « parti de l’étranger » pour Raphaël Glucksmann
