@@ -1,4 +1,60 @@
 ----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-05 21:00:05
+TITRE: Breaking through AlphaFold's limits to predict how proteins change shape
+LIEN: https://phys.org/news/2026-09-alphafold-limits-proteins.html
+CONTENU: Conformational changes in proteins are vital to their function yet remain challenging for state-of-the-art artificial intelligence, such as AlphaFold3, to predict. Researchers at the Institute for Molecular Science (IMS), and the Graduate University for Advanced Studies, SOKENDAI introduced a repulsive force between predicted structures, allowing AlphaFold3 to sample the multiple conformational states that its default settings rarely capture.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-05 20:30:01
+TITRE: How much clearcutting can nature sustain? A study determines the ecological limit for boreal forest birds
+LIEN: https://phys.org/news/2026-09-clearcutting-nature-sustain-ecological-limit.html
+CONTENU: A study led by the University of Jyväskylä in Finland evaluated, for the first time, an ecological threshold for the amount of clearcutting in boreal forests. According to the results, maintaining populations of bird species specialized in old-growth forests requires either a forest rotation period of at least 90 years on average or that approximately one-fifth of the forest area be excluded from clearcut management. The study provides a concrete target for the ecologically sustainable use of forests.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-05 18:40:02
+TITRE: FAST finds two mysterious hydrogen clouds with no visible stars
+LIEN: https://phys.org/news/2026-09-fast-mysterious-hydrogen-clouds-visible.html
+CONTENU: Astronomers have found two clouds of hydrogen near the Whirlpool galaxy that appear to contain almost no stars. The clouds, discovered with China's FAST radio telescope, each contain roughly 3 million times the mass of the sun in hydrogen but have no detectable optical counterpart. Their properties are outlined in a new paper published in the Astronomy &amp; Astrophysics  journal on Aug. 4.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-05 18:00:04
+TITRE: Views from a physician and veterinarian: How to improve barriers to pet care when owners are hospitalized
+LIEN: https://phys.org/news/2026-09-views-physician-veterinarian-barriers-pet.html
+CONTENU: The human-animal bond is often so strong that pet owners may delay or forgo medical treatment or leave a health care facility against medical advice if they have no one to care for their pet at home. A perspective paper published in the New England Journal of Medicine explains why pet owners may need different approaches to care when hospitalized, according to an Emory University physician and an Ohio State University veterinarian.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-05 17:30:01
+TITRE: US study tests psilocybin to fight cancer side effects
+LIEN: https://phys.org/news/2026-09-psilocybin-cancer-side-effects.html
+CONTENU: Here's a novel idea for countering the painful side effects of chemotherapy: Beforehand, take the hallucinogenic drug found in magic mushrooms.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-05 17:00:01
+TITRE: A black hole as light as 40 tons can exist inside a star if dark matter helps
+LIEN: https://phys.org/news/2026-09-black-hole-tons-star-dark.html
+CONTENU: In 1974, Stephen Hawking made a prediction that transformed our understanding of black holes. Black holes, he showed, are not truly black: They slowly lose energy through a quantum process now known as Hawking radiation. The lighter the black hole, the faster it evaporates.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-05 16:00:01
+TITRE: Tree species diversity protects forests from climate extremes, study finds
+LIEN: https://phys.org/news/2026-09-tree-species-diversity-forests-climate.html
+CONTENU: New research has found that tree species diversity can play a crucial role in protecting forests from the growing threat of extreme climate events. The study analyzed data from 88,116 separate forest plots across the United States to investigate the impact of "compound climate extremes," when events such as drought and extreme heat occur at the same time.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-05 18:00:00
