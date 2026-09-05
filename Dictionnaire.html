@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extracteur Wiktionnaire Ultime v13</title>
+    <title>Extracteur Wiktionnaire Pur v14</title>
     <style>
         :root {
             --bg-color: #f4f6f8;
@@ -132,8 +132,8 @@
 </head>
 <body>
 
-    <h1>Extracteur Propre - Wiktionnaire</h1>
-    <p>Version v13 : mode diagnostic console activé et sécurisation absolue du rendu.</p>
+    <h1>Extracteur Wiktionnaire Pur</h1>
+    <p>Version v14 : extraction textuelle brute épurée, sans métadonnées de navigation, sans barres obliques et sans en-têtes externes.</p>
 
     <div class="search-box">
         <input type="text" id="wordInput" placeholder="Ex: Maison, courir, éco-..." aria-label="Mot à rechercher sur le Wiktionnaire" autofocus>
@@ -147,7 +147,7 @@
 
     <div class="output-container">
         <label for="outputArea" class="visually-hidden" style="display:none;">Texte extrait et nettoyé</label>
-        <textarea id="outputArea" placeholder="Le texte structuré et nettoyé apparaîtra ici..." aria-label="Résultat de l'extraction textuelle" tabindex="0"></textarea>
+        <textarea id="outputArea" placeholder="Le texte pur apparaîtra ici..." aria-label="Résultat de l'extraction textuelle" tabindex="0"></textarea>
         <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()" aria-label="Copier le texte dans le presse-papier">Copier dans le presse-papier</button>
     </div>
 
@@ -155,7 +155,7 @@
         let currentAbortController = null;
         
         class PersistentCache {
-            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v13') {
+            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v14') {
                 this.maxSize = maxSize;
                 this.ttlMs = ttlMs;
                 this.storageKey = storageKey;
@@ -298,21 +298,9 @@
 
                 if (parseData.parse && parseData.parse.text) {
                     const htmlContent = parseData.parse.text['*'];
-                    console.log("--> HTML brut récupéré (longueur):", htmlContent.length);
                     
                     const frenchHtml = extractFrenchSections(htmlContent);
-                    console.log("--> HTML après extraction (longueur):", frenchHtml.length);
-
-                    let cleanText = parseHtmlToCleanText(frenchHtml);
-                    console.log("--> Texte nettoyé (longueur):", cleanText.length);
-
-                    // Filet de sécurité ultime si le texte nettoyé est vide
-                    if (!cleanText || cleanText.trim().length === 0) {
-                        console.warn("Texte nettoyé vide, application du repli brut.");
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(htmlContent, 'text/html');
-                        cleanText = doc.body.textContent || "Aucun texte lisible extrait.";
-                    }
+                    const cleanText = parseHtmlToCleanText(frenchHtml);
 
                     searchCache.set(word, cleanText);
                     searchCache.set(canonicalTitle, cleanText);
@@ -368,13 +356,16 @@
             const parser = new DOMParser();
             const doc = parser.parseFromString(htmlString, 'text/html');
 
+            // Suppression complète des éléments parasites, liens vers d'autres projets, boîtes, etc.
             const selectorsToRemove = [
                 '.mw-editsection', 'script', 'style', '.printfooter', 
                 '.navigation-not-searchable', '.toc', '#toc', 
                 '.mw-references-wrap', '.references', '.ambox', 
                 '.infobox', '.navbox', '.thumb', '.mw-empty-elt',
                 '.wikt-lang-label', '.demono', '.reference', '.audiolink', 'sup',
-                '.sister-project', '.NavFrame', '.mw-jump-link'
+                '.sister-project', '.NavFrame', '.mw-jump-link',
+                'div[role="navigation"]', '.interproject', '.vector-menu',
+                'ol.references', 'div.printfooter', '.catlinks'
             ];
             
             selectorsToRemove.forEach(selector => {
@@ -383,31 +374,20 @@
                 } catch (e) {}
             });
 
+            // Neutralisation des liens hypertextes en conservant uniquement leur texte brut
             doc.querySelectorAll('a').forEach(a => {
                 const text = a.textContent.trim();
                 if (text) {
-                    a.replaceWith(document.createTextNode(` ${text} `));
+                    a.replaceWith(document.createTextNode(text));
                 } else {
                     a.remove();
                 }
             });
 
-            doc.querySelectorAll('b, strong').forEach(el => {
-                const text = el.textContent.trim();
-                if (text) el.replaceWith(document.createTextNode(` **${text}** `));
-            });
-            doc.querySelectorAll('i, em').forEach(el => {
-                const text = el.textContent.trim();
-                if (text) el.replaceWith(document.createTextNode(` *${text}* `));
-            });
-
+            // Conversion des retours à la ligne propres
             doc.querySelectorAll('br').forEach(el => el.replaceWith(document.createTextNode('\n')));
 
-            doc.querySelectorAll('h3, h4, h5').forEach(el => {
-                el.prepend('\n\n=== ');
-                el.append(' ===\n');
-            });
-
+            // Transformation des listes en puces propres sans symboles parasites
             doc.querySelectorAll('li, dd').forEach(el => {
                 if (el.dataset.processed) return;
                 let depth = 0;
@@ -416,8 +396,8 @@
                     depth++;
                     parent = parent.parentElement;
                 }
-                const indent = '    '.repeat(Math.max(0, depth - 1));
-                el.prepend(`${indent}• `);
+                const indent = '  '.repeat(Math.max(0, depth - 1));
+                el.prepend(`${indent}- `);
                 el.append('\n');
                 el.dataset.processed = 'true';
             });
@@ -427,8 +407,10 @@
                 el.append('\n');
             });
 
+            // Extraction finale du texte brut du DOM nettoyé
             let text = doc.body.textContent || "";
 
+            // Nettoyage rigoureux des sauts de ligne excessifs, espaces multiples et balises résiduelles
             return text
                 .replace(/\r\n/g, '\n')
                 .replace(/[ \t]+\n/g, '\n')
