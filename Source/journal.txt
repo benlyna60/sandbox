@@ -1,4 +1,36 @@
 ----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-05 01:20:01
+TITRE: Study reveals pupils most at risk of school suspension and what may help them
+LIEN: https://phys.org/news/2026-09-reveals-pupils-school-suspension.html
+CONTENU: School suspensions are associated with a complex combination of socioeconomic disadvantage, special educational needs, peer relationships and students' experiences of school, according to new research from The University of Manchester.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-04 23:40:01
+TITRE: Deadly floods of 2021—Researchers identify gaps in hazard mapping
+LIEN: https://phys.org/news/2026-09-deadly-gaps-hazard.html
+CONTENU: The catastrophic flooding in July 2021 claimed the lives of more than 200 people in Germany and Belgium. The high death toll makes it clear that hazard mapping and risk communication must be improved urgently. Researchers at the University of Potsdam, the Helmholtz Centre for Geosciences, the University of Louvain and Johns Hopkins University analyzed the locations and specific circumstances of 224 deaths. Their findings show that many occurred outside the officially mapped flood hazard zones and that older people were particularly affected. The work is published in the journal Earth's Future.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-04 22:20:01
+TITRE: Researchers tune into Arctic under-ice sounds and test through-ice communication
+LIEN: https://phys.org/news/2026-09-tune-arctic-ice-communication.html
+CONTENU: Beneath the Arctic Ocean is an orchestra featuring natural and human composers, from cracking sea ice and whistling beluga whales to humming shipping-vessel engines. Researchers from MIT Lincoln Laboratory heard some of this cacophony when analyzing data from commercial off-the-shelf sensors that they integrated and deployed in 2024 during the U.S. Navy's Operation Ice Camp (OIC). This past March, during OIC 2026, the researchers returned to the Arctic with a higher-fidelity version of one of the sensors, a geophone that detects vibrations in the sea ice.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-04 22:00:02
+TITRE: A new type of LED light could bring significant efficiency gains
+LIEN: https://phys.org/news/2026-09-significant-efficiency-gains.html
+CONTENU: Researchers at Lund University have developed a new type of light-emitting diode based on thin, branched nanowires that could offer significantly higher efficiency and lower production costs than current technology. By controlling where in the structure the light is generated, the researchers have reduced the losses that would otherwise limit the amount of light that can be used. Their study is published in the journal Nano Research.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: RFI (Actualités)
 DATE: 2026-09-04 22:16:17
