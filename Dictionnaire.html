@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extracteur Wiktionnaire Pur v14</title>
+    <title>Extracteur Wiktionnaire Pur v16</title>
     <style>
         :root {
             --bg-color: #f4f6f8;
@@ -16,6 +16,8 @@
             --btn-disabled: #95a5a6;
             --copy-bg: #2ecc71;
             --copy-hover: #27ae60;
+            --download-bg: #9b59b6;
+            --download-hover: #8e44ad;
             --status-color: #555;
             --error-color: #c0392b;
         }
@@ -32,6 +34,8 @@
                 --btn-disabled: #555555;
                 --copy-bg: #27ae60;
                 --copy-hover: #27ae61;
+                --download-bg: #8e44ad;
+                --download-hover: #9b59b6;
                 --status-color: #aaa;
                 --error-color: #e74c3c;
             }
@@ -121,19 +125,29 @@
             resize: vertical;
             line-height: 1.5;
         }
-        .copy-btn {
+        .actions {
+            display: flex;
+            gap: 10px;
             margin-top: 10px;
+        }
+        .copy-btn {
             background-color: var(--copy-bg);
         }
         .copy-btn:hover:not(:disabled) {
             background-color: var(--copy-hover);
+        }
+        .download-btn {
+            background-color: var(--download-bg);
+        }
+        .download-btn:hover:not(:disabled) {
+            background-color: var(--download-hover);
         }
     </style>
 </head>
 <body>
 
     <h1>Extracteur Wiktionnaire Pur</h1>
-    <p>Version v14 : extraction textuelle brute épurée, sans métadonnées de navigation, sans barres obliques et sans en-têtes externes.</p>
+    <p>Version v16 : cache blindé, robustesse API accrue, hiérarchie des listes propre, indication de source et export .txt.</p>
 
     <div class="search-box">
         <input type="text" id="wordInput" placeholder="Ex: Maison, courir, éco-..." aria-label="Mot à rechercher sur le Wiktionnaire" autofocus>
@@ -148,18 +162,26 @@
     <div class="output-container">
         <label for="outputArea" class="visually-hidden" style="display:none;">Texte extrait et nettoyé</label>
         <textarea id="outputArea" placeholder="Le texte pur apparaîtra ici..." aria-label="Résultat de l'extraction textuelle" tabindex="0"></textarea>
-        <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()" aria-label="Copier le texte dans le presse-papier">Copier dans le presse-papier</button>
+        <div class="actions">
+            <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()" aria-label="Copier le texte dans le presse-papier">Copier dans le presse-papier</button>
+            <button class="download-btn" id="downloadBtn" onclick="downloadTextFile()" aria-label="Télécharger le texte en fichier .txt">Télécharger (.txt)</button>
+        </div>
     </div>
 
     <script>
         let currentAbortController = null;
         
         class PersistentCache {
-            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v14') {
+            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v16') {
                 this.maxSize = maxSize;
                 this.ttlMs = ttlMs;
                 this.storageKey = storageKey;
                 this.cacheMap = this._loadFromStorage();
+            }
+
+            _normalizeKey(key) {
+                if (!key) return '';
+                return String(key).trim().toLowerCase().normalize('NFC');
             }
 
             _loadFromStorage() {
@@ -167,7 +189,11 @@
                     const raw = localStorage.getItem(this.storageKey);
                     if (!raw) return new Map();
                     const parsed = JSON.parse(raw);
-                    return new Map(Object.entries(parsed));
+                    const map = new Map();
+                    for (const [k, v] of Object.entries(parsed)) {
+                        map.set(this._normalizeKey(k), v);
+                    }
+                    return map;
                 } catch (e) {
                     return new Map();
                 }
@@ -181,7 +207,7 @@
             }
 
             get(key) {
-                const normalizedKey = key.toLowerCase().normalize('NFC');
+                const normalizedKey = this._normalizeKey(key);
                 if (!this.cacheMap.has(normalizedKey)) return undefined;
                 const item = this.cacheMap.get(normalizedKey);
                 if (Date.now() - item.timestamp > this.ttlMs) {
@@ -195,7 +221,8 @@
             }
 
             set(key, value) {
-                const normalizedKey = key.toLowerCase().normalize('NFC');
+                const normalizedKey = this._normalizeKey(key);
+                if (!normalizedKey) return;
                 if (this.cacheMap.has(normalizedKey)) {
                     this.cacheMap.delete(normalizedKey);
                 } else if (this.cacheMap.size >= this.maxSize) {
@@ -242,7 +269,7 @@
 
             if (searchCache.has(word)) {
                 outputArea.value = searchCache.get(word);
-                updateStatus(`Succès ! Article "${word}" chargé depuis le cache.`);
+                updateStatus(`Succès ! Article "${word}" chargé instantanément depuis le cache.`);
                 return;
             }
 
@@ -266,47 +293,58 @@
                 if (!queryRes.ok) throw new Error(`Erreur HTTP réseau : ${queryRes.status}`);
                 
                 const queryData = await queryRes.json();
+                if (queryData.error) {
+                    throw new Error(queryData.error.info || 'Erreur lors de la requête API Wiktionnaire.');
+                }
                 
-                if (queryData.query.redirects && queryData.query.redirects.length > 0) {
+                if (queryData.query && queryData.query.redirects && queryData.query.redirects.length > 0) {
                     let rawTarget = queryData.query.redirects[queryData.query.redirects.length - 1].to;
                     canonicalTitle = decodeURIComponent(rawTarget).replace(/_/g, ' ');
-                } else {
+                } else if (queryData.query && queryData.query.pages) {
                     const pages = queryData.query.pages;
                     const pageId = Object.keys(pages)[0];
                     if (pageId === '-1') {
                         const searchEndpoint = `https://fr.wiktionary.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(word)}&srlimit=1&format=json&origin=*`;
                         const searchRes = await fetch(searchEndpoint, { signal });
                         const searchData = await searchRes.json();
-                        if (!searchData.query || searchData.query.search.length === 0) {
+                        if (!searchData.query || !searchData.query.search || searchData.query.search.length === 0) {
                             throw new Error(`Aucun résultat trouvé pour "${word}".`);
                         }
                         canonicalTitle = searchData.query.search[0].title;
                     } else {
                         canonicalTitle = pages[pageId].title;
                     }
+                } else {
+                    throw new Error("Réponse inattendue de l'API MediaWiki.");
                 }
 
-                updateStatus(`Chargement de l'article : "${canonicalTitle}"...`);
+                updateStatus(`Chargement de l'article : "${canonicalTitle}" depuis le réseau...`);
 
                 const parseEndpoint = `https://fr.wiktionary.org/w/api.php?action=parse&page=${encodeURIComponent(canonicalTitle)}&prop=text&format=json&origin=*`;
                 const parseRes = await fetch(parseEndpoint, { signal });
                 const parseData = await parseRes.json();
                 
                 if (parseData.error) {
-                    throw new Error(parseData.error.info || 'Erreur API Wiktionnaire.');
+                    throw new Error(parseData.error.info || 'Erreur API Wiktionnaire lors du rendu.');
                 }
 
                 if (parseData.parse && parseData.parse.text) {
                     const htmlContent = parseData.parse.text['*'];
                     
                     const frenchHtml = extractFrenchSections(htmlContent);
-                    const cleanText = parseHtmlToCleanText(frenchHtml);
+                    let cleanText = parseHtmlToCleanText(frenchHtml);
+
+                    if (!cleanText || cleanText.trim().length === 0) {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(htmlContent, 'text/html');
+                        cleanText = doc.body.textContent || "Aucun texte lisible extrait.";
+                    }
 
                     searchCache.set(word, cleanText);
                     searchCache.set(canonicalTitle, cleanText);
 
                     outputArea.value = cleanText;
-                    updateStatus(`Succès ! Article "${canonicalTitle}" affiché.`);
+                    updateStatus(`Succès ! Article "${canonicalTitle}" récupéré du réseau et mis en cache.`);
                 } else {
                     updateStatus('Aucun contenu exploitable trouvé.');
                 }
@@ -340,7 +378,7 @@
                 let idAttr = h2.id ? decodeURIComponent(h2.id).toLowerCase() : '';
                 let textContent = h2.textContent.toLowerCase();
                 
-                if (textContent.includes('français') || textContent.includes('francais') || idAttr.includes('français') || idAttr.includes('francais')) {
+                if (textContent.includes('français') || textContent.includes('francais') || idAttr.includes('français') || idAttr.includes('francais') || idAttr.includes('_français') || idAttr.includes('_francais')) {
                     let current = h2.nextElementSibling;
                     while (current && current.tagName !== 'H2') {
                         combinedHtml += current.outerHTML;
@@ -356,16 +394,13 @@
             const parser = new DOMParser();
             const doc = parser.parseFromString(htmlString, 'text/html');
 
-            // Suppression complète des éléments parasites, liens vers d'autres projets, boîtes, etc.
             const selectorsToRemove = [
                 '.mw-editsection', 'script', 'style', '.printfooter', 
                 '.navigation-not-searchable', '.toc', '#toc', 
                 '.mw-references-wrap', '.references', '.ambox', 
                 '.infobox', '.navbox', '.thumb', '.mw-empty-elt',
-                '.wikt-lang-label', '.demono', '.reference', '.audiolink', 'sup',
-                '.sister-project', '.NavFrame', '.mw-jump-link',
-                'div[role="navigation"]', '.interproject', '.vector-menu',
-                'ol.references', 'div.printfooter', '.catlinks'
+                '.reference', '.audiolink', 'sup', '.sister-project', 
+                '.NavFrame', '.mw-jump-link', '.interproject'
             ];
             
             selectorsToRemove.forEach(selector => {
@@ -374,7 +409,6 @@
                 } catch (e) {}
             });
 
-            // Neutralisation des liens hypertextes en conservant uniquement leur texte brut
             doc.querySelectorAll('a').forEach(a => {
                 const text = a.textContent.trim();
                 if (text) {
@@ -384,10 +418,9 @@
                 }
             });
 
-            // Conversion des retours à la ligne propres
             doc.querySelectorAll('br').forEach(el => el.replaceWith(document.createTextNode('\n')));
 
-            // Transformation des listes en puces propres sans symboles parasites
+            // Gestion propre des listes imbriquées sans sauts de ligne redondants
             doc.querySelectorAll('li, dd').forEach(el => {
                 if (el.dataset.processed) return;
                 let depth = 0;
@@ -398,7 +431,6 @@
                 }
                 const indent = '  '.repeat(Math.max(0, depth - 1));
                 el.prepend(`${indent}- `);
-                el.append('\n');
                 el.dataset.processed = 'true';
             });
 
@@ -407,10 +439,8 @@
                 el.append('\n');
             });
 
-            // Extraction finale du texte brut du DOM nettoyé
             let text = doc.body.textContent || "";
 
-            // Nettoyage rigoureux des sauts de ligne excessifs, espaces multiples et balises résiduelles
             return text
                 .replace(/\r\n/g, '\n')
                 .replace(/[ \t]+\n/g, '\n')
@@ -445,6 +475,26 @@
             } catch (err) {
                 alert('Impossible de copier automatiquement.');
             }
+        }
+
+        function downloadTextFile() {
+            const outputArea = document.getElementById('outputArea');
+            const wordInput = document.getElementById('wordInput');
+            if (!outputArea.value) {
+                alert('Rien à télécharger !');
+                return;
+            }
+
+            const wordName = wordInput.value.trim() || 'wiktionnaire';
+            const blob = new Blob([outputArea.value], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${wordName.replace(/[^a-z0-9àâäéèêëîïôöùûüç-]+/gi, '_')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
     </script>
 
