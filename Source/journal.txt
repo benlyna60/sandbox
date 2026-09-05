@@ -1,4 +1,12 @@
 ----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-05 08:40:02
+TITRE: AI could undermine managers' judgment unless used carefully, study warns
+LIEN: https://phys.org/news/2026-09-ai-undermine-judgment.html
+CONTENU: Generative artificial intelligence (Gen-AI) has become a routine part of working life, but overreliance on the technology may erode managers' ability to build moral insights, contextual understanding and know-how to get a job done, according to a new study from the University of Bath.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-05 06:34:00
