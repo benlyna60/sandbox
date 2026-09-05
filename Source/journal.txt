@@ -1,5 +1,37 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 16:05:00
+TITRE: Le PQ gèlerait les salaires des députés, des ministres et des p.-d.g. des sociétés d’État
+LIEN: https://www.ledevoir.com/politique/quebec/1006847/pq-gelerait-salaires-deputes-ministres-p-g-societes-etat
+CONTENU: Ces mesures seraient en vigueur jusqu’au « retour de l’équilibre budgétaire » au Québec.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 19:54:16
+TITRE: Les États-Unis coulent un troisième bateau de narcotrafiquants présumés au large de l’Équateur
+LIEN: https://www.ledevoir.com/monde/ameriques/1006856/etats-unis-coulent-troisieme-bateau-narcotrafiquants-presumes-large-equateur
+CONTENU: Les habitants et les organisations de défense des droits de la personne sont de plus en plus inquiets.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 21:45:00
+TITRE: Québec annonce une entente de principe dans les négociations avec les sages-femmes
+LIEN: https://www.ledevoir.com/actualites/sante/1006865/quebec-annonce-entente-principe-negociations-sages-femmes
+CONTENU: L’accessibilité dans les régions faisait entre autres partie de leurs préoccupations.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 13:26:00
+TITRE: Un couple de sexagénaires poignardés dans un appartement à Montréal
+LIEN: https://www.ledevoir.com/actualites/1006832/couple-sexagenaires-poignardes-appartement-montreal
+CONTENU: Le suspect, le fils du couple, a été arrêté à proximité des lieux.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-05 22:00:00
 TITRE: franceinfo la nuit du dimanche 06 septembre 2026
