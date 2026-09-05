@@ -1,5 +1,61 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Taxer les riches, la «promesse chouchou» de la semaine
+LIEN: https://www.ledevoir.com/politique/quebec/1006751/taxer-riches-promesse-chouchou-semaine
+CONTENU: Notre panel électoral s’indigne des inégalités grandissantes qui minent le filet social québécois.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: «Au cœur du pays»: Gilles Vigneault conjugué au présent
+LIEN: https://www.ledevoir.com/culture/musique/1006394/coeur-pays-gilles-vigneault-conjugue-present
+CONTENU: Sept artistes québécois revisitent l’œuvre du doyen de la chanson québécoise, sous la direction de Louis-Jean Cormier.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 13:03:00
+TITRE: Les émissaires de Trump à Moscou pour des négociations
+LIEN: https://www.ledevoir.com/monde/1006826/emissaires-trump-moscou-negociations
+CONTENU: Selon Trump, Jared Kushner et Steve Witkoff arrivent avec une proposition pour mettre fin à la guerre en Ukraine.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: «L’inconnue du quai de Javel»: Jaenada et la jeune morte
+LIEN: https://www.ledevoir.com/lire/1006238/inconnue-quai-javel-jaenada-jeune-morte
+CONTENU: Dans son nouveau livre, le romancier français rend hommage à Maigret dans une nouvelle et captivante contre-enquête.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: «Howa walla heya d’aujourd’hui» et «Capital Erotica»: honorer ces danses interdites
+LIEN: https://www.ledevoir.com/culture/danse/1006328/howa-walla-heya-aujourd-hui-capital-erotica-honorer-ces-danses-interdites
+CONTENU: Tangente lance sa saison avec deux univers traversés par des questions d’identité, de désir et de représentation.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: L’absurde mathématique des générations
+LIEN: https://www.ledevoir.com/opinion/chroniques/1006763/absurde-mathematique-generations
+CONTENU: Et moi qui croyais que nous étions tous Québécois.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: «Jardin»: au théâtre, côté jardin
+LIEN: https://www.ledevoir.com/culture/theatre/1006391/jardin-theatre-cote-jardin
+CONTENU: Evelyne de la Chenelière et Daniel Brière créent une pièce mettant en vedette des humains et des végétaux.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-09-05 13:21:00
 TITRE: Guerre en Ukraine: Donald Trump envoie ce week-end ses émissaires à Moscou et à Kiev pour "faire avancer les choses"
