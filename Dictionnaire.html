@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extracteur Wiktionnaire Ultime v10</title>
+    <title>Extracteur Wiktionnaire Ultime v11</title>
     <style>
         :root {
             --bg-color: #f4f6f8;
@@ -133,7 +133,7 @@
 <body>
 
     <h1>Extracteur Propre - Wiktionnaire</h1>
-    <p>Version v10 : persistance du cache via localStorage, ciblage sémantique renforcé des sections, accessibilité ARIA complète et bouton de copie natif opérationnel.</p>
+    <p>Version v11 : filet de sécurité intégré pour l'extraction de sections, persistance locale, accessibilité renforcée et copie opérationnelle.</p>
 
     <div class="search-box">
         <input type="text" id="wordInput" placeholder="Ex: Maison, courir, éco-..." aria-label="Mot à rechercher sur le Wiktionnaire" autofocus>
@@ -154,9 +154,8 @@
     <script>
         let currentAbortController = null;
         
-        // Cache persistant basé sur localStorage avec TTL (24 heures)
         class PersistentCache {
-            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v10') {
+            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v11') {
                 this.maxSize = maxSize;
                 this.ttlMs = ttlMs;
                 this.storageKey = storageKey;
@@ -195,7 +194,6 @@
                     return undefined;
                 }
 
-                // Rafraîchissement LRU en mémoire
                 this.cacheMap.delete(normalizedKey);
                 this.cacheMap.set(normalizedKey, item);
                 return item.value;
@@ -271,7 +269,7 @@
                 
                 const queryRes = await fetch(queryEndpoint, { 
                     signal,
-                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/10.0 (Educational Project)' }
+                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/11.0 (Educational Project)' }
                 });
                 if (!queryRes.ok) throw new Error(`Erreur HTTP réseau : ${queryRes.status}`);
                 
@@ -293,7 +291,7 @@
                         const searchEndpoint = `https://fr.wiktionary.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(word)}&srlimit=1&format=json&origin=*`;
                         const searchRes = await fetch(searchEndpoint, { 
                             signal,
-                            headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/10.0 (Educational Project)' }
+                            headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/11.0 (Educational Project)' }
                         });
                         if (!searchRes.ok) throw new Error(`Erreur HTTP recherche : ${searchRes.status}`);
                         
@@ -312,7 +310,7 @@
                 const parseEndpoint = `https://fr.wiktionary.org/w/api.php?action=parse&page=${encodeURIComponent(canonicalTitle)}&prop=text&format=json&origin=*`;
                 const parseRes = await fetch(parseEndpoint, { 
                     signal,
-                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/10.0 (Educational Project)' }
+                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/11.0 (Educational Project)' }
                 });
                 if (!parseRes.ok) throw new Error(`Erreur HTTP Wiktionnaire : ${parseRes.status}`);
                 
@@ -363,20 +361,14 @@
                 let idAttr = '';
                 if (h2.id) {
                     try {
-                        idAttr = decodeURIComponent(h2.id);
+                        idAttr = decodeURIComponent(h2.id).toLowerCase();
                     } catch {
-                        idAttr = h2.id;
+                        idAttr = h2.id.toLowerCase();
                     }
                 }
+                let textContent = h2.textContent.toLowerCase();
                 
-                const normalizedId = idAttr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                const normalizedText = h2.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                
-                // Vérification sémantique renforcée : attribut lang explicite ou termes linguistiques français
-                const langAttr = h2.getAttribute('lang') || h2.closest('[lang]')?.getAttribute('lang') || '';
-                const isFrenchLang = langAttr.toLowerCase().startsWith('fr');
-
-                if (isFrenchLang || normalizedText.includes('francais') || normalizedId.includes('francais')) {
+                if (textContent.includes('français') || textContent.includes('francais') || idAttr.includes('français') || idAttr.includes('francais')) {
                     let current = h2.nextElementSibling;
                     while (current && current.tagName !== 'H2') {
                         combinedHtml += current.outerHTML;
@@ -385,7 +377,8 @@
                 }
             }
 
-            return combinedHtml || htmlString;
+            // Filet de sécurité : si le filtrage par h2 ne renvoie rien, on retourne tout le document nettoyé
+            return combinedHtml.trim() ? combinedHtml : htmlString;
         }
 
         function parseHtmlToCleanText(htmlString) {
@@ -448,6 +441,7 @@
                 el.dataset.processed = 'true';
             });
 
+            doc.querySelectorAll('p, dt').formatStyle = {};
             doc.querySelectorAll('p, dt').forEach(el => {
                 el.prepend('\n');
                 el.append('\n');
@@ -483,7 +477,6 @@
                         copyBtn.style.backgroundColor = '';
                     }, 2000);
                 } else {
-                    // Fallback de sélection manuelle pour les contextes restreints
                     outputArea.select();
                     document.execCommand('copy');
                     alert('Texte sélectionné et copié dans le presse-papier.');
