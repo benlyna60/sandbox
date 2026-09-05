@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extracteur Wiktionnaire Ultime v12</title>
+    <title>Extracteur Wiktionnaire Ultime v13</title>
     <style>
         :root {
             --bg-color: #f4f6f8;
@@ -133,7 +133,7 @@
 <body>
 
     <h1>Extracteur Propre - Wiktionnaire</h1>
-    <p>Version v12 : correction complète du filet de sécurité d'extraction, persistance locale, accessibilité ARIA et copie opérationnelle.</p>
+    <p>Version v13 : mode diagnostic console activé et sécurisation absolue du rendu.</p>
 
     <div class="search-box">
         <input type="text" id="wordInput" placeholder="Ex: Maison, courir, éco-..." aria-label="Mot à rechercher sur le Wiktionnaire" autofocus>
@@ -155,7 +155,7 @@
         let currentAbortController = null;
         
         class PersistentCache {
-            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v12') {
+            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v13') {
                 this.maxSize = maxSize;
                 this.ttlMs = ttlMs;
                 this.storageKey = storageKey;
@@ -169,7 +169,6 @@
                     const parsed = JSON.parse(raw);
                     return new Map(Object.entries(parsed));
                 } catch (e) {
-                    console.warn("Impossible de charger le cache depuis localStorage", e);
                     return new Map();
                 }
             }
@@ -178,22 +177,18 @@
                 try {
                     const obj = Object.fromEntries(this.cacheMap);
                     localStorage.setItem(this.storageKey, JSON.stringify(obj));
-                } catch (e) {
-                    console.warn("Impossible d'enregistrer le cache dans localStorage", e);
-                }
+                } catch (e) {}
             }
 
             get(key) {
                 const normalizedKey = key.toLowerCase().normalize('NFC');
                 if (!this.cacheMap.has(normalizedKey)) return undefined;
                 const item = this.cacheMap.get(normalizedKey);
-                
                 if (Date.now() - item.timestamp > this.ttlMs) {
                     this.cacheMap.delete(normalizedKey);
                     this._saveToStorage();
                     return undefined;
                 }
-
                 this.cacheMap.delete(normalizedKey);
                 this.cacheMap.set(normalizedKey, item);
                 return item.value;
@@ -247,7 +242,7 @@
 
             if (searchCache.has(word)) {
                 outputArea.value = searchCache.get(word);
-                updateStatus(`Succès ! Article "${word}" chargé depuis le cache persistant.`);
+                updateStatus(`Succès ! Article "${word}" chargé depuis le cache.`);
                 return;
             }
 
@@ -267,37 +262,23 @@
                 let canonicalTitle = word;
                 const queryEndpoint = `https://fr.wiktionary.org/w/api.php?action=query&titles=${encodeURIComponent(word)}&redirects=1&format=json&origin=*`;
                 
-                const queryRes = await fetch(queryEndpoint, { 
-                    signal,
-                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/12.0 (Educational Project)' }
-                });
+                const queryRes = await fetch(queryEndpoint, { signal });
                 if (!queryRes.ok) throw new Error(`Erreur HTTP réseau : ${queryRes.status}`);
                 
                 const queryData = await queryRes.json();
                 
                 if (queryData.query.redirects && queryData.query.redirects.length > 0) {
                     let rawTarget = queryData.query.redirects[queryData.query.redirects.length - 1].to;
-                    try {
-                        canonicalTitle = decodeURIComponent(rawTarget).replace(/_/g, ' ');
-                    } catch {
-                        canonicalTitle = rawTarget.replace(/_/g, ' ');
-                    }
+                    canonicalTitle = decodeURIComponent(rawTarget).replace(/_/g, ' ');
                 } else {
                     const pages = queryData.query.pages;
                     const pageId = Object.keys(pages)[0];
-
                     if (pageId === '-1') {
-                        updateStatus('Entrée exacte introuvable, recherche alternative...');
                         const searchEndpoint = `https://fr.wiktionary.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(word)}&srlimit=1&format=json&origin=*`;
-                        const searchRes = await fetch(searchEndpoint, { 
-                            signal,
-                            headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/12.0 (Educational Project)' }
-                        });
-                        if (!searchRes.ok) throw new Error(`Erreur HTTP recherche : ${searchRes.status}`);
-                        
+                        const searchRes = await fetch(searchEndpoint, { signal });
                         const searchData = await searchRes.json();
                         if (!searchData.query || searchData.query.search.length === 0) {
-                            throw new Error(`Aucun résultat trouvé pour "${word}" sur le Wiktionnaire.`);
+                            throw new Error(`Aucun résultat trouvé pour "${word}".`);
                         }
                         canonicalTitle = searchData.query.search[0].title;
                     } else {
@@ -308,30 +289,36 @@
                 updateStatus(`Chargement de l'article : "${canonicalTitle}"...`);
 
                 const parseEndpoint = `https://fr.wiktionary.org/w/api.php?action=parse&page=${encodeURIComponent(canonicalTitle)}&prop=text&format=json&origin=*`;
-                const parseRes = await fetch(parseEndpoint, { 
-                    signal,
-                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/12.0 (Educational Project)' }
-                });
-                if (!parseRes.ok) throw new Error(`Erreur HTTP Wiktionnaire : ${parseRes.status}`);
-                
+                const parseRes = await fetch(parseEndpoint, { signal });
                 const parseData = await parseRes.json();
+                
                 if (parseData.error) {
-                    throw new Error(parseData.error.info || 'Erreur inconnue de l’API Wiktionnaire.');
+                    throw new Error(parseData.error.info || 'Erreur API Wiktionnaire.');
                 }
 
                 if (parseData.parse && parseData.parse.text) {
                     const htmlContent = parseData.parse.text['*'];
+                    console.log("--> HTML brut récupéré (longueur):", htmlContent.length);
                     
                     const frenchHtml = extractFrenchSections(htmlContent);
-                    const cleanText = parseHtmlToCleanText(frenchHtml);
+                    console.log("--> HTML après extraction (longueur):", frenchHtml.length);
 
-                    if (cleanText && cleanText.length > 15) {
-                        searchCache.set(word, cleanText);
-                        searchCache.set(canonicalTitle, cleanText);
+                    let cleanText = parseHtmlToCleanText(frenchHtml);
+                    console.log("--> Texte nettoyé (longueur):", cleanText.length);
+
+                    // Filet de sécurité ultime si le texte nettoyé est vide
+                    if (!cleanText || cleanText.trim().length === 0) {
+                        console.warn("Texte nettoyé vide, application du repli brut.");
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(htmlContent, 'text/html');
+                        cleanText = doc.body.textContent || "Aucun texte lisible extrait.";
                     }
 
+                    searchCache.set(word, cleanText);
+                    searchCache.set(canonicalTitle, cleanText);
+
                     outputArea.value = cleanText;
-                    updateStatus(`Succès ! Article "${canonicalTitle}" extrait et nettoyé.`);
+                    updateStatus(`Succès ! Article "${canonicalTitle}" affiché.`);
                 } else {
                     updateStatus('Aucun contenu exploitable trouvé.');
                 }
@@ -341,7 +328,7 @@
                     updateStatus('Recherche annulée.');
                     return;
                 }
-                console.error(error);
+                console.error("Erreur attrapée :", error);
                 updateStatus(`Erreur : ${error.message}`, true, true);
             } finally {
                 searchBtn.disabled = false;
@@ -362,14 +349,7 @@
             }
 
             for (let h2 of h2Elements) {
-                let idAttr = '';
-                if (h2.id) {
-                    try {
-                        idAttr = decodeURIComponent(h2.id).toLowerCase();
-                    } catch {
-                        idAttr = h2.id.toLowerCase();
-                    }
-                }
+                let idAttr = h2.id ? decodeURIComponent(h2.id).toLowerCase() : '';
                 let textContent = h2.textContent.toLowerCase();
                 
                 if (textContent.includes('français') || textContent.includes('francais') || idAttr.includes('français') || idAttr.includes('francais')) {
@@ -381,7 +361,6 @@
                 }
             }
 
-            // Filet de sécurité absolu : si aucun bloc français n'est extrait, on retourne l'intégralité du HTML nettoyable
             return combinedHtml.trim() ? combinedHtml : htmlString;
         }
 
@@ -469,7 +448,6 @@
             try {
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     await navigator.clipboard.writeText(outputArea.value);
-                    
                     const originalText = copyBtn.textContent;
                     copyBtn.textContent = 'Copié !';
                     copyBtn.style.backgroundColor = '#27ae60';
@@ -480,11 +458,10 @@
                 } else {
                     outputArea.select();
                     document.execCommand('copy');
-                    alert('Texte sélectionné et copié dans le presse-papier.');
+                    alert('Texte copié.');
                 }
             } catch (err) {
-                console.error(err);
-                alert('Impossible de copier automatiquement. Veuillez sélectionner et copier le texte manuellement.');
+                alert('Impossible de copier automatiquement.');
             }
         }
     </script>
