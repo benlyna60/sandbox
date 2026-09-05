@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Extracteur Wiktionnaire Pur v19</title>
+<title>Extracteur Wiktionnaire Pur v21</title>
 
 <style>
 :root {
@@ -238,12 +238,12 @@ button:disabled {
 
 <div class="container">
 
-    <h1>Extracteur Wiktionnaire Pur v19</h1>
+    <h1>Extracteur Wiktionnaire Pur v21</h1>
 
     <div class="description">
-        Extraction du contenu français utile du Wiktionnaire.
-        Le résultat final est nettoyé phrase par phrase, sans numéros,
-        guillemets, liens, boutons, références, menus ou bruit rédactionnel.
+        Extraction linguistique française propre du Wiktionnaire.
+        Le moteur nettoie le contenu, filtre les fragments non linguistiques
+        et conserve les phrases et informations lexicales utiles.
     </div>
 
     <div class="search-box">
@@ -255,7 +255,6 @@ button:disabled {
             spellcheck="false"
             aria-label="Mot à rechercher"
         >
-
         <button
             id="searchBtn"
             class="search-btn"
@@ -271,14 +270,16 @@ button:disabled {
             class="spinner"
             aria-hidden="true"
         ></div>
-
         <div
             id="status"
             aria-live="polite"
         ></div>
     </div>
 
-    <label class="output-label" for="outputArea">
+    <label
+        class="output-label"
+        for="outputArea"
+    >
         Texte propre
     </label>
 
@@ -289,7 +290,6 @@ button:disabled {
     ></textarea>
 
     <div class="actions">
-
         <button
             id="copyBtn"
             class="copy-btn"
@@ -297,7 +297,6 @@ button:disabled {
         >
             Copier le texte propre
         </button>
-
         <button
             id="downloadBtn"
             class="download-btn"
@@ -305,7 +304,6 @@ button:disabled {
         >
             Télécharger le texte propre
         </button>
-
         <button
             id="clearBtn"
             class="clear-btn"
@@ -313,17 +311,18 @@ button:disabled {
         >
             Effacer
         </button>
-
     </div>
 
     <div class="info">
-        Le texte copié et le fichier téléchargé utilisent exactement la même
-        sortie finale que celle affichée dans la zone ci-dessus.
+        Le texte affiché, copié et téléchargé est exactement le même
+        résultat final produit par le moteur linguistique.
     </div>
 
 </div>
 
+
 <script>
+
 "use strict";
 
 /* ============================================================
@@ -332,26 +331,20 @@ button:disabled {
 
 const CONFIG = {
     API: "https://fr.wiktionary.org/w/api.php",
-
-    CACHE_KEY: "wiktionnaire_pur_v19_cache",
-
+    CACHE_KEY: "wiktionnaire_pur_v21_cache",
     CACHE_MAX: 60,
-
     CACHE_TTL: 1000 * 60 * 60 * 24,
-
     REQUEST_TIMEOUT: 20000
 };
 
-
 /* ============================================================
-   ÉTAT GLOBAL
+   ÉTAT
    ============================================================ */
 
 let currentAbortController = null;
 
-
 /* ============================================================
-   RÉFÉRENCES DOM
+   DOM
    ============================================================ */
 
 const wordInput = document.getElementById("wordInput");
@@ -363,13 +356,11 @@ const outputArea = document.getElementById("outputArea");
 const status = document.getElementById("status");
 const spinner = document.getElementById("loadingSpinner");
 
-
 /* ============================================================
-   CACHE LOCAL
+   CACHE
    ============================================================ */
 
 class PersistentCache {
-
     constructor(
         maxSize = CONFIG.CACHE_MAX,
         ttl = CONFIG.CACHE_TTL,
@@ -382,7 +373,6 @@ class PersistentCache {
     }
 
     normalizeKey(value) {
-
         return String(value || "")
             .trim()
             .normalize("NFC")
@@ -390,25 +380,15 @@ class PersistentCache {
     }
 
     load() {
-
         try {
-
             const raw = localStorage.getItem(this.key);
-
-            if (!raw) {
-                return new Map();
-            }
+            if (!raw) return new Map();
 
             const parsed = JSON.parse(raw);
+            if (!Array.isArray(parsed)) return new Map();
 
             const map = new Map();
-
-            if (!Array.isArray(parsed)) {
-                return map;
-            }
-
             for (const item of parsed) {
-
                 if (
                     !item ||
                     typeof item.key !== "string" ||
@@ -430,77 +410,52 @@ class PersistentCache {
                     }
                 );
             }
-
             return map;
-
         } catch (error) {
-
             return new Map();
         }
     }
 
     save() {
-
         try {
-
             const data = [];
-
-            for (const [key, item] of this.map.entries()) {
-
+            for (const [key, item] of this.map) {
                 data.push({
-                    key,
+                    key: key,
                     value: item.value,
                     timestamp: item.timestamp
                 });
             }
-
-            localStorage.setItem(
-                this.key,
-                JSON.stringify(data)
-            );
-
+            localStorage.setItem(this.key, JSON.stringify(data));
         } catch (error) {
-            /* Le cache est facultatif. */
+            // Gestion robuste en cas de dépassement de quota (QuotaExceededError)
+            try {
+                localStorage.removeItem(this.key);
+                this.map.clear();
+            } catch (e) {}
         }
     }
 
     get(key) {
-
         const normalized = this.normalizeKey(key);
-
         if (!normalized || !this.map.has(normalized)) {
             return undefined;
         }
 
         const item = this.map.get(normalized);
-
-        if (
-            !item ||
-            Date.now() - item.timestamp > this.ttl
-        ) {
-
+        if (!item || Date.now() - item.timestamp > this.ttl) {
             this.map.delete(normalized);
             this.save();
-
             return undefined;
         }
 
-        /*
-         * On remet l'élément en dernier :
-         * comportement LRU simple.
-         */
-
         this.map.delete(normalized);
-
         this.map.set(normalized, item);
-
         return item.value;
     }
 
     set(key, value) {
-
         const normalized = this.normalizeKey(key);
-
         if (!normalized || typeof value !== "string") {
             return;
         }
@@ -510,24 +465,17 @@ class PersistentCache {
         }
 
         while (this.map.size >= this.maxSize) {
-
-            const oldestKey =
-                this.map.keys().next().value;
-
-            if (oldestKey === undefined) {
+            const oldest = this.map.keys().next().value;
+            if (oldest === undefined) {
                 break;
             }
-
-            this.map.delete(oldestKey);
+            this.map.delete(oldest);
         }
 
-        this.map.set(
-            normalized,
-            {
-                value,
-                timestamp: Date.now()
-            }
-        );
+        this.map.set(normalized, {
+            value: value,
+            timestamp: Date.now()
+        });
 
         this.save();
     }
@@ -535,45 +483,38 @@ class PersistentCache {
 
 const cache = new PersistentCache();
 
-
 /* ============================================================
-   OUTILS GÉNÉRAUX
+   STATUT
    ============================================================ */
 
 function setStatus(message, isError = false) {
-
     status.textContent = message;
-
-    status.style.color =
-        isError
-            ? "var(--danger)"
-            : "var(--muted)";
+    status.style.color = isError ? "var(--danger)" : "var(--muted)";
 }
 
+/* ============================================================
+   CHARGEMENT
+   ============================================================ */
 
 function setLoading(loading) {
-
     searchBtn.disabled = loading;
     wordInput.disabled = loading;
-
-    spinner.style.display =
-        loading ? "block" : "none";
+    spinner.style.display = loading ? "block" : "none";
 }
 
+/* ============================================================
+   NORMALISATION
+   ============================================================ */
 
 function normalizeSpaces(text) {
-
     return String(text || "")
         .replace(/\u00A0/g, " ")
-        .replace(/[ \t]+/g, " ")
+        .replace(/[\t ]+/g, " ")
         .trim();
 }
 
-
 function normalizeLine(text) {
-
-    let line = String(text || "")
-        .normalize("NFC");
+    let line = String(text || "").normalize("NFC");
 
     line = line
         .replace(/\u00A0/g, " ")
@@ -581,270 +522,122 @@ function normalizeLine(text) {
         .replace(/[ \t]+/g, " ")
         .trim();
 
-    /*
-     * Suppression des numéros de définition au début.
-     *
-     * Exemple :
-     * "1. Maison où l'on habite."
-     * devient :
-     * "Maison où l'on habite."
-     *
-     * IMPORTANT :
-     * Cette opération ne touche jamais l'intérieur
-     * d'un mot.
-     */
-
-    line = line.replace(
-        /^\s*(?:\d+|[a-z])[\s.)-]+(?=\S)/i,
-        ""
-    );
-
-    /*
-     * Puces éventuelles.
-     */
-
-    line = line.replace(
-        /^\s*[-•●▪◦*]+\s*/,
-        ""
-    );
-
-    /*
-     * Quelques marqueurs Wiktionnaire très fréquents.
-     */
-
-    line = line.replace(
-        /^\s*(?:sens|définition)\s*:?\s*/i,
-        ""
-    );
-
-    /*
-     * Guillemets entourant toute la ligne.
-     */
-
-    line = line.replace(
-        /^\s*[«“"]\s*/,
-        ""
-    );
-
-    line = line.replace(
-        /\s*[»”"]\s*$/,
-        ""
-    );
+    line = line.replace(/^\s*(?:\d+|[a-z])[\s.)-]+(?=\S)/i, "");
+    line = line.replace(/^\s*[-•●▪◦*]+\s*/, "");
+    line = line.replace(/^\s*(?:sens|définition)\s*:?\s*/i, "");
+    line = line.replace(/^\s*[«“"]\s*/, "");
+    line = line.replace(/\s*[»”"]\s*$/, "");
 
     return line.trim();
 }
 
+/* ============================================================
+   PONCTUATION
+   ============================================================ */
 
-function cleanPunctuation(line) {
+function cleanPunctuation(text) {
+    let result = String(text || "");
 
-    let result = line;
-
-    /*
-     * Espaces avant certaines ponctuations.
-     */
-
-    result = result.replace(
-        /\s+([,.;:!?])/g,
-        "$1"
-    );
-
-    /*
-     * Espaces inutiles après ouverture
-     * et avant fermeture de parenthèses.
-     */
-
-    result = result.replace(
-        /([(\[])\s+/g,
-        "$1"
-    );
-
-    result = result.replace(
-        /\s+([)\]])/g,
-        "$1"
-    );
-
-    /*
-     * Guillemets restants.
-     *
-     * On les retire volontairement.
-     */
-
-    result = result.replace(
-        /[«»„“”""]/g,
-        ""
-    );
-
-    /*
-     * Espaces multiples.
-     */
-
-    result = result.replace(
-        /[ \t]{2,}/g,
-        " "
-    );
+    result = result.replace(/\s+([,.;:!?])/g, "$1");
+    result = result.replace(/([(\[])\s+/g, "$1");
+    result = result.replace(/\s+([)\]])/g, "$1");
+    result = result.replace(/[«»„“”""]/g, "");
+    result = result.replace(/[ \t]{2,}/g, " ");
 
     return result.trim();
 }
 
-
 /* ============================================================
-   FILTRES DE BRUIT
+   FILTRE LINGUISTIQUE
    ============================================================ */
 
+const technicalTerms = [
+    "modifier", "modifier le wikicode", "modifier la section", "modifier cette section",
+    "wikicode", "source", "historique", "sommaire", "navigation", "menu", "outils",
+    "se connecter", "créer un compte", "discussion", "contribuer", "catégorie", "catégories",
+    "aide", "références", "référence", "notes", "bibliographie", "liens externes",
+    "imprimer", "télécharger", "déplacer", "permalink"
+];
+
+const unwantedSectionTerms = [
+    "traduction", "traductions", "prononciation", "homophone", "homophones",
+    "anagramme", "anagrammes", "synonyme", "synonymes", "antonyme", "antonymes",
+    "hyperonyme", "hyperonymes", "hyponyme", "hyponymes", "méronyme", "méronymes",
+    "holonyme", "holonymes", "dérivé", "dérivés", "apparenté", "apparentés",
+    "voir aussi", "références", "bibliographie", "sources", "liens externes"
+];
+
 function isPureNoise(text) {
+    const value = normalizeSpaces(text).toLocaleLowerCase("fr-FR");
+    if (!value) return true;
 
-    const value = normalizeSpaces(text)
-        .toLocaleLowerCase("fr-FR");
-
-    if (!value) {
-        return true;
-    }
-
-    /*
-     * Lignes composées uniquement de ponctuation.
-     */
+    if (/^[\s.,;:!?()[\]{}\-–—_/*+|=<>~^]+$/.test(value)) return true;
+    if (technicalTerms.includes(value)) return true;
 
     if (
-        /^[\s.,;:!?()[\]{}\-–—_/*+]+$/.test(value)
+        value.startsWith("modifier ") ||
+        value.startsWith("référence ") ||
+        value.startsWith("références ") ||
+        value.startsWith("catégorie ") ||
+        value.startsWith("catégories ")
     ) {
         return true;
     }
 
-    /*
-     * Éléments de navigation ou d'interface.
-     */
-
-    const exactNoise = new Set([
-        "modifier",
-        "modifier le wikicode",
-        "modifier la section",
-        "modifier cette section",
-        "voir le wikicode",
-        "sommaire",
-        "menu",
-        "navigation",
-        "rechercher",
-        "recherche",
-        "outils",
-        "langues",
-        "déplacer",
-        "catégorie",
-        "catégories",
-        "aide",
-        "discussion",
-        "contribuer",
-        "créer un compte",
-        "se connecter",
-        "imprimer",
-        "télécharger",
-        "références",
-        "notes",
-        "annexes"
-    ]);
-
-    if (exactNoise.has(value)) {
-        return true;
-    }
-
-    /*
-     * Certains éléments techniques peuvent apparaître
-     * sous forme de texte après rendu.
-     */
-
-    if (
-        value === "français" ||
-        value === "francais"
-    ) {
-        return true;
-    }
-
-    /*
-     * Lignes extrêmement courtes constituées uniquement
-     * de caractères techniques.
-     */
-
-    if (
-        /^[\[\]{}|=<>~^]+$/.test(value)
-    ) {
-        return true;
-    }
+    if (/^(?:\{\{|\}\}|\[\[|\]\]|\|\||<ref|<\/?ref)/i.test(value)) return true;
 
     return false;
 }
 
+function looksLikeLinguisticContent(text) {
+    const line = normalizeSpaces(text);
+    if (!line) return false;
 
-function isUnwantedSectionTitle(title) {
+    if (!/[A-Za-zÀ-ÖØ-öø-ÿŒœÆæ]/u.test(line)) return false;
 
-    const value = normalizeSpaces(title)
-        .toLocaleLowerCase("fr-FR");
+    const lower = line.toLocaleLowerCase("fr-FR");
+    if (technicalTerms.includes(lower)) return false;
 
-    const blocked = [
-        "traductions",
-        "traduction",
-        "prononciation",
-        "homophones",
-        "homophone",
-        "anagrammes",
-        "anagramme",
-        "synonymes",
-        "synonyme",
-        "antonymes",
-        "antonyme",
-        "hyperonymes",
-        "hyperonyme",
-        "hyponymes",
-        "hyponyme",
-        "méronymes",
-        "méronyme",
-        "holonymes",
-        "holonyme",
-        "dérivés",
-        "dérivé",
-        "apparentés",
-        "apparenté",
-        "voir aussi",
-        "références",
-        "notes",
-        "bibliographie",
-        "sources",
-        "liens externes",
-        "anagrammes",
-        "vocabulaire apparenté"
+    if (/(?:\{\{[^}]*\}\}|\[\[[^\]]*\]\]|\{\|.*\|\})/.test(line)) return false;
+    if (/^[\d\s.,;:/()\-–—]+$/.test(line)) return false;
+    if (/^(?:https?:\/\/|www\.)/i.test(line)) return false;
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(line)) return false;
+
+    const metadataWords = [
+        "isbn", "issn", "doi", "identifiant", "code langue", "page spéciale", "modèle", "template"
     ];
 
-    return blocked.some(
-        item =>
-            value === item ||
-            value.startsWith(item + " ")
+    for (const word of metadataWords) {
+        if (lower.startsWith(word + ":")) return false;
+    }
+
+    const letters = line.match(/[A-Za-zÀ-ÖØ-öø-ÿŒœÆæ]/gu);
+    if (letters && letters.length >= 2) return true;
+
+    return false;
+}
+
+function isUnwantedSectionTitle(title) {
+    const value = normalizeSpaces(title).toLocaleLowerCase("fr-FR");
+    return unwantedSectionTerms.some(
+        term => value === term || value.startsWith(term + " ")
     );
 }
 
-
 /* ============================================================
-   EXTRACTION DE LA SECTION FRANÇAISE
+   EXTRACTION FRANÇAISE
    ============================================================ */
 
 function findFrenchHeading(doc) {
-
-    const headings = Array.from(
-        doc.querySelectorAll("h2")
-    );
+    const headings = Array.from(doc.querySelectorAll("h2"));
 
     for (const heading of headings) {
+        const headline = heading.querySelector(".mw-headline");
+        const text = normalizeSpaces(
+            headline ? headline.textContent : heading.textContent
+        ).toLocaleLowerCase("fr-FR");
 
-        const headline =
-            heading.querySelector(".mw-headline");
-
-        const text =
-            normalizeSpaces(
-                headline
-                    ? headline.textContent
-                    : heading.textContent
-            ).toLocaleLowerCase("fr-FR");
-
-        const id =
-            String(heading.id || "")
-                .toLocaleLowerCase("fr-FR");
+        const id = String(heading.id || "").toLocaleLowerCase("fr-FR");
 
         if (
             text === "français" ||
@@ -855,280 +648,102 @@ function findFrenchHeading(doc) {
             return heading;
         }
     }
-
     return null;
 }
 
-
 function extractFrenchSection(html) {
-
     const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
 
-    const doc =
-        parser.parseFromString(
-            html,
-            "text/html"
-        );
-
-    /*
-     * On supprime d'abord les éléments qui ne doivent
-     * jamais atteindre le texte final.
-     */
-
+    // Suppression des éléments non pertinents (les tables de données lexicographiques sont conservées)
     const globalSelectors = [
-        "script",
-        "style",
-        "noscript",
-        "template",
-
-        ".mw-editsection",
-        ".mw-editsection-bracket",
-
-        ".mw-jump",
-        ".mw-jump-link",
-
-        ".mw-indicators",
-        ".mw-references-wrap",
-
-        ".references",
-        ".reference",
-        ".reflist",
-
-        ".printfooter",
-        ".navigation-not-searchable",
-
-        ".toc",
-        "#toc",
-
-        ".navbox",
-        ".infobox",
-
-        ".sister-project",
-        ".interproject",
-
-        ".catlinks",
-
-        ".vector-menu",
-        ".portal",
-        "nav",
-        "header",
-        "footer",
-
-        ".thumb",
-        ".thumbinner",
-
-        ".audiolink",
-        ".audio",
-
-        "table"
+        "script", "style", "noscript", "template",
+        ".mw-editsection", ".mw-editsection-bracket",
+        ".mw-jump", ".mw-jump-link", ".mw-indicators",
+        ".mw-references-wrap", ".references", ".reference", ".reflist",
+        ".printfooter", ".navigation-not-searchable",
+        ".toc", "#toc", ".navbox", ".infobox",
+        ".sister-project", ".interproject", ".catlinks",
+        ".vector-menu", ".portal", "nav", "header", "footer",
+        ".thumb", ".thumbinner", ".audiolink", ".audio"
     ];
 
     for (const selector of globalSelectors) {
-
-        doc.querySelectorAll(selector)
-            .forEach(el => el.remove());
+        doc.querySelectorAll(selector).forEach(el => el.remove());
     }
 
-    const frenchHeading =
-        findFrenchHeading(doc);
-
-    /*
-     * Si une section française existe,
-     * on récupère uniquement ce qui se trouve
-     * jusqu'au prochain H2.
-     */
+    const frenchHeading = findFrenchHeading(doc);
 
     if (frenchHeading) {
+        const wrapper = doc.createElement("div");
+        let current = frenchHeading.nextElementSibling;
 
-        const wrapper =
-            doc.createElement("div");
-
-        let current =
-            frenchHeading.nextElementSibling;
-
-        while (
-            current &&
-            current.tagName !== "H2"
-        ) {
-
-            const next =
-                current.nextElementSibling;
-
-            wrapper.appendChild(
-                current.cloneNode(true)
-            );
-
+        while (current && current.tagName !== "H2") {
+            const next = current.nextElementSibling;
+            wrapper.appendChild(current.cloneNode(true));
             current = next;
         }
-
         return wrapper;
     }
-
-    /*
-     * Si le Wiktionnaire n'utilise pas une structure
-     * classique, on tente une extraction prudente.
-     */
 
     return doc.body;
 }
 
-
-/* ============================================================
-   SUPPRESSION DES SOUS-SECTIONS INUTILES
-   ============================================================ */
-
 function removeUnwantedSubsections(root) {
-
-    const headings =
-        Array.from(
-            root.querySelectorAll(
-                "h3, h4, h5, h6"
-            )
-        );
+    const headings = Array.from(root.querySelectorAll("h3,h4,h5,h6"));
 
     for (const heading of headings) {
+        const title = normalizeSpaces(heading.textContent);
 
-        const title =
-            normalizeSpaces(
-                heading.textContent
-            );
-
-        if (
-            isUnwantedSectionTitle(title)
-        ) {
-
-            let current =
-                heading.nextElementSibling;
+        if (isUnwantedSectionTitle(title)) {
+            let current = heading.nextElementSibling;
 
             while (
                 current &&
-                ![
-                    "H2",
-                    "H3",
-                    "H4",
-                    "H5"
-                ].includes(current.tagName)
+                !["H2", "H3", "H4", "H5"].includes(current.tagName)
             ) {
-
-                const next =
-                    current.nextElementSibling;
-
+                const next = current.nextElementSibling;
                 current.remove();
-
                 current = next;
             }
-
             heading.remove();
         }
     }
 }
 
-
-/* ============================================================
-   EXTRACTION DES BLOCS TEXTUELS
-   ============================================================ */
-
 function extractTextBlocks(root) {
-
     const blocks = [];
-
-    /*
-     * On travaille avec les éléments qui portent
-     * réellement du contenu linguistique.
-     */
-
-    const selector = [
-        "p",
-        "li",
-        "dd",
-        "blockquote"
-    ].join(",");
-
-    const elements =
-        Array.from(
-            root.querySelectorAll(selector)
-        );
+    const elements = Array.from(
+        root.querySelectorAll("p,li,dd,blockquote,td,th")
+    );
 
     for (const element of elements) {
-
-        /*
-         * Éviter de récupérer plusieurs fois
-         * le même texte lorsqu'un bloc contient
-         * des sous-listes.
-         */
-
-        if (
-            element.closest("li") &&
-            element.tagName === "P"
-        ) {
+        if (element.closest("li") && element.tagName === "P") {
             continue;
         }
-
-        /*
-         * Nettoyage des éléments internes parasites.
-         */
 
         element.querySelectorAll(
             [
-                "sup",
-                ".reference",
-                ".mw-editsection",
-                "style",
-                "script",
-                ".audiolink",
-                ".IPA",
-                ".prononciation"
+                "sup", ".reference", ".mw-editsection", "style",
+                "script", ".audiolink", ".IPA", ".prononciation"
             ].join(",")
         ).forEach(el => el.remove());
 
-        /*
-         * Les liens sont transformés en texte.
-         * Le lien lui-même disparaît.
-         */
+        element.querySelectorAll("a").forEach(a => {
+            const text = normalizeSpaces(a.textContent);
+            if (text) {
+                a.replaceWith(document.createTextNode(text));
+            } else {
+                a.remove();
+            }
+        });
 
-        element.querySelectorAll("a")
-            .forEach(a => {
+        element.querySelectorAll("br").forEach(br => {
+            br.replaceWith(document.createTextNode(" "));
+        });
 
-                const text =
-                    normalizeSpaces(
-                        a.textContent
-                    );
-
-                if (text) {
-                    a.replaceWith(
-                        document.createTextNode(text)
-                    );
-                } else {
-                    a.remove();
-                }
-            });
-
-        /*
-         * Les retours <br> deviennent des espaces.
-         */
-
-        element.querySelectorAll("br")
-            .forEach(br => {
-
-                br.replaceWith(
-                    document.createTextNode(" ")
-                );
-            });
-
-        const raw =
-            normalizeSpaces(
-                element.textContent
-            );
-
-        if (!raw) {
-            continue;
-        }
-
-        /*
-         * Une ligne peut contenir plusieurs informations.
-         * On la garde ici entière afin de ne pas casser
-         * artificiellement les mots.
-         */
+        const raw = normalizeSpaces(element.textContent);
+        if (!raw) continue;
 
         blocks.push(raw);
     }
@@ -1136,141 +751,97 @@ function extractTextBlocks(root) {
     return blocks;
 }
 
+/* ============================================================
+   PROTECTION DES ABRÉVIATIONS
+   ============================================================ */
+
+function protectAbbreviations(text) {
+    return text.replace(
+        /\b(M|Mme|Mlle|Dr|Pr|etc|ex|p|pp|n°)\./gi,
+        match => match.replace(".", "\u0001")
+    );
+}
+
+function restoreAbbreviations(text) {
+    return text.replace(/\u0001/g, ".");
+}
 
 /* ============================================================
-   DÉCOUPAGE PROPRE EN PHRASES
+   DÉCOUPAGE DES PHRASES
    ============================================================ */
 
 function splitIntoSentences(text) {
+    const clean = normalizeSpaces(text);
+    if (!clean) return [];
 
-    const clean =
-        normalizeSpaces(text);
+    const protectedText = protectAbbreviations(clean);
 
-    if (!clean) {
-        return [];
-    }
-
-    /*
-     * Le moteur utilise une séparation prudente.
-     *
-     * On ne coupe pas sur les points qui font partie
-     * d'abréviations courantes.
-     */
-
-    const protectedText =
-        clean
-            .replace(
-                /\b(?:M|Mme|Mlle|Dr|Pr|etc|ex|p|pp|n°)\./gi,
-                match =>
-                    match.replace(
-                        ".",
-                        "\u0001"
-                    )
-            );
-
-    const pieces =
-        protectedText.split(
-            /(?<=[.!?])\s+(?=[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸŒ])/u
-        );
+    const pieces = protectedText.split(
+        /(?<=[.!?])\s+(?=[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸŒ])/u
+    );
 
     return pieces
-        .map(piece =>
-            piece.replace(/\u0001/g, ".")
-        )
+        .map(piece => restoreAbbreviations(piece))
         .map(normalizeLine)
         .map(cleanPunctuation)
-        .filter(piece =>
-            piece.length > 0 &&
-            !isPureNoise(piece)
-        );
+        .filter(piece => piece.length > 0);
 }
 
+/* ============================================================
+   FILTRE FINAL PHRASE PAR PHRASE
+   ============================================================ */
+
+function linguisticFilter(lines) {
+    const accepted = [];
+
+    for (const line of lines) {
+        let candidate = normalizeLine(line);
+        if (!candidate) continue;
+
+        candidate = cleanPunctuation(candidate);
+
+        if (isPureNoise(candidate)) continue;
+        if (!looksLikeLinguisticContent(candidate)) continue;
+
+        if (/^[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸŒ][^.!?]{0,50}:\s*$/.test(candidate)) {
+            continue;
+        }
+
+        accepted.push(candidate);
+    }
+
+    return accepted;
+}
 
 /* ============================================================
    NETTOYAGE FINAL
    ============================================================ */
 
 function cleanFinalText(blocks) {
-
-    const sentences = [];
+    const rawLines = [];
 
     for (const block of blocks) {
+        const cleanedBlock = normalizeLine(block);
+        if (!cleanedBlock || isPureNoise(cleanedBlock)) continue;
 
-        const cleanedBlock =
-            normalizeLine(block);
-
-        if (
-            !cleanedBlock ||
-            isPureNoise(cleanedBlock)
-        ) {
-            continue;
-        }
-
-        const pieces =
-            splitIntoSentences(
-                cleanedBlock
-            );
-
-        for (const piece of pieces) {
-
-            let finalLine =
-                cleanPunctuation(piece);
-
-            /*
-             * Suppression de marqueurs de type
-             * référence qui se seraient échappés.
-             */
-
-            finalLine =
-                finalLine.replace(
-                    /^\s*(?:↑|↗|→|←|•|▪|◦)\s*/,
-                    ""
-                );
-
-            finalLine =
-                finalLine.trim();
-
-            if (
-                !finalLine ||
-                isPureNoise(finalLine)
-            ) {
-                continue;
-            }
-
-            /*
-             * Ne jamais modifier l'intérieur des mots.
-             */
-
-            sentences.push(finalLine);
+        const sentences = splitIntoSentences(cleanedBlock);
+        for (const sentence of sentences) {
+            if (!sentence) continue;
+            rawLines.push(sentence);
         }
     }
 
-    /*
-     * Suppression des doublons exacts
-     * en conservant l'ordre.
-     */
-
+    const filtered = linguisticFilter(rawLines);
     const seen = new Set();
     const unique = [];
 
-    for (const sentence of sentences) {
-
-        const key =
-            sentence
-                .normalize("NFC")
-                .toLocaleLowerCase("fr-FR");
-
-        if (seen.has(key)) {
-            continue;
-        }
+    for (const line of filtered) {
+        const key = line.normalize("NFC").toLocaleLowerCase("fr-FR");
+        if (seen.has(key)) continue;
 
         seen.add(key);
-        unique.push(sentence);
+        unique.push(line);
     }
-
-    /*
-     * Nettoyage final des lignes vides.
-     */
 
     return unique
         .map(line => line.trim())
@@ -1278,84 +849,48 @@ function cleanFinalText(blocks) {
         .join("\n");
 }
 
-
 /* ============================================================
-   PIPELINE COMPLET DE NETTOYAGE
+   PIPELINE HTML -> TEXTE PROPRE
    ============================================================ */
 
 function htmlToPureText(html) {
+    const frenchRoot = extractFrenchSection(html);
+    removeUnwantedSubsections(frenchRoot);
+    const blocks = extractTextBlocks(frenchRoot);
+    const result = cleanFinalText(blocks);
 
-    const frenchRoot =
-        extractFrenchSection(html);
-
-    removeUnwantedSubsections(
-        frenchRoot
-    );
-
-    const blocks =
-        extractTextBlocks(
-            frenchRoot
-        );
-
-    let result =
-        cleanFinalText(blocks);
-
-    /*
-     * Dernière sécurité.
-     */
-
-    result =
-        result
-            .replace(/\r/g, "")
-            .replace(/\n{2,}/g, "\n")
-            .trim();
-
-    return result;
+    return result
+        .replace(/\r/g, "")
+        .replace(/\n{2,}/g, "\n")
+        .trim();
 }
-
 
 /* ============================================================
    RÉSOLUTION DU TITRE
    ============================================================ */
 
-async function resolveCanonicalTitle(
-    word,
-    signal
-) {
-
+async function resolveCanonicalTitle(word, signal) {
     const endpoint =
         CONFIG.API +
         "?action=query" +
-        "&titles=" +
-        encodeURIComponent(word) +
+        "&titles=" + encodeURIComponent(word) +
         "&redirects=1" +
         "&format=json" +
         "&origin=*";
 
-    const response =
-        await fetch(
-            endpoint,
-            {
-                signal,
-                cache: "no-store"
-            }
-        );
+    const response = await fetch(endpoint, {
+        signal,
+        cache: "no-store"
+    });
 
     if (!response.ok) {
-        throw new Error(
-            "Erreur réseau HTTP " +
-            response.status
-        );
+        throw new Error("Erreur réseau HTTP " + response.status);
     }
 
-    const data =
-        await response.json();
+    const data = await response.json();
 
     if (data.error) {
-        throw new Error(
-            data.error.info ||
-            "Erreur API Wiktionnaire."
-        );
+        throw new Error(data.error.info || "Erreur API Wiktionnaire.");
     }
 
     if (
@@ -1363,49 +898,21 @@ async function resolveCanonicalTitle(
         data.query.redirects &&
         data.query.redirects.length
     ) {
-
-        const redirect =
-            data.query.redirects[
-                data.query.redirects.length - 1
-            ];
-
-        return String(
-            redirect.to || word
-        ).replace(/_/g, " ");
+        const redirect = data.query.redirects[data.query.redirects.length - 1];
+        return String(redirect.to || word).replace(/_/g, " ");
     }
 
-    if (
-        data.query &&
-        data.query.pages
-    ) {
-
-        const pages =
-            data.query.pages;
-
-        const ids =
-            Object.keys(pages);
+    if (data.query && data.query.pages) {
+        const pages = data.query.pages;
+        const ids = Object.keys(pages);
 
         if (ids.length) {
-
-            const page =
-                pages[ids[0]];
-
-            if (
-                page &&
-                page.pageid &&
-                page.title
-            ) {
+            const page = pages[ids[0]];
+            if (page && page.pageid && page.title) {
                 return page.title;
             }
-
-            if (
-                ids[0] === "-1"
-            ) {
-
-                return await searchWiktionary(
-                    word,
-                    signal
-                );
+            if (ids[0] === "-1") {
+                return await searchWiktionary(word, signal);
             }
         }
     }
@@ -1413,104 +920,68 @@ async function resolveCanonicalTitle(
     return word;
 }
 
-
 /* ============================================================
    RECHERCHE DE SECOURS
    ============================================================ */
 
-async function searchWiktionary(
-    word,
-    signal
-) {
-
+async function searchWiktionary(word, signal) {
     const endpoint =
         CONFIG.API +
         "?action=query" +
         "&list=search" +
-        "&srsearch=" +
-        encodeURIComponent(word) +
+        "&srsearch=" + encodeURIComponent(word) +
         "&srlimit=1" +
         "&format=json" +
         "&origin=*";
 
-    const response =
-        await fetch(
-            endpoint,
-            {
-                signal,
-                cache: "no-store"
-            }
-        );
+    const response = await fetch(endpoint, {
+        signal,
+        cache: "no-store"
+    });
 
     if (!response.ok) {
-
-        throw new Error(
-            "Erreur lors de la recherche du terme."
-        );
+        throw new Error("Erreur lors de la recherche du terme.");
     }
 
-    const data =
-        await response.json();
+    const data = await response.json();
 
     if (
         !data.query ||
         !data.query.search ||
         !data.query.search.length
     ) {
-
-        throw new Error(
-            `Aucun article trouvé pour « ${word} ».`
-        );
+        throw new Error(`Aucun article trouvé pour « ${word} ».`);
     }
 
     return data.query.search[0].title;
 }
 
-
 /* ============================================================
-   CHARGEMENT DU CONTENU
+   CHARGEMENT ARTICLE
    ============================================================ */
 
-async function loadWiktionaryArticle(
-    title,
-    signal
-) {
-
+async function loadWiktionaryArticle(title, signal) {
     const endpoint =
         CONFIG.API +
         "?action=parse" +
-        "&page=" +
-        encodeURIComponent(title) +
+        "&page=" + encodeURIComponent(title) +
         "&prop=text" +
         "&format=json" +
         "&origin=*";
 
-    const response =
-        await fetch(
-            endpoint,
-            {
-                signal,
-                cache: "no-store"
-            }
-        );
+    const response = await fetch(endpoint, {
+        signal,
+        cache: "no-store"
+    });
 
     if (!response.ok) {
-
-        throw new Error(
-            "Erreur HTTP " +
-            response.status
-        );
+        throw new Error("Erreur HTTP " + response.status);
     }
 
-    const data =
-        await response.json();
+    const data = await response.json();
 
     if (data.error) {
-
-        throw new Error(
-            data.error.info ||
-            "Erreur lors du chargement de l'article."
-        );
+        throw new Error(data.error.info || "Erreur lors du chargement de l'article.");
     }
 
     if (
@@ -1518,412 +989,183 @@ async function loadWiktionaryArticle(
         !data.parse.text ||
         typeof data.parse.text["*"] !== "string"
     ) {
-
-        throw new Error(
-            "Aucun contenu exploitable trouvé."
-        );
+        throw new Error("Aucun contenu exploitable trouvé.");
     }
 
     return data.parse.text["*"];
 }
-
 
 /* ============================================================
    RECHERCHE PRINCIPALE
    ============================================================ */
 
 async function fetchWiktionary() {
-
-    const word =
-        wordInput.value
-            .trim()
-            .normalize("NFC");
+    const word = wordInput.value.trim().normalize("NFC");
 
     if (!word) {
-
-        setStatus(
-            "Veuillez entrer un mot.",
-            true
-        );
-
+        setStatus("Veuillez entrer un mot.", true);
         wordInput.focus();
-
         return;
     }
-
-    /*
-     * Annule la recherche précédente si nécessaire.
-     */
 
     if (currentAbortController) {
         currentAbortController.abort();
     }
 
-    currentAbortController =
-        new AbortController();
+    currentAbortController = new AbortController();
+    const signal = currentAbortController.signal;
 
-    const signal =
-        currentAbortController.signal;
-
-    /*
-     * Timeout de sécurité.
-     */
-
-    const timeout =
-        setTimeout(
-            () => {
-                currentAbortController?.abort();
-            },
-            CONFIG.REQUEST_TIMEOUT
-        );
+    const timeout = setTimeout(() => {
+        if (currentAbortController) {
+            currentAbortController.abort();
+        }
+    }, CONFIG.REQUEST_TIMEOUT);
 
     try {
-
         setLoading(true);
-
         outputArea.value = "";
+        setStatus(`Recherche de « ${word} »...`);
 
-        setStatus(
-            `Recherche de « ${word} »...`
-        );
-
-        /*
-         * CACHE
-         */
-
-        const cached =
-            cache.get(word);
-
+        const cached = cache.get(word);
         if (cached !== undefined) {
-
-            outputArea.value =
-                cached;
-
-            setStatus(
-                `« ${word} » chargé depuis le cache.`
-            );
-
+            outputArea.value = cached;
+            setStatus(`« ${word} » chargé depuis le cache.`);
             return;
         }
 
-        /*
-         * TITRE CANONIQUE
-         */
+        const canonicalTitle = await resolveCanonicalTitle(word, signal);
+        setStatus(`Chargement de « ${canonicalTitle} »...`);
 
-        const canonicalTitle =
-            await resolveCanonicalTitle(
-                word,
-                signal
-            );
+        const html = await loadWiktionaryArticle(canonicalTitle, signal);
+        setStatus("Extraction du français...");
 
-        setStatus(
-            `Chargement de « ${canonicalTitle} »...`
-        );
-
-        /*
-         * ARTICLE
-         */
-
-        const html =
-            await loadWiktionaryArticle(
-                canonicalTitle,
-                signal
-            );
-
-        setStatus(
-            "Nettoyage du texte..."
-        );
-
-        /*
-         * EXTRACTION + NETTOYAGE
-         */
-
-        const pureText =
-            htmlToPureText(html);
+        const pureText = htmlToPureText(html);
 
         if (!pureText) {
-
             throw new Error(
-                "L'article a été trouvé, mais aucun texte français propre n'a pu être extrait."
+                "Article trouvé, mais aucun contenu linguistique français exploitable n'a été extrait."
             );
         }
 
-        /*
-         * STOCKAGE DU RÉSULTAT FINAL.
-         *
-         * Ce résultat est exactement celui affiché,
-         * copié et téléchargé.
-         */
+        cache.set(word, pureText);
+        cache.set(canonicalTitle, pureText);
 
-        cache.set(
-            word,
-            pureText
-        );
+        outputArea.value = pureText;
 
-        cache.set(
-            canonicalTitle,
-            pureText
-        );
-
-        outputArea.value =
-            pureText;
-
-        const lineCount =
-            pureText
-                .split("\n")
-                .filter(Boolean)
-                .length;
-
+        const lineCount = pureText.split("\n").filter(Boolean).length;
         setStatus(
-            `Terminé : ${lineCount} élément(s) propre(s) extrait(s).`
+            `Terminé : ${lineCount} phrase(s) ou information(s) linguistique(s) conservée(s).`
         );
 
     } catch (error) {
-
-        if (
-            error &&
-            error.name === "AbortError"
-        ) {
-
-            /*
-             * Ne pas afficher une erreur si une nouvelle
-             * recherche a simplement remplacé l'ancienne.
-             */
-
-            if (
-                currentAbortController &&
-                currentAbortController.signal === signal
-            ) {
-
-                setStatus(
-                    "Recherche annulée.",
-                    true
-                );
+        if (error && error.name === "AbortError") {
+            if (currentAbortController && currentAbortController.signal === signal) {
+                setStatus("Recherche annulée.", true);
             }
-
             return;
         }
 
-        console.error(
-            "Erreur Extracteur Wiktionnaire v19 :",
-            error
-        );
-
-        setStatus(
-            "Erreur : " +
-            (
-                error?.message ||
-                "Erreur inconnue."
-            ),
-            true
-        );
+        console.error("Erreur Extracteur Wiktionnaire v21 :", error);
+        setStatus("Erreur : " + (error?.message || "Erreur inconnue."), true);
 
     } finally {
-
         clearTimeout(timeout);
 
-        if (
-            currentAbortController &&
-            currentAbortController.signal === signal
-        ) {
-
+        if (currentAbortController && currentAbortController.signal === signal) {
             currentAbortController = null;
-
             setLoading(false);
         }
     }
 }
 
-
 /* ============================================================
-   COPIE
+   COPIER
    ============================================================ */
 
 async function copyToClipboard() {
-
-    /*
-     * TRÈS IMPORTANT :
-     *
-     * On copie UNIQUEMENT outputArea.value.
-     *
-     * Aucun HTML.
-     * Aucun objet interne.
-     * Aucun résultat brut.
-     */
-
-    const text =
-        outputArea.value.trim();
+    const text = outputArea.value.trim();
 
     if (!text) {
-
-        setStatus(
-            "Rien à copier.",
-            true
-        );
-
+        setStatus("Rien à copier.", true);
         return;
     }
 
     try {
-
-        if (
-            navigator.clipboard &&
-            navigator.clipboard.writeText
-        ) {
-
-            await navigator.clipboard.writeText(
-                text
-            );
-
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
         } else {
-
-            /*
-             * Solution de secours pour certains
-             * navigateurs plus anciens.
-             */
-
             outputArea.focus();
             outputArea.select();
-
-            const success =
-                document.execCommand("copy");
-
+            const success = document.execCommand("copy");
             if (!success) {
-                throw new Error(
-                    "Copie impossible."
-                );
+                throw new Error("Copie impossible.");
             }
         }
 
-        const original =
-            copyBtn.textContent;
+        const original = copyBtn.textContent;
+        copyBtn.textContent = "✓ Texte propre copié";
+        setStatus("Le texte propre a été copié.");
 
-        copyBtn.textContent =
-            "✓ Texte propre copié";
-
-        setStatus(
-            "Le texte propre a été copié."
-        );
-
-        setTimeout(
-            () => {
-                copyBtn.textContent =
-                    original;
-            },
-            1800
-        );
+        setTimeout(() => {
+            copyBtn.textContent = original;
+        }, 1800);
 
     } catch (error) {
-
-        setStatus(
-            "Impossible de copier automatiquement. Sélectionnez le texte manuellement.",
-            true
-        );
+        setStatus("Impossible de copier automatiquement. Sélectionnez le texte manuellement.", true);
     }
 }
 
-
 /* ============================================================
-   TÉLÉCHARGEMENT
+   TÉLÉCHARGER
    ============================================================ */
 
 function downloadTextFile() {
-
-    /*
-     * EXACTEMENT la même donnée que celle affichée
-     * et copiée.
-     */
-
-    const text =
-        outputArea.value.trim();
+    const text = outputArea.value.trim();
 
     if (!text) {
-
-        setStatus(
-            "Rien à télécharger.",
-            true
-        );
-
+        setStatus("Rien à télécharger.", true);
         return;
     }
 
-    let filename =
-        wordInput.value.trim() ||
-        "wiktionnaire";
+    let filename = wordInput.value.trim() || "wiktionnaire";
 
-    /*
-     * Nettoyage du nom du fichier uniquement.
-     *
-     * IMPORTANT :
-     * Cela ne modifie PAS le contenu du texte.
-     */
-
-    filename =
-        filename
-            .normalize("NFC")
-            .replace(
-                /[<>:"/\\|?*\x00-\x1F]/g,
-                "_"
-            )
-            .replace(
-                /\s+/g,
-                "_"
-            )
-            .slice(0, 100);
+    filename = filename
+        .normalize("NFC")
+        .replace(/[<>:"/\\|?*\x00-\x1F]/g, "_")
+        .replace(/\s+/g, "_")
+        .slice(0, 100);
 
     if (!filename) {
         filename = "wiktionnaire";
     }
 
-    const blob =
-        new Blob(
-            [text + "\n"],
-            {
-                type:
-                    "text/plain;charset=utf-8"
-            }
-        );
+    const blob = new Blob([text + "\n"], {
+        type: "text/plain;charset=utf-8"
+    });
 
-    const url =
-        URL.createObjectURL(blob);
-
-    const link =
-        document.createElement("a");
-
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
     link.href = url;
-
-    link.download =
-        filename + ".txt";
+    link.download = filename + ".txt";
 
     document.body.appendChild(link);
-
     link.click();
-
     link.remove();
 
-    setTimeout(
-        () => {
-            URL.revokeObjectURL(url);
-        },
-        1000
-    );
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    }, 1000);
 
-    setStatus(
-        "Fichier texte propre téléchargé."
-    );
+    setStatus("Fichier texte propre téléchargé.");
 }
-
 
 /* ============================================================
    EFFACER
    ============================================================ */
 
 function clearAll() {
-
     if (currentAbortController) {
-
         currentAbortController.abort();
-
         currentAbortController = null;
     }
 
@@ -1931,62 +1173,31 @@ function clearAll() {
     outputArea.value = "";
 
     setLoading(false);
-
     setStatus("");
-
     wordInput.focus();
 }
-
 
 /* ============================================================
    ÉVÉNEMENTS
    ============================================================ */
 
-searchBtn.addEventListener(
-    "click",
-    fetchWiktionary
-);
+searchBtn.addEventListener("click", fetchWiktionary);
+copyBtn.addEventListener("click", copyToClipboard);
+downloadBtn.addEventListener("click", downloadTextFile);
+clearBtn.addEventListener("click", clearAll);
 
-copyBtn.addEventListener(
-    "click",
-    copyToClipboard
-);
-
-downloadBtn.addEventListener(
-    "click",
-    downloadTextFile
-);
-
-clearBtn.addEventListener(
-    "click",
-    clearAll
-);
-
-wordInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter" &&
-            !searchBtn.disabled
-        ) {
-
-            event.preventDefault();
-
-            fetchWiktionary();
-        }
+wordInput.addEventListener("keydown", event => {
+    if (event.key === "Enter" && !searchBtn.disabled) {
+        event.preventDefault();
+        fetchWiktionary();
     }
-);
-
+});
 
 /* ============================================================
    INITIALISATION
    ============================================================ */
 
-setStatus(
-    "Prêt."
-);
-
+setStatus("Prêt.");
 wordInput.focus();
 
 </script>
