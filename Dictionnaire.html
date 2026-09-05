@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Extracteur Wiktionnaire Pur v21</title>
+<title>Extracteur Wiktionnaire Pur v22</title>
 
 <style>
 :root {
@@ -238,7 +238,7 @@ button:disabled {
 
 <div class="container">
 
-    <h1>Extracteur Wiktionnaire Pur v21</h1>
+    <h1>Extracteur Wiktionnaire Pur v22</h1>
 
     <div class="description">
         Extraction linguistique française propre du Wiktionnaire.
@@ -325,27 +325,15 @@ button:disabled {
 
 "use strict";
 
-/* ============================================================
-   CONFIGURATION
-   ============================================================ */
-
 const CONFIG = {
     API: "https://fr.wiktionary.org/w/api.php",
-    CACHE_KEY: "wiktionnaire_pur_v21_cache",
+    CACHE_KEY: "wiktionnaire_pur_v22_cache",
     CACHE_MAX: 60,
     CACHE_TTL: 1000 * 60 * 60 * 24,
     REQUEST_TIMEOUT: 20000
 };
 
-/* ============================================================
-   ÉTAT
-   ============================================================ */
-
 let currentAbortController = null;
-
-/* ============================================================
-   DOM
-   ============================================================ */
 
 const wordInput = document.getElementById("wordInput");
 const searchBtn = document.getElementById("searchBtn");
@@ -356,16 +344,8 @@ const outputArea = document.getElementById("outputArea");
 const status = document.getElementById("status");
 const spinner = document.getElementById("loadingSpinner");
 
-/* ============================================================
-   CACHE
-   ============================================================ */
-
 class PersistentCache {
-    constructor(
-        maxSize = CONFIG.CACHE_MAX,
-        ttl = CONFIG.CACHE_TTL,
-        key = CONFIG.CACHE_KEY
-    ) {
+    constructor(maxSize = CONFIG.CACHE_MAX, ttl = CONFIG.CACHE_TTL, key = CONFIG.CACHE_KEY) {
         this.maxSize = maxSize;
         this.ttl = ttl;
         this.key = key;
@@ -373,42 +353,20 @@ class PersistentCache {
     }
 
     normalizeKey(value) {
-        return String(value || "")
-            .trim()
-            .normalize("NFC")
-            .toLocaleLowerCase("fr-FR");
+        return String(value || "").trim().normalize("NFC").toLocaleLowerCase("fr-FR");
     }
 
     load() {
         try {
             const raw = localStorage.getItem(this.key);
             if (!raw) return new Map();
-
             const parsed = JSON.parse(raw);
             if (!Array.isArray(parsed)) return new Map();
-
             const map = new Map();
             for (const item of parsed) {
-                if (
-                    !item ||
-                    typeof item.key !== "string" ||
-                    typeof item.value !== "string" ||
-                    typeof item.timestamp !== "number"
-                ) {
-                    continue;
-                }
-
-                if (Date.now() - item.timestamp > this.ttl) {
-                    continue;
-                }
-
-                map.set(
-                    this.normalizeKey(item.key),
-                    {
-                        value: item.value,
-                        timestamp: item.timestamp
-                    }
-                );
+                if (!item || typeof item.key !== "string" || typeof item.value !== "string" || typeof item.timestamp !== "number") continue;
+                if (Date.now() - item.timestamp > this.ttl) continue;
+                map.set(this.normalizeKey(item.key), { value: item.value, timestamp: item.timestamp });
             }
             return map;
         } catch (error) {
@@ -420,35 +378,23 @@ class PersistentCache {
         try {
             const data = [];
             for (const [key, item] of this.map) {
-                data.push({
-                    key: key,
-                    value: item.value,
-                    timestamp: item.timestamp
-                });
+                data.push({ key: key, value: item.value, timestamp: item.timestamp });
             }
             localStorage.setItem(this.key, JSON.stringify(data));
         } catch (error) {
-            // Gestion robuste en cas de dépassement de quota (QuotaExceededError)
-            try {
-                localStorage.removeItem(this.key);
-                this.map.clear();
-            } catch (e) {}
+            try { localStorage.removeItem(this.key); this.map.clear(); } catch (e) {}
         }
     }
 
     get(key) {
         const normalized = this.normalizeKey(key);
-        if (!normalized || !this.map.has(normalized)) {
-            return undefined;
-        }
-
+        if (!normalized || !this.map.has(normalized)) return undefined;
         const item = this.map.get(normalized);
         if (!item || Date.now() - item.timestamp > this.ttl) {
             this.map.delete(normalized);
             this.save();
             return undefined;
         }
-
         this.map.delete(normalized);
         this.map.set(normalized, item);
         return item.value;
@@ -456,45 +402,24 @@ class PersistentCache {
 
     set(key, value) {
         const normalized = this.normalizeKey(key);
-        if (!normalized || typeof value !== "string") {
-            return;
-        }
-
-        if (this.map.has(normalized)) {
-            this.map.delete(normalized);
-        }
-
+        if (!normalized || typeof value !== "string") return;
+        if (this.map.has(normalized)) this.map.delete(normalized);
         while (this.map.size >= this.maxSize) {
             const oldest = this.map.keys().next().value;
-            if (oldest === undefined) {
-                break;
-            }
+            if (oldest === undefined) break;
             this.map.delete(oldest);
         }
-
-        this.map.set(normalized, {
-            value: value,
-            timestamp: Date.now()
-        });
-
+        this.map.set(normalized, { value: value, timestamp: Date.now() });
         this.save();
     }
 }
 
 const cache = new PersistentCache();
 
-/* ============================================================
-   STATUT
-   ============================================================ */
-
 function setStatus(message, isError = false) {
     status.textContent = message;
     status.style.color = isError ? "var(--danger)" : "var(--muted)";
 }
-
-/* ============================================================
-   CHARGEMENT
-   ============================================================ */
 
 function setLoading(loading) {
     searchBtn.disabled = loading;
@@ -502,54 +427,30 @@ function setLoading(loading) {
     spinner.style.display = loading ? "block" : "none";
 }
 
-/* ============================================================
-   NORMALISATION
-   ============================================================ */
-
 function normalizeSpaces(text) {
-    return String(text || "")
-        .replace(/\u00A0/g, " ")
-        .replace(/[\t ]+/g, " ")
-        .trim();
+    return String(text || "").replace(/\u00A0/g, " ").replace(/[\t ]+/g, " ").trim();
 }
 
 function normalizeLine(text) {
     let line = String(text || "").normalize("NFC");
-
-    line = line
-        .replace(/\u00A0/g, " ")
-        .replace(/\r/g, "")
-        .replace(/[ \t]+/g, " ")
-        .trim();
-
+    line = line.replace(/\u00A0/g, " ").replace(/\r/g, "").replace(/[ \t]+/g, " ").trim();
     line = line.replace(/^\s*(?:\d+|[a-z])[\s.)-]+(?=\S)/i, "");
     line = line.replace(/^\s*[-•●▪◦*]+\s*/, "");
     line = line.replace(/^\s*(?:sens|définition)\s*:?\s*/i, "");
     line = line.replace(/^\s*[«“"]\s*/, "");
     line = line.replace(/\s*[»”"]\s*$/, "");
-
     return line.trim();
 }
 
-/* ============================================================
-   PONCTUATION
-   ============================================================ */
-
 function cleanPunctuation(text) {
     let result = String(text || "");
-
     result = result.replace(/\s+([,.;:!?])/g, "$1");
     result = result.replace(/([(\[])\s+/g, "$1");
     result = result.replace(/\s+([)\]])/g, "$1");
     result = result.replace(/[«»„“”""]/g, "");
     result = result.replace(/[ \t]{2,}/g, " ");
-
     return result.trim();
 }
-
-/* ============================================================
-   FILTRE LINGUISTIQUE
-   ============================================================ */
 
 const technicalTerms = [
     "modifier", "modifier le wikicode", "modifier la section", "modifier cette section",
@@ -570,81 +471,46 @@ const unwantedSectionTerms = [
 function isPureNoise(text) {
     const value = normalizeSpaces(text).toLocaleLowerCase("fr-FR");
     if (!value) return true;
-
     if (/^[\s.,;:!?()[\]{}\-–—_/*+|=<>~^]+$/.test(value)) return true;
     if (technicalTerms.includes(value)) return true;
-
-    if (
-        value.startsWith("modifier ") ||
-        value.startsWith("référence ") ||
-        value.startsWith("références ") ||
-        value.startsWith("catégorie ") ||
-        value.startsWith("catégories ")
-    ) {
-        return true;
-    }
-
+    if (value.startsWith("modifier ") || value.startsWith("référence ") || value.startsWith("références ") || value.startsWith("catégorie ") || value.startsWith("catégories ")) return true;
     if (/^(?:\{\{|\}\}|\[\[|\]\]|\|\||<ref|<\/?ref)/i.test(value)) return true;
-
     return false;
 }
 
 function looksLikeLinguisticContent(text) {
     const line = normalizeSpaces(text);
     if (!line) return false;
-
     if (!/[A-Za-zÀ-ÖØ-öø-ÿŒœÆæ]/u.test(line)) return false;
-
     const lower = line.toLocaleLowerCase("fr-FR");
     if (technicalTerms.includes(lower)) return false;
-
     if (/(?:\{\{[^}]*\}\}|\[\[[^\]]*\]\]|\{\|.*\|\})/.test(line)) return false;
     if (/^[\d\s.,;:/()\-–—]+$/.test(line)) return false;
     if (/^(?:https?:\/\/|www\.)/i.test(line)) return false;
     if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(line)) return false;
-
-    const metadataWords = [
-        "isbn", "issn", "doi", "identifiant", "code langue", "page spéciale", "modèle", "template"
-    ];
-
+    
+    const metadataWords = ["isbn", "issn", "doi", "identifiant", "code langue", "page spéciale", "modèle", "template"];
     for (const word of metadataWords) {
         if (lower.startsWith(word + ":")) return false;
     }
 
     const letters = line.match(/[A-Za-zÀ-ÖØ-öø-ÿŒœÆæ]/gu);
-    if (letters && letters.length >= 2) return true;
-
+    if (letters && letters.length >= 1) return true; // Assoupli de 2 à 1 pour ne pas rater les mots courts ou définitions succinctes
     return false;
 }
 
 function isUnwantedSectionTitle(title) {
     const value = normalizeSpaces(title).toLocaleLowerCase("fr-FR");
-    return unwantedSectionTerms.some(
-        term => value === term || value.startsWith(term + " ")
-    );
+    return unwantedSectionTerms.some(term => value === term || value.startsWith(term + " "));
 }
 
-/* ============================================================
-   EXTRACTION FRANÇAISE
-   ============================================================ */
-
 function findFrenchHeading(doc) {
-    const headings = Array.from(doc.querySelectorAll("h2"));
-
+    const headings = Array.from(doc.querySelectorAll("h2, h3"));
     for (const heading of headings) {
         const headline = heading.querySelector(".mw-headline");
-        const text = normalizeSpaces(
-            headline ? headline.textContent : heading.textContent
-        ).toLocaleLowerCase("fr-FR");
-
+        const text = normalizeSpaces(headline ? headline.textContent : heading.textContent).toLocaleLowerCase("fr-FR");
         const id = String(heading.id || "").toLocaleLowerCase("fr-FR");
-
-        if (
-            text === "français" ||
-            text === "francais" ||
-            id.includes("français") ||
-            id.includes("francais")
-        ) {
+        if (text.includes("français") || text.includes("francais") || id.includes("français") || id.includes("francais")) {
             return heading;
         }
     }
@@ -655,7 +521,6 @@ function extractFrenchSection(html) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
 
-    // Suppression des éléments non pertinents (les tables de données lexicographiques sont conservées)
     const globalSelectors = [
         "script", "style", "noscript", "template",
         ".mw-editsection", ".mw-editsection-bracket",
@@ -673,11 +538,9 @@ function extractFrenchSection(html) {
     }
 
     const frenchHeading = findFrenchHeading(doc);
-
     if (frenchHeading) {
         const wrapper = doc.createElement("div");
         let current = frenchHeading.nextElementSibling;
-
         while (current && current.tagName !== "H2") {
             const next = current.nextElementSibling;
             wrapper.appendChild(current.cloneNode(true));
@@ -686,22 +549,17 @@ function extractFrenchSection(html) {
         return wrapper;
     }
 
+    // Fallback : si aucune balise "Français" stricte n'est trouvée, on retourne tout le corps pour éviter le blocage total
     return doc.body;
 }
 
 function removeUnwantedSubsections(root) {
     const headings = Array.from(root.querySelectorAll("h3,h4,h5,h6"));
-
     for (const heading of headings) {
         const title = normalizeSpaces(heading.textContent);
-
         if (isUnwantedSectionTitle(title)) {
             let current = heading.nextElementSibling;
-
-            while (
-                current &&
-                !["H2", "H3", "H4", "H5"].includes(current.tagName)
-            ) {
+            while (current && !["H2", "H3", "H4", "H5"].includes(current.tagName)) {
                 const next = current.nextElementSibling;
                 current.remove();
                 current = next;
@@ -713,21 +571,14 @@ function removeUnwantedSubsections(root) {
 
 function extractTextBlocks(root) {
     const blocks = [];
-    const elements = Array.from(
-        root.querySelectorAll("p,li,dd,blockquote,td,th")
-    );
-
+    const elements = Array.from(root.querySelectorAll("p,li,dd,blockquote,td,th,span"));
     for (const element of elements) {
-        if (element.closest("li") && element.tagName === "P") {
-            continue;
-        }
+        if (element.closest("li") && element.tagName === "P") continue;
 
-        element.querySelectorAll(
-            [
-                "sup", ".reference", ".mw-editsection", "style",
-                "script", ".audiolink", ".IPA", ".prononciation"
-            ].join(",")
-        ).forEach(el => el.remove());
+        element.querySelectorAll([
+            "sup", ".reference", ".mw-editsection", "style",
+            "script", ".audiolink", ".IPA", ".prononciation"
+        ].join(",")).forEach(el => el.remove());
 
         element.querySelectorAll("a").forEach(a => {
             const text = normalizeSpaces(a.textContent);
@@ -744,42 +595,24 @@ function extractTextBlocks(root) {
 
         const raw = normalizeSpaces(element.textContent);
         if (!raw) continue;
-
         blocks.push(raw);
     }
-
     return blocks;
 }
 
-/* ============================================================
-   PROTECTION DES ABRÉVIATIONS
-   ============================================================ */
-
 function protectAbbreviations(text) {
-    return text.replace(
-        /\b(M|Mme|Mlle|Dr|Pr|etc|ex|p|pp|n°)\./gi,
-        match => match.replace(".", "\u0001")
-    );
+    return text.replace(/\b(M|Mme|Mlle|Dr|Pr|etc|ex|p|pp|n°)\./gi, match => match.replace(".", "\u0001"));
 }
 
 function restoreAbbreviations(text) {
     return text.replace(/\u0001/g, ".");
 }
 
-/* ============================================================
-   DÉCOUPAGE DES PHRASES
-   ============================================================ */
-
 function splitIntoSentences(text) {
     const clean = normalizeSpaces(text);
     if (!clean) return [];
-
     const protectedText = protectAbbreviations(clean);
-
-    const pieces = protectedText.split(
-        /(?<=[.!?])\s+(?=[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸŒ])/u
-    );
-
+    const pieces = protectedText.split(/(?<=[.!?])\s+(?=[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸŒ])/u);
     return pieces
         .map(piece => restoreAbbreviations(piece))
         .map(normalizeLine)
@@ -787,43 +620,24 @@ function splitIntoSentences(text) {
         .filter(piece => piece.length > 0);
 }
 
-/* ============================================================
-   FILTRE FINAL PHRASE PAR PHRASE
-   ============================================================ */
-
 function linguisticFilter(lines) {
     const accepted = [];
-
     for (const line of lines) {
         let candidate = normalizeLine(line);
         if (!candidate) continue;
-
         candidate = cleanPunctuation(candidate);
-
         if (isPureNoise(candidate)) continue;
         if (!looksLikeLinguisticContent(candidate)) continue;
-
-        if (/^[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸŒ][^.!?]{0,50}:\s*$/.test(candidate)) {
-            continue;
-        }
-
         accepted.push(candidate);
     }
-
     return accepted;
 }
 
-/* ============================================================
-   NETTOYAGE FINAL
-   ============================================================ */
-
 function cleanFinalText(blocks) {
     const rawLines = [];
-
     for (const block of blocks) {
         const cleanedBlock = normalizeLine(block);
         if (!cleanedBlock || isPureNoise(cleanedBlock)) continue;
-
         const sentences = splitIntoSentences(cleanedBlock);
         for (const sentence of sentences) {
             if (!sentence) continue;
@@ -838,20 +652,12 @@ function cleanFinalText(blocks) {
     for (const line of filtered) {
         const key = line.normalize("NFC").toLocaleLowerCase("fr-FR");
         if (seen.has(key)) continue;
-
         seen.add(key);
         unique.push(line);
     }
 
-    return unique
-        .map(line => line.trim())
-        .filter(Boolean)
-        .join("\n");
+    return unique.map(line => line.trim()).filter(Boolean).join("\n");
 }
-
-/* ============================================================
-   PIPELINE HTML -> TEXTE PROPRE
-   ============================================================ */
 
 function htmlToPureText(html) {
     const frenchRoot = extractFrenchSection(html);
@@ -859,45 +665,17 @@ function htmlToPureText(html) {
     const blocks = extractTextBlocks(frenchRoot);
     const result = cleanFinalText(blocks);
 
-    return result
-        .replace(/\r/g, "")
-        .replace(/\n{2,}/g, "\n")
-        .trim();
+    return result.replace(/\r/g, "").replace(/\n{2,}/g, "\n").trim();
 }
 
-/* ============================================================
-   RÉSOLUTION DU TITRE
-   ============================================================ */
-
 async function resolveCanonicalTitle(word, signal) {
-    const endpoint =
-        CONFIG.API +
-        "?action=query" +
-        "&titles=" + encodeURIComponent(word) +
-        "&redirects=1" +
-        "&format=json" +
-        "&origin=*";
-
-    const response = await fetch(endpoint, {
-        signal,
-        cache: "no-store"
-    });
-
-    if (!response.ok) {
-        throw new Error("Erreur réseau HTTP " + response.status);
-    }
-
+    const endpoint = CONFIG.API + "?action=query&titles=" + encodeURIComponent(word) + "&redirects=1&format=json&origin=*";
+    const response = await fetch(endpoint, { signal, cache: "no-store" });
+    if (!response.ok) throw new Error("Erreur réseau HTTP " + response.status);
     const data = await response.json();
+    if (data.error) throw new Error(data.error.info || "Erreur API Wiktionnaire.");
 
-    if (data.error) {
-        throw new Error(data.error.info || "Erreur API Wiktionnaire.");
-    }
-
-    if (
-        data.query &&
-        data.query.redirects &&
-        data.query.redirects.length
-    ) {
+    if (data.query && data.query.redirects && data.query.redirects.length) {
         const redirect = data.query.redirects[data.query.redirects.length - 1];
         return String(redirect.to || word).replace(/_/g, " ");
     }
@@ -905,120 +683,52 @@ async function resolveCanonicalTitle(word, signal) {
     if (data.query && data.query.pages) {
         const pages = data.query.pages;
         const ids = Object.keys(pages);
-
         if (ids.length) {
             const page = pages[ids[0]];
-            if (page && page.pageid && page.title) {
-                return page.title;
-            }
-            if (ids[0] === "-1") {
-                return await searchWiktionary(word, signal);
-            }
+            if (page && page.pageid && page.title) return page.title;
+            if (ids[0] === "-1") return await searchWiktionary(word, signal);
         }
     }
-
     return word;
 }
 
-/* ============================================================
-   RECHERCHE DE SECOURS
-   ============================================================ */
-
 async function searchWiktionary(word, signal) {
-    const endpoint =
-        CONFIG.API +
-        "?action=query" +
-        "&list=search" +
-        "&srsearch=" + encodeURIComponent(word) +
-        "&srlimit=1" +
-        "&format=json" +
-        "&origin=*";
-
-    const response = await fetch(endpoint, {
-        signal,
-        cache: "no-store"
-    });
-
-    if (!response.ok) {
-        throw new Error("Erreur lors de la recherche du terme.");
-    }
-
+    const endpoint = CONFIG.API + "?action=query&list=search&srsearch=" + encodeURIComponent(word) + "&srlimit=1&format=json&origin=*";
+    const response = await fetch(endpoint, { signal, cache: "no-store" });
+    if (!response.ok) throw new Error("Erreur lors de la recherche du terme.");
     const data = await response.json();
-
-    if (
-        !data.query ||
-        !data.query.search ||
-        !data.query.search.length
-    ) {
+    if (!data.query || !data.query.search || !data.query.search.length) {
         throw new Error(`Aucun article trouvé pour « ${word} ».`);
     }
-
     return data.query.search[0].title;
 }
 
-/* ============================================================
-   CHARGEMENT ARTICLE
-   ============================================================ */
-
 async function loadWiktionaryArticle(title, signal) {
-    const endpoint =
-        CONFIG.API +
-        "?action=parse" +
-        "&page=" + encodeURIComponent(title) +
-        "&prop=text" +
-        "&format=json" +
-        "&origin=*";
-
-    const response = await fetch(endpoint, {
-        signal,
-        cache: "no-store"
-    });
-
-    if (!response.ok) {
-        throw new Error("Erreur HTTP " + response.status);
-    }
-
+    const endpoint = CONFIG.API + "?action=parse&page=" + encodeURIComponent(title) + "&prop=text&format=json&origin=*";
+    const response = await fetch(endpoint, { signal, cache: "no-store" });
+    if (!response.ok) throw new Error("Erreur HTTP " + response.status);
     const data = await response.json();
-
-    if (data.error) {
-        throw new Error(data.error.info || "Erreur lors du chargement de l'article.");
-    }
-
-    if (
-        !data.parse ||
-        !data.parse.text ||
-        typeof data.parse.text["*"] !== "string"
-    ) {
+    if (data.error) throw new Error(data.error.info || "Erreur lors du chargement de l'article.");
+    if (!data.parse || !data.parse.text || typeof data.parse.text["*"] !== "string") {
         throw new Error("Aucun contenu exploitable trouvé.");
     }
-
     return data.parse.text["*"];
 }
 
-/* ============================================================
-   RECHERCHE PRINCIPALE
-   ============================================================ */
-
 async function fetchWiktionary() {
     const word = wordInput.value.trim().normalize("NFC");
-
     if (!word) {
         setStatus("Veuillez entrer un mot.", true);
         wordInput.focus();
         return;
     }
 
-    if (currentAbortController) {
-        currentAbortController.abort();
-    }
-
+    if (currentAbortController) currentAbortController.abort();
     currentAbortController = new AbortController();
     const signal = currentAbortController.signal;
 
     const timeout = setTimeout(() => {
-        if (currentAbortController) {
-            currentAbortController.abort();
-        }
+        if (currentAbortController) currentAbortController.abort();
     }, CONFIG.REQUEST_TIMEOUT);
 
     try {
@@ -1042,20 +752,15 @@ async function fetchWiktionary() {
         const pureText = htmlToPureText(html);
 
         if (!pureText) {
-            throw new Error(
-                "Article trouvé, mais aucun contenu linguistique français exploitable n'a été extrait."
-            );
+            throw new Error("Article trouvé, mais aucun contenu linguistique français exploitable n'a été extrait.");
         }
 
         cache.set(word, pureText);
         cache.set(canonicalTitle, pureText);
-
         outputArea.value = pureText;
 
         const lineCount = pureText.split("\n").filter(Boolean).length;
-        setStatus(
-            `Terminé : ${lineCount} phrase(s) ou information(s) linguistique(s) conservée(s).`
-        );
+        setStatus(`Terminé : ${lineCount} phrase(s) ou information(s) linguistique(s) conservée(s).`);
 
     } catch (error) {
         if (error && error.name === "AbortError") {
@@ -1064,13 +769,10 @@ async function fetchWiktionary() {
             }
             return;
         }
-
-        console.error("Erreur Extracteur Wiktionnaire v21 :", error);
+        console.error("Erreur Extracteur Wiktionnaire v22 :", error);
         setStatus("Erreur : " + (error?.message || "Erreur inconnue."), true);
-
     } finally {
         clearTimeout(timeout);
-
         if (currentAbortController && currentAbortController.signal === signal) {
             currentAbortController = null;
             setLoading(false);
@@ -1078,18 +780,9 @@ async function fetchWiktionary() {
     }
 }
 
-/* ============================================================
-   COPIER
-   ============================================================ */
-
 async function copyToClipboard() {
     const text = outputArea.value.trim();
-
-    if (!text) {
-        setStatus("Rien à copier.", true);
-        return;
-    }
-
+    if (!text) { setStatus("Rien à copier.", true); return; }
     try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
             await navigator.clipboard.writeText(text);
@@ -1097,89 +790,47 @@ async function copyToClipboard() {
             outputArea.focus();
             outputArea.select();
             const success = document.execCommand("copy");
-            if (!success) {
-                throw new Error("Copie impossible.");
-            }
+            if (!success) throw new Error("Copie impossible.");
         }
-
         const original = copyBtn.textContent;
         copyBtn.textContent = "✓ Texte propre copié";
         setStatus("Le texte propre a été copié.");
-
-        setTimeout(() => {
-            copyBtn.textContent = original;
-        }, 1800);
-
+        setTimeout(() => { copyBtn.textContent = original; }, 1800);
     } catch (error) {
         setStatus("Impossible de copier automatiquement. Sélectionnez le texte manuellement.", true);
     }
 }
 
-/* ============================================================
-   TÉLÉCHARGER
-   ============================================================ */
-
 function downloadTextFile() {
     const text = outputArea.value.trim();
-
-    if (!text) {
-        setStatus("Rien à télécharger.", true);
-        return;
-    }
-
+    if (!text) { setStatus("Rien à télécharger.", true); return; }
     let filename = wordInput.value.trim() || "wiktionnaire";
+    filename = filename.normalize("NFC").replace(/[<>:"/\\|?*\x00-\x1F]/g, "_").replace(/\s+/g, "_").slice(0, 100);
+    if (!filename) filename = "wiktionnaire";
 
-    filename = filename
-        .normalize("NFC")
-        .replace(/[<>:"/\\|?*\x00-\x1F]/g, "_")
-        .replace(/\s+/g, "_")
-        .slice(0, 100);
-
-    if (!filename) {
-        filename = "wiktionnaire";
-    }
-
-    const blob = new Blob([text + "\n"], {
-        type: "text/plain;charset=utf-8"
-    });
-
+    const blob = new Blob([text + "\n"], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
     link.download = filename + ".txt";
-
     document.body.appendChild(link);
     link.click();
     link.remove();
-
-    setTimeout(() => {
-        URL.revokeObjectURL(url);
-    }, 1000);
-
+    setTimeout(() => { URL.revokeObjectURL(url); }, 1000);
     setStatus("Fichier texte propre téléchargé.");
 }
-
-/* ============================================================
-   EFFACER
-   ============================================================ */
 
 function clearAll() {
     if (currentAbortController) {
         currentAbortController.abort();
         currentAbortController = null;
     }
-
     wordInput.value = "";
     outputArea.value = "";
-
     setLoading(false);
     setStatus("");
     wordInput.focus();
 }
-
-/* ============================================================
-   ÉVÉNEMENTS
-   ============================================================ */
 
 searchBtn.addEventListener("click", fetchWiktionary);
 copyBtn.addEventListener("click", copyToClipboard);
@@ -1192,10 +843,6 @@ wordInput.addEventListener("keydown", event => {
         fetchWiktionary();
     }
 });
-
-/* ============================================================
-   INITIALISATION
-   ============================================================ */
 
 setStatus("Prêt.");
 wordInput.focus();
