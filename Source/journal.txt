@@ -1,5 +1,37 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 22:17:00
+TITRE: Fréchette et Plamondon s’écorchent sur la viabilité d’un Québec souverain
+LIEN: https://www.ledevoir.com/politique/quebec/1006736/frechette-plamondon-ecorchent-viabilite-quebec-souverain
+CONTENU: Le PQ évoque «la plus grande ingérence du fédéral dans nos affaires et notre élection depuis 1995».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 20:58:44
+TITRE: Les trois actus du 4 septembre
+LIEN: https://www.ledevoir.com/actualites/1006679/trois-actus-4-septembre
+CONTENU: Crise climatique au Québec, PSPP évoque une «ingérence» fédérale et Daniel Rochefort détenu: ce qu’il faut retenir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 23:36:58
+TITRE: Tetris prend ses distances avec un jeu vidéo polémique de la Maison-Blanche
+LIEN: https://www.ledevoir.com/monde/etats-unis/1006796/tetris-prend-distances-jeu-video-polemique-maison-blanche
+CONTENU: «Build the Wall» invite les joueurs à bâtir un mur à la frontière avec le Mexique pour se protéger des «zombies».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-04 17:31:00
+TITRE: Élections partielles, Jacques Doucet et cahiers Canada: le Défi de l’info du 4 septembre
+LIEN: https://www.ledevoir.com/actualites/1006652/elections-partielles-jacques-doucet-cahiers-canada-defi-info-4-septembre-2026
+CONTENU: Venez tester vos connaissances de l’actualité en 10 questions.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-09-04 22:57:51
 TITRE: La TVA sociale... solution miracle ou fausse bonne idée ? - 04/09
