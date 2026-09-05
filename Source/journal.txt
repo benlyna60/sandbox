@@ -1,5 +1,53 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-05 18:00:00
+TITRE: Le 20/minuit du samedi 05 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-20-minuit-du-week-end/le-20-minuit-du-samedi-05-septembre-2026-9325100
+CONTENU: Article de référence : "Le 20/minuit du samedi 05 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-05 17:00:00
+TITRE: Le journal de 19h00 du samedi 05 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-19h00/le-journal-de-19h00-du-samedi-05-septembre-2026-5033937
+CONTENU: Article de référence : "Le journal de 19h00 du samedi 05 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-05 17:35:53
+TITRE: L'armée américaine affirme avoir «détruit» trois pétroliers iraniens
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260905-l-arm%C3%A9e-am%C3%A9ricaine-affirme-avoir-d%C3%A9truit-trois-p%C3%A9troliers-iraniens
+CONTENU: L'armée américaine a annoncé avoir détruit samedi 5 septembre 2026 trois pétroliers iraniens dans la région du Golfe, en riposte à une attaque de Téhéran contre deux de ses navires, alors que les États-Unis répètent vouloir accentuer la pression économique contre l'Iran.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-05 18:34:35
+TITRE: Football: Brahim Hemdani nommé sélectionneur de l’Algérie
+LIEN: https://www.rfi.fr/fr/afrique-foot/20260905-football-brahim-hemdani-nomm%C3%A9-s%C3%A9lectionneur-de-l-alg%C3%A9rie
+CONTENU: L’ancien capitaine de l’Olympique de Marseille Brahim Hemdani a été nommé sélectionneur de l’Algérie, après le départ de Vladimir Petkovic. À 48 ans, l’ancien milieu défensif, qui a récemment conduit les moins de 21 ans algériens au titre aux Jeux méditerranéens, prend les rênes des Fennecs avec l’objectif de préparer les prochaines échéances, à commencer par les qualifications à la CAN 2027.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-05 18:38:41
+TITRE: Royaume-Uni: des centaines de manifestants pro et anti-avortement réunis à Londres
+LIEN: https://www.rfi.fr/fr/europe/20260905-royaume-uni-des-centaines-de-manifestants-pro-et-anti-avortement-r%C3%A9unis-%C3%A0-londres
+CONTENU: Deux manifestations opposées ont eu lieu ce 5 septembre à Londres. L’une pro-vie, l’autre pro-choix, autour du droit à l’avortement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-05 16:45:41
+TITRE: Mondial féminin de basket 2026: le Mali s’offre une victoire historique contre l’Espagne
+LIEN: https://www.rfi.fr/fr/sports/20260905-mondial-f%C3%A9minin-de-basket-2026-le-mali-s-offre-une-victoire-historique-contre-l-espagne
+CONTENU: Battues par le Japon pour leur entrée en lice, les Maliennes ont réalisé un immense exploit en faisant tomber l’Espagne (82-73), l’une des nations candidates au podium. Leur premier succès en phases de poules d'un Mondial de leur histoire.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-09-05 16:54:00
 TITRE: DIRECT. Nice-Le Mans: les Aiglons rapidement menés, les Manceaux sans complexes
