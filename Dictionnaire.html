@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extracteur Wiktionnaire Ultime v11</title>
+    <title>Extracteur Wiktionnaire Ultime v12</title>
     <style>
         :root {
             --bg-color: #f4f6f8;
@@ -133,7 +133,7 @@
 <body>
 
     <h1>Extracteur Propre - Wiktionnaire</h1>
-    <p>Version v11 : filet de sécurité intégré pour l'extraction de sections, persistance locale, accessibilité renforcée et copie opérationnelle.</p>
+    <p>Version v12 : correction complète du filet de sécurité d'extraction, persistance locale, accessibilité ARIA et copie opérationnelle.</p>
 
     <div class="search-box">
         <input type="text" id="wordInput" placeholder="Ex: Maison, courir, éco-..." aria-label="Mot à rechercher sur le Wiktionnaire" autofocus>
@@ -155,7 +155,7 @@
         let currentAbortController = null;
         
         class PersistentCache {
-            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v11') {
+            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v12') {
                 this.maxSize = maxSize;
                 this.ttlMs = ttlMs;
                 this.storageKey = storageKey;
@@ -269,7 +269,7 @@
                 
                 const queryRes = await fetch(queryEndpoint, { 
                     signal,
-                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/11.0 (Educational Project)' }
+                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/12.0 (Educational Project)' }
                 });
                 if (!queryRes.ok) throw new Error(`Erreur HTTP réseau : ${queryRes.status}`);
                 
@@ -291,7 +291,7 @@
                         const searchEndpoint = `https://fr.wiktionary.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(word)}&srlimit=1&format=json&origin=*`;
                         const searchRes = await fetch(searchEndpoint, { 
                             signal,
-                            headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/11.0 (Educational Project)' }
+                            headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/12.0 (Educational Project)' }
                         });
                         if (!searchRes.ok) throw new Error(`Erreur HTTP recherche : ${searchRes.status}`);
                         
@@ -310,7 +310,7 @@
                 const parseEndpoint = `https://fr.wiktionary.org/w/api.php?action=parse&page=${encodeURIComponent(canonicalTitle)}&prop=text&format=json&origin=*`;
                 const parseRes = await fetch(parseEndpoint, { 
                     signal,
-                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/11.0 (Educational Project)' }
+                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/12.0 (Educational Project)' }
                 });
                 if (!parseRes.ok) throw new Error(`Erreur HTTP Wiktionnaire : ${parseRes.status}`);
                 
@@ -357,6 +357,10 @@
             const h2Elements = doc.querySelectorAll('h2');
             let combinedHtml = '';
 
+            if (!h2Elements || h2Elements.length === 0) {
+                return htmlString;
+            }
+
             for (let h2 of h2Elements) {
                 let idAttr = '';
                 if (h2.id) {
@@ -377,7 +381,7 @@
                 }
             }
 
-            // Filet de sécurité : si le filtrage par h2 ne renvoie rien, on retourne tout le document nettoyé
+            // Filet de sécurité absolu : si aucun bloc français n'est extrait, on retourne l'intégralité du HTML nettoyable
             return combinedHtml.trim() ? combinedHtml : htmlString;
         }
 
@@ -397,9 +401,7 @@
             selectorsToRemove.forEach(selector => {
                 try {
                     doc.querySelectorAll(selector).forEach(el => el.remove());
-                } catch (e) {
-                    // Ignore sélecteurs non supportés
-                }
+                } catch (e) {}
             });
 
             doc.querySelectorAll('a').forEach(a => {
@@ -441,7 +443,6 @@
                 el.dataset.processed = 'true';
             });
 
-            doc.querySelectorAll('p, dt').formatStyle = {};
             doc.querySelectorAll('p, dt').forEach(el => {
                 el.prepend('\n');
                 el.append('\n');
