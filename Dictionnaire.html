@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extracteur Wiktionnaire Pur v16</title>
+    <title>Extracteur Wiktionnaire Pur v17</title>
     <style>
         :root {
             --bg-color: #f4f6f8;
@@ -147,7 +147,7 @@
 <body>
 
     <h1>Extracteur Wiktionnaire Pur</h1>
-    <p>Version v16 : cache blindé, robustesse API accrue, hiérarchie des listes propre, indication de source et export .txt.</p>
+    <p>Version v17 : Nettoyage ultra-poussé (suppression des citations, des sources, de la phonétique et du bruit).</p>
 
     <div class="search-box">
         <input type="text" id="wordInput" placeholder="Ex: Maison, courir, éco-..." aria-label="Mot à rechercher sur le Wiktionnaire" autofocus>
@@ -172,7 +172,7 @@
         let currentAbortController = null;
         
         class PersistentCache {
-            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v16') {
+            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v17') {
                 this.maxSize = maxSize;
                 this.ttlMs = ttlMs;
                 this.storageKey = storageKey;
@@ -394,13 +394,15 @@
             const parser = new DOMParser();
             const doc = parser.parseFromString(htmlString, 'text/html');
 
+            // 1. Suppression agressive de tous les éléments parasites et blocs annexes
             const selectorsToRemove = [
                 '.mw-editsection', 'script', 'style', '.printfooter', 
                 '.navigation-not-searchable', '.toc', '#toc', 
                 '.mw-references-wrap', '.references', '.ambox', 
                 '.infobox', '.navbox', '.thumb', '.mw-empty-elt',
                 '.reference', '.audiolink', 'sup', '.sister-project', 
-                '.NavFrame', '.mw-jump-link', '.interproject'
+                '.NavFrame', '.mw-jump-link', '.interproject',
+                'table', 'small', '.lexicographer'
             ];
             
             selectorsToRemove.forEach(selector => {
@@ -409,6 +411,40 @@
                 } catch (e) {}
             });
 
+            // 2. Suppression des sections non désirées (Traductions, Prononciation, Anagrammes, Références, etc.)
+            doc.querySelectorAll('h3, h4, h5').forEach(heading => {
+                const title = heading.textContent.toLowerCase();
+                if (
+                    title.includes('traduction') || 
+                    title.includes('prononciation') || 
+                    title.includes('homophone') || 
+                    title.includes('anagramme') || 
+                    title.includes('référence') || 
+                    title.includes('voir aussi') ||
+                    title.includes('apparenté') ||
+                    title.includes('dérivé') ||
+                    title.includes('synonyme') ||
+                    title.includes('hyperonyme')
+                ) {
+                    let current = heading.nextElementSibling;
+                    while (current && !['H2', 'H3'].includes(current.tagName)) {
+                        let next = current.nextElementSibling;
+                        current.remove();
+                        current = next;
+                    }
+                    heading.remove();
+                }
+            });
+
+            // 3. Suppression des paragraphes/lignes de citations littéraires (ex: contenant un tiret cadratin de source, des numéros de page ou des dates)
+            doc.querySelectorAll('p, dd, li').forEach(el => {
+                let text = el.textContent;
+                if (text.includes('—') || text.includes('page') || text.includes('no ') || text.includes('édition')) {
+                    el.remove();
+                }
+            });
+
+            // 4. Nettoyage des liens et transformation en texte brut
             doc.querySelectorAll('a').forEach(a => {
                 const text = a.textContent.trim();
                 if (text) {
@@ -420,7 +456,7 @@
 
             doc.querySelectorAll('br').forEach(el => el.replaceWith(document.createTextNode('\n')));
 
-            // Gestion propre des listes imbriquées sans sauts de ligne redondants
+            // 5. Formatage propre des listes et paragraphes restants
             doc.querySelectorAll('li, dd').forEach(el => {
                 if (el.dataset.processed) return;
                 let depth = 0;
@@ -441,7 +477,10 @@
 
             let text = doc.body.textContent || "";
 
+            // 6. Nettoyage final global (suppression du mot modifier résiduel, phonétique entre slashes, espaces et sauts de ligne superflus)
             return text
+                .replace(/modifier/gi, '')
+                .replace(/\\[^\\}]*\\/g, '')
                 .replace(/\r\n/g, '\n')
                 .replace(/[ \t]+\n/g, '\n')
                 .replace(/\n{3,}/g, '\n\n')
