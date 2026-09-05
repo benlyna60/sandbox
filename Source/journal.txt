@@ -1,5 +1,85 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Unir au lieu de diviser
+LIEN: https://www.ledevoir.com/opinion/editoriaux/1006721/unir-lieu-diviser
+CONTENU: Le PQ insiste sur les symptômes, mais néglige les causes de la surpopulation dans les écoles.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Troisième vitesse
+LIEN: https://www.ledevoir.com/opinion/chroniques/1006748/troisieme-vitesse
+CONTENU: Pour retrouver une égalité des chances à l’école, il faut intégrer les écoles privées au réseau scolaire commun.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Se lier avant les promesses: Ulysse, Elster et la rigueur démocratique
+LIEN: https://www.ledevoir.com/opinion/idees/1006604/lier-avant-promesses-ulysse-elster-rigueur-democratique
+CONTENU: Les meilleures contraintes sont choisies parce qu’elles nous permettent d’atteindre nos objectifs réels.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Affaires courantes
+LIEN: https://www.ledevoir.com/opinion/chroniques/1006637/affaires-courantes
+CONTENU: Quand respirer par le nez ne suffit plus, il y a le jogging.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Le 250e des États-Unis n’a pas vaincu la morosité ambiante
+LIEN: https://www.ledevoir.com/monde/etats-unis/1006784/250e-etats-unis-pas-vaincu-morosite-ambiante
+CONTENU: Censées entretenir la fierté, les festivités ont surtout nourri les déceptions à l’égard des idéaux fondateurs malmenés.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: L’IA souffle (un peu) sur la rentrée
+LIEN: https://www.ledevoir.com/opinion/chroniques/1006727/ia-souffle-peu-rentree
+CONTENU: L’hécatombe pressentie sur le marché du travail ne s’est toujours pas manifestée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Les attentats du 11 Septembre, une chronologie en photos
+LIEN: https://www.ledevoir.com/monde/etats-unis/1006757/attentats-11-septembre-chronologie-photos
+CONTENU: Vingt-cinq ans après l’attaque survenue à New York, «Le Devoir» retrace le fil des événements à partir de photos d’archives.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Dans Bellechasse, les villages veulent prendre la clé des champs
+LIEN: https://www.ledevoir.com/politique/quebec/1006712/bellechasse-villages-veulent-prendre-cle-champs
+CONTENU: Plusieurs municipalités de la circonscription lorgnent les terres agricoles du coin pour grandir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Le 11 Septembre a posé les bases d’un régime de surveillance  devenu dangereux
+LIEN: https://www.ledevoir.com/monde/etats-unis/1006766/11-septembre-pose-bases-regime-surveillance-devenu-dangereux
+CONTENU: Vingt-cinq ans plus tard, l’«ennemi intérieur» qu’il traque a changé ; l’étendue et le pouvoir de ses outils aussi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-05 04:00:00
+TITRE: Que reste-t-il de la prison militaire de Guantánamo Bay ?
+LIEN: https://www.ledevoir.com/monde/etats-unis/1006769/reste-il-prison-militaire-guantanamo-bay
+CONTENU: Loin de vouloir la fermer, l’actuel président américain souhaite y détenir des migrants sans papiers.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-05 04:20:00
 TITRE: Les experts cinema du samedi 05 septembre 2026
