@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extracteur Wiktionnaire Pur v17</title>
+    <title>Extracteur Wiktionnaire Pur v18</title>
     <style>
         :root {
             --bg-color: #f4f6f8;
@@ -147,7 +147,7 @@
 <body>
 
     <h1>Extracteur Wiktionnaire Pur</h1>
-    <p>Version v17 : Nettoyage ultra-poussé (suppression des citations, des sources, de la phonétique et du bruit).</p>
+    <p>Version v18 : Nettoyage renforcé (suppression des liens d'édition, des étiquettes de métadonnées, des guillemets superflus et du bruit rédactionnel).</p>
 
     <div class="search-box">
         <input type="text" id="wordInput" placeholder="Ex: Maison, courir, éco-..." aria-label="Mot à rechercher sur le Wiktionnaire" autofocus>
@@ -172,7 +172,7 @@
         let currentAbortController = null;
         
         class PersistentCache {
-            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v17') {
+            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v18') {
                 this.maxSize = maxSize;
                 this.ttlMs = ttlMs;
                 this.storageKey = storageKey;
@@ -394,15 +394,16 @@
             const parser = new DOMParser();
             const doc = parser.parseFromString(htmlString, 'text/html');
 
-            // 1. Suppression agressive de tous les éléments parasites et blocs annexes
+            // 1. Suppression agressive de tous les éléments parasites, balises d'édition et blocs annexes
             const selectorsToRemove = [
-                '.mw-editsection', 'script', 'style', '.printfooter', 
+                '.mw-editsection', '.mw-editsection-bracket', 'script', 'style', '.printfooter', 
                 '.navigation-not-searchable', '.toc', '#toc', 
                 '.mw-references-wrap', '.references', '.ambox', 
                 '.infobox', '.navbox', '.thumb', '.mw-empty-elt',
                 '.reference', '.audiolink', 'sup', '.sister-project', 
                 '.NavFrame', '.mw-jump-link', '.interproject',
-                'table', 'small', '.lexicographer'
+                'table', 'small', '.lexicographer', '.vector-menu',
+                '.mw-indicators', 'header', 'footer', 'nav'
             ];
             
             selectorsToRemove.forEach(selector => {
@@ -436,7 +437,7 @@
                 }
             });
 
-            // 3. Suppression des paragraphes/lignes de citations littéraires (ex: contenant un tiret cadratin de source, des numéros de page ou des dates)
+            // 3. Suppression des paragraphes/lignes de citations littéraires ou métadonnées résiduelles
             doc.querySelectorAll('p, dd, li').forEach(el => {
                 let text = el.textContent;
                 if (text.includes('—') || text.includes('page') || text.includes('no ') || text.includes('édition')) {
@@ -470,21 +471,23 @@
                 el.dataset.processed = 'true';
             });
 
-            doc.querySelectorAll('p, dt').forEach(el => {
+            doc.querySelectorAll('p, dt, h3, h4').forEach(el => {
                 el.prepend('\n');
                 el.append('\n');
             });
 
             let text = doc.body.textContent || "";
 
-            // 6. Nettoyage final global (suppression du mot modifier résiduel, phonétique entre slashes, espaces et sauts de ligne superflus)
+            // 6. Nettoyage global approfondi des mots parasites, bruits, guillemets superflus et ponctuations orphelines
             return text
-                .replace(/modifier/gi, '')
+                .replace(/\b(modifier|modifier le wikicode|data précisée|français)\b/gi, '')
                 .replace(/\\[^\\}]*\\/g, '')
+                .replace(/[„“""«»]/g, '') // Supprime les guillemets superflus
                 .replace(/\r\n/g, '\n')
                 .replace(/[ \t]+\n/g, '\n')
                 .replace(/\n{3,}/g, '\n\n')
                 .replace(/[ \t]{2,}/g, ' ')
+                .replace(/^\s*[,.;:]\s*$/gm, '') // Supprime les lignes composées uniquement de ponctuations seules
                 .trim();
         }
 
