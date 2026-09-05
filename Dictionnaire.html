@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extracteur Wiktionnaire Ultime v10</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f8;
+            --text-color: #333;
+            --card-bg: #fff;
+            --border-color: #ccc;
+            --header-color: #2c3e50;
+            --btn-bg: #3498db;
+            --btn-hover: #2980b9;
+            --btn-disabled: #95a5a6;
+            --copy-bg: #2ecc71;
+            --copy-hover: #27ae60;
+            --status-color: #555;
+            --error-color: #c0392b;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --text-color: #e0e0e0;
+                --card-bg: #2d2d2d;
+                --border-color: #444;
+                --header-color: #ecf0f1;
+                --btn-bg: #2980b9;
+                --btn-hover: #3498db;
+                --btn-disabled: #555555;
+                --copy-bg: #27ae60;
+                --copy-hover: #27ae61;
+                --status-color: #aaa;
+                --error-color: #e74c3c;
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        h1 {
+            color: var(--header-color);
+        }
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: var(--btn-bg);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover:not(:disabled) {
+            background-color: var(--btn-hover);
+        }
+        button:disabled {
+            background-color: var(--btn-disabled);
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        .status-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            min-height: 24px;
+        }
+        #status {
+            font-style: italic;
+            color: var(--status-color);
+        }
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border-color);
+            border-top: 2px solid var(--btn-bg);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .output-container {
+            position: relative;
+        }
+        textarea {
+            width: 100%;
+            height: 450px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            resize: vertical;
+            line-height: 1.5;
+        }
+        .copy-btn {
+            margin-top: 10px;
+            background-color: var(--copy-bg);
+        }
+        .copy-btn:hover:not(:disabled) {
+            background-color: var(--copy-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Extracteur Propre - Wiktionnaire</h1>
+    <p>Version v10 : persistance du cache via localStorage, ciblage sémantique renforcé des sections, accessibilité ARIA complète et bouton de copie natif opérationnel.</p>
+
+    <div class="search-box">
+        <input type="text" id="wordInput" placeholder="Ex: Maison, courir, éco-..." aria-label="Mot à rechercher sur le Wiktionnaire" autofocus>
+        <button id="searchBtn" onclick="fetchWiktionary()">Rechercher</button>
+    </div>
+
+    <div class="status-container" role="region" aria-label="Zone de statut">
+        <div class="spinner" id="loadingSpinner" aria-hidden="true"></div>
+        <div id="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
+    </div>
+
+    <div class="output-container">
+        <label for="outputArea" class="visually-hidden" style="display:none;">Texte extrait et nettoyé</label>
+        <textarea id="outputArea" placeholder="Le texte structuré et nettoyé apparaîtra ici..." aria-label="Résultat de l'extraction textuelle" tabindex="0"></textarea>
+        <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()" aria-label="Copier le texte dans le presse-papier">Copier dans le presse-papier</button>
+    </div>
+
+    <script>
+        let currentAbortController = null;
+        
+        // Cache persistant basé sur localStorage avec TTL (24 heures)
+        class PersistentCache {
+            constructor(maxSize = 50, ttlMs = 3600000 * 24, storageKey = 'wiktionary_extract_cache_v10') {
+                this.maxSize = maxSize;
+                this.ttlMs = ttlMs;
+                this.storageKey = storageKey;
+                this.cacheMap = this._loadFromStorage();
+            }
+
+            _loadFromStorage() {
+                try {
+                    const raw = localStorage.getItem(this.storageKey);
+                    if (!raw) return new Map();
+                    const parsed = JSON.parse(raw);
+                    return new Map(Object.entries(parsed));
+                } catch (e) {
+                    console.warn("Impossible de charger le cache depuis localStorage", e);
+                    return new Map();
+                }
+            }
+
+            _saveToStorage() {
+                try {
+                    const obj = Object.fromEntries(this.cacheMap);
+                    localStorage.setItem(this.storageKey, JSON.stringify(obj));
+                } catch (e) {
+                    console.warn("Impossible d'enregistrer le cache dans localStorage", e);
+                }
+            }
+
+            get(key) {
+                const normalizedKey = key.toLowerCase().normalize('NFC');
+                if (!this.cacheMap.has(normalizedKey)) return undefined;
+                const item = this.cacheMap.get(normalizedKey);
+                
+                if (Date.now() - item.timestamp > this.ttlMs) {
+                    this.cacheMap.delete(normalizedKey);
+                    this._saveToStorage();
+                    return undefined;
+                }
+
+                // Rafraîchissement LRU en mémoire
+                this.cacheMap.delete(normalizedKey);
+                this.cacheMap.set(normalizedKey, item);
+                return item.value;
+            }
+
+            set(key, value) {
+                const normalizedKey = key.toLowerCase().normalize('NFC');
+                if (this.cacheMap.has(normalizedKey)) {
+                    this.cacheMap.delete(normalizedKey);
+                } else if (this.cacheMap.size >= this.maxSize) {
+                    const oldestKey = this.cacheMap.keys().next().value;
+                    this.cacheMap.delete(oldestKey);
+                }
+                this.cacheMap.set(normalizedKey, { value, timestamp: Date.now() });
+                this._saveToStorage();
+            }
+
+            has(key) {
+                return this.get(key) !== undefined;
+            }
+        }
+
+        const searchCache = new PersistentCache(50);
+
+        document.getElementById('wordInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && !document.getElementById('searchBtn').disabled) {
+                fetchWiktionary();
+            }
+        });
+
+        function updateStatus(message, isError = false, moveFocus = false) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.style.color = isError ? 'var(--error-color)' : 'var(--status-color)';
+            if (isError || moveFocus) {
+                statusDiv.focus();
+            }
+        }
+
+        async function fetchWiktionary() {
+            const wordInput = document.getElementById('wordInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const spinner = document.getElementById('loadingSpinner');
+            const outputArea = document.getElementById('outputArea');
+            
+            const word = wordInput.value.trim().normalize('NFC');
+            if (!word) {
+                alert('Veuillez entrer un mot.');
+                return;
+            }
+
+            if (searchCache.has(word)) {
+                outputArea.value = searchCache.get(word);
+                updateStatus(`Succès ! Article "${word}" chargé depuis le cache persistant.`);
+                return;
+            }
+
+            if (currentAbortController) {
+                currentAbortController.abort();
+            }
+            currentAbortController = new AbortController();
+            const { signal } = currentAbortController;
+
+            searchBtn.disabled = true;
+            wordInput.disabled = true;
+            spinner.style.display = 'block';
+            updateStatus('Résolution du terme et recherche...');
+            outputArea.value = '';
+
+            try {
+                let canonicalTitle = word;
+                const queryEndpoint = `https://fr.wiktionary.org/w/api.php?action=query&titles=${encodeURIComponent(word)}&redirects=1&format=json&origin=*`;
+                
+                const queryRes = await fetch(queryEndpoint, { 
+                    signal,
+                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/10.0 (Educational Project)' }
+                });
+                if (!queryRes.ok) throw new Error(`Erreur HTTP réseau : ${queryRes.status}`);
+                
+                const queryData = await queryRes.json();
+                
+                if (queryData.query.redirects && queryData.query.redirects.length > 0) {
+                    let rawTarget = queryData.query.redirects[queryData.query.redirects.length - 1].to;
+                    try {
+                        canonicalTitle = decodeURIComponent(rawTarget).replace(/_/g, ' ');
+                    } catch {
+                        canonicalTitle = rawTarget.replace(/_/g, ' ');
+                    }
+                } else {
+                    const pages = queryData.query.pages;
+                    const pageId = Object.keys(pages)[0];
+
+                    if (pageId === '-1') {
+                        updateStatus('Entrée exacte introuvable, recherche alternative...');
+                        const searchEndpoint = `https://fr.wiktionary.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(word)}&srlimit=1&format=json&origin=*`;
+                        const searchRes = await fetch(searchEndpoint, { 
+                            signal,
+                            headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/10.0 (Educational Project)' }
+                        });
+                        if (!searchRes.ok) throw new Error(`Erreur HTTP recherche : ${searchRes.status}`);
+                        
+                        const searchData = await searchRes.json();
+                        if (!searchData.query || searchData.query.search.length === 0) {
+                            throw new Error(`Aucun résultat trouvé pour "${word}" sur le Wiktionnaire.`);
+                        }
+                        canonicalTitle = searchData.query.search[0].title;
+                    } else {
+                        canonicalTitle = pages[pageId].title;
+                    }
+                }
+
+                updateStatus(`Chargement de l'article : "${canonicalTitle}"...`);
+
+                const parseEndpoint = `https://fr.wiktionary.org/w/api.php?action=parse&page=${encodeURIComponent(canonicalTitle)}&prop=text&format=json&origin=*`;
+                const parseRes = await fetch(parseEndpoint, { 
+                    signal,
+                    headers: { 'Api-User-Agent': 'ExtracteurWiktionnaireUltime/10.0 (Educational Project)' }
+                });
+                if (!parseRes.ok) throw new Error(`Erreur HTTP Wiktionnaire : ${parseRes.status}`);
+                
+                const parseData = await parseRes.json();
+                if (parseData.error) {
+                    throw new Error(parseData.error.info || 'Erreur inconnue de l’API Wiktionnaire.');
+                }
+
+                if (parseData.parse && parseData.parse.text) {
+                    const htmlContent = parseData.parse.text['*'];
+                    
+                    const frenchHtml = extractFrenchSections(htmlContent);
+                    const cleanText = parseHtmlToCleanText(frenchHtml);
+
+                    if (cleanText && cleanText.length > 15) {
+                        searchCache.set(word, cleanText);
+                        searchCache.set(canonicalTitle, cleanText);
+                    }
+
+                    outputArea.value = cleanText;
+                    updateStatus(`Succès ! Article "${canonicalTitle}" extrait et nettoyé.`);
+                } else {
+                    updateStatus('Aucun contenu exploitable trouvé.');
+                }
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    updateStatus('Recherche annulée.');
+                    return;
+                }
+                console.error(error);
+                updateStatus(`Erreur : ${error.message}`, true, true);
+            } finally {
+                searchBtn.disabled = false;
+                wordInput.disabled = false;
+                spinner.style.display = 'none';
+            }
+        }
+
+        function extractFrenchSections(htmlString) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlString, 'text/html');
+
+            const h2Elements = doc.querySelectorAll('h2');
+            let combinedHtml = '';
+
+            for (let h2 of h2Elements) {
+                let idAttr = '';
+                if (h2.id) {
+                    try {
+                        idAttr = decodeURIComponent(h2.id);
+                    } catch {
+                        idAttr = h2.id;
+                    }
+                }
+                
+                const normalizedId = idAttr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const normalizedText = h2.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                
+                // Vérification sémantique renforcée : attribut lang explicite ou termes linguistiques français
+                const langAttr = h2.getAttribute('lang') || h2.closest('[lang]')?.getAttribute('lang') || '';
+                const isFrenchLang = langAttr.toLowerCase().startsWith('fr');
+
+                if (isFrenchLang || normalizedText.includes('francais') || normalizedId.includes('francais')) {
+                    let current = h2.nextElementSibling;
+                    while (current && current.tagName !== 'H2') {
+                        combinedHtml += current.outerHTML;
+                        current = current.nextElementSibling;
+                    }
+                }
+            }
+
+            return combinedHtml || htmlString;
+        }
+
+        function parseHtmlToCleanText(htmlString) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlString, 'text/html');
+
+            const selectorsToRemove = [
+                '.mw-editsection', 'script', 'style', '.printfooter', 
+                '.navigation-not-searchable', '.toc', '#toc', 
+                '.mw-references-wrap', '.references', '.ambox', 
+                '.infobox', '.navbox', '.thumb', '.mw-empty-elt',
+                '.wikt-lang-label', '.demono', '.reference', '.audiolink', 'sup',
+                '.sister-project', '.NavFrame', '.mw-jump-link'
+            ];
+            
+            selectorsToRemove.forEach(selector => {
+                try {
+                    doc.querySelectorAll(selector).forEach(el => el.remove());
+                } catch (e) {
+                    // Ignore sélecteurs non supportés
+                }
+            });
+
+            doc.querySelectorAll('a').forEach(a => {
+                const text = a.textContent.trim();
+                if (text) {
+                    a.replaceWith(document.createTextNode(` ${text} `));
+                } else {
+                    a.remove();
+                }
+            });
+
+            doc.querySelectorAll('b, strong').forEach(el => {
+                const text = el.textContent.trim();
+                if (text) el.replaceWith(document.createTextNode(` **${text}** `));
+            });
+            doc.querySelectorAll('i, em').forEach(el => {
+                const text = el.textContent.trim();
+                if (text) el.replaceWith(document.createTextNode(` *${text}* `));
+            });
+
+            doc.querySelectorAll('br').forEach(el => el.replaceWith(document.createTextNode('\n')));
+
+            doc.querySelectorAll('h3, h4, h5').forEach(el => {
+                el.prepend('\n\n=== ');
+                el.append(' ===\n');
+            });
+
+            doc.querySelectorAll('li, dd').forEach(el => {
+                if (el.dataset.processed) return;
+                let depth = 0;
+                let parent = el.parentElement;
+                while (parent && (parent.tagName === 'UL' || parent.tagName === 'OL' || parent.tagName === 'DL')) {
+                    depth++;
+                    parent = parent.parentElement;
+                }
+                const indent = '    '.repeat(Math.max(0, depth - 1));
+                el.prepend(`${indent}• `);
+                el.append('\n');
+                el.dataset.processed = 'true';
+            });
+
+            doc.querySelectorAll('p, dt').forEach(el => {
+                el.prepend('\n');
+                el.append('\n');
+            });
+
+            let text = doc.body.textContent || "";
+
+            return text
+                .replace(/\r\n/g, '\n')
+                .replace(/[ \t]+\n/g, '\n')
+                .replace(/\n{3,}/g, '\n\n')
+                .replace(/[ \t]{2,}/g, ' ')
+                .trim();
+        }
+
+        async function copyToClipboard() {
+            const outputArea = document.getElementById('outputArea');
+            const copyBtn = document.getElementById('copyBtn');
+            if (!outputArea.value) {
+                alert('Rien à copier !');
+                return;
+            }
+
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(outputArea.value);
+                    
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copié !';
+                    copyBtn.style.backgroundColor = '#27ae60';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                    }, 2000);
+                } else {
+                    // Fallback de sélection manuelle pour les contextes restreints
+                    outputArea.select();
+                    document.execCommand('copy');
+                    alert('Texte sélectionné et copié dans le presse-papier.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Impossible de copier automatiquement. Veuillez sélectionner et copier le texte manuellement.');
+            }
+        }
+    </script>
+
+</body>
+</html>
