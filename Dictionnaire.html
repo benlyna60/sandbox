@@ -174,7 +174,7 @@
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Tapez n'importe quel sujet complexe (ex: <i>mécanique quantique</i>, <i>fabriquer une table</i>, <i>histoire de Rome</i>) : le système apprend le vocabulaire spécifique du sujet en direct avant de synthétiser.
+        Bonjour ! Tapez n'importe quel sujet complexe (ex: <i>mécanique quantique</i>, <i>fabriquer une balançoire</i>, <i>histoire de Rome</i>) : le système apprend le vocabulaire spécifique du sujet en direct avant de synthétiser.
       </div>
     </div>
     
@@ -436,8 +436,9 @@
           if (lowerSentence.includes(st)) adaptiveMatches++;
         });
 
-        // Règle universelle de conjonction stricte : évite de valider des phrases isolées sur un seul mot ambigu
-        if (coreTokens.length > 1 && coreMatches < 2) {
+        // Règle de tolérance adaptative : permet l'extraction même si tous les mots ne sont pas dans la même phrase, 
+        // à condition que les satellites dynamiques compensent.
+        if (coreTokens.length > 1 && coreMatches < 1 && adaptiveMatches < 2) {
           return 0; 
         }
 
