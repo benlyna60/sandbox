@@ -1,4 +1,36 @@
 ----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-06 20:00:00
+TITRE: Le journal de 22h00 du dimanche 06 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-22h00/le-journal-de-22h00-du-dimanche-06-septembre-2026-4775564
+CONTENU: Article de référence : "Le journal de 22h00 du dimanche 06 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-06 18:00:00
+TITRE: Le 20/minuit du dimanche 06 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-20-minuit-du-week-end/le-20-minuit-du-dimanche-06-septembre-2026-3760268
+CONTENU: Article de référence : "Le 20/minuit du dimanche 06 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-06 17:49:30
+TITRE: Le club franceinfo - l'Equipe du dimanche 06 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-club-franceinfo-l-equipe/le-club-franceinfo-l-equipe-du-dimanche-06-septembre-2026-5322095
+CONTENU: Article de référence : "Le club franceinfo - l'Equipe du dimanche 06 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-06 17:11:39
+TITRE: Guerre en Ukraine: les émissaires américains appellent Kiev et Moscou au compromis
+LIEN: https://www.rfi.fr/fr/europe/20260906-guerre-en-ukraine-les-%C3%A9missaires-am%C3%A9ricains-appellent-kiev-et-moscou-au-compromis
+CONTENU: Les premières discussions à Kiev avec le président ukrainien Volodymyr Zelensky ont été « très significatives », a déclaré dimanche 6 septembre Steve Witkoff, l'un des deux émissaires américains, porteurs selon Donald Trump d'une proposition destinée à mettre fin au conflit avec la Russie.
+
+----------------------------------------
 CATEGORIE: UNIVERSITÉ & RECHERCHE
 SOURCE: The Conversation France
 DATE: 2026-09-06 17:28:42
