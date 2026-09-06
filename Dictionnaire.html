@@ -1,853 +1,411 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Extracteur Wiktionnaire Pur v22</title>
-
-<style>
-:root {
-    --bg: #f4f6f8;
-    --card: #ffffff;
-    --text: #222;
-    --muted: #666;
-    --border: #d0d4d8;
-    --primary: #3498db;
-    --primary-hover: #2980b9;
-    --success: #27ae60;
-    --success-hover: #219150;
-    --download: #8e44ad;
-    --download-hover: #76368f;
-    --danger: #c0392b;
-    --disabled: #95a5a6;
-}
-
-@media (prefers-color-scheme: dark) {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synthétiseur Wikimedia - Chat Local</title>
+  <style>
     :root {
-        --bg: #181818;
-        --card: #272727;
-        --text: #eeeeee;
-        --muted: #aaaaaa;
-        --border: #444;
-        --primary: #2980b9;
-        --primary-hover: #3498db;
-        --success: #27ae60;
-        --success-hover: #2ecc71;
-        --download: #8e44ad;
-        --download-hover: #9b59b6;
-        --danger: #e74c3c;
-        --disabled: #555;
+      --primary-color: #2563eb;
+      --bg-color: #f8fafc;
+      --chat-bg: #ffffff;
+      --text-color: #1e293b;
+      --border-color: #e2e8f0;
     }
-}
 
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    padding: 30px 16px;
-    background: var(--bg);
-    color: var(--text);
-    font-family: Arial, sans-serif;
-}
-
-.container {
-    width: min(900px, 100%);
-    margin: auto;
-}
-
-h1 {
-    margin: 0 0 8px;
-    font-size: 28px;
-}
-
-.description {
-    color: var(--muted);
-    line-height: 1.5;
-    margin-bottom: 24px;
-}
-
-.search-box {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 16px;
-}
-
-#wordInput {
-    flex: 1;
-    min-width: 0;
-    padding: 13px 14px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--card);
-    color: var(--text);
-    font-size: 16px;
-    outline: none;
-}
-
-#wordInput:focus {
-    border-color: var(--primary);
-}
-
-button {
-    border: 0;
-    border-radius: 6px;
-    padding: 12px 18px;
-    font-size: 15px;
-    cursor: pointer;
-    color: white;
-    transition: 0.2s;
-}
-
-button:disabled {
-    background: var(--disabled) !important;
-    cursor: not-allowed;
-}
-
-.search-btn {
-    background: var(--primary);
-}
-
-.search-btn:hover:not(:disabled) {
-    background: var(--primary-hover);
-}
-
-.status-container {
-    min-height: 28px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-}
-
-#status {
-    color: var(--muted);
-    font-size: 14px;
-}
-
-.spinner {
-    width: 17px;
-    height: 17px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    border-top-color: var(--primary);
-    animation: spin 0.7s linear infinite;
-    display: none;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.output-label {
-    display: block;
-    margin-bottom: 7px;
-    font-weight: bold;
-}
-
-#outputArea {
-    display: block;
-    width: 100%;
-    min-height: 470px;
-    padding: 16px;
-    resize: vertical;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--card);
-    color: var(--text);
-    font-family: Arial, sans-serif;
-    font-size: 15px;
-    line-height: 1.65;
-    outline: none;
-}
-
-#outputArea:focus {
-    border-color: var(--primary);
-}
-
-.actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-    flex-wrap: wrap;
-}
-
-.copy-btn {
-    background: var(--success);
-}
-
-.copy-btn:hover:not(:disabled) {
-    background: var(--success-hover);
-}
-
-.download-btn {
-    background: var(--download);
-}
-
-.download-btn:hover:not(:disabled) {
-    background: var(--download-hover);
-}
-
-.clear-btn {
-    background: #666;
-}
-
-.clear-btn:hover:not(:disabled) {
-    background: #555;
-}
-
-.info {
-    margin-top: 18px;
-    padding: 12px 14px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: var(--card);
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-@media (max-width: 600px) {
     body {
-        padding: 20px 12px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
-    h1 {
-        font-size: 23px;
+    .chat-container {
+      width: 100%;
+      max-width: 700px;
+      height: 90vh;
+      background: var(--chat-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
     }
 
-    .search-box {
-        flex-direction: column;
+    .chat-header {
+      padding: 16px 20px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    button {
-        width: 100%;
+    .chat-header span {
+      font-size: 0.8rem;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: normal;
     }
 
-    #outputArea {
-        min-height: 400px;
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #fdfdfd;
     }
-}
-</style>
+
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      line-height: 1.5;
+      font-size: 0.95rem;
+      word-break: break-word;
+    }
+
+    .message.user {
+      background: var(--primary-color);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+
+    .message.bot {
+      background: #f1f5f9;
+      color: var(--text-color);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+      border: 1px solid var(--border-color);
+    }
+
+    .message.loading {
+      font-style: italic;
+      color: #64748b;
+    }
+
+    .chat-input-area {
+      padding: 16px;
+      background: #ffffff;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      outline: none;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input-area input:focus {
+      border-color: var(--primary-color);
+    }
+
+    .chat-input-area button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .chat-input-area button:hover {
+      background: #1d4ed8;
+    }
+
+    .chat-input-area button:disabled,
+    .chat-input-area input:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="container">
-
-    <h1>Extracteur Wiktionnaire Pur v22</h1>
-
-    <div class="description">
-        Extraction linguistique française propre du Wiktionnaire.
-        Le moteur nettoie le contenu, filtre les fragments non linguistiques
-        et conserve les phrases et informations lexicales utiles.
+  <div class="chat-container">
+    <div class="chat-header">
+      Synthétiseur Wikimedia <span>100% Local / Sans LLM</span>
     </div>
-
-    <div class="search-box">
-        <input
-            id="wordInput"
-            type="text"
-            placeholder="Ex. maison, courir, annonce..."
-            autocomplete="off"
-            spellcheck="false"
-            aria-label="Mot à rechercher"
-        >
-        <button
-            id="searchBtn"
-            class="search-btn"
-            type="button"
-        >
-            Rechercher
-        </button>
-    </div>
-
-    <div class="status-container">
-        <div
-            id="loadingSpinner"
-            class="spinner"
-            aria-hidden="true"
-        ></div>
-        <div
-            id="status"
-            aria-live="polite"
-        ></div>
-    </div>
-
-    <label
-        class="output-label"
-        for="outputArea"
-    >
-        Texte propre
-    </label>
-
-    <textarea
-        id="outputArea"
-        placeholder="Le texte propre apparaîtra ici..."
-        spellcheck="false"
-    ></textarea>
-
-    <div class="actions">
-        <button
-            id="copyBtn"
-            class="copy-btn"
-            type="button"
-        >
-            Copier le texte propre
-        </button>
-        <button
-            id="downloadBtn"
-            class="download-btn"
-            type="button"
-        >
-            Télécharger le texte propre
-        </button>
-        <button
-            id="clearBtn"
-            class="clear-btn"
-            type="button"
-        >
-            Effacer
-        </button>
-    </div>
-
-    <div class="info">
-        Le texte affiché, copié et téléchargé est exactement le même
-        résultat final produit par le moteur linguistique.
-    </div>
-
-</div>
-
-
-<script>
-
-"use strict";
-
-const CONFIG = {
-    API: "https://fr.wiktionary.org/w/api.php",
-    CACHE_KEY: "wiktionnaire_pur_v22_cache",
-    CACHE_MAX: 60,
-    CACHE_TTL: 1000 * 60 * 60 * 24,
-    REQUEST_TIMEOUT: 20000
-};
-
-let currentAbortController = null;
-
-const wordInput = document.getElementById("wordInput");
-const searchBtn = document.getElementById("searchBtn");
-const copyBtn = document.getElementById("copyBtn");
-const downloadBtn = document.getElementById("downloadBtn");
-const clearBtn = document.getElementById("clearBtn");
-const outputArea = document.getElementById("outputArea");
-const status = document.getElementById("status");
-const spinner = document.getElementById("loadingSpinner");
-
-class PersistentCache {
-    constructor(maxSize = CONFIG.CACHE_MAX, ttl = CONFIG.CACHE_TTL, key = CONFIG.CACHE_KEY) {
-        this.maxSize = maxSize;
-        this.ttl = ttl;
-        this.key = key;
-        this.map = this.load();
-    }
-
-    normalizeKey(value) {
-        return String(value || "").trim().normalize("NFC").toLocaleLowerCase("fr-FR");
-    }
-
-    load() {
-        try {
-            const raw = localStorage.getItem(this.key);
-            if (!raw) return new Map();
-            const parsed = JSON.parse(raw);
-            if (!Array.isArray(parsed)) return new Map();
-            const map = new Map();
-            for (const item of parsed) {
-                if (!item || typeof item.key !== "string" || typeof item.value !== "string" || typeof item.timestamp !== "number") continue;
-                if (Date.now() - item.timestamp > this.ttl) continue;
-                map.set(this.normalizeKey(item.key), { value: item.value, timestamp: item.timestamp });
-            }
-            return map;
-        } catch (error) {
-            return new Map();
-        }
-    }
-
-    save() {
-        try {
-            const data = [];
-            for (const [key, item] of this.map) {
-                data.push({ key: key, value: item.value, timestamp: item.timestamp });
-            }
-            localStorage.setItem(this.key, JSON.stringify(data));
-        } catch (error) {
-            try { localStorage.removeItem(this.key); this.map.clear(); } catch (e) {}
-        }
-    }
-
-    get(key) {
-        const normalized = this.normalizeKey(key);
-        if (!normalized || !this.map.has(normalized)) return undefined;
-        const item = this.map.get(normalized);
-        if (!item || Date.now() - item.timestamp > this.ttl) {
-            this.map.delete(normalized);
-            this.save();
-            return undefined;
-        }
-        this.map.delete(normalized);
-        this.map.set(normalized, item);
-        return item.value;
-    }
-
-    set(key, value) {
-        const normalized = this.normalizeKey(key);
-        if (!normalized || typeof value !== "string") return;
-        if (this.map.has(normalized)) this.map.delete(normalized);
-        while (this.map.size >= this.maxSize) {
-            const oldest = this.map.keys().next().value;
-            if (oldest === undefined) break;
-            this.map.delete(oldest);
-        }
-        this.map.set(normalized, { value: value, timestamp: Date.now() });
-        this.save();
-    }
-}
-
-const cache = new PersistentCache();
-
-function setStatus(message, isError = false) {
-    status.textContent = message;
-    status.style.color = isError ? "var(--danger)" : "var(--muted)";
-}
-
-function setLoading(loading) {
-    searchBtn.disabled = loading;
-    wordInput.disabled = loading;
-    spinner.style.display = loading ? "block" : "none";
-}
-
-function normalizeSpaces(text) {
-    return String(text || "").replace(/\u00A0/g, " ").replace(/[\t ]+/g, " ").trim();
-}
-
-function normalizeLine(text) {
-    let line = String(text || "").normalize("NFC");
-    line = line.replace(/\u00A0/g, " ").replace(/\r/g, "").replace(/[ \t]+/g, " ").trim();
-    line = line.replace(/^\s*(?:\d+|[a-z])[\s.)-]+(?=\S)/i, "");
-    line = line.replace(/^\s*[-•●▪◦*]+\s*/, "");
-    line = line.replace(/^\s*(?:sens|définition)\s*:?\s*/i, "");
-    line = line.replace(/^\s*[«“"]\s*/, "");
-    line = line.replace(/\s*[»”"]\s*$/, "");
-    return line.trim();
-}
-
-function cleanPunctuation(text) {
-    let result = String(text || "");
-    result = result.replace(/\s+([,.;:!?])/g, "$1");
-    result = result.replace(/([(\[])\s+/g, "$1");
-    result = result.replace(/\s+([)\]])/g, "$1");
-    result = result.replace(/[«»„“”""]/g, "");
-    result = result.replace(/[ \t]{2,}/g, " ");
-    return result.trim();
-}
-
-const technicalTerms = [
-    "modifier", "modifier le wikicode", "modifier la section", "modifier cette section",
-    "wikicode", "source", "historique", "sommaire", "navigation", "menu", "outils",
-    "se connecter", "créer un compte", "discussion", "contribuer", "catégorie", "catégories",
-    "aide", "références", "référence", "notes", "bibliographie", "liens externes",
-    "imprimer", "télécharger", "déplacer", "permalink"
-];
-
-const unwantedSectionTerms = [
-    "traduction", "traductions", "prononciation", "homophone", "homophones",
-    "anagramme", "anagrammes", "synonyme", "synonymes", "antonyme", "antonymes",
-    "hyperonyme", "hyperonymes", "hyponyme", "hyponymes", "méronyme", "méronymes",
-    "holonyme", "holonymes", "dérivé", "dérivés", "apparenté", "apparentés",
-    "voir aussi", "références", "bibliographie", "sources", "liens externes"
-];
-
-function isPureNoise(text) {
-    const value = normalizeSpaces(text).toLocaleLowerCase("fr-FR");
-    if (!value) return true;
-    if (/^[\s.,;:!?()[\]{}\-–—_/*+|=<>~^]+$/.test(value)) return true;
-    if (technicalTerms.includes(value)) return true;
-    if (value.startsWith("modifier ") || value.startsWith("référence ") || value.startsWith("références ") || value.startsWith("catégorie ") || value.startsWith("catégories ")) return true;
-    if (/^(?:\{\{|\}\}|\[\[|\]\]|\|\||<ref|<\/?ref)/i.test(value)) return true;
-    return false;
-}
-
-function looksLikeLinguisticContent(text) {
-    const line = normalizeSpaces(text);
-    if (!line) return false;
-    if (!/[A-Za-zÀ-ÖØ-öø-ÿŒœÆæ]/u.test(line)) return false;
-    const lower = line.toLocaleLowerCase("fr-FR");
-    if (technicalTerms.includes(lower)) return false;
-    if (/(?:\{\{[^}]*\}\}|\[\[[^\]]*\]\]|\{\|.*\|\})/.test(line)) return false;
-    if (/^[\d\s.,;:/()\-–—]+$/.test(line)) return false;
-    if (/^(?:https?:\/\/|www\.)/i.test(line)) return false;
-    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(line)) return false;
     
-    const metadataWords = ["isbn", "issn", "doi", "identifiant", "code langue", "page spéciale", "modèle", "template"];
-    for (const word of metadataWords) {
-        if (lower.startsWith(word + ":")) return false;
-    }
+    <div id="chat-messages" class="chat-messages">
+      <div class="message bot">
+        Bonjour ! Entrez un mot-clé ou un sujet (ex: <i>Intelligence artificielle</i>, <i>Photosynthèse</i>) pour générer une synthèse instantanée à partir de Wikipédia, Wiktionnaire, Wikisource et Wikiquote.
+      </div>
+    </div>
+    
+    <div class="chat-input-area">
+      <input type="text" id="user-input" placeholder="Tapez votre recherche ici..." autocomplete="off">
+      <button id="send-btn">Envoyer</button>
+    </div>
+  </div>
 
-    const letters = line.match(/[A-Za-zÀ-ÖØ-öø-ÿŒœÆæ]/gu);
-    if (letters && letters.length >= 1) return true; // Assoupli de 2 à 1 pour ne pas rater les mots courts ou définitions succinctes
-    return false;
-}
+  <script>
+    /**
+     * Module de fusion front-end de sources Wikimedia (Sans LLM / Sans API tierce)
+     */
+    class WikimediaSynthesizer {
+      constructor() {
+        this.sources = {
+          wikipedia: 'https://fr.wikipedia.org/w/api.php',
+          wiktionnaire: 'https://fr.wiktionary.org/w/api.php',
+          wikisource: 'https://fr.wikisource.org/w/api.php',
+          wikiquote: 'https://fr.wikiquote.org/w/api.php'
+        };
 
-function isUnwantedSectionTitle(title) {
-    const value = normalizeSpaces(title).toLocaleLowerCase("fr-FR");
-    return unwantedSectionTerms.some(term => value === term || value.startsWith(term + " "));
-}
+        this.protectedAbbreviations = [
+          'p. ex', 'ex', 'ca', 'cf', 'etc', 'art', 'av', 'dr', 'm', 'me', 'mgr', 
+          'st', 'ste', 'trad', 'vol', 'janv', 'févr', 'juill', 'sept', 'oct', 'nov', 'déc'
+        ];
+      }
 
-function findFrenchHeading(doc) {
-    const headings = Array.from(doc.querySelectorAll("h2, h3"));
-    for (const heading of headings) {
-        const headline = heading.querySelector(".mw-headline");
-        const text = normalizeSpaces(headline ? headline.textContent : heading.textContent).toLocaleLowerCase("fr-FR");
-        const id = String(heading.id || "").toLocaleLowerCase("fr-FR");
-        if (text.includes("français") || text.includes("francais") || id.includes("français") || id.includes("francais")) {
-            return heading;
+      async generateSynthesis(keyword) {
+        if (!keyword || keyword.trim() === "") {
+          throw new Error("Le mot-clé ne peut pas être vide.");
         }
-    }
-    return null;
-}
 
-function extractFrenchSection(html) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-
-    const globalSelectors = [
-        "script", "style", "noscript", "template",
-        ".mw-editsection", ".mw-editsection-bracket",
-        ".mw-jump", ".mw-jump-link", ".mw-indicators",
-        ".mw-references-wrap", ".references", ".reference", ".reflist",
-        ".printfooter", ".navigation-not-searchable",
-        ".toc", "#toc", ".navbox", ".infobox",
-        ".sister-project", ".interproject", ".catlinks",
-        ".vector-menu", ".portal", "nav", "header", "footer",
-        ".thumb", ".thumbinner", ".audiolink", ".audio"
-    ];
-
-    for (const selector of globalSelectors) {
-        doc.querySelectorAll(selector).forEach(el => el.remove());
-    }
-
-    const frenchHeading = findFrenchHeading(doc);
-    if (frenchHeading) {
-        const wrapper = doc.createElement("div");
-        let current = frenchHeading.nextElementSibling;
-        while (current && current.tagName !== "H2") {
-            const next = current.nextElementSibling;
-            wrapper.appendChild(current.cloneNode(true));
-            current = next;
-        }
-        return wrapper;
-    }
-
-    // Fallback : si aucune balise "Français" stricte n'est trouvée, on retourne tout le corps pour éviter le blocage total
-    return doc.body;
-}
-
-function removeUnwantedSubsections(root) {
-    const headings = Array.from(root.querySelectorAll("h3,h4,h5,h6"));
-    for (const heading of headings) {
-        const title = normalizeSpaces(heading.textContent);
-        if (isUnwantedSectionTitle(title)) {
-            let current = heading.nextElementSibling;
-            while (current && !["H2", "H3", "H4", "H5"].includes(current.tagName)) {
-                const next = current.nextElementSibling;
-                current.remove();
-                current = next;
+        const cleanKeyword = keyword.trim();
+        
+        const fetchPromises = Object.entries(this.sources).map(([sourceName, apiUrl]) => 
+          this.fetchCombinedFromSource(sourceName, apiUrl, cleanKeyword)
+        );
+        
+        const rawResults = await Promise.all(fetchPromises);
+        let allSentences = [];
+        
+        rawResults.forEach(({ source, text }) => {
+          if (!text) return;
+          
+          const cleanText = this.cleanRawText(text);
+          const sentences = this.segmentIntoSentences(cleanText);
+          
+          sentences.forEach(sentence => {
+            const score = this.scoreSentence(sentence, cleanKeyword, source);
+            if (sentence.length >= 20 && sentence.length <= 250) {
+              allSentences.push({
+                text: sentence,
+                source: source,
+                score: score
+              });
             }
-            heading.remove();
-        }
-    }
-}
-
-function extractTextBlocks(root) {
-    const blocks = [];
-    const elements = Array.from(root.querySelectorAll("p,li,dd,blockquote,td,th,span"));
-    for (const element of elements) {
-        if (element.closest("li") && element.tagName === "P") continue;
-
-        element.querySelectorAll([
-            "sup", ".reference", ".mw-editsection", "style",
-            "script", ".audiolink", ".IPA", ".prononciation"
-        ].join(",")).forEach(el => el.remove());
-
-        element.querySelectorAll("a").forEach(a => {
-            const text = normalizeSpaces(a.textContent);
-            if (text) {
-                a.replaceWith(document.createTextNode(text));
-            } else {
-                a.remove();
-            }
+          });
         });
 
-        element.querySelectorAll("br").forEach(br => {
-            br.replaceWith(document.createTextNode(" "));
+        return this.assembleSynthesis(allSentences);
+      }
+
+      async fetchCombinedFromSource(sourceName, apiUrl, keyword) {
+        const params = new URLSearchParams({
+          action: 'query',
+          format: 'json',
+          origin: '*',
+          generator: 'search',
+          gsrsearch: keyword,
+          gsrlimit: '1',
+          prop: 'extracts',
+          exintro: '1',
+          explaintext: '1',
+          redirects: '1'
         });
 
-        const raw = normalizeSpaces(element.textContent);
-        if (!raw) continue;
-        blocks.push(raw);
-    }
-    return blocks;
-}
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 1800);
 
-function protectAbbreviations(text) {
-    return text.replace(/\b(M|Mme|Mlle|Dr|Pr|etc|ex|p|pp|n°)\./gi, match => match.replace(".", "\u0001"));
-}
+        try {
+          const response = await fetch(`${apiUrl}?${params.toString()}`, { signal: controller.signal });
+          clearTimeout(timeoutId);
 
-function restoreAbbreviations(text) {
-    return text.replace(/\u0001/g, ".");
-}
-
-function splitIntoSentences(text) {
-    const clean = normalizeSpaces(text);
-    if (!clean) return [];
-    const protectedText = protectAbbreviations(clean);
-    const pieces = protectedText.split(/(?<=[.!?])\s+(?=[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸŒ])/u);
-    return pieces
-        .map(piece => restoreAbbreviations(piece))
-        .map(normalizeLine)
-        .map(cleanPunctuation)
-        .filter(piece => piece.length > 0);
-}
-
-function linguisticFilter(lines) {
-    const accepted = [];
-    for (const line of lines) {
-        let candidate = normalizeLine(line);
-        if (!candidate) continue;
-        candidate = cleanPunctuation(candidate);
-        if (isPureNoise(candidate)) continue;
-        if (!looksLikeLinguisticContent(candidate)) continue;
-        accepted.push(candidate);
-    }
-    return accepted;
-}
-
-function cleanFinalText(blocks) {
-    const rawLines = [];
-    for (const block of blocks) {
-        const cleanedBlock = normalizeLine(block);
-        if (!cleanedBlock || isPureNoise(cleanedBlock)) continue;
-        const sentences = splitIntoSentences(cleanedBlock);
-        for (const sentence of sentences) {
-            if (!sentence) continue;
-            rawLines.push(sentence);
+          if (!response.ok) throw new Error(`HTTP status ${response.status}`);
+          
+          const data = await response.json();
+          const pages = data.query?.pages;
+          
+          if (!pages) return { source: sourceName, text: "" };
+          
+          const pageIds = Object.keys(pages);
+          if (pageIds.length === 0 || pageIds.includes("-1")) {
+            return { source: sourceName, text: "" };
+          }
+          
+          const extract = pages[pageIds[0]]?.extract || "";
+          return { source: sourceName, text: extract };
+        } catch (error) {
+          if (error.name !== 'AbortError') {
+            clearTimeout(timeoutId);
+          }
+          console.warn(`[${sourceName.toUpperCase()}] Échec du traitement :`, error.message);
+          return { source: sourceName, text: "" };
         }
-    }
+      }
 
-    const filtered = linguisticFilter(rawLines);
-    const seen = new Set();
-    const unique = [];
+      cleanRawText(text) {
+        return text
+          .replace(/==.*?==/g, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
 
-    for (const line of filtered) {
-        const key = line.normalize("NFC").toLocaleLowerCase("fr-FR");
-        if (seen.has(key)) continue;
-        seen.add(key);
-        unique.push(line);
-    }
+      segmentIntoSentences(text) {
+        if (!text) return [];
 
-    return unique.map(line => line.trim()).filter(Boolean).join("\n");
-}
+        let maskedText = text;
+        maskedText = maskedText.replace(/(\d+)\.(\d+)/g, '$1__DEC__$2');
+        maskedText = maskedText.replace(/([A-Z])\./g, '$1__INIT__');
 
-function htmlToPureText(html) {
-    const frenchRoot = extractFrenchSection(html);
-    removeUnwantedSubsections(frenchRoot);
-    const blocks = extractTextBlocks(frenchRoot);
-    const result = cleanFinalText(blocks);
+        this.protectedAbbreviations.forEach(abbr => {
+          const regex = new RegExp(`\\b(${abbr})\\.` , 'gi');
+          maskedText = maskedText.replace(regex, '$1__ABBR__');
+        });
 
-    return result.replace(/\r/g, "").replace(/\n{2,}/g, "\n").trim();
-}
+        const rawSegments = maskedText.match(/[^.!?]+([.!?]+|\s|$)/g) || [maskedText];
 
-async function resolveCanonicalTitle(word, signal) {
-    const endpoint = CONFIG.API + "?action=query&titles=" + encodeURIComponent(word) + "&redirects=1&format=json&origin=*";
-    const response = await fetch(endpoint, { signal, cache: "no-store" });
-    if (!response.ok) throw new Error("Erreur réseau HTTP " + response.status);
-    const data = await response.json();
-    if (data.error) throw new Error(data.error.info || "Erreur API Wiktionnaire.");
+        return rawSegments
+          .map(sentence => {
+            return sentence
+              .replace(/__DEC__/g, '.')
+              .replace(/__INIT__/g, '.')
+              .replace(/__ABBR__/g, '.')
+              .trim();
+          })
+          .filter(sentence => sentence.length > 0);
+      }
 
-    if (data.query && data.query.redirects && data.query.redirects.length) {
-        const redirect = data.query.redirects[data.query.redirects.length - 1];
-        return String(redirect.to || word).replace(/_/g, " ");
-    }
+      scoreSentence(sentence, keyword, source) {
+        let score = 0;
+        const lowerSentence = sentence.toLowerCase();
+        const lowerKeyword = keyword.toLowerCase();
 
-    if (data.query && data.query.pages) {
-        const pages = data.query.pages;
-        const ids = Object.keys(pages);
-        if (ids.length) {
-            const page = pages[ids[0]];
-            if (page && page.pageid && page.title) return page.title;
-            if (ids[0] === "-1") return await searchWiktionary(word, signal);
-        }
-    }
-    return word;
-}
-
-async function searchWiktionary(word, signal) {
-    const endpoint = CONFIG.API + "?action=query&list=search&srsearch=" + encodeURIComponent(word) + "&srlimit=1&format=json&origin=*";
-    const response = await fetch(endpoint, { signal, cache: "no-store" });
-    if (!response.ok) throw new Error("Erreur lors de la recherche du terme.");
-    const data = await response.json();
-    if (!data.query || !data.query.search || !data.query.search.length) {
-        throw new Error(`Aucun article trouvé pour « ${word} ».`);
-    }
-    return data.query.search[0].title;
-}
-
-async function loadWiktionaryArticle(title, signal) {
-    const endpoint = CONFIG.API + "?action=parse&page=" + encodeURIComponent(title) + "&prop=text&format=json&origin=*";
-    const response = await fetch(endpoint, { signal, cache: "no-store" });
-    if (!response.ok) throw new Error("Erreur HTTP " + response.status);
-    const data = await response.json();
-    if (data.error) throw new Error(data.error.info || "Erreur lors du chargement de l'article.");
-    if (!data.parse || !data.parse.text || typeof data.parse.text["*"] !== "string") {
-        throw new Error("Aucun contenu exploitable trouvé.");
-    }
-    return data.parse.text["*"];
-}
-
-async function fetchWiktionary() {
-    const word = wordInput.value.trim().normalize("NFC");
-    if (!word) {
-        setStatus("Veuillez entrer un mot.", true);
-        wordInput.focus();
-        return;
-    }
-
-    if (currentAbortController) currentAbortController.abort();
-    currentAbortController = new AbortController();
-    const signal = currentAbortController.signal;
-
-    const timeout = setTimeout(() => {
-        if (currentAbortController) currentAbortController.abort();
-    }, CONFIG.REQUEST_TIMEOUT);
-
-    try {
-        setLoading(true);
-        outputArea.value = "";
-        setStatus(`Recherche de « ${word} »...`);
-
-        const cached = cache.get(word);
-        if (cached !== undefined) {
-            outputArea.value = cached;
-            setStatus(`« ${word} » chargé depuis le cache.`);
-            return;
+        if (lowerSentence.includes(lowerKeyword)) {
+          score += 50;
+          if (lowerSentence.indexOf(lowerKeyword) < 10) {
+            score += 20;
+          }
         }
 
-        const canonicalTitle = await resolveCanonicalTitle(word, signal);
-        setStatus(`Chargement de « ${canonicalTitle} »...`);
-
-        const html = await loadWiktionaryArticle(canonicalTitle, signal);
-        setStatus("Extraction du français...");
-
-        const pureText = htmlToPureText(html);
-
-        if (!pureText) {
-            throw new Error("Article trouvé, mais aucun contenu linguistique français exploitable n'a été extrait.");
+        const len = sentence.length;
+        if (len >= 60 && len <= 150) {
+          score += 15;
+        } else if (len > 150) {
+          score -= 10;
         }
 
-        cache.set(word, pureText);
-        cache.set(canonicalTitle, pureText);
-        outputArea.value = pureText;
-
-        const lineCount = pureText.split("\n").filter(Boolean).length;
-        setStatus(`Terminé : ${lineCount} phrase(s) ou information(s) linguistique(s) conservée(s).`);
-
-    } catch (error) {
-        if (error && error.name === "AbortError") {
-            if (currentAbortController && currentAbortController.signal === signal) {
-                setStatus("Recherche annulée.", true);
-            }
-            return;
+        if (source === 'wiktionnaire') {
+          score += 12;
+        } else if (source === 'wikipedia') {
+          score += 8;
         }
-        console.error("Erreur Extracteur Wiktionnaire v22 :", error);
-        setStatus("Erreur : " + (error?.message || "Erreur inconnue."), true);
-    } finally {
-        clearTimeout(timeout);
-        if (currentAbortController && currentAbortController.signal === signal) {
-            currentAbortController = null;
-            setLoading(false);
+
+        return score;
+      }
+
+      calculateJaccardSimilarity(str1, str2) {
+        const getWords = (str) => new Set(str.toLowerCase().match(/\b\w{3,}\b/g) || []);
+        const words1 = getWords(str1);
+        const words2 = getWords(str2);
+        
+        if (words1.size === 0 || words2.size === 0) return 0;
+        
+        const intersection = new Set([...words1].filter(x => words2.has(x)));
+        const union = new Set([...words1, ...words2]);
+        
+        return intersection.size / union.size;
+      }
+
+      assembleSynthesis(allSentences) {
+        if (allSentences.length === 0) {
+          return "Aucun contenu pertinent n'a pu être extrait des sources Wikimedia pour ce mot-clé.";
         }
-    }
-}
 
-async function copyToClipboard() {
-    const text = outputArea.value.trim();
-    if (!text) { setStatus("Rien à copier.", true); return; }
-    try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            await navigator.clipboard.writeText(text);
-        } else {
-            outputArea.focus();
-            outputArea.select();
-            const success = document.execCommand("copy");
-            if (!success) throw new Error("Copie impossible.");
+        allSentences.sort((a, b) => b.score - a.score);
+        const selectedSentences = [];
+
+        for (const item of allSentences) {
+          if (selectedSentences.length >= 5) break;
+
+          const isRedundant = selectedSentences.some(selected => 
+            this.calculateJaccardSimilarity(selected.text, item.text) > 0.4
+          );
+
+          if (isRedundant) continue;
+          selectedSentences.push(item);
         }
-        const original = copyBtn.textContent;
-        copyBtn.textContent = "✓ Texte propre copié";
-        setStatus("Le texte propre a été copié.");
-        setTimeout(() => { copyBtn.textContent = original; }, 1800);
-    } catch (error) {
-        setStatus("Impossible de copier automatiquement. Sélectionnez le texte manuellement.", true);
+
+        return selectedSentences
+          .map(item => `${item.text} [${item.source.toUpperCase()}]`)
+          .join(' ');
+      }
     }
-}
 
-function downloadTextFile() {
-    const text = outputArea.value.trim();
-    if (!text) { setStatus("Rien à télécharger.", true); return; }
-    let filename = wordInput.value.trim() || "wiktionnaire";
-    filename = filename.normalize("NFC").replace(/[<>:"/\\|?*\x00-\x1F]/g, "_").replace(/\s+/g, "_").slice(0, 100);
-    if (!filename) filename = "wiktionnaire";
+    // --- LOGIQUE DE L'INTERFACE DE CHAT ---
 
-    const blob = new Blob([text + "\n"], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename + ".txt";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    setTimeout(() => { URL.revokeObjectURL(url); }, 1000);
-    setStatus("Fichier texte propre téléchargé.");
-}
+    const synthesizer = new WikimediaSynthesizer();
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
 
-function clearAll() {
-    if (currentAbortController) {
-        currentAbortController.abort();
-        currentAbortController = null;
+    function appendMessage(sender, text) {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', sender);
+      messageDiv.textContent = text;
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-    wordInput.value = "";
-    outputArea.value = "";
-    setLoading(false);
-    setStatus("");
-    wordInput.focus();
-}
 
-searchBtn.addEventListener("click", fetchWiktionary);
-copyBtn.addEventListener("click", copyToClipboard);
-downloadBtn.addEventListener("click", downloadTextFile);
-clearBtn.addEventListener("click", clearAll);
+    async function handleUserSubmit() {
+      const keyword = userInput.value.trim();
+      if (!keyword) return;
 
-wordInput.addEventListener("keydown", event => {
-    if (event.key === "Enter" && !searchBtn.disabled) {
-        event.preventDefault();
-        fetchWiktionary();
+      appendMessage('user', keyword);
+      userInput.value = '';
+      userInput.disabled = true;
+      sendBtn.disabled = true;
+
+      const loadingId = 'loading-' + Date.now();
+      const loadingDiv = document.createElement('div');
+      loadingDiv.classList.add('message', 'bot', 'loading');
+      loadingDiv.id = loadingId;
+      loadingDiv.textContent = "Recherche et synthèse en cours dans les sources Wikimedia...";
+      chatMessages.appendChild(loadingDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      try {
+        const synthesisResult = await synthesizer.generateSynthesis(keyword);
+        document.getElementById(loadingId).remove();
+        appendMessage('bot', synthesisResult);
+      } catch (error) {
+        document.getElementById(loadingId).remove();
+        appendMessage('bot', `Erreur : ${error.message}`);
+      } finally {
+        userInput.disabled = false;
+        sendBtn.disabled = false;
+        userInput.focus();
+      }
     }
-});
 
-setStatus("Prêt.");
-wordInput.focus();
-
-</script>
-
+    sendBtn.addEventListener('click', handleUserSubmit);
+    userInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleUserSubmit();
+    });
+  </script>
 </body>
 </html>
