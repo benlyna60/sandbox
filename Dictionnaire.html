@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synthétiseur Pyramidal Wikimedia - Chat Local</title>
+  <title>Synthétiseur Pyramidal Universel - Wikimedia</title>
   <style>
     :root {
       --primary-color: #2563eb;
@@ -169,23 +169,23 @@
 
   <div class="chat-container">
     <div class="chat-header">
-      Synthétiseur Pyramidal Wikimedia <span>Architecture en Entonnoir / Cross-Scoring</span>
+      Synthétiseur Pyramidal Universel <span>Optimisé & Résilient / 100% Local</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Tapez une expression complexe (ex: <i>recette de gâteau</i>) : le système va croiser les tokens pour s'assurer que les briques du bas se parlent avant de s'élever vers le sommet de la pyramide.
+        Bonjour ! Tapez n'importe quelle requête procédurale ou thématique : le système combine la recherche globale et l'analyse par jetons pour structurer un résultat séquentiel.
       </div>
     </div>
     
     <div class="chat-input-area">
-      <input type="text" id="user-input" placeholder="Tapez votre expression multi-mots..." autocomplete="off">
+      <input type="text" id="user-input" placeholder="Tapez votre recherche..." autocomplete="off">
       <button id="send-btn">Envoyer</button>
     </div>
   </div>
 
   <script>
-    class WikimediaPyramidalSynthesizer {
+    class WikimediaUniversalSynthesizer {
       constructor() {
         this.sources = {
           wikipedia: 'https://fr.wikipedia.org/w/api.php',
@@ -198,6 +198,8 @@
           'p. ex', 'ex', 'ca', 'cf', 'etc', 'art', 'av', 'dr', 'm', 'me', 'mgr', 
           'st', 'ste', 'trad', 'vol', 'janv', 'févr', 'juill', 'sept', 'oct', 'nov', 'déc'
         ];
+
+        this.stopWords = new Set(['le', 'la', 'les', 'un', 'une', 'des', 'de', 'du', 'au', 'aux', 'et', 'ou', 'donne', 'moi', 'cherche', 'pour', 'sur', 'dans', 'comment', 'faire', 'fabriquer', 'atteindre', 'etapes', 'pas']);
       }
 
       async generatePyramidalSynthesis(inputPhrase) {
@@ -205,23 +207,26 @@
           throw new Error("L'expression ne peut pas être vide.");
         }
 
+        const lowerInput = inputPhrase.toLowerCase();
+        const isProcessIntent = /comment|fabriquer|recette|etapes|étape|méthode|processus|réaliser|construire|atteindre|obtenir|créer|guide/.test(lowerInput);
+
         const rawTokens = inputPhrase.trim().split(/\s+/);
         const tokens = [...new Set(
           rawTokens
-            .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim())
-            .filter(t => t.length > 2)
+            .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
+            .filter(t => t.length > 2 && !this.stopWords.has(t))
         )];
 
-        if (tokens.length === 0) {
-          throw new Error("Veuillez entrer des mots-clés valides (plus de 3 caractères).");
-        }
+        // Stratégie améliorée : on cherche à la fois la phrase globale et les tokens significatifs
+        const searchQueries = [inputPhrase.trim()];
+        tokens.forEach(t => searchQueries.push(t));
+        const uniqueQueries = [...new Set(searchQueries)].slice(0, 4); // Limite pour éviter le spam d'API
 
-        // Bassin global collectant toutes les phrases candidates de toutes les sources pour tous les tokens
         let globalSentencePool = [];
 
-        for (const token of tokens) {
+        for (const query of uniqueQueries) {
           const fetchPromises = Object.entries(this.sources).map(([sourceName, apiUrl]) => 
-            this.fetchCombinedFromSource(sourceName, apiUrl, token)
+            this.fetchCombinedFromSource(sourceName, apiUrl, query)
           );
           
           const rawResults = await Promise.all(fetchPromises);
@@ -233,13 +238,13 @@
             const sentences = this.segmentIntoSentences(cleanText);
             
             sentences.forEach(sentence => {
-              if (sentence.length >= 20 && sentence.length <= 250) {
-                const score = this.scoreSentenceCross(sentence, tokens, token, source);
+              if (sentence.length >= 15 && sentence.length <= 300) {
+                const score = this.scoreSentenceUniversal(sentence, tokens, query, source, isProcessIntent);
                 globalSentencePool.push({
                   text: sentence,
                   source: source,
                   score: score,
-                  token: token
+                  query: query
                 });
               }
             });
@@ -247,10 +252,10 @@
         }
 
         if (globalSentencePool.length === 0) {
-          return "Aucun contenu pertinent n'a pu être extrait pour ces mots.";
+          return "Aucun contenu pertinent n'a pu être extrait pour ces termes.";
         }
 
-        return this.fusePoolToPeak(globalSentencePool, inputPhrase);
+        return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent);
       }
 
       async fetchCombinedFromSource(sourceName, apiUrl, keyword) {
@@ -260,7 +265,7 @@
           origin: '*',
           generator: 'search',
           gsrsearch: keyword,
-          gsrlimit: '1',
+          gsrlimit: '3', // Volume de données élargi
           prop: 'extracts',
           exintro: '1',
           explaintext: '1',
@@ -268,7 +273,7 @@
         });
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2500);
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
 
         try {
           const response = await fetch(`${apiUrl}?${params.toString()}`, { signal: controller.signal });
@@ -281,13 +286,14 @@
           
           if (!pages) return { source: sourceName, text: "" };
           
-          const pageIds = Object.keys(pages);
-          if (pageIds.length === 0 || pageIds.includes("-1")) {
-            return { source: sourceName, text: "" };
+          let combinedExtracts = "";
+          for (const pageId of Object.keys(pages)) {
+            if (pageId !== "-1" && pages[pageId]?.extract) {
+              combinedExtracts += " " + pages[pageId].extract;
+            }
           }
           
-          const extract = pages[pageIds[0]]?.extract || "";
-          return { source: sourceName, text: extract };
+          return { source: sourceName, text: combinedExtracts.trim() };
         } catch (error) {
           clearTimeout(timeoutId);
           return { source: sourceName, text: "" };
@@ -315,7 +321,18 @@
 
         const rawSegments = maskedText.match(/[^.!?]+([.!?]+|\s|$)/g) || [maskedText];
 
-        return rawSegments
+        let expandedSegments = [];
+        rawSegments.forEach(seg => {
+          if (seg.includes(';') || seg.includes(' - ')) {
+            const subParts = seg.split(/;| - /);
+            subParts.forEach(part => {
+              if (part.trim().length > 10) expandedSegments.push(part.trim());
+            });
+          }
+          expandedSegments.push(seg.trim());
+        });
+
+        return expandedSegments
           .map(sentence => {
             return sentence
               .replace(/__DEC__/g, '.')
@@ -326,38 +343,33 @@
           .filter(sentence => sentence.length > 0);
       }
 
-      // Logique de Cross-Scoring : évalue la phrase non pas sur un seul mot, mais sur sa capacité à connecter l'ensemble des tokens de la requête
-      scoreSentenceCross(sentence, allTokens, currentToken, source) {
+      scoreSentenceUniversal(sentence, allTokens, currentQuery, source, isProcessIntent) {
         let score = 0;
         const lowerSentence = sentence.toLowerCase();
-        const lowerToken = currentToken.toLowerCase();
 
-        // Bonus pour le token principal de la recherche
-        if (lowerSentence.includes(lowerToken)) {
-          score += 40;
-          if (lowerSentence.indexOf(lowerToken) < 15) {
-            score += 15;
-          }
+        // Bonus si la phrase contient la requête globale
+        if (lowerSentence.includes(currentQuery.toLowerCase())) {
+          score += 50;
         }
 
-        // Bonus de croisement : vérifie combien d'autres tokens de la requête sont présents dans la phrase
+        // Cross-scoring avec les tokens
         allTokens.forEach(t => {
-          if (t.toLowerCase() !== lowerToken && lowerSentence.includes(t.toLowerCase())) {
-            score += 35; // Forte récompense si la phrase fait le pont vers un autre mot-clé
+          if (lowerSentence.includes(t.toLowerCase())) {
+            score += 25;
           }
         });
 
-        // Longueur idéale de phrase
-        const len = sentence.length;
-        if (len >= 60 && len <= 150) {
-          score += 15;
-        } else if (len > 150) {
-          score -= 10;
+        if (isProcessIntent) {
+          const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie'];
+          let markerMatches = 0;
+          processMarkers.forEach(pm => {
+            if (lowerSentence.includes(pm)) markerMatches++;
+          });
+          score += markerMatches * 15;
         }
 
-        // Bonus source
-        if (source === 'wiktionnaire') score += 10;
-        if (source === 'wikipedia') score += 8;
+        if (source === 'wikipedia') score += 10;
+        if (source === 'wiktionnaire') score += 5;
 
         return score;
       }
@@ -375,51 +387,40 @@
         return intersection.size / union.size;
       }
 
-      // Fusion globale optimisée avec zone de Jaccard nuancée (ni doublon strict, ni hors-sujet complet)
-      fusePoolToPeak(sentencePool, originalPhrase) {
+      fusePoolToPeak(sentencePool, originalPhrase, isProcessIntent) {
         sentencePool.sort((a, b) => b.score - a.score);
         const finalSelected = [];
 
         for (const item of sentencePool) {
-          if (finalSelected.length >= 5) break;
+          const maxPhrases = isProcessIntent ? 6 : 4;
+          if (finalSelected.length >= maxPhrases) break;
 
           let tooRedundant = false;
-          let hasConnection = finalSelected.length === 0; // La première passe direct
-
           for (const selected of finalSelected) {
-            const similarity = this.calculateJaccardSimilarity(selected, item.text);
-            
-            if (similarity > 0.4) {
-              tooRedundant = true; // Doublon strict à éliminer
+            if (this.calculateJaccardSimilarity(selected, item.text) > 0.4) {
+              tooRedundant = true;
               break;
-            }
-            
-            // Si la similarité se situe dans la zone de complémentarité utile (entre 0.10 et 0.38), on valide le lien thématique
-            if (similarity >= 0.10 && similarity <= 0.38) {
-              hasConnection = true;
             }
           }
 
           if (tooRedundant) continue;
-
-          // Si on a plusieurs phrases, on s'assure qu'elles partagent un minimum de fil conducteur (complémentarité)
-          if (finalSelected.length > 0 && !hasConnection) {
-            // Tolérance si le score global est exceptionnellement élevé
-            if (item.score < 80) continue; 
-          }
-
           finalSelected.push(item.text);
         }
 
         if (finalSelected.length === 0) {
-          return `Synthèse unifiée (Sujet : "${originalPhrase}") :\n\nImpossible de composer un paragraphe cohérent avec les données croisées retournées.`;
+          return `Synthèse (Sujet : "${originalPhrase}") :\nAucun élément structuré n'a pu être assemblé.`;
         }
 
-        return `Synthèse unifiée (Sujet : "${originalPhrase}") :\n\n` + finalSelected.join(' ');
+        const prefix = isProcessIntent 
+          ? `Synthèse procédurale / Étapes ("${originalPhrase}") :\n\n• ` 
+          : `Synthèse unifiée ("${originalPhrase}") :\n\n`;
+
+        const separator = isProcessIntent ? '\n• ' : ' ';
+        return prefix + finalSelected.join(separator);
       }
     }
 
-    const synthesizer = new WikimediaPyramidalSynthesizer();
+    const synthesizer = new WikimediaUniversalSynthesizer();
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
@@ -463,7 +464,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Interrogation multi-sources, application du cross-scoring et fusion pyramidale contextuelle en cours...";
+      loadingDiv.textContent = "Requête globale combinée, extraction élargie et fusion pyramidale en cours...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
