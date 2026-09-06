@@ -1,4 +1,36 @@
 ----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-06 21:30:01
+TITRE: Advanced optical imaging reveals hidden activity in blood immune cells
+LIEN: https://phys.org/news/2026-09-advanced-optical-imaging-reveals-hidden.html
+CONTENU: A routine blood sample contains a diverse collection of immune cells that can reveal important clues about health and disease. These cells, known as peripheral blood mononuclear cells (PBMCs), are widely used to study infections, autoimmune disorders, cancer and the immune system's response to treatment. Scientists typically identify these cells using fluorescent labels that attach to specific surface markers. While effective, those methods provide limited information about how the cells are functioning and can alter the cells during preparation. As reported in Biophotonics Discovery, a recent study shows how advanced optical imaging can reveal a previously inaccessible layer of information: the metabolic activity of individual immune cells within a complex blood sample.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-06 21:00:01
+TITRE: How bird movements are helping researchers track a global virus
+LIEN: https://phys.org/news/2026-08-bird-movements-track-global-virus.html
+CONTENU: While the highly virulent avian influenza strain has only recently been discovered on Australian shores, researchers at Deakin University have been working behind the scenes for years, anticipating what an outbreak might look like.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-06 18:30:01
+TITRE: Small molecular substitutions reshape energy pathways behind aggregation-induced emission
+LIEN: https://phys.org/news/2026-09-small-molecular-substitutions-reshape-energy.html
+CONTENU: Certain chemical substances, broadly called luminogens, have an inherent ability to emit light. Most fluorescent molecules emit light in solution but lose their emission in the solid state, where the molecules aggregate.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-06 17:00:01
+TITRE: Six unusual structures identified at Earth's core-mantle boundary with the help of deep learning
+LIEN: https://phys.org/news/2026-09-unusual-earth-core-mantle-boundary.html
+CONTENU: Since scientists can't drill 2,900 km (1,800 miles) to the boundary between Earth's core and deep mantle, they must use information relayed by seismic waves recorded during earthquakes to study this region. In a new study published in the journal JGR Solid Earth, a group of scientists used deep learning to study a large set of a specific type of seismic wave. The analysis revealed six continuous bands of irregularities at the core-mantle boundary (CMB) that had previously appeared only as sparse patches.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-06 18:24:34
