@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synthétiseur Pyramidal Multi-Sources - Écosystème Étendu</title>
+  <title>Synthétiseur Pyramidal Multi-Sources - Zéro Dépendance Tiers</title>
   <style>
     :root {
       --primary-color: #2563eb;
@@ -170,17 +170,17 @@
   <div class="chat-container">
     <div class="chat-header">
       Synthétiseur Multi-Sources Adaptatif
-      <span>Wiki + Wikidata + Open Library + Crossref</span>
+      <span>100% Natif Front-end (Zéro Proxy Tiers)</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Système mis à jour (gestion CORS robuste, filtrage des stubs bibliographiques et analyse syntaxique affinée). Tapez un sujet pour lancer la synthèse enrichie :
+        Bonjour ! Architecture 100% front-end native activée sans aucun proxy tiers ni backend. Tapez un sujet pour lancer la synthèse :
       </div>
     </div>
     
     <div class="chat-input-area">
-      <input type="text" id="user-input" placeholder="Tapez votre recherche (scientifique, technique, historique...)..." autocomplete="off">
+      <input type="text" id="user-input" placeholder="Tapez votre recherche..." autocomplete="off">
       <button id="send-btn">Envoyer</button>
     </div>
   </div>
@@ -188,6 +188,8 @@
   <script>
     class MultiSourceAdaptiveSynthesizer {
       constructor() {
+        // Suppression totale des endpoints bloqués par le CORS sans proxy (Crossref, Open Library).
+        // On conserve exclusivement l'écosystème MediaWiki natif qui accepte ?origin=* sans aucune restriction.
         this.sources = {
           wikipedia: { type: 'mediawiki', url: 'https://fr.wikipedia.org/w/api.php' },
           wiktionnaire: { type: 'mediawiki', url: 'https://fr.wiktionary.org/w/api.php' },
@@ -196,9 +198,7 @@
           wikisource: { type: 'mediawiki', url: 'https://fr.wikisource.org/w/api.php' },
           wikiquote: { type: 'mediawiki', url: 'https://fr.wikiquote.org/w/api.php' },
           wikidata: { type: 'mediawiki', url: 'https://www.wikidata.org/w/api.php' },
-          wikihow: { type: 'mediawiki', url: 'https://fr.wikihow.com/api.php' },
-          openlibrary: { type: 'openlibrary', url: 'https://openlibrary.org/search.json' },
-          crossref: { type: 'crossref', url: 'https://api.crossref.org/works' }
+          wikihow: { type: 'mediawiki', url: 'https://fr.wikihow.com/api.php' }
         };
 
         this.protectedAbbreviations = [
@@ -254,15 +254,24 @@
         const uniqueQueries = [...new Set(searchQueries)].slice(0, 4);
 
         let globalSentencePool = [];
+        let hasNetworkError = false;
+        const sourcesEntries = Object.entries(this.sources);
 
         for (const query of uniqueQueries) {
-          const fetchPromises = Object.entries(this.sources).map(([sourceName, sourceConfig]) => 
-            this.fetchFromSpecificSource(sourceName, sourceConfig, query)
-          );
+          const batchSize = 3;
+          let rawResults = [];
+
+          for (let i = 0; i < sourcesEntries.length; i += batchSize) {
+            const batch = sourcesEntries.slice(i, i + batchSize);
+            const batchPromises = batch.map(([sourceName, sourceConfig]) => 
+              this.fetchFromSpecificSource(sourceName, sourceConfig, query)
+            );
+            const batchResults = await Promise.all(batchPromises);
+            rawResults.push(...batchResults);
+          }
           
-          const rawResults = await Promise.all(fetchPromises);
-          
-          rawResults.forEach(({ source, text }) => {
+          rawResults.forEach(({ source, text, errorOccurred }) => {
+            if (errorOccurred) hasNetworkError = true;
             if (!text) return;
             
             const cleanText = this.cleanRawText(text);
@@ -284,7 +293,10 @@
         }
 
         if (globalSentencePool.length === 0) {
-          return "Aucun contenu pertinent n'a pu être extrait (vérifiez votre connexion ou l'absence de blocage réseau/CORS sur les APIs externes).";
+          if (hasNetworkError) {
+            return "Aucun contenu n'a pu être extrait en raison d'interruptions réseau. Vérifiez votre connexion.";
+          }
+          return `Aucun contenu pertinent n'a pu être extrait pour : "${inputPhrase}".`;
         }
 
         return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent);
@@ -343,7 +355,7 @@
 
       async fetchFromSpecificSource(sourceName, config, keyword) {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500);
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
 
         try {
           if (config.type === 'mediawiki') {
@@ -362,7 +374,7 @@
 
             const response = await fetch(`${config.url}?${params.toString()}`, { signal: controller.signal });
             clearTimeout(timeoutId);
-            if (!response.ok) return { source: sourceName, text: "" };
+            if (!response.ok) return { source: sourceName, text: "", errorOccurred: true };
             
             const data = await response.json();
             const pages = data.query?.pages;
@@ -375,49 +387,12 @@
               }
             }
             return { source: sourceName, text: combined.trim() };
-
-          } else if (config.type === 'openlibrary') {
-            const params = new URLSearchParams({ q: keyword, limit: '2' });
-            const response = await fetch(`${config.url}?${params.toString()}`, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            if (!response.ok) return { source: sourceName, text: "" };
-
-            const data = await response.json();
-            const docs = data.docs || [];
-            let combined = "";
-            docs.forEach(doc => {
-              const title = doc.title || '';
-              const authors = doc.author_name ? doc.author_name.join(', ') : '';
-              const year = doc.first_publish_year || '';
-              if (title && title.length > 10) {
-                combined += ` ${title} ${authors ? 'par ' + authors : ''} (${year}). `;
-              }
-            });
-            return { source: sourceName, text: combined.trim() };
-
-          } else if (config.type === 'crossref') {
-            const params = new URLSearchParams({ query: keyword, rows: '2' });
-            const response = await fetch(`${config.url}?${params.toString()}`, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            if (!response.ok) return { source: sourceName, text: "" };
-
-            const data = await response.json();
-            const items = data.message?.items || [];
-            let combined = "";
-            items.forEach(item => {
-              const title = item.title?.[0] || '';
-              const year = item.issued?.['date-parts']?.[0]?.[0] || '';
-              if (title && title.length > 15) {
-                combined += ` ${title} (${year}). `;
-              }
-            });
-            return { source: sourceName, text: combined.trim() };
           }
 
           return { source: sourceName, text: "" };
         } catch (error) {
           clearTimeout(timeoutId);
-          return { source: sourceName, text: "" };
+          return { source: sourceName, text: "", errorOccurred: true };
         }
       }
 
@@ -470,11 +445,6 @@
 
         if (!/[.!?]$/.test(sentence) && sentence.length < 40) return 0;
 
-        const isBibliographicStub = /^\s*[^.!?]+\(\d{4}\)\s*\.?\s*$/.test(sentence);
-        if (isBibliographicStub) {
-          return 0;
-        }
-
         const sentenceWords = (lowerSentence.match(/\b[a-zéèàâêîôûç]{3,}\b/g) || [])
           .filter(w => !this.stopWords.has(w));
 
@@ -519,8 +489,6 @@
         if (source === 'wikiquote') score += 15;
         if (source === 'wikidata') score += 18;
         if (source === 'wikihow') score += 25;
-        if (source === 'openlibrary') score += 15;
-        if (source === 'crossref') score += 15;
 
         return score;
       }
@@ -610,7 +578,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Apprentissage dynamique, interrogation multi-sources sécurisée et filtrage syntaxique strict...";
+      loadingDiv.textContent = "Apprentissage dynamique, interrogation multi-sources native et filtrage syntaxique...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
