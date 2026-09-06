@@ -200,7 +200,6 @@
           'st', 'ste', 'trad', 'vol', 'janv', 'févr', 'juill', 'sept', 'oct', 'nov', 'déc'
         ];
 
-        // Mots vides universels (stopwords) mis à jour pour filtrer les phrases de type "explique moi c'est quoi"
         this.stopWords = new Set([
           'le', 'la', 'les', 'un', 'une', 'des', 'de', 'du', 'au', 'aux', 'et', 'ou', 
           'donne', 'moi', 'cherche', 'pour', 'sur', 'dans', 'comment', 'faire', 'fabriquer', 
@@ -217,7 +216,6 @@
         const lowerInput = inputPhrase.toLowerCase();
         const isProcessIntent = /comment|fabriquer|recette|etapes|étape|méthode|processus|réaliser|construire|atteindre|obtenir|créer|guide|donne/.test(lowerInput);
 
-        // 1. Extraction des tokens initiaux de l'utilisateur (nettoyage strict)
         const rawTokens = inputPhrase.trim().split(/\s+/);
         const coreTokens = [...new Set(
           rawTokens
@@ -225,7 +223,6 @@
             .filter(t => t.length > 3 && !this.stopWords.has(t))
         )];
 
-        // Sécurité de secours si tous les mots ont été filtrés
         if (coreTokens.length === 0) {
           const fallbackTokens = rawTokens
             .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
@@ -237,20 +234,15 @@
           throw new Error("Veuillez entrer des mots-clés significatifs.");
         }
 
-        // 2. PHASE D'APPRENTISSAGE AUTOMATIQUE (Apprentissage dynamique du contexte)
         let collectedCorpusTexts = [];
         for (const token of coreTokens) {
           const initialResults = await this.fetchRawTextsOnly(token);
           collectedCorpusTexts.push(...initialResults);
         }
 
-        // Le système analyse le corpus récupéré et extrait les mots les plus récurrents
         const learnedVocabulary = this.extractDynamicKeywords(collectedCorpusTexts, coreTokens);
-
-        // Fusion des tokens de l'utilisateur et du vocabulaire appris
         const adaptiveSatellites = [...new Set([...coreTokens, ...learnedVocabulary])];
 
-        // 3. PHASE DE RECHERCHE CIBLÉE ÉTENDUE
         const searchQueries = [inputPhrase.trim(), ...coreTokens];
         learnedVocabulary.slice(0, 3).forEach(vocabWord => searchQueries.push(vocabWord));
         const uniqueQueries = [...new Set(searchQueries)].slice(0, 5);
@@ -272,7 +264,7 @@
             
             sentences.forEach(sentence => {
               if (sentence.length >= 15 && sentence.length <= 300) {
-                const score = this.scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent);
+                const score = this.scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent, lowerInput);
                 if (score > 0) {
                   globalSentencePool.push({
                     text: sentence,
@@ -292,7 +284,6 @@
         return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent);
       }
 
-      // Récupération brute pour l'apprentissage
       async fetchRawTextsOnly(keyword) {
         const params = new URLSearchParams({
           action: 'query',
@@ -326,7 +317,6 @@
         }
       }
 
-      // Algorithme d'apprentissage : compte la fréquence des mots dans le corpus récupéré
       extractDynamicKeywords(textArray, ignoreList) {
         let wordFrequency = {};
 
@@ -430,17 +420,9 @@
           .filter(sentence => sentence.length > 0);
       }
 
-      scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent) {
+      scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent, userQueryLower) {
         let score = 0;
         const lowerSentence = sentence.toLowerCase();
-
-        // Filtre anti-bruit pour écarter les phrases publicitaires ou de diffusion TV indésirables
-        const noiseKeywords = ['france 4', 'okoo', 'gulli', 'youtube', 'c\'est pas sorcier', 'télévision', 'diffusée', 'chaîne'];
-        const isTelevisionQuery = coreTokens.some(t => ['television', 'emission', 'sorcier'].includes(t));
-        if (!isTelevisionQuery) {
-          const hasNoise = noiseKeywords.some(noise => lowerSentence.includes(noise));
-          if (hasNoise) return 0;
-        }
 
         let coreMatches = 0;
         coreTokens.forEach(t => {
@@ -452,7 +434,6 @@
           if (lowerSentence.includes(st)) adaptiveMatches++;
         });
 
-        // Règle de sécurité absolue : La phrase DOIT contenir au moins un mot-clé direct de l'utilisateur.
         if (coreMatches === 0) {
           return 0;
         }
@@ -464,8 +445,19 @@
         score += coreMatches * 35;
         score += adaptiveMatches * 6;
 
+        // SYSTÈMES DE PÉNALITÉ INTELLIGENTE CONTEXTUELLE
+        const cinemaMarkers = ['réalisé par', 'film français', 'film américain', 'sorti en 202', 'sorti en 199', 'sorti en 200', 'cinéma', 'long-métrage'];
+        const isUserAskingForMovie = /film|cinema|regarder|acteur|réalisateur|serie/i.test(userQueryLower);
+
+        if (!isUserAskingForMovie) {
+          const isSentenceAboutMovie = cinemaMarkers.some(marker => lowerSentence.includes(marker));
+          if (isSentenceAboutMovie) {
+            score -= 150; 
+          }
+        }
+
         if (isProcessIntent) {
-          const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler', 'organisation', 'service', 'réseau', 'gestion'];
+          const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler', 'organisation', 'service', 'réseau', 'gestion', 'farce', 'pâte'];
           let markerMatches = 0;
           processMarkers.forEach(pm => {
             if (lowerSentence.includes(pm)) markerMatches++;
@@ -475,7 +467,7 @@
 
         if (source === 'wikipedia') score += 10;
         if (source === 'wiktionnaire') score += 5;
-        if (source === 'wikihow') score += 15; // Bonus pour les guides pratiques structurés
+        if (source === 'wikihow') score += 15;
 
         return score;
       }
@@ -494,10 +486,12 @@
       }
 
       fusePoolToPeak(sentencePool, originalPhrase, isProcessIntent) {
-        sentencePool.sort((a, b) => b.score - a.score);
+        const validPool = sentencePool.filter(item => item.score > 0);
+        validPool.sort((a, b) => b.score - a.score);
+
         const finalSelected = [];
 
-        for (const item of sentencePool) {
+        for (const item of validPool) {
           const maxPhrases = isProcessIntent ? 6 : 4;
           if (finalSelected.length >= maxPhrases) break;
 
