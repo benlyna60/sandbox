@@ -3,621 +3,1389 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Synthétiseur Pyramidal V3</title>
+<title>Synthétiseur Pyramidal Multi-Sources V4</title>
 <style>
-:root{--p:#2563eb;--bg:#f8fafc;--txt:#172033;--mut:#64748b;--bd:#dbe3ec;--bot:#f1f5f9}
-*{box-sizing:border-box}body{margin:0;height:100vh;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;justify-content:center;align-items:center}
-.app{width:min(900px,100%);height:94vh;background:#fff;border:1px solid var(--bd);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 5px 20px #0000000a}
-header{padding:15px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700}
-header small{font-weight:500;color:#0369a1;background:#e0f2fe;padding:4px 9px;border-radius:20px}
-#chat{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:13px;background:#fcfdff}
-.msg{max-width:90%;padding:12px 15px;border-radius:12px;line-height:1.52;white-space:pre-wrap;word-break:break-word;font-size:.94rem;position:relative}
-.user{align-self:flex-end;background:var(--p);color:#fff;border-bottom-right-radius:3px}
-.bot{align-self:flex-start;background:var(--bot);border:1px solid var(--bd);border-bottom-left-radius:3px;padding-top:34px}
-.info{font-size:.76rem;color:var(--mut);margin-top:8px;padding-top:7px;border-top:1px solid var(--bd)}
-.copy{position:absolute;right:7px;top:7px;border:0;border-radius:5px;padding:4px 8px;background:#e2e8f0;color:#475569;font-weight:600;cursor:pointer}
-.copy:hover{background:var(--p);color:#fff}
-.thinking{padding-top:12px;color:#0369a1;background:#f0f9ff;border-style:dashed}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#0284c7;margin-right:9px;animation:p 1s infinite}
-@keyframes p{50%{opacity:.35;transform:scale(.75)}}
-footer{border-top:1px solid var(--bd);padding:12px;display:flex;gap:8px}
-input{flex:1;min-width:0;border:1px solid var(--bd);border-radius:8px;padding:11px 13px;font:inherit;outline:0}
-input:focus{border-color:var(--p)}
-button.send,button.clear{border:0;border-radius:8px;padding:0 16px;font-weight:700;cursor:pointer}
-.send{background:var(--p);color:#fff}.clear{background:#e2e8f0;color:#475569}
-button:disabled{opacity:.55;cursor:not-allowed}
-@media(max-width:600px){.app{height:100vh;border-radius:0}header{font-size:.92rem}header small{font-size:.65rem}.msg{max-width:95%}.clear{display:none}}
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#e9edf7;font-family:Arial,Helvetica,sans-serif}
+header{padding:18px 20px;background:#111936;border-bottom:1px solid #29345c}
+header h1{margin:0;font-size:20px}
+header p{margin:6px 0 0;color:#9ca8c8;font-size:13px}
+#chat{max-width:1050px;margin:auto;padding:20px;min-height:calc(100vh - 150px)}
+.msg{max-width:92%;margin:12px 0;padding:14px 16px;border-radius:14px;line-height:1.55;white-space:pre-wrap}
+.user{margin-left:auto;background:#263b73}
+.bot{background:#151d35;border:1px solid #29345c}
+.copy{display:block;margin-top:10px;padding:6px 10px;border:0;border-radius:7px;background:#29365f;color:#fff;cursor:pointer;font-size:12px}
+.copy:hover{background:#3c4d80}
+.thinking{color:#9ca8c8;font-style:italic}
+.meta{margin-top:10px;padding-top:9px;border-top:1px solid #29345c;color:#8f9bbb;font-size:11px}
+.badge{display:inline-block;margin:2px 4px 2px 0;padding:3px 7px;border-radius:10px;background:#202b4d;color:#b9c6e8}
+#bar{position:sticky;bottom:0;background:#0b1020;border-top:1px solid #29345c;padding:12px}
+.controls{max-width:1050px;margin:auto;display:flex;gap:8px}
+#input{flex:1;min-height:48px;max-height:150px;resize:vertical;padding:13px;border-radius:10px;border:1px solid #35436d;background:#111936;color:#fff;outline:none;font-size:15px}
+button{border:0;border-radius:10px;padding:0 17px;background:#4968c8;color:#fff;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+#clear{background:#29324f}
+.status{font-size:11px;color:#7382a8;margin-top:7px;text-align:center}
+@media(max-width:700px){
+ .controls{flex-wrap:wrap}
+ #input{flex-basis:100%}
+ .controls button{height:44px}
+ .msg{max-width:97%}
+}
 </style>
 </head>
-<body>
-<div class="app">
-<header>
-<div>Synthétiseur Pyramidal Multi-Sources <small>V3 • moteur local</small></div>
-</header>
-<div id="chat">
-<div class="msg bot">Bonjour. V3 analyse maintenant la cible, les contraintes et l'intention de votre question avant de sélectionner les informations.
 
-Aucun LLM, aucune bibliothèque et aucune API d'IA externe.</div>
+<body>
+
+<header>
+<h1>🧠 Synthétiseur Pyramidal Multi-Sources — V4</h1>
+<p>Moteur ouvert • découverte automatique des sujets • Wikimedia • synthèse locale</p>
+</header>
+
+<main id="chat">
+<div class="msg bot">
+Bonjour. Pose-moi une question sur n'importe quel sujet.
+<div class="meta">
+Le moteur découvre automatiquement les concepts nécessaires au lieu de dépendre d'une liste de sujets programmée à l'avance.
 </div>
-<footer>
-<input id="input" autocomplete="off" placeholder="Ex. Comment fonctionne le Parlement canadien ?">
-<button class="clear" id="clear">Effacer</button>
-<button class="send" id="send">Envoyer</button>
-</footer>
+</div>
+</main>
+
+<div id="bar">
+<div class="controls">
+<textarea id="input" placeholder="Ex. Pourquoi les volcans entrent-ils en éruption ?"></textarea>
+<button id="send" type="button">Envoyer</button>
+<button id="clear" type="button">Effacer</button>
+</div>
+<div class="status" id="status">Moteur prêt</div>
 </div>
 
 <script>
 "use strict";
 
-class PyramidV3{
+/* ============================================================
+   SYNTHÉTISEUR PYRAMIDAL V4
+   MOTEUR OUVERT SANS LISTE DE SUJETS
+   ============================================================ */
+
+class PyramidV4{
+
 constructor(){
-this.sources={
-"Wikipédia":"https://fr.wikipedia.org/w/api.php",
-"Wiktionnaire":"https://fr.wiktionary.org/w/api.php",
-"Wikiversité":"https://fr.wikiversity.org/w/api.php",
-"Wikivoyage":"https://fr.wikivoyage.org/w/api.php",
-"Wikisource":"https://fr.wikisource.org/w/api.php",
-"Wikiquote":"https://fr.wikiquote.org/w/api.php",
-"Wikilivres":"https://fr.wikibooks.org/w/api.php"
-};
 
-this.stop=new Set(("le la les un une des de du au aux à a et ou où en dans sur sous par pour avec sans ce cette ces cet se sa son ses leur leurs mon ma mes ton ta tes est sont être été qui que quoi dont donc mais car ni ne pas plus moins très tout toute tous toutes comme comment pourquoi quand quel quelle quels quelles moi toi vous nous je il elle ils elles me te lui faire fait fais donne donner chercher cherche trouver trouvez recherche obtenir créer fabriquer construire réaliser atteindre apprendre méthode processus étape étapes guide exemple information informations sujet propos concernant selon entre vers après avant depuis pendant peut peuvent doit doivent cette ainsi alors aussi encore même autre autres comment fonctionne fonctionnement faire quoi");
-this.syn={};
-this.groups={
-pays:{
-canada:["canadien","canadienne","canadiens","canadiennes","canada"],
-france:["français","française","france"],
-portugal:["portugais","portugaise","portugal"],
-espagne:["espagnol","espagnole","espagne"],
-royaumeuni:["britannique","britanniques","angleterre","royaume-uni","royaumeuni"],
-etatsunis:["américain","américaine","américains","américaines","états-unis","etatsunis"],
-belgique:["belge","belges","belgique"],
-suisse:["suisse","suisses"],
-bresil:["brésilien","brésilienne","brésil","bresil"],
-allemagne:["allemand","allemande","allemagne"],
-italie:["italien","italienne","italie"]
-},
-institutions:{
-parlement:["parlement","parlements","assemblée","assemblee","législature","legislature"],
-gouvernement:["gouvernement","gouvernements"],
-presidence:["président","présidente","présidence","president","presidente","presidence"],
-justice:["justice","judiciaire","tribunal","tribunaux","cour"]
-},
-aliments:{
-gateau:["gâteau","gateau","gâteaux","gateaux"],
-pain:["pain","pains"],
-pizza:["pizza","pizzas"],
-soupe:["soupe","soupes"],
-salade:["salade","salades"]
+this.sources=[
+ {name:"Wikipédia",url:"https://fr.wikipedia.org/w/api.php",weight:1},
+ {name:"Wiktionnaire",url:"https://fr.wiktionary.org/w/api.php",weight:.65},
+ {name:"Wikiversité",url:"https://fr.wikiversity.org/w/api.php",weight:.75},
+ {name:"Wikivoyage",url:"https://fr.wikivoyage.org/w/api.php",weight:.65},
+ {name:"Wikisource",url:"https://fr.wikisource.org/w/api.php",weight:.65},
+ {name:"Wikiquote",url:"https://fr.wikiquote.org/w/api.php",weight:.55},
+ {name:"Wikilivres",url:"https://fr.wikibooks.org/w/api.php",weight:.75}
+];
+
+this.stop=new Set(
+("le la les un une des de du au aux en et ou est sont a à avec pour par dans sur que qui quoi comment pourquoi où ce cette ces cet se son sa ses leur leurs il elle ils elles nous vous je tu on ne pas plus très bien faire fait être avoir peut peuvent comme mais donc car si sans entre vers après avant sous aussi tout toute tous toutes me te mon ma mes ton ta tes notre nos votre vos cela ceci ça c est d de que quel quelle quels quelles").normalize("NFD").replace(/[\u0300-\u036f]/g,"").split(/\s+/)
+);
+
+this.cache=new Map();
+this.pageCache=new Map();
+this.maxSearch=8;
+this.maxPages=30;
+this.maxSentences=14;
+
 }
-};
 
-this.intentWords={
-processus:["comment","fonctionne","fonctionnement","fabriquer","construire","réaliser","créer","préparer","recette","étape","étapes","méthode","processus","guide"],
-comparaison:["différence","différences","comparer","comparaison","versus","vs"],
-causalite:["pourquoi","cause","causes","raison","raisons"],
-definition:["définition","définir","signifie","signification","qu'est-ce","questce","c'est quoi"],
-chronologie:["quand","date","année","siècle","histoire"],
-localisation:["où","lieu","ville","pays","situé","situe"],
-personne:["qui","auteur","inventeur","personne","président"]
-};
 
-this.sourceWeight={"Wikipédia":1.35,"Wiktionnaire":1.05,"Wikiversité":1.15,"Wikivoyage":1.05,"Wikisource":.9,"Wikiquote":.85,"Wikilivres":1.1};
-this.cache=new Map;
-this.maxCache=160;
-this.abbr=["p. ex","etc","cf","ca","env","dr","mme","mlle","mgr","st","ste","vol","janv","févr","mars","avr","mai","juin","juil","août","sept","oct","nov","déc"];
-}
+/* ============================================================
+   TEXTE
+   ============================================================ */
 
 norm(s){
-return(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+return String(s||"")
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.toLowerCase();
 }
 
 words(s){
-return this.norm(s).match(/[a-z0-9-]{2,}/g)||[];
+return this.norm(s)
+.replace(/[^a-z0-9'-]+/g," ")
+.split(/\s+/)
+.filter(Boolean);
 }
 
-unique(a){return[...new Set(a)]}
-
-sleep(ms){return new Promise(r=>setTimeout(r,ms))}
-
-async fetch(url,p,timeout=9000){
-const key=url+"?"+new URLSearchParams(p);
-if(this.cache.has(key))return this.cache.get(key);
-const c=new AbortController,t=setTimeout(()=>c.abort(),timeout);
-try{
-const r=await fetch(key,{signal:c.signal});
-if(!r.ok)throw Error("HTTP "+r.status);
-const d=await r.json();
-clearTimeout(t);
-if(this.cache.size>=this.maxCache)this.cache.delete(this.cache.keys().next().value);
-this.cache.set(key,d);
-return d;
-}catch(e){clearTimeout(t);return null}
+unique(a){
+return [...new Set(a)];
 }
 
-async searchSource(name,url,q){
-const p={action:"query",format:"json",origin:"*",generator:"search",gsrsearch:q,gsrlimit:"3",prop:"extracts",exintro:"1",explaintext:"1",redirects:"1"};
-const d=await this.fetch(url,p);
-if(!d)return{name,text:"",pages:0,ok:false};
-const pages=d.query?.pages||{};
-let text="",pagesCount=0;
-for(const id in pages){
-if(id!=="-1"&&pages[id]?.extract){text+=" "+pages[id].extract;pagesCount++}
-}
-return{name,text:text.trim(),pages:pagesCount,ok:true};
-}
-
-async searchAll(q){
-return Promise.all(Object.entries(this.sources).map(([n,u])=>this.searchSource(n,u,q)));
+clean(s){
+return String(s||"")
+.replace(/<[^>]*>/g," ")
+.replace(/\{\{[^}]*\}\}/g," ")
+.replace(/\[\[[^\]]*\]\]/g," ")
+.replace(/\[[^\]]*\]/g," ")
+.replace(/&nbsp;/gi," ")
+.replace(/&amp;/gi,"&")
+.replace(/&quot;/gi,'"')
+.replace(/\s+/g," ")
+.trim();
 }
 
-detectIntent(q){
+sentences(s){
+return this.clean(s)
+.split(/(?<=[.!?])\s+/)
+.map(x=>x.trim())
+.filter(x=>x.length>=45&&x.length<=500);
+}
+
+
+/* ============================================================
+   EXTRACTION AUTOMATIQUE
+   ============================================================ */
+
+extractTerms(q){
+
+const raw=this.words(q);
+
+const terms=this.unique(
+raw.filter(w=>
+w.length>=3 &&
+!this.stop.has(w) &&
+!/^\d+$/.test(w)
+)
+);
+
+return terms;
+}
+
+extractPhrases(q){
+
 const n=this.norm(q);
-let best="explication",score=0;
-for(const [intent,list] of Object.entries(this.intentWords)){
-let s=0;
-for(const w of list)if(new RegExp("\\b"+this.norm(w).replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\b","i").test(n))s++;
-if(s>score){score=s;best=intent}
-}
-if(/\b(recette|preparer|préparer)\b/.test(n))best="recette";
-return best;
-}
-
-findGroups(q){
-const n=this.norm(q);
-const found=[];
-for(const [type,groups] of Object.entries(this.groups)){
-for(const [key,variants] of Object.entries(groups)){
-if(variants.some(v=>n.includes(this.norm(v))))found.push({type,key,variants});
-}
-}
-return found;
-}
-
-extractMeta(q){
-const n=this.norm(q),intent=this.detectIntent(q),groups=this.findGroups(q);
-let tokens=this.unique(this.words(q).filter(w=>!this.stop.has(w)&&w.length>2));
-
-const target=[];
-const qualifiers=[];
-for(const g of groups){
-target.push(g.key);
-for(const v of g.variants)if(n.includes(this.norm(v)))qualifiers.push(this.norm(v));
-}
-
-if(intent==="recette"){
-if(!tokens.some(x=>["gateau","pain","pizza","soupe","salade"].includes(x))&&/\bgateau\b/.test(n))tokens.push("gateau");
-}
-const queryTokens=this.unique(tokens.filter(x=>!["recette","simple","facile"].includes(x)));
-
-return{
-original:q,intent,tokens:queryTokens,
-target:this.unique(target),
-qualifiers:this.unique(qualifiers),
-simple:/\bsimple\b|\bfacile\b/.test(n),
-negative:this.detectUnrequestedSpecializations(n),
-queries:this.buildQueries(queryTokens,target,intent)
-};
-}
-
-detectUnrequestedSpecializations(n){
 const out=[];
-const specs={
-gateau:["sans gluten","vegan","végétalien","chocolat","forêt noire","basque","breton","aux pommes","au citron","au yaourt"],
-parlement:["européen","européenne","portugais","portugaise","catalan","catalane","britannique","allemand","français"],
-};
-for(const [k,list] of Object.entries(specs)){
-if(n.includes(k)||list.some(x=>n.includes(x))){
-for(const x of list)if(n.includes(this.norm(x)))out.push(this.norm(x));
+
+const patterns=[
+/qu'est ce que ([a-z0-9 -]+)/,
+/qu'est-ce que ([a-z0-9 -]+)/,
+/comment fonctionne ([a-z0-9 -]+)/,
+/comment marche ([a-z0-9 -]+)/,
+/pourquoi ([a-z0-9 -]+)/,
+/histoire de ([a-z0-9 -]+)/,
+/definition de ([a-z0-9 -]+)/,
+/difference entre ([a-z0-9 -]+)/
+];
+
+for(const p of patterns){
+
+const m=n.match(p);
+
+if(m&&m[1]){
+out.push(m[1].trim());
 }
+
 }
+
 return this.unique(out);
 }
 
-buildQueries(tokens,target,intent){
-const q=[];
-const clean=tokens.filter(Boolean);
-if(target.length)q.push(target[0]+" "+clean.filter(x=>!target.includes(x)).slice(0,3).join(" "));
-if(clean.length)q.push(clean.slice(0,3).join(" "));
-if(intent==="recette"){
-const obj=clean.find(x=>["gateau","pain","pizza","soupe","salade"].includes(x));
-if(obj)q.push("recette "+obj);
-}
-if(intent==="processus"&&clean.length)q.push(clean.slice(0,3).join(" ")+" fonctionnement");
-return this.unique(q.filter(x=>x.trim())).slice(0,5);
+
+/* ============================================================
+   INTENTION
+   ============================================================ */
+
+detectIntent(q){
+
+const n=this.norm(q);
+
+if(/comment fonctionne|comment marche|fonctionnement/.test(n))
+return "fonctionnement";
+
+if(/pourquoi|cause|causes|raison/.test(n))
+return "cause";
+
+if(/qu'est ce que|qu'est-ce que|definition|signifie|signification/.test(n))
+return "definition";
+
+if(/qui est|biographie/.test(n))
+return "personne";
+
+if(/quand|date|chronologie|histoire|historique/.test(n))
+return "chronologie";
+
+if(/ou se trouve|ou est|situe|situee|localisation/.test(n))
+return "localisation";
+
+if(/difference|comparer|compare|comparaison/.test(n))
+return "comparaison";
+
+if(/recette|cuisiner|cuisine|preparation/.test(n))
+return "recette";
+
+return "information";
 }
 
-clean(text){
-return(text||"")
-.replace(/\{\{[^{}]*\}\}/g," ")
-.replace(/\[\[([^|\]]+)(?:\|[^\]]+)?\]\]/g,"$1")
-.replace(/<[^>]+>/g," ")
-.replace(/&[a-z]+;/gi," ")
-.replace(/\s+/g," ").trim();
-}
 
-sentences(text){
-let s=this.clean(text);
-if(!s)return[];
-s=s.replace(/(\d+)\.(\d+)/g,"$1§D§$2");
-for(const a of this.abbr){
-const r=new RegExp("\\b("+a.replace(/\./g,"\\.")+")\\.","gi");
-s=s.replace(r,"$1§A§");
-}
-const arr=s.match(/[^.!?]+[.!?]+/g)||[s];
-return arr.map(x=>x.replace(/§D§/g,".").replace(/§A§/g,".").trim())
-.filter(x=>x.length>=35&&x.length<=450);
-}
+/* ============================================================
+   PROFIL DE LA QUESTION
+   ============================================================ */
 
-tokenSet(s){return new Set(this.words(s))}
+analyzeQuestion(q){
 
-jaccard(a,b){
-const A=this.tokenSet(a),B=this.tokenSet(b);
-if(!A.size||!B.size)return 0;
-let i=0;for(const x of A)if(B.has(x))i++;
-return i/(A.size+B.size-i);
-}
+const terms=this.extractTerms(q);
+const phrases=this.extractPhrases(q);
+const intent=this.detectIntent(q);
 
-containsTerm(text,term){
-return this.norm(text).includes(this.norm(term));
-}
+let subjectTerms=[...terms];
 
-targetScore(sentence,meta){
-const n=this.norm(sentence);
-let score=0;
-
-if(meta.target.length){
-for(const target of meta.target){
-const g=[...Object.values(this.groups).flatMap(x=>Object.entries(x))].find(x=>x[0]===target);
-if(!g)continue;
-const variants=g[1];
-if(variants.some(v=>n.includes(this.norm(v))))score+=115;
-else score-=90;
-}
-}
-
-for(const q of meta.qualifiers){
-if(n.includes(q))score+=65;
-}
-
-for(const bad of meta.negative){
-if(n.includes(bad))score-=170;
-}
-
-return score;
-}
-
-contextScore(sentence,meta,satellites){
-const sw=this.tokenSet(sentence);
-let core=0,sat=0;
-for(const t of meta.tokens)if(sw.has(this.norm(t)))core++;
-for(const t of satellites)if(sw.has(this.norm(t)))sat++;
-return core*80+Math.min(sat,4)*10;
-}
-
-intentScore(sentence,intent){
-const n=this.norm(sentence);
-const markers={
-processus:["fonctionne","fonctionnement","consiste","permet","nécessite","utilise","utiliser","étape","étapes","processus","méthode","d'abord","ensuite","puis","enfin"],
-recette:["ingrédients","ingredient","préparation","preparation","cuisson","four","mélanger","melanger","verser","cuire","minutes"],
-explication:["désigne","designe","définition","definition","consiste","signifie","correspond","caractérise","caracterise"],
-comparaison:["différent","different","contrairement","similaire","tandis","alors que"],
-causalite:["cause","raison","provoque","entraîne","entraine","effet","conséquence","consequence"],
-chronologie:["année","annee","date","siècle","siecle","fondé","fonde","créé","cree","né","ne"],
-localisation:["situé","situe","ville","pays","région","region","nord","sud","est","ouest"],
-personne:["né","ne","naissance","mort","auteur","inventeur","président","president"]
+const intentWords={
+fonctionnement:["comment","fonctionne","marche","fonctionnement"],
+cause:["pourquoi","cause","causes","raison"],
+definition:["definition","signifie","signification"],
+personne:["qui","est","biographie"],
+chronologie:["quand","date","histoire","historique"],
+localisation:["ou","trouve","situe","localisation"],
+comparaison:["difference","comparer","compare","comparaison"],
+recette:["recette","cuisine","cuisiner","preparation"]
 };
-return(markers[intent]||markers.explication).reduce((a,x)=>a+(n.includes(this.norm(x))?12:0),0);
+
+const remove=intentWords[intent]||[];
+
+subjectTerms=subjectTerms.filter(x=>!remove.includes(x));
+
+return{
+ query:q,
+ normalized:this.norm(q),
+ terms,
+ subjectTerms:this.unique(subjectTerms),
+ phrases,
+ intent
+};
+
 }
 
-score(sentence,meta,satellites,source){
-let s=this.targetScore(sentence,meta);
-s+=this.contextScore(sentence,meta,satellites);
-s+=this.intentScore(sentence,meta.intent);
-s*=this.sourceWeight[source]||1;
 
-if(meta.simple&&meta.intent==="recette"){
-const n=this.norm(sentence);
-const simpleWords=["simple","facile","rapide","facilement","ingrédient","ingredient"];
-for(const w of simpleWords)if(n.includes(w))s+=10;
-}
-if(sentence.length>300)s-=12;
-if(sentence.length<55)s-=5;
+/* ============================================================
+   CONSTRUCTION DES REQUÊTES
+   ============================================================ */
 
-return s;
+buildQueries(profile){
+
+const out=[];
+const q=profile.query;
+const terms=profile.subjectTerms;
+
+if(profile.phrases.length){
+profile.phrases.forEach(x=>out.push(x));
 }
 
-expand(results,meta){
-const freq=new Map;
-for(const r of results){
-for(const s of this.sentences(r.text)){
-const n=this.norm(s);
-if(meta.tokens.some(t=>n.includes(this.norm(t)))){
-for(const w of this.words(s)){
-if(!this.stop.has(w)&&w.length>3&&!meta.tokens.includes(w))
-freq.set(w,(freq.get(w)||0)+1);
-}
-}
-}
-}
-return[...freq.entries()].sort((a,b)=>b[1]-a[1]).slice(0,12).map(x=>x[0]);
+out.push(q);
+
+if(terms.length>=2){
+out.push(terms.slice(0,2).join(" "));
 }
 
-buildPool(results,meta,satellites){
-const pool=[];
-for(const r of results){
-if(!r.text)continue;
-for(const text of this.sentences(r.text)){
-const score=this.score(text,meta,satellites,r.name);
-if(score<55)continue;
-pool.push({text,score,source:r.name});
-}
+if(terms.length>=3){
+out.push(terms.slice(0,3).join(" "));
 }
 
-pool.sort((a,b)=>b.score-a.score);
-const merged=[];
-for(const item of pool){
-let existing=null;
-for(const x of merged){
-if(this.jaccard(x.text,item.text)>.62){existing=x;break}
-}
-if(existing){
-existing.score+=Math.min(35,item.score*.12);
-existing.sources.add(item.source);
-}else merged.push({text:item.text,score:item.score,source:item.source,sources:new Set([item.source])});
-}
-for(const x of merged)if(x.sources.size>1)x.score+=x.sources.size*22;
-
-return merged.sort((a,b)=>b.score-a.score);
+if(terms.length>=4){
+out.push(terms.slice(0,4).join(" "));
 }
 
-isValid(item,meta){
-const n=this.norm(item.text);
+if(profile.intent==="definition"&&terms.length)
+out.push(terms.join(" ")+" définition");
 
-if(meta.target.length){
-let matched=false;
-for(const t of meta.target){
-const g=[...Object.values(this.groups).flatMap(x=>Object.entries(x))].find(x=>x[0]===t);
-if(g&&g[1].some(v=>n.includes(this.norm(v))))matched=true;
+if(profile.intent==="fonctionnement"&&terms.length)
+out.push(terms.join(" ")+" fonctionnement");
+
+if(profile.intent==="cause"&&terms.length)
+out.push(terms.join(" ")+" causes");
+
+if(profile.intent==="chronologie"&&terms.length)
+out.push(terms.join(" ")+" histoire");
+
+return this.unique(
+out.map(x=>x.trim()).filter(x=>x.length>=3)
+).slice(0,this.maxSearch);
+
 }
-if(!matched)return false;
+
+
+/* ============================================================
+   API WIKIMEDIA
+   ============================================================ */
+
+async searchSource(source,query){
+
+const key=source.url+"|"+query;
+
+if(this.cache.has(key))
+return this.cache.get(key);
+
+const params=new URLSearchParams({
+action:"query",
+list:"search",
+srsearch:query,
+srnamespace:"0",
+srlimit:"6",
+srprop:"snippet|titlesnippet",
+format:"json",
+origin:"*"
+});
+
+try{
+
+const response=await fetch(
+source.url+"?"+params.toString(),
+{headers:{"Accept":"application/json"}}
+);
+
+if(!response.ok)throw new Error("HTTP "+response.status);
+
+const data=await response.json();
+
+const results=(data.query?.search||[]).map(x=>({
+title:x.title||"",
+snippet:this.clean(x.snippet||""),
+source:source.name,
+sourceUrl:source.url,
+weight:source.weight
+}));
+
+this.cache.set(key,results);
+return results;
+
+}catch(error){
+
+console.warn("Recherche impossible:",source.name,error);
+return[];
+
 }
 
-for(const bad of meta.negative)if(n.includes(bad))return false;
-
-if(meta.intent==="recette"){
-const useful=["ingrédient","ingredient","préparation","preparation","cuisson","four","mélanger","melanger","sucre","farine","œuf","oeuf","beurre","pâte","pate"];
-if(!useful.some(x=>n.includes(this.norm(x))))return false;
 }
 
+
+/* ============================================================
+   RECHERCHE MULTI-SOURCES
+   ============================================================ */
+
+async searchAll(queries,progress){
+
+let all=[];
+
+for(let qi=0;qi<queries.length;qi++){
+
+const query=queries[qi];
+
+progress?.(
+`Recherche ${qi+1}/${queries.length} : ${query}`
+);
+
+const jobs=this.sources.map(s=>this.searchSource(s,query));
+
+const groups=await Promise.all(jobs);
+
+groups.forEach(group=>all.push(...group));
+
+if(all.length>=this.maxPages*2)
+break;
+
+}
+
+const seen=new Set();
+
+all=all.filter(r=>{
+
+const key=this.norm(r.source+"|"+r.title);
+
+if(seen.has(key))return false;
+
+seen.add(key);
 return true;
+
+});
+
+return all.slice(0,this.maxPages);
+
 }
 
-select(pool,meta){
-const max=meta.intent==="recette"?7:meta.intent==="processus"?7:6;
-const out=[];
-for(const x of pool){
-if(out.length>=max)break;
-if(!this.isValid(x,meta))continue;
-if(out.some(y=>this.jaccard(y.text,x.text)>.46))continue;
-out.push(x);
+
+/* ============================================================
+   EXTRAITS DES PAGES
+   ============================================================ */
+
+async fetchExtract(item){
+
+const key=item.sourceUrl+"|"+item.title;
+
+if(this.pageCache.has(key))
+return this.pageCache.get(key);
+
+const params=new URLSearchParams({
+action:"query",
+prop:"extracts",
+exintro:"1",
+explaintext:"1",
+exchars:"5000",
+redirects:"1",
+titles:item.title,
+format:"json",
+origin:"*"
+});
+
+try{
+
+const response=await fetch(
+item.sourceUrl+"?"+params.toString(),
+{headers:{"Accept":"application/json"}}
+);
+
+if(!response.ok)throw new Error("HTTP "+response.status);
+
+const data=await response.json();
+const pages=data.query?.pages||{};
+const page=Object.values(pages)[0];
+
+const text=this.clean(page?.extract||"");
+
+this.pageCache.set(key,text);
+
+return text;
+
+}catch(error){
+
+console.warn("Page inaccessible:",item.title,error);
+return "";
+
 }
-return out;
+
 }
 
-contradictions(items){
-const out=[];
-for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){
-if(this.jaccard(items[i].text,items[j].text)<.2)continue;
-const a=this.norm(items[i].text),b=this.norm(items[j].text);
-const na=a.match(/\b\d+(?:[.,]\d+)?\b/g)||[];
-const nb=b.match(/\b\d+(?:[.,]\d+)?\b/g)||[];
-if(na.length&&nb.length&&na.some(x=>!nb.includes(x)))out.push([items[i],items[j]]);
-}
-return out;
-}
 
-format(meta,items,stats){
-let title="Synthèse";
-if(meta.intent==="processus")title="Fonctionnement : "+meta.tokens.slice(0,4).join(" ");
-else if(meta.intent==="recette")title="Recette : "+meta.tokens.slice(0,4).join(" ");
-else if(meta.intent==="comparaison")title="Comparaison : "+meta.tokens.slice(0,4).join(" ");
-else if(meta.intent==="causalite")title="Pourquoi : "+meta.tokens.slice(0,4).join(" ");
-else if(meta.intent==="chronologie")title="Chronologie : "+meta.tokens.slice(0,4).join(" ");
-else if(meta.intent==="localisation")title="Localisation : "+meta.tokens.slice(0,4).join(" ");
-else title="Synthèse : "+meta.tokens.slice(0,4).join(" ");
+/* ============================================================
+   DÉCOUVERTE DES CONCEPTS
+   ============================================================ */
 
-let out=title+"\n\n";
+discoverConcepts(results,profile){
 
-if(meta.intent==="recette"){
-out+="Voici les éléments de préparation qui correspondent à la demande :\n\n";
-items.forEach((x,i)=>out+=(i+1)+". "+x.text+"\n\n");
-}else if(meta.intent==="processus"){
-out+="Les informations les plus directement liées au fonctionnement demandé :\n\n";
-items.forEach(x=>out+="• "+x.text+"\n\n");
-}else{
-items.forEach(x=>out+="• "+x.text+"\n\n");
+const freq={};
+const original=new Set(profile.terms);
+
+for(const r of results){
+
+const text=this.clean(
+(r.title||"")+" "+(r.snippet||"")
+);
+
+for(const word of this.words(text)){
+
+if(
+word.length<5||
+this.stop.has(word)||
+original.has(word)||
+/^\d+$/.test(word)
+)continue;
+
+freq[word]=(freq[word]||0)+1;
+
 }
 
-out+="Sources retenues : "+stats.sources.join(", ")+".";
-return out.trim();
 }
 
-async run(input,update){
-const meta=this.extractMeta(input);
+return Object.entries(freq)
+.sort((a,b)=>b[1]-a[1])
+.slice(0,18)
+.map(x=>x[0]);
 
-if(!meta.tokens.length)throw Error("Je n'ai pas trouvé de sujet exploitable.");
+}
 
-update("Analyse de l'intention et des contraintes...");
-await this.sleep(100);
 
-update("Cible détectée : "+(meta.target.length?meta.target.join(", "):"aucune cible spécialisée"));
-update("Intention : "+meta.intent);
-await this.sleep(100);
+/* ============================================================
+   DEUXIÈME PASSE
+   ============================================================ */
 
-const queries=meta.queries;
+async secondPass(concepts,profile,progress){
+
+if(!concepts.length)
+return[];
+
+const base=profile.subjectTerms.slice(0,5).join(" ");
+
+const queries=[];
+
+for(const concept of concepts.slice(0,8)){
+
+if(base)
+queries.push(base+" "+concept);
+else
+queries.push(concept);
+
+}
+
 let all=[];
 
 for(let i=0;i<queries.length;i++){
-update(`Recherche ciblée ${i+1}/${queries.length} : « ${queries[i]} »`);
-const r=await this.searchAll(queries[i]);
-all.push(...r);
+
+progress?.(
+`Exploration conceptuelle ${i+1}/${queries.length} : ${queries[i]}`
+);
+
+const jobs=this.sources.slice(0,4)
+.map(s=>this.searchSource(s,queries[i]));
+
+const groups=await Promise.all(jobs);
+
+groups.forEach(g=>all.push(...g));
+
 }
 
-const map=new Map;
-for(const r of all){
-if(!r.ok||!r.text)continue;
-if(!map.has(r.name))map.set(r.name,{...r});
-else map.get(r.name).text+=" "+r.text;
+const seen=new Set();
+
+return all.filter(r=>{
+
+const k=this.norm(r.source+"|"+r.title);
+
+if(seen.has(k))return false;
+
+seen.add(k);
+return true;
+
+}).slice(0,25);
+
 }
 
-const results=[...map.values()];
-if(!results.length)return{empty:true,text:"Aucune source Wikimedia n'a pu répondre. Vérifiez votre connexion.",sources:[]};
 
-update("Extraction des concepts réellement liés...");
-const satellites=this.expand(results,meta);
+/* ============================================================
+   SCORE DE PERTINENCE
+   ============================================================ */
 
-update("Classement avec filtre de cible...");
-const pool=this.buildPool(results,meta,satellites);
-const selected=this.select(pool,meta);
+termScore(text,terms){
 
-if(!selected.length){
+if(!terms.length)return 0;
+
+const n=this.norm(text);
+let hits=0;
+
+for(const term of terms){
+
+const t=this.norm(term);
+
+if(
+t.length>=3 &&
+(n.includes(" "+t+" ")||
+n.includes(t))
+){
+hits++;
+}
+
+}
+
+return hits/terms.length;
+}
+
+phraseScore(text,phrases){
+
+if(!phrases.length)return 0;
+
+const n=this.norm(text);
+let hits=0;
+
+for(const p of phrases){
+
+const words=this.words(p);
+
+if(words.length<2)continue;
+
+const matching=words.filter(w=>n.includes(w));
+
+if(matching.length>=Math.ceil(words.length*.6))
+hits++;
+
+}
+
+return hits/phrases.length;
+}
+
+titleScore(title,profile){
+
+const n=this.norm(title);
+let hits=0;
+
+for(const term of profile.subjectTerms){
+
+if(n.includes(this.norm(term)))
+hits++;
+
+}
+
+return profile.subjectTerms.length
+?hits/profile.subjectTerms.length
+:0;
+}
+
+intentScore(text,profile){
+
+const n=this.norm(text);
+
+const patterns={
+fonctionnement:[
+ "fonction","fonctionne","processus","mecanisme",
+ "role","permet","consiste","organise"
+],
+cause:[
+ "cause","provoque","raison","entraine",
+ "du a","origine","consequence"
+],
+definition:[
+ "designe","signifie","definition","est un",
+ "est une","terme"
+],
+chronologie:[
+ "histoire","siecle","annee","periode",
+ "fondation","origine","evolution"
+],
+localisation:[
+ "situe","situee","localise","pays","region",
+ "ville","territoire"
+],
+comparaison:[
+ "difference","contrairement","tandis",
+ "alors que","compare"
+],
+recette:[
+ "ingredient","preparation","cuisson",
+ "four","melanger","farine","sucre"
+]
+};
+
+const p=patterns[profile.intent]||[];
+
+if(!p.length)return .35;
+
+let hits=0;
+
+for(const x of p)
+if(n.includes(x))hits++;
+
+return Math.min(1,hits/p.length+.2);
+}
+
+specificityScore(text,profile){
+
+const n=this.norm(text);
+
+if(!profile.subjectTerms.length)
+return .3;
+
+let hits=0;
+
+for(const term of profile.subjectTerms)
+if(n.includes(this.norm(term)))hits++;
+
+return Math.min(1,hits/profile.subjectTerms.length);
+}
+
+score(item,profile){
+
+const combined=(item.title||"")+" "+(item.text||"");
+
+let score=0;
+
+score+=this.termScore(combined,profile.subjectTerms)*.34;
+score+=this.phraseScore(combined,profile.phrases)*.18;
+score+=this.titleScore(item.title,profile)*.20;
+score+=this.intentScore(combined,profile)*.13;
+score+=this.specificityScore(combined,profile)*.10;
+score+=(item.weight||.5)*.05;
+
+return Math.max(0,Math.min(1,score));
+}
+
+
+/* ============================================================
+   FILTRE DE DÉRIVE
+   ============================================================ */
+
+driftPenalty(text,profile){
+
+if(!profile.subjectTerms.length)
+return 0;
+
+const n=this.norm(text);
+
+let matching=0;
+
+for(const term of profile.subjectTerms){
+
+if(n.includes(this.norm(term)))
+matching++;
+
+}
+
+const ratio=matching/profile.subjectTerms.length;
+
+if(ratio===0)return .45;
+if(ratio<.25)return .25;
+if(ratio<.5)return .10;
+
+return 0;
+}
+
+
+/* ============================================================
+   EXTRACTION DES PASSAGES
+   ============================================================ */
+
+async buildPassages(results,profile,progress){
+
+const passages=[];
+
+for(let i=0;i<results.length;i++){
+
+const r=results[i];
+
+progress?.(
+`Analyse ${i+1}/${results.length} : ${r.title}`
+);
+
+let text=r.snippet;
+
+if(text.length<120)
+text=await this.fetchExtract(r);
+
+if(!text)continue;
+
+const sentences=this.sentences(text);
+
+for(const sentence of sentences){
+
+let score=this.score(
+{
+ title:r.title,
+ text:sentence,
+ weight:r.weight
+},
+profile
+);
+
+score-=this.driftPenalty(sentence,profile);
+
+if(score<.28)continue;
+
+passages.push({
+text:sentence,
+title:r.title,
+source:r.source,
+sourceUrl:r.sourceUrl,
+score:Math.max(0,score)
+});
+
+}
+
+}
+
+return passages;
+
+}
+
+
+/* ============================================================
+   DÉDOUBLONNAGE
+   ============================================================ */
+
+similarity(a,b){
+
+const A=new Set(this.words(a));
+const B=new Set(this.words(b));
+
+if(!A.size||!B.size)return 0;
+
+let common=0;
+
+for(const x of A)
+if(B.has(x))common++;
+
+return common/Math.max(A.size,B.size);
+}
+
+selectPassages(passages){
+
+passages.sort((a,b)=>b.score-a.score);
+
+const selected=[];
+
+for(const item of passages){
+
+if(selected.length>=10)
+break;
+
+let duplicate=false;
+
+for(const existing of selected){
+
+if(this.similarity(item.text,existing.text)>.65){
+duplicate=true;
+break;
+}
+
+}
+
+if(!duplicate)
+selected.push(item);
+
+}
+
+return selected;
+
+}
+
+
+/* ============================================================
+   CONTRADICTIONS
+   ============================================================ */
+
+findContradictions(items){
+
+const pairs=[
+["jamais","toujours"],
+["aucun","tous"],
+["aucune","toutes"],
+["interdit","autorise"],
+["impossible","possible"],
+["refuse","accepte"],
+["ne peut pas","peut"],
+["n'est pas","est"]
+];
+
+const found=[];
+
+for(let i=0;i<items.length;i++){
+
+for(let j=i+1;j<items.length;j++){
+
+const a=this.norm(items[i].text);
+const b=this.norm(items[j].text);
+
+for(const [x,y] of pairs){
+
+if(
+(a.includes(x)&&b.includes(y))||
+(a.includes(y)&&b.includes(x))
+){
+
+found.push({
+a:items[i],
+b:items[j]
+});
+
+break;
+
+}
+
+}
+
+}
+
+}
+
+return found.slice(0,4);
+
+}
+
+
+/* ============================================================
+   CONCEPTS FINAUX
+   ============================================================ */
+
+finalConcepts(items,profile){
+
+const freq={};
+const original=new Set(profile.terms);
+
+for(const item of items){
+
+for(const word of this.words(item.text)){
+
+if(
+word.length<5||
+this.stop.has(word)||
+original.has(word)||
+/^\d+$/.test(word)
+)continue;
+
+freq[word]=(freq[word]||0)+1;
+
+}
+
+}
+
+return Object.entries(freq)
+.sort((a,b)=>b[1]-a[1])
+.slice(0,10)
+.map(x=>x[0]);
+
+}
+
+
+/* ============================================================
+   SYNTHÈSE
+   ============================================================ */
+
+synthesize(items,profile,concepts,contradictions){
+
+if(!items.length){
+
 return{
-empty:true,
-text:`Aucun passage n'a satisfait simultanément les contraintes de votre demande.
-
-Sujet : ${meta.tokens.join(", ")}
-Intention : ${meta.intent}
-${meta.target.length?"Cible : "+meta.target.join(", "):""}
-
-Le moteur préfère ne rien répondre plutôt que de remplacer votre sujet par un sujet voisin.`,
-sources:results.map(x=>x.name)
+text:
+"Je n'ai pas trouvé suffisamment d'informations pertinentes pour produire une synthèse fiable.",
+selected:0,
+concepts:[],
+contradictions:[]
 };
+
 }
 
-update("Vérification des doublons et de la cohérence...");
-await this.sleep(120);
+let intro="";
 
-const stats={
-sources:results.filter(x=>x.text).map(x=>x.name),
-selected:selected.length
-};
+switch(profile.intent){
 
-update("Construction de la synthèse...");
-await this.sleep(120);
+case"fonctionnement":
+intro="Voici les éléments principaux permettant de comprendre le fonctionnement du sujet :";
+break;
+
+case"cause":
+intro="Voici les principaux éléments permettant de comprendre les causes :";
+break;
+
+case"definition":
+intro="Voici les éléments permettant de définir et comprendre le sujet :";
+break;
+
+case"chronologie":
+intro="Voici les éléments historiques et chronologiques les plus pertinents :";
+break;
+
+case"comparaison":
+intro="Voici les éléments les plus pertinents pour établir la comparaison :";
+break;
+
+case"recette":
+intro="Voici les éléments de préparation pertinents trouvés :";
+break;
+
+default:
+intro="Voici la synthèse des informations les plus pertinentes trouvées :";
+
+}
+
+let text=intro+"\n\n";
+
+items.forEach((item,i)=>{
+
+text+="• "+item.text+"\n";
+
+});
+
+if(concepts.length){
+
+text+="\nConcepts associés découverts automatiquement :\n";
+text+=concepts.map(x=>"• "+x).join("\n");
+
+}
+
+const sourceNames=this.unique(items.map(x=>x.source));
+
+text+="\n\nSources consultées : ";
+text+=sourceNames.join(", ");
+
+if(contradictions.length){
+
+text+=
+"\n\n⚠️ Le moteur a détecté "+
+contradictions.length+
+" divergence(s) potentielle(s) entre certains passages. "+
+"Il ne les fusionne pas automatiquement.";
+
+}
 
 return{
-empty:false,
-text:this.format(meta,selected,stats),
-sources:stats.sources,
-concepts:satellites.slice(0,6),
-intent:meta.intent,
-target:meta.target,
-contradictions:this.contradictions(selected)
+text,
+selected:items.length,
+concepts,
+contradictions
 };
-}
+
 }
 
-const engine=new PyramidV3;
+
+/* ============================================================
+   MOTEUR COMPLET
+   ============================================================ */
+
+async run(question,progress){
+
+const profile=this.analyzeQuestion(question);
+
+progress?.(
+"Analyse de la question : "+
+profile.subjectTerms.join(", ")
+);
+
+const queries=this.buildQueries(profile);
+
+progress?.(
+"Création de "+queries.length+" requête(s) ouvertes"
+);
+
+const firstResults=await this.searchAll(
+queries,
+progress
+);
+
+if(!firstResults.length){
+
+return{
+text:
+"Aucun résultat Wikimedia n'a été trouvé. Vérifie la connexion Internet ou reformule légèrement la question.",
+selected:0,
+concepts:[],
+contradictions:[]
+};
+
+}
+
+progress?.(
+firstResults.length+
+" résultats initiaux trouvés"
+);
+
+const discovered=this.discoverConcepts(
+firstResults,
+profile
+);
+
+progress?.(
+"Concepts découverts : "+
+(discovered.slice(0,8).join(", ")||"aucun")
+);
+
+const secondResults=await this.secondPass(
+discovered,
+profile,
+progress
+);
+
+const combined=[
+...firstResults,
+...secondResults
+];
+
+const seen=new Set();
+
+const uniqueResults=combined.filter(r=>{
+
+const key=this.norm(r.source+"|"+r.title);
+
+if(seen.has(key))return false;
+
+seen.add(key);
+
+return true;
+
+});
+
+progress?.(
+uniqueResults.length+
+" pages retenues pour l'analyse"
+);
+
+const passages=await this.buildPassages(
+uniqueResults,
+profile,
+progress
+);
+
+const selected=this.selectPassages(passages);
+
+const contradictions=this.findContradictions(
+selected
+);
+
+const concepts=this.finalConcepts(
+selected,
+profile
+);
+
+return this.synthesize(
+selected,
+profile,
+concepts,
+contradictions
+);
+
+}
+
+}
+
+
+/* ============================================================
+   INTERFACE
+   ============================================================ */
+
 const chat=document.getElementById("chat");
 const input=document.getElementById("input");
 const send=document.getElementById("send");
 const clear=document.getElementById("clear");
+const status=document.getElementById("status");
 
-function addMessage(type,text,copy=false,info=""){
-const d=document.createElement("div");
-d.className="msg "+type;
-d.textContent=text;
+const engine=new PyramidV4();
 
-if(copy&&type==="bot"){
-const b=document.createElement("button");
-b.className="copy";
-b.textContent="Copier";
-b.onclick=async()=>{
+let busy=false;
+
+
+/* ---------- MESSAGE ---------- */
+
+function addMessage(text,type="bot",data=null){
+
+const box=document.createElement("div");
+box.className="msg "+type;
+
+const content=document.createElement("div");
+content.textContent=text;
+
+box.appendChild(content);
+
+if(type==="bot"){
+
+const copy=document.createElement("button");
+
+copy.type="button";
+copy.className="copy";
+copy.textContent="Copier";
+
+copy.addEventListener("click",async()=>{
+
 try{
+
 await navigator.clipboard.writeText(text);
+
+copy.textContent="Copié ✓";
+
+setTimeout(()=>{
+copy.textContent="Copier";
+},1200);
+
+}catch(e){
+
+const area=document.createElement("textarea");
+area.value=text;
+document.body.appendChild(area);
+area.select();
+
+try{
+document.execCommand("copy");
+copy.textContent="Copié ✓";
 }catch{
-const ta=document.createElement("textarea");
-ta.value=text;document.body.appendChild(ta);ta.select();
-document.execCommand("copy");ta.remove();
-}
-b.textContent="Copié !";
-setTimeout(()=>b.textContent="Copier",1500);
-};
-d.appendChild(b);
+copy.textContent="Copie impossible";
 }
 
-if(info){
-const i=document.createElement("div");
-i.className="info";
-i.textContent=info;
-d.appendChild(i);
+area.remove();
+
 }
 
-chat.appendChild(d);
+});
+
+box.appendChild(copy);
+
+}
+
+if(data){
+
+const meta=document.createElement("div");
+meta.className="meta";
+
+let html=
+"Passages sélectionnés : <b>"+
+(data.selected||0)+
+"</b>";
+
+if(data.concepts?.length){
+
+html+="<br>Concepts découverts : ";
+
+html+=data.concepts.map(
+x=>`<span class="badge">${escapeHtml(x)}</span>`
+).join("");
+
+}
+
+meta.innerHTML=html;
+box.appendChild(meta);
+
+}
+
+chat.appendChild(box);
 chat.scrollTop=chat.scrollHeight;
-return d;
+
 }
 
-function thinking(){
-const d=document.createElement("div");
-d.className="msg bot thinking";
-const dot=document.createElement("span");
-dot.className="dot";
-const text=document.createElement("span");
-text.textContent="Initialisation...";
-d.append(dot,text);
-chat.appendChild(d);
-chat.scrollTop=chat.scrollHeight;
-return{d,text};
+
+/* ---------- SÉCURITÉ AFFICHAGE ---------- */
+
+function escapeHtml(s){
+
+return String(s)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
 }
+
+
+/* ---------- PENSÉE ---------- */
+
+function addThinking(){
+
+const box=document.createElement("div");
+
+box.className="msg bot thinking";
+box.id="thinking";
+
+box.textContent="Analyse en cours…";
+
+chat.appendChild(box);
+
+chat.scrollTop=chat.scrollHeight;
+
+return box;
+
+}
+
+
+/* ---------- ENVOI ---------- */
 
 async function submit(){
-const q=input.value.trim();
-if(!q)return;
 
-addMessage("user",q);
-input.value="";
-input.disabled=true;
+if(busy)return;
+
+const question=input.value.trim();
+
+if(!question)return;
+
+busy=true;
+
 send.disabled=true;
 clear.disabled=true;
+input.disabled=true;
 
-const t=thinking();
+addMessage(question,"user");
+
+input.value="";
+
+const thinking=addThinking();
+
+status.textContent="Recherche en cours…";
 
 try{
-const r=await engine.run(q,x=>t.text.textContent=x);
-t.d.remove();
 
-if(r.empty){
-addMessage("bot",r.text,true,"Sources disponibles : "+(r.sources.length?r.sources.join(", "):"aucune"));
-}else{
-let info=`Intention : ${r.intent} • Cible : ${r.target.length?r.target.join(", "):"générale"} • ${r.selected||0} passages`;
-if(r.concepts.length)info+=` • Concepts associés : ${r.concepts.join(", ")}`;
-addMessage("bot",r.text,true,info);
+const result=await engine.run(
+question,
+message=>{
+status.textContent=message;
+}
+);
 
-if(r.contradictions?.length){
-addMessage("bot","⚠️ Le moteur a détecté des passages proches contenant des valeurs numériques différentes. Il ne choisit pas arbitrairement entre elles.");
+thinking.remove();
+
+addMessage(
+result.text||"Aucune synthèse disponible.",
+"bot",
+{
+selected:result.selected||0,
+concepts:result.concepts||[]
 }
-}
-}catch(e){
-t.d.remove();
-addMessage("bot","Erreur contrôlée : "+(e.message||"problème inattendu")+".");
+);
+
+status.textContent="Terminé";
+
+}catch(error){
+
+console.error(error);
+
+if(thinking)
+thinking.remove();
+
+addMessage(
+"Une erreur technique est survenue pendant la recherche. Vérifie ta connexion Internet puis réessaie.",
+"bot"
+);
+
+status.textContent="Erreur";
+
 }finally{
-input.disabled=false;
+
+busy=false;
+
 send.disabled=false;
 clear.disabled=false;
+input.disabled=false;
+
 input.focus();
-}
+
 }
 
-send.onclick=submit;
+}
+
+
+/* ---------- ÉVÉNEMENTS ---------- */
+
+send.addEventListener("click",submit);
+
 input.addEventListener("keydown",e=>{
-if(e.key==="Enter"){e.preventDefault();submit()}
+
+if(e.key==="Enter"&&!e.shiftKey){
+
+e.preventDefault();
+submit();
+
+}
+
 });
-clear.onclick=()=>{
-chat.innerHTML='<div class="msg bot">Conversation effacée. Le moteur V3 est prêt.</div>';
+
+clear.addEventListener("click",()=>{
+
+chat.innerHTML=
+`<div class="msg bot">
+Conversation effacée.
+<div class="meta">
+Le moteur est prêt pour une nouvelle question.
+</div>
+</div>`;
+
+input.value="";
+status.textContent="Moteur prêt";
 input.focus();
-};
+
+});
+
+
+/* ---------- DÉMARRAGE ---------- */
+
+window.addEventListener("load",()=>{
+
+console.log(
+"Synthétiseur Pyramidal Multi-Sources V4 chargé."
+);
+
+console.log(
+"Moteur ouvert : aucun catalogue de sujets prédéfini."
+);
+
+input.focus();
+
+});
+
 </script>
+
 </body>
 </html>
