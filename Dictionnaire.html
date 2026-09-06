@@ -193,7 +193,7 @@
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Le système utilise désormais exclusivement les wikis textuels sous licence libre, avec isolation de Wikidata et exclusion de WikiHow. Tapez votre sujet :
+        Bonjour ! Le système intègre l'ensemble des wikis francophones sous licence libre (Wikipédia, Wiktionnaire, Wikiversité, Wikivoyage, Wikisource, Wikiquote). Tapez votre sujet :
       </div>
     </div>
     
@@ -206,7 +206,7 @@
   <script>
     class MultiSourceAdaptiveSynthesizer {
       constructor() {
-        // Sources Wikimedia textuelles officielles et unifiées par type MediaWiki
+        // Sources Wikimedia textuelles officielles et unifiées 100% en français par type MediaWiki
         this.sources = {
           wikipedia: { type: 'mediawiki', url: 'https://fr.wikipedia.org/w/api.php' },
           wiktionnaire: { type: 'mediawiki', url: 'https://fr.wiktionary.org/w/api.php' },
