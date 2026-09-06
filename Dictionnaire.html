@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synthétiseur Wikimedia - Chat Local</title>
+  <title>Synthétiseur Pyramidal Wikimedia - Chat Local</title>
   <style>
     :root {
       --primary-color: #2563eb;
@@ -27,7 +27,7 @@
 
     .chat-container {
       width: 100%;
-      max-width: 700px;
+      max-width: 750px;
       height: 90vh;
       background: var(--chat-bg);
       border-radius: 12px;
@@ -76,6 +76,7 @@
       font-size: 0.95rem;
       word-break: break-word;
       position: relative;
+      white-space: pre-line;
     }
 
     .message.user {
@@ -91,7 +92,7 @@
       align-self: flex-start;
       border-bottom-left-radius: 2px;
       border: 1px solid var(--border-color);
-      padding-top: 32px; /* Espace pour le bouton copier */
+      padding-top: 32px;
     }
 
     .message.loading {
@@ -168,23 +169,23 @@
 
   <div class="chat-container">
     <div class="chat-header">
-      Synthétiseur Wikimedia <span>100% Local / Sans LLM</span>
+      Synthétiseur Pyramidal Wikimedia <span>Architecture en Entonnoir / 100% Local</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Entrez un mot-clé ou un sujet (ex: <i>Intelligence artificielle</i>, <i>Photosynthèse</i>) pour générer une synthèse instantanée à partir de Wikipédia, Wiktionnaire, Wikisource et Wikiquote.
+        Bonjour ! Tapez une phrase complexe (ex: <i>intelligence artificielle générale</i>) : le système va la tokeniser par mot, interroger les 4 sources pour chaque mot, générer un sous-paragraphe par mot, puis fusionner le tout en un unique sommet pyramidal.
       </div>
     </div>
     
     <div class="chat-input-area">
-      <input type="text" id="user-input" placeholder="Tapez votre recherche ici..." autocomplete="off">
+      <input type="text" id="user-input" placeholder="Tapez votre expression multi-mots..." autocomplete="off">
       <button id="send-btn">Envoyer</button>
     </div>
   </div>
 
   <script>
-    class WikimediaSynthesizer {
+    class WikimediaPyramidalSynthesizer {
       constructor() {
         this.sources = {
           wikipedia: 'https://fr.wikipedia.org/w/api.php',
@@ -199,39 +200,68 @@
         ];
       }
 
-      async generateSynthesis(keyword) {
-        if (!keyword || keyword.trim() === "") {
-          throw new Error("Le mot-clé ne peut pas être vide.");
+      /**
+       * ÉTAPE 1 : Point d'entrée principal (La Pyramide)
+       */
+      async generatePyramidalSynthesis(inputPhrase) {
+        if (!inputPhrase || inputPhrase.trim() === "") {
+          throw new Error("L'expression ne peut pas être vide.");
         }
 
-        const cleanKeyword = keyword.trim();
-        
-        const fetchPromises = Object.entries(this.sources).map(([sourceName, apiUrl]) => 
-          this.fetchCombinedFromSource(sourceName, apiUrl, cleanKeyword)
-        );
-        
-        const rawResults = await Promise.all(fetchPromises);
-        let allSentences = [];
-        
-        rawResults.forEach(({ source, text }) => {
-          if (!text) return;
-          
-          const cleanText = this.cleanRawText(text);
-          const sentences = this.segmentIntoSentences(cleanText);
-          
-          sentences.forEach(sentence => {
-            const score = this.scoreSentence(sentence, cleanKeyword, source);
-            if (sentence.length >= 20 && sentence.length <= 250) {
-              allSentences.push({
-                text: sentence,
-                source: source,
-                score: score
-              });
-            }
-          });
-        });
+        // Tokenisation : Extraction des mots significatifs (de plus de 3 lettres pour éviter les articles/prépositions superflus)
+        const rawTokens = inputPhrase.trim().split(/\s+/);
+        const tokens = [...new Set(rawTokens.map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim()).filter(t => t.length > 2)];
 
-        return this.assembleSynthesis(allSentences);
+        if (tokens.length === 0) {
+          throw new Error("Veuillez entrer des mots-clés valides (plus de 3 caractères).");
+        }
+
+        let wordParagraphs = [];
+
+        // ÉTAPE 2 & 3 : Pour chaque mot, on interroge les 4 sources et on génère son paragraphe intermédiaire
+        for (const token of tokens) {
+          const fetchPromises = Object.entries(this.sources).map(([sourceName, apiUrl]) => 
+            this.fetchCombinedFromSource(sourceName, apiUrl, token)
+          );
+          
+          const rawResults = await Promise.all(fetchPromises);
+          let tokenSentences = [];
+          
+          rawResults.forEach(({ source, text }) => {
+            if (!text) return;
+            
+            const cleanText = this.cleanRawText(text);
+            const sentences = this.segmentIntoSentences(cleanText);
+            
+            sentences.forEach(sentence => {
+              const score = this.scoreSentence(sentence, token, source);
+              if (sentence.length >= 20 && sentence.length <= 250) {
+                tokenSentences.push({
+                  text: sentence,
+                  source: source,
+                  score: score,
+                  token: token
+                });
+              }
+            });
+          });
+
+          // Assemblage du sous-paragraphe pour ce mot spécifique
+          const tokenParagraph = this.assembleSubSynthesis(tokenSentences);
+          if (tokenParagraph) {
+            wordParagraphs.push({
+              token: token,
+              content: tokenParagraph
+            });
+          }
+        }
+
+        if (wordParagraphs.length === 0) {
+          return "Aucun contenu pertinent n'a pu être extrait pour ces mots.";
+        }
+
+        // ÉTAPE 4 : Sommet de la pyramide (Fusion des paragraphes intermédiaires en un seul)
+        return this.fuseParagraphsToPeak(wordParagraphs, inputPhrase);
       }
 
       async fetchCombinedFromSource(sourceName, apiUrl, keyword) {
@@ -273,7 +303,7 @@
           if (error.name !== 'AbortError') {
             clearTimeout(timeoutId);
           }
-          console.warn(`[${sourceName.toUpperCase()}] Échec du traitement :`, error.message);
+          console.warn(`[${sourceName.toUpperCase()}] Échec pour "${keyword}" :`, error.message);
           return { source: sourceName, text: "" };
         }
       }
@@ -329,11 +359,8 @@
           score -= 10;
         }
 
-        if (source === 'wiktionnaire') {
-          score += 12;
-        } else if (source === 'wikipedia') {
-          score += 8;
-        }
+        if (source === 'wiktionnaire') score += 12;
+        if (source === 'wikipedia') score += 8;
 
         return score;
       }
@@ -351,32 +378,66 @@
         return intersection.size / union.size;
       }
 
-      assembleSynthesis(allSentences) {
-        if (allSentences.length === 0) {
-          return "Aucun contenu pertinent n'a pu être extrait des sources Wikimedia pour ce mot-clé.";
+      /**
+       * Crée le sous-paragraphe intermédiaire pour un mot donné
+       */
+      assembleSubSynthesis(sentences) {
+        if (sentences.length === 0) return "";
+
+        sentences.sort((a, b) => b.score - a.score);
+        const selected = [];
+
+        for (const item of sentences) {
+          if (selected.length >= 2) break; // On prend les 2 meilleures phrases par mot
+          const isRedundant = selected.some(s => this.calculateJaccardSimilarity(s.text, item.text) > 0.4);
+          if (isRedundant) continue;
+          selected.push(item);
         }
 
-        allSentences.sort((a, b) => b.score - a.score);
-        const selectedSentences = [];
+        return selected.map(item => `${item.text} [${item.source.toUpperCase()}]`).join(' ');
+      }
 
-        for (const item of allSentences) {
-          if (selectedSentences.length >= 5) break;
+      /**
+       * Sommet de la pyramide : Fusionne les paragraphes intermédiaires en un unique paragraphe final
+       */
+      fuseParagraphsToPeak(wordParagraphs, originalPhrase) {
+        let allSentencesPool = [];
 
-          const isRedundant = selectedSentences.some(selected => 
-            this.calculateJaccardSimilarity(selected.text, item.text) > 0.4
+        // On redécoupe chaque paragraphe intermédiaire en phrases pour les traiter globalement
+        wordParagraphs.forEach(wp => {
+          const subSentences = this.segmentIntoSentences(wp.content);
+          subSentences.forEach(s => {
+            // Nettoyage de l'étiquette de source incrustée pour l'analyse
+            const cleanS = s.replace(/\[[A-Z]+\]/g, '').trim();
+            if (cleanS.length > 0) {
+              allSentencesPool.push({
+                text: cleanS,
+                score: wp.token.length // Bonus contextuel lié au token
+              });
+            }
+          });
+        });
+
+        // Tri global et déduplication finale stricte par Jaccard
+        allSentencesPool.sort((a, b) => b.score - a.score);
+        const finalSelected = [];
+
+        for (const item of allSentencesPool) {
+          if (finalSelected.length >= 5) break; // Le paragraphe final aura au maximum 5 phrases riches
+
+          const isRedundant = finalSelected.some(selected => 
+            this.calculateJaccardSimilarity(selected.text, item.text) > 0.35
           );
 
           if (isRedundant) continue;
-          selectedSentences.push(item);
+          finalSelected.push(item.text);
         }
 
-        return selectedSentences
-          .map(item => item.text)
-          .join(' ');
+        return `Synthèse unifiée (Sujet : "${originalPhrase}") :\n\n` + finalSelected.join(' ');
       }
     }
 
-    const synthesizer = new WikimediaSynthesizer();
+    const synthesizer = new WikimediaPyramidalSynthesizer();
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
@@ -408,10 +469,10 @@
     }
 
     async function handleUserSubmit() {
-      const keyword = userInput.value.trim();
-      if (!keyword) return;
+      const inputVal = userInput.value.trim();
+      if (!inputVal) return;
 
-      appendMessage('user', keyword);
+      appendMessage('user', inputVal);
       userInput.value = '';
       userInput.disabled = true;
       sendBtn.disabled = true;
@@ -420,14 +481,14 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Recherche et synthèse en cours dans les sources Wikimedia...";
+      loadingDiv.textContent = "Découpage en tokens, interrogation multi-sources par mot et fusion pyramidale en cours...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
       try {
-        const synthesisResult = await synthesizer.generateSynthesis(keyword);
+        const synthesisResult = await synthesizer.generatePyramidalSynthesis(inputVal);
         document.getElementById(loadingId).remove();
-        appendMessage('bot', synthesisResult, true); // true active le bouton copier
+        appendMessage('bot', synthesisResult, true);
       } catch (error) {
         document.getElementById(loadingId).remove();
         appendMessage('bot', `Erreur : ${error.message}`);
