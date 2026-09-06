@@ -469,14 +469,7 @@
         let score = 0;
         const lowerSentence = sentence.toLowerCase();
 
-        const isDrivingQuery = /conduite|permis|voiture|conduire|route/.test(userQueryLower);
-        if (isDrivingQuery) {
-          const forbiddenOffTopic = ['informatique', 'télécommunication', 'protocole', 'serveur', 'dégustation', 'vin', 'dictionnaires', 'internet'];
-          for (const word of forbiddenOffTopic) {
-            if (lowerSentence.includes(word)) return 0;
-          }
-        }
-
+        // Rejeter les phrases trop courtes ou non terminées
         if (!/[.!?]$/.test(sentence) && sentence.length < 50) return 0;
 
         let coreMatches = 0;
@@ -489,12 +482,14 @@
           if (lowerSentence.includes(st)) adaptiveMatches++;
         });
 
-        if (coreMatches === 0) return 0;
-        if (coreTokens.length > 1 && coreMatches < 1 && adaptiveMatches < 2) return 0;
+        // Règle universelle : si la phrase ne contient aucun des mots-clés de la question 
+        // et qu'elle n'a pas assez de correspondances satellites dynamiques, on l'écarte.
+        if (coreMatches === 0 && adaptiveMatches < 2) return 0;
 
-        score += coreMatches * 35;
-        score += adaptiveMatches * 6;
+        score += coreMatches * 40;
+        score += adaptiveMatches * 8;
 
+        // Analyse de la déviation lexicale dynamique
         const sentenceWords = new Set(lowerSentence.match(/\b[a-zéèàâêîôûç]{4,}\b/g) || []);
         let lexicalCoherenceCount = 0;
         sentenceWords.forEach(word => {
@@ -506,22 +501,19 @@
           if (!this.stopWords.has(word) && !coreTokens.includes(word) && !adaptiveSatellites.includes(word)) foreignWordsCount++;
         });
 
-        if (foreignWordsCount > 4 && lexicalCoherenceCount === 0) {
-          score -= 200;
+        if (foreignWordsCount > 3 && lexicalCoherenceCount === 0) {
+          score -= 150;
         }
 
+        // Bonus universel pour les structures processuelles si la question demande un "comment" ou des "étapes"
         if (isProcessIntent) {
-          const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler', 'organisation', 'service', 'réseau', 'gestion', 'évaluation', 'certificative', 'compétence'];
+          const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler', 'organisation', 'service', 'réseau', 'gestion', 'évaluation', 'méthode'];
           let markerMatches = 0;
           processMarkers.forEach(pm => { if (lowerSentence.includes(pm)) markerMatches++; });
           score += markerMatches * 15;
-
-          const constructiveMarkers = ['bois', 'assembler', 'pieds', 'dossier', 'vis', 'colle', 'couper', 'mesurer', 'planche', 'clou', 'poncer', 'farine', 'eau', 'levure', 'sel', 'cuire', 'four', 'pétrir', 'conduite', 'permis', 'route', 'véhicule', 'vaccin', 'grippe', 'virus'];
-          let constructiveMatches = 0;
-          constructiveMarkers.forEach(cm => { if (lowerSentence.includes(cm)) constructiveMatches++; });
-          score += constructiveMatches * 25;
         }
 
+        // Pondération de la source
         if (source === 'wikipedia') score += 10;
         if (source === 'wiktionnaire') score += 5;
         if (source === 'wikiversite') score += 15;
@@ -530,8 +522,8 @@
         if (source === 'wikiquote') score += 10;
         if (source === 'wikidata') score += 18;
         if (source === 'wikihow') score += 25;
-        if (source === 'openlibrary') score += 20;
-        if (source === 'crossref') score += 30;
+        if (source === 'openlibrary') score += 30;
+        if (source === 'crossref') score += 35;
 
         return score;
       }
