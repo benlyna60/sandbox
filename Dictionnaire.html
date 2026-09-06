@@ -1,731 +1,476 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synthétiseur Pyramidal Multi-Sources - Haute Résilience</title>
-  <style>
-    :root {
-      --primary-color: #2563eb;
-      --bg-color: #f8fafc;
-      --chat-bg: #ffffff;
-      --text-color: #1e293b;
-      --border-color: #e2e8f0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .chat-container {
-      width: 100%;
-      max-width: 800px;
-      height: 90vh;
-      background: var(--chat-bg);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-    }
-
-    .chat-header {
-      padding: 16px 20px;
-      background: #ffffff;
-      border-bottom: 1px solid var(--border-color);
-      font-weight: 600;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .chat-header span {
-      font-size: 0.8rem;
-      background: #e0f2fe;
-      color: #0369a1;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-weight: normal;
-    }
-
-    .chat-messages {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      background: #fdfdfd;
-    }
-
-    .message {
-      max-width: 85%;
-      padding: 12px 16px;
-      border-radius: 12px;
-      line-height: 1.5;
-      font-size: 0.95rem;
-      word-break: break-word;
-      position: relative;
-      white-space: pre-line;
-    }
-
-    .message.user {
-      background: var(--primary-color);
-      color: white;
-      align-self: flex-end;
-      border-bottom-right-radius: 2px;
-    }
-
-    .message.bot {
-      background: #f1f5f9;
-      color: var(--text-color);
-      align-self: flex-start;
-      border-bottom-left-radius: 2px;
-      border: 1px solid var(--border-color);
-      padding-top: 32px;
-    }
-
-    .message.thinking {
-      padding-top: 12px;
-      font-style: italic;
-      color: #0284c7;
-      background: #f0f9ff;
-      border: 1px dashed #bae6fd;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .pulse-dot {
-      width: 8px;
-      height: 8px;
-      background-color: #0284c7;
-      border-radius: 50%;
-      animation: pulse 1.2s infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(0.8); opacity: 0.5; }
-      50% { transform: scale(1.2); opacity: 1; }
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: #e2e8f0;
-      border: none;
-      border-radius: 4px;
-      padding: 3px 8px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #475569;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .copy-btn:hover {
-      background: var(--primary-color);
-      color: white;
-    }
-
-    .chat-input-area {
-      padding: 16px;
-      background: #ffffff;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      gap: 10px;
-    }
-
-    .chat-input-area input {
-      flex: 1;
-      padding: 12px 16px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      outline: none;
-      font-size: 0.95rem;
-      transition: border-color 0.2s;
-    }
-
-    .chat-input-area input:focus {
-      border-color: var(--primary-color);
-    }
-
-    .chat-input-area button {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0 20px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .chat-input-area button:hover {
-      background: #1d4ed8;
-    }
-
-    .chat-input-area button:disabled,
-    .chat-input-area input:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Synthétiseur Pyramidal V2</title>
+<style>
+:root{--p:#2563eb;--bg:#f8fafc;--txt:#172033;--mut:#64748b;--bd:#dbe3ec;--bot:#f1f5f9}
+*{box-sizing:border-box}body{margin:0;height:100vh;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;justify-content:center;align-items:center}
+.app{width:min(900px,100%);height:94vh;background:white;border:1px solid var(--bd);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 5px 20px #0000000a}
+header{padding:15px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700}
+header small{font-weight:500;color:#0369a1;background:#e0f2fe;padding:4px 9px;border-radius:20px}
+#chat{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:13px;background:#fcfdff}
+.msg{max-width:88%;padding:12px 15px;border-radius:12px;line-height:1.52;white-space:pre-wrap;word-break:break-word;font-size:.94rem;position:relative}
+.user{align-self:flex-end;background:var(--p);color:white;border-bottom-right-radius:3px}
+.bot{align-self:flex-start;background:var(--bot);border:1px solid var(--bd);border-bottom-left-radius:3px;padding-top:34px}
+.info{font-size:.78rem;color:var(--mut);margin-top:7px}
+.copy{position:absolute;right:7px;top:7px;border:0;border-radius:5px;padding:4px 8px;background:#e2e8f0;color:#475569;font-weight:600;cursor:pointer}
+.copy:hover{background:var(--p);color:white}
+.thinking{padding-top:12px;color:#0369a1;background:#f0f9ff;border-style:dashed}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#0284c7;margin-right:9px;animation:p 1s infinite}
+@keyframes p{50%{opacity:.35;transform:scale(.75)}}
+footer{border-top:1px solid var(--bd);padding:12px;display:flex;gap:8px}
+input{flex:1;min-width:0;border:1px solid var(--bd);border-radius:8px;padding:11px 13px;font:inherit;outline:0}
+input:focus{border-color:var(--p)}
+button.send,button.clear{border:0;border-radius:8px;padding:0 16px;font-weight:700;cursor:pointer}
+.send{background:var(--p);color:white}.clear{background:#e2e8f0;color:#475569}
+button:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:600px){.app{height:100vh;border-radius:0}.msg{max-width:94%}header{font-size:.95rem}header small{font-size:.68rem}footer{padding:9px}.clear{display:none}}
+</style>
 </head>
 <body>
-
-  <div class="chat-container">
-    <div class="chat-header">
-      Synthétiseur Pyramidal Multi-Sources
-      <span>Réflexion Dynamique & Haute Résilience</span>
-    </div>
-    
-    <div id="chat-messages" class="chat-messages">
-      <div class="message bot">
-        Bonjour ! Le système intègre l'ensemble des wikis francophones sous licence libre (Wikipédia, Wiktionnaire, Wikiversité, Wikivoyage, Wikisource, Wikiquote, Wikilivres). Tapez votre sujet :
-      </div>
-    </div>
-    
-    <div class="chat-input-area">
-      <input type="text" id="user-input" placeholder="Tapez votre recherche..." autocomplete="off">
-      <button id="send-btn">Envoyer</button>
-    </div>
-  </div>
-
-  <script>
-    class MultiSourceAdaptiveSynthesizer {
-      constructor() {
-        this.sources = {
-          wikipedia: { type: 'mediawiki', url: 'https://fr.wikipedia.org/w/api.php' },
-          wiktionnaire: { type: 'mediawiki', url: 'https://fr.wiktionary.org/w/api.php' },
-          wikiversite: { type: 'mediawiki', url: 'https://fr.wikiversite.org/w/api.php' },
-          wikivoyage: { type: 'mediawiki', url: 'https://fr.wikivoyage.org/w/api.php' },
-          wikisource: { type: 'mediawiki', url: 'https://fr.wikisource.org/w/api.php' },
-          wikiquote: { type: 'mediawiki', url: 'https://fr.wikiquote.org/w/api.php' },
-          wikilivres: { type: 'mediawiki', url: 'https://fr.wikibooks.org/w/api.php' }
-        };
-
-        this.protectedAbbreviations = [
-          'p. ex', 'ex', 'ca', 'cf', 'etc', 'art', 'av', 'dr', 'm', 'me', 'mgr', 
-          'st', 'ste', 'trad', 'vol', 'janv', 'févr', 'juill', 'sept', 'oct', 'nov', 'déc'
-        ];
-
-        this.stopWords = new Set([
-          'le', 'la', 'les', 'un', 'une', 'des', 'de', 'du', 'au', 'aux', 'et', 'ou', 
-          'donne', 'moi', 'cherche', 'pour', 'sur', 'dans', 'comment', 'faire', 'fabriquer', 
-          'atteindre', 'etapes', 'pas', 'recette', 'est', 'sont', 'qui', 'que', 'ces', 
-          'par', 'plus', 'ses', 'leur', 'avec', 'tout', 'mais', 'cette', 'explique', 'quoi', 'c',
-          'ce', 'quel', 'quelle', 'quand', 'pourquoi', 'dois', 'cest', 'meilleure', 'methode', 'apprendre'
-        ]);
-      }
-
-      async generatePyramidalSynthesis(inputPhrase, onStepUpdate) {
-        if (!inputPhrase || inputPhrase.trim() === "") {
-          throw new Error("L'expression ne peut pas être vide.");
-        }
-
-        onStepUpdate("Analyse syntaxique et extraction des mots-clés...");
-        await this.wait(250);
-
-        const lowerInput = inputPhrase.toLowerCase();
-        const isProcessIntent = /comment\b|fabriquer\b|recette\b|etapes?\b|étape\b|méthode\b|processus\b|réaliser\b|construire\b|atteindre\b|obtenir\b|créer\b|guide\b|apprendre\b/i.test(lowerInput);
-
-        const rawTokens = inputPhrase.trim().split(/\s+/);
-        
-        const allContextTokens = [...new Set(
-          rawTokens
-            .map(t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
-            .filter(t => t.length > 2 && !this.stopWords.has(t))
-        )];
-
-        if (allContextTokens.length === 0) {
-          rawTokens.forEach(t => {
-            const clean = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z]/g, "");
-            if (clean.length > 2) allContextTokens.push(clean);
-          });
-        }
-
-        if (allContextTokens.length === 0) {
-          throw new Error("Veuillez entrer des mots-clés significatifs.");
-        }
-
-        const coreTokens = [...allContextTokens];
-
-        onStepUpdate(`Filtrage des stop-words (Core tokens détectés : ${coreTokens.join(', ')})`);
-        await this.wait(300);
-
-        let collectedCorpusTexts = [];
-        let expandedCoreTokens = [...coreTokens];
-
-        onStepUpdate("Lancement de la boucle réflexive et interrogation Wiktionnaire...");
-        for (const token of coreTokens) {
-          let initialResults = await this.fetchRawTextsOnly(token);
-          
-          if (initialResults.length === 0) {
-            onStepUpdate(`Rebond sémantique sur le terme : "${token}"`);
-            const wiktionaryTexts = await this.fetchWiktionnaireExpansion(token);
-            if (wiktionaryTexts.length > 0) {
-              collectedCorpusTexts.push(...wiktionaryTexts);
-              const defWords = wiktionaryTexts.join(' ').toLowerCase().match(/\b[a-zéèàâêîôûç]{4,}\b/g) || [];
-              const uniqueDefWords = [...new Set(defWords)]
-                .filter(w => !this.stopWords.has(w) && !coreTokens.includes(w))
-                .slice(0, 3);
-              expandedCoreTokens.push(...uniqueDefWords);
-            }
-          } else {
-            collectedCorpusTexts.push(...initialResults);
-          }
-        }
-
-        const finalCoreTokens = [...new Set(expandedCoreTokens)];
-
-        onStepUpdate("Extraction des satellites de proximité contextuelle...");
-        await this.wait(250);
-        const adaptiveSatellites = this.extractStrictCoherentSatellites(collectedCorpusTexts, finalCoreTokens);
-
-        let searchQueries = [];
-        if (finalCoreTokens.length >= 2) {
-          searchQueries.push(`${finalCoreTokens[0]} ${finalCoreTokens[1]}`);
-        }
-        searchQueries.push(finalCoreTokens[0]);
-        
-        if (lowerInput.includes('francais') || lowerInput.includes('français')) {
-          searchQueries.push("Français (langue)");
-          searchQueries.push("Didactique du français");
-        }
-
-        adaptiveSatellites.slice(0, 2).forEach(sat => {
-          searchQueries.push(`${finalCoreTokens[0]} ${sat}`);
-        });
-
-        const uniqueQueries = [...new Set(searchQueries)].filter(q => q && q.trim().length > 0).slice(0, 5);
-
-        let globalSentencePool = [];
-        let successfulSourcesCount = 0;
-        const sourcesEntries = Object.entries(this.sources);
-
-        for (let qIdx = 0; qIdx < uniqueQueries.length; qIdx++) {
-          const query = uniqueQueries[qIdx];
-          onStepUpdate(`Interrogation multi-sources (${qIdx + 1}/${uniqueQueries.length}) : "${query}"`);
-
-          const batchSize = 3;
-          let rawResults = [];
-
-          for (let i = 0; i < sourcesEntries.length; i += batchSize) {
-            const batch = sourcesEntries.slice(i, i + batchSize);
-            const batchPromises = batch.map(([sourceName, sourceConfig]) => 
-              this.fetchFromSpecificSource(sourceName, sourceConfig, query)
-            );
-            const batchResults = await Promise.all(batchPromises);
-            rawResults.push(...batchResults);
-          }
-          
-          rawResults.forEach(({ source, text, success }) => {
-            if (success) successfulSourcesCount++;
-            if (!text) return;
-            
-            const cleanText = this.cleanRawText(text);
-            const sentences = this.segmentIntoSentences(cleanText);
-            
-            sentences.forEach(sentence => {
-              if (sentence.length >= 20 && sentence.length <= 300) {
-                const score = this.scoreSentenceWithAnchoring(sentence, finalCoreTokens, adaptiveSatellites, allContextTokens, source, isProcessIntent);
-                if (score > 0) {
-                  globalSentencePool.push({
-                    text: sentence,
-                    source: source,
-                    score: score
-                  });
-                }
-              }
-            });
-          });
-        }
-
-        if (globalSentencePool.length === 0) {
-          if (successfulSourcesCount === 0) {
-            return "Aucun contenu n'a pu être extrait en raison d'interruptions réseau globales. Vérifiez votre connexion.";
-          }
-          return `Aucun contenu pertinent n'a pu être extrait pour : "${inputPhrase}". Essayez de formuler avec des mots-clés plus précis.`;
-        }
-
-        onStepUpdate("Assemblage pyramidal et élimination des doublons...");
-        await this.wait(300);
-
-        return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent, finalCoreTokens);
-      }
-
-      wait(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-      }
-
-      async fetchRawTextsOnly(keyword) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-        try {
-          const params = new URLSearchParams({
-            action: 'query',
-            format: 'json',
-            origin: '*',
-            generator: 'search',
-            gsrsearch: keyword,
-            gsrlimit: '2',
-            prop: 'extracts',
-            exintro: '1',
-            explaintext: '1',
-            redirects: '1'
-          });
-
-          const response = await fetch(`https://fr.wikipedia.org/w/api.php?${params.toString()}`, { signal: controller.signal });
-          clearTimeout(timeoutId);
-          if (!response.ok) return [];
-          const data = await response.json();
-          const pages = data.query?.pages;
-          if (!pages) return [];
-
-          let texts = [];
-          for (const pageId of Object.keys(pages)) {
-            if (pageId !== "-1" && pages[pageId]?.extract) {
-              texts.push(pages[pageId].extract);
-            }
-          }
-          return texts;
-        } catch (e) {
-          clearTimeout(timeoutId);
-          return [];
-        }
-      }
-
-      async fetchWiktionnaireExpansion(token) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-        try {
-          const params = new URLSearchParams({
-            action: 'query',
-            format: 'json',
-            origin: '*',
-            generator: 'search',
-            gsrsearch: token,
-            gsrlimit: '1',
-            prop: 'extracts',
-            exintro: '1',
-            explaintext: '1',
-            redirects: '1'
-          });
-
-          const response = await fetch(`https://fr.wiktionary.org/w/api.php?${params.toString()}`, { signal: controller.signal });
-          clearTimeout(timeoutId);
-          if (!response.ok) return [];
-          const data = await response.json();
-          const pages = data.query?.pages;
-          if (!pages) return [];
-
-          let texts = [];
-          for (const pageId of Object.keys(pages)) {
-            if (pageId !== "-1" && pages[pageId]?.extract) {
-              texts.push(pages[pageId].extract);
-            }
-          }
-          return texts;
-        } catch (e) {
-          clearTimeout(timeoutId);
-          return [];
-        }
-      }
-
-      extractStrictCoherentSatellites(textArray, coreTokens) {
-        let wordFrequency = {};
-
-        textArray.forEach(text => {
-          const segments = text.split(/[.!?\n]+/);
-          
-          segments.forEach(seg => {
-            const lowerSeg = seg.toLowerCase();
-            const hasCore = coreTokens.some(ct => lowerSeg.includes(ct));
-            
-            if (hasCore) {
-              const words = lowerSeg.match(/\b[a-zéèàâêîôûç]{4,}\b/g) || [];
-              words.forEach(w => {
-                if (!this.stopWords.has(w) && !coreTokens.includes(w)) {
-                  wordFrequency[w] = (wordFrequency[w] || 0) + 1;
-                }
-              });
-            }
-          });
-        });
-
-        return Object.entries(wordFrequency)
-          .sort((a, b) => b[1] - a[1])
-          .map(entry => entry[0])
-          .slice(0, 5);
-      }
-
-      async fetchFromSpecificSource(sourceName, config, keyword) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-        try {
-          if (config.type === 'mediawiki') {
-            const params = new URLSearchParams({
-              action: 'query',
-              format: 'json',
-              origin: '*',
-              generator: 'search',
-              gsrsearch: keyword,
-              gsrlimit: '2',
-              prop: 'extracts',
-              exintro: '1',
-              explaintext: '1',
-              redirects: '1'
-            });
-
-            const response = await fetch(`${config.url}?${params.toString()}`, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            if (!response.ok) return { source: sourceName, text: "", success: false };
-            
-            const data = await response.json();
-            const pages = data.query?.pages;
-            if (!pages) return { source: sourceName, text: "", success: true };
-            
-            let combined = "";
-            for (const pageId of Object.keys(pages)) {
-              if (pageId !== "-1" && pages[pageId]?.extract) {
-                combined += " " + pages[pageId].extract;
-              }
-            }
-            return { source: sourceName, text: combined.trim(), success: true };
-          }
-
-          return { source: sourceName, text: "", success: false };
-        } catch (error) {
-          clearTimeout(timeoutId);
-          return { source: sourceName, text: "", success: false };
-        }
-      }
-
-      cleanRawText(text) {
-        return text
-          .replace(/==.*?==/g, '')
-          .replace(/\s+/g, ' ')
-          .trim();
-      }
-
-      segmentIntoSentences(text) {
-        if (!text) return [];
-
-        let maskedText = text;
-        maskedText = maskedText.replace(/(\d+)\.(\d+)/g, '$1__DEC__$2');
-        maskedText = maskedText.replace(/([A-Z])\./g, '$1__INIT__');
-
-        this.protectedAbbreviations.forEach(abbr => {
-          const regex = new RegExp(`\\b(${abbr})\\.` , 'gi');
-          maskedText = maskedText.replace(regex, '$1__ABBR__');
-        });
-
-        const rawSegments = maskedText.match(/[^.!?]+([.!?]+|\s|$)/g) || [maskedText];
-
-        let expandedSegments = [];
-        rawSegments.forEach(seg => {
-          if (seg.includes(';') || seg.includes(' - ')) {
-            const subParts = seg.split(/;| - /);
-            subParts.forEach(part => {
-              if (part.trim().length > 15) expandedSegments.push(part.trim());
-            });
-          }
-          expandedSegments.push(seg.trim());
-        });
-
-        return expandedSegments
-          .map(sentence => {
-            return sentence
-              .replace(/__DEC__/g, '.')
-              .replace(/__INIT__/g, '.')
-              .replace(/__ABBR__/g, '.')
-              .trim();
-          })
-          .filter(sentence => sentence.length > 0);
-      }
-
-      scoreSentenceWithAnchoring(sentence, coreTokens, adaptiveSatellites, allContextTokens, source, isProcessIntent) {
-        const lowerSentence = sentence.toLowerCase();
-
-        if (!/[.!?]$/.test(sentence) && sentence.length < 30) return 0;
-
-        const sentenceWords = (lowerSentence.match(/\b[a-zéèàâêîôûç]{3,}\b/g) || [])
-          .filter(w => !this.stopWords.has(w));
-
-        if (sentenceWords.length === 0) return 0;
-
-        let matchedCoreTokensList = new Set();
-        let satelliteMatchCount = 0;
-        let contextMatchCount = 0;
-
-        sentenceWords.forEach(word => {
-          if (coreTokens.includes(word)) {
-            matchedCoreTokensList.add(word);
-          } else if (adaptiveSatellites.includes(word)) {
-            satelliteMatchCount++;
-          }
-          if (allContextTokens.includes(word)) {
-            contextMatchCount++;
-          }
-        });
-
-        if (matchedCoreTokensList.size < 1 && contextMatchCount === 0) {
-          return 0;
-        }
-
-        let score = matchedCoreTokensList.size * 100 + contextMatchCount * 20;
-        const cappedSatelliteCount = Math.min(satelliteMatchCount, 2);
-        score += cappedSatelliteCount * 15;
-
-        if (isProcessIntent) {
-          const structuralMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'méthode', 'processus', 'réaliser', 'langue', 'enseignement'];
-          let markerMatches = 0;
-          structuralMarkers.forEach(pm => { if (lowerSentence.includes(pm)) markerMatches++; });
-          score += Math.min(markerMatches, 2) * 10;
-        }
-
-        if (source === 'wikipedia') score += 20;
-        if (source === 'wikiversite') score += 30;
-        if (source === 'wikilivres') score += 25;
-
-        return score;
-      }
-
-      calculateJaccardSimilarity(str1, str2) {
-        const getWords = (str) => new Set(str.toLowerCase().match(/\b\w{3,}\b/g) || []);
-        const words1 = getWords(str1);
-        const words2 = getWords(str2);
-        
-        if (words1.size === 0 || words2.size === 0) return 0;
-        
-        const intersection = new Set([...words1].filter(x => words2.has(x)));
-        const union = new Set([...words1, ...words2]);
-        
-        return intersection.size / union.size;
-      }
-
-      fusePoolToPeak(sentencePool, originalPhrase, isProcessIntent, coreTokens) {
-        const validPool = sentencePool.filter(item => item.score > 0);
-        validPool.sort((a, b) => b.score - a.score);
-
-        const finalSelected = [];
-
-        for (const item of validPool) {
-          const maxPhrases = isProcessIntent ? 5 : 4;
-          if (finalSelected.length >= maxPhrases) break;
-
-          let tooRedundant = false;
-          for (const selected of finalSelected) {
-            if (this.calculateJaccardSimilarity(selected, item.text) > 0.4) {
-              tooRedundant = true;
-              break;
-            }
-          }
-
-          if (tooRedundant) continue;
-          finalSelected.push(item.text);
-        }
-
-        if (finalSelected.length === 0) {
-          return `Aucun élément structuré n'a pu être assemblé pour : "${originalPhrase}".`;
-        }
-
-        return finalSelected.join(' ');
-      }
-    }
-
-    const synthesizer = new MultiSourceAdaptiveSynthesizer();
-    const chatMessages = document.getElementById('chat-messages');
-    const userInput = document.getElementById('user-input');
-    const sendBtn = document.getElementById('send-btn');
-
-    function appendMessage(sender, text, showCopy = false) {
-      const messageDiv = document.createElement('div');
-      messageDiv.classList.add('message', sender);
-      messageDiv.textContent = text;
-
-      if (showCopy && sender === 'bot') {
-        const copyBtn = document.createElement('button');
-        copyBtn.classList.add('copy-btn');
-        copyBtn.textContent = 'Copier';
-        
-        copyBtn.addEventListener('click', () => {
-          navigator.clipboard.writeText(text).then(() => {
-            copyBtn.textContent = 'Copié !';
-            setTimeout(() => { copyBtn.textContent = 'Copier'; }, 2000);
-          });
-        });
-
-        messageDiv.appendChild(copyBtn);
-      }
-
-      chatMessages.appendChild(messageDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-      return messageDiv;
-    }
-
-    async function handleUserSubmit() {
-      const inputVal = userInput.value.trim();
-      if (!inputVal) return;
-
-      appendMessage('user', inputVal);
-      userInput.value = '';
-      userInput.disabled = true;
-      sendBtn.disabled = true;
-
-      const thinkingDiv = document.createElement('div');
-      thinkingDiv.classList.add('message', 'bot', 'thinking');
-      
-      const dot = document.createElement('div');
-      dot.classList.add('pulse-dot');
-      
-      const textSpan = document.createElement('span');
-      textSpan.textContent = "Initialisation du moteur de recherche...";
-      
-      thinkingDiv.appendChild(dot);
-      thinkingDiv.appendChild(textSpan);
-      chatMessages.appendChild(thinkingDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-
-      const updateStepMessage = (stepText) => {
-        textSpan.textContent = stepText;
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      };
-
-      try {
-        const synthesisResult = await synthesizer.generatePyramidalSynthesis(inputVal, updateStepMessage);
-        
-        thinkingDiv.remove();
-        appendMessage('bot', synthesisResult, true);
-      } catch (error) {
-        thinkingDiv.remove();
-        appendMessage('bot', `Erreur : ${error.message}`);
-      } finally {
-        userInput.disabled = false;
-        sendBtn.disabled = false;
-        userInput.focus();
-      }
-    }
-
-    sendBtn.addEventListener('click', handleUserSubmit);
-    userInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') handleUserSubmit();
-    });
-  </script>
+<div class="app">
+<header>
+<div>Synthétiseur Pyramidal Multi-Sources <small>V2 • sans LLM</small></div>
+</header>
+
+<div id="chat">
+<div class="msg bot">Bonjour. Je suis le Synthétiseur Pyramidal V2.
+
+Je fonctionne sans LLM, sans bibliothèque et sans service d'IA externe. Je recherche et assemble des informations provenant des sources Wikimedia francophones.
+
+Posez une question ou donnez simplement un sujet.</div>
+</div>
+
+<footer>
+<input id="input" autocomplete="off" placeholder="Ex. Comment fonctionne la photographie numérique ?">
+<button class="clear" id="clear">Effacer</button>
+<button class="send" id="send">Envoyer</button>
+</footer>
+</div>
+
+<script>
+"use strict";
+
+class PyramidSynth{
+constructor(){
+this.sources={
+Wikipédia:"https://fr.wikipedia.org/w/api.php",
+Wiktionnaire:"https://fr.wiktionary.org/w/api.php",
+Wikiversité:"https://fr.wikiversity.org/w/api.php",
+Wikivoyage:"https://fr.wikivoyage.org/w/api.php",
+Wikisource:"https://fr.wikisource.org/w/api.php",
+Wikiquote:"https://fr.wikiquote.org/w/api.php",
+Wikilivres:"https://fr.wikibooks.org/w/api.php"
+};
+
+this.stop=new Set(("le la les un une des de du au aux à a et ou où en dans sur sous par pour avec sans avec ce cette ces cet se sa son ses leur leurs mon ma mes ton ta tes est sont être été qui que quoi dont donc mais ou car ni ne pas plus moins très tout toute tous toutes comme comment pourquoi quand quel quelle quels quelles moi toi vous nous je il elle ils elles me te lui faire fait fais donne chercher cherche trouver obtenir créer fabriquer construire réaliser atteindre apprendre méthode processus étape étapes guide exemple information informations sujet propos concernant selon entre vers après avant avec depuis pendant peut peuvent doit doivent cette ainsi alors aussi encore même autre autres").split(/\s+/));
+
+this.abbr=["p. ex","etc","cf","ca","env","dr","mme","mlle","m","me","mgr","st","ste","vol","janv","févr","mars","avr","mai","juin","juil","août","sept","oct","nov","déc"];
+
+this.sourceWeight={
+Wikipédia:1.35,Wiktionnaire:1.15,Wikiversité:1.2,
+Wikivoyage:1.05,Wikisource:.95,Wikiquote:.9,Wikilivres:1.15
+};
+
+this.cache=new Map();
+}
+
+norm(s){
+return (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+}
+
+words(s){
+return this.norm(s).match(/[a-z0-9À-ÿ]{3,}/gi)||[];
+}
+
+unique(a){return [...new Set(a)]}
+
+sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+
+async fetch(url,params,timeout=9000){
+const key=url+"?"+new URLSearchParams(params);
+if(this.cache.has(key))return this.cache.get(key);
+const c=new AbortController(),t=setTimeout(()=>c.abort(),timeout);
+try{
+const r=await fetch(key,{signal:c.signal,headers:{Accept:"application/json"}});
+if(!r.ok)throw Error("HTTP "+r.status);
+const d=await r.json();
+clearTimeout(t);this.cache.set(key,d);return d;
+}catch(e){clearTimeout(t);return null}
+}
+
+async searchSource(name,url,q,limit=3){
+const p={
+action:"query",format:"json",origin:"*",generator:"search",
+gsrsearch:q,gsrlimit:String(limit),prop:"extracts",
+exintro:"1",explaintext:"1",redirects:"1"
+};
+const d=await this.fetch(url,p);
+if(!d)return {name,text:"",pages:0,ok:false};
+const pages=d.query?.pages||{};
+let text="",n=0;
+for(const id in pages){
+if(id!=="-1"&&pages[id]?.extract){
+text+=" "+pages[id].extract;n++;
+}}
+return{name,text:text.trim(),pages:n,ok:true};
+}
+
+async searchAll(q){
+const entries=Object.entries(this.sources);
+const results=await Promise.all(entries.map(([n,u])=>this.searchSource(n,u,q,3)));
+return results;
+}
+
+extractQuery(input){
+const original=input.trim();
+const n=this.norm(original);
+
+let intent="explication";
+if(/\b(comment|étape|etapes|méthode|processus|fabriquer|construire|réaliser|créer|obtenir|atteindre|guide)\b/.test(n))intent="processus";
+else if(/\b(différence|différence entre|comparer|comparaison|versus|vs)\b/.test(n))intent="comparaison";
+else if(/\b(pourquoi|cause|causes|raison)\b/.test(n))intent="causalité";
+else if(/\b(quand|date|année|siecle|siècle)\b/.test(n))intent="chronologie";
+else if(/\b(où|ou|lieu|ville|pays|voyage)\b/.test(n))intent="localisation";
+else if(/\b(qui|personne|auteur|inventeur)\b/.test(n))intent="personne";
+
+let ws=this.words(original).filter(w=>!this.stop.has(this.norm(w)));
+ws=this.unique(ws);
+
+const phrases=[
+...ws,
+ws.slice(0,2).join(" "),
+ws.slice(0,3).join(" ")
+].filter(Boolean);
+
+return{original,intent,tokens:ws,queries:this.unique(phrases).slice(0,5)};
+}
+
+expandTokens(tokens,results){
+const freq=new Map();
+for(const r of results){
+if(!r.text)continue;
+const sentences=this.sentences(r.text);
+for(const s of sentences){
+const sw=this.unique(this.words(s).map(x=>this.norm(x)));
+if(tokens.some(t=>sw.includes(this.norm(t)))){
+for(const w of sw){
+if(!this.stop.has(w)&&w.length>3&&!tokens.map(x=>this.norm(x)).includes(w))
+freq.set(w,(freq.get(w)||0)+1);
+}
+}
+}
+}
+return [...freq.entries()].sort((a,b)=>b[1]-a[1]).slice(0,10).map(x=>x[0]);
+}
+
+sentences(text){
+if(!text)return[];
+let s=text.replace(/\s+/g," ").trim();
+s=s.replace(/(\d+)\.(\d+)/g,"$1§DEC§$2");
+for(const a of this.abbr){
+const re=new RegExp("\\b("+a.replace(/\./g,"\\.")+")\\.","gi");
+s=s.replace(re,"$1§ABR§");
+}
+let arr=s.match(/[^.!?]+[.!?]+/g)||[s];
+return arr.map(x=>x.replace(/§DEC§/g,".").replace(/§ABR§/g,".").trim())
+.filter(x=>x.length>=35&&x.length<=500);
+}
+
+tokenSet(s){return new Set(this.words(s).map(x=>this.norm(x)))}
+
+jaccard(a,b){
+const A=this.tokenSet(a),B=this.tokenSet(b);
+if(!A.size||!B.size)return 0;
+let i=0;for(const x of A)if(B.has(x))i++;
+return i/(A.size+B.size-i);
+}
+
+score(sentence,tokens,satellites,intent,source,sourceHits){
+const sw=this.tokenSet(sentence);
+const ct=tokens.map(x=>this.norm(x));
+const st=satellites.map(x=>this.norm(x));
+let core=0,sat=0;
+for(const x of ct)if(sw.has(x))core++;
+for(const x of st)if(sw.has(x))sat++;
+
+if(!core)return 0;
+
+let score=core*90+Math.min(sat,4)*12;
+score*=this.sourceWeight[source]||1;
+
+if(sourceHits>1)score+=Math.min(sourceHits,5)*18;
+
+const structural={
+processus:["étape","étapes","processus","méthode","permet","nécessite","utiliser","utilise","consiste","d'abord","ensuite","puis","enfin"],
+causalité:["cause","raison","provoque","entraîne","origine","effet","conséquence"],
+chronologie:["siècle","année","date","né","mort","fondé","créé","avant","après"],
+comparaison:["contrairement","différent","similaire","comparaison","alors","tandis"],
+localisation:["situé","ville","pays","région","géographie","nord","sud","est","ouest"],
+personne:["né","naissance","mort","auteur","personne","écrivain","scientifique"],
+explication:["définition","désigne","correspond","consiste","caractérise","signifie"]
+}[intent]||[];
+
+for(const m of structural)if(this.norm(sentence).includes(m))score+=9;
+if(sentence.length>80)score+=5;
+if(sentence.length>250)score-=8;
+
+return score;
+}
+
+collectSentencePool(results,tokens,satellites,intent){
+const map=new Map();
+
+for(const r of results){
+if(!r.text)continue;
+for(const sentence of this.sentences(this.clean(r.text))){
+const score=this.score(sentence,tokens,satellites,intent,r.name,0);
+if(score<=0)continue;
+
+const key=this.norm(sentence).replace(/[^\wÀ-ÿ ]/g,"").slice(0,280);
+if(!map.has(key))map.set(key,{
+text:sentence,score,source:r.name,sources:new Set([r.name])
+});
+else{
+const x=map.get(key);
+x.score=Math.max(x.score,score)+20;
+x.sources.add(r.name);
+}
+}
+}
+
+const arr=[...map.values()];
+for(const a of arr){
+for(const b of arr){
+if(a===b)continue;
+if(this.jaccard(a.text,b.text)>.72){
+a.score+=12;
+for(const s of b.sources)a.sources.add(s);
+}
+}
+}
+return arr.sort((a,b)=>b.score-a.score);
+}
+
+clean(text){
+return text
+.replace(/\{\{.*?\}\}/g," ")
+.replace(/\[\[([^|\]]+)(?:\|[^\]]+)?\]\]/g,"$1")
+.replace(/<[^>]+>/g," ")
+.replace(/\s+/g," ").trim();
+}
+
+select(pool,intent){
+const max=intent==="processus"?7:6;
+const selected=[];
+
+for(const item of pool){
+if(selected.length>=max)break;
+if(selected.some(x=>this.jaccard(x.text,item.text)>.48))continue;
+selected.push(item);
+}
+return selected;
+}
+
+detectContradictions(items){
+const groups=[];
+for(let i=0;i<items.length;i++){
+const a=items[i];
+for(let j=i+1;j<items.length;j++){
+const b=items[j];
+const overlap=this.jaccard(a.text,b.text);
+if(overlap<.18)continue;
+
+const na=this.norm(a.text),nb=this.norm(b.text);
+const numsA=(na.match(/\b\d+(?:[.,]\d+)?\b/g)||[]);
+const numsB=(nb.match(/\b\d+(?:[.,]\d+)?\b/g)||[]);
+if(numsA.length&&numsB.length){
+const diff=numsA.some(x=>!numsB.includes(x));
+if(diff)groups.push([a,b]);
+}
+}
+}
+return groups;
+}
+
+build(selected,meta,pool){
+if(!selected.length)return"Aucun passage suffisamment pertinent n'a été trouvé.";
+
+const title=this.makeTitle(meta);
+let out=title+"\n\n";
+
+if(meta.intent==="processus")out+="Voici une synthèse structurée à partir des passages trouvés :\n\n";
+else if(meta.intent==="comparaison")out+="Les sources font ressortir les éléments suivants :\n\n";
+else out+="Les éléments les plus pertinents trouvés sont les suivants :\n\n";
+
+selected.forEach((x,i)=>{
+let prefix=meta.intent==="processus"?`${i+1}. `:"• ";
+out+=prefix+x.text.trim()+"\n\n";
+});
+
+const agreements=selected.filter(x=>x.sources.size>1).length;
+if(agreements){
+out+="Convergence des sources : "+agreements+" passage"+(agreements>1?"s":"")+" présente"+(agreements>1?"nt":"")+" des éléments retrouvés dans plusieurs résultats.\n";
+}
+
+return out.trim();
+}
+
+makeTitle(meta){
+const t=meta.tokens.slice(0,5).join(" ");
+if(meta.intent==="processus")return"Comment : "+t;
+if(meta.intent==="comparaison")return"Comparaison : "+t;
+if(meta.intent==="causalité")return"Pourquoi : "+t;
+if(meta.intent==="chronologie")return"Chronologie : "+t;
+if(meta.intent==="localisation")return"Localisation : "+t;
+if(meta.intent==="personne")return"Informations sur : "+t;
+return"Synthèse : "+t;
+}
+
+async run(input,update){
+const meta=this.extractQuery(input);
+if(!meta.tokens.length)throw Error("Je n'ai pas trouvé de mots-clés suffisamment précis.");
+
+update("Analyse de la requête...");
+await this.sleep(120);
+
+update("Recherche multi-sources...");
+let all=[];
+
+for(let i=0;i<meta.queries.length;i++){
+update(`Recherche ${i+1}/${meta.queries.length} : ${meta.queries[i]}`);
+const batch=await this.searchAll(meta.queries[i]);
+all.push(...batch);
+}
+
+const usable=all.filter(x=>x.ok&&x.text);
+const sourceMap=new Map();
+
+for(const r of usable){
+if(!sourceMap.has(r.name))sourceMap.set(r.name,{...r});
+else sourceMap.get(r.name).text+=" "+r.text;
+}
+
+const uniqueSources=[...sourceMap.values()];
+if(!uniqueSources.length)return"Aucune source Wikimedia n'a répondu correctement. Vérifiez votre connexion puis réessayez.";
+
+update("Extraction des concepts associés...");
+const satellites=this.expandTokens(meta.tokens,uniqueSources);
+
+update("Classement sémantique local...");
+const pool=this.collectSentencePool(uniqueSources,meta.tokens,satellites,meta.intent);
+
+if(!pool.length)return`Aucun passage suffisamment pertinent n'a été trouvé pour « ${meta.original} ».\n\nEssayez d'ajouter un terme plus précis.`;
+
+update("Élimination des doublons et rapprochement des sources...");
+const selected=this.select(pool,meta.intent);
+
+update("Construction de la synthèse pyramidale...");
+await this.sleep(150);
+
+const result=this.build(selected,meta,pool);
+
+return{
+text:result,
+sources:uniqueSources.map(x=>x.name),
+concepts:satellites.slice(0,6),
+intent:meta.intent,
+count:selected.length,
+contradictions:this.detectContradictions(selected)
+};
+}
+}
+
+const engine=new PyramidSynth();
+const chat=document.getElementById("chat");
+const input=document.getElementById("input");
+const send=document.getElementById("send");
+const clear=document.getElementById("clear");
+
+function addMessage(type,text,copy=false,info=""){
+const d=document.createElement("div");
+d.className="msg "+type;
+d.textContent=text;
+
+if(copy&&type==="bot"){
+const b=document.createElement("button");
+b.className="copy";b.textContent="Copier";
+b.onclick=async()=>{
+try{
+await navigator.clipboard.writeText(text);
+b.textContent="Copié !";
+setTimeout(()=>b.textContent="Copier",1500);
+}catch{
+const ta=document.createElement("textarea");
+ta.value=text;document.body.appendChild(ta);ta.select();
+document.execCommand("copy");ta.remove();b.textContent="Copié !";
+setTimeout(()=>b.textContent="Copier",1500);
+}
+};
+d.appendChild(b);
+}
+
+if(info){
+const i=document.createElement("div");
+i.className="info";i.textContent=info;d.appendChild(i);
+}
+chat.appendChild(d);
+chat.scrollTop=chat.scrollHeight;
+return d;
+}
+
+function addThinking(){
+const d=document.createElement("div");
+d.className="msg bot thinking";
+const dot=document.createElement("span");
+dot.className="dot";
+const txt=document.createElement("span");
+txt.textContent="Initialisation...";
+d.append(dot,txt);chat.appendChild(d);
+chat.scrollTop=chat.scrollHeight;
+return{d,txt};
+}
+
+async function submit(){
+const q=input.value.trim();
+if(!q)return;
+
+addMessage("user",q);
+input.value="";input.disabled=true;send.disabled=true;clear.disabled=true;
+
+const th=addThinking();
+
+try{
+const r=await engine.run(q,x=>th.txt.textContent=x);
+th.d.remove();
+
+if(typeof r==="string"){
+addMessage("bot",r,true);
+}else{
+let info=`Sources utilisées : ${r.sources.join(", ")} • ${r.count} passages sélectionnés`;
+if(r.concepts.length)info+=` • Concepts associés : ${r.concepts.join(", ")}`;
+addMessage("bot",r.text,true,info);
+
+if(r.contradictions.length){
+addMessage("bot",
+"⚠️ Attention : certains passages contiennent des valeurs numériques différentes. Le moteur ne choisit pas arbitrairement entre elles ; vérifiez ces informations dans les sources originales.");
+}
+}
+}catch(e){
+th.d.remove();
+addMessage("bot","Erreur contrôlée : "+(e.message||"problème inattendu")+".");
+}finally{
+input.disabled=false;send.disabled=false;clear.disabled=false;input.focus();
+}
+}
+
+send.onclick=submit;
+input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();submit()}});
+clear.onclick=()=>{chat.innerHTML='<div class="msg bot">Conversation effacée. Le moteur est prêt pour une nouvelle recherche.</div>';input.focus()};
+
+window.addEventListener("error",e=>console.warn("Erreur interface:",e.error||e.message));
+</script>
 </body>
 </html>
