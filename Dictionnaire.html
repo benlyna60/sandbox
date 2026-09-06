@@ -445,19 +445,25 @@
         score += coreMatches * 35;
         score += adaptiveMatches * 6;
 
-        const cinemaMarkers = ['réalisé par', 'film français', 'film américain', 'sorti en 202', 'sorti en 199', 'sorti en 200', 'cinéma', 'long-métrage'];
-        const isUserAskingForMovie = /film|cinema|regarder|acteur|réalisateur|serie/i.test(userQueryLower);
+        // --- MÉCANISME DE COHÉRENCE LEXICALE (Dynamique et sans exclusion absolue en dur) ---
+        const sentenceWords = new Set(lowerSentence.match(/\b[a-zéèàâêîôûç]{4,}\b/g) || []);
+        
+        let lexicalCoherenceCount = 0;
+        sentenceWords.forEach(word => {
+          if (coreTokens.includes(word) || adaptiveSatellites.includes(word)) {
+            lexicalCoherenceCount++;
+          }
+        });
 
-        if (!isUserAskingForMovie) {
-          const isSentenceAboutMovie = cinemaMarkers.some(marker => lowerSentence.includes(marker));
-          if (isSentenceAboutMovie) score -= 150; 
-        }
+        let foreignWordsCount = 0;
+        sentenceWords.forEach(word => {
+          if (!this.stopWords.has(word) && !coreTokens.includes(word) && !adaptiveSatellites.includes(word)) {
+            foreignWordsCount++;
+          }
+        });
 
-        const isUserAskingForWeaponOrExecution = /electrique|electrocution|mort|peine|condamné/i.test(userQueryLower);
-        if (!isUserAskingForWeaponOrExecution) {
-          const morbidMarkers = ['électrique', 'condamnés', 'exécuter', 'électrocution', 'peine de mort', 'prison', 'mineurs', 'États-Unis', 'exécuté'];
-          const isSentenceMorbid = morbidMarkers.some(marker => lowerSentence.includes(marker));
-          if (isSentenceMorbid) score -= 500;
+        if (foreignWordsCount > 4 && lexicalCoherenceCount === 0) {
+          score -= 200; // Forte pénalité de décrochage thématique contextuel
         }
 
         if (isProcessIntent) {
@@ -468,7 +474,7 @@
           });
           score += markerMatches * 15;
 
-          const constructiveMarkers = ['bois', 'assembler', 'pieds', 'dossier', 'vis', 'colle', 'couper', 'mesurer', 'planche', 'clou', 'poncer'];
+          const constructiveMarkers = ['bois', 'assembler', 'pieds', 'dossier', 'vis', 'colle', 'couper', 'mesurer', 'planche', 'clou', 'poncer', 'farine', 'eau', 'levure', 'sel', 'cuire', 'four', 'pétrir'];
           let constructiveMatches = 0;
           constructiveMarkers.forEach(cm => {
             if (lowerSentence.includes(cm)) constructiveMatches++;
