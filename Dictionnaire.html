@@ -169,12 +169,12 @@
 
   <div class="chat-container">
     <div class="chat-header">
-      Synthétiseur Pyramidal Wikimedia <span>Architecture en Entonnoir / 100% Local</span>
+      Synthétiseur Pyramidal Wikimedia <span>Architecture en Entonnoir / Cross-Scoring</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Tapez une expression complexe (ex: <i>intelligence artificielle générale</i>) : le système va la tokeniser par mot, interroger les 4 sources pour chaque mot, générer un sous-paragraphe par mot, puis fusionner le tout en un unique sommet pyramidal.
+        Bonjour ! Tapez une expression complexe (ex: <i>recette de gâteau</i>) : le système va croiser les tokens pour s'assurer que les briques du bas se parlent avant de s'élever vers le sommet de la pyramide.
       </div>
     </div>
     
@@ -205,7 +205,6 @@
           throw new Error("L'expression ne peut pas être vide.");
         }
 
-        // Tokenisation sécurisée : extraction des mots de plus de 3 lettres
         const rawTokens = inputPhrase.trim().split(/\s+/);
         const tokens = [...new Set(
           rawTokens
@@ -217,16 +216,15 @@
           throw new Error("Veuillez entrer des mots-clés valides (plus de 3 caractères).");
         }
 
-        let wordParagraphs = [];
+        // Bassin global collectant toutes les phrases candidates de toutes les sources pour tous les tokens
+        let globalSentencePool = [];
 
-        // Boucle asynchrone propre pour traiter chaque token un par un
         for (const token of tokens) {
           const fetchPromises = Object.entries(this.sources).map(([sourceName, apiUrl]) => 
             this.fetchCombinedFromSource(sourceName, apiUrl, token)
           );
           
           const rawResults = await Promise.all(fetchPromises);
-          let tokenSentences = [];
           
           rawResults.forEach(({ source, text }) => {
             if (!text) return;
@@ -235,9 +233,9 @@
             const sentences = this.segmentIntoSentences(cleanText);
             
             sentences.forEach(sentence => {
-              const score = this.scoreSentence(sentence, token, source);
               if (sentence.length >= 20 && sentence.length <= 250) {
-                tokenSentences.push({
+                const score = this.scoreSentenceCross(sentence, tokens, token, source);
+                globalSentencePool.push({
                   text: sentence,
                   source: source,
                   score: score,
@@ -246,21 +244,13 @@
               }
             });
           });
-
-          const tokenParagraph = this.assembleSubSynthesis(tokenSentences);
-          if (tokenParagraph) {
-            wordParagraphs.push({
-              token: token,
-              content: tokenParagraph
-            });
-          }
         }
 
-        if (wordParagraphs.length === 0) {
+        if (globalSentencePool.length === 0) {
           return "Aucun contenu pertinent n'a pu être extrait pour ces mots.";
         }
 
-        return this.fuseParagraphsToPeak(wordParagraphs, inputPhrase);
+        return this.fusePoolToPeak(globalSentencePool, inputPhrase);
       }
 
       async fetchCombinedFromSource(sourceName, apiUrl, keyword) {
@@ -278,7 +268,7 @@
         });
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2500); // Délai étendu à 2.5s pour éviter les timeouts prématurés
+        const timeoutId = setTimeout(() => controller.abort(), 2500);
 
         try {
           const response = await fetch(`${apiUrl}?${params.toString()}`, { signal: controller.signal });
@@ -336,18 +326,28 @@
           .filter(sentence => sentence.length > 0);
       }
 
-      scoreSentence(sentence, keyword, source) {
+      // Logique de Cross-Scoring : évalue la phrase non pas sur un seul mot, mais sur sa capacité à connecter l'ensemble des tokens de la requête
+      scoreSentenceCross(sentence, allTokens, currentToken, source) {
         let score = 0;
         const lowerSentence = sentence.toLowerCase();
-        const lowerKeyword = keyword.toLowerCase();
+        const lowerToken = currentToken.toLowerCase();
 
-        if (lowerSentence.includes(lowerKeyword)) {
-          score += 50;
-          if (lowerSentence.indexOf(lowerKeyword) < 10) {
-            score += 20;
+        // Bonus pour le token principal de la recherche
+        if (lowerSentence.includes(lowerToken)) {
+          score += 40;
+          if (lowerSentence.indexOf(lowerToken) < 15) {
+            score += 15;
           }
         }
 
+        // Bonus de croisement : vérifie combien d'autres tokens de la requête sont présents dans la phrase
+        allTokens.forEach(t => {
+          if (t.toLowerCase() !== lowerToken && lowerSentence.includes(t.toLowerCase())) {
+            score += 35; // Forte récompense si la phrase fait le pont vers un autre mot-clé
+          }
+        });
+
+        // Longueur idéale de phrase
         const len = sentence.length;
         if (len >= 60 && len <= 150) {
           score += 15;
@@ -355,7 +355,8 @@
           score -= 10;
         }
 
-        if (source === 'wiktionnaire') score += 12;
+        // Bonus source
+        if (source === 'wiktionnaire') score += 10;
         if (source === 'wikipedia') score += 8;
 
         return score;
@@ -374,54 +375,44 @@
         return intersection.size / union.size;
       }
 
-      assembleSubSynthesis(sentences) {
-        if (sentences.length === 0) return "";
-
-        sentences.sort((a, b) => b.score - a.score);
-        const selected = [];
-
-        for (const item of sentences) {
-          if (selected.length >= 2) break;
-          const isRedundant = selected.some(s => this.calculateJaccardSimilarity(s.text, item.text) > 0.4);
-          if (isRedundant) continue;
-          selected.push(item);
-        }
-
-        return selected.map(item => `${item.text} [${item.source.toUpperCase()}]`).join(' ');
-      }
-
-      fuseParagraphsToPeak(wordParagraphs, originalPhrase) {
-        let allSentencesPool = [];
-
-        wordParagraphs.forEach(wp => {
-          const subSentences = this.segmentIntoSentences(wp.content);
-          subSentences.forEach(s => {
-            const cleanS = s.replace(/\[[A-Z]+\]/g, '').trim();
-            if (cleanS.length > 0) {
-              allSentencesPool.push({
-                text: cleanS,
-                score: wp.token.length
-              });
-            }
-          });
-        });
-
-        allSentencesPool.sort((a, b) => b.score - a.score);
+      // Fusion globale optimisée avec zone de Jaccard nuancée (ni doublon strict, ni hors-sujet complet)
+      fusePoolToPeak(sentencePool, originalPhrase) {
+        sentencePool.sort((a, b) => b.score - a.score);
         const finalSelected = [];
 
-        for (const item of allSentencesPool) {
+        for (const item of sentencePool) {
           if (finalSelected.length >= 5) break;
 
-          const isRedundant = finalSelected.some(selected => 
-            this.calculateJaccardSimilarity(selected, item.text) > 0.35
-          );
+          let tooRedundant = false;
+          let hasConnection = finalSelected.length === 0; // La première passe direct
 
-          if (isRedundant) continue;
+          for (const selected of finalSelected) {
+            const similarity = this.calculateJaccardSimilarity(selected, item.text);
+            
+            if (similarity > 0.4) {
+              tooRedundant = true; // Doublon strict à éliminer
+              break;
+            }
+            
+            // Si la similarité se situe dans la zone de complémentarité utile (entre 0.10 et 0.38), on valide le lien thématique
+            if (similarity >= 0.10 && similarity <= 0.38) {
+              hasConnection = true;
+            }
+          }
+
+          if (tooRedundant) continue;
+
+          // Si on a plusieurs phrases, on s'assure qu'elles partagent un minimum de fil conducteur (complémentarité)
+          if (finalSelected.length > 0 && !hasConnection) {
+            // Tolérance si le score global est exceptionnellement élevé
+            if (item.score < 80) continue; 
+          }
+
           finalSelected.push(item.text);
         }
 
         if (finalSelected.length === 0) {
-          return `Synthèse unifiée (Sujet : "${originalPhrase}") :\n\nImpossible de composer un paragraphe cohérent avec les données retournées.`;
+          return `Synthèse unifiée (Sujet : "${originalPhrase}") :\n\nImpossible de composer un paragraphe cohérent avec les données croisées retournées.`;
         }
 
         return `Synthèse unifiée (Sujet : "${originalPhrase}") :\n\n` + finalSelected.join(' ');
@@ -472,7 +463,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Découpage en tokens, interrogation multi-sources par mot et fusion pyramidale en cours...";
+      loadingDiv.textContent = "Interrogation multi-sources, application du cross-scoring et fusion pyramidale contextuelle en cours...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
