@@ -175,7 +175,7 @@
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Ce système combine désormais les écosystèmes Wikimedia, les données structurées de Wikidata, le catalogue mondial d'Open Library et les publications scientifiques de Crossref. Tapez un sujet pour lancer la synthèse enrichie :
+        Bonjour ! Système mis à jour (gestion CORS robuste, filtrage des stubs bibliographiques et analyse syntaxique affinée). Tapez un sujet pour lancer la synthèse enrichie :
       </div>
     </div>
     
@@ -284,7 +284,7 @@
         }
 
         if (globalSentencePool.length === 0) {
-          return "Aucun contenu pertinent n'a pu être extrait avec le modèle multi-sources.";
+          return "Aucun contenu pertinent n'a pu être extrait (vérifiez votre connexion ou l'absence de blocage réseau/CORS sur les APIs externes).";
         }
 
         return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent);
@@ -390,7 +390,7 @@
               const authors = doc.author_name ? doc.author_name.join(', ') : '';
               const year = doc.first_publish_year || '';
               if (title && title.length > 10) {
-                combined += ` Ouvrage de référence : ${title} ${authors ? 'par ' + authors : ''} (${year}). `;
+                combined += ` ${title} ${authors ? 'par ' + authors : ''} (${year}). `;
               }
             });
             return { source: sourceName, text: combined.trim() };
@@ -406,10 +406,9 @@
             let combined = "";
             items.forEach(item => {
               const title = item.title?.[0] || '';
-              const container = item['container-title']?.[0] || 'Publication scientifique';
               const year = item.issued?.['date-parts']?.[0]?.[0] || '';
               if (title && title.length > 15) {
-                combined += ` Article scientifique : ${title} (${year}). `;
+                combined += ` ${title} (${year}). `;
               }
             });
             return { source: sourceName, text: combined.trim() };
@@ -469,61 +468,59 @@
         let score = 0;
         const lowerSentence = sentence.toLowerCase();
 
-        // Rejeter les phrases trop courtes ou non terminées
-        if (!/[.!?]$/.test(sentence) && sentence.length < 50) return 0;
+        if (!/[.!?]$/.test(sentence) && sentence.length < 40) return 0;
 
-        let coreMatches = 0;
-        coreTokens.forEach(t => {
-          if (lowerSentence.includes(t)) coreMatches++;
-        });
-
-        let adaptiveMatches = 0;
-        adaptiveSatellites.forEach(st => {
-          if (lowerSentence.includes(st)) adaptiveMatches++;
-        });
-
-        // Règle universelle : si la phrase ne contient aucun des mots-clés de la question 
-        // et qu'elle n'a pas assez de correspondances satellites dynamiques, on l'écarte.
-        if (coreMatches === 0 && adaptiveMatches < 2) return 0;
-
-        score += coreMatches * 40;
-        score += adaptiveMatches * 8;
-
-        // Analyse de la déviation lexicale dynamique
-        const sentenceWords = new Set(lowerSentence.match(/\b[a-zéèàâêîôûç]{4,}\b/g) || []);
-        let lexicalCoherenceCount = 0;
-        sentenceWords.forEach(word => {
-          if (coreTokens.includes(word) || adaptiveSatellites.includes(word)) lexicalCoherenceCount++;
-        });
-
-        let foreignWordsCount = 0;
-        sentenceWords.forEach(word => {
-          if (!this.stopWords.has(word) && !coreTokens.includes(word) && !adaptiveSatellites.includes(word)) foreignWordsCount++;
-        });
-
-        if (foreignWordsCount > 3 && lexicalCoherenceCount === 0) {
-          score -= 150;
+        const isBibliographicStub = /^\s*[^.!?]+\(\d{4}\)\s*\.?\s*$/.test(sentence);
+        if (isBibliographicStub) {
+          return 0;
         }
 
-        // Bonus universel pour les structures processuelles si la question demande un "comment" ou des "étapes"
+        const sentenceWords = (lowerSentence.match(/\b[a-zéèàâêîôûç]{3,}\b/g) || [])
+          .filter(w => !this.stopWords.has(w));
+
+        if (sentenceWords.length === 0) return 0;
+
+        let coreMatchCount = 0;
+        let satelliteMatchCount = 0;
+
+        sentenceWords.forEach(word => {
+          if (coreTokens.includes(word)) {
+            coreMatchCount++;
+          } else if (adaptiveSatellites.includes(word)) {
+            satelliteMatchCount++;
+          }
+        });
+
+        if (coreMatchCount === 0) return 0;
+
+        const totalMatches = coreMatchCount + satelliteMatchCount;
+        const relevanceRatio = totalMatches / sentenceWords.length;
+
+        if (sentenceWords.length > 3 && relevanceRatio < 0.12) {
+          return 0;
+        }
+
+        score += coreMatchCount * 50;
+        score += satelliteMatchCount * 15;
+        score += Math.round(relevanceRatio * 100);
+
         if (isProcessIntent) {
-          const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler', 'organisation', 'service', 'réseau', 'gestion', 'évaluation', 'méthode'];
+          const structuralMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler', 'méthode', 'processus', 'réaliser', 'gérer', 'organisation'];
           let markerMatches = 0;
-          processMarkers.forEach(pm => { if (lowerSentence.includes(pm)) markerMatches++; });
+          structuralMarkers.forEach(pm => { if (lowerSentence.includes(pm)) markerMatches++; });
           score += markerMatches * 15;
         }
 
-        // Pondération de la source
-        if (source === 'wikipedia') score += 10;
-        if (source === 'wiktionnaire') score += 5;
-        if (source === 'wikiversite') score += 15;
+        if (source === 'wikipedia') score += 20;
+        if (source === 'wiktionnaire') score += 10;
+        if (source === 'wikiversite') score += 20;
         if (source === 'wikivoyage') score += 20;
-        if (source === 'wikisource') score += 10;
-        if (source === 'wikiquote') score += 10;
+        if (source === 'wikisource') score += 15;
+        if (source === 'wikiquote') score += 15;
         if (source === 'wikidata') score += 18;
         if (source === 'wikihow') score += 25;
-        if (source === 'openlibrary') score += 30;
-        if (source === 'crossref') score += 35;
+        if (source === 'openlibrary') score += 15;
+        if (source === 'crossref') score += 15;
 
         return score;
       }
@@ -613,7 +610,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Apprentissage du vocabulaire, interrogation simultanée de l'écosystème Wiki, Wikidata, Open Library et Crossref, puis synthèse adaptative...";
+      loadingDiv.textContent = "Apprentissage dynamique, interrogation multi-sources sécurisée et filtrage syntaxique strict...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
