@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synthétiseur Pyramidal à Apprentissage Dynamique - Wikimedia</title>
+  <title>Synthétiseur Pyramidal à Apprentissage Dynamique - Wikimedia & wikiHow</title>
   <style>
     :root {
       --primary-color: #2563eb;
@@ -169,7 +169,7 @@
 
   <div class="chat-container">
     <div class="chat-header">
-      Synthétiseur Pyramidal Adaptatif <span>Apprentissage Sémantique Autonome / 100% Local</span>
+      Synthétiseur Pyramidal Adaptatif <span>Wiki + wikiHow / 100% Local</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
@@ -191,7 +191,8 @@
           wikipedia: 'https://fr.wikipedia.org/w/api.php',
           wiktionnaire: 'https://fr.wiktionary.org/w/api.php',
           wikisource: 'https://fr.wikisource.org/w/api.php',
-          wikiquote: 'https://fr.wikiquote.org/w/api.php'
+          wikiquote: 'https://fr.wikiquote.org/w/api.php',
+          wikihow: 'https://fr.wikihow.com/api.php'
         };
 
         this.protectedAbbreviations = [
@@ -229,21 +230,19 @@
         }
 
         // 2. PHASE D'APPRENTISSAGE AUTOMATIQUE (Apprentissage dynamique du contexte)
-        // On interroge d'abord l'API sur les mots principaux pour récolter de la matière brute
         let collectedCorpusTexts = [];
         for (const token of coreTokens) {
           const initialResults = await this.fetchRawTextsOnly(token);
           collectedCorpusTexts.push(...initialResults);
         }
 
-        // Le système analyse le corpus récupéré et extrait les mots les plus récurrents (apprentissage du domaine)
+        // Le système analyse le corpus récupéré et extrait les mots les plus récurrents
         const learnedVocabulary = this.extractDynamicKeywords(collectedCorpusTexts, coreTokens);
 
-        // Fusion des tokens de l'utilisateur et du vocabulaire appris pour former les "satellites" adaptatifs
+        // Fusion des tokens de l'utilisateur et du vocabulaire appris
         const adaptiveSatellites = [...new Set([...coreTokens, ...learnedVocabulary])];
 
         // 3. PHASE DE RECHERCHE CIBLÉE ÉTENDUE
-        // On construit des requêtes combinant les mots d'origine et les mots qui viennent d'être appris
         const searchQueries = [inputPhrase.trim(), ...coreTokens];
         learnedVocabulary.slice(0, 3).forEach(vocabWord => searchQueries.push(vocabWord));
         const uniqueQueries = [...new Set(searchQueries)].slice(0, 5);
@@ -319,7 +318,7 @@
         }
       }
 
-      // Algorithme d'apprentissage : compte la fréquence des mots dans le corpus récupéré pour identifier le jargon/vocabulaire clé
+      // Algorithme d'apprentissage : compte la fréquence des mots dans le corpus récupéré
       extractDynamicKeywords(textArray, ignoreList) {
         let wordFrequency = {};
 
@@ -332,11 +331,10 @@
           });
         });
 
-        // Trie les mots par ordre de fréquence décroissante et extrait les plus pertinents
         return Object.entries(wordFrequency)
           .sort((a, b) => b[1] - a[1])
           .map(entry => entry[0])
-          .slice(0, 8); // On retient les 8 mots clés les plus caractéristiques du sujet
+          .slice(0, 8);
       }
 
       async fetchCombinedFromSource(sourceName, apiUrl, keyword) {
@@ -438,9 +436,14 @@
           if (lowerSentence.includes(st)) adaptiveMatches++;
         });
 
-        // Filtrage de pertinence : la phrase doit au moins toucher un mot d'origine ou plusieurs mots appris
+        // Filtrage de pertinence de base
         if (coreMatches === 0 && adaptiveMatches < 2) {
           return 0; 
+        }
+
+        // Filtre anti-bruit sémantique (élimine les pollutions thématiques non désirées)
+        if (/cycliste|coureurs|prologue|revue|graphisme|casse-noisette/.test(lowerSentence) && !/(bois|pied|dossier|assise|meuble)/.test(lowerSentence)) {
+          return 0;
         }
 
         score += coreMatches * 35;
@@ -457,6 +460,7 @@
 
         if (source === 'wikipedia') score += 10;
         if (source === 'wiktionnaire') score += 5;
+        if (source === 'wikihow') score += 15; // Bonus pour les guides pratiques structurés
 
         return score;
       }
@@ -551,7 +555,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Apprentissage du vocabulaire du sujet, extraction du jargon et synthèse adaptative en cours...";
+      loadingDiv.textContent = "Apprentissage du vocabulaire du sujet, interrogation de Wikipédia & wikiHow, et synthèse adaptative en cours...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
