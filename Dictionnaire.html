@@ -193,7 +193,7 @@
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Le système intègre l'ensemble des wikis francophones sous licence libre (Wikipédia, Wiktionnaire, Wikiversité, Wikivoyage, Wikisource, Wikiquote). Tapez votre sujet :
+        Bonjour ! Le système intègre l'ensemble des wikis francophones sous licence libre (Wikipédia, Wiktionnaire, Wikiversité, Wikivoyage, Wikisource, Wikiquote, Wikilivres). Tapez votre sujet :
       </div>
     </div>
     
@@ -206,14 +206,15 @@
   <script>
     class MultiSourceAdaptiveSynthesizer {
       constructor() {
-        // Sources Wikimedia textuelles officielles et unifiées 100% en français par type MediaWiki
+        // Sources Wikimedia textuelles officielles et unifiées 100% en français par type MediaWiki (inclus Wikilivres / Wikibooks)
         this.sources = {
           wikipedia: { type: 'mediawiki', url: 'https://fr.wikipedia.org/w/api.php' },
           wiktionnaire: { type: 'mediawiki', url: 'https://fr.wiktionary.org/w/api.php' },
           wikiversite: { type: 'mediawiki', url: 'https://fr.wikiversite.org/w/api.php' },
           wikivoyage: { type: 'mediawiki', url: 'https://fr.wikivoyage.org/w/api.php' },
           wikisource: { type: 'mediawiki', url: 'https://fr.wikisource.org/w/api.php' },
-          wikiquote: { type: 'mediawiki', url: 'https://fr.wikiquote.org/w/api.php' }
+          wikiquote: { type: 'mediawiki', url: 'https://fr.wikiquote.org/w/api.php' },
+          wikilivres: { type: 'mediawiki', url: 'https://fr.wikibooks.org/w/api.php' }
         };
 
         this.protectedAbbreviations = [
@@ -598,6 +599,7 @@
 
         if (source === 'wikipedia') score += 20;
         if (source === 'wiktionnaire') score += 10;
+        if (source === 'wikilivres') score += 25; // Bonus de pertinence pour les tutoriels et méthodes de Wikilivres
 
         return score;
       }
@@ -634,7 +636,7 @@
           }
 
           if (tooRedundant) continue;
-          finalSelected.push(item.text);
+          finalSelected.text = finalSelected.push(item.text);
         }
 
         if (finalSelected.length === 0) {
