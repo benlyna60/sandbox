@@ -174,7 +174,7 @@
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Tapez une phrase complexe (ex: <i>intelligence artificielle générale</i>) : le système va la tokeniser par mot, interroger les 4 sources pour chaque mot, générer un sous-paragraphe par mot, puis fusionner le tout en un unique sommet pyramidal.
+        Bonjour ! Tapez une expression complexe (ex: <i>intelligence artificielle générale</i>) : le système va la tokeniser par mot, interroger les 4 sources pour chaque mot, générer un sous-paragraphe par mot, puis fusionner le tout en un unique sommet pyramidal.
       </div>
     </div>
     
@@ -200,17 +200,18 @@
         ];
       }
 
-      /**
-       * ÉTAPE 1 : Point d'entrée principal (La Pyramide)
-       */
       async generatePyramidalSynthesis(inputPhrase) {
         if (!inputPhrase || inputPhrase.trim() === "") {
           throw new Error("L'expression ne peut pas être vide.");
         }
 
-        // Tokenisation : Extraction des mots significatifs (de plus de 3 lettres pour éviter les articles/prépositions superflus)
+        // Tokenisation sécurisée : extraction des mots de plus de 3 lettres
         const rawTokens = inputPhrase.trim().split(/\s+/);
-        const tokens = [...new Set(rawTokens.map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim()).filter(t => t.length > 2)];
+        const tokens = [...new Set(
+          rawTokens
+            .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim())
+            .filter(t => t.length > 2)
+        )];
 
         if (tokens.length === 0) {
           throw new Error("Veuillez entrer des mots-clés valides (plus de 3 caractères).");
@@ -218,7 +219,7 @@
 
         let wordParagraphs = [];
 
-        // ÉTAPE 2 & 3 : Pour chaque mot, on interroge les 4 sources et on génère son paragraphe intermédiaire
+        // Boucle asynchrone propre pour traiter chaque token un par un
         for (const token of tokens) {
           const fetchPromises = Object.entries(this.sources).map(([sourceName, apiUrl]) => 
             this.fetchCombinedFromSource(sourceName, apiUrl, token)
@@ -246,7 +247,6 @@
             });
           });
 
-          // Assemblage du sous-paragraphe pour ce mot spécifique
           const tokenParagraph = this.assembleSubSynthesis(tokenSentences);
           if (tokenParagraph) {
             wordParagraphs.push({
@@ -260,7 +260,6 @@
           return "Aucun contenu pertinent n'a pu être extrait pour ces mots.";
         }
 
-        // ÉTAPE 4 : Sommet de la pyramide (Fusion des paragraphes intermédiaires en un seul)
         return this.fuseParagraphsToPeak(wordParagraphs, inputPhrase);
       }
 
@@ -279,13 +278,13 @@
         });
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 1800);
+        const timeoutId = setTimeout(() => controller.abort(), 2500); // Délai étendu à 2.5s pour éviter les timeouts prématurés
 
         try {
           const response = await fetch(`${apiUrl}?${params.toString()}`, { signal: controller.signal });
           clearTimeout(timeoutId);
 
-          if (!response.ok) throw new Error(`HTTP status ${response.status}`);
+          if (!response.ok) return { source: sourceName, text: "" };
           
           const data = await response.json();
           const pages = data.query?.pages;
@@ -300,10 +299,7 @@
           const extract = pages[pageIds[0]]?.extract || "";
           return { source: sourceName, text: extract };
         } catch (error) {
-          if (error.name !== 'AbortError') {
-            clearTimeout(timeoutId);
-          }
-          console.warn(`[${sourceName.toUpperCase()}] Échec pour "${keyword}" :`, error.message);
+          clearTimeout(timeoutId);
           return { source: sourceName, text: "" };
         }
       }
@@ -378,9 +374,6 @@
         return intersection.size / union.size;
       }
 
-      /**
-       * Crée le sous-paragraphe intermédiaire pour un mot donné
-       */
       assembleSubSynthesis(sentences) {
         if (sentences.length === 0) return "";
 
@@ -388,7 +381,7 @@
         const selected = [];
 
         for (const item of sentences) {
-          if (selected.length >= 2) break; // On prend les 2 meilleures phrases par mot
+          if (selected.length >= 2) break;
           const isRedundant = selected.some(s => this.calculateJaccardSimilarity(s.text, item.text) > 0.4);
           if (isRedundant) continue;
           selected.push(item);
@@ -397,40 +390,38 @@
         return selected.map(item => `${item.text} [${item.source.toUpperCase()}]`).join(' ');
       }
 
-      /**
-       * Sommet de la pyramide : Fusionne les paragraphes intermédiaires en un unique paragraphe final
-       */
       fuseParagraphsToPeak(wordParagraphs, originalPhrase) {
         let allSentencesPool = [];
 
-        // On redécoupe chaque paragraphe intermédiaire en phrases pour les traiter globalement
         wordParagraphs.forEach(wp => {
           const subSentences = this.segmentIntoSentences(wp.content);
           subSentences.forEach(s => {
-            // Nettoyage de l'étiquette de source incrustée pour l'analyse
             const cleanS = s.replace(/\[[A-Z]+\]/g, '').trim();
             if (cleanS.length > 0) {
               allSentencesPool.push({
                 text: cleanS,
-                score: wp.token.length // Bonus contextuel lié au token
+                score: wp.token.length
               });
             }
           });
         });
 
-        // Tri global et déduplication finale stricte par Jaccard
         allSentencesPool.sort((a, b) => b.score - a.score);
         const finalSelected = [];
 
         for (const item of allSentencesPool) {
-          if (finalSelected.length >= 5) break; // Le paragraphe final aura au maximum 5 phrases riches
+          if (finalSelected.length >= 5) break;
 
           const isRedundant = finalSelected.some(selected => 
-            this.calculateJaccardSimilarity(selected.text, item.text) > 0.35
+            this.calculateJaccardSimilarity(selected, item.text) > 0.35
           );
 
           if (isRedundant) continue;
           finalSelected.push(item.text);
+        }
+
+        if (finalSelected.length === 0) {
+          return `Synthèse unifiée (Sujet : "${originalPhrase}") :\n\nImpossible de composer un paragraphe cohérent avec les données retournées.`;
         }
 
         return `Synthèse unifiée (Sujet : "${originalPhrase}") :\n\n` + finalSelected.join(' ');
@@ -487,10 +478,12 @@
 
       try {
         const synthesisResult = await synthesizer.generatePyramidalSynthesis(inputVal);
-        document.getElementById(loadingId).remove();
+        const loadingElement = document.getElementById(loadingId);
+        if (loadingElement) loadingElement.remove();
         appendMessage('bot', synthesisResult, true);
       } catch (error) {
-        document.getElementById(loadingId).remove();
+        const loadingElement = document.getElementById(loadingId);
+        if (loadingElement) loadingElement.remove();
         appendMessage('bot', `Erreur : ${error.message}`);
       } finally {
         userInput.disabled = false;
