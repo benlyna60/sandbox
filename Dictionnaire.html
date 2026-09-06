@@ -436,14 +436,14 @@
           if (lowerSentence.includes(st)) adaptiveMatches++;
         });
 
-        // Filtrage de pertinence de base
-        if (coreMatches === 0 && adaptiveMatches < 2) {
+        // Règle universelle de conjonction stricte : évite de valider des phrases isolées sur un seul mot ambigu
+        if (coreTokens.length > 1 && coreMatches < 2) {
           return 0; 
         }
 
-        // Filtre anti-bruit sémantique (élimine les pollutions thématiques non désirées)
-        if (/cycliste|coureurs|prologue|revue|graphisme|casse-noisette/.test(lowerSentence) && !/(bois|pied|dossier|assise|meuble)/.test(lowerSentence)) {
-          return 0;
+        // Filtrage de pertinence de base
+        if (coreMatches === 0 && adaptiveMatches < 2) {
+          return 0; 
         }
 
         score += coreMatches * 35;
