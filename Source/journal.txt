@@ -1,5 +1,69 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 09:40:11
+TITRE: EN DIRECT, guerre en Ukraine : après Moscou samedi, les émissaires américains Steve Witkoff et Jared Kushner sont arrivés à Kiev pour une première visite
+LIEN: https://www.lemonde.fr/international/live/2026/09/06/en-direct-guerre-en-ukraine-les-emissaires-americains-steve-witkoff-et-jared-kushner-attendus-a-kiev-apres-apres-avoir-rencontre-vladimir-poutine-samedi-a-moscou_6766818_3210.html
+CONTENU: Les deux hommes doivent s’entretenir avec le président ukrainien, Volodymyr Zelensky, après des pourparlers à Moscou avec Vladimir Poutine.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 03:00:18
+TITRE: En France, la faune sauvage a durement souffert des canicules et de la sécheresse : « Toute la chaîne alimentaire est perturbée »
+LIEN: https://www.lemonde.fr/planete/article/2026/09/06/en-france-la-faune-sauvage-a-durement-souffert-des-canicules-et-de-la-secheresse-toute-la-chaine-alimentaire-est-perturbee_6766771_3244.html
+CONTENU: La multiplication des épisodes climatiques extrêmes oblige les animaux sauvages à déployer toutes leurs capacités d’adaptation, pas toujours suffisantes pour survivre. Cet été, de nombreuses personnes ont d’elles-mêmes décidé de leur venir en aide, pour pallier la saturation des refuges et des centres de soin.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 03:00:18
+TITRE: En Australie-Occidentale, le gouvernement prépare l’avenir après la fermeture annoncée des centrales à charbon publiques
+LIEN: https://www.lemonde.fr/economie/article/2026/09/06/en-australie-occidentale-le-gouvernement-prepare-l-avenir-apres-la-fermeture-annoncee-des-centrales-a-charbon-publiques_6766772_3234.html
+CONTENU: La cité minière de Collie, où sont situées trois centrales thermiques, ambitionne d’être un modèle à une transition énergétique et économique réussie.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 08:00:18
+TITRE: Antoine Volodine : « Il faut savoir se retirer, plutôt qu’attendre que la Faucheuse se charge de porter le coup fatal »
+LIEN: https://www.lemonde.fr/livres/article/2026/09/06/antoine-volodine-il-faut-savoir-se-retirer-plutot-qu-attendre-que-la-faucheuse-se-charge-de-porter-le-coup-fatal_6767025_3260.html
+CONTENU: L'écrivain expose quelques clés de lecture de l’univers romanesque dont les onze titres de « Retour au goudron » sont la coda.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 10:40:10
+TITRE: Incendie en vallée d’Aspe, dans les Pyrénées-Atlantiques : 105 hectares brûlés, le feu toujours actif
+LIEN: https://www.lemonde.fr/planete/article/2026/09/06/incendie-en-vallee-d-aspe-dans-les-pyrenees-atlantiques-105-hectares-brules-le-feu-toujours-actif_6767262_3244.html
+CONTENU: L’incendie qui touche depuis mercredi la vallée d’Aspe, dans les Pyrénées-Atlantiques, a parcouru 105 hectares. Le feu n’a pas progressé dans la nuit de samedi à dimanche mais reste en cours, selon la préfecture.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 09:51:04
+TITRE: Quatre morts au Liban dans des bombardements israéliens, malgré la trêve
+LIEN: https://www.lemonde.fr/guerre-au-proche-orient/article/2026/09/06/quatre-morts-au-liban-dans-des-bombardements-israeliens-malgre-la-treve_6767226_6325529.html
+CONTENU: Alors que les négociations entre responsables libanais et israéliens peinent à avancer, les civils du Liban sud paient un lourd tribut aux affrontements persistants.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 08:00:16
+TITRE: Au Kenya, l’alcool contrefait envahit le marché et devient une menace sanitaire
+LIEN: https://www.lemonde.fr/afrique/article/2026/09/06/au-kenya-l-alcool-contrefait-envahit-le-marche-et-devient-une-menace-sanitaire_6767023_3212.html
+CONTENU: Un rapport publié en mai 2025 estime que l’alcool illicite représente 60 % du marché kényan en volume, soit une hausse de 27 % depuis 2022. Des cas d’intoxication sont régulièrement rapportés.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 08:27:12
+TITRE: Au Népal, les autorités répètent que les recherches se poursuivent malgré les difficultés
+LIEN: https://www.lemonde.fr/planete/article/2026/09/06/au-nepal-les-autorites-repetent-que-les-recherches-se-poursuivent-malgre-les-difficultes_6767059_3244.html
+CONTENU: Les secours assurent continuer leurs recherches dans le nord du Népal, onze jours après la crue soudaine qui a causé 1 341 morts et près de 5 000 disparus. Quatre personnes ont été retrouvées vivantes ces deux derniers jours.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-06 11:00:00
 TITRE: Le journal de 13h00 du dimanche 06 septembre 2026
