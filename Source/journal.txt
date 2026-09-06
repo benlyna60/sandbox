@@ -1,4 +1,68 @@
 ----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-06 11:00:00
+TITRE: Le journal de 13h00 du dimanche 06 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-13h00/le-journal-de-13h00-du-dimanche-06-septembre-2026-8406970
+CONTENU: Article de référence : "Le journal de 13h00 du dimanche 06 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-06 10:00:00
+TITRE: Le journal de 12h00 du dimanche 06 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-12h00/le-journal-de-12h00-du-dimanche-06-septembre-2026-4366512
+CONTENU: Article de référence : "Le journal de 12h00 du dimanche 06 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-06 08:00:00
+TITRE: Le 10/14 du dimanche 06 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-10-14-du-week-end/le-10-14-du-dimanche-06-septembre-2026-4096880
+CONTENU: Article de référence : "Le 10/14 du dimanche 06 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-06 10:32:01
+TITRE: Équateur: un nouveau bateau soupçonné de narcotrafic coulé par la marine étatsunienne, le quatrième de la semaine
+LIEN: https://www.rfi.fr/fr/am%C3%A9riques/20260906-equateur-un-nouveau-bateau-soup%C3%A7onn%C3%A9-de-narcotrafic-coul%C3%A9-par-la-marine-%C3%A9tatsunienne-le-quatri%C3%A8me-de-la-semaine
+CONTENU: Les États-Unis ont coulé samedi un quatrième navire soupçonné de liens avec le narcotrafic au large de l'Équateur, lors d'une opération conjointe avec ce pays diffusée sur les réseaux sociaux par l'armée étatsunienne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-06 09:12:14
+TITRE: Indonésie: les vols suspendus dans six aéroports après l'éruption du volcan Krakatoa
+LIEN: https://www.rfi.fr/fr/asie-pacifique/20260906-indon%C3%A9sie-les-vols-suspendus-dans-six-a%C3%A9roports-apr%C3%A8s-l-%C3%A9ruption-du-volcan-krakatoa
+CONTENU: Les autorités indonésiennes ont suspendu dimanche les activités dans six aéroports, dont l'aéroport international de Jakarta, après l'éruption du volcan Anak Krakatoa, situé à plus de 150 kilomètres de la capitale, a annoncé le ministre des Transports.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-06 11:04:29
+TITRE: Groenland: Ursula von der Leyen en visite pour réaffirmer le partenariat avec la grande île
+LIEN: https://www.rfi.fr/fr/europe/20260906-groenland-ursula-von-der-leyen-visite-pour-r%C3%A9affirmer-le-partenariat-avec-la-grande-%C3%AEle
+CONTENU: Deux cents millions d'euros d'investissements dans le numérique ou les minérais critiques, c'est ce que va annoncer ce dimanche Ursula von der Leyen, la présidente de la Commission européenne en visite au Groenland, pour la première fois depuis le début de la crise avec les États-Unis.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-06 10:00:14
+TITRE: « La Chine ne détrônera pas les Etats-Unis en tant que puissance mondiale »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/06/la-chine-ne-detronera-pas-les-etats-unis-en-tant-que-puissance-mondiale_6767228_3232.html
+CONTENU: Dan Wang, chercheur canado-chinois vivant aux Etats-Unis, consacre aux deux puissances rivales un nouvel ouvrage, intitulé « La Chine à toute vitesse ». Dans un entretien au « Monde », il détaille ce qui les sépare, mais aussi ce qui les réunit.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-06 08:00:19
+TITRE: « Le patrimoine photographique est en péril, il est urgent de mieux le protéger »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/06/le-patrimoine-photographique-est-en-peril-il-est-urgent-de-mieux-le-proteger_6767024_3232.html
+CONTENU: Il existe un enjeu considérable autour de la protection juridique de la conservation et de la restauration de la photographie. Un enjeu qui n’est pas du tout pris en compte par les pouvoirs publics, alertent, dans une tribune au « Monde », Lucille Bonnier, restauratrice du patrimoine photographique, et Abraham Le Guen, juriste.
+
+----------------------------------------
 CATEGORIE: UNIVERSITÉ & RECHERCHE
 SOURCE: Phys.org
 DATE: 2026-09-06 08:00:01
