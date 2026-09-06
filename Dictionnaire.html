@@ -170,12 +170,12 @@
   <div class="chat-container">
     <div class="chat-header">
       Synthétiseur Pyramidal Multi-Sources
-      <span>Boucle Réflexive & Ancrage Strict</span>
+      <span>Cohérence Thématique Dynamique & Ancrage Strict</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Moteur mis à jour avec boucle de rebond par le Wiktionnaire et ancrage strict. Tapez votre sujet :
+        Bonjour ! Moteur mis à jour avec le filtre de co-occurrence thématique dynamique. Tapez votre sujet :
       </div>
     </div>
     
@@ -209,7 +209,7 @@
           'donne', 'moi', 'cherche', 'pour', 'sur', 'dans', 'comment', 'faire', 'fabriquer', 
           'atteindre', 'etapes', 'pas', 'recette', 'est', 'sont', 'qui', 'que', 'ces', 
           'par', 'plus', 'ses', 'leur', 'avec', 'tout', 'mais', 'cette', 'explique', 'quoi', 'c',
-          'est', 'ce', 'cette', 'qui', 'que', 'quel', 'quelle', 'quand', 'pourquoi'
+          'est', 'ce', 'cette', 'qui', 'que', 'quel', 'quelle', 'quand', 'pourquoi', 'sont', 'dois'
         ]);
       }
 
@@ -232,6 +232,13 @@
           throw new Error("Veuillez entrer des mots-clés significatifs.");
         }
 
+        // CONTEXTE THÉMATIQUE DYNAMIQUE : Capture TOUS les mots significatifs de la question
+        const allContextTokens = [...new Set(
+          rawTokens
+            .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
+            .filter(t => t.length > 2 && !this.stopWords.has(t))
+        )];
+
         // Étape 1 : Récupération ciblée avec Boucle Réflexive (Rebond Wiktionnaire si échec initial)
         let collectedCorpusTexts = [];
         let expandedCoreTokens = [...coreTokens];
@@ -240,7 +247,6 @@
           let initialResults = await this.fetchRawTextsOnly(token);
           
           if (initialResults.length === 0) {
-            // Rebond sémantique via le Wiktionnaire pour récupérer définition et synonymes
             const wiktionaryTexts = await this.fetchWiktionnaireExpansion(token);
             if (wiktionaryTexts.length > 0) {
               collectedCorpusTexts.push(...wiktionaryTexts);
@@ -303,7 +309,7 @@
             
             sentences.forEach(sentence => {
               if (sentence.length >= 25 && sentence.length <= 300) {
-                const score = this.scoreSentenceWithAnchoring(sentence, finalCoreTokens, adaptiveSatellites, source, isProcessIntent);
+                const score = this.scoreSentenceWithAnchoring(sentence, finalCoreTokens, adaptiveSatellites, allContextTokens, source, isProcessIntent);
                 if (score > 0) {
                   globalSentencePool.push({
                     text: sentence,
@@ -505,7 +511,7 @@
           .filter(sentence => sentence.length > 0);
       }
 
-      scoreSentenceWithAnchoring(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent) {
+      scoreSentenceWithAnchoring(sentence, coreTokens, adaptiveSatellites, allContextTokens, source, isProcessIntent) {
         const lowerSentence = sentence.toLowerCase();
 
         if (!/[.!?]$/.test(sentence) && sentence.length < 40) return 0;
@@ -515,21 +521,30 @@
 
         if (sentenceWords.length === 0) return 0;
 
-        let coreMatchCount = 0;
         let matchedCoreTokensList = new Set();
         let satelliteMatchCount = 0;
+        let contextMatchCount = 0;
 
         sentenceWords.forEach(word => {
           if (coreTokens.includes(word)) {
-            coreMatchCount++;
             matchedCoreTokensList.add(word);
           } else if (adaptiveSatellites.includes(word)) {
             satelliteMatchCount++;
           }
+          if (allContextTokens.includes(word)) {
+            contextMatchCount++;
+          }
         });
 
+        // 1. FILTRE D'ANCRAGE STRICT
         const requiredCoreMatches = coreTokens.length > 1 ? Math.min(2, coreTokens.length) : 1;
         if (matchedCoreTokensList.size < requiredCoreMatches) {
+          return 0;
+        }
+
+        // 2. FILTRE DE COHÉRENCE THÉMATIQUE DYNAMIQUE (Zéro mot en dur)
+        // Empêche la déviation sémantique si plusieurs mots-clés contextuels étaient présents dans la question.
+        if (allContextTokens.length > 1 && contextMatchCount < 2) {
           return 0;
         }
 
@@ -637,7 +652,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Analyse, rebond dictionnaire et synthèse pyramidale...";
+      loadingDiv.textContent = "Analyse contextuelle dynamique et synthèse pyramidale...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
