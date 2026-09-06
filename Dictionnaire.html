@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Synthétiseur Pyramidal V2</title>
+<title>Synthétiseur Pyramidal V3</title>
 <style>
 :root{--p:#2563eb;--bg:#f8fafc;--txt:#172033;--mut:#64748b;--bd:#dbe3ec;--bot:#f1f5f9}
 *{box-sizing:border-box}body{margin:0;height:100vh;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;justify-content:center;align-items:center}
-.app{width:min(900px,100%);height:94vh;background:white;border:1px solid var(--bd);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 5px 20px #0000000a}
+.app{width:min(900px,100%);height:94vh;background:#fff;border:1px solid var(--bd);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 5px 20px #0000000a}
 header{padding:15px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700}
 header small{font-weight:500;color:#0369a1;background:#e0f2fe;padding:4px 9px;border-radius:20px}
 #chat{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:13px;background:#fcfdff}
-.msg{max-width:88%;padding:12px 15px;border-radius:12px;line-height:1.52;white-space:pre-wrap;word-break:break-word;font-size:.94rem;position:relative}
-.user{align-self:flex-end;background:var(--p);color:white;border-bottom-right-radius:3px}
+.msg{max-width:90%;padding:12px 15px;border-radius:12px;line-height:1.52;white-space:pre-wrap;word-break:break-word;font-size:.94rem;position:relative}
+.user{align-self:flex-end;background:var(--p);color:#fff;border-bottom-right-radius:3px}
 .bot{align-self:flex-start;background:var(--bot);border:1px solid var(--bd);border-bottom-left-radius:3px;padding-top:34px}
-.info{font-size:.78rem;color:var(--mut);margin-top:7px}
+.info{font-size:.76rem;color:var(--mut);margin-top:8px;padding-top:7px;border-top:1px solid var(--bd)}
 .copy{position:absolute;right:7px;top:7px;border:0;border-radius:5px;padding:4px 8px;background:#e2e8f0;color:#475569;font-weight:600;cursor:pointer}
-.copy:hover{background:var(--p);color:white}
+.copy:hover{background:var(--p);color:#fff}
 .thinking{padding-top:12px;color:#0369a1;background:#f0f9ff;border-style:dashed}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#0284c7;margin-right:9px;animation:p 1s infinite}
 @keyframes p{50%{opacity:.35;transform:scale(.75)}}
@@ -24,27 +24,23 @@ footer{border-top:1px solid var(--bd);padding:12px;display:flex;gap:8px}
 input{flex:1;min-width:0;border:1px solid var(--bd);border-radius:8px;padding:11px 13px;font:inherit;outline:0}
 input:focus{border-color:var(--p)}
 button.send,button.clear{border:0;border-radius:8px;padding:0 16px;font-weight:700;cursor:pointer}
-.send{background:var(--p);color:white}.clear{background:#e2e8f0;color:#475569}
+.send{background:var(--p);color:#fff}.clear{background:#e2e8f0;color:#475569}
 button:disabled{opacity:.55;cursor:not-allowed}
-@media(max-width:600px){.app{height:100vh;border-radius:0}.msg{max-width:94%}header{font-size:.95rem}header small{font-size:.68rem}footer{padding:9px}.clear{display:none}}
+@media(max-width:600px){.app{height:100vh;border-radius:0}header{font-size:.92rem}header small{font-size:.65rem}.msg{max-width:95%}.clear{display:none}}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
-<div>Synthétiseur Pyramidal Multi-Sources <small>V2 • sans LLM</small></div>
+<div>Synthétiseur Pyramidal Multi-Sources <small>V3 • moteur local</small></div>
 </header>
-
 <div id="chat">
-<div class="msg bot">Bonjour. Je suis le Synthétiseur Pyramidal V2.
+<div class="msg bot">Bonjour. V3 analyse maintenant la cible, les contraintes et l'intention de votre question avant de sélectionner les informations.
 
-Je fonctionne sans LLM, sans bibliothèque et sans service d'IA externe. Je recherche et assemble des informations provenant des sources Wikimedia francophones.
-
-Posez une question ou donnez simplement un sujet.</div>
+Aucun LLM, aucune bibliothèque et aucune API d'IA externe.</div>
 </div>
-
 <footer>
-<input id="input" autocomplete="off" placeholder="Ex. Comment fonctionne la photographie numérique ?">
+<input id="input" autocomplete="off" placeholder="Ex. Comment fonctionne le Parlement canadien ?">
 <button class="clear" id="clear">Effacer</button>
 <button class="send" id="send">Envoyer</button>
 </footer>
@@ -53,133 +49,207 @@ Posez une question ou donnez simplement un sujet.</div>
 <script>
 "use strict";
 
-class PyramidSynth{
+class PyramidV3{
 constructor(){
 this.sources={
-Wikipédia:"https://fr.wikipedia.org/w/api.php",
-Wiktionnaire:"https://fr.wiktionary.org/w/api.php",
-Wikiversité:"https://fr.wikiversity.org/w/api.php",
-Wikivoyage:"https://fr.wikivoyage.org/w/api.php",
-Wikisource:"https://fr.wikisource.org/w/api.php",
-Wikiquote:"https://fr.wikiquote.org/w/api.php",
-Wikilivres:"https://fr.wikibooks.org/w/api.php"
+"Wikipédia":"https://fr.wikipedia.org/w/api.php",
+"Wiktionnaire":"https://fr.wiktionary.org/w/api.php",
+"Wikiversité":"https://fr.wikiversity.org/w/api.php",
+"Wikivoyage":"https://fr.wikivoyage.org/w/api.php",
+"Wikisource":"https://fr.wikisource.org/w/api.php",
+"Wikiquote":"https://fr.wikiquote.org/w/api.php",
+"Wikilivres":"https://fr.wikibooks.org/w/api.php"
 };
 
-this.stop=new Set(("le la les un une des de du au aux à a et ou où en dans sur sous par pour avec sans avec ce cette ces cet se sa son ses leur leurs mon ma mes ton ta tes est sont être été qui que quoi dont donc mais ou car ni ne pas plus moins très tout toute tous toutes comme comment pourquoi quand quel quelle quels quelles moi toi vous nous je il elle ils elles me te lui faire fait fais donne chercher cherche trouver obtenir créer fabriquer construire réaliser atteindre apprendre méthode processus étape étapes guide exemple information informations sujet propos concernant selon entre vers après avant avec depuis pendant peut peuvent doit doivent cette ainsi alors aussi encore même autre autres").split(/\s+/));
-
-this.abbr=["p. ex","etc","cf","ca","env","dr","mme","mlle","m","me","mgr","st","ste","vol","janv","févr","mars","avr","mai","juin","juil","août","sept","oct","nov","déc"];
-
-this.sourceWeight={
-Wikipédia:1.35,Wiktionnaire:1.15,Wikiversité:1.2,
-Wikivoyage:1.05,Wikisource:.95,Wikiquote:.9,Wikilivres:1.15
+this.stop=new Set(("le la les un une des de du au aux à a et ou où en dans sur sous par pour avec sans ce cette ces cet se sa son ses leur leurs mon ma mes ton ta tes est sont être été qui que quoi dont donc mais car ni ne pas plus moins très tout toute tous toutes comme comment pourquoi quand quel quelle quels quelles moi toi vous nous je il elle ils elles me te lui faire fait fais donne donner chercher cherche trouver trouvez recherche obtenir créer fabriquer construire réaliser atteindre apprendre méthode processus étape étapes guide exemple information informations sujet propos concernant selon entre vers après avant depuis pendant peut peuvent doit doivent cette ainsi alors aussi encore même autre autres comment fonctionne fonctionnement faire quoi");
+this.syn={};
+this.groups={
+pays:{
+canada:["canadien","canadienne","canadiens","canadiennes","canada"],
+france:["français","française","france"],
+portugal:["portugais","portugaise","portugal"],
+espagne:["espagnol","espagnole","espagne"],
+royaumeuni:["britannique","britanniques","angleterre","royaume-uni","royaumeuni"],
+etatsunis:["américain","américaine","américains","américaines","états-unis","etatsunis"],
+belgique:["belge","belges","belgique"],
+suisse:["suisse","suisses"],
+bresil:["brésilien","brésilienne","brésil","bresil"],
+allemagne:["allemand","allemande","allemagne"],
+italie:["italien","italienne","italie"]
+},
+institutions:{
+parlement:["parlement","parlements","assemblée","assemblee","législature","legislature"],
+gouvernement:["gouvernement","gouvernements"],
+presidence:["président","présidente","présidence","president","presidente","presidence"],
+justice:["justice","judiciaire","tribunal","tribunaux","cour"]
+},
+aliments:{
+gateau:["gâteau","gateau","gâteaux","gateaux"],
+pain:["pain","pains"],
+pizza:["pizza","pizzas"],
+soupe:["soupe","soupes"],
+salade:["salade","salades"]
+}
 };
 
-this.cache=new Map();
+this.intentWords={
+processus:["comment","fonctionne","fonctionnement","fabriquer","construire","réaliser","créer","préparer","recette","étape","étapes","méthode","processus","guide"],
+comparaison:["différence","différences","comparer","comparaison","versus","vs"],
+causalite:["pourquoi","cause","causes","raison","raisons"],
+definition:["définition","définir","signifie","signification","qu'est-ce","questce","c'est quoi"],
+chronologie:["quand","date","année","siècle","histoire"],
+localisation:["où","lieu","ville","pays","situé","situe"],
+personne:["qui","auteur","inventeur","personne","président"]
+};
+
+this.sourceWeight={"Wikipédia":1.35,"Wiktionnaire":1.05,"Wikiversité":1.15,"Wikivoyage":1.05,"Wikisource":.9,"Wikiquote":.85,"Wikilivres":1.1};
+this.cache=new Map;
+this.maxCache=160;
+this.abbr=["p. ex","etc","cf","ca","env","dr","mme","mlle","mgr","st","ste","vol","janv","févr","mars","avr","mai","juin","juil","août","sept","oct","nov","déc"];
 }
 
 norm(s){
-return (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+return(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 }
 
 words(s){
-return this.norm(s).match(/[a-z0-9À-ÿ]{3,}/gi)||[];
+return this.norm(s).match(/[a-z0-9-]{2,}/g)||[];
 }
 
-unique(a){return [...new Set(a)]}
+unique(a){return[...new Set(a)]}
 
 sleep(ms){return new Promise(r=>setTimeout(r,ms))}
 
-async fetch(url,params,timeout=9000){
-const key=url+"?"+new URLSearchParams(params);
+async fetch(url,p,timeout=9000){
+const key=url+"?"+new URLSearchParams(p);
 if(this.cache.has(key))return this.cache.get(key);
-const c=new AbortController(),t=setTimeout(()=>c.abort(),timeout);
+const c=new AbortController,t=setTimeout(()=>c.abort(),timeout);
 try{
-const r=await fetch(key,{signal:c.signal,headers:{Accept:"application/json"}});
+const r=await fetch(key,{signal:c.signal});
 if(!r.ok)throw Error("HTTP "+r.status);
 const d=await r.json();
-clearTimeout(t);this.cache.set(key,d);return d;
+clearTimeout(t);
+if(this.cache.size>=this.maxCache)this.cache.delete(this.cache.keys().next().value);
+this.cache.set(key,d);
+return d;
 }catch(e){clearTimeout(t);return null}
 }
 
-async searchSource(name,url,q,limit=3){
-const p={
-action:"query",format:"json",origin:"*",generator:"search",
-gsrsearch:q,gsrlimit:String(limit),prop:"extracts",
-exintro:"1",explaintext:"1",redirects:"1"
-};
+async searchSource(name,url,q){
+const p={action:"query",format:"json",origin:"*",generator:"search",gsrsearch:q,gsrlimit:"3",prop:"extracts",exintro:"1",explaintext:"1",redirects:"1"};
 const d=await this.fetch(url,p);
-if(!d)return {name,text:"",pages:0,ok:false};
+if(!d)return{name,text:"",pages:0,ok:false};
 const pages=d.query?.pages||{};
-let text="",n=0;
+let text="",pagesCount=0;
 for(const id in pages){
-if(id!=="-1"&&pages[id]?.extract){
-text+=" "+pages[id].extract;n++;
-}}
-return{name,text:text.trim(),pages:n,ok:true};
+if(id!=="-1"&&pages[id]?.extract){text+=" "+pages[id].extract;pagesCount++}
+}
+return{name,text:text.trim(),pages:pagesCount,ok:true};
 }
 
 async searchAll(q){
-const entries=Object.entries(this.sources);
-const results=await Promise.all(entries.map(([n,u])=>this.searchSource(n,u,q,3)));
-return results;
+return Promise.all(Object.entries(this.sources).map(([n,u])=>this.searchSource(n,u,q)));
 }
 
-extractQuery(input){
-const original=input.trim();
-const n=this.norm(original);
-
-let intent="explication";
-if(/\b(comment|étape|etapes|méthode|processus|fabriquer|construire|réaliser|créer|obtenir|atteindre|guide)\b/.test(n))intent="processus";
-else if(/\b(différence|différence entre|comparer|comparaison|versus|vs)\b/.test(n))intent="comparaison";
-else if(/\b(pourquoi|cause|causes|raison)\b/.test(n))intent="causalité";
-else if(/\b(quand|date|année|siecle|siècle)\b/.test(n))intent="chronologie";
-else if(/\b(où|ou|lieu|ville|pays|voyage)\b/.test(n))intent="localisation";
-else if(/\b(qui|personne|auteur|inventeur)\b/.test(n))intent="personne";
-
-let ws=this.words(original).filter(w=>!this.stop.has(this.norm(w)));
-ws=this.unique(ws);
-
-const phrases=[
-...ws,
-ws.slice(0,2).join(" "),
-ws.slice(0,3).join(" ")
-].filter(Boolean);
-
-return{original,intent,tokens:ws,queries:this.unique(phrases).slice(0,5)};
+detectIntent(q){
+const n=this.norm(q);
+let best="explication",score=0;
+for(const [intent,list] of Object.entries(this.intentWords)){
+let s=0;
+for(const w of list)if(new RegExp("\\b"+this.norm(w).replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\b","i").test(n))s++;
+if(s>score){score=s;best=intent}
+}
+if(/\b(recette|preparer|préparer)\b/.test(n))best="recette";
+return best;
 }
 
-expandTokens(tokens,results){
-const freq=new Map();
-for(const r of results){
-if(!r.text)continue;
-const sentences=this.sentences(r.text);
-for(const s of sentences){
-const sw=this.unique(this.words(s).map(x=>this.norm(x)));
-if(tokens.some(t=>sw.includes(this.norm(t)))){
-for(const w of sw){
-if(!this.stop.has(w)&&w.length>3&&!tokens.map(x=>this.norm(x)).includes(w))
-freq.set(w,(freq.get(w)||0)+1);
+findGroups(q){
+const n=this.norm(q);
+const found=[];
+for(const [type,groups] of Object.entries(this.groups)){
+for(const [key,variants] of Object.entries(groups)){
+if(variants.some(v=>n.includes(this.norm(v))))found.push({type,key,variants});
 }
 }
+return found;
+}
+
+extractMeta(q){
+const n=this.norm(q),intent=this.detectIntent(q),groups=this.findGroups(q);
+let tokens=this.unique(this.words(q).filter(w=>!this.stop.has(w)&&w.length>2));
+
+const target=[];
+const qualifiers=[];
+for(const g of groups){
+target.push(g.key);
+for(const v of g.variants)if(n.includes(this.norm(v)))qualifiers.push(this.norm(v));
+}
+
+if(intent==="recette"){
+if(!tokens.some(x=>["gateau","pain","pizza","soupe","salade"].includes(x))&&/\bgateau\b/.test(n))tokens.push("gateau");
+}
+const queryTokens=this.unique(tokens.filter(x=>!["recette","simple","facile"].includes(x)));
+
+return{
+original:q,intent,tokens:queryTokens,
+target:this.unique(target),
+qualifiers:this.unique(qualifiers),
+simple:/\bsimple\b|\bfacile\b/.test(n),
+negative:this.detectUnrequestedSpecializations(n),
+queries:this.buildQueries(queryTokens,target,intent)
+};
+}
+
+detectUnrequestedSpecializations(n){
+const out=[];
+const specs={
+gateau:["sans gluten","vegan","végétalien","chocolat","forêt noire","basque","breton","aux pommes","au citron","au yaourt"],
+parlement:["européen","européenne","portugais","portugaise","catalan","catalane","britannique","allemand","français"],
+};
+for(const [k,list] of Object.entries(specs)){
+if(n.includes(k)||list.some(x=>n.includes(x))){
+for(const x of list)if(n.includes(this.norm(x)))out.push(this.norm(x));
 }
 }
-return [...freq.entries()].sort((a,b)=>b[1]-a[1]).slice(0,10).map(x=>x[0]);
+return this.unique(out);
+}
+
+buildQueries(tokens,target,intent){
+const q=[];
+const clean=tokens.filter(Boolean);
+if(target.length)q.push(target[0]+" "+clean.filter(x=>!target.includes(x)).slice(0,3).join(" "));
+if(clean.length)q.push(clean.slice(0,3).join(" "));
+if(intent==="recette"){
+const obj=clean.find(x=>["gateau","pain","pizza","soupe","salade"].includes(x));
+if(obj)q.push("recette "+obj);
+}
+if(intent==="processus"&&clean.length)q.push(clean.slice(0,3).join(" ")+" fonctionnement");
+return this.unique(q.filter(x=>x.trim())).slice(0,5);
+}
+
+clean(text){
+return(text||"")
+.replace(/\{\{[^{}]*\}\}/g," ")
+.replace(/\[\[([^|\]]+)(?:\|[^\]]+)?\]\]/g,"$1")
+.replace(/<[^>]+>/g," ")
+.replace(/&[a-z]+;/gi," ")
+.replace(/\s+/g," ").trim();
 }
 
 sentences(text){
-if(!text)return[];
-let s=text.replace(/\s+/g," ").trim();
-s=s.replace(/(\d+)\.(\d+)/g,"$1§DEC§$2");
+let s=this.clean(text);
+if(!s)return[];
+s=s.replace(/(\d+)\.(\d+)/g,"$1§D§$2");
 for(const a of this.abbr){
-const re=new RegExp("\\b("+a.replace(/\./g,"\\.")+")\\.","gi");
-s=s.replace(re,"$1§ABR§");
+const r=new RegExp("\\b("+a.replace(/\./g,"\\.")+")\\.","gi");
+s=s.replace(r,"$1§A§");
 }
-let arr=s.match(/[^.!?]+[.!?]+/g)||[s];
-return arr.map(x=>x.replace(/§DEC§/g,".").replace(/§ABR§/g,".").trim())
-.filter(x=>x.length>=35&&x.length<=500);
+const arr=s.match(/[^.!?]+[.!?]+/g)||[s];
+return arr.map(x=>x.replace(/§D§/g,".").replace(/§A§/g,".").trim())
+.filter(x=>x.length>=35&&x.length<=450);
 }
 
-tokenSet(s){return new Set(this.words(s).map(x=>this.norm(x)))}
+tokenSet(s){return new Set(this.words(s))}
 
 jaccard(a,b){
 const A=this.tokenSet(a),B=this.tokenSet(b);
@@ -188,202 +258,267 @@ let i=0;for(const x of A)if(B.has(x))i++;
 return i/(A.size+B.size-i);
 }
 
-score(sentence,tokens,satellites,intent,source,sourceHits){
-const sw=this.tokenSet(sentence);
-const ct=tokens.map(x=>this.norm(x));
-const st=satellites.map(x=>this.norm(x));
-let core=0,sat=0;
-for(const x of ct)if(sw.has(x))core++;
-for(const x of st)if(sw.has(x))sat++;
+containsTerm(text,term){
+return this.norm(text).includes(this.norm(term));
+}
 
-if(!core)return 0;
+targetScore(sentence,meta){
+const n=this.norm(sentence);
+let score=0;
 
-let score=core*90+Math.min(sat,4)*12;
-score*=this.sourceWeight[source]||1;
+if(meta.target.length){
+for(const target of meta.target){
+const g=[...Object.values(this.groups).flatMap(x=>Object.entries(x))].find(x=>x[0]===target);
+if(!g)continue;
+const variants=g[1];
+if(variants.some(v=>n.includes(this.norm(v))))score+=115;
+else score-=90;
+}
+}
 
-if(sourceHits>1)score+=Math.min(sourceHits,5)*18;
+for(const q of meta.qualifiers){
+if(n.includes(q))score+=65;
+}
 
-const structural={
-processus:["étape","étapes","processus","méthode","permet","nécessite","utiliser","utilise","consiste","d'abord","ensuite","puis","enfin"],
-causalité:["cause","raison","provoque","entraîne","origine","effet","conséquence"],
-chronologie:["siècle","année","date","né","mort","fondé","créé","avant","après"],
-comparaison:["contrairement","différent","similaire","comparaison","alors","tandis"],
-localisation:["situé","ville","pays","région","géographie","nord","sud","est","ouest"],
-personne:["né","naissance","mort","auteur","personne","écrivain","scientifique"],
-explication:["définition","désigne","correspond","consiste","caractérise","signifie"]
-}[intent]||[];
-
-for(const m of structural)if(this.norm(sentence).includes(m))score+=9;
-if(sentence.length>80)score+=5;
-if(sentence.length>250)score-=8;
+for(const bad of meta.negative){
+if(n.includes(bad))score-=170;
+}
 
 return score;
 }
 
-collectSentencePool(results,tokens,satellites,intent){
-const map=new Map();
+contextScore(sentence,meta,satellites){
+const sw=this.tokenSet(sentence);
+let core=0,sat=0;
+for(const t of meta.tokens)if(sw.has(this.norm(t)))core++;
+for(const t of satellites)if(sw.has(this.norm(t)))sat++;
+return core*80+Math.min(sat,4)*10;
+}
 
+intentScore(sentence,intent){
+const n=this.norm(sentence);
+const markers={
+processus:["fonctionne","fonctionnement","consiste","permet","nécessite","utilise","utiliser","étape","étapes","processus","méthode","d'abord","ensuite","puis","enfin"],
+recette:["ingrédients","ingredient","préparation","preparation","cuisson","four","mélanger","melanger","verser","cuire","minutes"],
+explication:["désigne","designe","définition","definition","consiste","signifie","correspond","caractérise","caracterise"],
+comparaison:["différent","different","contrairement","similaire","tandis","alors que"],
+causalite:["cause","raison","provoque","entraîne","entraine","effet","conséquence","consequence"],
+chronologie:["année","annee","date","siècle","siecle","fondé","fonde","créé","cree","né","ne"],
+localisation:["situé","situe","ville","pays","région","region","nord","sud","est","ouest"],
+personne:["né","ne","naissance","mort","auteur","inventeur","président","president"]
+};
+return(markers[intent]||markers.explication).reduce((a,x)=>a+(n.includes(this.norm(x))?12:0),0);
+}
+
+score(sentence,meta,satellites,source){
+let s=this.targetScore(sentence,meta);
+s+=this.contextScore(sentence,meta,satellites);
+s+=this.intentScore(sentence,meta.intent);
+s*=this.sourceWeight[source]||1;
+
+if(meta.simple&&meta.intent==="recette"){
+const n=this.norm(sentence);
+const simpleWords=["simple","facile","rapide","facilement","ingrédient","ingredient"];
+for(const w of simpleWords)if(n.includes(w))s+=10;
+}
+if(sentence.length>300)s-=12;
+if(sentence.length<55)s-=5;
+
+return s;
+}
+
+expand(results,meta){
+const freq=new Map;
+for(const r of results){
+for(const s of this.sentences(r.text)){
+const n=this.norm(s);
+if(meta.tokens.some(t=>n.includes(this.norm(t)))){
+for(const w of this.words(s)){
+if(!this.stop.has(w)&&w.length>3&&!meta.tokens.includes(w))
+freq.set(w,(freq.get(w)||0)+1);
+}
+}
+}
+}
+return[...freq.entries()].sort((a,b)=>b[1]-a[1]).slice(0,12).map(x=>x[0]);
+}
+
+buildPool(results,meta,satellites){
+const pool=[];
 for(const r of results){
 if(!r.text)continue;
-for(const sentence of this.sentences(this.clean(r.text))){
-const score=this.score(sentence,tokens,satellites,intent,r.name,0);
-if(score<=0)continue;
-
-const key=this.norm(sentence).replace(/[^\wÀ-ÿ ]/g,"").slice(0,280);
-if(!map.has(key))map.set(key,{
-text:sentence,score,source:r.name,sources:new Set([r.name])
-});
-else{
-const x=map.get(key);
-x.score=Math.max(x.score,score)+20;
-x.sources.add(r.name);
-}
+for(const text of this.sentences(r.text)){
+const score=this.score(text,meta,satellites,r.name);
+if(score<55)continue;
+pool.push({text,score,source:r.name});
 }
 }
 
-const arr=[...map.values()];
-for(const a of arr){
-for(const b of arr){
-if(a===b)continue;
-if(this.jaccard(a.text,b.text)>.72){
-a.score+=12;
-for(const s of b.sources)a.sources.add(s);
-}
-}
-}
-return arr.sort((a,b)=>b.score-a.score);
-}
-
-clean(text){
-return text
-.replace(/\{\{.*?\}\}/g," ")
-.replace(/\[\[([^|\]]+)(?:\|[^\]]+)?\]\]/g,"$1")
-.replace(/<[^>]+>/g," ")
-.replace(/\s+/g," ").trim();
-}
-
-select(pool,intent){
-const max=intent==="processus"?7:6;
-const selected=[];
-
+pool.sort((a,b)=>b.score-a.score);
+const merged=[];
 for(const item of pool){
-if(selected.length>=max)break;
-if(selected.some(x=>this.jaccard(x.text,item.text)>.48))continue;
-selected.push(item);
+let existing=null;
+for(const x of merged){
+if(this.jaccard(x.text,item.text)>.62){existing=x;break}
 }
-return selected;
+if(existing){
+existing.score+=Math.min(35,item.score*.12);
+existing.sources.add(item.source);
+}else merged.push({text:item.text,score:item.score,source:item.source,sources:new Set([item.source])});
+}
+for(const x of merged)if(x.sources.size>1)x.score+=x.sources.size*22;
+
+return merged.sort((a,b)=>b.score-a.score);
 }
 
-detectContradictions(items){
-const groups=[];
-for(let i=0;i<items.length;i++){
-const a=items[i];
-for(let j=i+1;j<items.length;j++){
-const b=items[j];
-const overlap=this.jaccard(a.text,b.text);
-if(overlap<.18)continue;
+isValid(item,meta){
+const n=this.norm(item.text);
 
-const na=this.norm(a.text),nb=this.norm(b.text);
-const numsA=(na.match(/\b\d+(?:[.,]\d+)?\b/g)||[]);
-const numsB=(nb.match(/\b\d+(?:[.,]\d+)?\b/g)||[]);
-if(numsA.length&&numsB.length){
-const diff=numsA.some(x=>!numsB.includes(x));
-if(diff)groups.push([a,b]);
+if(meta.target.length){
+let matched=false;
+for(const t of meta.target){
+const g=[...Object.values(this.groups).flatMap(x=>Object.entries(x))].find(x=>x[0]===t);
+if(g&&g[1].some(v=>n.includes(this.norm(v))))matched=true;
 }
-}
-}
-return groups;
+if(!matched)return false;
 }
 
-build(selected,meta,pool){
-if(!selected.length)return"Aucun passage suffisamment pertinent n'a été trouvé.";
+for(const bad of meta.negative)if(n.includes(bad))return false;
 
-const title=this.makeTitle(meta);
+if(meta.intent==="recette"){
+const useful=["ingrédient","ingredient","préparation","preparation","cuisson","four","mélanger","melanger","sucre","farine","œuf","oeuf","beurre","pâte","pate"];
+if(!useful.some(x=>n.includes(this.norm(x))))return false;
+}
+
+return true;
+}
+
+select(pool,meta){
+const max=meta.intent==="recette"?7:meta.intent==="processus"?7:6;
+const out=[];
+for(const x of pool){
+if(out.length>=max)break;
+if(!this.isValid(x,meta))continue;
+if(out.some(y=>this.jaccard(y.text,x.text)>.46))continue;
+out.push(x);
+}
+return out;
+}
+
+contradictions(items){
+const out=[];
+for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){
+if(this.jaccard(items[i].text,items[j].text)<.2)continue;
+const a=this.norm(items[i].text),b=this.norm(items[j].text);
+const na=a.match(/\b\d+(?:[.,]\d+)?\b/g)||[];
+const nb=b.match(/\b\d+(?:[.,]\d+)?\b/g)||[];
+if(na.length&&nb.length&&na.some(x=>!nb.includes(x)))out.push([items[i],items[j]]);
+}
+return out;
+}
+
+format(meta,items,stats){
+let title="Synthèse";
+if(meta.intent==="processus")title="Fonctionnement : "+meta.tokens.slice(0,4).join(" ");
+else if(meta.intent==="recette")title="Recette : "+meta.tokens.slice(0,4).join(" ");
+else if(meta.intent==="comparaison")title="Comparaison : "+meta.tokens.slice(0,4).join(" ");
+else if(meta.intent==="causalite")title="Pourquoi : "+meta.tokens.slice(0,4).join(" ");
+else if(meta.intent==="chronologie")title="Chronologie : "+meta.tokens.slice(0,4).join(" ");
+else if(meta.intent==="localisation")title="Localisation : "+meta.tokens.slice(0,4).join(" ");
+else title="Synthèse : "+meta.tokens.slice(0,4).join(" ");
+
 let out=title+"\n\n";
 
-if(meta.intent==="processus")out+="Voici une synthèse structurée à partir des passages trouvés :\n\n";
-else if(meta.intent==="comparaison")out+="Les sources font ressortir les éléments suivants :\n\n";
-else out+="Les éléments les plus pertinents trouvés sont les suivants :\n\n";
-
-selected.forEach((x,i)=>{
-let prefix=meta.intent==="processus"?`${i+1}. `:"• ";
-out+=prefix+x.text.trim()+"\n\n";
-});
-
-const agreements=selected.filter(x=>x.sources.size>1).length;
-if(agreements){
-out+="Convergence des sources : "+agreements+" passage"+(agreements>1?"s":"")+" présente"+(agreements>1?"nt":"")+" des éléments retrouvés dans plusieurs résultats.\n";
+if(meta.intent==="recette"){
+out+="Voici les éléments de préparation qui correspondent à la demande :\n\n";
+items.forEach((x,i)=>out+=(i+1)+". "+x.text+"\n\n");
+}else if(meta.intent==="processus"){
+out+="Les informations les plus directement liées au fonctionnement demandé :\n\n";
+items.forEach(x=>out+="• "+x.text+"\n\n");
+}else{
+items.forEach(x=>out+="• "+x.text+"\n\n");
 }
 
+out+="Sources retenues : "+stats.sources.join(", ")+".";
 return out.trim();
 }
 
-makeTitle(meta){
-const t=meta.tokens.slice(0,5).join(" ");
-if(meta.intent==="processus")return"Comment : "+t;
-if(meta.intent==="comparaison")return"Comparaison : "+t;
-if(meta.intent==="causalité")return"Pourquoi : "+t;
-if(meta.intent==="chronologie")return"Chronologie : "+t;
-if(meta.intent==="localisation")return"Localisation : "+t;
-if(meta.intent==="personne")return"Informations sur : "+t;
-return"Synthèse : "+t;
-}
-
 async run(input,update){
-const meta=this.extractQuery(input);
-if(!meta.tokens.length)throw Error("Je n'ai pas trouvé de mots-clés suffisamment précis.");
+const meta=this.extractMeta(input);
 
-update("Analyse de la requête...");
-await this.sleep(120);
+if(!meta.tokens.length)throw Error("Je n'ai pas trouvé de sujet exploitable.");
 
-update("Recherche multi-sources...");
+update("Analyse de l'intention et des contraintes...");
+await this.sleep(100);
+
+update("Cible détectée : "+(meta.target.length?meta.target.join(", "):"aucune cible spécialisée"));
+update("Intention : "+meta.intent);
+await this.sleep(100);
+
+const queries=meta.queries;
 let all=[];
 
-for(let i=0;i<meta.queries.length;i++){
-update(`Recherche ${i+1}/${meta.queries.length} : ${meta.queries[i]}`);
-const batch=await this.searchAll(meta.queries[i]);
-all.push(...batch);
+for(let i=0;i<queries.length;i++){
+update(`Recherche ciblée ${i+1}/${queries.length} : « ${queries[i]} »`);
+const r=await this.searchAll(queries[i]);
+all.push(...r);
 }
 
-const usable=all.filter(x=>x.ok&&x.text);
-const sourceMap=new Map();
-
-for(const r of usable){
-if(!sourceMap.has(r.name))sourceMap.set(r.name,{...r});
-else sourceMap.get(r.name).text+=" "+r.text;
+const map=new Map;
+for(const r of all){
+if(!r.ok||!r.text)continue;
+if(!map.has(r.name))map.set(r.name,{...r});
+else map.get(r.name).text+=" "+r.text;
 }
 
-const uniqueSources=[...sourceMap.values()];
-if(!uniqueSources.length)return"Aucune source Wikimedia n'a répondu correctement. Vérifiez votre connexion puis réessayez.";
+const results=[...map.values()];
+if(!results.length)return{empty:true,text:"Aucune source Wikimedia n'a pu répondre. Vérifiez votre connexion.",sources:[]};
 
-update("Extraction des concepts associés...");
-const satellites=this.expandTokens(meta.tokens,uniqueSources);
+update("Extraction des concepts réellement liés...");
+const satellites=this.expand(results,meta);
 
-update("Classement sémantique local...");
-const pool=this.collectSentencePool(uniqueSources,meta.tokens,satellites,meta.intent);
+update("Classement avec filtre de cible...");
+const pool=this.buildPool(results,meta,satellites);
+const selected=this.select(pool,meta);
 
-if(!pool.length)return`Aucun passage suffisamment pertinent n'a été trouvé pour « ${meta.original} ».\n\nEssayez d'ajouter un terme plus précis.`;
+if(!selected.length){
+return{
+empty:true,
+text:`Aucun passage n'a satisfait simultanément les contraintes de votre demande.
 
-update("Élimination des doublons et rapprochement des sources...");
-const selected=this.select(pool,meta.intent);
+Sujet : ${meta.tokens.join(", ")}
+Intention : ${meta.intent}
+${meta.target.length?"Cible : "+meta.target.join(", "):""}
 
-update("Construction de la synthèse pyramidale...");
-await this.sleep(150);
+Le moteur préfère ne rien répondre plutôt que de remplacer votre sujet par un sujet voisin.`,
+sources:results.map(x=>x.name)
+};
+}
 
-const result=this.build(selected,meta,pool);
+update("Vérification des doublons et de la cohérence...");
+await this.sleep(120);
+
+const stats={
+sources:results.filter(x=>x.text).map(x=>x.name),
+selected:selected.length
+};
+
+update("Construction de la synthèse...");
+await this.sleep(120);
 
 return{
-text:result,
-sources:uniqueSources.map(x=>x.name),
+empty:false,
+text:this.format(meta,selected,stats),
+sources:stats.sources,
 concepts:satellites.slice(0,6),
 intent:meta.intent,
-count:selected.length,
-contradictions:this.detectContradictions(selected)
+target:meta.target,
+contradictions:this.contradictions(selected)
 };
 }
 }
 
-const engine=new PyramidSynth();
+const engine=new PyramidV3;
 const chat=document.getElementById("chat");
 const input=document.getElementById("input");
 const send=document.getElementById("send");
@@ -396,41 +531,45 @@ d.textContent=text;
 
 if(copy&&type==="bot"){
 const b=document.createElement("button");
-b.className="copy";b.textContent="Copier";
+b.className="copy";
+b.textContent="Copier";
 b.onclick=async()=>{
 try{
 await navigator.clipboard.writeText(text);
-b.textContent="Copié !";
-setTimeout(()=>b.textContent="Copier",1500);
 }catch{
 const ta=document.createElement("textarea");
 ta.value=text;document.body.appendChild(ta);ta.select();
-document.execCommand("copy");ta.remove();b.textContent="Copié !";
-setTimeout(()=>b.textContent="Copier",1500);
+document.execCommand("copy");ta.remove();
 }
+b.textContent="Copié !";
+setTimeout(()=>b.textContent="Copier",1500);
 };
 d.appendChild(b);
 }
 
 if(info){
 const i=document.createElement("div");
-i.className="info";i.textContent=info;d.appendChild(i);
+i.className="info";
+i.textContent=info;
+d.appendChild(i);
 }
+
 chat.appendChild(d);
 chat.scrollTop=chat.scrollHeight;
 return d;
 }
 
-function addThinking(){
+function thinking(){
 const d=document.createElement("div");
 d.className="msg bot thinking";
 const dot=document.createElement("span");
 dot.className="dot";
-const txt=document.createElement("span");
-txt.textContent="Initialisation...";
-d.append(dot,txt);chat.appendChild(d);
+const text=document.createElement("span");
+text.textContent="Initialisation...";
+d.append(dot,text);
+chat.appendChild(d);
 chat.scrollTop=chat.scrollHeight;
-return{d,txt};
+return{d,text};
 }
 
 async function submit(){
@@ -438,39 +577,47 @@ const q=input.value.trim();
 if(!q)return;
 
 addMessage("user",q);
-input.value="";input.disabled=true;send.disabled=true;clear.disabled=true;
+input.value="";
+input.disabled=true;
+send.disabled=true;
+clear.disabled=true;
 
-const th=addThinking();
+const t=thinking();
 
 try{
-const r=await engine.run(q,x=>th.txt.textContent=x);
-th.d.remove();
+const r=await engine.run(q,x=>t.text.textContent=x);
+t.d.remove();
 
-if(typeof r==="string"){
-addMessage("bot",r,true);
+if(r.empty){
+addMessage("bot",r.text,true,"Sources disponibles : "+(r.sources.length?r.sources.join(", "):"aucune"));
 }else{
-let info=`Sources utilisées : ${r.sources.join(", ")} • ${r.count} passages sélectionnés`;
+let info=`Intention : ${r.intent} • Cible : ${r.target.length?r.target.join(", "):"générale"} • ${r.selected||0} passages`;
 if(r.concepts.length)info+=` • Concepts associés : ${r.concepts.join(", ")}`;
 addMessage("bot",r.text,true,info);
 
-if(r.contradictions.length){
-addMessage("bot",
-"⚠️ Attention : certains passages contiennent des valeurs numériques différentes. Le moteur ne choisit pas arbitrairement entre elles ; vérifiez ces informations dans les sources originales.");
+if(r.contradictions?.length){
+addMessage("bot","⚠️ Le moteur a détecté des passages proches contenant des valeurs numériques différentes. Il ne choisit pas arbitrairement entre elles.");
 }
 }
 }catch(e){
-th.d.remove();
+t.d.remove();
 addMessage("bot","Erreur contrôlée : "+(e.message||"problème inattendu")+".");
 }finally{
-input.disabled=false;send.disabled=false;clear.disabled=false;input.focus();
+input.disabled=false;
+send.disabled=false;
+clear.disabled=false;
+input.focus();
 }
 }
 
 send.onclick=submit;
-input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();submit()}});
-clear.onclick=()=>{chat.innerHTML='<div class="msg bot">Conversation effacée. Le moteur est prêt pour une nouvelle recherche.</div>';input.focus()};
-
-window.addEventListener("error",e=>console.warn("Erreur interface:",e.error||e.message));
+input.addEventListener("keydown",e=>{
+if(e.key==="Enter"){e.preventDefault();submit()}
+});
+clear.onclick=()=>{
+chat.innerHTML='<div class="msg bot">Conversation effacée. Le moteur V3 est prêt.</div>';
+input.focus();
+};
 </script>
 </body>
 </html>
