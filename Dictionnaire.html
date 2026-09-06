@@ -4,33 +4,252 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Synthétiseur Pyramidal Multi-Sources V4</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#0b1020;color:#e9edf7;font-family:Arial,Helvetica,sans-serif}
-header{padding:18px 20px;background:#111936;border-bottom:1px solid #29345c}
-header h1{margin:0;font-size:20px}
-header p{margin:6px 0 0;color:#9ca8c8;font-size:13px}
-#chat{max-width:1050px;margin:auto;padding:20px;min-height:calc(100vh - 150px)}
-.msg{max-width:92%;margin:12px 0;padding:14px 16px;border-radius:14px;line-height:1.55;white-space:pre-wrap}
-.user{margin-left:auto;background:#263b73}
-.bot{background:#151d35;border:1px solid #29345c}
-.copy{display:block;margin-top:10px;padding:6px 10px;border:0;border-radius:7px;background:#29365f;color:#fff;cursor:pointer;font-size:12px}
-.copy:hover{background:#3c4d80}
-.thinking{color:#9ca8c8;font-style:italic}
-.meta{margin-top:10px;padding-top:9px;border-top:1px solid #29345c;color:#8f9bbb;font-size:11px}
-.badge{display:inline-block;margin:2px 4px 2px 0;padding:3px 7px;border-radius:10px;background:#202b4d;color:#b9c6e8}
-#bar{position:sticky;bottom:0;background:#0b1020;border-top:1px solid #29345c;padding:12px}
-.controls{max-width:1050px;margin:auto;display:flex;gap:8px}
-#input{flex:1;min-height:48px;max-height:150px;resize:vertical;padding:13px;border-radius:10px;border:1px solid #35436d;background:#111936;color:#fff;outline:none;font-size:15px}
-button{border:0;border-radius:10px;padding:0 17px;background:#4968c8;color:#fff;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
-#clear{background:#29324f}
-.status{font-size:11px;color:#7382a8;margin-top:7px;text-align:center}
-@media(max-width:700px){
- .controls{flex-wrap:wrap}
- #input{flex-basis:100%}
- .controls button{height:44px}
- .msg{max-width:97%}
+
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f5f7fa;
+  color:#20242a;
+}
+
+body{
+  display:flex;
+  flex-direction:column;
+}
+
+header{
+  flex:0 0 auto;
+  padding:14px 18px;
+  background:#ffffff;
+  border-bottom:1px solid #e1e5ea;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+header h1{
+  margin:0;
+  font-size:18px;
+  font-weight:700;
+}
+
+header small{
+  color:#6b7280;
+  font-size:12px;
+}
+
+#clear{
+  border:1px solid #d5dae0;
+  background:#fff;
+  color:#333;
+  border-radius:8px;
+  padding:7px 11px;
+  cursor:pointer;
+}
+
+#clear:hover{
+  background:#f0f2f5;
+}
+
+#chat{
+  flex:1 1 auto;
+  overflow-y:auto;
+  padding:20px max(14px,calc((100% - 900px)/2));
+  scroll-behavior:smooth;
+}
+
+.message{
+  max-width:850px;
+  margin:0 auto 18px auto;
+}
+
+.user{
+  display:flex;
+  justify-content:flex-end;
+}
+
+.user .bubble{
+  background:#1f2937;
+  color:white;
+  border-radius:16px 16px 4px 16px;
+  padding:11px 14px;
+  max-width:75%;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.assistant{
+  position:relative;
+}
+
+.answer{
+  background:#fff;
+  border:1px solid #e2e6eb;
+  border-radius:14px;
+  padding:16px 18px;
+  line-height:1.65;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+
+.answer-actions{
+  margin-top:8px;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.copy{
+  border:1px solid #d8dde3;
+  background:#fff;
+  color:#555;
+  border-radius:7px;
+  padding:5px 9px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.copy:hover{
+  background:#f2f4f6;
+}
+
+.sources{
+  margin-top:8px;
+  padding-left:3px;
+  color:#9299a3;
+  font-size:10px;
+  line-height:1.4;
+}
+
+.step-line{
+  max-width:850px;
+  margin:3px auto 14px auto;
+  color:#737b86;
+  font-size:13px;
+  line-height:1.4;
+  padding:2px 0;
+  opacity:0;
+  animation:stepIn .18s ease forwards;
+}
+
+.step-number{
+  font-weight:700;
+  color:#555e69;
+  margin-right:7px;
+}
+
+@keyframes stepIn{
+  from{
+    opacity:0;
+    transform:translateY(2px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.composer{
+  flex:0 0 auto;
+  background:#fff;
+  border-top:1px solid #e1e5ea;
+  padding:12px max(14px,calc((100% - 900px)/2));
+}
+
+.composer-inner{
+  max-width:850px;
+  margin:auto;
+  display:flex;
+  gap:8px;
+  align-items:flex-end;
+}
+
+#input{
+  flex:1;
+  resize:none;
+  min-height:44px;
+  max-height:150px;
+  padding:11px 13px;
+  border:1px solid #cfd5dc;
+  border-radius:11px;
+  outline:none;
+  font:inherit;
+  line-height:1.4;
+  background:#fff;
+}
+
+#input:focus{
+  border-color:#8d98a6;
+}
+
+#send{
+  flex:0 0 auto;
+  height:44px;
+  padding:0 17px;
+  border:0;
+  border-radius:10px;
+  background:#1f2937;
+  color:#fff;
+  cursor:pointer;
+  font-weight:600;
+}
+
+#send:hover{
+  background:#111827;
+}
+
+#send:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.status{
+  max-width:850px;
+  margin:5px auto 0 auto;
+  min-height:14px;
+  font-size:10px;
+  color:#9aa1aa;
+}
+
+@media(max-width:600px){
+  header{
+    padding:12px;
+  }
+
+  header h1{
+    font-size:16px;
+  }
+
+  #chat{
+    padding:15px 10px;
+  }
+
+  .user .bubble{
+    max-width:88%;
+  }
+
+  .answer{
+    padding:14px;
+  }
+
+  .composer{
+    padding:10px;
+  }
+
+  .composer-inner{
+    gap:6px;
+  }
+
+  #send{
+    padding:0 13px;
+  }
 }
 </style>
 </head>
@@ -38,1352 +257,1828 @@ button:disabled{opacity:.5;cursor:not-allowed}
 <body>
 
 <header>
-<h1>🧠 Synthétiseur Pyramidal Multi-Sources — V4</h1>
-<p>Moteur ouvert • découverte automatique des sujets • Wikimedia • synthèse locale</p>
+  <div>
+    <h1>Synthétiseur Pyramidal Multi-Sources V4</h1>
+    <small>Recherche et synthèse locale à partir de sources Wikimedia</small>
+  </div>
+  <button id="clear" type="button">Effacer</button>
 </header>
 
-<main id="chat">
-<div class="msg bot">
-Bonjour. Pose-moi une question sur n'importe quel sujet.
-<div class="meta">
-Le moteur découvre automatiquement les concepts nécessaires au lieu de dépendre d'une liste de sujets programmée à l'avance.
-</div>
-</div>
-</main>
+<main id="chat"></main>
 
-<div id="bar">
-<div class="controls">
-<textarea id="input" placeholder="Ex. Pourquoi les volcans entrent-ils en éruption ?"></textarea>
-<button id="send" type="button">Envoyer</button>
-<button id="clear" type="button">Effacer</button>
-</div>
-<div class="status" id="status">Moteur prêt</div>
+<div class="composer">
+  <div class="composer-inner">
+    <textarea
+      id="input"
+      placeholder="Pose ta question..."
+      aria-label="Question"
+    ></textarea>
+
+    <button id="send" type="button">Envoyer</button>
+  </div>
+
+  <div id="status" class="status"></div>
 </div>
 
 <script>
 "use strict";
 
-/* ============================================================
-   SYNTHÉTISEUR PYRAMIDAL V4
-   MOTEUR OUVERT SANS LISTE DE SUJETS
-   ============================================================ */
+/* =========================================================
+   SYNTHÉTISEUR PYRAMIDAL MULTI-SOURCES V4
+   ========================================================= */
 
 class PyramidV4{
 
-constructor(){
-
-this.sources=[
- {name:"Wikipédia",url:"https://fr.wikipedia.org/w/api.php",weight:1},
- {name:"Wiktionnaire",url:"https://fr.wiktionary.org/w/api.php",weight:.65},
- {name:"Wikiversité",url:"https://fr.wikiversity.org/w/api.php",weight:.75},
- {name:"Wikivoyage",url:"https://fr.wikivoyage.org/w/api.php",weight:.65},
- {name:"Wikisource",url:"https://fr.wikisource.org/w/api.php",weight:.65},
- {name:"Wikiquote",url:"https://fr.wikiquote.org/w/api.php",weight:.55},
- {name:"Wikilivres",url:"https://fr.wikibooks.org/w/api.php",weight:.75}
-];
-
-this.stop=new Set(
-("le la les un une des de du au aux en et ou est sont a à avec pour par dans sur que qui quoi comment pourquoi où ce cette ces cet se son sa ses leur leurs il elle ils elles nous vous je tu on ne pas plus très bien faire fait être avoir peut peuvent comme mais donc car si sans entre vers après avant sous aussi tout toute tous toutes me te mon ma mes ton ta tes notre nos votre vos cela ceci ça c est d de que quel quelle quels quelles").normalize("NFD").replace(/[\u0300-\u036f]/g,"").split(/\s+/)
-);
-
-this.cache=new Map();
-this.pageCache=new Map();
-this.maxSearch=8;
-this.maxPages=30;
-this.maxSentences=14;
+  constructor(stepCallback){
+
+    this.stepCallback=typeof stepCallback==="function"
+      ? stepCallback
+      : function(){};
+
+    this.sources=[
+      {
+        name:"Wikipédia",
+        url:"https://fr.wikipedia.org/w/api.php"
+      },
+      {
+        name:"Wiktionnaire",
+        url:"https://fr.wiktionary.org/w/api.php"
+      },
+      {
+        name:"Wikiversité",
+        url:"https://fr.wikiversity.org/w/api.php"
+      },
+      {
+        name:"Wikivoyage",
+        url:"https://fr.wikivoyage.org/w/api.php"
+      },
+      {
+        name:"Wikisource",
+        url:"https://fr.wikisource.org/w/api.php"
+      },
+      {
+        name:"Wikiquote",
+        url:"https://fr.wikiquote.org/w/api.php"
+      },
+      {
+        name:"Wikibooks",
+        url:"https://fr.wikibooks.org/w/api.php"
+      }
+    ];
+
+    this.stop=new Set(
+      (
+        "a afin ai ainsi après au aux avec avoir avant " +
+        "c car ce ceci cela celle celles celui ceux comme " +
+        "dans de des du donc elle elles en entre est et eu " +
+        "faire faut il ils je l la le les leur leurs lui " +
+        "mais me mes moi mon même ne nos notre nous on ont " +
+        "ou par pas pour pourquoi que quel quelle quelles " +
+        "quelles quels qu est qui quoi sa sans se sera sont " +
+        "sur ta te tes toi ton tous tout toute toutes très " +
+        "tu un une vos votre vous y d n s c l m t j " +
+        "est-ce"
+      )
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g,"")
+      .split(/\s+/)
+    );
+
+    this.cache=new Map();
+    this.searchCache=new Map();
+    this.busy=false;
+  }
+
+  /* -------------------------------------------------------
+     ÉTAPES
+     ------------------------------------------------------- */
+
+  step(text,number){
+    this.stepCallback({
+      number:number,
+      text:text
+    });
+  }
+
+  /* -------------------------------------------------------
+     NORMALISATION POUR LA RECHERCHE
+     ------------------------------------------------------- */
+
+  norm(value){
+    return String(value||"")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g,"")
+      .toLowerCase()
+      .replace(/[’‘`´]/g,"'")
+      .replace(/[^\p{L}\p{N}'\s-]/gu," ")
+      .replace(/\s+/g," ")
+      .trim();
+  }
+
+  words(value){
+    return this.norm(value)
+      .split(/\s+/)
+      .filter(Boolean);
+  }
+
+  unique(arr){
+    return [...new Set(arr)];
+  }
+
+  /* -------------------------------------------------------
+     DÉCODAGE HTML
+     ------------------------------------------------------- */
+
+  decodeEntities(value){
+
+    let text=String(value||"");
+
+    try{
+      const area=document.createElement("textarea");
+      area.innerHTML=text;
+      text=area.value;
+
+      /*
+       * Deuxième passage pour les entités doublement encodées.
+       */
+      area.innerHTML=text;
+      text=area.value;
+    }catch(e){}
+
+    return text;
+  }
+
+  /* -------------------------------------------------------
+     NETTOYAGE WIKIMEDIA / HTML
+     ------------------------------------------------------- */
+
+  clean(value){
+
+    let text=String(value||"");
+
+    if(!text) return "";
+
+    /*
+     * Caractères invisibles.
+     */
+    text=text
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g," ")
+      .replace(/[\u200B-\u200D\u2060\uFEFF]/g,"")
+      .replace(/\u00A0/g," ");
+
+    /*
+     * Décodage initial des entités.
+     */
+    text=this.decodeEntities(text);
+
+    /*
+     * Balises dont le contenu entier doit disparaître.
+     */
+    text=text
+      .replace(/<ref\b[^>]*>[\s\S]*?<\/ref>/gi," ")
+      .replace(/<gallery\b[^>]*>[\s\S]*?<\/gallery>/gi," ")
+      .replace(/<math\b[^>]*>[\s\S]*?<\/math>/gi," ")
+      .replace(/<nowiki\b[^>]*>[\s\S]*?<\/nowiki>/gi," ")
+      .replace(/<source\b[^>]*>[\s\S]*?<\/source>/gi," ")
+      .replace(/<syntaxhighlight\b[^>]*>[\s\S]*?<\/syntaxhighlight>/gi," ")
+      .replace(/<timeline\b[^>]*>[\s\S]*?<\/timeline>/gi," ");
+
+    /*
+     * Balises de ligne.
+     */
+    text=text
+      .replace(/<br\s*\/?>/gi," ")
+      .replace(/<\/p\s*>/gi," ")
+      .replace(/<\/div\s*>/gi," ")
+      .replace(/<\/li\s*>/gi," ")
+      .replace(/<\/h[1-6]\s*>/gi," ");
+
+    /*
+     * Liens Wikimedia :
+     * [[cible|texte]] -> texte
+     * [[cible]] -> cible
+     */
+    text=text.replace(
+      /\[\[\s*([^|\]]+?)\s*\|\s*([^\]]+?)\s*\]\]/g,
+      "$2"
+    );
+
+    text=text.replace(
+      /\[\[\s*([^\]]+?)\s*\]\]/g,
+      "$1"
+    );
+
+    /*
+     * Fichiers/images.
+     */
+    text=text.replace(
+      /\[\[\s*(?:Fichier|File|Image)\s*:[\s\S]*?\]\]/gi,
+      " "
+    );
+
+    /*
+     * Modèles Wikimedia.
+     * Plusieurs passages pour les modèles imbriqués simples.
+     */
+    for(let i=0;i<5;i++){
+      text=text.replace(/\{\{[^{}]*\}\}/g," ");
+    }
+
+    /*
+     * Restes de balises HTML.
+     */
+    text=text.replace(/<[^>]*>/g," ");
+
+    /*
+     * Entités restantes.
+     */
+    text=this.decodeEntities(text);
+
+    /*
+     * URL.
+     */
+    text=text.replace(
+      /\bhttps?:\/\/[^\s<>"']+/gi,
+      " "
+    );
+
+    /*
+     * Références ou marqueurs résiduels.
+     */
+    text=text
+      .replace(/&(?:amp|lt|gt|quot|apos|nbsp|#\d+|#x[\da-f]+);/gi," ")
+      .replace(/\[\s*\]/g," ")
+      .replace(/\{\s*\}/g," ")
+      .replace(/\|\s*\|+/g," ")
+      .replace(/^\s*[|=#:;]+\s*/g," ");
+
+    /*
+     * Caractères typographiques :
+     * on conserve les lettres accentuées mais on normalise
+     * les apostrophes/guillemets/tirets problématiques.
+     */
+    text=text
+      .replace(/[’‘ʼʻ`´]/g,"'")
+      .replace(/[“”„‟]/g,'"')
+      .replace(/[–—―]/g,"-")
+      .replace(/…/g,"...");
+
+    /*
+     * Nettoyage des répétitions de ponctuation artificielles.
+     */
+    text=text
+      .replace(/([!?.,])\1{2,}/g,"$1")
+      .replace(/[ \t]+/g," ")
+      .replace(/\s+\n\s*/g,"\n")
+      .replace(/\n{3,}/g,"\n\n")
+      .trim();
+
+    /*
+     * Supprime quelques artefacts de début/fin.
+     */
+    text=text
+      .replace(/^[|=:;,.\-]+\s*/,"")
+      .replace(/\s*[|=:;]+\s*$/,"")
+      .trim();
+
+    return text;
+  }
+
+  /* -------------------------------------------------------
+     NETTOYAGE FINAL SPÉCIAL RÉPONSE
+     ------------------------------------------------------- */
+
+  cleanFinalText(value){
+
+    let text=this.clean(value);
+
+    if(!text) return "";
+
+    /*
+     * Une ligne par paragraphe maximum.
+     */
+    text=text
+      .replace(/\r/g,"")
+      .replace(/[ \t]+\n/g,"\n")
+      .replace(/\n[ \t]+/g,"\n")
+      .replace(/\n{3,}/g,"\n\n")
+      .trim();
+
+    /*
+     * Retire les puces automatiques.
+     */
+    text=text.replace(
+      /(^|\n)\s*(?:[-*•▪◦]|\d+[.)])\s+/g,
+      "$1"
+    );
+
+    /*
+     * Retire les titres Wikimedia évidents.
+     */
+    text=text.replace(
+      /(^|\n)\s*(?:sources?|références?|notes?|bibliographie)\s*:?\s*(?=\n|$)/gi,
+      "$1"
+    );
+
+    /*
+     * Ne laisse jamais des entités HTML dans le texte final.
+     */
+    text=text.replace(
+      /&(?:[a-z][a-z0-9]+|#\d+|#x[\da-f]+);/gi,
+      " "
+    );
+
+    /*
+     * Dernier passage.
+     */
+    text=this.clean(text);
+
+    return text.trim();
+  }
+
+  /* -------------------------------------------------------
+     EXTRACTION DES TERMES
+     ------------------------------------------------------- */
+
+  extractTerms(question){
+
+    const ws=this.words(question);
+
+    const terms=ws.filter(w=>{
+      if(w.length<3) return false;
+      if(this.stop.has(w)) return false;
+      if(/^\d+$/.test(w)) return false;
+      return true;
+    });
+
+    return this.unique(terms).slice(0,18);
+  }
+
+  extractPhrases(question){
+
+    const clean=this.clean(question);
+
+    const phrases=[];
+
+    const quoted=clean.match(/["«](.+?)["»]/g)||[];
+
+    quoted.forEach(x=>{
+      const p=x.replace(/^["«]|["»]$/g,"").trim();
+      if(p.length>2) phrases.push(p);
+    });
+
+    const ws=this.words(clean);
+
+    for(let i=0;i<ws.length-1;i++){
+
+      const a=ws[i];
+      const b=ws[i+1];
+
+      if(
+        a.length>=3 &&
+        b.length>=3 &&
+        !this.stop.has(a) &&
+        !this.stop.has(b)
+      ){
+        phrases.push(a+" "+b);
+      }
+    }
+
+    return this.unique(phrases).slice(0,10);
+  }
+
+  /* -------------------------------------------------------
+     INTENTION
+     ------------------------------------------------------- */
+
+  detectIntent(question){
+
+    const q=this.norm(question);
+
+    if(/\b(comment|de quelle facon|de quelle manière)\b/.test(q))
+      return "how";
+
+    if(/\b(pourquoi|raison|cause)\b/.test(q))
+      return "why";
+
+    if(/\b(qui|quel|quelle|quels|quelles)\b/.test(q))
+      return "who";
+
+    if(/\b(quand|date|annee|année|moment)\b/.test(q))
+      return "when";
+
+    if(/\b(ou|où|lieu|endroit)\b/.test(q))
+      return "where";
+
+    if(/\b(combien|nombre|quantite|quantité)\b/.test(q))
+      return "quantity";
+
+    if(/\b(definition|définition|signifie|signification|c'est quoi|qu'est-ce)\b/.test(q))
+      return "definition";
+
+    if(/\b(compar|difference|différence|versus|contre)\b/.test(q))
+      return "comparison";
+
+    return "general";
+  }
+
+  analyzeQuestion(question){
+
+    return {
+      original:this.clean(question),
+      terms:this.extractTerms(question),
+      phrases:this.extractPhrases(question),
+      intent:this.detectIntent(question)
+    };
+  }
+
+  /* -------------------------------------------------------
+     CONSTRUCTION DES REQUÊTES
+     ------------------------------------------------------- */
+
+  buildQueries(analysis){
+
+    const queries=[];
+
+    if(analysis.original){
+      queries.push(analysis.original);
+    }
+
+    analysis.phrases.forEach(p=>{
+      if(p.length>=4) queries.push(p);
+    });
+
+    if(analysis.terms.length){
+      queries.push(
+        analysis.terms.slice(0,6).join(" ")
+      );
+    }
+
+    return this.unique(
+      queries
+        .map(x=>this.clean(x))
+        .filter(x=>x.length>=2)
+    ).slice(0,5);
+  }
+
+  /* -------------------------------------------------------
+     REQUÊTE API
+     ------------------------------------------------------- */
+
+  async api(url,params){
+
+    const query=new URLSearchParams({
+      ...params,
+      format:"json",
+      origin:"*"
+    });
+
+    const response=await fetch(
+      url+"?"+query.toString(),
+      {
+        method:"GET",
+        cache:"no-store"
+      }
+    );
+
+    if(!response.ok){
+      throw new Error("HTTP "+response.status);
+    }
+
+    return await response.json();
+  }
+
+  /* -------------------------------------------------------
+     RECHERCHE D'UNE SOURCE
+     ------------------------------------------------------- */
+
+  async searchSource(source,query){
+
+    const key=source.url+"|"+query;
+
+    if(this.searchCache.has(key)){
+      return this.searchCache.get(key);
+    }
+
+    try{
+
+      const data=await this.api(
+        source.url,
+        {
+          action:"query",
+          list:"search",
+          srsearch:query,
+          srnamespace:"0",
+          srlimit:"5",
+          srprop:"snippet|titlesnippet",
+          utf8:"1"
+        }
+      );
+
+      const results=(data.query&&data.query.search)
+        ? data.query.search
+        : [];
+
+      const cleaned=results.map(item=>({
+        title:this.clean(item.title||""),
+        snippet:this.clean(item.snippet||""),
+        source:source.name,
+        url:source.url
+      })).filter(x=>x.title);
+
+      this.searchCache.set(key,cleaned);
+
+      return cleaned;
+
+    }catch(error){
+
+      return [];
+    }
+  }
+
+  /* -------------------------------------------------------
+     RECHERCHE MULTI-SOURCES
+     ------------------------------------------------------- */
+
+  async searchAll(queries){
+
+    const tasks=[];
+
+    for(const source of this.sources){
+
+      for(const query of queries.slice(0,3)){
+
+        tasks.push(
+          this.searchSource(source,query)
+        );
+
+      }
+    }
+
+    const results=await Promise.all(tasks);
+
+    return results.flat();
+  }
+
+  /* -------------------------------------------------------
+     EXTRACTION D'UNE PAGE
+     ------------------------------------------------------- */
+
+  async fetchExtract(item){
+
+    const key=item.source+"|"+item.title;
+
+    if(this.cache.has(key)){
+      return this.cache.get(key);
+    }
+
+    const source=this.sources.find(
+      s=>s.name===item.source
+    );
+
+    if(!source) return null;
+
+    try{
+
+      const data=await this.api(
+        source.url,
+        {
+          action:"query",
+          prop:"extracts",
+          titles:item.title,
+          exintro:"1",
+          explaintext:"1",
+          exsectionformat:"plain",
+          exchars:"2200",
+          redirects:"1"
+        }
+      );
+
+      const pages=
+        data.query &&
+        data.query.pages
+          ? data.query.pages
+          : {};
+
+      let page=null;
+
+      Object.keys(pages).some(id=>{
+        if(pages[id] && pages[id].extract){
+          page=pages[id];
+          return true;
+        }
+        return false;
+      });
+
+      if(!page) return null;
+
+      const text=this.cleanFinalText(
+        page.extract||""
+      );
+
+      if(!text) return null;
+
+      const result={
+        title:this.clean(page.title||item.title),
+        text:text,
+        source:item.source,
+        url:source.url
+      };
+
+      this.cache.set(key,result);
+
+      return result;
+
+    }catch(error){
+
+      return null;
+    }
+  }
+
+  /* -------------------------------------------------------
+     DÉCOUVERTE DES CONCEPTS
+     ------------------------------------------------------- */
+
+  discoverConcepts(results,analysis){
+
+    const counts=new Map();
+
+    const add=(word,weight)=>{
+
+      const n=this.norm(word);
+
+      if(
+        n.length<4 ||
+        this.stop.has(n) ||
+        /^\d+$/.test(n)
+      ){
+        return;
+      }
+
+      counts.set(
+        n,
+        (counts.get(n)||0)+weight
+      );
+    };
+
+    results.forEach(r=>{
+
+      this.words(r.title).forEach(w=>{
+        add(w,4);
+      });
+
+      this.words(r.snippet).forEach(w=>{
+        add(w,1);
+      });
+
+    });
+
+    analysis.terms.forEach(w=>{
+      add(w,8);
+    });
+
+    return [...counts.entries()]
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0,18)
+      .map(x=>x[0]);
+  }
+
+  /* -------------------------------------------------------
+     DEUXIÈME PASSAGE
+     ------------------------------------------------------- */
+
+  async secondPass(concepts,analysis){
+
+    const queries=[];
+
+    if(concepts.length){
 
-}
-
-
-/* ============================================================
-   TEXTE
-   ============================================================ */
-
-norm(s){
-return String(s||"")
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g,"")
-.toLowerCase();
-}
-
-words(s){
-return this.norm(s)
-.replace(/[^a-z0-9'-]+/g," ")
-.split(/\s+/)
-.filter(Boolean);
-}
-
-unique(a){
-return [...new Set(a)];
-}
-
-clean(s){
-return String(s||"")
-.replace(/<[^>]*>/g," ")
-.replace(/\{\{[^}]*\}\}/g," ")
-.replace(/\[\[[^\]]*\]\]/g," ")
-.replace(/\[[^\]]*\]/g," ")
-.replace(/&nbsp;/gi," ")
-.replace(/&amp;/gi,"&")
-.replace(/&quot;/gi,'"')
-.replace(/\s+/g," ")
-.trim();
-}
-
-sentences(s){
-return this.clean(s)
-.split(/(?<=[.!?])\s+/)
-.map(x=>x.trim())
-.filter(x=>x.length>=45&&x.length<=500);
-}
-
-
-/* ============================================================
-   EXTRACTION AUTOMATIQUE
-   ============================================================ */
-
-extractTerms(q){
-
-const raw=this.words(q);
-
-const terms=this.unique(
-raw.filter(w=>
-w.length>=3 &&
-!this.stop.has(w) &&
-!/^\d+$/.test(w)
-)
-);
-
-return terms;
-}
-
-extractPhrases(q){
-
-const n=this.norm(q);
-const out=[];
-
-const patterns=[
-/qu'est ce que ([a-z0-9 -]+)/,
-/qu'est-ce que ([a-z0-9 -]+)/,
-/comment fonctionne ([a-z0-9 -]+)/,
-/comment marche ([a-z0-9 -]+)/,
-/pourquoi ([a-z0-9 -]+)/,
-/histoire de ([a-z0-9 -]+)/,
-/definition de ([a-z0-9 -]+)/,
-/difference entre ([a-z0-9 -]+)/
-];
-
-for(const p of patterns){
-
-const m=n.match(p);
-
-if(m&&m[1]){
-out.push(m[1].trim());
-}
-
-}
-
-return this.unique(out);
-}
-
-
-/* ============================================================
-   INTENTION
-   ============================================================ */
-
-detectIntent(q){
-
-const n=this.norm(q);
-
-if(/comment fonctionne|comment marche|fonctionnement/.test(n))
-return "fonctionnement";
-
-if(/pourquoi|cause|causes|raison/.test(n))
-return "cause";
-
-if(/qu'est ce que|qu'est-ce que|definition|signifie|signification/.test(n))
-return "definition";
-
-if(/qui est|biographie/.test(n))
-return "personne";
-
-if(/quand|date|chronologie|histoire|historique/.test(n))
-return "chronologie";
-
-if(/ou se trouve|ou est|situe|situee|localisation/.test(n))
-return "localisation";
-
-if(/difference|comparer|compare|comparaison/.test(n))
-return "comparaison";
-
-if(/recette|cuisiner|cuisine|preparation/.test(n))
-return "recette";
-
-return "information";
-}
-
-
-/* ============================================================
-   PROFIL DE LA QUESTION
-   ============================================================ */
-
-analyzeQuestion(q){
-
-const terms=this.extractTerms(q);
-const phrases=this.extractPhrases(q);
-const intent=this.detectIntent(q);
-
-let subjectTerms=[...terms];
-
-const intentWords={
-fonctionnement:["comment","fonctionne","marche","fonctionnement"],
-cause:["pourquoi","cause","causes","raison"],
-definition:["definition","signifie","signification"],
-personne:["qui","est","biographie"],
-chronologie:["quand","date","histoire","historique"],
-localisation:["ou","trouve","situe","localisation"],
-comparaison:["difference","comparer","compare","comparaison"],
-recette:["recette","cuisine","cuisiner","preparation"]
-};
-
-const remove=intentWords[intent]||[];
-
-subjectTerms=subjectTerms.filter(x=>!remove.includes(x));
-
-return{
- query:q,
- normalized:this.norm(q),
- terms,
- subjectTerms:this.unique(subjectTerms),
- phrases,
- intent
-};
-
-}
-
-
-/* ============================================================
-   CONSTRUCTION DES REQUÊTES
-   ============================================================ */
-
-buildQueries(profile){
-
-const out=[];
-const q=profile.query;
-const terms=profile.subjectTerms;
-
-if(profile.phrases.length){
-profile.phrases.forEach(x=>out.push(x));
-}
-
-out.push(q);
-
-if(terms.length>=2){
-out.push(terms.slice(0,2).join(" "));
-}
-
-if(terms.length>=3){
-out.push(terms.slice(0,3).join(" "));
-}
-
-if(terms.length>=4){
-out.push(terms.slice(0,4).join(" "));
-}
-
-if(profile.intent==="definition"&&terms.length)
-out.push(terms.join(" ")+" définition");
-
-if(profile.intent==="fonctionnement"&&terms.length)
-out.push(terms.join(" ")+" fonctionnement");
-
-if(profile.intent==="cause"&&terms.length)
-out.push(terms.join(" ")+" causes");
-
-if(profile.intent==="chronologie"&&terms.length)
-out.push(terms.join(" ")+" histoire");
-
-return this.unique(
-out.map(x=>x.trim()).filter(x=>x.length>=3)
-).slice(0,this.maxSearch);
-
-}
-
-
-/* ============================================================
-   API WIKIMEDIA
-   ============================================================ */
-
-async searchSource(source,query){
-
-const key=source.url+"|"+query;
-
-if(this.cache.has(key))
-return this.cache.get(key);
-
-const params=new URLSearchParams({
-action:"query",
-list:"search",
-srsearch:query,
-srnamespace:"0",
-srlimit:"6",
-srprop:"snippet|titlesnippet",
-format:"json",
-origin:"*"
-});
-
-try{
-
-const response=await fetch(
-source.url+"?"+params.toString(),
-{headers:{"Accept":"application/json"}}
-);
-
-if(!response.ok)throw new Error("HTTP "+response.status);
-
-const data=await response.json();
-
-const results=(data.query?.search||[]).map(x=>({
-title:x.title||"",
-snippet:this.clean(x.snippet||""),
-source:source.name,
-sourceUrl:source.url,
-weight:source.weight
-}));
-
-this.cache.set(key,results);
-return results;
-
-}catch(error){
-
-console.warn("Recherche impossible:",source.name,error);
-return[];
-
-}
-
-}
-
-
-/* ============================================================
-   RECHERCHE MULTI-SOURCES
-   ============================================================ */
-
-async searchAll(queries,progress){
-
-let all=[];
-
-for(let qi=0;qi<queries.length;qi++){
-
-const query=queries[qi];
-
-progress?.(
-`Recherche ${qi+1}/${queries.length} : ${query}`
-);
-
-const jobs=this.sources.map(s=>this.searchSource(s,query));
-
-const groups=await Promise.all(jobs);
-
-groups.forEach(group=>all.push(...group));
-
-if(all.length>=this.maxPages*2)
-break;
-
-}
+      queries.push(
+        concepts.slice(0,5).join(" ")
+      );
 
-const seen=new Set();
+      concepts.slice(0,8).forEach(c=>{
+        if(
+          !analysis.terms.includes(c) &&
+          c.length>=4
+        ){
+          queries.push(c);
+        }
+      });
+    }
 
-all=all.filter(r=>{
+    const results=await this.searchAll(
+      this.unique(queries).slice(0,4)
+    );
 
-const key=this.norm(r.source+"|"+r.title);
+    return results;
+  }
 
-if(seen.has(key))return false;
+  /* -------------------------------------------------------
+     SCORE DES MOTS
+     ------------------------------------------------------- */
 
-seen.add(key);
-return true;
+  termScore(text,analysis){
 
-});
+    const n=this.norm(text);
 
-return all.slice(0,this.maxPages);
+    let score=0;
 
-}
-
-
-/* ============================================================
-   EXTRAITS DES PAGES
-   ============================================================ */
-
-async fetchExtract(item){
-
-const key=item.sourceUrl+"|"+item.title;
-
-if(this.pageCache.has(key))
-return this.pageCache.get(key);
-
-const params=new URLSearchParams({
-action:"query",
-prop:"extracts",
-exintro:"1",
-explaintext:"1",
-exchars:"5000",
-redirects:"1",
-titles:item.title,
-format:"json",
-origin:"*"
-});
-
-try{
-
-const response=await fetch(
-item.sourceUrl+"?"+params.toString(),
-{headers:{"Accept":"application/json"}}
-);
-
-if(!response.ok)throw new Error("HTTP "+response.status);
-
-const data=await response.json();
-const pages=data.query?.pages||{};
-const page=Object.values(pages)[0];
-
-const text=this.clean(page?.extract||"");
-
-this.pageCache.set(key,text);
-
-return text;
-
-}catch(error){
-
-console.warn("Page inaccessible:",item.title,error);
-return "";
-
-}
-
-}
-
-
-/* ============================================================
-   DÉCOUVERTE DES CONCEPTS
-   ============================================================ */
-
-discoverConcepts(results,profile){
-
-const freq={};
-const original=new Set(profile.terms);
-
-for(const r of results){
-
-const text=this.clean(
-(r.title||"")+" "+(r.snippet||"")
-);
-
-for(const word of this.words(text)){
-
-if(
-word.length<5||
-this.stop.has(word)||
-original.has(word)||
-/^\d+$/.test(word)
-)continue;
-
-freq[word]=(freq[word]||0)+1;
-
-}
-
-}
-
-return Object.entries(freq)
-.sort((a,b)=>b[1]-a[1])
-.slice(0,18)
-.map(x=>x[0]);
-
-}
-
-
-/* ============================================================
-   DEUXIÈME PASSE
-   ============================================================ */
-
-async secondPass(concepts,profile,progress){
-
-if(!concepts.length)
-return[];
-
-const base=profile.subjectTerms.slice(0,5).join(" ");
-
-const queries=[];
-
-for(const concept of concepts.slice(0,8)){
-
-if(base)
-queries.push(base+" "+concept);
-else
-queries.push(concept);
-
-}
-
-let all=[];
-
-for(let i=0;i<queries.length;i++){
-
-progress?.(
-`Exploration conceptuelle ${i+1}/${queries.length} : ${queries[i]}`
-);
-
-const jobs=this.sources.slice(0,4)
-.map(s=>this.searchSource(s,queries[i]));
-
-const groups=await Promise.all(jobs);
-
-groups.forEach(g=>all.push(...g));
-
-}
+    analysis.terms.forEach(term=>{
 
-const seen=new Set();
+      if(n.includes(term)){
+        score+=3;
+      }
 
-return all.filter(r=>{
+    });
 
-const k=this.norm(r.source+"|"+r.title);
+    return score;
+  }
 
-if(seen.has(k))return false;
+  phraseScore(text,analysis){
 
-seen.add(k);
-return true;
+    const n=this.norm(text);
 
-}).slice(0,25);
+    let score=0;
 
-}
-
-
-/* ============================================================
-   SCORE DE PERTINENCE
-   ============================================================ */
-
-termScore(text,terms){
-
-if(!terms.length)return 0;
-
-const n=this.norm(text);
-let hits=0;
-
-for(const term of terms){
-
-const t=this.norm(term);
-
-if(
-t.length>=3 &&
-(n.includes(" "+t+" ")||
-n.includes(t))
-){
-hits++;
-}
-
-}
-
-return hits/terms.length;
-}
-
-phraseScore(text,phrases){
-
-if(!phrases.length)return 0;
-
-const n=this.norm(text);
-let hits=0;
-
-for(const p of phrases){
-
-const words=this.words(p);
-
-if(words.length<2)continue;
+    analysis.phrases.forEach(phrase=>{
 
-const matching=words.filter(w=>n.includes(w));
+      const p=this.norm(phrase);
 
-if(matching.length>=Math.ceil(words.length*.6))
-hits++;
+      if(
+        p.length>=4 &&
+        n.includes(p)
+      ){
+        score+=4;
+      }
 
-}
-
-return hits/phrases.length;
-}
+    });
 
-titleScore(title,profile){
+    return score;
+  }
 
-const n=this.norm(title);
-let hits=0;
+  titleScore(title,analysis){
 
-for(const term of profile.subjectTerms){
+    return this.termScore(
+      title,
+      analysis
+    )*1.5;
+  }
 
-if(n.includes(this.norm(term)))
-hits++;
+  intentScore(text,analysis){
 
-}
-
-return profile.subjectTerms.length
-?hits/profile.subjectTerms.length
-:0;
-}
+    const n=this.norm(text);
 
-intentScore(text,profile){
-
-const n=this.norm(text);
-
-const patterns={
-fonctionnement:[
- "fonction","fonctionne","processus","mecanisme",
- "role","permet","consiste","organise"
-],
-cause:[
- "cause","provoque","raison","entraine",
- "du a","origine","consequence"
-],
-definition:[
- "designe","signifie","definition","est un",
- "est une","terme"
-],
-chronologie:[
- "histoire","siecle","annee","periode",
- "fondation","origine","evolution"
-],
-localisation:[
- "situe","situee","localise","pays","region",
- "ville","territoire"
-],
-comparaison:[
- "difference","contrairement","tandis",
- "alors que","compare"
-],
-recette:[
- "ingredient","preparation","cuisson",
- "four","melanger","farine","sucre"
-]
-};
-
-const p=patterns[profile.intent]||[];
-
-if(!p.length)return .35;
-
-let hits=0;
-
-for(const x of p)
-if(n.includes(x))hits++;
-
-return Math.min(1,hits/p.length+.2);
-}
+    let score=0;
 
-specificityScore(text,profile){
+    if(analysis.intent==="definition"){
 
-const n=this.norm(text);
+      if(/\b(est|désigne|signifie|définit|définition)\b/.test(n))
+        score+=3;
+    }
 
-if(!profile.subjectTerms.length)
-return .3;
+    if(analysis.intent==="why"){
 
-let hits=0;
+      if(/\b(parce que|car|cause|raison|permet|provoque)\b/.test(n))
+        score+=2;
+    }
 
-for(const term of profile.subjectTerms)
-if(n.includes(this.norm(term)))hits++;
+    if(analysis.intent==="how"){
 
-return Math.min(1,hits/profile.subjectTerms.length);
-}
+      if(/\b(comment|étape|méthode|processus|permet de)\b/.test(n))
+        score+=2;
+    }
 
-score(item,profile){
+    if(analysis.intent==="comparison"){
 
-const combined=(item.title||"")+" "+(item.text||"");
+      if(/\b(différence|contrairement|alors que|comparaison)\b/.test(n))
+        score+=2;
+    }
 
-let score=0;
+    return score;
+  }
 
-score+=this.termScore(combined,profile.subjectTerms)*.34;
-score+=this.phraseScore(combined,profile.phrases)*.18;
-score+=this.titleScore(item.title,profile)*.20;
-score+=this.intentScore(combined,profile)*.13;
-score+=this.specificityScore(combined,profile)*.10;
-score+=(item.weight||.5)*.05;
+  specificityScore(text,analysis){
 
-return Math.max(0,Math.min(1,score));
-}
+    const n=this.norm(text);
 
+    let score=0;
 
-/* ============================================================
-   FILTRE DE DÉRIVE
-   ============================================================ */
+    analysis.terms.forEach(term=>{
 
-driftPenalty(text,profile){
+      const count=n.split(term).length-1;
 
-if(!profile.subjectTerms.length)
-return 0;
+      if(count>0){
+        score+=Math.min(count,3);
+      }
 
-const n=this.norm(text);
+    });
 
-let matching=0;
+    return score;
+  }
 
-for(const term of profile.subjectTerms){
+  driftPenalty(text,analysis){
 
-if(n.includes(this.norm(term)))
-matching++;
+    const n=this.norm(text);
 
-}
+    if(!analysis.terms.length){
+      return 0;
+    }
 
-const ratio=matching/profile.subjectTerms.length;
+    let matches=0;
 
-if(ratio===0)return .45;
-if(ratio<.25)return .25;
-if(ratio<.5)return .10;
+    analysis.terms.forEach(term=>{
+      if(n.includes(term)){
+        matches++;
+      }
+    });
 
-return 0;
-}
+    const ratio=matches/analysis.terms.length;
 
+    if(ratio===0) return 8;
+    if(ratio<0.15) return 5;
+    if(ratio<0.30) return 2;
 
-/* ============================================================
-   EXTRACTION DES PASSAGES
-   ============================================================ */
+    return 0;
+  }
 
-async buildPassages(results,profile,progress){
+  score(item,analysis){
 
-const passages=[];
+    const text=
+      (item.title||"")+" "+
+      (item.text||item.snippet||"");
 
-for(let i=0;i<results.length;i++){
+    return (
+      this.termScore(text,analysis)+
+      this.phraseScore(text,analysis)+
+      this.titleScore(item.title||"",analysis)+
+      this.intentScore(text,analysis)+
+      this.specificityScore(text,analysis)-
+      this.driftPenalty(text,analysis)
+    );
+  }
 
-const r=results[i];
+  /* -------------------------------------------------------
+     CONSTRUCTION DES PASSAGES
+     ------------------------------------------------------- */
 
-progress?.(
-`Analyse ${i+1}/${results.length} : ${r.title}`
-);
+  buildPassages(items){
 
-let text=r.snippet;
+    const passages=[];
 
-if(text.length<120)
-text=await this.fetchExtract(r);
+    items.forEach(item=>{
 
-if(!text)continue;
+      const text=this.cleanFinalText(
+        item.text||item.snippet||""
+      );
 
-const sentences=this.sentences(text);
+      if(!text) return;
 
-for(const sentence of sentences){
+      const sentences=text
+        .split(/(?<=[.!?])\s+/)
+        .map(x=>this.cleanFinalText(x))
+        .filter(x=>x.length>=35);
 
-let score=this.score(
-{
- title:r.title,
- text:sentence,
- weight:r.weight
-},
-profile
-);
+      sentences.slice(0,8).forEach(sentence=>{
 
-score-=this.driftPenalty(sentence,profile);
+        passages.push({
+          text:sentence,
+          title:this.clean(item.title||""),
+          source:item.source||""
+        });
 
-if(score<.28)continue;
+      });
 
-passages.push({
-text:sentence,
-title:r.title,
-source:r.source,
-sourceUrl:r.sourceUrl,
-score:Math.max(0,score)
-});
+    });
 
-}
+    return passages;
+  }
 
-}
+  /* -------------------------------------------------------
+     SIMILARITÉ
+     ------------------------------------------------------- */
 
-return passages;
+  similarity(a,b){
 
-}
+    const A=new Set(
+      this.words(a)
+    );
 
+    const B=new Set(
+      this.words(b)
+    );
 
-/* ============================================================
-   DÉDOUBLONNAGE
-   ============================================================ */
+    if(!A.size || !B.size){
+      return 0;
+    }
 
-similarity(a,b){
+    let common=0;
 
-const A=new Set(this.words(a));
-const B=new Set(this.words(b));
+    A.forEach(x=>{
+      if(B.has(x)) common++;
+    });
 
-if(!A.size||!B.size)return 0;
+    return common/
+      Math.max(A.size,B.size);
+  }
 
-let common=0;
+  /* -------------------------------------------------------
+     SÉLECTION DES PASSAGES
+     ------------------------------------------------------- */
 
-for(const x of A)
-if(B.has(x))common++;
+  selectPassages(passages,analysis){
 
-return common/Math.max(A.size,B.size);
-}
+    const scored=passages
+      .map(p=>({
+        ...p,
+        score:this.score(p,analysis)
+      }))
+      .sort((a,b)=>b.score-a.score);
 
-selectPassages(passages){
+    const selected=[];
 
-passages.sort((a,b)=>b.score-a.score);
+    for(const p of scored){
 
-const selected=[];
+      if(p.score<1) continue;
 
-for(const item of passages){
+      const duplicate=selected.some(
+        x=>this.similarity(
+          x.text,
+          p.text
+        )>0.72
+      );
 
-if(selected.length>=10)
-break;
+      if(duplicate) continue;
 
-let duplicate=false;
+      selected.push(p);
 
-for(const existing of selected){
+      if(selected.length>=8){
+        break;
+      }
+    }
 
-if(this.similarity(item.text,existing.text)>.65){
-duplicate=true;
-break;
-}
+    return selected;
+  }
 
-}
+  /* -------------------------------------------------------
+     CONTRADICTIONS SIMPLES
+     ------------------------------------------------------- */
 
-if(!duplicate)
-selected.push(item);
+  findContradictions(passages){
 
-}
+    const result=[];
 
-return selected;
+    for(let i=0;i<passages.length;i++){
 
-}
+      for(let j=i+1;j<passages.length;j++){
 
+        const a=this.norm(passages[i].text);
+        const b=this.norm(passages[j].text);
 
-/* ============================================================
-   CONTRADICTIONS
-   ============================================================ */
+        if(
+          a.includes("contrairement") ||
+          b.includes("contrairement")
+        ){
+          result.push({
+            a:passages[i],
+            b:passages[j]
+          });
+        }
 
-findContradictions(items){
+      }
 
-const pairs=[
-["jamais","toujours"],
-["aucun","tous"],
-["aucune","toutes"],
-["interdit","autorise"],
-["impossible","possible"],
-["refuse","accepte"],
-["ne peut pas","peut"],
-["n'est pas","est"]
-];
+    }
 
-const found=[];
+    return result;
+  }
 
-for(let i=0;i<items.length;i++){
+  /* -------------------------------------------------------
+     CONCEPTS FINAUX
+     ------------------------------------------------------- */
 
-for(let j=i+1;j<items.length;j++){
+  finalConcepts(passages,analysis){
 
-const a=this.norm(items[i].text);
-const b=this.norm(items[j].text);
+    const map=new Map();
 
-for(const [x,y] of pairs){
+    passages.forEach(p=>{
 
-if(
-(a.includes(x)&&b.includes(y))||
-(a.includes(y)&&b.includes(x))
-){
+      this.words(p.text).forEach(w=>{
 
-found.push({
-a:items[i],
-b:items[j]
-});
+        if(
+          w.length<5 ||
+          this.stop.has(w) ||
+          analysis.terms.includes(w)
+        ){
+          return;
+        }
 
-break;
+        map.set(
+          w,
+          (map.get(w)||0)+1
+        );
 
-}
+      });
 
-}
+    });
 
-}
+    return [...map.entries()]
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0,10)
+      .map(x=>x[0]);
+  }
 
-}
+  /* -------------------------------------------------------
+     SYNTHÈSE
+     ------------------------------------------------------- */
 
-return found.slice(0,4);
+  synthesize(selected,analysis){
 
-}
+    if(!selected.length){
 
+      return {
+        answerText:
+          "Je n'ai pas trouvé suffisamment d'informations pertinentes pour répondre correctement à cette question.",
+        sources:[],
+        concepts:[]
+      };
+    }
 
-/* ============================================================
-   CONCEPTS FINAUX
-   ============================================================ */
+    const sentences=[];
+    const seen=new Set();
 
-finalConcepts(items,profile){
+    selected.forEach(p=>{
 
-const freq={};
-const original=new Set(profile.terms);
+      const clean=this.cleanFinalText(
+        p.text
+      );
 
-for(const item of items){
+      if(!clean) return;
 
-for(const word of this.words(item.text)){
+      const key=this.norm(clean);
 
-if(
-word.length<5||
-this.stop.has(word)||
-original.has(word)||
-/^\d+$/.test(word)
-)continue;
+      if(
+        key.length<20 ||
+        seen.has(key)
+      ){
+        return;
+      }
 
-freq[word]=(freq[word]||0)+1;
+      seen.add(key);
+      sentences.push(clean);
+    });
 
-}
+    /*
+     * Maximum raisonnable pour conserver une réponse lisible.
+     */
+    let answer=sentences
+      .slice(0,8)
+      .join(" ");
 
-}
+    answer=this.cleanFinalText(answer);
 
-return Object.entries(freq)
-.sort((a,b)=>b[1]-a[1])
-.slice(0,10)
-.map(x=>x[0]);
+    /*
+     * Si le texte est trop long, on conserve les phrases
+     * les plus pertinentes déjà sélectionnées.
+     */
+    if(answer.length>6000){
 
-}
+      answer=sentences
+        .slice(0,6)
+        .join(" ");
 
+      answer=this.cleanFinalText(answer);
+    }
 
-/* ============================================================
-   SYNTHÈSE
-   ============================================================ */
+    const sources=this.unique(
+      selected
+        .map(x=>this.clean(x.source))
+        .filter(Boolean)
+    );
 
-synthesize(items,profile,concepts,contradictions){
+    const concepts=this.finalConcepts(
+      selected,
+      analysis
+    );
 
-if(!items.length){
+    return {
+      answerText:answer,
+      sources:sources,
+      concepts:concepts
+    };
+  }
 
-return{
-text:
-"Je n'ai pas trouvé suffisamment d'informations pertinentes pour produire une synthèse fiable.",
-selected:0,
-concepts:[],
-contradictions:[]
-};
+  /* -------------------------------------------------------
+     EXÉCUTION COMPLÈTE
+     ------------------------------------------------------- */
 
-}
+  async run(question){
 
-let intro="";
+    if(this.busy){
+      throw new Error(
+        "Une recherche est déjà en cours."
+      );
+    }
 
-switch(profile.intent){
+    this.busy=true;
 
-case"fonctionnement":
-intro="Voici les éléments principaux permettant de comprendre le fonctionnement du sujet :";
-break;
+    try{
 
-case"cause":
-intro="Voici les principaux éléments permettant de comprendre les causes :";
-break;
+      this.step(
+        "Analyse de la question...",
+        1
+      );
 
-case"definition":
-intro="Voici les éléments permettant de définir et comprendre le sujet :";
-break;
+      const analysis=
+        this.analyzeQuestion(question);
 
-case"chronologie":
-intro="Voici les éléments historiques et chronologiques les plus pertinents :";
-break;
+      await new Promise(
+        r=>setTimeout(r,80)
+      );
 
-case"comparaison":
-intro="Voici les éléments les plus pertinents pour établir la comparaison :";
-break;
+      this.step(
+        "Extraction des termes importants...",
+        2
+      );
 
-case"recette":
-intro="Voici les éléments de préparation pertinents trouvés :";
-break;
+      const queries=
+        this.buildQueries(analysis);
 
-default:
-intro="Voici la synthèse des informations les plus pertinentes trouvées :";
+      await new Promise(
+        r=>setTimeout(r,80)
+      );
 
-}
+      this.step(
+        "Recherche dans les sources...",
+        3
+      );
 
-let text=intro+"\n\n";
+      const firstResults=
+        await this.searchAll(queries);
 
-items.forEach((item,i)=>{
+      await new Promise(
+        r=>setTimeout(r,80)
+      );
 
-text+="• "+item.text+"\n";
+      this.step(
+        "Découverte des concepts associés...",
+        4
+      );
 
-});
+      const concepts=
+        this.discoverConcepts(
+          firstResults,
+          analysis
+        );
 
-if(concepts.length){
+      await new Promise(
+        r=>setTimeout(r,80)
+      );
 
-text+="\nConcepts associés découverts automatiquement :\n";
-text+=concepts.map(x=>"• "+x).join("\n");
+      this.step(
+        "Recherche ciblée des concepts...",
+        5
+      );
 
-}
+      const secondResults=
+        await this.secondPass(
+          concepts,
+          analysis
+        );
 
-const sourceNames=this.unique(items.map(x=>x.source));
+      await new Promise(
+        r=>setTimeout(r,80)
+      );
 
-text+="\n\nSources consultées : ";
-text+=sourceNames.join(", ");
+      this.step(
+        "Récupération des passages pertinents...",
+        6
+      );
 
-if(contradictions.length){
+      const allResults=[
+        ...firstResults,
+        ...secondResults
+      ];
 
-text+=
-"\n\n⚠️ Le moteur a détecté "+
-contradictions.length+
-" divergence(s) potentielle(s) entre certains passages. "+
-"Il ne les fusionne pas automatiquement.";
+      /*
+       * Déduplication des résultats.
+       */
+      const uniqueResults=[];
+      const resultKeys=new Set();
 
-}
+      allResults.forEach(item=>{
 
-return{
-text,
-selected:items.length,
-concepts,
-contradictions
-};
+        const key=
+          this.norm(item.source)+"|"+
+          this.norm(item.title);
 
-}
+        if(!resultKeys.has(key)){
 
+          resultKeys.add(key);
+          uniqueResults.push(item);
 
-/* ============================================================
-   MOTEUR COMPLET
-   ============================================================ */
+        }
 
-async run(question,progress){
+      });
 
-const profile=this.analyzeQuestion(question);
+      /*
+       * Limite pour éviter trop de requêtes.
+       */
+      const candidates=
+        uniqueResults.slice(0,35);
 
-progress?.(
-"Analyse de la question : "+
-profile.subjectTerms.join(", ")
-);
+      const extracts=[];
 
-const queries=this.buildQueries(profile);
+      /*
+       * Extraction en petits lots pour éviter
+       * de surcharger le navigateur.
+       */
+      for(
+        let i=0;
+        i<candidates.length;
+        i+=7
+      ){
 
-progress?.(
-"Création de "+queries.length+" requête(s) ouvertes"
-);
+        const batch=
+          candidates.slice(i,i+7);
 
-const firstResults=await this.searchAll(
-queries,
-progress
-);
+        const batchResults=
+          await Promise.all(
+            batch.map(
+              x=>this.fetchExtract(x)
+            )
+          );
 
-if(!firstResults.length){
+        batchResults.forEach(x=>{
+          if(x) extracts.push(x);
+        });
 
-return{
-text:
-"Aucun résultat Wikimedia n'a été trouvé. Vérifie la connexion Internet ou reformule légèrement la question.",
-selected:0,
-concepts:[],
-contradictions:[]
-};
+      }
 
-}
+      await new Promise(
+        r=>setTimeout(r,80)
+      );
 
-progress?.(
-firstResults.length+
-" résultats initiaux trouvés"
-);
+      this.step(
+        "Évaluation de la pertinence...",
+        7
+      );
 
-const discovered=this.discoverConcepts(
-firstResults,
-profile
-);
+      const passages=
+        this.buildPassages(
+          extracts
+        );
 
-progress?.(
-"Concepts découverts : "+
-(discovered.slice(0,8).join(", ")||"aucun")
-);
+      const selected=
+        this.selectPassages(
+          passages,
+          analysis
+        );
 
-const secondResults=await this.secondPass(
-discovered,
-profile,
-progress
-);
+      await new Promise(
+        r=>setTimeout(r,80)
+      );
 
-const combined=[
-...firstResults,
-...secondResults
-];
+      this.step(
+        "Élimination des informations hors sujet...",
+        8
+      );
 
-const seen=new Set();
+      const contradictions=
+        this.findContradictions(
+          selected
+        );
 
-const uniqueResults=combined.filter(r=>{
+      /*
+       * On garde la variable pour permettre
+       * une extension future sans casser le moteur.
+       */
+      void contradictions;
 
-const key=this.norm(r.source+"|"+r.title);
+      await new Promise(
+        r=>setTimeout(r,80)
+      );
 
-if(seen.has(key))return false;
+      this.step(
+        "Construction de la réponse...",
+        9
+      );
 
-seen.add(key);
+      const result=
+        this.synthesize(
+          selected,
+          analysis
+        );
 
-return true;
+      await new Promise(
+        r=>setTimeout(r,80)
+      );
 
-});
+      this.step(
+        "Nettoyage du texte final...",
+        10
+      );
 
-progress?.(
-uniqueResults.length+
-" pages retenues pour l'analyse"
-);
+      result.answerText=
+        this.cleanFinalText(
+          result.answerText
+        );
 
-const passages=await this.buildPassages(
-uniqueResults,
-profile,
-progress
-);
+      result.sources=
+        this.unique(
+          result.sources
+            .map(x=>this.clean(x))
+            .filter(Boolean)
+        );
 
-const selected=this.selectPassages(passages);
+      /*
+       * Protection supplémentaire :
+       * aucun markup ne doit arriver au résultat.
+       */
+      result.answerText=
+        result.answerText
+          .replace(/\[\[[\s\S]*?\]\]/g," ")
+          .replace(/\{\{[\s\S]*?\}\}/g," ")
+          .replace(/<[^>]*>/g," ")
+          .replace(/&(?:[a-z][a-z0-9]+|#\d+|#x[\da-f]+);/gi," ");
 
-const contradictions=this.findContradictions(
-selected
-);
+      result.answerText=
+        this.cleanFinalText(
+          result.answerText
+        );
 
-const concepts=this.finalConcepts(
-selected,
-profile
-);
+      return result;
 
-return this.synthesize(
-selected,
-profile,
-concepts,
-contradictions
-);
+    }finally{
 
-}
+      this.busy=false;
 
+    }
+  }
 }
 
 
-/* ============================================================
+/* =========================================================
    INTERFACE
-   ============================================================ */
+   ========================================================= */
 
-const chat=document.getElementById("chat");
-const input=document.getElementById("input");
-const send=document.getElementById("send");
-const clear=document.getElementById("clear");
-const status=document.getElementById("status");
+const chat=
+  document.getElementById("chat");
 
-const engine=new PyramidV4();
+const input=
+  document.getElementById("input");
 
-let busy=false;
+const send=
+  document.getElementById("send");
+
+const clear=
+  document.getElementById("clear");
+
+const status=
+  document.getElementById("status");
+
+let engine=null;
+
+let stepElement=null;
 
 
-/* ---------- MESSAGE ---------- */
+/* ---------------------------------------------------------
+   ÉCHAPPEMENT HTML
+   --------------------------------------------------------- */
 
-function addMessage(text,type="bot",data=null){
+function escapeHtml(value){
 
-const box=document.createElement("div");
-box.className="msg "+type;
-
-const content=document.createElement("div");
-content.textContent=text;
-
-box.appendChild(content);
-
-if(type==="bot"){
-
-const copy=document.createElement("button");
-
-copy.type="button";
-copy.className="copy";
-copy.textContent="Copier";
-
-copy.addEventListener("click",async()=>{
-
-try{
-
-await navigator.clipboard.writeText(text);
-
-copy.textContent="Copié ✓";
-
-setTimeout(()=>{
-copy.textContent="Copier";
-},1200);
-
-}catch(e){
-
-const area=document.createElement("textarea");
-area.value=text;
-document.body.appendChild(area);
-area.select();
-
-try{
-document.execCommand("copy");
-copy.textContent="Copié ✓";
-}catch{
-copy.textContent="Copie impossible";
-}
-
-area.remove();
-
-}
-
-});
-
-box.appendChild(copy);
-
-}
-
-if(data){
-
-const meta=document.createElement("div");
-meta.className="meta";
-
-let html=
-"Passages sélectionnés : <b>"+
-(data.selected||0)+
-"</b>";
-
-if(data.concepts?.length){
-
-html+="<br>Concepts découverts : ";
-
-html+=data.concepts.map(
-x=>`<span class="badge">${escapeHtml(x)}</span>`
-).join("");
-
-}
-
-meta.innerHTML=html;
-box.appendChild(meta);
-
-}
-
-chat.appendChild(box);
-chat.scrollTop=chat.scrollHeight;
-
+  return String(value||"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
 
-/* ---------- SÉCURITÉ AFFICHAGE ---------- */
+/* ---------------------------------------------------------
+   AJOUT MESSAGE UTILISATEUR
+   --------------------------------------------------------- */
 
-function escapeHtml(s){
+function addUserMessage(text){
 
-return String(s)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+  const wrapper=
+    document.createElement("div");
+
+  wrapper.className=
+    "message user";
+
+  const bubble=
+    document.createElement("div");
+
+  bubble.className=
+    "bubble";
+
+  bubble.textContent=
+    text;
+
+  wrapper.appendChild(
+    bubble
+  );
+
+  chat.appendChild(
+    wrapper
+  );
+
+  scrollBottom();
+}
+
+
+/* ---------------------------------------------------------
+   ÉTAPE TEMPORAIRE
+   --------------------------------------------------------- */
+
+function showStep(data){
+
+  /*
+   * Supprime immédiatement l'étape précédente.
+   */
+  if(stepElement){
+
+    stepElement.remove();
+    stepElement=null;
+
+  }
+
+  stepElement=
+    document.createElement("div");
+
+  stepElement.className=
+    "step-line";
+
+  const number=
+    document.createElement("span");
+
+  number.className=
+    "step-number";
+
+  number.textContent=
+    "Étape "+data.number;
+
+  const text=
+    document.createElement("span");
+
+  text.textContent=
+    data.text;
+
+  stepElement.appendChild(
+    number
+  );
+
+  stepElement.appendChild(
+    text
+  );
+
+  chat.appendChild(
+    stepElement
+  );
+
+  scrollBottom();
+}
+
+
+/* ---------------------------------------------------------
+   SUPPRESSION ÉTAPE
+   --------------------------------------------------------- */
+
+function removeStep(){
+
+  if(stepElement){
+
+    stepElement.remove();
+    stepElement=null;
+
+  }
 
 }
 
 
-/* ---------- PENSÉE ---------- */
+/* ---------------------------------------------------------
+   RÉSULTAT FINAL
+   --------------------------------------------------------- */
 
-function addThinking(){
+function addAssistantMessage(result){
 
-const box=document.createElement("div");
+  removeStep();
 
-box.className="msg bot thinking";
-box.id="thinking";
+  const wrapper=
+    document.createElement("div");
 
-box.textContent="Analyse en cours…";
+  wrapper.className=
+    "message assistant";
 
-chat.appendChild(box);
+  const answer=
+    document.createElement("div");
 
-chat.scrollTop=chat.scrollHeight;
+  answer.className=
+    "answer";
 
-return box;
+  answer.textContent=
+    result.answerText ||
+    "Aucune réponse exploitable n'a été produite.";
+
+  wrapper.appendChild(
+    answer
+  );
+
+  const actions=
+    document.createElement("div");
+
+  actions.className=
+    "answer-actions";
+
+  const copy=
+    document.createElement("button");
+
+  copy.type="button";
+  copy.className="copy";
+  copy.textContent="Copier";
+
+  copy.addEventListener(
+    "click",
+    async()=>{
+      try{
+
+        await navigator.clipboard.writeText(
+          result.answerText||""
+        );
+
+        copy.textContent="Copié";
+
+        setTimeout(()=>{
+          copy.textContent="Copier";
+        },1200);
+
+      }catch(error){
+
+        /*
+         * Fallback pour certains navigateurs.
+         */
+        const area=
+          document.createElement("textarea");
+
+        area.value=
+          result.answerText||"";
+
+        area.style.position="fixed";
+        area.style.opacity="0";
+
+        document.body.appendChild(area);
+        area.select();
+
+        try{
+          document.execCommand("copy");
+          copy.textContent="Copié";
+
+          setTimeout(()=>{
+            copy.textContent="Copier";
+          },1200);
+
+        }catch(e){}
+
+        area.remove();
+      }
+    }
+  );
+
+  actions.appendChild(
+    copy
+  );
+
+  wrapper.appendChild(
+    actions
+  );
+
+  /*
+   * Sources très discrètes tout en bas.
+   * Elles ne sont PAS incluses dans le texte copié.
+   */
+  if(
+    result.sources &&
+    result.sources.length
+  ){
+
+    const sources=
+      document.createElement("div");
+
+    sources.className=
+      "sources";
+
+    sources.textContent=
+      result.sources.join(" · ");
+
+    wrapper.appendChild(
+      sources
+    );
+
+  }
+
+  chat.appendChild(
+    wrapper
+  );
+
+  scrollBottom();
+}
+
+
+/* ---------------------------------------------------------
+   SCROLL
+   --------------------------------------------------------- */
+
+function scrollBottom(){
+
+  requestAnimationFrame(()=>{
+    chat.scrollTop=
+      chat.scrollHeight;
+  });
 
 }
 
 
-/* ---------- ENVOI ---------- */
+/* ---------------------------------------------------------
+   ENVOI
+   --------------------------------------------------------- */
+
+let sending=false;
 
 async function submit(){
 
-if(busy)return;
+  if(sending) return;
 
-const question=input.value.trim();
+  const question=
+    input.value.trim();
 
-if(!question)return;
+  if(!question) return;
 
-busy=true;
+  sending=true;
 
-send.disabled=true;
-clear.disabled=true;
-input.disabled=true;
+  send.disabled=true;
+  input.disabled=true;
 
-addMessage(question,"user");
+  status.textContent="";
 
-input.value="";
+  addUserMessage(question);
 
-const thinking=addThinking();
+  input.value="";
+  input.style.height="44px";
 
-status.textContent="Recherche en cours…";
+  try{
 
-try{
+    const result=
+      await engine.run(
+        question
+      );
 
-const result=await engine.run(
-question,
-message=>{
-status.textContent=message;
-}
-);
+    removeStep();
 
-thinking.remove();
+    addAssistantMessage(
+      result
+    );
 
-addMessage(
-result.text||"Aucune synthèse disponible.",
-"bot",
-{
-selected:result.selected||0,
-concepts:result.concepts||[]
-}
-);
+  }catch(error){
 
-status.textContent="Terminé";
+    removeStep();
 
-}catch(error){
+    const wrapper=
+      document.createElement("div");
 
-console.error(error);
+    wrapper.className=
+      "message assistant";
 
-if(thinking)
-thinking.remove();
+    const answer=
+      document.createElement("div");
 
-addMessage(
-"Une erreur technique est survenue pendant la recherche. Vérifie ta connexion Internet puis réessaie.",
-"bot"
-);
+    answer.className=
+      "answer";
 
-status.textContent="Erreur";
+    answer.textContent=
+      "Une erreur est survenue pendant la recherche. Vérifie ta connexion Internet puis réessaie.";
 
-}finally{
+    wrapper.appendChild(
+      answer
+    );
 
-busy=false;
+    chat.appendChild(
+      wrapper
+    );
 
-send.disabled=false;
-clear.disabled=false;
-input.disabled=false;
+    scrollBottom();
 
-input.focus();
+    console.error(
+      "Erreur V4:",
+      error
+    );
 
-}
+  }finally{
 
-}
+    sending=false;
 
+    send.disabled=false;
+    input.disabled=false;
 
-/* ---------- ÉVÉNEMENTS ---------- */
+    input.focus();
 
-send.addEventListener("click",submit);
-
-input.addEventListener("keydown",e=>{
-
-if(e.key==="Enter"&&!e.shiftKey){
-
-e.preventDefault();
-submit();
-
+  }
 }
 
-});
 
-clear.addEventListener("click",()=>{
+/* ---------------------------------------------------------
+   BOUTON ENVOYER
+   --------------------------------------------------------- */
 
-chat.innerHTML=
-`<div class="msg bot">
-Conversation effacée.
-<div class="meta">
-Le moteur est prêt pour une nouvelle question.
-</div>
-</div>`;
-
-input.value="";
-status.textContent="Moteur prêt";
-input.focus();
-
-});
-
-
-/* ---------- DÉMARRAGE ---------- */
-
-window.addEventListener("load",()=>{
-
-console.log(
-"Synthétiseur Pyramidal Multi-Sources V4 chargé."
+send.addEventListener(
+  "click",
+  submit
 );
 
-console.log(
-"Moteur ouvert : aucun catalogue de sujets prédéfini."
+
+/* ---------------------------------------------------------
+   ENTRÉE / SHIFT+ENTRÉE
+   --------------------------------------------------------- */
+
+input.addEventListener(
+  "keydown",
+  event=>{
+
+    if(
+      event.key==="Enter" &&
+      !event.shiftKey
+    ){
+
+      event.preventDefault();
+      submit();
+
+    }
+
+  }
 );
 
-input.focus();
 
-});
+/* ---------------------------------------------------------
+   HAUTEUR AUTOMATIQUE DU TEXTAREA
+   --------------------------------------------------------- */
+
+input.addEventListener(
+  "input",
+  ()=>{
+
+    input.style.height="44px";
+
+    input.style.height=
+      Math.min(
+        input.scrollHeight,
+        150
+      )+"px";
+
+  }
+);
+
+
+/* ---------------------------------------------------------
+   EFFACER
+   --------------------------------------------------------- */
+
+clear.addEventListener(
+  "click",
+  ()=>{
+
+    chat.innerHTML="";
+
+    removeStep();
+
+    status.textContent="";
+
+    input.value="";
+    input.style.height="44px";
+
+    input.focus();
+
+  }
+);
+
+
+/* ---------------------------------------------------------
+   INITIALISATION
+   --------------------------------------------------------- */
+
+window.addEventListener(
+  "load",
+  ()=>{
+
+    engine=
+      new PyramidV4(
+        showStep
+      );
+
+    input.focus();
+
+  }
+);
 
 </script>
 
