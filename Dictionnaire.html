@@ -200,12 +200,12 @@
           'st', 'ste', 'trad', 'vol', 'janv', 'févr', 'juill', 'sept', 'oct', 'nov', 'déc'
         ];
 
-        // Mots vides universels (stopwords) à ignorer lors de l'apprentissage automatique du vocabulaire
+        // Mots vides universels (stopwords) mis à jour pour filtrer les phrases de type "explique moi c'est quoi"
         this.stopWords = new Set([
           'le', 'la', 'les', 'un', 'une', 'des', 'de', 'du', 'au', 'aux', 'et', 'ou', 
           'donne', 'moi', 'cherche', 'pour', 'sur', 'dans', 'comment', 'faire', 'fabriquer', 
-          'atteindre', 'etapes', 'pas', 'recette', 'est', 'sont', 'qui', 'que', 'les', 'ces', 
-          'une', 'par', 'plus', 'pas', 'aux', 'ses', 'leur', 'avec', 'tout', 'mais', 'cette'
+          'atteindre', 'etapes', 'pas', 'recette', 'est', 'sont', 'qui', 'que', 'ces', 
+          'par', 'plus', 'ses', 'leur', 'avec', 'tout', 'mais', 'cette', 'explique', 'quoi', 'c'
         ]);
       }
 
@@ -217,13 +217,21 @@
         const lowerInput = inputPhrase.toLowerCase();
         const isProcessIntent = /comment|fabriquer|recette|etapes|étape|méthode|processus|réaliser|construire|atteindre|obtenir|créer|guide|donne/.test(lowerInput);
 
-        // 1. Extraction des tokens initiaux de l'utilisateur
+        // 1. Extraction des tokens initiaux de l'utilisateur (nettoyage strict)
         const rawTokens = inputPhrase.trim().split(/\s+/);
         const coreTokens = [...new Set(
           rawTokens
             .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
-            .filter(t => t.length > 2 && !this.stopWords.has(t))
+            .filter(t => t.length > 3 && !this.stopWords.has(t))
         )];
+
+        // Sécurité de secours si tous les mots ont été filtrés
+        if (coreTokens.length === 0) {
+          const fallbackTokens = rawTokens
+            .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
+            .filter(t => t.length > 2 && !this.stopWords.has(t));
+          coreTokens.push(...fallbackTokens);
+        }
 
         if (coreTokens.length === 0) {
           throw new Error("Veuillez entrer des mots-clés significatifs.");
@@ -426,6 +434,14 @@
         let score = 0;
         const lowerSentence = sentence.toLowerCase();
 
+        // Filtre anti-bruit pour écarter les phrases publicitaires ou de diffusion TV indésirables
+        const noiseKeywords = ['france 4', 'okoo', 'gulli', 'youtube', 'c\'est pas sorcier', 'télévision', 'diffusée', 'chaîne'];
+        const isTelevisionQuery = coreTokens.some(t => ['television', 'emission', 'sorcier'].includes(t));
+        if (!isTelevisionQuery) {
+          const hasNoise = noiseKeywords.some(noise => lowerSentence.includes(noise));
+          if (hasNoise) return 0;
+        }
+
         let coreMatches = 0;
         coreTokens.forEach(t => {
           if (lowerSentence.includes(t)) coreMatches++;
@@ -437,7 +453,6 @@
         });
 
         // Règle de sécurité absolue : La phrase DOIT contenir au moins un mot-clé direct de l'utilisateur.
-        // Cela garantit que chaque phrase est liée au sujet recherché (ville, art, musique, cinéma, etc.) sans bloquer des thématiques entières.
         if (coreMatches === 0) {
           return 0;
         }
