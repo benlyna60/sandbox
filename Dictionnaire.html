@@ -269,7 +269,7 @@
             const sentences = this.segmentIntoSentences(cleanText);
             
             sentences.forEach(sentence => {
-              if (sentence.length >= 15 && sentence.length <= 300) {
+              if (sentence.length >= 25 && sentence.length <= 300) {
                 const score = this.scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent, lowerInput);
                 if (score > 0) {
                   globalSentencePool.push({
@@ -389,7 +389,7 @@
               const title = doc.title || '';
               const authors = doc.author_name ? doc.author_name.join(', ') : '';
               const year = doc.first_publish_year || '';
-              if (title) {
+              if (title && title.length > 10) {
                 combined += ` Ouvrage de référence : ${title} ${authors ? 'par ' + authors : ''} (${year}). `;
               }
             });
@@ -408,8 +408,8 @@
               const title = item.title?.[0] || '';
               const container = item['container-title']?.[0] || 'Publication scientifique';
               const year = item.issued?.['date-parts']?.[0]?.[0] || '';
-              if (title) {
-                combined += ` Article scientifique publié dans ${container} (${year}) : ${title}. `;
+              if (title && title.length > 15) {
+                combined += ` Article scientifique : ${title} (${year}). `;
               }
             });
             return { source: sourceName, text: combined.trim() };
@@ -448,7 +448,7 @@
           if (seg.includes(';') || seg.includes(' - ')) {
             const subParts = seg.split(/;| - /);
             subParts.forEach(part => {
-              if (part.trim().length > 10) expandedSegments.push(part.trim());
+              if (part.trim().length > 15) expandedSegments.push(part.trim());
             });
           }
           expandedSegments.push(seg.trim());
@@ -469,14 +469,17 @@
         let score = 0;
         const lowerSentence = sentence.toLowerCase();
 
-        // 1. Filtrage anti-télescopage sémantique contextuel
-        const isDrivingQuery = /conduite|permis|voiture|conduire|route|conduisant/.test(userQueryLower);
+        // Filtre anti-télescopage contextuel
+        const isDrivingQuery = /conduite|permis|voiture|conduire|route/.test(userQueryLower);
         if (isDrivingQuery) {
           const forbiddenOffTopic = ['informatique', 'télécommunication', 'protocole', 'serveur', 'dégustation', 'vin', 'dictionnaires', 'internet'];
           for (const word of forbiddenOffTopic) {
             if (lowerSentence.includes(word)) return 0;
           }
         }
+
+        // Rejeter les phrases tronquées ou non terminées
+        if (!/[.!?]$/.test(sentence) && sentence.length < 50) return 0;
 
         let coreMatches = 0;
         coreTokens.forEach(t => {
@@ -515,7 +518,7 @@
           processMarkers.forEach(pm => { if (lowerSentence.includes(pm)) markerMatches++; });
           score += markerMatches * 15;
 
-          const constructiveMarkers = ['bois', 'assembler', 'pieds', 'dossier', 'vis', 'colle', 'couper', 'mesurer', 'planche', 'clou', 'poncer', 'farine', 'eau', 'levure', 'sel', 'cuire', 'four', 'pétrir', 'conduite', 'permis', 'route', 'véhicule'];
+          const constructiveMarkers = ['bois', 'assembler', 'pieds', 'dossier', 'vis', 'colle', 'couper', 'mesurer', 'planche', 'clou', 'poncer', 'farine', 'eau', 'levure', 'sel', 'cuire', 'four', 'pétrir', 'conduite', 'permis', 'route', 'véhicule', 'vaccin', 'grippe', 'virus'];
           let constructiveMatches = 0;
           constructiveMarkers.forEach(cm => { if (lowerSentence.includes(cm)) constructiveMatches++; });
           score += constructiveMatches * 25;
@@ -555,7 +558,7 @@
         const finalSelected = [];
 
         for (const item of validPool) {
-          const maxPhrases = isProcessIntent ? 6 : 4;
+          const maxPhrases = isProcessIntent ? 5 : 4;
           if (finalSelected.length >= maxPhrases) break;
 
           let tooRedundant = false;
@@ -567,18 +570,15 @@
           }
 
           if (tooRedundant) continue;
-          finalSelected.push(`[${item.source.toUpperCase()}] ${item.text}`);
+          finalSelected.push(item.text);
         }
 
         if (finalSelected.length === 0) {
-          return `Synthèse (Sujet : "${originalPhrase}") :\nAucun élément structuré n'a pu être assemblé.`;
+          return `Aucun élément structuré n'a pu être assemblé pour : "${originalPhrase}".`;
         }
 
-        const prefix = isProcessIntent 
-          ? `Synthèse procédurale multi-sources ("${originalPhrase}") :\n\n• ` 
-          : `Synthèse unifiée multi-sources ("${originalPhrase}") :\n\n• `;
-
-        return prefix + finalSelected.join('\n• ');
+        // Retourne un texte brut, fluide et rédigé, sans aucune balise de source
+        return finalSelected.join(' ');
       }
     }
 
