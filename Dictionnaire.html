@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synthétiseur Pyramidal Multi-Sources - Satellites Blindés</title>
+  <title>Synthétiseur Pyramidal Multi-Sources - Satellites Blindés & Boucle Réflexive</title>
   <style>
     :root {
       --primary-color: #2563eb;
@@ -170,12 +170,12 @@
   <div class="chat-container">
     <div class="chat-header">
       Synthétiseur Pyramidal Multi-Sources
-      <span>Satellites Blindés & Ancrage Strict</span>
+      <span>Boucle Réflexive & Ancrage Strict</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Moteur mis à jour : système d'ancrage strict des mots-clés et élimination des biais d'auto-contamination. Tapez votre sujet :
+        Bonjour ! Moteur mis à jour avec boucle de rebond par le Wiktionnaire et ancrage strict. Tapez votre sujet :
       </div>
     </div>
     
@@ -219,7 +219,6 @@
         }
 
         const lowerInput = inputPhrase.toLowerCase();
-        // Correction : Restriction stricte de l'intention de processus pour éviter les faux positifs (ex: "explique")
         const isProcessIntent = /comment\b|fabriquer\b|recette\b|etapes?\b|étape\b|méthode\b|processus\b|réaliser\b|construire\b|atteindre\b|obtenir\b|créer\b|guide\b/i.test(lowerInput);
 
         const rawTokens = inputPhrase.trim().split(/\s+/);
@@ -233,29 +232,46 @@
           throw new Error("Veuillez entrer des mots-clés significatifs.");
         }
 
-        // Étape 1 : Récupération ciblée
+        // Étape 1 : Récupération ciblée avec Boucle Réflexive (Rebond Wiktionnaire si échec initial)
         let collectedCorpusTexts = [];
+        let expandedCoreTokens = [...coreTokens];
+
         for (const token of coreTokens) {
-          const initialResults = await this.fetchRawTextsOnly(token);
-          collectedCorpusTexts.push(...initialResults);
+          let initialResults = await this.fetchRawTextsOnly(token);
+          
+          if (initialResults.length === 0) {
+            // Rebond sémantique via le Wiktionnaire pour récupérer définition et synonymes
+            const wiktionaryTexts = await this.fetchWiktionnaireExpansion(token);
+            if (wiktionaryTexts.length > 0) {
+              collectedCorpusTexts.push(...wiktionaryTexts);
+              const defWords = wiktionaryTexts.join(' ').toLowerCase().match(/\b[a-zéèàâêîôûç]{4,}\b/g) || [];
+              const uniqueDefWords = [...new Set(defWords)]
+                .filter(w => !this.stopWords.has(w) && !coreTokens.includes(w))
+                .slice(0, 3);
+              expandedCoreTokens.push(...uniqueDefWords);
+            }
+          } else {
+            collectedCorpusTexts.push(...initialResults);
+          }
         }
 
-        // Étape 2 : Extraction de satellites avec proximité stricte (évite le poison du includes global)
-        const adaptiveSatellites = this.extractStrictCoherentSatellites(collectedCorpusTexts, coreTokens);
+        const finalCoreTokens = [...new Set(expandedCoreTokens)];
+
+        // Étape 2 : Extraction de satellites avec proximité stricte
+        const adaptiveSatellites = this.extractStrictCoherentSatellites(collectedCorpusTexts, finalCoreTokens);
 
         // Étape 3 : Construction de requêtes unifiées avec mécanisme de repli (fallback)
         const searchQueries = [inputPhrase.trim()];
         
-        if (coreTokens.length >= 2) {
-          searchQueries.push(`${coreTokens[0]} ${coreTokens[1]}`);
+        if (finalCoreTokens.length >= 2) {
+          searchQueries.push(`${finalCoreTokens[0]} ${finalCoreTokens[1]}`);
         }
         
         adaptiveSatellites.slice(0, 2).forEach(sat => {
-          searchQueries.push(`${coreTokens[0]} ${sat}`);
+          searchQueries.push(`${finalCoreTokens[0]} ${sat}`);
         });
 
-        // Repli de sécurité : si la requête combinée est trop restrictive, on ajoute chaque mot-clé individuellement
-        coreTokens.forEach(token => {
+        finalCoreTokens.forEach(token => {
           searchQueries.push(token);
         });
 
@@ -287,7 +303,7 @@
             
             sentences.forEach(sentence => {
               if (sentence.length >= 25 && sentence.length <= 300) {
-                const score = this.scoreSentenceWithAnchoring(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent);
+                const score = this.scoreSentenceWithAnchoring(sentence, finalCoreTokens, adaptiveSatellites, source, isProcessIntent);
                 if (score > 0) {
                   globalSentencePool.push({
                     text: sentence,
@@ -307,7 +323,7 @@
           return `Aucun contenu pertinent n'a pu être extrait pour : "${inputPhrase}".`;
         }
 
-        return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent, coreTokens);
+        return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent, finalCoreTokens);
       }
 
       async fetchRawTextsOnly(keyword) {
@@ -343,17 +359,47 @@
         }
       }
 
-      // CORRECTION : Extraction stricte par voisinage sémantique dans le même paragraphe/phrase
+      async fetchWiktionnaireExpansion(token) {
+        const params = new URLSearchParams({
+          action: 'query',
+          format: 'json',
+          origin: '*',
+          generator: 'search',
+          gsrsearch: token,
+          gsrlimit: '1',
+          prop: 'extracts',
+          exintro: '1',
+          explaintext: '1',
+          redirects: '1'
+        });
+
+        try {
+          const response = await fetch(`https://fr.wiktionary.org/w/api.php?${params.toString()}`);
+          if (!response.ok) return [];
+          const data = await response.json();
+          const pages = data.query?.pages;
+          if (!pages) return [];
+
+          let texts = [];
+          for (const pageId of Object.keys(pages)) {
+            if (pageId !== "-1" && pages[pageId]?.extract) {
+              texts.push(pages[pageId].extract);
+            }
+          }
+          return texts;
+        } catch (e) {
+          return [];
+        }
+      }
+
       extractStrictCoherentSatellites(textArray, coreTokens) {
         let wordFrequency = {};
 
         textArray.forEach(text => {
-          // On découpe en sous-phrases ou paragraphes pour vérifier la proximité locale
           const segments = text.split(/[.!?\n]+/);
           
           segments.forEach(seg => {
             const lowerSeg = seg.toLowerCase();
-            // Le segment doit impérativement contenir au moins un coreToken pour que ses voisins soient valides
             const hasCore = coreTokens.some(ct => lowerSeg.includes(ct));
             
             if (hasCore) {
@@ -459,7 +505,6 @@
           .filter(sentence => sentence.length > 0);
       }
 
-      // CORRECTION MAJEURE : Ancrage strict et plafonnement des satellites pour éliminer l'inversion de priorité
       scoreSentenceWithAnchoring(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent) {
         const lowerSentence = sentence.toLowerCase();
 
@@ -483,20 +528,15 @@
           }
         });
 
-        // 1. FILTRE D'ANCRAGE STRICT : Si la question a plusieurs mots-clés, on exige une présence minimale proportionnelle
         const requiredCoreMatches = coreTokens.length > 1 ? Math.min(2, coreTokens.length) : 1;
         if (matchedCoreTokensList.size < requiredCoreMatches) {
-          return 0; // Rejet net si l'ancrage principal est absent
+          return 0;
         }
 
-        // 2. SCORING À PALIER STRICT : Les coreTokens ont une valeur écrasante
         let score = matchedCoreTokensList.size * 100;
-
-        // 3. PLAFONNEMENT DES SATELLITES : Les satellites ne peuvent jamais compenser un manque de mots-clés
         const cappedSatelliteCount = Math.min(satelliteMatchCount, 2);
         score += cappedSatelliteCount * 15;
 
-        // Boost contextuel conditionnel (uniquement si l'intention de processus est avérée)
         if (isProcessIntent) {
           const structuralMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'méthode', 'processus', 'réaliser'];
           let markerMatches = 0;
@@ -507,6 +547,7 @@
         if (source === 'wikipedia') score += 20;
         if (source === 'wikidata') score += 15;
         if (source === 'wikihow') score += 25;
+        if (source === 'wiktionnaire') score += 10;
 
         return score;
       }
@@ -596,7 +637,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Analyse syntaxique, ancrage strict et synthèse pyramidale...";
+      loadingDiv.textContent = "Analyse, rebond dictionnaire et synthèse pyramidale...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
