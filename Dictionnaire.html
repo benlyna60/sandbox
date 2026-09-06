@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synthétiseur Pyramidal à Apprentissage Dynamique - Écosystème Wiki Complet</title>
+  <title>Synthétiseur Pyramidal Multi-Sources - Écosystème Étendu</title>
   <style>
     :root {
       --primary-color: #2563eb;
@@ -27,7 +27,7 @@
 
     .chat-container {
       width: 100%;
-      max-width: 750px;
+      max-width: 800px;
       height: 90vh;
       background: var(--chat-bg);
       border-radius: 12px;
@@ -46,7 +46,7 @@
       font-size: 1.1rem;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
     }
 
     .chat-header span {
@@ -169,32 +169,36 @@
 
   <div class="chat-container">
     <div class="chat-header">
-      Synthétiseur Pyramidal Adaptatif <span>Écosystème Wiki Complet / 100% Local</span>
+      Synthétiseur Multi-Sources Adaptatif
+      <span>Wiki + Wikidata + Open Library + Crossref</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Tapez n'importe quel sujet complexe (ex: <i>mécanique quantique</i>, <i>fabriquer une balançoire</i>, <i>histoire de Rome</i>) : le système apprend le vocabulaire spécifique du sujet en direct avant de synthétiser.
+        Bonjour ! Ce système combine désormais les écosystèmes Wikimedia, les données structurées de Wikidata, le catalogue mondial d'Open Library et les publications scientifiques de Crossref. Tapez un sujet pour lancer la synthèse enrichie :
       </div>
     </div>
     
     <div class="chat-input-area">
-      <input type="text" id="user-input" placeholder="Tapez votre recherche..." autocomplete="off">
+      <input type="text" id="user-input" placeholder="Tapez votre recherche (scientifique, technique, historique...)..." autocomplete="off">
       <button id="send-btn">Envoyer</button>
     </div>
   </div>
 
   <script>
-    class WikimediaAdaptiveSynthesizer {
+    class MultiSourceAdaptiveSynthesizer {
       constructor() {
         this.sources = {
-          wikipedia: 'https://fr.wikipedia.org/w/api.php',
-          wiktionnaire: 'https://fr.wiktionary.org/w/api.php',
-          wikiversite: 'https://fr.wikiversite.org/w/api.php',
-          wikivoyage: 'https://fr.wikivoyage.org/w/api.php',
-          wikisource: 'https://fr.wikisource.org/w/api.php',
-          wikiquote: 'https://fr.wikiquote.org/w/api.php',
-          wikihow: 'https://fr.wikihow.com/api.php'
+          wikipedia: { type: 'mediawiki', url: 'https://fr.wikipedia.org/w/api.php' },
+          wiktionnaire: { type: 'mediawiki', url: 'https://fr.wiktionary.org/w/api.php' },
+          wikiversite: { type: 'mediawiki', url: 'https://fr.wikiversite.org/w/api.php' },
+          wikivoyage: { type: 'mediawiki', url: 'https://fr.wikivoyage.org/w/api.php' },
+          wikisource: { type: 'mediawiki', url: 'https://fr.wikisource.org/w/api.php' },
+          wikiquote: { type: 'mediawiki', url: 'https://fr.wikiquote.org/w/api.php' },
+          wikidata: { type: 'mediawiki', url: 'https://www.wikidata.org/w/api.php' },
+          wikihow: { type: 'mediawiki', url: 'https://fr.wikihow.com/api.php' },
+          openlibrary: { type: 'openlibrary', url: 'https://openlibrary.org/search.json' },
+          crossref: { type: 'crossref', url: 'https://api.crossref.org/works' }
         };
 
         this.protectedAbbreviations = [
@@ -247,13 +251,13 @@
 
         const searchQueries = [inputPhrase.trim(), ...coreTokens];
         learnedVocabulary.slice(0, 3).forEach(vocabWord => searchQueries.push(vocabWord));
-        const uniqueQueries = [...new Set(searchQueries)].slice(0, 5);
+        const uniqueQueries = [...new Set(searchQueries)].slice(0, 4);
 
         let globalSentencePool = [];
 
         for (const query of uniqueQueries) {
-          const fetchPromises = Object.entries(this.sources).map(([sourceName, apiUrl]) => 
-            this.fetchCombinedFromSource(sourceName, apiUrl, query)
+          const fetchPromises = Object.entries(this.sources).map(([sourceName, sourceConfig]) => 
+            this.fetchFromSpecificSource(sourceName, sourceConfig, query)
           );
           
           const rawResults = await Promise.all(fetchPromises);
@@ -266,7 +270,7 @@
             
             sentences.forEach(sentence => {
               if (sentence.length >= 15 && sentence.length <= 300) {
-                const score = this.scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent, lowerInput);
+                const score = this.scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent);
                 if (score > 0) {
                   globalSentencePool.push({
                     text: sentence,
@@ -280,7 +284,7 @@
         }
 
         if (globalSentencePool.length === 0) {
-          return "Aucun contenu pertinent n'a pu être extrait avec le modèle adaptatif.";
+          return "Aucun contenu pertinent n'a pu être extrait avec le modèle multi-sources.";
         }
 
         return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent);
@@ -337,42 +341,81 @@
           .slice(0, 8);
       }
 
-      async fetchCombinedFromSource(sourceName, apiUrl, keyword) {
-        const params = new URLSearchParams({
-          action: 'query',
-          format: 'json',
-          origin: '*',
-          generator: 'search',
-          gsrsearch: keyword,
-          gsrlimit: '2',
-          prop: 'extracts',
-          exintro: '1',
-          explaintext: '1',
-          redirects: '1'
-        });
-
+      async fetchFromSpecificSource(sourceName, config, keyword) {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
 
         try {
-          const response = await fetch(`${apiUrl}?${params.toString()}`, { signal: controller.signal });
-          clearTimeout(timeoutId);
+          if (config.type === 'mediawiki') {
+            const params = new URLSearchParams({
+              action: 'query',
+              format: 'json',
+              origin: '*',
+              generator: 'search',
+              gsrsearch: keyword,
+              gsrlimit: '2',
+              prop: 'extracts',
+              exintro: '1',
+              explaintext: '1',
+              redirects: '1'
+            });
 
-          if (!response.ok) return { source: sourceName, text: "" };
-          
-          const data = await response.json();
-          const pages = data.query?.pages;
-          
-          if (!pages) return { source: sourceName, text: "" };
-          
-          let combinedExtracts = "";
-          for (const pageId of Object.keys(pages)) {
-            if (pageId !== "-1" && pages[pageId]?.extract) {
-              combinedExtracts += " " + pages[pageId].extract;
+            const response = await fetch(`${config.url}?${params.toString()}`, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            if (!response.ok) return { source: sourceName, text: "" };
+            
+            const data = await response.json();
+            const pages = data.query?.pages;
+            if (!pages) return { source: sourceName, text: "" };
+            
+            let combined = "";
+            for (const pageId of Object.keys(pages)) {
+              if (pageId !== "-1" && pages[pageId]?.extract) {
+                combined += " " + pages[pageId].extract;
+              }
             }
+            return { source: sourceName, text: combined.trim() };
+
+          } else if (config.type === 'openlibrary') {
+            const params = new URLSearchParams({ q: keyword, limit: '2' });
+            const response = await fetch(`${config.url}?${params.toString()}`, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            if (!response.ok) return { source: sourceName, text: "" };
+
+            const data = await response.json();
+            const docs = data.docs || [];
+            let combined = "";
+            docs.forEach(doc => {
+              const title = doc.title || '';
+              const authors = doc.author_name ? doc.author_name.join(', ') : '';
+              const year = doc.first_publish_year || '';
+              if (title) {
+                combined += ` Ouvrage de référence : ${title} ${authors ? 'par ' + authors : ''} (${year}). `;
+              }
+            });
+            return { source: sourceName, text: combined.trim() };
+
+          } else if (config.type === 'crossref') {
+            const params = new URLSearchParams({ query: keyword, rows: '2' });
+            const response = await fetch(`${config.url}?${params.toString()}`, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            if (!response.ok) return { source: sourceName, text: "" };
+
+            const data = await response.json();
+            const items = data.message?.items || [];
+            let combined = "";
+            items.forEach(item => {
+              const title = item.title?.[0] || '';
+              const container = item['container-title']?.[0] || 'Publication scientifique';
+              const year = item.issued?.['date-parts']?.[0]?.[0] || '';
+              if (title) {
+                combined += ` Article scientifique publié dans ${container} (${year}) : ${title}. `;
+              }
+            });
+            return { source: sourceName, text: combined.trim() };
           }
-          
-          return { source: sourceName, text: combinedExtracts.trim() };
+
+          return { source: sourceName, text: "" };
         } catch (error) {
           clearTimeout(timeoutId);
           return { source: sourceName, text: "" };
@@ -422,7 +465,7 @@
           .filter(sentence => sentence.length > 0);
       }
 
-      scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent, userQueryLower) {
+      scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent) {
         let score = 0;
         const lowerSentence = sentence.toLowerCase();
 
@@ -436,51 +479,36 @@
           if (lowerSentence.includes(st)) adaptiveMatches++;
         });
 
-        if (coreMatches === 0) {
-          return 0;
-        }
-
-        if (coreTokens.length > 1 && coreMatches < 1 && adaptiveMatches < 2) {
-          return 0; 
-        }
+        if (coreMatches === 0) return 0;
+        if (coreTokens.length > 1 && coreMatches < 1 && adaptiveMatches < 2) return 0;
 
         score += coreMatches * 35;
         score += adaptiveMatches * 6;
 
-        // --- MÉCANISME DE COHÉRENCE LEXICALE (Dynamique et sans exclusion absolue en dur) ---
         const sentenceWords = new Set(lowerSentence.match(/\b[a-zéèàâêîôûç]{4,}\b/g) || []);
-        
         let lexicalCoherenceCount = 0;
         sentenceWords.forEach(word => {
-          if (coreTokens.includes(word) || adaptiveSatellites.includes(word)) {
-            lexicalCoherenceCount++;
-          }
+          if (coreTokens.includes(word) || adaptiveSatellites.includes(word)) lexicalCoherenceCount++;
         });
 
         let foreignWordsCount = 0;
         sentenceWords.forEach(word => {
-          if (!this.stopWords.has(word) && !coreTokens.includes(word) && !adaptiveSatellites.includes(word)) {
-            foreignWordsCount++;
-          }
+          if (!this.stopWords.has(word) && !coreTokens.includes(word) && !adaptiveSatellites.includes(word)) foreignWordsCount++;
         });
 
         if (foreignWordsCount > 4 && lexicalCoherenceCount === 0) {
-          score -= 200; // Forte pénalité de décrochage thématique contextuel
+          score -= 200;
         }
 
         if (isProcessIntent) {
           const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler', 'organisation', 'service', 'réseau', 'gestion', 'farce', 'pâte'];
           let markerMatches = 0;
-          processMarkers.forEach(pm => {
-            if (lowerSentence.includes(pm)) markerMatches++;
-          });
+          processMarkers.forEach(pm => { if (lowerSentence.includes(pm)) markerMatches++; });
           score += markerMatches * 15;
 
           const constructiveMarkers = ['bois', 'assembler', 'pieds', 'dossier', 'vis', 'colle', 'couper', 'mesurer', 'planche', 'clou', 'poncer', 'farine', 'eau', 'levure', 'sel', 'cuire', 'four', 'pétrir'];
           let constructiveMatches = 0;
-          constructiveMarkers.forEach(cm => {
-            if (lowerSentence.includes(cm)) constructiveMatches++;
-          });
+          constructiveMarkers.forEach(cm => { if (lowerSentence.includes(cm)) constructiveMatches++; });
           score += constructiveMatches * 25;
         }
 
@@ -490,7 +518,10 @@
         if (source === 'wikivoyage') score += 20;
         if (source === 'wikisource') score += 10;
         if (source === 'wikiquote') score += 10;
+        if (source === 'wikidata') score += 18;
         if (source === 'wikihow') score += 25;
+        if (source === 'openlibrary') score += 20;
+        if (source === 'crossref') score += 30;
 
         return score;
       }
@@ -527,7 +558,7 @@
           }
 
           if (tooRedundant) continue;
-          finalSelected.push(item.text);
+          finalSelected.push(`[${item.source.toUpperCase()}] ${item.text}`);
         }
 
         if (finalSelected.length === 0) {
@@ -535,15 +566,14 @@
         }
 
         const prefix = isProcessIntent 
-          ? `Synthèse procédurale / Adaptative ("${originalPhrase}") :\n\n• ` 
-          : `Synthèse unifiée ("${originalPhrase}") :\n\n`;
+          ? `Synthèse procédurale multi-sources ("${originalPhrase}") :\n\n• ` 
+          : `Synthèse unifiée multi-sources ("${originalPhrase}") :\n\n• `;
 
-        const separator = isProcessIntent ? '\n• ' : ' ';
-        return prefix + finalSelected.join(separator);
+        return prefix + finalSelected.join('\n• ');
       }
     }
 
-    const synthesizer = new WikimediaAdaptiveSynthesizer();
+    const synthesizer = new MultiSourceAdaptiveSynthesizer();
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
@@ -561,9 +591,7 @@
         copyBtn.addEventListener('click', () => {
           navigator.clipboard.writeText(text).then(() => {
             copyBtn.textContent = 'Copié !';
-            setTimeout(() => {
-              copyBtn.textContent = 'Copier';
-            }, 2000);
+            setTimeout(() => { copyBtn.textContent = 'Copier'; }, 2000);
           });
         });
 
@@ -587,7 +615,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Apprentissage du vocabulaire du sujet, interrogation de l'écosystème Wiki & wikiHow, et synthèse adaptative en cours...";
+      loadingDiv.textContent = "Apprentissage du vocabulaire, interrogation simultanée de l'écosystème Wiki, Wikidata, Open Library et Crossref, puis synthèse adaptative...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
