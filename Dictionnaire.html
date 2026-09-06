@@ -436,14 +436,13 @@
           if (lowerSentence.includes(st)) adaptiveMatches++;
         });
 
-        // Règle de tolérance adaptative : permet l'extraction même si tous les mots ne sont pas dans la même phrase, 
-        // à condition que les satellites dynamiques compensent.
-        if (coreTokens.length > 1 && coreMatches < 1 && adaptiveMatches < 2) {
-          return 0; 
+        // Règle de sécurité absolue : La phrase DOIT contenir au moins un mot-clé direct de l'utilisateur.
+        // Cela garantit que chaque phrase est liée au sujet recherché (ville, art, musique, cinéma, etc.) sans bloquer des thématiques entières.
+        if (coreMatches === 0) {
+          return 0;
         }
 
-        // Filtrage de pertinence de base
-        if (coreMatches === 0 && adaptiveMatches < 2) {
+        if (coreTokens.length > 1 && coreMatches < 1 && adaptiveMatches < 2) {
           return 0; 
         }
 
@@ -451,7 +450,7 @@
         score += adaptiveMatches * 6;
 
         if (isProcessIntent) {
-          const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler'];
+          const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler', 'organisation', 'service', 'réseau', 'gestion'];
           let markerMatches = 0;
           processMarkers.forEach(pm => {
             if (lowerSentence.includes(pm)) markerMatches++;
