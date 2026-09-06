@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synthétiseur Pyramidal Universel - Wikimedia</title>
+  <title>Synthétiseur Pyramidal à Apprentissage Dynamique - Wikimedia</title>
   <style>
     :root {
       --primary-color: #2563eb;
@@ -169,12 +169,12 @@
 
   <div class="chat-container">
     <div class="chat-header">
-      Synthétiseur Pyramidal Universel <span>Satellites Adaptatifs & Universels / 100% Local</span>
+      Synthétiseur Pyramidal Adaptatif <span>Apprentissage Sémantique Autonome / 100% Local</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Tapez n'importe quelle requête (ex: recette de mille-feuille, fabriquer une chaise, fonctionnement télévision) : le système génère des satellites contextuels dynamiques pour cibler l'essentiel.
+        Bonjour ! Tapez n'importe quel sujet complexe (ex: <i>mécanique quantique</i>, <i>fabriquer une table</i>, <i>histoire de Rome</i>) : le système apprend le vocabulaire spécifique du sujet en direct avant de synthétiser.
       </div>
     </div>
     
@@ -185,7 +185,7 @@
   </div>
 
   <script>
-    class WikimediaUniversalSynthesizer {
+    class WikimediaAdaptiveSynthesizer {
       constructor() {
         this.sources = {
           wikipedia: 'https://fr.wikipedia.org/w/api.php',
@@ -199,28 +199,13 @@
           'st', 'ste', 'trad', 'vol', 'janv', 'févr', 'juill', 'sept', 'oct', 'nov', 'déc'
         ];
 
-        this.stopWords = new Set(['le', 'la', 'les', 'un', 'une', 'des', 'de', 'du', 'au', 'aux', 'et', 'ou', 'donne', 'moi', 'cherche', 'pour', 'sur', 'dans', 'comment', 'faire', 'fabriquer', 'atteindre', 'etapes', 'pas', 'recette']);
-
-        // Banques de satellites universels par univers sémantique détecté à la volée
-        this.universalSatelliteBank = {
-          culinaire: ['pate', 'sucre', 'farine', 'cuisson', 'four', 'creme', 'beurre', 'oeuf', 'recette', 'ingredients', 'preparation', 'grammes', 'melanger', 'feuille', 'feuilletage', 'pâtisserie'],
-          technologique: ['ecran', 'signal', 'image', 'circuit', 'composant', 'appareil', 'donnees', 'technologie', 'flux', 'systeme', 'boitier', 'television', 'recepteur', 'tube'],
-          mecanique_bois: ['bois', 'assemblage', 'vis', 'coupe', 'atelier', 'colle', 'structure', 'outils', 'materiaux', 'fixation', 'pieces', 'chaise', 'dossier', 'pieds', 'assise']
-        };
-      }
-
-      detectSemanticUniverse(inputPhrase) {
-        const lower = inputPhrase.toLowerCase();
-        if (/mille-feuille|millefeuille|recette|gateau|chocolat|tarte|cuisine|plat|cuisson|creme|farine|sucre|patisserie|pate/.test(lower)) {
-          return 'culinaire';
-        }
-        if (/television|tv|ecran|ordinateur|radio|electronique|appareil|signal|audio|video/.test(lower)) {
-          return 'technologique';
-        }
-        if (/chaise|table|meuble|bois|etagere|cabane|construire|fabriquer|vis|clou/.test(lower)) {
-          return 'mecanique_bois';
-        }
-        return 'generique';
+        // Mots vides universels (stopwords) à ignorer lors de l'apprentissage automatique du vocabulaire
+        this.stopWords = new Set([
+          'le', 'la', 'les', 'un', 'une', 'des', 'de', 'du', 'au', 'aux', 'et', 'ou', 
+          'donne', 'moi', 'cherche', 'pour', 'sur', 'dans', 'comment', 'faire', 'fabriquer', 
+          'atteindre', 'etapes', 'pas', 'recette', 'est', 'sont', 'qui', 'que', 'les', 'ces', 
+          'une', 'par', 'plus', 'pas', 'aux', 'ses', 'leur', 'avec', 'tout', 'mais', 'cette'
+        ]);
       }
 
       async generatePyramidalSynthesis(inputPhrase) {
@@ -231,29 +216,37 @@
         const lowerInput = inputPhrase.toLowerCase();
         const isProcessIntent = /comment|fabriquer|recette|etapes|étape|méthode|processus|réaliser|construire|atteindre|obtenir|créer|guide|donne/.test(lowerInput);
 
+        // 1. Extraction des tokens initiaux de l'utilisateur
         const rawTokens = inputPhrase.trim().split(/\s+/);
-        const tokens = [...new Set(
+        const coreTokens = [...new Set(
           rawTokens
             .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
             .filter(t => t.length > 2 && !this.stopWords.has(t))
         )];
 
-        // Génération dynamique des satellites selon l'univers détecté
-        const universe = this.detectSemanticUniverse(inputPhrase);
-        let dynamicSatellites = [...tokens];
-        
-        if (this.universalSatelliteBank[universe]) {
-          dynamicSatellites.push(...this.universalSatelliteBank[universe]);
+        if (coreTokens.length === 0) {
+          throw new Error("Veuillez entrer des mots-clés significatifs.");
         }
-        
-        // Satellites de secours universels pour éviter les impasses si l'univers est inconnu
-        dynamicSatellites.push('composant', 'etape', 'realisation', 'partie', 'element', 'methode');
-        dynamicSatellites = [...new Set(dynamicSatellites)];
 
-        // Construction des requêtes intelligentes pour l'API
-        const searchQueries = [inputPhrase.trim()];
-        tokens.forEach(t => searchQueries.push(t));
-        const uniqueQueries = [...new Set(searchQueries)].slice(0, 4);
+        // 2. PHASE D'APPRENTISSAGE AUTOMATIQUE (Apprentissage dynamique du contexte)
+        // On interroge d'abord l'API sur les mots principaux pour récolter de la matière brute
+        let collectedCorpusTexts = [];
+        for (const token of coreTokens) {
+          const initialResults = await this.fetchRawTextsOnly(token);
+          collectedCorpusTexts.push(...initialResults);
+        }
+
+        // Le système analyse le corpus récupéré et extrait les mots les plus récurrents (apprentissage du domaine)
+        const learnedVocabulary = this.extractDynamicKeywords(collectedCorpusTexts, coreTokens);
+
+        // Fusion des tokens de l'utilisateur et du vocabulaire appris pour former les "satellites" adaptatifs
+        const adaptiveSatellites = [...new Set([...coreTokens, ...learnedVocabulary])];
+
+        // 3. PHASE DE RECHERCHE CIBLÉE ÉTENDUE
+        // On construit des requêtes combinant les mots d'origine et les mots qui viennent d'être appris
+        const searchQueries = [inputPhrase.trim(), ...coreTokens];
+        learnedVocabulary.slice(0, 3).forEach(vocabWord => searchQueries.push(vocabWord));
+        const uniqueQueries = [...new Set(searchQueries)].slice(0, 5);
 
         let globalSentencePool = [];
 
@@ -272,13 +265,12 @@
             
             sentences.forEach(sentence => {
               if (sentence.length >= 15 && sentence.length <= 300) {
-                const score = this.scoreSentenceAdaptive(sentence, tokens, dynamicSatellites, query, source, isProcessIntent);
+                const score = this.scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent);
                 if (score > 0) {
                   globalSentencePool.push({
                     text: sentence,
                     source: source,
-                    score: score,
-                    query: query
+                    score: score
                   });
                 }
               }
@@ -287,10 +279,64 @@
         }
 
         if (globalSentencePool.length === 0) {
-          return "Aucun contenu pertinent n'a pu être extrait avec les satellites adaptatifs.";
+          return "Aucun contenu pertinent n'a pu être extrait avec le modèle adaptatif.";
         }
 
         return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent);
+      }
+
+      // Récupération brute pour l'apprentissage
+      async fetchRawTextsOnly(keyword) {
+        const params = new URLSearchParams({
+          action: 'query',
+          format: 'json',
+          origin: '*',
+          generator: 'search',
+          gsrsearch: keyword,
+          gsrlimit: '2',
+          prop: 'extracts',
+          exintro: '1',
+          explaintext: '1',
+          redirects: '1'
+        });
+
+        try {
+          const response = await fetch(`https://fr.wikipedia.org/w/api.php?${params.toString()}`);
+          if (!response.ok) return [];
+          const data = await response.json();
+          const pages = data.query?.pages;
+          if (!pages) return [];
+
+          let texts = [];
+          for (const pageId of Object.keys(pages)) {
+            if (pageId !== "-1" && pages[pageId]?.extract) {
+              texts.push(pages[pageId].extract);
+            }
+          }
+          return texts;
+        } catch (e) {
+          return [];
+        }
+      }
+
+      // Algorithme d'apprentissage : compte la fréquence des mots dans le corpus récupéré pour identifier le jargon/vocabulaire clé
+      extractDynamicKeywords(textArray, ignoreList) {
+        let wordFrequency = {};
+
+        textArray.forEach(text => {
+          const words = text.toLowerCase().match(/\b[a-zéèàâêîôûç]{4,}\b/g) || [];
+          words.forEach(w => {
+            if (!this.stopWords.has(w) && !ignoreList.includes(w)) {
+              wordFrequency[w] = (wordFrequency[w] || 0) + 1;
+            }
+          });
+        });
+
+        // Trie les mots par ordre de fréquence décroissante et extrait les plus pertinents
+        return Object.entries(wordFrequency)
+          .sort((a, b) => b[1] - a[1])
+          .map(entry => entry[0])
+          .slice(0, 8); // On retient les 8 mots clés les plus caractéristiques du sujet
       }
 
       async fetchCombinedFromSource(sourceName, apiUrl, keyword) {
@@ -300,7 +346,7 @@
           origin: '*',
           generator: 'search',
           gsrsearch: keyword,
-          gsrlimit: '3',
+          gsrlimit: '2',
           prop: 'extracts',
           exintro: '1',
           explaintext: '1',
@@ -378,7 +424,7 @@
           .filter(sentence => sentence.length > 0);
       }
 
-      scoreSentenceAdaptive(sentence, coreTokens, dynamicSatellites, currentQuery, source, isProcessIntent) {
+      scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent) {
         let score = 0;
         const lowerSentence = sentence.toLowerCase();
 
@@ -387,22 +433,18 @@
           if (lowerSentence.includes(t)) coreMatches++;
         });
 
-        let satelliteMatches = 0;
-        dynamicSatellites.forEach(st => {
-          if (lowerSentence.includes(st)) satelliteMatches++;
+        let adaptiveMatches = 0;
+        adaptiveSatellites.forEach(st => {
+          if (lowerSentence.includes(st)) adaptiveMatches++;
         });
 
-        // Exigence minimale de pertinence contextuelle
-        if (coreMatches === 0 && satelliteMatches < 2) {
+        // Filtrage de pertinence : la phrase doit au moins toucher un mot d'origine ou plusieurs mots appris
+        if (coreMatches === 0 && adaptiveMatches < 2) {
           return 0; 
         }
 
-        if (lowerSentence.includes(currentQuery.toLowerCase())) {
-          score += 40;
-        }
-
-        score += coreMatches * 30;
-        score += satelliteMatches * 8;
+        score += coreMatches * 35;
+        score += adaptiveMatches * 6;
 
         if (isProcessIntent) {
           const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler'];
@@ -453,11 +495,11 @@
         }
 
         if (finalSelected.length === 0) {
-          return `Synthèse (Sujet : "${originalPhrase}") :\nAucun élément structuré n'a pu être assemblé via les satellites adaptatifs.`;
+          return `Synthèse (Sujet : "${originalPhrase}") :\nAucun élément structuré n'a pu être assemblé.`;
         }
 
         const prefix = isProcessIntent 
-          ? `Synthèse procédurale / Étapes ("${originalPhrase}") :\n\n• ` 
+          ? `Synthèse procédurale / Adaptative ("${originalPhrase}") :\n\n• ` 
           : `Synthèse unifiée ("${originalPhrase}") :\n\n`;
 
         const separator = isProcessIntent ? '\n• ' : ' ';
@@ -465,7 +507,7 @@
       }
     }
 
-    const synthesizer = new WikimediaUniversalSynthesizer();
+    const synthesizer = new WikimediaAdaptiveSynthesizer();
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
@@ -509,7 +551,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Détection de l'univers sémantique, expansion des satellites adaptatifs et synthèse...";
+      loadingDiv.textContent = "Apprentissage du vocabulaire du sujet, extraction du jargon et synthèse adaptative en cours...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
