@@ -270,7 +270,7 @@
             
             sentences.forEach(sentence => {
               if (sentence.length >= 15 && sentence.length <= 300) {
-                const score = this.scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent);
+                const score = this.scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent, lowerInput);
                 if (score > 0) {
                   globalSentencePool.push({
                     text: sentence,
@@ -465,9 +465,18 @@
           .filter(sentence => sentence.length > 0);
       }
 
-      scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent) {
+      scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent, userQueryLower) {
         let score = 0;
         const lowerSentence = sentence.toLowerCase();
+
+        // 1. Filtrage anti-télescopage sémantique contextuel
+        const isDrivingQuery = /conduite|permis|voiture|conduire|route|conduisant/.test(userQueryLower);
+        if (isDrivingQuery) {
+          const forbiddenOffTopic = ['informatique', 'télécommunication', 'protocole', 'serveur', 'dégustation', 'vin', 'dictionnaires', 'internet'];
+          for (const word of forbiddenOffTopic) {
+            if (lowerSentence.includes(word)) return 0;
+          }
+        }
 
         let coreMatches = 0;
         coreTokens.forEach(t => {
@@ -501,12 +510,12 @@
         }
 
         if (isProcessIntent) {
-          const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler', 'organisation', 'service', 'réseau', 'gestion', 'farce', 'pâte'];
+          const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler', 'organisation', 'service', 'réseau', 'gestion', 'évaluation', 'certificative', 'compétence'];
           let markerMatches = 0;
           processMarkers.forEach(pm => { if (lowerSentence.includes(pm)) markerMatches++; });
           score += markerMatches * 15;
 
-          const constructiveMarkers = ['bois', 'assembler', 'pieds', 'dossier', 'vis', 'colle', 'couper', 'mesurer', 'planche', 'clou', 'poncer', 'farine', 'eau', 'levure', 'sel', 'cuire', 'four', 'pétrir'];
+          const constructiveMarkers = ['bois', 'assembler', 'pieds', 'dossier', 'vis', 'colle', 'couper', 'mesurer', 'planche', 'clou', 'poncer', 'farine', 'eau', 'levure', 'sel', 'cuire', 'four', 'pétrir', 'conduite', 'permis', 'route', 'véhicule'];
           let constructiveMatches = 0;
           constructiveMarkers.forEach(cm => { if (lowerSentence.includes(cm)) constructiveMatches++; });
           score += constructiveMatches * 25;
