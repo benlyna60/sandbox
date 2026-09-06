@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synthétiseur Pyramidal Multi-Sources - Zéro Dépendance Tiers</title>
+  <title>Synthétiseur Pyramidal Multi-Sources - Satellites Blindés</title>
   <style>
     :root {
       --primary-color: #2563eb;
@@ -169,13 +169,13 @@
 
   <div class="chat-container">
     <div class="chat-header">
-      Synthétiseur Multi-Sources Adaptatif
-      <span>100% Natif Front-end (Zéro Proxy Tiers)</span>
+      Synthétiseur Pyramidal Multi-Sources
+      <span>Satellites Blindés & Ancrage Strict</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Architecture 100% front-end native activée sans aucun proxy tiers ni backend. Tapez un sujet pour lancer la synthèse :
+        Bonjour ! Moteur mis à jour : système d'ancrage strict des mots-clés et élimination des biais d'auto-contamination. Tapez votre sujet :
       </div>
     </div>
     
@@ -188,8 +188,6 @@
   <script>
     class MultiSourceAdaptiveSynthesizer {
       constructor() {
-        // Suppression totale des endpoints bloqués par le CORS sans proxy (Crossref, Open Library).
-        // On conserve exclusivement l'écosystème MediaWiki natif qui accepte ?origin=* sans aucune restriction.
         this.sources = {
           wikipedia: { type: 'mediawiki', url: 'https://fr.wikipedia.org/w/api.php' },
           wiktionnaire: { type: 'mediawiki', url: 'https://fr.wiktionary.org/w/api.php' },
@@ -210,7 +208,8 @@
           'le', 'la', 'les', 'un', 'une', 'des', 'de', 'du', 'au', 'aux', 'et', 'ou', 
           'donne', 'moi', 'cherche', 'pour', 'sur', 'dans', 'comment', 'faire', 'fabriquer', 
           'atteindre', 'etapes', 'pas', 'recette', 'est', 'sont', 'qui', 'que', 'ces', 
-          'par', 'plus', 'ses', 'leur', 'avec', 'tout', 'mais', 'cette', 'explique', 'quoi', 'c'
+          'par', 'plus', 'ses', 'leur', 'avec', 'tout', 'mais', 'cette', 'explique', 'quoi', 'c',
+          'est', 'ce', 'cette', 'qui', 'que', 'quel', 'quelle', 'quand', 'pourquoi'
         ]);
       }
 
@@ -220,38 +219,47 @@
         }
 
         const lowerInput = inputPhrase.toLowerCase();
-        const isProcessIntent = /comment|fabriquer|recette|etapes|étape|méthode|processus|réaliser|construire|atteindre|obtenir|créer|guide|donne/.test(lowerInput);
+        // Correction : Restriction stricte de l'intention de processus pour éviter les faux positifs (ex: "explique")
+        const isProcessIntent = /comment\b|fabriquer\b|recette\b|etapes?\b|étape\b|méthode\b|processus\b|réaliser\b|construire\b|atteindre\b|obtenir\b|créer\b|guide\b/i.test(lowerInput);
 
         const rawTokens = inputPhrase.trim().split(/\s+/);
         const coreTokens = [...new Set(
           rawTokens
             .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
-            .filter(t => t.length > 3 && !this.stopWords.has(t))
+            .filter(t => t.length > 2 && !this.stopWords.has(t))
         )];
-
-        if (coreTokens.length === 0) {
-          const fallbackTokens = rawTokens
-            .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
-            .filter(t => t.length > 2 && !this.stopWords.has(t));
-          coreTokens.push(...fallbackTokens);
-        }
 
         if (coreTokens.length === 0) {
           throw new Error("Veuillez entrer des mots-clés significatifs.");
         }
 
+        // Étape 1 : Récupération ciblée
         let collectedCorpusTexts = [];
         for (const token of coreTokens) {
           const initialResults = await this.fetchRawTextsOnly(token);
           collectedCorpusTexts.push(...initialResults);
         }
 
-        const learnedVocabulary = this.extractDynamicKeywords(collectedCorpusTexts, coreTokens);
-        const adaptiveSatellites = [...new Set([...coreTokens, ...learnedVocabulary])];
+        // Étape 2 : Extraction de satellites avec proximité stricte (évite le poison du includes global)
+        const adaptiveSatellites = this.extractStrictCoherentSatellites(collectedCorpusTexts, coreTokens);
 
-        const searchQueries = [inputPhrase.trim(), ...coreTokens];
-        learnedVocabulary.slice(0, 3).forEach(vocabWord => searchQueries.push(vocabWord));
-        const uniqueQueries = [...new Set(searchQueries)].slice(0, 4);
+        // Étape 3 : Construction de requêtes unifiées avec mécanisme de repli (fallback)
+        const searchQueries = [inputPhrase.trim()];
+        
+        if (coreTokens.length >= 2) {
+          searchQueries.push(`${coreTokens[0]} ${coreTokens[1]}`);
+        }
+        
+        adaptiveSatellites.slice(0, 2).forEach(sat => {
+          searchQueries.push(`${coreTokens[0]} ${sat}`);
+        });
+
+        // Repli de sécurité : si la requête combinée est trop restrictive, on ajoute chaque mot-clé individuellement
+        coreTokens.forEach(token => {
+          searchQueries.push(token);
+        });
+
+        const uniqueQueries = [...new Set(searchQueries)].slice(0, 5);
 
         let globalSentencePool = [];
         let hasNetworkError = false;
@@ -279,7 +287,7 @@
             
             sentences.forEach(sentence => {
               if (sentence.length >= 25 && sentence.length <= 300) {
-                const score = this.scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent, lowerInput);
+                const score = this.scoreSentenceWithAnchoring(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent);
                 if (score > 0) {
                   globalSentencePool.push({
                     text: sentence,
@@ -299,7 +307,7 @@
           return `Aucun contenu pertinent n'a pu être extrait pour : "${inputPhrase}".`;
         }
 
-        return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent);
+        return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent, coreTokens);
       }
 
       async fetchRawTextsOnly(keyword) {
@@ -335,14 +343,26 @@
         }
       }
 
-      extractDynamicKeywords(textArray, ignoreList) {
+      // CORRECTION : Extraction stricte par voisinage sémantique dans le même paragraphe/phrase
+      extractStrictCoherentSatellites(textArray, coreTokens) {
         let wordFrequency = {};
 
         textArray.forEach(text => {
-          const words = text.toLowerCase().match(/\b[a-zéèàâêîôûç]{4,}\b/g) || [];
-          words.forEach(w => {
-            if (!this.stopWords.has(w) && !ignoreList.includes(w)) {
-              wordFrequency[w] = (wordFrequency[w] || 0) + 1;
+          // On découpe en sous-phrases ou paragraphes pour vérifier la proximité locale
+          const segments = text.split(/[.!?\n]+/);
+          
+          segments.forEach(seg => {
+            const lowerSeg = seg.toLowerCase();
+            // Le segment doit impérativement contenir au moins un coreToken pour que ses voisins soient valides
+            const hasCore = coreTokens.some(ct => lowerSeg.includes(ct));
+            
+            if (hasCore) {
+              const words = lowerSeg.match(/\b[a-zéèàâêîôûç]{4,}\b/g) || [];
+              words.forEach(w => {
+                if (!this.stopWords.has(w) && !coreTokens.includes(w)) {
+                  wordFrequency[w] = (wordFrequency[w] || 0) + 1;
+                }
+              });
             }
           });
         });
@@ -350,7 +370,7 @@
         return Object.entries(wordFrequency)
           .sort((a, b) => b[1] - a[1])
           .map(entry => entry[0])
-          .slice(0, 8);
+          .slice(0, 5);
       }
 
       async fetchFromSpecificSource(sourceName, config, keyword) {
@@ -439,8 +459,8 @@
           .filter(sentence => sentence.length > 0);
       }
 
-      scoreSentenceAdaptive(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent, userQueryLower) {
-        let score = 0;
+      // CORRECTION MAJEURE : Ancrage strict et plafonnement des satellites pour éliminer l'inversion de priorité
+      scoreSentenceWithAnchoring(sentence, coreTokens, adaptiveSatellites, source, isProcessIntent) {
         const lowerSentence = sentence.toLowerCase();
 
         if (!/[.!?]$/.test(sentence) && sentence.length < 40) return 0;
@@ -451,43 +471,41 @@
         if (sentenceWords.length === 0) return 0;
 
         let coreMatchCount = 0;
+        let matchedCoreTokensList = new Set();
         let satelliteMatchCount = 0;
 
         sentenceWords.forEach(word => {
           if (coreTokens.includes(word)) {
             coreMatchCount++;
+            matchedCoreTokensList.add(word);
           } else if (adaptiveSatellites.includes(word)) {
             satelliteMatchCount++;
           }
         });
 
-        if (coreMatchCount === 0) return 0;
-
-        const totalMatches = coreMatchCount + satelliteMatchCount;
-        const relevanceRatio = totalMatches / sentenceWords.length;
-
-        if (sentenceWords.length > 3 && relevanceRatio < 0.12) {
-          return 0;
+        // 1. FILTRE D'ANCRAGE STRICT : Si la question a plusieurs mots-clés, on exige une présence minimale proportionnelle
+        const requiredCoreMatches = coreTokens.length > 1 ? Math.min(2, coreTokens.length) : 1;
+        if (matchedCoreTokensList.size < requiredCoreMatches) {
+          return 0; // Rejet net si l'ancrage principal est absent
         }
 
-        score += coreMatchCount * 50;
-        score += satelliteMatchCount * 15;
-        score += Math.round(relevanceRatio * 100);
+        // 2. SCORING À PALIER STRICT : Les coreTokens ont une valeur écrasante
+        let score = matchedCoreTokensList.size * 100;
 
+        // 3. PLAFONNEMENT DES SATELLITES : Les satellites ne peuvent jamais compenser un manque de mots-clés
+        const cappedSatelliteCount = Math.min(satelliteMatchCount, 2);
+        score += cappedSatelliteCount * 15;
+
+        // Boost contextuel conditionnel (uniquement si l'intention de processus est avérée)
         if (isProcessIntent) {
-          const structuralMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie', 'mélanger', 'monter', 'assembler', 'méthode', 'processus', 'réaliser', 'gérer', 'organisation'];
+          const structuralMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'méthode', 'processus', 'réaliser'];
           let markerMatches = 0;
           structuralMarkers.forEach(pm => { if (lowerSentence.includes(pm)) markerMatches++; });
-          score += markerMatches * 15;
+          score += Math.min(markerMatches, 2) * 10;
         }
 
         if (source === 'wikipedia') score += 20;
-        if (source === 'wiktionnaire') score += 10;
-        if (source === 'wikiversite') score += 20;
-        if (source === 'wikivoyage') score += 20;
-        if (source === 'wikisource') score += 15;
-        if (source === 'wikiquote') score += 15;
-        if (source === 'wikidata') score += 18;
+        if (source === 'wikidata') score += 15;
         if (source === 'wikihow') score += 25;
 
         return score;
@@ -506,7 +524,7 @@
         return intersection.size / union.size;
       }
 
-      fusePoolToPeak(sentencePool, originalPhrase, isProcessIntent) {
+      fusePoolToPeak(sentencePool, originalPhrase, isProcessIntent, coreTokens) {
         const validPool = sentencePool.filter(item => item.score > 0);
         validPool.sort((a, b) => b.score - a.score);
 
@@ -578,7 +596,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Apprentissage dynamique, interrogation multi-sources native et filtrage syntaxique...";
+      loadingDiv.textContent = "Analyse syntaxique, ancrage strict et synthèse pyramidale...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
