@@ -1,5 +1,85 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-06 20:40:00
+TITRE: Un avion d’Amazon sort de la piste d’atterrissage et percute des véhicules à Miami
+LIEN: https://www.ledevoir.com/actualites/transports-urbanisme/1006919/avion-amazon-sort-piste-atterrissage-percute-vehicules-miami
+CONTENU: En service depuis plus de 20 ans, ce Boeing 767 avait volé pour plusieurs compagnies aériennes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-06 21:27:42
+TITRE: L’Iran menace d’intensifier sa riposte aux attaques américaines
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1006922/iran-menace-intensifier-riposte-attaques-americaines
+CONTENU: Depuis quelques jours, les affrontements entre les deux camps se sont intensifiés en mer, dans la région du Golfe.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-06 22:40:04
+TITRE: Le réalisateur allemand Wim Wenders clarifie sa position sur le cinéma et la politique
+LIEN: https://www.ledevoir.com/culture/cinema/1006925/realisateur-allemand-wim-wenders-clarifie-position-cinema-politique
+CONTENU: Les propos qu’il avait tenus lors de la Berlinale en février dernier avaient suscité la polémique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-06 20:00:00
+TITRE: De Philippe B à Camilla Sparksss, une soirée FME en montagnes russes
+LIEN: https://www.ledevoir.com/culture/musique/1006916/philippe-b-camilla-sparksss-soiree-fme-montagnes-russes
+CONTENU: Le public a eu droit à un parcours éclectique, de la chanson québécoise aux rythmes électroniques des plus déchaînés.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 18:46:08
+TITRE: EN DIRECT, élections régionales en Allemagne : Ulrich Siegmund appelle les partis à s’allier avec l’AfD en Saxe-Anhalt ; le parti d’extrême droite n’atteint pas la majorité absolue, selon les dernières estimations
+LIEN: https://www.lemonde.fr/international/live/2026/09/06/en-direct-elections-regionales-en-allemagne-l-afd-effectue-une-poussee-historique-en-saxe-anhalt-mais-les-consequences-restent-incertaines_6767342_3210.html
+CONTENU: Largement en tête dans cette région, Alternative pour l’Allemagne pourrait devenir le premier parti d’extrême droite à diriger un Land depuis 1945, à condition qu’il obtienne la majorité absolue ou tisse des alliances à l’issue du dépouillement. La CDU s’effondre et le sort du chancelier Friedrich Merz est en débat.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 18:58:21
+TITRE: Fabien Roussel officialise sa candidature à la présidentielle et promet « un projet de rupture »
+LIEN: https://www.lemonde.fr/election-presidentielle-2027/article/2026/09/06/fabien-roussel-officialise-sa-candidature-a-la-presidentielle-et-promet-un-projet-de-rupture_6767491_6205049.html
+CONTENU: Après un vote favorable des militants du PCF à 72 %, le communiste a confirmé sa candidature à l’Elysée au JT de TF1, assurant avoir fait « un choix largement réfléchi » malgré la multiplication des candidatures à gauche.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 21:00:02
+TITRE: Avant sa venue à Paris, le président sud-coréen, Lee Jae-myung, plaide pour une coopération internationale « fondée sur des valeurs communes »
+LIEN: https://www.lemonde.fr/international/article/2026/09/06/avant-sa-venue-a-paris-le-president-sud-coreen-lee-jae-myung-plaide-pour-une-cooperation-internationale-fondee-sur-des-valeurs-communes_6767624_3210.html
+CONTENU: Le président sud-coréen, Lee Jae-myung, est en visite en France du dimanche 6 au mardi 8 septembre. Dans un entretien accordé au « Monde », le dirigeant progressiste revient sur le renforcement des liens politiques, économiques et culturels avec la France. Il évoque aussi la diplomatie et sa gestion de la crise politique qui a secoué son pays.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 15:00:10
+TITRE: Mary Austin, la discrète gardienne du temple de Freddie Mercury
+LIEN: https://www.lemonde.fr/m-le-mag/article/2026/09/06/mary-austin-la-discrete-gardienne-du-temple-de-freddie-mercury_6767377_4500055.html
+CONTENU: Elle a été la compagne, puis l’assistante personnelle, et, enfin, l’héritière du flamboyant leader du groupe Queen. A 75 ans, Mary Austin dévoile dans un premier livre des archives inédites de Freddie Mercury, qui la qualifia d’“amour de sa vie” jusqu’à sa mort.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 19:26:43
+TITRE: Incendie en vallée d’Aspe, dans les Pyrénées-Atlantiques : 125 hectares brûlés, « la météo n’est toujours pas favorable et des points chauds persistent »
+LIEN: https://www.lemonde.fr/planete/article/2026/09/06/incendie-en-vallee-d-aspe-dans-les-pyrenees-atlantiques-125-hectares-brules-la-meteo-n-est-toujours-pas-favorable-et-des-points-chauds-persistent_6767262_3245.html
+CONTENU: L’incendie de végétation qui embrase depuis mercredi les hauteurs de la vallée d’Aspe (Pyrénées-Atlantiques) concerne désormais 125 hectares, contre 105 hectares samedi, a-t-on appris dimanche soir auprès de la préfecture, qui évoque une situation « plutôt stable »
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-06 19:04:06
+TITRE: Canicule : six départements du sud et du sud-est en vigilance orange lundi, selon Météo France
+LIEN: https://www.lemonde.fr/planete/article/2026/09/06/canicule-six-departements-du-sud-et-du-sud-est-en-vigilance-orange-lundi-selon-meteo-france_6767524_3244.html
+CONTENU: Ardèche, Aude, Drôme, Gard, Hérault et Vaucluse resteront à l’orange dimanche et lundi, précise le prévisionniste, qui a enregistré ce week-end des températures inédites pour un mois de septembre dans plusieurs localités.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-06 21:00:00
 TITRE: Le journal de 23h00 du dimanche 06 septembre 2026
