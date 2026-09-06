@@ -169,17 +169,17 @@
 
   <div class="chat-container">
     <div class="chat-header">
-      Synthétiseur Pyramidal Universel <span>Optimisé & Résilient / 100% Local</span>
+      Synthétiseur Pyramidal Universel <span>Filtrage Satellitaire & Contextuel / 100% Local</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Tapez n'importe quelle requête procédurale ou thématique : le système combine la recherche globale et l'analyse par jetons pour structurer un résultat séquentiel.
+        Bonjour ! Tapez votre requête : le système croise les mots-clés et leurs satellites contextuels pour écarter les homonymes (ex: éviter le Tour de France pour une chaise).
       </div>
     </div>
     
     <div class="chat-input-area">
-      <input type="text" id="user-input" placeholder="Tapez votre recherche..." autocomplete="off">
+      <input type="text" id="user-input" placeholder="Tapez votre recherche (ex: fabriquer une chaise)..." autocomplete="off">
       <button id="send-btn">Envoyer</button>
     </div>
   </div>
@@ -200,6 +200,13 @@
         ];
 
         this.stopWords = new Set(['le', 'la', 'les', 'un', 'une', 'des', 'de', 'du', 'au', 'aux', 'et', 'ou', 'donne', 'moi', 'cherche', 'pour', 'sur', 'dans', 'comment', 'faire', 'fabriquer', 'atteindre', 'etapes', 'pas']);
+
+        // Dictionnaire de satellites sémantiques contextuels pour lier les concepts et éviter les homonymes
+        this.semanticSatellites = {
+          'chaise': ['bois', 'meuble', 'assise', 'pieds', 'dossier', 'siège', 'fabriquer', 'menuiserie', 'clou', 'vis'],
+          'velo': ['roue', 'cadre', 'pedale', 'guidon', 'chaine', 'vitesse', 'route'],
+          'gâteau': ['farine', 'sucre', 'cuisson', 'four', 'recette', 'oeuf', 'patisserie']
+        };
       }
 
       async generatePyramidalSynthesis(inputPhrase) {
@@ -217,10 +224,18 @@
             .filter(t => t.length > 2 && !this.stopWords.has(t))
         )];
 
-        // Stratégie améliorée : on cherche à la fois la phrase globale et les tokens significatifs
+        // Enrichissement par mots satellites associés aux tokens principaux
+        let expandedTokens = [...tokens];
+        tokens.forEach(token => {
+          if (this.semanticSatellites[token]) {
+            expandedTokens.push(...this.semanticSatellites[token]);
+          }
+        });
+        expandedTokens = [...new Set(expandedTokens)];
+
         const searchQueries = [inputPhrase.trim()];
         tokens.forEach(t => searchQueries.push(t));
-        const uniqueQueries = [...new Set(searchQueries)].slice(0, 4); // Limite pour éviter le spam d'API
+        const uniqueQueries = [...new Set(searchQueries)].slice(0, 4);
 
         let globalSentencePool = [];
 
@@ -239,20 +254,22 @@
             
             sentences.forEach(sentence => {
               if (sentence.length >= 15 && sentence.length <= 300) {
-                const score = this.scoreSentenceUniversal(sentence, tokens, query, source, isProcessIntent);
-                globalSentencePool.push({
-                  text: sentence,
-                  source: source,
-                  score: score,
-                  query: query
-                });
+                const score = this.scoreSentenceWithSatellites(sentence, tokens, expandedTokens, query, source, isProcessIntent);
+                if (score > 0) {
+                  globalSentencePool.push({
+                    text: sentence,
+                    source: source,
+                    score: score,
+                    query: query
+                  });
+                }
               }
             });
           });
         }
 
         if (globalSentencePool.length === 0) {
-          return "Aucun contenu pertinent n'a pu être extrait pour ces termes.";
+          return "Aucun contenu pertinent n'a pu être extrait avec les liens satellites requis.";
         }
 
         return this.fusePoolToPeak(globalSentencePool, inputPhrase, isProcessIntent);
@@ -265,7 +282,7 @@
           origin: '*',
           generator: 'search',
           gsrsearch: keyword,
-          gsrlimit: '3', // Volume de données élargi
+          gsrlimit: '3',
           prop: 'extracts',
           exintro: '1',
           explaintext: '1',
@@ -343,21 +360,31 @@
           .filter(sentence => sentence.length > 0);
       }
 
-      scoreSentenceUniversal(sentence, allTokens, currentQuery, source, isProcessIntent) {
+      scoreSentenceWithSatellites(sentence, coreTokens, expandedTokens, currentQuery, source, isProcessIntent) {
         let score = 0;
         const lowerSentence = sentence.toLowerCase();
 
-        // Bonus si la phrase contient la requête globale
-        if (lowerSentence.includes(currentQuery.toLowerCase())) {
-          score += 50;
+        let coreMatches = 0;
+        coreTokens.forEach(t => {
+          if (lowerSentence.includes(t)) coreMatches++;
+        });
+
+        let satelliteMatches = 0;
+        expandedTokens.forEach(st => {
+          if (lowerSentence.includes(st)) satelliteMatches++;
+        });
+
+        // Filtrage anti-bruit : exige au moins un terme principal ou un ancrage satellite suffisant
+        if (coreMatches === 0 && satelliteMatches < 2) {
+          return 0; 
         }
 
-        // Cross-scoring avec les tokens
-        allTokens.forEach(t => {
-          if (lowerSentence.includes(t.toLowerCase())) {
-            score += 25;
-          }
-        });
+        if (lowerSentence.includes(currentQuery.toLowerCase())) {
+          score += 40;
+        }
+
+        score += coreMatches * 30;
+        score += satelliteMatches * 10;
 
         if (isProcessIntent) {
           const processMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'partie'];
@@ -408,7 +435,7 @@
         }
 
         if (finalSelected.length === 0) {
-          return `Synthèse (Sujet : "${originalPhrase}") :\nAucun élément structuré n'a pu être assemblé.`;
+          return `Synthèse (Sujet : "${originalPhrase}") :\nAucun élément structuré n'a pu être assemblé via les satellites sémantiques.`;
         }
 
         const prefix = isProcessIntent 
@@ -464,7 +491,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Requête globale combinée, extraction élargie et fusion pyramidale en cours...";
+      loadingDiv.textContent = "Analyse des tokens principaux, maillage des mots satellites et filtrage contextuel...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
