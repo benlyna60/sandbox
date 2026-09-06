@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Synthétiseur Pyramidal Multi-Sources - Réflexion Dynamique & Temps Réel</title>
+  <title>Synthétiseur Pyramidal Multi-Sources - Haute Résilience</title>
   <style>
     :root {
       --primary-color: #2563eb;
@@ -188,12 +188,12 @@
   <div class="chat-container">
     <div class="chat-header">
       Synthétiseur Pyramidal Multi-Sources
-      <span>Réflexion Dynamique & Temps Réel</span>
+      <span>Réflexion Dynamique & Haute Résilience</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Le système affiche désormais sa réflexion en direct étape par étape. Tapez votre sujet :
+        Bonjour ! Le système utilise désormais exclusivement les wikis textuels sous licence libre, avec isolation de Wikidata et exclusion de WikiHow. Tapez votre sujet :
       </div>
     </div>
     
@@ -206,15 +206,14 @@
   <script>
     class MultiSourceAdaptiveSynthesizer {
       constructor() {
+        // Sources Wikimedia textuelles officielles et unifiées par type MediaWiki
         this.sources = {
           wikipedia: { type: 'mediawiki', url: 'https://fr.wikipedia.org/w/api.php' },
           wiktionnaire: { type: 'mediawiki', url: 'https://fr.wiktionary.org/w/api.php' },
           wikiversite: { type: 'mediawiki', url: 'https://fr.wikiversite.org/w/api.php' },
           wikivoyage: { type: 'mediawiki', url: 'https://fr.wikivoyage.org/w/api.php' },
           wikisource: { type: 'mediawiki', url: 'https://fr.wikisource.org/w/api.php' },
-          wikiquote: { type: 'mediawiki', url: 'https://fr.wikiquote.org/w/api.php' },
-          wikidata: { type: 'mediawiki', url: 'https://www.wikidata.org/w/api.php' },
-          wikihow: { type: 'mediawiki', url: 'https://fr.wikihow.com/api.php' }
+          wikiquote: { type: 'mediawiki', url: 'https://fr.wikiquote.org/w/api.php' }
         };
 
         this.protectedAbbreviations = [
@@ -305,7 +304,7 @@
         const uniqueQueries = [...new Set(searchQueries)].slice(0, 5);
 
         let globalSentencePool = [];
-        let hasNetworkError = false;
+        let successfulSourcesCount = 0;
         const sourcesEntries = Object.entries(this.sources);
 
         for (let qIdx = 0; qIdx < uniqueQueries.length; qIdx++) {
@@ -324,8 +323,8 @@
             rawResults.push(...batchResults);
           }
           
-          rawResults.forEach(({ source, text, errorOccurred }) => {
-            if (errorOccurred) hasNetworkError = true;
+          rawResults.forEach(({ source, text, success }) => {
+            if (success) successfulSourcesCount++;
             if (!text) return;
             
             const cleanText = this.cleanRawText(text);
@@ -347,8 +346,8 @@
         }
 
         if (globalSentencePool.length === 0) {
-          if (hasNetworkError) {
-            return "Aucun contenu n'a pu être extrait en raison d'interruptions réseau. Vérifiez votre connexion.";
+          if (successfulSourcesCount === 0) {
+            return "Aucun contenu n'a pu être extrait en raison d'interruptions réseau globales. Vérifiez votre connexion.";
           }
           return `Aucun contenu pertinent n'a pu être extrait pour : "${inputPhrase}".`;
         }
@@ -364,21 +363,25 @@
       }
 
       async fetchRawTextsOnly(keyword) {
-        const params = new URLSearchParams({
-          action: 'query',
-          format: 'json',
-          origin: '*',
-          generator: 'search',
-          gsrsearch: keyword,
-          gsrlimit: '2',
-          prop: 'extracts',
-          exintro: '1',
-          explaintext: '1',
-          redirects: '1'
-        });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 12000);
 
         try {
-          const response = await fetch(`https://fr.wikipedia.org/w/api.php?${params.toString()}`);
+          const params = new URLSearchParams({
+            action: 'query',
+            format: 'json',
+            origin: '*',
+            generator: 'search',
+            gsrsearch: keyword,
+            gsrlimit: '2',
+            prop: 'extracts',
+            exintro: '1',
+            explaintext: '1',
+            redirects: '1'
+          });
+
+          const response = await fetch(`https://fr.wikipedia.org/w/api.php?${params.toString()}`, { signal: controller.signal });
+          clearTimeout(timeoutId);
           if (!response.ok) return [];
           const data = await response.json();
           const pages = data.query?.pages;
@@ -392,26 +395,31 @@
           }
           return texts;
         } catch (e) {
+          clearTimeout(timeoutId);
           return [];
         }
       }
 
       async fetchWiktionnaireExpansion(token) {
-        const params = new URLSearchParams({
-          action: 'query',
-          format: 'json',
-          origin: '*',
-          generator: 'search',
-          gsrsearch: token,
-          gsrlimit: '1',
-          prop: 'extracts',
-          exintro: '1',
-          explaintext: '1',
-          redirects: '1'
-        });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 12000);
 
         try {
-          const response = await fetch(`https://fr.wiktionary.org/w/api.php?${params.toString()}`);
+          const params = new URLSearchParams({
+            action: 'query',
+            format: 'json',
+            origin: '*',
+            generator: 'search',
+            gsrsearch: token,
+            gsrlimit: '1',
+            prop: 'extracts',
+            exintro: '1',
+            explaintext: '1',
+            redirects: '1'
+          });
+
+          const response = await fetch(`https://fr.wiktionary.org/w/api.php?${params.toString()}`, { signal: controller.signal });
+          clearTimeout(timeoutId);
           if (!response.ok) return [];
           const data = await response.json();
           const pages = data.query?.pages;
@@ -425,6 +433,7 @@
           }
           return texts;
         } catch (e) {
+          clearTimeout(timeoutId);
           return [];
         }
       }
@@ -458,7 +467,7 @@
 
       async fetchFromSpecificSource(sourceName, config, keyword) {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 7000);
+        const timeoutId = setTimeout(() => controller.abort(), 12000);
 
         try {
           if (config.type === 'mediawiki') {
@@ -477,11 +486,11 @@
 
             const response = await fetch(`${config.url}?${params.toString()}`, { signal: controller.signal });
             clearTimeout(timeoutId);
-            if (!response.ok) return { source: sourceName, text: "", errorOccurred: true };
+            if (!response.ok) return { source: sourceName, text: "", success: false };
             
             const data = await response.json();
             const pages = data.query?.pages;
-            if (!pages) return { source: sourceName, text: "" };
+            if (!pages) return { source: sourceName, text: "", success: true };
             
             let combined = "";
             for (const pageId of Object.keys(pages)) {
@@ -489,13 +498,13 @@
                 combined += " " + pages[pageId].extract;
               }
             }
-            return { source: sourceName, text: combined.trim() };
+            return { source: sourceName, text: combined.trim(), success: true };
           }
 
-          return { source: sourceName, text: "" };
+          return { source: sourceName, text: "", success: false };
         } catch (error) {
           clearTimeout(timeoutId);
-          return { source: sourceName, text: "", errorOccurred: true };
+          return { source: sourceName, text: "", success: false };
         }
       }
 
@@ -588,8 +597,6 @@
         }
 
         if (source === 'wikipedia') score += 20;
-        if (source === 'wikidata') score += 15;
-        if (source === 'wikihow') score += 25;
         if (source === 'wiktionnaire') score += 10;
 
         return score;
@@ -677,7 +684,6 @@
       userInput.disabled = true;
       sendBtn.disabled = true;
 
-      // Bulle de réflexion dynamique
       const thinkingDiv = document.createElement('div');
       thinkingDiv.classList.add('message', 'bot', 'thinking');
       
@@ -700,10 +706,7 @@
       try {
         const synthesisResult = await synthesizer.generatePyramidalSynthesis(inputVal, updateStepMessage);
         
-        // Suppression immédiate de la bulle de réflexion
         thinkingDiv.remove();
-        
-        // Affichage du résultat final
         appendMessage('bot', synthesisResult, true);
       } catch (error) {
         thinkingDiv.remove();
