@@ -445,7 +445,6 @@
         score += coreMatches * 35;
         score += adaptiveMatches * 6;
 
-        // FILTRES DE PÉNALITÉ CONTEXTUELLE (Cinéma & Contexte morbide/judiciaire)
         const cinemaMarkers = ['réalisé par', 'film français', 'film américain', 'sorti en 202', 'sorti en 199', 'sorti en 200', 'cinéma', 'long-métrage'];
         const isUserAskingForMovie = /film|cinema|regarder|acteur|réalisateur|serie/i.test(userQueryLower);
 
@@ -469,7 +468,6 @@
           });
           score += markerMatches * 15;
 
-          // Bonus supplémentaire pour orienter vers les guides de fabrication / meubles si pertinent
           const constructiveMarkers = ['bois', 'assembler', 'pieds', 'dossier', 'vis', 'colle', 'couper', 'mesurer', 'planche', 'clou', 'poncer'];
           let constructiveMatches = 0;
           constructiveMarkers.forEach(cm => {
@@ -480,7 +478,7 @@
 
         if (source === 'wikipedia') score += 10;
         if (source === 'wiktionnaire') score += 5;
-        if (source === 'wikihow') score += 25; // Priorité renforcée pour wikiHow sur les guides pratiques
+        if (source === 'wikihow') score += 25;
 
         return score;
       }
