@@ -170,12 +170,12 @@
   <div class="chat-container">
     <div class="chat-header">
       Synthétiseur Pyramidal Multi-Sources
-      <span>Cohérence Thématique Dynamique & Ancrage Strict</span>
+      <span>Cohérence Thématique Stricte & Anti-Collision</span>
     </div>
     
     <div id="chat-messages" class="chat-messages">
       <div class="message bot">
-        Bonjour ! Moteur mis à jour avec le filtre de co-occurrence thématique dynamique. Tapez votre sujet :
+        Bonjour ! Moteur renforcé contre les collisions sémantiques. Tapez votre sujet :
       </div>
     </div>
     
@@ -222,22 +222,19 @@
         const isProcessIntent = /comment\b|fabriquer\b|recette\b|etapes?\b|étape\b|méthode\b|processus\b|réaliser\b|construire\b|atteindre\b|obtenir\b|créer\b|guide\b/i.test(lowerInput);
 
         const rawTokens = inputPhrase.trim().split(/\s+/);
-        const coreTokens = [...new Set(
-          rawTokens
-            .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
-            .filter(t => t.length > 2 && !this.stopWords.has(t))
-        )];
-
-        if (coreTokens.length === 0) {
-          throw new Error("Veuillez entrer des mots-clés significatifs.");
-        }
-
-        // CONTEXTE THÉMATIQUE DYNAMIQUE : Capture TOUS les mots significatifs de la question
+        
+        // Extraction globale de TOUS les mots significatifs de la question
         const allContextTokens = [...new Set(
           rawTokens
             .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
             .filter(t => t.length > 2 && !this.stopWords.has(t))
         )];
+
+        if (allContextTokens.length === 0) {
+          throw new Error("Veuillez entrer des mots-clés significatifs.");
+        }
+
+        const coreTokens = [...allContextTokens];
 
         // Étape 1 : Récupération ciblée avec Boucle Réflexive (Rebond Wiktionnaire si échec initial)
         let collectedCorpusTexts = [];
@@ -536,15 +533,17 @@
           }
         });
 
-        // 1. FILTRE D'ANCRAGE STRICT
-        const requiredCoreMatches = coreTokens.length > 1 ? Math.min(2, coreTokens.length) : 1;
+        // 1. FILTRE D'ANCRAGE STRICT SUR LES MOTS CLÉS
+        const requiredCoreMatches = coreTokens.length > 2 ? 2 : 1;
         if (matchedCoreTokensList.size < requiredCoreMatches) {
           return 0;
         }
 
-        // 2. FILTRE DE COHÉRENCE THÉMATIQUE DYNAMIQUE (Zéro mot en dur)
-        // Empêche la déviation sémantique si plusieurs mots-clés contextuels étaient présents dans la question.
-        if (allContextTokens.length > 1 && contextMatchCount < 2) {
+        // 2. FILTRE DE COHÉRENCE THÉMATIQUE STRICT (ANTI-COLLISION)
+        // Si la question comporte plusieurs mots de contexte différents (ex: "caractéristique", "enseignant", "cours"),
+        // la phrase candidate doit obligatoirement valider un minimum de 2 correspondances thématiques globales 
+        // pour empêcher qu'un article scientifique hors-sujet (comme les maths) ne passe à travers les mailles du filet.
+        if (allContextTokens.length >= 3 && contextMatchCount < 2) {
           return 0;
         }
 
@@ -652,7 +651,7 @@
       const loadingDiv = document.createElement('div');
       loadingDiv.classList.add('message', 'bot', 'loading');
       loadingDiv.id = loadingId;
-      loadingDiv.textContent = "Analyse contextuelle dynamique et synthèse pyramidale...";
+      loadingDiv.textContent = "Analyse contextuelle stricte et synthèse pyramidale...";
       chatMessages.appendChild(loadingDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
