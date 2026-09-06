@@ -206,7 +206,6 @@
   <script>
     class MultiSourceAdaptiveSynthesizer {
       constructor() {
-        // Sources Wikimedia textuelles officielles et unifiées 100% en français par type MediaWiki (inclus Wikilivres / Wikibooks)
         this.sources = {
           wikipedia: { type: 'mediawiki', url: 'https://fr.wikipedia.org/w/api.php' },
           wiktionnaire: { type: 'mediawiki', url: 'https://fr.wiktionary.org/w/api.php' },
@@ -227,7 +226,7 @@
           'donne', 'moi', 'cherche', 'pour', 'sur', 'dans', 'comment', 'faire', 'fabriquer', 
           'atteindre', 'etapes', 'pas', 'recette', 'est', 'sont', 'qui', 'que', 'ces', 
           'par', 'plus', 'ses', 'leur', 'avec', 'tout', 'mais', 'cette', 'explique', 'quoi', 'c',
-          'est', 'ce', 'cette', 'qui', 'que', 'quel', 'quelle', 'quand', 'pourquoi', 'sont', 'dois'
+          'ce', 'quel', 'quelle', 'quand', 'pourquoi', 'dois', 'cest', 'meilleure', 'methode', 'apprendre'
         ]);
       }
 
@@ -240,15 +239,22 @@
         await this.wait(250);
 
         const lowerInput = inputPhrase.toLowerCase();
-        const isProcessIntent = /comment\b|fabriquer\b|recette\b|etapes?\b|étape\b|méthode\b|processus\b|réaliser\b|construire\b|atteindre\b|obtenir\b|créer\b|guide\b/i.test(lowerInput);
+        const isProcessIntent = /comment\b|fabriquer\b|recette\b|etapes?\b|étape\b|méthode\b|processus\b|réaliser\b|construire\b|atteindre\b|obtenir\b|créer\b|guide\b|apprendre\b/i.test(lowerInput);
 
         const rawTokens = inputPhrase.trim().split(/\s+/);
         
         const allContextTokens = [...new Set(
           rawTokens
-            .map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
+            .map(t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase().trim())
             .filter(t => t.length > 2 && !this.stopWords.has(t))
         )];
+
+        if (allContextTokens.length === 0) {
+          rawTokens.forEach(t => {
+            const clean = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z]/g, "");
+            if (clean.length > 2) allContextTokens.push(clean);
+          });
+        }
 
         if (allContextTokens.length === 0) {
           throw new Error("Veuillez entrer des mots-clés significatifs.");
@@ -288,21 +294,22 @@
         await this.wait(250);
         const adaptiveSatellites = this.extractStrictCoherentSatellites(collectedCorpusTexts, finalCoreTokens);
 
-        const searchQueries = [inputPhrase.trim()];
-        
+        let searchQueries = [];
         if (finalCoreTokens.length >= 2) {
           searchQueries.push(`${finalCoreTokens[0]} ${finalCoreTokens[1]}`);
         }
+        searchQueries.push(finalCoreTokens[0]);
         
+        if (lowerInput.includes('francais') || lowerInput.includes('français')) {
+          searchQueries.push("Français (langue)");
+          searchQueries.push("Didactique du français");
+        }
+
         adaptiveSatellites.slice(0, 2).forEach(sat => {
           searchQueries.push(`${finalCoreTokens[0]} ${sat}`);
         });
 
-        finalCoreTokens.forEach(token => {
-          searchQueries.push(token);
-        });
-
-        const uniqueQueries = [...new Set(searchQueries)].slice(0, 5);
+        const uniqueQueries = [...new Set(searchQueries)].filter(q => q && q.trim().length > 0).slice(0, 5);
 
         let globalSentencePool = [];
         let successfulSourcesCount = 0;
@@ -332,7 +339,7 @@
             const sentences = this.segmentIntoSentences(cleanText);
             
             sentences.forEach(sentence => {
-              if (sentence.length >= 25 && sentence.length <= 300) {
+              if (sentence.length >= 20 && sentence.length <= 300) {
                 const score = this.scoreSentenceWithAnchoring(sentence, finalCoreTokens, adaptiveSatellites, allContextTokens, source, isProcessIntent);
                 if (score > 0) {
                   globalSentencePool.push({
@@ -350,7 +357,7 @@
           if (successfulSourcesCount === 0) {
             return "Aucun contenu n'a pu être extrait en raison d'interruptions réseau globales. Vérifiez votre connexion.";
           }
-          return `Aucun contenu pertinent n'a pu être extrait pour : "${inputPhrase}".`;
+          return `Aucun contenu pertinent n'a pu être extrait pour : "${inputPhrase}". Essayez de formuler avec des mots-clés plus précis.`;
         }
 
         onStepUpdate("Assemblage pyramidal et élimination des doublons...");
@@ -555,7 +562,7 @@
       scoreSentenceWithAnchoring(sentence, coreTokens, adaptiveSatellites, allContextTokens, source, isProcessIntent) {
         const lowerSentence = sentence.toLowerCase();
 
-        if (!/[.!?]$/.test(sentence) && sentence.length < 40) return 0;
+        if (!/[.!?]$/.test(sentence) && sentence.length < 30) return 0;
 
         const sentenceWords = (lowerSentence.match(/\b[a-zéèàâêîôûç]{3,}\b/g) || [])
           .filter(w => !this.stopWords.has(w));
@@ -577,29 +584,24 @@
           }
         });
 
-        const requiredCoreMatches = coreTokens.length > 2 ? 2 : 1;
-        if (matchedCoreTokensList.size < requiredCoreMatches) {
+        if (matchedCoreTokensList.size < 1 && contextMatchCount === 0) {
           return 0;
         }
 
-        if (allContextTokens.length >= 3 && contextMatchCount < 2) {
-          return 0;
-        }
-
-        let score = matchedCoreTokensList.size * 100;
+        let score = matchedCoreTokensList.size * 100 + contextMatchCount * 20;
         const cappedSatelliteCount = Math.min(satelliteMatchCount, 2);
         score += cappedSatelliteCount * 15;
 
         if (isProcessIntent) {
-          const structuralMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'méthode', 'processus', 'réaliser'];
+          const structuralMarkers = ['premièrement', 'ensuite', 'puis', 'enfin', 'étape', 'phase', 'composé', 'nécessite', 'utiliser', 'permet', 'afin', 'pour', 'doit', 'méthode', 'processus', 'réaliser', 'langue', 'enseignement'];
           let markerMatches = 0;
           structuralMarkers.forEach(pm => { if (lowerSentence.includes(pm)) markerMatches++; });
           score += Math.min(markerMatches, 2) * 10;
         }
 
         if (source === 'wikipedia') score += 20;
-        if (source === 'wiktionnaire') score += 10;
-        if (source === 'wikilivres') score += 25; // Bonus de pertinence pour les tutoriels et méthodes de Wikilivres
+        if (source === 'wikiversite') score += 30;
+        if (source === 'wikilivres') score += 25;
 
         return score;
       }
@@ -636,7 +638,7 @@
           }
 
           if (tooRedundant) continue;
-          finalSelected.text = finalSelected.push(item.text);
+          finalSelected.push(item.text);
         }
 
         if (finalSelected.length === 0) {
