@@ -2,3457 +2,3710 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Synthétiseur Pyramidal Multi-Sources V6</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Synthétiseur Pyramidal Multi-Sources V7</title>
 <style>
+:root{--bg:#0d1117;--panel:#151b23;--panel2:#1b222c;--border:#293241;--text:#e7edf4;--muted:#8b98a8;--accent:#5aa9ff;--accent2:#78c2ff;--user:#26384d;--danger:#ef6b73;--ok:#5dcc91;--shadow:0 12px 32px rgba(0,0,0,.28)}
 *{box-sizing:border-box}
-:root{
-  --bg:#0d1117;
-  --panel:#151b23;
-  --panel2:#1b222c;
-  --border:#293241;
-  --text:#e7edf4;
-  --muted:#8b98a8;
-  --accent:#5aa9ff;
-  --accent2:#78c2ff;
-  --user:#26384d;
-  --success:#65d18a;
-  --warning:#e5b85c;
-  --danger:#e87575;
-}
-
-html,body{
-  margin:0;
-  padding:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-
-body{
-  display:flex;
-  flex-direction:column;
-}
-
-button,
-textarea{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.header{
-  height:64px;
-  min-height:64px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 18px;
-  border-bottom:1px solid var(--border);
-  background:rgba(13,17,23,.97);
-}
-
-.brand{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-}
-
-.brand-title{
-  font-size:16px;
-  font-weight:700;
-  letter-spacing:.2px;
-}
-
-.brand-sub{
-  font-size:11px;
-  color:var(--muted);
-}
-
-.header-actions{
-  display:flex;
-  gap:7px;
-}
-
-.small-btn{
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:var(--muted);
-  padding:7px 11px;
-  border-radius:7px;
-  font-size:12px;
-}
-
-.small-btn:hover{
-  color:var(--text);
-  border-color:#3b4a5e;
-}
-
-#chat{
-  flex:1;
-  min-height:0;
-  overflow-y:auto;
-  overflow-x:hidden;
-  padding:18px max(14px,calc((100vw - 850px)/2));
-  scroll-behavior:smooth;
-}
-
-#chat::-webkit-scrollbar{
-  width:8px;
-}
-
-#chat::-webkit-scrollbar-track{
-  background:transparent;
-}
-
-#chat::-webkit-scrollbar-thumb{
-  background:#303b49;
-  border-radius:10px;
-}
-
-.message{
-  width:100%;
-  margin:0 0 20px;
-  animation:fadeIn .15s ease;
-}
-
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(3px)}
-  to{opacity:1;transform:none}
-}
-
-.user{
-  display:flex;
-  justify-content:flex-end;
-}
-
-.user .bubble{
-  max-width:min(78%,680px);
-  background:var(--user);
-  border:1px solid #31475e;
-  color:#edf5ff;
-  border-radius:14px 14px 4px 14px;
-  padding:10px 13px;
-  white-space:pre-wrap;
-  line-height:1.5;
-  font-size:14px;
-}
-
-.assistant{
-  display:block;
-}
-
-.assistant .answer{
-  width:100%;
-  color:var(--text);
-  line-height:1.65;
-  font-size:14px;
-  white-space:pre-wrap;
-}
-
-.answer-actions{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-top:9px;
-}
-
-.copy{
-  border:0;
-  background:transparent;
-  color:var(--muted);
-  padding:3px 0;
-  font-size:11px;
-}
-
-.copy:hover{
-  color:var(--accent2);
-}
-
-.sources{
-  margin-top:7px;
-  color:#667384;
-  font-size:10px;
-  line-height:1.5;
-  opacity:.9;
-}
-
-.step-line{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:var(--muted);
-  font-size:11px;
-  padding:3px 0 15px;
-}
-
-.step-number{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-width:20px;
-  height:20px;
-  border-radius:50%;
-  background:#202936;
-  color:#9bb9d8;
-  font-size:10px;
-}
-
-.step-spinner{
-  width:11px;
-  height:11px;
-  border:2px solid #344253;
-  border-top-color:var(--accent);
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
-.composer-wrap{
-  border-top:1px solid var(--border);
-  background:rgba(13,17,23,.98);
-  padding:10px max(14px,calc((100vw - 850px)/2)) 12px;
-}
-
-.composer{
-  display:flex;
-  align-items:flex-end;
-  gap:8px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  border-radius:12px;
-  padding:7px;
-}
-
-#input{
-  flex:1;
-  min-height:22px;
-  max-height:150px;
-  resize:none;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:var(--text);
-  padding:7px 6px;
-  line-height:1.45;
-  font-size:14px;
-}
-
-#input::placeholder{
-  color:#647183;
-}
-
-#send{
-  width:38px;
-  height:34px;
-  border:0;
-  border-radius:8px;
-  background:var(--accent);
-  color:#07111d;
-  font-weight:700;
-}
-
-#send:hover{
-  background:var(--accent2);
-}
-
-#send:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-}
-
-.status{
-  height:15px;
-  margin-top:4px;
-  color:#667384;
-  font-size:9px;
-  text-align:right;
-}
-
-.welcome{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
-  padding:15px 0;
-}
-
-.welcome strong{
-  color:var(--text);
-}
-
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{overflow:hidden}
+.app{height:100dvh;display:flex;flex-direction:column;min-height:0}
+.header{height:64px;flex:0 0 64px;border-bottom:1px solid var(--border);background:rgba(13,17,23,.96);display:flex;align-items:center;gap:10px;padding:0 12px;z-index:10}
+.menuBtn,.clearBtn{width:38px;height:38px;border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:9px;cursor:pointer;font-size:19px}
+.menuBtn:hover,.clearBtn:hover{border-color:#40516a}
+.brand{min-width:0;flex:1}
+.brand b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand span{display:block;color:var(--muted);font-size:11px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat{flex:1;min-height:0;overflow-y:auto;padding:18px 14px 12px}
+.chat::-webkit-scrollbar{width:8px}
+.chat::-webkit-scrollbar-thumb{background:#293241;border-radius:8px}
+.message{display:flex;margin:0 0 12px}
+.message.user{justify-content:flex-end}
+.bubble{max-width:78%;padding:10px 12px;border-radius:12px;border:1px solid var(--border);line-height:1.48;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.user .bubble{background:var(--user)}
+.assistant .bubble{background:transparent;border-color:transparent;padding-left:0;padding-right:0;max-width:88%}
+.answerActions{display:flex;gap:7px;margin-top:8px}
+.miniBtn{border:1px solid var(--border);background:var(--panel);color:var(--muted);border-radius:7px;padding:5px 8px;font-size:11px;cursor:pointer}
+.miniBtn:hover{color:var(--text);border-color:#40516a}
+.sources{margin-top:9px;color:var(--muted);font-size:10px;line-height:1.45}
+.sourceItem{display:inline-block;margin:2px 6px 2px 0;padding:2px 5px;border:1px solid var(--border);border-radius:5px}
+.step{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px;margin:3px 0 12px;padding-left:2px}
+.spinner{width:12px;height:12px;border:2px solid #354152;border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.composer{flex:0 0 auto;border-top:1px solid var(--border);background:var(--bg);padding:10px 12px 12px;display:flex;gap:8px;align-items:flex-end}
+.composer textarea{flex:1;resize:none;min-height:42px;max-height:150px;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:11px 12px;outline:none;font:inherit;font-size:14px;line-height:1.35}
+.composer textarea:focus{border-color:#46617e}
+.send{height:42px;min-width:70px;border:0;border-radius:10px;background:var(--accent);color:#07111b;font-weight:700;cursor:pointer}
+.send:disabled{opacity:.5;cursor:not-allowed}
+.welcome{color:var(--muted);font-size:13px;line-height:1.6;max-width:760px;margin:30px auto;padding:0 10px}
+.welcome b{color:var(--text)}
+.drawerBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:20}
+.drawerBackdrop.open{display:block}
+.drawer{position:absolute;left:0;top:0;bottom:0;width:min(340px,88vw);background:var(--panel);border-right:1px solid var(--border);box-shadow:var(--shadow);padding:16px;overflow-y:auto}
+.drawerHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.drawerHead b{font-size:15px}
+.closeBtn{border:0;background:none;color:var(--muted);font-size:24px;cursor:pointer}
+.drawerSection{border-top:1px solid var(--border);padding:13px 0}
+.drawerSection:first-of-type{border-top:0}
+.drawerSection h3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 9px}
+.drawer button.action{width:100%;text-align:left;padding:9px 10px;margin:4px 0;border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:8px;cursor:pointer;font-size:12px}
+.drawer button.action:hover{border-color:#40516a}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.stat{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px}
+.stat small{display:block;color:var(--muted);font-size:9px}
+.stat strong{display:block;font-size:15px;margin-top:2px}
+.statusLine{font-size:11px;color:var(--muted);line-height:1.5}
+.notice{font-size:10px;color:var(--muted);line-height:1.45;margin-top:8px}
+.hidden{display:none!important}
+.confidence{margin-top:7px;color:var(--muted);font-size:10px}
+.confidence strong{color:var(--text)}
 @media(max-width:600px){
-  .header{
-    padding:0 11px;
-  }
-
-  .brand-sub{
-    display:none;
-  }
-
-  #chat{
-    padding:14px 11px;
-  }
-
-  .composer-wrap{
-    padding:8px 10px 10px;
-  }
-
-  .user .bubble{
-    max-width:88%;
-  }
+.header{height:58px;flex-basis:58px}
+.bubble{max-width:88%}
+.assistant .bubble{max-width:94%}
+.composer{padding:8px}
+.send{min-width:58px}
+.chat{padding:14px 10px}
+.brand b{font-size:14px}
 }
 </style>
 </head>
 
 <body>
 
+<div class="app">
+
 <header class="header">
-  <div class="brand">
-    <div class="brand-title">Synthétiseur Pyramidal V6</div>
-    <div class="brand-sub">Recherche multi-sources · raisonnement · vérification</div>
-  </div>
+<button id="menuBtn" class="menuBtn" aria-label="Menu">☰</button>
 
-  <div class="header-actions">
-    <button class="small-btn" id="clearBtn">Effacer</button>
-  </div>
-</header>
-
-<main id="chat">
-  <div class="welcome" id="welcome">
-    <strong>Moteur prêt.</strong><br>
-    Pose une question. Le moteur recherche les sources publiques, extrait les éléments pertinents, construit des relations et tente de vérifier la réponse.
-  </div>
-</main>
-
-<div class="composer-wrap">
-  <div class="composer">
-    <textarea id="input" rows="1" placeholder="Pose ta question..."></textarea>
-    <button id="send" aria-label="Envoyer">➤</button>
-  </div>
-  <div class="status" id="status">Prêt</div>
+<div class="brand">
+<b>Synthétiseur Pyramidal Multi-Sources V7</b>
+<span>Recherche • raisonnement • rédaction • mémoire persistante • Wikimedia / Wikidata</span>
 </div>
 
+<button id="clearBtn" class="clearBtn" title="Effacer la conversation">×</button>
+</header>
+
+<main id="chat" class="chat">
+
+<div id="welcome" class="welcome">
+<b>V7 prête.</b><br>
+Pose une question, demande une explication, une comparaison, une synthèse ou la rédaction d’un texte.
+Le moteur cherche des preuves publiques, raisonne sur les relations et conserve son apprentissage générique dans une mémoire locale exportable.
+</div>
+
+</main>
+
+<div class="composer">
+<textarea id="input" rows="1" placeholder="Écris une question ou une tâche…"></textarea>
+<button id="send" class="send">Envoyer</button>
+</div>
+
+</div>
+
+
+<div id="drawerBackdrop" class="drawerBackdrop">
+
+<aside class="drawer" role="dialog" aria-label="Mémoire et configuration">
+
+<div class="drawerHead">
+<b>Menu V7</b>
+<button id="closeDrawer" class="closeBtn">×</button>
+</div>
+
+<div class="drawerSection">
+
+<h3>Mémoire</h3>
+
+<button class="action" id="exportBtn">⇩ Exporter la mémoire JSON</button>
+<button class="action" id="importBtn">⇧ Importer une mémoire JSON</button>
+<button class="action" id="mergeBtn">⊕ Fusionner une mémoire JSON</button>
+<button class="action" id="resetMemoryBtn">♲ Réinitialiser la mémoire</button>
+
+<input id="importInput" class="hidden" type="file" accept="application/json,.json">
+<input id="mergeInput" class="hidden" type="file" accept="application/json,.json">
+
+<div class="notice">
+La mémoire contient l’état appris localement :
+conversations, concepts, entités, relations, preuves, sources, stratégies et statistiques.
+Elle ne contient pas de réponses factuelles codées en dur.
+</div>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>État du moteur</h3>
+
+<div id="memoryStats" class="stats"></div>
+
+<div id="engineStatus" class="statusLine" style="margin-top:9px"></div>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>Principe V7</h3>
+
+<div class="statusLine">
+Comprendre → planifier → chercher → enrichir → relier → vérifier → répondre → mémoriser.
+</div>
+
+<div class="notice">
+Les URL et règles linguistiques du moteur sont de l’infrastructure générique.
+Les faits sont récupérés dynamiquement depuis les sources publiques.
+</div>
+
+</div>
+
+</aside>
+</div>
+
+
 <script>
-"use strict";
-
-/* =========================================================
-   SYNTHÉTISEUR PYRAMIDAL V6
-   =========================================================
-   Objectifs :
-   - aucune réponse factuelle codée en dur
-   - recherche multi-sources
-   - Wikimedia + Wikidata
-   - analyse générique
-   - raisonnement relationnel
-   - superlatifs
-   - comparaison de valeurs
-   - vérification croisée
-   - synthèse extractive
-   - cache local
-   - interface légère
-   ========================================================= */
-
-class PyramidV6{
-
-  constructor(stepCallback){
-
-    this.stepCallback=stepCallback;
-
-    this.sources=[
-      {
-        id:"wikipedia",
-        name:"Wikipédia",
-        url:"https://fr.wikipedia.org/w/api.php",
-        weight:8
-      },
-      {
-        id:"wiktionnaire",
-        name:"Wiktionnaire",
-        url:"https://fr.wiktionary.org/w/api.php",
-        weight:4
-      },
-      {
-        id:"wikiversite",
-        name:"Wikiversité",
-        url:"https://fr.wikiversity.org/w/api.php",
-        weight:3
-      },
-      {
-        id:"wikivoyage",
-        name:"Wikivoyage",
-        url:"https://fr.wikivoyage.org/w/api.php",
-        weight:3
-      },
-      {
-        id:"wikisource",
-        name:"Wikisource",
-        url:"https://fr.wikisource.org/w/api.php",
-        weight:2
-      },
-      {
-        id:"wikiquote",
-        name:"Wikiquote",
-        url:"https://fr.wikiquote.org/w/api.php",
-        weight:2
-      },
-      {
-        id:"wikibooks",
-        name:"Wikibooks",
-        url:"https://fr.wikibooks.org/w/api.php",
-        weight:2
-      },
-      {
-        id:"wikidata",
-        name:"Wikidata",
-        url:"https://www.wikidata.org/w/api.php",
-        weight:10,
-        structured:true
-      }
-    ];
-
-    this.stopwords=new Set([
-      "a","ai","as","au","aux","avec","ce","ceci","cela","ces",
-      "cet","cette","d","dans","de","des","du","elle","elles",
-      "en","es","est","et","eux","il","ils","je","la","le","les",
-      "leur","leurs","lui","mais","me","mes","moi","mon","ne","nos",
-      "notre","nous","on","ou","par","pas","pour","que","quel",
-      "quelle","quelles","quels","qui","quoi","se","ses","son",
-      "sont","sur","ta","te","tes","toi","ton","tu","un","une",
-      "vos","votre","vous","y","du","des","dun","dune",
-      "estce","est-ce","comment","pourquoi","quand","combien",
-      "où","peut","peux","peut-on","faire","fait","être","avoir"
-    ]);
-
-    this.cache=new Map();
-    this.searchCache=new Map();
-    this.wikidataCache=new Map();
-    this.busy=false;
-    this.abortController=null;
-    this.sessionMemory=[];
-  }
-
-  /* =========================================================
-     OUTILS GÉNÉRAUX
-     ========================================================= */
-
-  step(text,number){
-    if(typeof this.stepCallback==="function"){
-      this.stepCallback(text,number);
-    }
-  }
-
-  norm(value){
-    return String(value||"")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g,"")
-      .toLowerCase()
-      .replace(/[’‘`´]/g,"'")
-      .replace(/[^\p{L}\p{N}'\s-]/gu," ")
-      .replace(/\s+/g," ")
-      .trim();
-  }
-
-  words(value){
-    return this.norm(value)
-      .split(/\s+/)
-      .filter(Boolean);
-  }
-
-  unique(array){
-    return [...new Set(array)];
-  }
-
-  decodeEntities(value){
-    const box=document.createElement("textarea");
-    box.innerHTML=String(value||"");
-    return box.value;
-  }
-
-  clean(value){
-    let text=String(value||"");
-
-    text=this.decodeEntities(text);
-
-    text=text
-      .replace(/[\u0000-\u001F\u007F-\u009F]/g," ")
-      .replace(/<ref[\s\S]*?<\/ref>/gi," ")
-      .replace(/<ref[^>]*\/>/gi," ")
-      .replace(/<gallery[\s\S]*?<\/gallery>/gi," ")
-      .replace(/<math[\s\S]*?<\/math>/gi," ")
-      .replace(/<nowiki[\s\S]*?<\/nowiki>/gi," ")
-      .replace(/<source[\s\S]*?<\/source>/gi," ")
-      .replace(/<syntaxhighlight[\s\S]*?<\/syntaxhighlight>/gi," ")
-      .replace(/<timeline[\s\S]*?<\/timeline>/gi," ")
-      .replace(/<[^>]+>/g," ")
-      .replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g,"$2")
-      .replace(/\[\[([^\]]+)\]\]/g,"$1")
-      .replace(/\{\{[\s\S]*?\}\}/g," ")
-      .replace(/\[https?:\/\/[^\s\]]+\s*([^\]]*)\]/gi,"$1")
-      .replace(/https?:\/\/\S+/gi," ")
-      .replace(/'''?/g,"")
-      .replace(/&(?:amp|nbsp|quot|lt|gt);/gi," ")
-      .replace(/^\s*[*#;:]+\s*/gm,"")
-      .replace(/\s+/g," ")
-      .trim();
-
-    return text;
-  }
-
-  cleanFinalText(value){
-    let text=this.clean(value);
-
-    text=text
-      .replace(/^\s*[-*•]\s*/gm,"")
-      .replace(/^\s*\d+[.)]\s*/gm,"")
-      .replace(/^(sources?|références?)\s*:?.*$/gim,"")
-      .replace(/\s{2,}/g," ")
-      .trim();
-
-    return text;
-  }
-
-  escapeHTML(value){
-    return String(value||"")
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
-  }
-
-  async sleep(ms){
-    return new Promise(resolve=>setTimeout(resolve,ms));
-  }
-
-  /* =========================================================
-     ANALYSE DE LA QUESTION
-     ========================================================= */
-
-  extractTerms(question){
-
-    const normalized=this.norm(question);
-
-    const raw=this.words(question);
-
-    return this.unique(
-      raw.filter(word=>{
-        if(word.length<2)return false;
-        if(this.stopwords.has(word))return false;
-        if(/^\d+$/.test(word))return false;
-        return true;
-      })
-    );
-  }
-
-  extractPhrases(question){
-
-    const clean=this.clean(question);
-    const result=[];
-
-    const quoted=[...clean.matchAll(/["«](.+?)["»]/g)];
-
-    for(const item of quoted){
-      if(item[1])result.push(this.norm(item[1]));
-    }
-
-    const words=this.words(clean);
-
-    for(let size=4;size>=2;size--){
-      for(let i=0;i<=words.length-size;i++){
-
-        const phrase=words.slice(i,i+size);
-
-        if(
-          phrase.filter(x=>!this.stopwords.has(x)).length>=2
-        ){
-          result.push(phrase.join(" "));
-        }
-      }
-    }
-
-    return this.unique(result).slice(0,35);
-  }
-
-  detectSuperlative(question){
-
-    const q=this.norm(question);
-
-    let direction=null;
-    let property=null;
-    let strength=0;
-
-    if(/\bplus grand\b|\bplus grande\b|\bplus vast\b|\bplus vaste\b/.test(q)){
-      direction="max";
-      property="size";
-      strength=1;
-    }
-
-    if(/\bplus petit\b|\bplus petite\b/.test(q)){
-      direction="min";
-      property="size";
-      strength=1;
-    }
-
-    if(/\bplus peupl[eé]\b/.test(q)){
-      direction="max";
-      property="population";
-      strength=1;
-    }
-
-    if(/\bmoins peupl[eé]\b/.test(q)){
-      direction="min";
-      property="population";
-      strength=1;
-    }
-
-    if(/\bplus haut\b|\bplus haute\b/.test(q)){
-      direction="max";
-      property="height";
-      strength=1;
-    }
-
-    if(/\bplus bas\b|\bplus basse\b/.test(q)){
-      direction="min";
-      property="height";
-      strength=1;
-    }
-
-    if(/\bmeilleur\b|\bmeilleure\b/.test(q)){
-      direction="max";
-      property="quality";
-      strength=1;
-    }
-
-    if(/\bmoins bon\b|\bmoins bonne\b|\bpire\b/.test(q)){
-      direction="min";
-      property="quality";
-      strength=1;
-    }
-
-    return{
-      detected:!!direction,
-      direction,
-      property,
-      strength
-    };
-  }
-
-  detectQuestionType(question){
-
-    const q=this.norm(question);
-
-    if(/\bpourquoi\b|\bpour quelle raison\b/.test(q))
-      return"causal";
-
-    if(/\bcomment\b/.test(q))
-      return"procedural";
-
-    if(/\bquand\b|\bquelle date\b|\bà quelle époque\b/.test(q))
-      return"temporal";
-
-    if(/\boù\b|\bdans quel pays\b|\bdans quelle ville\b/.test(q))
-      return"location";
-
-    if(/\bcombien\b|\bquelle quantité\b|\bquel nombre\b/.test(q))
-      return"quantity";
-
-    if(/\bqui\b|\bquel est le nom\b|\bquelle personne\b/.test(q))
-      return"person";
-
-    if(/\bqu'est-ce que\b|\bc'est quoi\b|\bque signifie\b|\bdefinition\b|\bdéfinition\b/.test(q))
-      return"definition";
-
-    if(/\bcapitale\b|\bprésident\b|\broi\b|\brelation\b|\bsiège\b|\blangue\b|\bchef-lieu\b/.test(q))
-      return"relation";
-
-    if(/\bcompare\b|\bcomparaison\b|\bentre\b.*\bet\b/.test(q))
-      return"comparison";
-
-    return"general";
-  }
-
-  extractDomainCandidates(question){
-
-    const q=this.norm(question);
-
-    const candidates=[];
-
-    const patterns=[
-      /\b(?:en|dans|sur)\s+([a-zà-ÿ][a-zà-ÿ' -]{2,50})$/i,
-      /\b(?:de|du|des|d')\s+([a-zà-ÿ][a-zà-ÿ' -]{2,50})/i,
-      /\b(?:d'|de la|de l'|du|des)\s+([a-zà-ÿ][a-zà-ÿ' -]{2,50})/i
-    ];
-
-    for(const pattern of patterns){
-      const match=q.match(pattern);
-      if(match&&match[1]){
-        const value=match[1]
-          .replace(/\b(quel|quelle|quels|quelles|est|sont)\b.*$/,"")
-          .trim();
-
-        if(value.length>2){
-          candidates.push(value);
-        }
-      }
-    }
-
-    const geographic=[
-      "afrique","europe","asie","amerique","amérique",
-      "océanie","oceanie","antarctique","monde",
-      "canada","france","québec","quebec"
-    ];
-
-    for(const geo of geographic){
-      if(q.includes(geo))candidates.push(geo);
-    }
-
-    return this.unique(candidates);
-  }
-
-  analyzeQuestion(question){
-
-    const q=this.norm(question);
-
-    const relationMap=[];
-
-    if(/\bcapital(?:e|es)?\b|\bchef-lieu\b/.test(q)){
-      relationMap.push({
-        type:"capital",
-        labels:["capitale","chef-lieu"]
-      });
-    }
-
-    if(/\bpopulation\b|\bhabitants?\b/.test(q)){
-      relationMap.push({
-        type:"population",
-        labels:["population","nombre d'habitants","habitants"]
-      });
-    }
-
-    if(/\bsuperficie\b|\bsurface\b|\baire\b/.test(q)){
-      relationMap.push({
-        type:"area",
-        labels:["superficie","surface","aire"]
-      });
-    }
-
-    if(/\blangue\b|\blangues\b/.test(q)){
-      relationMap.push({
-        type:"language",
-        labels:["langue","langues officielles","langue officielle"]
-      });
-    }
-
-    if(/\bprésident\b|\bprésidente\b/.test(q)){
-      relationMap.push({
-        type:"president",
-        labels:["président","présidente"]
-      });
-    }
-
-    if(/\bn[ée]\b|\bné à\b|\bnée à\b|\blieu de naissance\b/.test(q)){
-      relationMap.push({
-        type:"birthplace",
-        labels:["lieu de naissance","né à","née à"]
-      });
-    }
-
-    if(/\bfondateur\b|\bfondatrice\b|\bfondé par\b/.test(q)){
-      relationMap.push({
-        type:"founder",
-        labels:["fondateur","fondatrice","fondé par"]
-      });
-    }
-
-    if(/\bcréé\b|\bcréation\b|\bfondation\b/.test(q)){
-      relationMap.push({
-        type:"creation",
-        labels:["date de création","création","fondation"]
-      });
-    }
-
-    return{
-      original:question,
-      normalized:q,
-      terms:this.extractTerms(question),
-      phrases:this.extractPhrases(question),
-      domains:this.extractDomainCandidates(question),
-      type:this.detectQuestionType(question),
-      superlative:this.detectSuperlative(question),
-      relations:relationMap
-    };
-  }
-
-  /* =========================================================
-     CONSTRUCTION DES REQUÊTES
-     ========================================================= */
-
-  buildQueries(questionInfo){
-
-    const q=questionInfo.normalized;
-    const queries=[];
-
-    const terms=questionInfo.terms;
-    const phrases=questionInfo.phrases;
-
-    if(q){
-      queries.push(q);
-    }
-
-    for(const phrase of phrases.slice(0,8)){
-      if(phrase.length>=5){
-        queries.push(phrase);
-      }
-    }
-
-    if(terms.length){
-      queries.push(terms.slice(0,8).join(" "));
-      queries.push(terms.slice(0,5).join(" "));
-    }
-
-    if(questionInfo.superlative.detected){
-
-      const usefulTerms=terms
-        .filter(x=>![
-          "plus","moins","grand","grande",
-          "petit","petite","haut","haute",
-          "meilleur","meilleure","pire"
-        ].includes(x));
-
-      if(usefulTerms.length){
-        queries.push(
-          usefulTerms.slice(0,7).join(" ")
-        );
-      }
-    }
-
-    return this.unique(
-      queries
-        .map(x=>x.trim())
-        .filter(x=>x.length>=2)
-    ).slice(0,12);
-  }
-
-  /* =========================================================
-     API WIKIMEDIA
-     ========================================================= */
-
-  async api(url,params={},signal=null){
-
-    const query=new URLSearchParams({
-      ...params,
-      origin:"*"
-    });
-
-    const full=url+"?"+query.toString();
-
-    if(this.cache.has(full)){
-      return this.cache.get(full);
-    }
-
-    const response=await fetch(full,{
-      method:"GET",
-      signal
-    });
-
-    if(!response.ok){
-      throw new Error("HTTP "+response.status);
-    }
-
-    const data=await response.json();
-
-    this.cache.set(full,data);
-
-    return data;
-  }
-
-  /* =========================================================
-     RECHERCHE TEXTUELLE
-     ========================================================= */
-
-  async searchSource(source,query,limit=6){
-
-    const key=source.id+"|"+query+"|"+limit;
-
-    if(this.searchCache.has(key)){
-      return this.searchCache.get(key);
-    }
-
-    if(source.structured){
-      return[];
-    }
-
-    try{
-
-      const data=await this.api(
-        source.url,
-        {
-          action:"query",
-          list:"search",
-          srsearch:query,
-          srnamespace:0,
-          srlimit:String(limit),
-          format:"json"
-        },
-        this.abortController?.signal
-      );
-
-      const results=(data?.query?.search||[]).map(item=>({
-        source:source.name,
-        sourceId:source.id,
-        title:item.title,
-        pageid:item.pageid,
-        snippet:this.clean(item.snippet||""),
-        timestamp:item.timestamp||null
-      }));
-
-      this.searchCache.set(key,results);
-
-      return results;
-
-    }catch(error){
-
-      return[];
-    }
-  }
-
-  async searchAll(queries){
-
-    const results=[];
-
-    for(const query of queries){
-
-      const batch=await Promise.all(
-        this.sources
-          .filter(source=>!source.structured)
-          .map(source=>this.searchSource(source,query,5))
-      );
-
-      for(const group of batch){
-        results.push(...group);
-      }
-
-      await this.sleep(20);
-    }
-
-    return results;
-  }
-
-  /* =========================================================
-     EXTRACTION DES PAGES
-     ========================================================= */
-
-  async fetchExtract(result){
-
-    const key=
-      result.sourceId+
-      "|" +
-      result.pageid;
-
-    if(this.cache.has("extract|"+key)){
-      return this.cache.get("extract|"+key);
-    }
-
-    const source=this.sources.find(
-      x=>x.id===result.sourceId
-    );
-
-    if(!source)return result;
-
-    try{
-
-      const data=await this.api(
-        source.url,
-        {
-          action:"query",
-          prop:"extracts|info",
-          exintro:"0",
-          explaintext:"1",
-          inprop:"url",
-          pageids:String(result.pageid),
-          format:"json"
-        },
-        this.abortController?.signal
-      );
-
-      const page=data?.query?.pages?.[String(result.pageid)];
-
-      const enriched={
-        ...result,
-        text:this.clean(page?.extract||result.snippet||""),
-        url:page?.fullurl||null
-      };
-
-      this.cache.set("extract|"+key,enriched);
-
-      return enriched;
-
-    }catch(error){
-
-      return{
-        ...result,
-        text:this.clean(result.snippet||"")
-      };
-    }
-  }
-
-  /* =========================================================
-     WIKIDATA
-     ========================================================= */
-
-  async wikidataSearch(label,limit=5){
-
-    const key="wdsearch|"+label+"|"+limit;
-
-    if(this.wikidataCache.has(key)){
-      return this.wikidataCache.get(key);
-    }
-
-    try{
-
-      const data=await this.api(
-        "https://www.wikidata.org/w/api.php",
-        {
-          action:"wbsearchentities",
-          search:label,
-          language:"fr",
-          uselang:"fr",
-          type:"item",
-          limit:String(limit),
-          format:"json"
-        },
-        this.abortController?.signal
-      );
-
-      const results=(data?.search||[]).map(item=>({
-        id:item.id,
-        label:item.label||"",
-        description:item.description||"",
-        url:item.concepturi||null,
-        source:"Wikidata"
-      }));
-
-      this.wikidataCache.set(key,results);
-
-      return results;
-
-    }catch(error){
-
-      return[];
-    }
-  }
-
-  async wikidataEntities(ids){
-
-    const cleanIds=this.unique(
-      ids.filter(id=>/^Q\d+$/i.test(id))
-    );
-
-    if(!cleanIds.length)return[];
-
-    const chunks=[];
-
-    for(let i=0;i<cleanIds.length;i+=40){
-      chunks.push(cleanIds.slice(i,i+40));
-    }
-
-    const all=[];
-
-    for(const chunk of chunks){
-
-      const key="wdentities|"+chunk.join("|");
-
-      let data=this.wikidataCache.get(key);
-
-      if(!data){
-
-        try{
-
-          data=await this.api(
-            "https://www.wikidata.org/w/api.php",
-            {
-              action:"wbgetentities",
-              ids:chunk.join("|"),
-              languages:"fr|en",
-              props:"labels|descriptions|claims|sitelinks",
-              format:"json"
-            },
-            this.abortController?.signal
-          );
-
-          this.wikidataCache.set(key,data);
-
-        }catch(error){
-          continue;
-        }
-      }
-
-      for(const id of chunk){
-
-        const entity=data?.entities?.[id];
-
-        if(entity){
-          all.push(entity);
-        }
-      }
-
-      await this.sleep(15);
-    }
-
-    return all;
-  }
-
-  async wikidataProperties(ids){
-
-    const cleanIds=this.unique(
-      ids.filter(id=>/^P\d+$/i.test(id))
-    );
-
-    if(!cleanIds.length)return{};
-
-    const result={};
-
-    for(let i=0;i<cleanIds.length;i+=40){
-
-      const chunk=cleanIds.slice(i,i+40);
-
-      const key="wdprops|"+chunk.join("|");
-
-      let data=this.wikidataCache.get(key);
-
-      if(!data){
-
-        try{
-
-          data=await this.api(
-            "https://www.wikidata.org/w/api.php",
-            {
-              action:"wbgetentities",
-              ids:chunk.join("|"),
-              languages:"fr|en",
-              props:"labels|descriptions",
-              format:"json"
-            },
-            this.abortController?.signal
-          );
-
-          this.wikidataCache.set(key,data);
-
-        }catch(error){
-          continue;
-        }
-      }
-
-      for(const id of chunk){
-
-        const entity=data?.entities?.[id];
-
-        if(entity){
-          result[id]={
-            id,
-            label:
-              entity.labels?.fr?.value||
-              entity.labels?.en?.value||
-              id,
-            description:
-              entity.descriptions?.fr?.value||
-              entity.descriptions?.en?.value||
-              ""
-          };
-        }
-      }
-    }
-
-    return result;
-  }
-
-  getClaimValue(claim){
-
-    const value=claim?.mainsnak?.datavalue?.value;
-
-    if(value===undefined||value===null){
-      return null;
-    }
-
-    const type=claim?.mainsnak?.datavalue?.type;
-
-    if(type==="wikibase-entityid"){
-      return{
-        kind:"entity",
-        id:value.id||null
-      };
-    }
-
-    if(type==="quantity"){
-      const amount=String(value.amount||"")
-        .replace("+","");
-
-      const number=Number(amount);
-
-      return{
-        kind:"quantity",
-        amount:Number.isFinite(number)?number:null,
-        raw:amount,
-        unit:value.unit||null
-      };
-    }
-
-    if(type==="monolingualtext"){
-      return{
-        kind:"text",
-        text:value.text||""
-      };
-    }
-
-    if(type==="string"){
-      return{
-        kind:"text",
-        text:value
-      };
-    }
-
-    if(type==="time"){
-      return{
-        kind:"time",
-        time:value.time||""
-      };
-    }
-
-    if(type==="globecoordinate"){
-      return{
-        kind:"coordinate",
-        latitude:value.latitude,
-        longitude:value.longitude
-      };
-    }
-
-    return{
-      kind:type||"unknown",
-      value
-    };
-  }
-
-  async buildWikidataFacts(entities){
-
-    const propertyIds=new Set();
-    const objectIds=new Set();
-
-    for(const entity of entities){
-
-      const claims=entity.claims||{};
-
-      for(const propertyId of Object.keys(claims)){
-
-        propertyIds.add(propertyId);
-
-        for(const claim of claims[propertyId]||[]){
-
-          const value=this.getClaimValue(claim);
-
-          if(value?.kind==="entity"&&value.id){
-            objectIds.add(value.id);
-          }
-        }
-      }
-    }
-
-    const [properties,objects]=await Promise.all([
-      this.wikidataProperties([...propertyIds]),
-      this.wikidataEntities([...objectIds])
-    ]);
-
-    const objectMap=new Map();
-
-    for(const entity of objects){
-
-      objectMap.set(
-        entity.id,
-        entity.labels?.fr?.value||
-        entity.labels?.en?.value||
-        entity.id
-      );
-    }
-
-    const facts=[];
-
-    for(const entity of entities){
-
-      const subjectLabel=
-        entity.labels?.fr?.value||
-        entity.labels?.en?.value||
-        entity.id;
-
-      const claims=entity.claims||{};
-
-      for(const propertyId of Object.keys(claims)){
-
-        const property=properties[propertyId];
-
-        const propertyLabel=
-          property?.label||
-          propertyId;
-
-        for(const claim of claims[propertyId]||[]){
-
-          const value=this.getClaimValue(claim);
-
-          if(!value)continue;
-
-          let objectLabel="";
-          let objectId=null;
-          let numeric=null;
-
-          if(value.kind==="entity"){
-
-            objectId=value.id;
-            objectLabel=objectMap.get(value.id)||value.id;
-
-          }else if(value.kind==="quantity"){
-
-            numeric=value.amount;
-            objectLabel=value.raw;
-
-          }else if(value.kind==="text"){
+'use strict';
+
+class PyramidV6 {
+
+constructor(stepCallback){
+
+this.stepCallback=stepCallback;
+
+this.sources=[
+{id:'wikipedia',label:'Wikipedia',lang:'fr',host:'https://fr.wikipedia.org'},
+{id:'wiktionary',label:'Wiktionnaire',lang:'fr',host:'https://fr.wiktionary.org'},
+{id:'wikiversity',label:'Wikiversité',lang:'fr',host:'https://fr.wikiversity.org'},
+{id:'wikivoyage',label:'Wikivoyage',lang:'fr',host:'https://fr.wikivoyage.org'},
+{id:'wikisource',label:'Wikisource',lang:'fr',host:'https://fr.wikisource.org'},
+{id:'wikiquote',label:'Wikiquote',lang:'fr',host:'https://fr.wikiquote.org'},
+{id:'wikibooks',label:'Wikilivres',lang:'fr',host:'https://fr.wikibooks.org'},
+{id:'wikidata',label:'Wikidata',lang:'all',host:'https://www.wikidata.org'}
+];
+
+this.stopwords=new Set(
+('a à au aux avec ce ceci cela ces cet cette comme dans de des du elle en est et eu eux il ils je la le les leur lui ma mais me mes moi mon ne nos notre nous on ou par pas pour que quel quelle quelles quels qui quoi se sera son sont sur ta te tes toi ton tu un une vos votre vous y d afin alors ainsi après avant aucun aussi autre autres car ce dont donc entre été être même moins plus quand sans sous très via')
+.split(/\s+/)
+);
+
+this.cache=new Map();
+this.searchCache=new Map();
+this.wikidataCache=new Map();
+
+this.busy=false;
+this.abortController=null;
+this.sessionMemory=[];
+}
+
+step(label){
+if(this.stepCallback)this.stepCallback(label);
+}
+
+norm(s){
+return String(s??'')
+.toLowerCase()
+.normalize('NFD')
+.replace(/[\u0300-\u036f]/g,'')
+.replace(/[’']/g,"'")
+.replace(/[^\p{L}\p{N}\s-]/gu,' ')
+.replace(/\s+/g,' ')
+.trim();
+}
+
+words(s){
+return this.norm(s)
+.split(/\s+/)
+.filter(w=>w&&!this.stopwords.has(w)&&w.length>1);
+}
+
+unique(arr){
+return [...new Set((arr||[]).filter(Boolean))];
+}
+
+decodeEntities(s){
+const el=document.createElement('textarea');
+el.innerHTML=String(s??'');
+return el.value;
+}
+
+clean(s){
+return this.decodeEntities(
+String(s??'')
+.replace(/<[^>]*>/g,' ')
+.replace(/\[\d+\]/g,' ')
+.replace(/\s+/g,' ')
+.trim()
+);
+}
+
+cleanFinalText(s){
+return this.decodeEntities(
+String(s??'')
+.replace(/<[^>]*>/g,' ')
+.replace(/\[\d+\]/g,' ')
+.split('\n')
+.map(x=>x.replace(/\s+/g,' ').replace(/\s+([,.;:!?])/g,'$1').trim())
+.join('\n')
+.trim()
+);
+}
+
+escapeHTML(s){
+return String(s??'').replace(
+/[&<>'"]/g,
+m=>({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+"'":'&#39;',
+'"':'&quot;'
+}[m])
+);
+}
+
+async sleep(ms){
+return new Promise(r=>setTimeout(r,ms));
+}
 
-            objectLabel=value.text;
+extractTerms(q){
+return this.unique(this.words(q)).slice(0,28);
+}
 
-          }else if(value.kind==="time"){
+extractPhrases(q){
 
-            objectLabel=value.time;
+const raw=String(q??'').toLowerCase();
+const out=[];
 
-          }else if(value.kind==="coordinate"){
+const quoted=[
+...raw.matchAll(/["“”«»]([^"“”«»]+)["“”«»]/g)
+].map(m=>m[1]);
 
-            objectLabel=
-              value.latitude+
-              ", "+
-              value.longitude;
-          }
+out.push(...quoted);
 
-          facts.push({
-            subjectId:entity.id,
-            subjectLabel,
-            propertyId,
-            propertyLabel,
-            objectId,
-            objectLabel,
-            numeric,
-            source:"Wikidata",
-            confidence:0.95,
-            rank:claim.rank||"normal"
-          });
-        }
-      }
-    }
-
-    return facts;
-  }
-
-  /* =========================================================
-     DISCOVERY
-     ========================================================= */
-
-  async discoverConcepts(questionInfo,searchResults){
+for(
+const m of raw.matchAll(
+/\b(?:du|de|des|d[’']|dans|sur|pour|entre|chez)\s+([\p{L}\p{N}][\p{L}\p{N}' -]{2,60})/giu
+)
+){
+out.push(m[1].trim());
+}
 
-    const labels=[];
+return this.unique(
+out
+.map(x=>x.replace(/[?!.,;:]+$/,''))
+.filter(x=>x.length>2)
+).slice(0,12);
+}
 
-    for(const result of searchResults.slice(0,30)){
+detectSuperlative(q){
 
-      if(result.title){
-        labels.push(result.title);
-      }
-    }
+const n=this.norm(q);
 
-    for(const term of questionInfo.terms){
-
-      if(term.length>=4){
-        labels.push(term);
-      }
-    }
+return {
+is:/(plus grand|plus grande|plus gros|plus grosse|plus haut|plus haute|plus long|plus longue|plus petit|plus petite|plus vieux|plus vieille|plus ancien|plus ancienne|meilleur|meilleure|maximum|maximal|maximale|minimum|minimal|minimale|le plus|la plus|les plus|le moins|la moins|les moins)/.test(n),
 
-    for(const phrase of questionInfo.phrases.slice(0,8)){
-      if(phrase.length>=5){
-        labels.push(phrase);
-      }
-    }
+direction:/(moins|minimum|minimal|minimale|plus petit|plus petite|plus court|plus courte)/.test(n)
+?'min'
+:'max'
+};
+}
 
-    const uniqueLabels=this.unique(labels).slice(0,30);
+detectQuestionType(q){
 
-    const groups=await Promise.all(
-      uniqueLabels.map(label=>this.wikidataSearch(label,3))
-    );
+const n=this.norm(q);
 
-    const entities=[];
+if(/\b(comment|de quelle maniere|de quelle façon|de quelle facon)\b/.test(n))
+return 'procedure';
 
-    for(const group of groups){
-      entities.push(...group);
-    }
+if(/\b(pourquoi)\b/.test(n))
+return 'explanation';
 
-    const uniqueEntities=[];
-    const seen=new Set();
+if(/\b(comment|qu'est-ce que|qu est ce que|que signifie|definition|définition)\b/.test(n))
+return 'definition';
 
-    for(const entity of entities){
+if(/\b(compare|comparaison|difference|différence|versus|vs)\b/.test(n))
+return 'comparison';
 
-      if(seen.has(entity.id))continue;
+if(/\b(resume|résume|résumer|synthese|synthèse)\b/.test(n))
+return 'summary';
 
-      seen.add(entity.id);
-      uniqueEntities.push(entity);
-    }
+if(/\b(reformule|reformulation|corrige|correction|simplifie|simplification)\b/.test(n))
+return 'rewrite';
 
-    return uniqueEntities.slice(0,35);
-  }
+if(/\b(redige|rédige|redaction|rédaction|ecris|écris|texte|paragraphe|article|discours|lettre)\b/.test(n))
+return 'writing';
 
-  async secondPass(questionInfo,initialResults){
+if(this.detectSuperlative(q).is)
+return 'superlative';
 
-    const candidates=[];
+if(/\b(qui|quel|quelle|quels|quelles|où|ou|combien|quand)\b/.test(n))
+return 'fact';
 
-    for(const result of initialResults.slice(0,15)){
-      if(result.title)candidates.push(result.title);
-    }
+return 'research';
+}
 
-    for(const domain of questionInfo.domains){
-      candidates.push(domain);
-    }
+extractDomainCandidates(q){
 
-    const queries=[];
+const out=[];
 
-    if(questionInfo.superlative.detected){
+for(const p of this.extractPhrases(q))
+out.push(p);
 
-      for(const candidate of candidates.slice(0,8)){
-        queries.push(candidate);
-      }
-    }
+const n=String(q??'').replace(/[’']/g,' ');
 
-    for(const relation of questionInfo.relations){
+for(
+const m of n.matchAll(
+/\b(?:d|de|des|du|dans|sur|au|aux|en)\s+([\p{L}][\p{L}'-]*(?:\s+[\p{L}][\p{L}'-]*){0,4})/giu
+)
+)
+out.push(m[1]);
 
-      for(const label of relation.labels){
-        queries.push(label);
-      }
-    }
+return this.unique(out).slice(0,10);
+}
 
-    if(questionInfo.domains.length){
-      for(const domain of questionInfo.domains){
-        for(const relation of questionInfo.relations){
-          queries.push(
-            domain+" "+relation.labels[0]
-          );
-        }
-      }
-    }
+analyzeQuestion(q){
 
-    if(!queries.length)return[];
+return {
+raw:q.trim(),
+terms:this.extractTerms(q),
+phrases:this.extractPhrases(q),
+type:this.detectQuestionType(q),
+superlative:this.detectSuperlative(q),
+domains:this.extractDomainCandidates(q)
+};
 
-    const results=await this.searchAll(
-      this.unique(queries).slice(0,12)
-    );
+}
 
-    return results;
-  }
+buildQueries(info){
 
-  /* =========================================================
-     TYPES D'ENTITÉS
-     ========================================================= */
+const q=info.raw;
+const terms=info.terms.join(' ');
+const phrases=info.phrases;
 
-  inferEntityType(entity){
+const arr=[q];
 
-    const text=this.norm(
-      [
-        entity?.label,
-        entity?.description
-      ].filter(Boolean).join(" ")
-    );
+if(terms&&terms!==this.norm(q))
+arr.push(terms);
 
-    if(/\bpays\b|\bétat souverain\b/.test(text))
-      return"country";
+for(const p of phrases)
+arr.push(`${p} ${terms}`.trim());
 
-    if(/\bville\b|\bmunicipalité\b|\bcommune\b/.test(text))
-      return"city";
+if(info.type==='superlative')
+arr.push(`${q} superficie population hauteur longueur date valeur`);
 
-    if(/\bpersonne\b|\bhomme\b|\bfemme\b|\bscientifique\b|\bpoliticien\b|\bpoliticienne\b/.test(text))
-      return"person";
+if(info.type==='comparison')
+arr.push(`${q} comparaison difference`);
 
-    if(/\bmontagne\b|\bsommet\b/.test(text))
-      return"mountain";
+return this.unique(
+arr.map(x=>x.trim()).filter(Boolean)
+).slice(0,8);
+}
 
-    if(/\bfleuve\b|\brivière\b|\briviere\b/.test(text))
-      return"river";
+async api(host,params,signal){
 
-    if(/\bentreprise\b|\bsociété\b|\bsociete\b|\bcompagnie\b/.test(text))
-      return"company";
+const u=new URL(host+'/w/api.php');
 
-    if(/\borganisation\b|\borganisation internationale\b/.test(text))
-      return"organization";
+Object.entries({
+...params,
+format:'json',
+origin:'*'
+})
+.forEach(([k,v])=>u.searchParams.set(k,String(v)));
 
-    return"unknown";
-  }
+const r=await fetch(u,{
+signal,
+headers:{Accept:'application/json'}
+});
 
-  /* =========================================================
-     SCORING
-     ========================================================= */
+if(!r.ok)
+throw new Error(`HTTP ${r.status}`);
 
-  termScore(text,terms){
+return r.json();
+}
 
-    const n=this.norm(text);
+async searchSource(source,query,signal){
 
-    let score=0;
+const key=`${source.id}|${this.norm(query)}`;
 
-    for(const term of terms){
+if(this.searchCache.has(key))
+return this.searchCache.get(key);
 
-      const t=this.norm(term);
+const p={
+action:'query',
+list:'search',
+srsearch:query,
+srlimit:'8',
+srnamespace:'0'
+};
 
-      if(!t)continue;
+const data=await this.api(source.host,p,signal);
 
-      if(n===t){
-        score+=8;
-      }else if(n.includes(t)){
-        score+=3;
-      }
-    }
+const res=(data?.query?.search||[])
+.map(x=>({
+source:source.id,
+title:x.title,
+snippet:this.clean(x.snippet||''),
+pageid:x.pageid
+}));
 
-    return score;
-  }
+this.searchCache.set(key,res);
 
-  phraseScore(text,phrases){
+return res;
+}
 
-    const n=this.norm(text);
+async searchAll(queries,signal){
 
-    let score=0;
+const all=[];
 
-    for(const phrase of phrases){
+for(const q of queries){
 
-      const p=this.norm(phrase);
+for(
+const source of this.sources.filter(
+s=>s.id!=='wikidata'
+)
+){
 
-      if(p.length>=5&&n.includes(p)){
-        score+=3;
-      }
-    }
+try{
+const r=await this.searchSource(source,q,signal);
+all.push(...r);
+}catch(e){}
 
-    return score;
-  }
+}
 
-  domainScore(text,domains){
+await this.sleep(20);
+}
 
-    const n=this.norm(text);
+return this.uniqueResults(all).slice(0,80);
+}
 
-    let score=0;
+async fetchExtract(source,title,signal){
 
-    for(const domain of domains){
+const key=`${source.id}|${title}`;
 
-      const d=this.norm(domain);
+if(this.cache.has(key))
+return this.cache.get(key);
 
-      if(d&&n.includes(d)){
-        score+=4;
-      }
-    }
+const data=await this.api(
+source.host,
+{
+action:'query',
+prop:'extracts|info',
+explaintext:'1',
+exsectionformat:'plain',
+inprop:'url',
+titles:title,
+redirects:'1'
+},
+signal
+);
 
-    return score;
-  }
+const pages=data?.query?.pages||{};
+const p=Object.values(pages)[0];
 
-  superlativeScore(text,questionInfo){
+const out=p?{
+source:source.id,
+title:p.title||title,
+url:p.fullurl||`${source.host}/wiki/${encodeURIComponent(p.title||title)}`,
+text:this.clean(p.extract||''),
+pageid:p.pageid
+}:null;
 
-    if(!questionInfo.superlative.detected)return 0;
+if(out)
+this.cache.set(key,out);
 
-    const n=this.norm(text);
+return out;
+}
 
-    let score=0;
+async wikidataSearch(query,signal){
 
-    if(questionInfo.superlative.property==="size"){
-      if(/\bsuperficie\b|\bsurface\b|\baire\b/.test(n))
-        score+=4;
-    }
+const key=this.norm(query);
 
-    if(questionInfo.superlative.property==="population"){
-      if(/\bpopulation\b|\bhabitants?\b/.test(n))
-        score+=4;
-    }
+if(this.wikidataCache.has(`s|${key}`))
+return this.wikidataCache.get(`s|${key}`);
 
-    if(questionInfo.superlative.property==="height"){
-      if(/\baltitude\b|\bhauteur\b|\bmètres?\b|\bmetres?\b/.test(n))
-        score+=4;
-    }
+const data=await this.api(
+'https://www.wikidata.org',
+{
+action:'wbsearchentities',
+search:query,
+language:'fr',
+uselang:'fr',
+type:'item',
+limit:'12'
+},
+signal
+);
 
-    return score;
-  }
+const out=(data?.search||[])
+.map(x=>({
+id:x.id,
+label:x.label||'',
+description:x.description||'',
+match:x.match?.text||''
+}));
 
-  relationScore(text,relations){
+this.wikidataCache.set(`s|${key}`,out);
 
-    const n=this.norm(text);
+return out;
+}
 
-    let score=0;
+async wikidataEntities(ids,signal){
 
-    for(const relation of relations){
+const cleanIds=this.unique(ids)
+.filter(x=>/^[QP]\d+$/i.test(x))
+.slice(0,25);
 
-      for(const label of relation.labels){
+if(!cleanIds.length)
+return {};
 
-        if(n.includes(this.norm(label))){
-          score+=3;
-        }
-      }
-    }
+const key=`e|${cleanIds.sort().join(',')}`;
 
-    return score;
-  }
+if(this.wikidataCache.has(key))
+return this.wikidataCache.get(key);
 
-  typePenalty(result,questionInfo){
+const data=await this.api(
+'https://www.wikidata.org',
+{
+action:'wbgetentities',
+ids:cleanIds.join('|'),
+languages:'fr|en',
+props:'labels|descriptions|aliases|claims|sitelinks',
+formatversion:'2'
+},
+signal
+);
 
-    if(!result)return 0;
+const out=data?.entities||{};
 
-    const text=this.norm(
-      [
-        result.title,
-        result.snippet,
-        result.text
-      ].join(" ")
-    );
+this.wikidataCache.set(key,out);
 
-    let penalty=0;
+return out;
+}
 
-    if(questionInfo.type==="person"){
+async wikidataProperties(ids,signal){
+return this.wikidataEntities(ids,signal);
+}
 
-      if(/\bfilm\b|\bchanson\b|\balbum\b|\broman\b/.test(text)){
-        penalty+=3;
-      }
-    }
+getClaimValue(claim,entities){
 
-    if(questionInfo.superlative.detected){
+const dv=claim?.mainsnak?.datavalue;
 
-      if(/\bhomme\b|\bfemme\b|\bpersonne\b/.test(text) &&
-         questionInfo.superlative.property==="size"){
-        penalty+=2;
-      }
-    }
+if(!dv)
+return null;
 
-    return penalty;
-  }
+if(dv.type==='wikibase-entityid')
+return {
+id:`Q${dv.value.id}`,
+raw:dv.value.id
+};
 
-  driftPenalty(result,questionInfo){
+if(dv.type==='string')
+return {value:dv.value};
 
-    const text=[
-      result.title,
-      result.snippet,
-      result.text
-    ].join(" ");
+if(dv.type==='monolingualtext')
+return {value:dv.value.text};
 
-    const terms=questionInfo.terms;
+if(dv.type==='quantity')
+return {
+value:dv.value,
+amount:Number(dv.value)
+};
 
-    if(!terms.length)return 0;
+if(dv.type==='time')
+return {value:dv.value};
 
-    const score=this.termScore(text,terms);
+if(dv.type==='globecoordinate')
+return {
+value:`${dv.value.latitude}, ${dv.value.longitude}`,
+lat:dv.value.latitude,
+lon:dv.value.longitude
+};
 
-    return score===0?5:0;
-  }
+return {
+value:String(dv.value)
+};
+}
 
-  score(result,questionInfo){
+labelOfEntity(e){
+return e?.labels?.fr?.value||e?.labels?.en?.value||'';
+}
 
-    const text=[
-      result.title,
-      result.snippet,
-      result.text
-    ].join(" ");
+async buildWikidataFacts(entities,signal){
 
-    const source=this.sources.find(
-      s=>s.id===result.sourceId
-    );
+const ids=Object.keys(entities);
 
-    const sourceWeight=source?.weight||1;
+const propertyIds=this.unique(
+ids.flatMap(
+id=>Object.keys(entities[id]?.claims||{})
+)
+)
+.filter(x=>/^P\d+$/i.test(x))
+.slice(0,120);
 
-    let score=0;
+let props={};
 
-    score+=this.termScore(
-      text,
-      questionInfo.terms
-    );
+try{
+props=await this.wikidataEntities(propertyIds,signal);
+}catch(e){}
 
-    score+=this.phraseScore(
-      text,
-      questionInfo.phrases
-    );
+const out=[];
 
-    score+=this.domainScore(
-      text,
-      questionInfo.domains
-    );
+for(const id of ids){
 
-    score+=this.superlativeScore(
-      text,
-      questionInfo
-    );
+const e=entities[id];
+const label=this.labelOfEntity(e)||id;
 
-    score+=this.relationScore(
-      text,
-      questionInfo.relations
-    );
+for(const [pid,claims] of Object.entries(e.claims||{})){
 
-    score+=sourceWeight*.35;
+const propertyLabel=
+this.labelOfEntity(props[pid])||pid;
 
-    score-=this.typePenalty(
-      result,
-      questionInfo
-    );
+for(const c of (claims||[]).slice(0,5)){
 
-    score-=this.driftPenalty(
-      result,
-      questionInfo
-    );
+const v=this.getClaimValue(c,entities);
 
-    return score;
-  }
+if(!v)
+continue;
 
-  /* =========================================================
-     PASSAGES
-     ========================================================= */
+let objectLabel=
+v.id
+?(this.labelOfEntity(entities[v.id])||v.id)
+:(v.value??'');
 
-  buildPassages(results){
+out.push({
+subjectId:id,
+subject:label,
+propertyId:pid,
+propertyLabel,
+objectId:v.id||null,
+object:objectLabel,
+value:v.amount??v.value??'',
+source:'wikidata'
+});
 
-    const passages=[];
+if(out.length>=2500)
+return out;
+}
+}
+}
 
-    for(const result of results){
+return out;
+}
 
-      const text=this.clean(
-        result.text||
-        result.snippet||
-        ""
-      );
+async discoverConcepts(results,info,signal){
 
-      if(!text)continue;
+const terms=this.unique(
+[...info.terms,...info.phrases]
+).slice(0,12);
 
-      const sentences=text
-        .split(/(?<=[.!?])\s+/)
-        .map(x=>x.trim())
-        .filter(x=>x.length>25);
+const found=[];
 
-      for(const sentence of sentences.slice(0,25)){
+for(const t of terms.slice(0,8)){
 
-        passages.push({
-          text:sentence,
-          title:result.title,
-          source:result.source,
-          sourceId:result.sourceId,
-          pageid:result.pageid,
-          url:result.url||null
-        });
-      }
-    }
+try{
+found.push(
+...await this.wikidataSearch(t,signal)
+);
+}catch(e){}
 
-    return passages;
-  }
+}
 
-  similarity(a,b){
+return this.unique(
+found.map(x=>x.id)
+);
+}
 
-    const aw=new Set(this.words(a));
-    const bw=new Set(this.words(b));
+async secondPass(info,results,signal){
 
-    if(!aw.size||!bw.size)return 0;
+const titles=this.unique(
+results.map(r=>r.title)
+).slice(0,10);
 
-    let common=0;
+const q=[];
 
-    for(const word of aw){
-      if(bw.has(word))common++;
-    }
+for(const t of titles){
 
-    return common/
-      Math.sqrt(aw.size*bw.size);
-  }
+if(info.type==='fact'||info.type==='superlative')
+q.push(`${t} ${info.terms.slice(-4).join(' ')}`);
+else
+q.push(t);
 
-  selectPassages(passages,questionInfo,limit=12){
+}
 
-    const scored=passages.map(item=>{
+return this.searchAll(
+this.unique(q).slice(0,5),
+signal
+);
+}
 
-      const base=this.termScore(
-        item.text,
-        questionInfo.terms
-      );
+inferEntityType(text){
 
-      const phrase=this.phraseScore(
-        item.text,
-        questionInfo.phrases
-      );
+const n=this.norm(text);
 
-      const domain=this.domainScore(
-        item.text,
-        questionInfo.domains
-      );
+if(/\b(pays|royaume|republique|république|etat|état|nation)\b/.test(n))
+return 'country';
 
-      const relation=this.relationScore(
-        item.text,
-        questionInfo.relations
-      );
+if(/\b(ville|municipalite|municipalité|commune|capitale)\b/.test(n))
+return 'city';
 
-      return{
-        ...item,
-        score:
-          base+
-          phrase+
-          domain+
-          relation
-      };
-    });
+if(/\b(personne|ecrivain|écrivain|scientifique|artiste|acteur|actrice|politicien|politicienne)\b/.test(n))
+return 'person';
 
-    scored.sort((a,b)=>b.score-a.score);
+if(/\b(montagne|sommet|volcan)\b/.test(n))
+return 'mountain';
 
-    const selected=[];
+if(/\b(entreprise|societe|société|organisation|institution)\b/.test(n))
+return 'organization';
 
-    for(const item of scored){
+return 'entity';
+}
 
-      if(selected.length>=limit)break;
+termScore(text,info){
 
-      const duplicate=selected.some(
-        existing=>
-          this.similarity(
-            existing.text,
-            item.text
-          )>.82
-      );
+const n=this.norm(text);
+const terms=info.terms;
 
-      if(!duplicate){
-        selected.push(item);
-      }
-    }
+let s=0;
 
-    return selected;
-  }
+for(const t of terms)
+if(n.includes(t))
+s++;
 
-  /* =========================================================
-     EXTRACTION DE RELATIONS TEXTUELLES
-     ========================================================= */
+return s/Math.max(1,terms.length);
+}
 
-  extractTextRelations(passages){
+phraseScore(text,info){
 
-    const relations=[];
+const n=this.norm(text);
+let s=0;
 
-    for(const passage of passages){
+for(const p of info.phrases)
+if(n.includes(this.norm(p)))
+s++;
 
-      const text=this.clean(passage.text);
+return Math.min(
+1,
+s/Math.max(1,info.phrases.length)
+);
+}
 
-      let match;
+domainScore(text,info){
 
-      match=text.match(
-        /^(.{2,100}?)\s+(?:est|sont|a pour)\s+(?:la\s+)?capitale\s+(?:de|d')\s+(.{2,100}?)(?:[.!?]|$)/i
-      );
+const n=this.norm(text);
+let s=0;
 
-      if(match){
-        relations.push({
-          subject:this.clean(match[2]),
-          relation:"capitale",
-          object:this.clean(match[1]),
-          value:null,
-          source:passage.source,
-          evidence:text,
-          url:passage.url||null
-        });
-      }
+for(const d of info.domains)
+if(n.includes(this.norm(d)))
+s++;
 
-      match=text.match(
-        /^(.{2,100}?)\s+(?:est|sont)\s+(?:la\s+)?capitale\s+(?:de|d')\s+(.{2,100}?)(?:[.!?]|$)/i
-      );
+return Math.min(
+1,
+s/Math.max(1,info.domains.length)
+);
+}
 
-      if(match){
-        relations.push({
-          subject:this.clean(match[2]),
-          relation:"capitale",
-          object:this.clean(match[1]),
-          value:null,
-          source:passage.source,
-          evidence:text,
-          url:passage.url||null
-        });
-      }
+superlativeScore(text,info){
 
-      match=text.match(
-        /(.{2,100}?)\s+(?:compte|compterait|possède)\s+([\d\s.,]+)\s*(?:habitants|personnes)/i
-      );
+if(!info.superlative.is)
+return .5;
 
-      if(match){
+const n=this.norm(text);
 
-        const number=this.parseNumber(match[2]);
+return /(plus grand|plus grande|plus haut|plus haute|plus long|plus longue|plus petit|plus petite|superficie|population|hauteur|longueur|maximum|minimum)/.test(n)
+?.9
+:.1;
+}
 
-        if(number!==null){
+relationScore(text,info){
 
-          relations.push({
-            subject:this.clean(match[1]),
-            relation:"population",
-            object:null,
-            value:number,
-            source:passage.source,
-            evidence:text,
-            url:passage.url||null
-          });
-        }
-      }
+const n=this.norm(text);
 
-      match=text.match(
-        /(.{2,100}?)\s+(?:couvre|possède|a)\s+(?:une\s+)?superficie\s+(?:de\s+)?([\d\s.,]+)\s*(?:km²|km2|km)/i
-      );
+const keys=[
+'capitale',
+'situe',
+'situé',
+'continent',
+'pays',
+'date',
+'naissance',
+'mort',
+'auteur',
+'genre',
+'population',
+'superficie',
+'hauteur',
+'longueur',
+'prix',
+'annee',
+'année',
+'epoque',
+'époque',
+'langue'
+];
 
-      if(match){
+let hits=0;
 
-        const number=this.parseNumber(match[2]);
+for(const k of keys)
+if(n.includes(this.norm(k)))
+hits++;
 
-        if(number!==null){
+return Math.min(1,hits/4);
+}
 
-          relations.push({
-            subject:this.clean(match[1]),
-            relation:"superficie",
-            object:null,
-            value:number,
-            source:passage.source,
-            evidence:text,
-            url:passage.url||null
-          });
-        }
-      }
+typePenalty(text,info){
+return .0;
+}
 
-      match=text.match(
-        /(.{2,100}?)\s+(?:est|se trouve|se situe|est située|est situé)\s+(?:en|au|aux|dans)\s+(.{2,100}?)(?:[.!?]|$)/i
-      );
+driftPenalty(text,info){
 
-      if(match){
+const n=this.norm(text);
+const overlap=this.termScore(n,info);
 
-        relations.push({
-          subject:this.clean(match[1]),
-          relation:"localisation",
-          object:this.clean(match[2]),
-          value:null,
-          source:passage.source,
-          evidence:text,
-          url:passage.url||null
-        });
-      }
+return overlap<.12?.35:0;
+}
 
-      match=text.match(
-        /(.{2,100}?)\s+(?:est né|est née|naquit)\s+(?:à|en)\s+(.{2,100}?)(?:[.!?]|$)/i
-      );
+score(item,info){
 
-      if(match){
+const text=
+`${item.title||''} ${item.snippet||''} ${item.text||''}`;
 
-        relations.push({
-          subject:this.clean(match[1]),
-          relation:"naissance",
-          object:this.clean(match[2]),
-          value:null,
-          source:passage.source,
-          evidence:text,
-          url:passage.url||null
-        });
-      }
-    }
+return
+.28*this.termScore(text,info)+
+.16*this.phraseScore(text,info)+
+.16*this.domainScore(text,info)+
+.14*this.superlativeScore(text,info)+
+.16*this.relationScore(text,info)-
+.10*this.driftPenalty(text,info);
+}
 
-    return relations;
-  }
+buildPassages(docs,info){
 
-  parseNumber(value){
+const out=[];
 
-    if(value===null||value===undefined)return null;
+for(const d of docs){
 
-    let text=String(value)
-      .replace(/\u00A0/g," ")
-      .replace(/\s/g,"")
-      .replace(/[^\d,.-]/g,"");
+const sentences=this.clean(
+d.text||d.snippet||''
+)
+.split(/(?<=[.!?])\s+/)
+.filter(s=>s.length>35);
 
-    if(!text)return null;
+for(const s of sentences.slice(0,18)){
 
-    const commas=(text.match(/,/g)||[]).length;
-    const dots=(text.match(/\./g)||[]).length;
+out.push({
+source:d.source,
+title:d.title,
+url:d.url||'',
+text:s,
+score:this.score({...d,text:s},info)
+});
 
-    if(commas===1&&dots===0){
-      text=text.replace(",",".");
-    }else{
-      text=text.replace(/,/g,"");
-    }
+}
+}
 
-    const n=Number(text);
+return out;
+}
 
-    return Number.isFinite(n)?n:null;
-  }
+similarity(a,b){
 
-  /* =========================================================
-     GRAPHE DE CONNAISSANCES
-     ========================================================= */
+const A=new Set(this.words(a));
+const B=new Set(this.words(b));
 
-  createGraph(){
+if(!A.size||!B.size)
+return 0;
 
-    return{
-      nodes:new Map(),
-      edges:[]
-    };
-  }
+let inter=0;
 
-  addNode(graph,id,data={}){
+for(const x of A)
+if(B.has(x))
+inter++;
 
-    if(!id)return null;
+return inter/(A.size+B.size-inter);
+}
 
-    if(!graph.nodes.has(id)){
+selectPassages(passages,n=20){
 
-      graph.nodes.set(id,{
-        id,
-        label:data.label||id,
-        type:data.type||"unknown",
-        sources:new Set(),
-        data:{}
-      });
+const sorted=[...passages]
+.sort((a,b)=>b.score-a.score);
 
-    }else{
+const out=[];
 
-      const node=graph.nodes.get(id);
+for(const p of sorted){
 
-      if(data.label&&(!node.label||node.label===node.id)){
-        node.label=data.label;
-      }
+if(
+out.every(
+x=>this.similarity(x.text,p.text)<.82
+)
+)
+out.push(p);
 
-      if(data.type&&node.type==="unknown"){
-        node.type=data.type;
-      }
-    }
+if(out.length>=n)
+break;
+}
 
-    return graph.nodes.get(id);
-  }
+return out;
+}
 
-  addEdge(graph,edge){
+extractTextRelations(text){
 
-    if(!edge.subject||!edge.relation)return;
+const out=[];
+const clean=this.clean(text);
 
-    graph.edges.push({
-      subject:edge.subject,
-      relation:edge.relation,
-      object:edge.object||null,
-      value:
-        edge.value===undefined?
-        null:
-        edge.value,
-      source:edge.source||"inconnu",
-      confidence:
-        edge.confidence===undefined?
-        .5:
-        edge.confidence,
-      evidence:edge.evidence||"",
-      propertyId:edge.propertyId||null
-    });
-  }
+const patterns=[
 
-  normalizeRelationLabel(label){
+/([^.!?]{2,100})\s+(?:est|sont|était|etaient|devient|devint|se trouve|est situe|est situé)\s+(?:en|dans|sur|au|aux|à)\s+([^.!?]{2,100})/gi,
 
-    const n=this.norm(label);
+/([^.!?]{2,100})\s+(?:a pour capitale|a comme capitale|dont la capitale est)\s+([^.!?]{2,80})/gi,
 
-    if(/\bcapital/.test(n))
-      return"capital";
+/([^.!?]{2,100})\s+(?:est la capitale de)\s+([^.!?]{2,100})/gi,
 
-    if(/\bsuperficie\b|\bsurface\b|\baire\b/.test(n))
-      return"area";
+/([^.!?]{2,100})\s+(?:a une superficie de|couvre une superficie de|mesure)\s+([\d\s.,]+\s*(?:km²|km2|m|km|ha|hectares)?)/gi,
 
-    if(/\bpopulation\b|\bhabitant/.test(n))
-      return"population";
+/([^.!?]{2,100})\s+(?:compte|possède|possede|a)\s+([\d\s.,]+)\s+(habitants|personnes|km²|km2|m|km)/gi
 
-    if(/\blangue/.test(n))
-      return"language";
+];
 
-    if(/\bpresident/.test(n))
-      return"president";
+for(const re of patterns){
 
-    if(/\bne\b|\bnaissance\b/.test(n))
-      return"birthplace";
+for(const m of clean.matchAll(re)){
 
-    if(/\bfond/.test(n))
-      return"founder";
+const s=this.clean(m[1]);
+const o=this.clean(m[2]);
 
-    if(/\baltitude\b|\bhauteur\b/.test(n))
-      return"height";
+if(s&&o){
 
-    if(/\bcreation\b|\bfondation\b/.test(n))
-      return"creation";
+out.push({
+subject:s,
+relation:'relation',
+object:o,
+text:m[0]
+});
 
-    return n;
-  }
+}
 
-  relationMatches(edge,questionInfo){
+}
+}
 
-    const relationType=this.normalizeRelationLabel(
-      edge.relation
-    );
+return out.slice(0,100);
+}
 
-    for(const relation of questionInfo.relations){
+parseNumber(s){
 
-      if(relation.type===relationType){
-        return true;
-      }
-    }
+const x=String(s??'')
+.replace(/\s/g,'')
+.replace(/,/g,'.')
+.replace(/[^0-9.+-]/g,'');
 
-    return false;
-  }
+const n=Number(x);
 
-  propertyMatchesSuperlative(fact,questionInfo){
+return Number.isFinite(n)?n:null;
+}
 
-    if(!questionInfo.superlative.detected){
-      return false;
-    }
+createGraph(){
+return {
+nodes:new Map(),
+edges:[]
+};
+}
 
-    const label=this.norm(
-      fact.propertyLabel||""
-    );
+addNode(g,node){
 
-    const property=
-      questionInfo.superlative.property;
+if(!node||!node.id)
+return;
 
-    if(property==="size"){
-      return /\bsuperficie\b|\bsurface\b|\baire\b/.test(label);
-    }
+const old=g.nodes.get(node.id);
 
-    if(property==="population"){
-      return /\bpopulation\b|\bhabitants?\b/.test(label);
-    }
+g.nodes.set(
+node.id,
+{
+...(old||{}),
+...node
+}
+);
+}
 
-    if(property==="height"){
-      return /\baltitude\b|\bhauteur\b/.test(label);
-    }
+addEdge(g,edge){
 
-    return false;
-  }
+if(!edge)
+return;
 
-  buildKnowledgeGraph(facts,textRelations,entities){
+const from=edge.from??edge.subject;
+const to=edge.to??edge.object;
 
-    const graph=this.createGraph();
+if(!from||!to)
+return;
 
-    for(const entity of entities){
+g.edges.push({
+...edge,
+from,
+to,
+subject:edge.subject??from,
+object:edge.object??to
+});
+}
 
-      this.addNode(
-        graph,
-        entity.id,
-        {
-          label:
-            entity.label||
-            entity.labels?.fr?.value||
-            entity.id,
-          type:this.inferEntityType(entity)
-        }
-      );
-    }
+normalizeRelationLabel(s){
 
-    for(const fact of facts){
+return this.norm(s)
+.replace(/\b(du|de|des|la|le|les|un|une)\b/g,' ')
+.replace(/\s+/g,' ')
+.trim();
+}
 
-      const subjectId=fact.subjectId;
+relationMatches(label,need){
 
-      this.addNode(
-        graph,
-        subjectId,
-        {
-          label:fact.subjectLabel
-        }
-      );
+const a=this.normalizeRelationLabel(label);
+const b=this.normalizeRelationLabel(need);
 
-      let object=fact.objectId||fact.objectLabel||null;
+if(!a||!b)
+return false;
 
-      if(fact.objectId){
+return a===b||a.includes(b)||b.includes(a);
+}
 
-        this.addNode(
-          graph,
-          fact.objectId,
-          {
-            label:fact.objectLabel
-          }
-        );
-      }
+propertyMatchesSuperlative(label,info){
 
-      this.addEdge(
-        graph,
-        {
-          subject:subjectId,
-          relation:fact.propertyLabel,
-          object,
-          value:
-            fact.numeric!==null&&fact.numeric!==undefined?
-            fact.numeric:
-            fact.objectLabel,
-          source:"Wikidata",
-          confidence:fact.confidence,
-          evidence:
-            fact.subjectLabel+
-            " — "+
-            fact.propertyLabel+
-            " → "+
-            (fact.objectLabel||""),
-          propertyId:fact.propertyId
-        }
-      );
-    }
+const n=this.norm(label);
 
-    for(const relation of textRelations){
+if(info.superlative.direction==='max')
 
-      const subjectKey=
-        "text:"+this.norm(relation.subject);
+return /(superficie|population|hauteur|longueur|taille|altitude|distance|annee|année|date|poids|prix)/.test(n);
 
-      const objectKey=
-        "text:"+this.norm(relation.object||"");
+return /(population|superficie|hauteur|longueur|taille|distance|poids|prix)/.test(n);
+}
 
-      this.addNode(
-        graph,
-        subjectKey,
-        {
-          label:relation.subject
-        }
-      );
+buildKnowledgeGraph(facts,relations){
 
-      if(relation.object){
+const g=this.createGraph();
 
-        this.addNode(
-          graph,
-          objectKey,
-          {
-            label:relation.object
-          }
-        );
-      }
+for(const f of facts){
 
-      this.addEdge(
-        graph,
-        {
-          subject:subjectKey,
-          relation:relation.relation,
-          object:
-            relation.object?
-            objectKey:
-            null,
-          value:relation.value,
-          source:relation.source,
-          confidence:.65,
-          evidence:relation.evidence
-        }
-      );
-    }
+this.addNode(g,{
+id:f.subjectId||`t:${this.norm(f.subject)}`,
+label:f.subject,
+type:this.inferEntityType(f.subject)
+});
 
-    return graph;
-  }
+this.addNode(g,{
+id:f.objectId||`v:${this.norm(f.object)}`,
+label:f.object,
+type:this.inferEntityType(f.object)
+});
 
-  /* =========================================================
-     RECHERCHE D'ENTITÉS DANS LE GRAPHE
-     ========================================================= */
+this.addEdge(g,{
+from:f.subjectId||`t:${this.norm(f.subject)}`,
+to:f.objectId||`v:${this.norm(f.object)}`,
+label:f.propertyLabel||f.propertyId||'propriete',
+labelText:f.propertyLabel||f.propertyId,
+value:f.value,
+source:'wikidata',
+raw:f
+});
 
-  findCandidateNodes(graph,questionInfo){
+}
 
-    const candidates=[];
+for(const r of relations){
 
-    for(const node of graph.nodes.values()){
+const a=`t:${this.norm(r.subject)}`;
+const b=`v:${this.norm(r.object)}`;
 
-      let score=0;
+this.addNode(g,{
+id:a,
+label:r.subject,
+type:this.inferEntityType(r.subject)
+});
 
-      score+=this.termScore(
-        node.label,
-        questionInfo.terms
-      );
+this.addNode(g,{
+id:b,
+label:r.object,
+type:this.inferEntityType(r.object)
+});
 
-      score+=this.domainScore(
-        node.label,
-        questionInfo.domains
-      );
+this.addEdge(g,{
+from:a,
+to:b,
+label:r.relation,
+labelText:r.relation,
+source:'text',
+raw:r
+});
 
-      const type=node.type;
+}
 
-      if(
-        questionInfo.superlative.property==="size" &&
-        type==="country"
-      ){
-        score+=1;
-      }
+return g;
+}
 
-      if(
-        questionInfo.superlative.property==="height" &&
-        type==="mountain"
-      ){
-        score+=1;
-      }
+findCandidateNodes(g,info){
 
-      if(score>0){
+const arr=[...g.nodes.values()];
+const terms=info.terms;
 
-        candidates.push({
-          node,
-          score
-        });
-      }
-    }
+return arr
+.map(n=>{
 
-    candidates.sort((a,b)=>b.score-a.score);
+const t=this.norm(n.label);
+const hits=terms.filter(
+x=>t.includes(x)
+).length;
 
-    return candidates;
-  }
+return {
+...n,
+_score:hits/Math.max(1,terms.length)
+};
 
-  getNumericEdges(graph,nodeId,questionInfo){
+})
+.filter(
+x=>
+x._score>.05||
+info.domains.some(
+d=>this.norm(x.label)===this.norm(d)
+)
+)
+.sort((a,b)=>b._score-a._score)
+.slice(0,30);
+}
 
-    return graph.edges.filter(edge=>
-      edge.subject===nodeId &&
-      typeof edge.value==="number" &&
-      this.propertyMatchesSuperlative(
-        {
-          propertyLabel:edge.relation
-        },
-        questionInfo
-      )
-    );
-  }
+getNumericEdges(g,nodeId){
 
-  solveSuperlative(graph,questionInfo){
+return g.edges
+.filter(e=>e.from===nodeId)
+.map(e=>({
+...e,
+num:this.parseNumber(
+e.value??e.raw?.object
+)
+}))
+.filter(e=>e.num!==null);
+}
 
-    if(!questionInfo.superlative.detected){
-      return null;
-    }
+nodeMatchesDomain(g,node,domain){
 
-    const candidates=this.findCandidateNodes(
-      graph,
-      questionInfo
-    );
+const dn=this.norm(domain);
 
-    const values=[];
+if(this.norm(node.label)===dn)
+return true;
 
-    for(const candidate of candidates){
+if(
+this.norm(node.label).includes(dn)||
+dn.includes(this.norm(node.label))
+)
+return true;
 
-      const edges=this.getNumericEdges(
-        graph,
-        candidate.node.id,
-        questionInfo
-      );
+const related=g.edges.filter(
+e=>e.from===node.id||e.to===node.id
+);
 
-      for(const edge of edges){
+return related.some(
+e=>
+this.norm(
+e.raw?.object||
+e.raw?.subject||
+''
+).includes(dn)||
+this.norm(
+e.labelText||e.label||''
+).includes(dn)
+);
+}
 
-        if(typeof edge.value!=="number")continue;
+solveSuperlative(g,info){
 
-        values.push({
-          node:candidate.node,
-          edge,
-          value:edge.value,
-          score:candidate.score
-        });
-      }
-    }
+const candidates=this.findCandidateNodes(g,info);
 
-    if(!values.length){
-      return null;
-    }
+let pool=candidates;
 
-    values.sort((a,b)=>{
+if(info.domains.length){
 
-      if(questionInfo.superlative.direction==="min"){
-        return a.value-b.value;
-      }
+const filtered=candidates.filter(
+n=>info.domains.some(
+d=>this.nodeMatchesDomain(g,n,d)
+)
+);
 
-      return b.value-a.value;
-    });
+pool=
+filtered.length
+?filtered
+:[...g.nodes.values()]
+.filter(
+n=>this.getNumericEdges(g,n.id).length
+);
+}
 
-    return{
-      winner:values[0],
-      candidates:values
-    };
-  }
+if(!pool.length)
 
-  findRelationFromNode(graph,nodeId,questionInfo){
+pool=[...g.nodes.values()]
+.filter(
+n=>this.getNumericEdges(g,n.id).length
+);
 
-    const matches=[];
+const scored=[];
 
-    for(const edge of graph.edges){
+for(const n of pool){
 
-      if(edge.subject!==nodeId)continue;
+for(const e of this.getNumericEdges(g,n.id)){
 
-      if(this.relationMatches(edge,questionInfo)){
+if(
+this.propertyMatchesSuperlative(
+e.labelText||e.label,
+info
+)
+)
+scored.push({
+node:n,
+edge:e
+});
 
-        matches.push(edge);
-      }
-    }
+}
 
-    matches.sort(
-      (a,b)=>b.confidence-a.confidence
-    );
+}
 
-    return matches;
-  }
+if(!scored.length)
+return null;
 
-  /* =========================================================
-     VALIDATION
-     ========================================================= */
+scored.sort(
+(a,b)=>
+info.superlative.direction==='max'
+?b.edge.num-a.edge.num
+:a.edge.num-b.edge.num
+);
 
-  validateCandidate(candidate,questionInfo){
+return scored[0];
+}
 
-    if(!candidate)return false;
+requestedRelationTerms(info){
 
-    if(questionInfo.relations.length===0){
-      return true;
-    }
+const keys=[
+'capitale',
+'population',
+'superficie',
+'hauteur',
+'longueur',
+'altitude',
+'date',
+'naissance',
+'mort',
+'auteur',
+'genre',
+'langue',
+'siege',
+'siège',
+'president',
+'président',
+'fondateur',
+'fondation',
+'monnaie',
+'frontiere',
+'frontière',
+'continent',
+'pays',
+'ville',
+'situé',
+'situe'
+];
 
-    return true;
-  }
+const n=this.norm(info.raw||'');
 
-  findContradictions(edges){
+return keys.filter(
+k=>n.includes(this.norm(k))
+);
+}
 
-    const groups=new Map();
+findRelationFromNode(g,node,terms){
 
-    for(const edge of edges){
+const edges=g.edges.filter(
+e=>e.from===node.id
+);
 
-      const key=
-        edge.subject+
-        "|"+
-        this.normalizeRelationLabel(edge.relation);
+if(!terms?.length)
+return null;
 
-      if(!groups.has(key)){
-        groups.set(key,[]);
-      }
+for(const e of edges){
 
-      groups.get(key).push(edge);
-    }
+if(
+terms.some(
+t=>
+this.relationMatches(
+e.labelText||e.label,
+t
+)||
+this.norm(
+e.raw?.propertyLabel||
+e.raw?.property||
+''
+).includes(this.norm(t))
+)
+)
+return e;
 
-    const contradictions=[];
+}
 
-    for(const [key,group] of groups){
+return null;
+}
 
-      const values=this.unique(
-        group
-          .map(x=>String(x.object||x.value||""))
-          .filter(Boolean)
-      );
+findEntityByLabel(g,query){
 
-      if(values.length>1){
+const n=this.norm(query);
 
-        contradictions.push({
-          key,
-          values,
-          edges:group
-        });
-      }
-    }
+return
+[...g.nodes.values()]
+.sort(
+(a,b)=>
+this.norm(a.label).length-
+this.norm(b.label).length
+)
+.find(
+x=>this.norm(x.label)===n
+)||
+[...g.nodes.values()]
+.find(
+x=>this.norm(x.label).includes(n)
+);
+}
 
-    return contradictions;
-  }
+validateCandidate(candidate,passages,info){
 
-  /* =========================================================
-     EVIDENCE
-     ========================================================= */
+if(!candidate)
+return {
+ok:false,
+score:0,
+reason:'Aucun candidat'
+};
 
-  aggregateEvidence(edges){
+const evidence=passages.filter(
+p=>this.termScore(p.text,info)>.15
+);
 
-    const sourceSet=new Set();
+return {
+ok:true,
+score:Math.min(
+1,
+.4+Math.min(.6,evidence.length/5)
+),
+evidence:evidence.slice(0,6)
+};
+}
 
-    for(const edge of edges){
+findContradictions(values){
 
-      if(edge.source){
-        sourceSet.add(edge.source);
-      }
-    }
+const groups=new Map();
 
-    const direct=edges.filter(
-      edge=>edge.confidence>=.8
-    ).length;
+for(const v of values){
 
-    const diversity=sourceSet.size;
+const k=this.norm(
+v.key||v.label||''
+);
 
-    let confidence=.35;
+if(!groups.has(k))
+groups.set(k,[]);
 
-    confidence+=Math.min(.3,direct*.08);
-    confidence+=Math.min(.2,diversity*.05);
+groups.get(k).push(v);
+}
 
-    if(confidence>0.97)confidence=.97;
+const out=[];
 
-    return{
-      confidence,
-      sourceCount:diversity,
-      directCount:direct
-    };
-  }
+for(const [k,arr] of groups){
 
-  /* =========================================================
-     RÉPONSE PAR GRAPHE
-     ========================================================= */
+const nums=this.unique(
+arr.map(x=>x.num)
+.filter(x=>x!==null)
+);
 
-  graphAnswer(graph,questionInfo){
+if(nums.length>1)
+out.push({
+key:k,
+values:arr
+});
+}
 
-    /*
-      Cas 1 :
-      question superlative
-      -> choisir le candidat selon une valeur numérique
-      -> suivre la relation demandée
-    */
+return out;
+}
 
-    if(questionInfo.superlative.detected){
+aggregateEvidence(passages){
 
-      const solved=this.solveSuperlative(
-        graph,
-        questionInfo
-      );
+const sources=this.unique(
+passages.map(p=>p.source)
+);
 
-      if(solved){
+const avg=passages.length
+?passages.reduce((a,b)=>a+b.score,0)/passages.length
+:0;
 
-        const winner=solved.winner;
+return {
+count:passages.length,
+sourceCount:sources.length,
+sources,
+averageScore:avg
+};
+}
 
-        const relations=this.findRelationFromNode(
-          graph,
-          winner.node.id,
-          questionInfo
-        );
+graphAnswer(g,info,passages){
 
-        if(relations.length){
+if(info.superlative.is){
 
-          const best=relations[0];
+const win=this.solveSuperlative(g,info);
 
-          let targetLabel=best.object;
+if(win){
 
-          if(best.object){
+const requested=
+this.requestedRelationTerms(info);
 
-            const node=graph.nodes.get(best.object);
+const extra=
+this.findRelationFromNode(
+g,
+win.node,
+requested
+);
 
-            if(node){
-              targetLabel=node.label;
-            }
-          }
+const value=
+this.cleanFinalText(
+String(win.edge.value??'')
+);
 
-          if(targetLabel){
+let answer=win.node.label;
 
-            const evidence=[
-              solved.winner.edge,
-              best
-            ];
+if(value)
+answer+=` — ${value}`;
 
-            const confidence=
-              this.aggregateEvidence(evidence);
+if(
+extra&&
+extra!==win.edge
+){
 
-            return{
-              answer:
-                winner.node.label+
-                " est l'élément retenu après comparaison des valeurs disponibles. "+
-                "La relation demandée donne : "+
-                targetLabel+".",
-              answerText:
-                winner.node.label+
-                " est l'élément retenu après comparaison des valeurs disponibles. "+
-                "La relation demandée donne : "+
-                targetLabel+".",
-              confidence,
-              evidence,
-              reasoning:{
-                winner:winner.node.label,
-                value:winner.value,
-                relation:best.relation,
-                target:targetLabel
-              }
-            };
-          }
-        }
-      }
-    }
+const object=
+extra.raw?.object||
+extra.raw?.value||
+extra.to||
+extra.object||
+'';
 
-    /*
-      Cas 2 :
-      relation directe
-    */
+if(
+object&&
+this.norm(object)!==
+this.norm(value)
+)
+answer+=` — ${object}`;
+}
 
-    const candidates=this.findCandidateNodes(
-      graph,
-      questionInfo
-    );
+return {
+answerText:answer,
+candidate:win,
+evidence:passages
+};
 
-    for(const candidate of candidates.slice(0,12)){
+}
+}
 
-      const relations=this.findRelationFromNode(
-        graph,
-        candidate.node.id,
-        questionInfo
-      );
+const cands=
+this.findCandidateNodes(g,info);
 
-      if(!relations.length)continue;
+if(cands.length){
 
-      const best=relations[0];
+const node=cands[0];
 
-      let targetLabel=best.object;
+const e=
+this.findRelationFromNode(
+g,
+node,
+info.terms
+);
 
-      if(best.object){
+if(e){
 
-        const node=graph.nodes.get(best.object);
+return {
+answerText:
+`${node.label} — ${e.raw?.object||e.to||e.object||''}.`,
+candidate:{
+node,
+edge:e
+},
+evidence:passages
+};
 
-        if(node){
-          targetLabel=node.label;
-        }
-      }
+}
+}
 
-      if(!targetLabel&&best.value!==null){
-        targetLabel=String(best.value);
-      }
+return null;
+}
 
-      if(targetLabel){
+synthesize(info,passages,graphResult){
 
-        const confidence=
-          this.aggregateEvidence([best]);
+if(graphResult?.answerText)
+return this.cleanFinalText(
+graphResult.answerText
+);
 
-        return{
-          answer:
-            candidate.node.label+
-            " : "+
-            targetLabel+".",
-          answerText:
-            candidate.node.label+
-            " : "+
-            targetLabel+".",
-          confidence,
-          evidence:[best],
-          reasoning:{
-            subject:candidate.node.label,
-            relation:best.relation,
-            target:targetLabel
-          }
-        };
-      }
-    }
+const selected=
+this.selectPassages(
+passages,
+7
+);
 
-    return null;
-  }
+if(!selected.length)
+return 'Je ne dispose pas de suffisamment de sources pour répondre de façon fiable.';
 
-  /* =========================================================
-     SYNTHÈSE EXTRACTIVE
-     ========================================================= */
+const pieces=[];
 
-  synthesize(passages,questionInfo){
+for(const p of selected){
 
-    if(!passages.length){
+const t=
+this.cleanFinalText(p.text);
 
-      return{
-        answerText:
-          "Je n'ai pas trouvé suffisamment d'informations fiables pour répondre à cette question.",
-        answer:
-          "Je n'ai pas trouvé suffisamment d'informations fiables pour répondre à cette question.",
-        evidence:[],
-        confidence:.1
-      };
-    }
+if(
+t&&
+pieces.every(
+x=>this.similarity(x,t)<.72
+)
+)
+pieces.push(t);
+}
 
-    const ranked=passages.map(item=>{
+if(info.type==='definition')
+return pieces.slice(0,3).join(' ');
 
-      const score=
-        this.termScore(
-          item.text,
-          questionInfo.terms
-        )+
-        this.phraseScore(
-          item.text,
-          questionInfo.phrases
-        )+
-        this.domainScore(
-          item.text,
-          questionInfo.domains
-        )+
-        this.relationScore(
-          item.text,
-          questionInfo.relations
-        );
+return pieces.slice(0,5).join(' ');
+}
 
-      return{
-        ...item,
-        rank:score
-      };
-    });
+formatSources(passages){
 
-    ranked.sort((a,b)=>b.rank-a.rank);
+return this.unique(
+passages
+.slice(0,8)
+.map(p=>`${p.source}: ${p.title}`)
+);
+}
 
-    const selected=ranked.slice(0,6);
+remember(q,result){
 
-    const sentences=[];
+this.sessionMemory.push({
+q,
+answer:result.answerText||'',
+time:Date.now(),
+entities:result.entities||[]
+});
 
-    for(const item of selected){
+if(this.sessionMemory.length>30)
+this.sessionMemory.shift();
+}
 
-      const text=this.cleanFinalText(
-        item.text
-      );
+uniqueResults(arr){
 
-      if(!text)continue;
+const m=new Map();
 
-      const duplicate=sentences.some(
-        x=>this.similarity(x.text,text)>.78
-      );
+for(const x of arr||[]){
 
-      if(!duplicate){
+const k=
+`${x.source}|${this.norm(x.title)}`;
 
-        sentences.push({
-          text,
-          source:item.source,
-          url:item.url
-        });
-      }
-    }
+if(!m.has(k))
+m.set(k,x);
+}
 
-    const answerText=sentences
-      .slice(0,5)
-      .map(x=>x.text)
-      .join(" ");
+return [...m.values()];
+}
 
-    const sourceSet=new Set(
-      sentences.map(x=>x.source)
-    );
+finalizeResult(info,answerText,passages,extra={}){
 
-    let confidence=.25+
-      Math.min(.45,sourceSet.size*.08);
+return {
+answerText:this.cleanFinalText(answerText),
+sources:this.formatSources(passages),
+passages,
+confidence:extra.confidence??0,
+entities:extra.entities||[],
+meta:{
+type:info.type,
+mode:extra.mode||null,
+task:extra.task||null,
+verification:extra.verification||null
+}
+};
+}
 
-    if(questionInfo.relations.length){
-      confidence+=.08;
-    }
+async run(q){
 
-    if(confidence>.9)confidence=.9;
+if(this.busy)
+throw new Error('Moteur déjà occupé.');
 
-    return{
-      answerText:
-        answerText||
-        "Les sources trouvées ne permettent pas de produire une réponse suffisamment claire.",
-      answer:
-        answerText||
-        "Les sources trouvées ne permettent pas de produire une réponse suffisamment claire.",
-      evidence:sentences,
-      confidence
-    };
-  }
+this.busy=true;
+this.abortController=new AbortController();
 
-  /* =========================================================
-     FORMATAGE DES SOURCES
-     ========================================================= */
+try{
 
-  formatSources(result){
+const info=this.analyzeQuestion(q);
 
-    const names=[];
+this.step('Analyse de la demande');
 
-    if(result?.evidence){
+const queries=this.buildQueries(info);
 
-      for(const item of result.evidence){
+this.step('Recherche multi-sources');
 
-        const name=
-          item.source||
-          "Source";
+const results=
+await this.searchAll(
+queries,
+this.abortController.signal
+);
 
-        if(!names.includes(name)){
-          names.push(name);
-        }
-      }
-    }
+this.step('Enrichissement Wikidata');
 
-    return names.slice(0,7).join(" · ");
-  }
+const ids=
+await this.discoverConcepts(
+results,
+info,
+this.abortController.signal
+);
 
-  /* =========================================================
-     MÉMOIRE DE SESSION
-     ========================================================= */
+const ents=
+await this.wikidataEntities(
+ids,
+this.abortController.signal
+);
 
-  remember(question,result){
+const facts=
+await this.buildWikidataFacts(
+ents,
+this.abortController.signal
+);
 
-    this.sessionMemory.push({
-      question,
-      answer:result?.answerText||"",
-      time:Date.now(),
-      confidence:result?.confidence||0
-    });
+this.step('Deuxième passage ciblé');
 
-    if(this.sessionMemory.length>30){
-      this.sessionMemory.shift();
-    }
-  }
+const more=
+await this.secondPass(
+info,
+results,
+this.abortController.signal
+);
 
-  /* =========================================================
-     EXÉCUTION PRINCIPALE
-     ========================================================= */
+const docs=[];
 
-  async run(question){
+for(
+const r of [...results,...more].slice(0,45)
+){
 
-    if(this.busy){
-      throw new Error("Le moteur travaille déjà.");
-    }
+const s=
+this.sources.find(
+x=>x.id===r.source
+);
 
-    this.busy=true;
+if(s){
 
-    this.abortController=new AbortController();
+try{
 
-    try{
+const d=
+await this.fetchExtract(
+s,
+r.title,
+this.abortController.signal
+);
 
-      const info=this.analyzeQuestion(question);
+if(d)
+docs.push(d);
 
-      this.step(
-        "Analyse de la question",
-        1
-      );
+}catch(e){}
 
-      await this.sleep(80);
+}
+}
 
-      this.step(
-        "Construction des recherches",
-        2
-      );
+this.step('Construction des preuves');
 
-      const queries=this.buildQueries(info);
+const passages=
+this.selectPassages(
+this.buildPassages(
+docs,
+info
+),
+20
+);
 
-      await this.sleep(60);
+const relations=
+passages.flatMap(
+p=>this.extractTextRelations(p.text)
+);
 
-      this.step(
-        "Recherche dans les sources publiques",
-        3
-      );
+const graph=
+this.buildKnowledgeGraph(
+facts,
+relations
+);
 
-      let results=await this.searchAll(
-        queries
-      );
+this.step('Raisonnement et vérification');
 
-      results=this.uniqueResults(results);
+const gr=
+this.graphAnswer(
+graph,
+info,
+passages
+);
 
-      if(!results.length){
+const answer=
+this.synthesize(
+info,
+passages,
+gr
+);
 
-        this.step(
-          "Recherche élargie",
-          4
-        );
+const ev=
+this.aggregateEvidence(
+passages
+);
 
-        const fallbackQueries=
-          this.unique([
-            ...info.terms,
-            ...info.domains,
-            ...info.phrases.slice(0,5)
-          ])
-          .filter(x=>x.length>2)
-          .slice(0,10);
+const confidence=
+Math.min(
+1,
+.45*ev.averageScore+
+.2*Math.min(1,ev.sourceCount/3)+
+.35*(gr?1:0)
+);
 
-        const second=await this.searchAll(
-          fallbackQueries
-        );
+const result=
+this.finalizeResult(
+info,
+answer,
+passages,
+{
+confidence,
+entities:
+[...graph.nodes.values()]
+.slice(0,20)
+.map(x=>x.label)
+}
+);
 
-        results=this.uniqueResults([
-          ...results,
-          ...second
-        ]);
-      }
+this.remember(q,result);
 
-      this.step(
-        "Extraction des informations utiles",
-        4
-      );
+return result;
 
-      const enriched=[];
+}catch(e){
 
-      for(const result of results
-        .sort((a,b)=>
-          this.score(b,info)-
-          this.score(a,info)
-        )
-        .slice(0,28)
-      ){
+if(e.name==='AbortError')
+throw e;
 
-        const item=await this.fetchExtract(
-          result
-        );
+throw e;
 
-        enriched.push(item);
-      }
+}finally{
 
-      this.step(
-        "Découverte des entités",
-        5
-      );
+this.busy=false;
+this.abortController=null;
 
-      const entities=await this.discoverConcepts(
-        info,
-        enriched
-      );
+}
 
-      this.step(
-        "Lecture des relations structurées",
-        6
-      );
+}
 
-      const entityIds=entities
-        .map(x=>x.id)
-        .filter(Boolean)
-        .slice(0,25);
-
-      const fullEntities=
-        await this.wikidataEntities(
-          entityIds
-        );
-
-      const facts=
-        await this.buildWikidataFacts(
-          fullEntities
-        );
-
-      this.step(
-        "Deuxième passe de recherche",
-        7
-      );
-
-      const secondResults=
-        await this.secondPass(
-          info,
-          enriched
-        );
-
-      const allResults=this.uniqueResults([
-        ...enriched,
-        ...secondResults
-      ]);
-
-      const passages=
-        this.buildPassages(
-          allResults
-        );
-
-      this.step(
-        "Construction du graphe de connaissances",
-        8
-      );
-
-      const textRelations=
-        this.extractTextRelations(
-          passages
-        );
-
-      const graph=
-        this.buildKnowledgeGraph(
-          facts,
-          textRelations,
-          fullEntities
-        );
-
-      this.step(
-        "Raisonnement et comparaison",
-        9
-      );
-
-      const graphResult=
-        this.graphAnswer(
-          graph,
-          info
-        );
-
-      let finalResult=graphResult;
-
-      if(!finalResult){
-
-        this.step(
-          "Sélection des passages les plus pertinents",
-          10
-        );
-
-        const selected=
-          this.selectPassages(
-            passages,
-            info,
-            14
-          );
-
-        this.step(
-          "Synthèse et vérification",
-          11
-        );
-
-        finalResult=
-          this.synthesize(
-            selected,
-            info
-          );
-      }
-
-      /*
-        Vérification complémentaire :
-        on ne modifie pas automatiquement une réponse
-        structurée forte avec un résultat textuel faible.
-      */
-
-      this.step(
-        "Vérification finale",
-        12
-      );
-
-      finalResult=
-        this.finalizeResult(
-          finalResult,
-          info,
-          allResults,
-          graph
-        );
-
-      this.remember(
-        question,
-        finalResult
-      );
-
-      return{
-        ...finalResult,
-        queryInfo:info,
-        stats:{
-          queries:queries.length,
-          results:allResults.length,
-          entities:fullEntities.length,
-          facts:facts.length,
-          graphNodes:graph.nodes.size,
-          graphEdges:graph.edges.length
-        }
-      };
-
-    }finally{
-
-      this.busy=false;
-      this.abortController=null;
-    }
-  }
-
-  uniqueResults(results){
-
-    const map=new Map();
-
-    for(const result of results){
-
-      const key=
-        result.sourceId+
-        "|" +
-        (result.pageid||result.title||"");
-
-      if(!map.has(key)){
-        map.set(key,result);
-      }
-    }
-
-    return[...map.values()];
-  }
-
-  finalizeResult(
-    result,
-    questionInfo,
-    allResults,
-    graph
-  ){
-
-    if(!result){
-
-      return{
-        answerText:
-          "Je n'ai pas pu construire une réponse suffisamment fiable.",
-        answer:
-          "Je n'ai pas pu construire une réponse suffisamment fiable.",
-        evidence:[],
-        confidence:.1
-      };
-    }
-
-    let answer=this.cleanFinalText(
-      result.answerText||
-      result.answer||
-      ""
-    );
-
-    if(!answer){
-
-      answer=
-        "Je n'ai pas trouvé de réponse exploitable.";
-    }
-
-    /*
-      Pour les réponses issues du graphe, on conserve
-      la formulation directe.
-    */
-
-    if(
-      questionInfo.superlative.detected &&
-      result.reasoning
-    ){
-
-      const r=result.reasoning;
-
-      if(
-        r.winner&&
-        r.relation&&
-        r.target
-      ){
-
-        answer=
-          r.winner+
-          " est l'élément retenu selon le critère demandé. "+
-          "Sa relation « "+
-          r.relation+
-          " » mène à "+
-          r.target+".";
-      }
-    }
-
-    const contradictions=
-      this.findContradictions(
-        graph.edges
-      );
-
-    let confidence=
-      Number(result.confidence||.2);
-
-    if(contradictions.length){
-      confidence-=.08;
-    }
-
-    confidence=Math.max(
-      .05,
-      Math.min(.97,confidence)
-    );
-
-    const evidence=
-      result.evidence||
-      [];
-
-    return{
-      ...result,
-      answerText:answer,
-      answer:answer,
-      evidence,
-      confidence,
-      contradictions
-    };
-  }
 }
 
 
-/* =========================================================
-   INTERFACE
-   ========================================================= */
+class PyramidV7 extends PyramidV6 {
 
-const chat=document.getElementById("chat");
-const input=document.getElementById("input");
-const send=document.getElementById("send");
-const clearBtn=document.getElementById("clearBtn");
-const status=document.getElementById("status");
+constructor(stepCallback){
+
+super(stepCallback);
+
+this.version='V7';
+
+this.memory=
+this.defaultMemory();
+
+this.loadPersistentMemory();
+
+this.taskState={};
+}
+
+defaultMemory(){
+
+return {
+schemaVersion:1,
+engineFamily:'Pyramidal',
+engineVersion:'V7',
+savedAt:null,
+conversation:[],
+concepts:[],
+entities:[],
+relations:[],
+evidence:[],
+sources:[],
+learnedStrategies:[],
+taskHistory:[],
+statistics:{
+runs:0,
+successes:0,
+failures:0,
+totalSearchPasses:0,
+totalSources:0,
+lastRun:null
+}
+};
+
+}
+
+now(){
+return new Date().toISOString();
+}
+
+hash(s){
+
+let h=2166136261;
+
+for(const ch of String(s)){
+
+h^=ch.charCodeAt(0);
+h=Math.imul(h,16777619);
+
+}
+
+return (h>>>0).toString(16);
+}
+
+normalizeMemory(m){
+
+const base=this.defaultMemory();
+
+if(!m||typeof m!=='object')
+return base;
+
+const out={
+...base,
+...m
+};
+
+out.schemaVersion=1;
+out.engineFamily='Pyramidal';
+out.engineVersion='V7';
+
+for(
+const k of [
+'conversation',
+'concepts',
+'entities',
+'relations',
+'evidence',
+'sources',
+'learnedStrategies',
+'taskHistory'
+]
+)
+out[k]=
+Array.isArray(out[k])
+?out[k]
+:[];
+
+out.statistics={
+...base.statistics,
+...(m.statistics||{})
+};
+
+return out;
+}
+
+migrateMemory(raw){
+
+if(Array.isArray(raw))
+return this.normalizeMemory({
+conversation:raw
+});
+
+if(raw?.memoryFormat&&raw.memory)
+raw=raw.memory;
+
+return this.normalizeMemory(raw);
+}
+
+loadPersistentMemory(){
+
+try{
+
+const raw=
+localStorage.getItem(
+'pyramidal_v7_memory'
+);
+
+if(raw)
+this.memory=
+this.migrateMemory(
+JSON.parse(raw)
+);
+
+}catch(e){
+
+this.memory=
+this.defaultMemory();
+
+}
+}
+
+savePersistentMemory(){
+
+try{
+
+this.memory.savedAt=
+this.now();
+
+localStorage.setItem(
+'pyramidal_v7_memory',
+JSON.stringify(this.memory)
+);
+
+return true;
+
+}catch(e){
+
+return false;
+
+}
+}
+
+addUnique(list,item,key){
+
+const k=
+key||
+this.hash(
+JSON.stringify(item)
+);
+
+if(
+!list.some(
+x=>
+(x._key||
+this.hash(JSON.stringify(x)))===k
+)
+){
+
+list.push({
+...item,
+_key:k
+});
+
+return true;
+}
+
+return false;
+}
+
+extractTaskConstraints(q){
+
+const n=this.norm(q);
+
+const words=
+String(q).match(
+/\b\d+(?:[.,]\d+)?\s*(?:mots?|pages?|paragraphes?|phrases?)\b/iu
+)||[];
+
+const length=words[0]||'';
+
+let style='neutre';
+
+if(
+/\b(formel|professionnel|scolaire|academique|académique|simple|vulgarise|vulgarisé|argumentatif|convaincant)\b/i
+.test(q)
+){
+
+style=
+q.match(
+/\b(formel|professionnel|scolaire|academique|académique|simple|vulgarise|vulgarisé|argumentatif|convaincant)\b/i
+)?.[1]||style;
+
+}
+
+let format='paragraphes';
+
+if(/\bliste|puces|bullet/i.test(n))
+format='liste';
+
+if(/\bplan|sommaire|structure/i.test(n))
+format='plan';
+
+if(/\btableau|table/i.test(n))
+format='tableau';
+
+return {
+length,
+style,
+format,
+audience:
+/\b(enfant|débutant|debutant|secondaire|universite|université|expert)\b/i
+.test(q)
+?q.match(
+/\b(enfant|débutant|debutant|secondaire|universite|université|expert)\b/i
+)?.[1]
+:'general'
+};
+
+}
+
+detectTaskMode(q){
+
+const n=this.norm(q);
+
+if(
+/\b(corrige|corriger|correction|reformule|reformuler|simplifie|simplifier)\b/.test(n)
+)
+return 'rewrite';
+
+if(
+/\b(resume|résume|résumer|synthese|synthèse)\b/.test(n)
+)
+return 'summary';
+
+if(
+/\b(redige|rédige|redaction|rédaction|ecris|écris|ecrit|écrit|texte|paragraphe|article|discours)\b/.test(n)
+)
+return 'writing';
+
+if(
+/\b(plan|structure|sommaire)\b/.test(n)
+)
+return 'outline';
+
+if(
+/\b(compare|comparaison|difference|différence|versus|vs)\b/.test(n)
+)
+return 'comparison';
+
+if(
+/\b(verifie|vérifie|verification|vérification|est-ce vrai|est ce vrai)\b/.test(n)
+)
+return 'verification';
+
+if(
+/\b(explique|explication|pourquoi|comment)\b/.test(n)&&
+!/\bcomment écrire|comment rediger|comment rédiger\b/.test(n)
+)
+return 'explanation';
+
+if(this.detectSuperlative(q).is)
+return 'superlative';
+
+return 'research';
+}
+
+stripTaskPrefix(q){
+
+let s=String(q).trim();
+
+const m=
+s.match(
+/^(rédige|redige|écris|ecris|résume|resume|reformule|reformuler|corrige|corriger|explique|compare|vérifie|verifie)\b\s*/i
+);
+
+if(m)
+s=s.slice(m[0].length).trim();
+
+const colon=s.indexOf(':');
+
+if(colon>=0&&colon<100)
+s=s.slice(colon+1).trim();
+
+return s.replace(
+/^(?:un|une|le|la|les)\s+(?:texte|article|paragraphe|discours|plan|resume|résumé)\s+(?:sur|de|du|des|concernant)\s+/i,
+''
+).trim();
+}
+
+buildContext(q){
+
+const recent=
+this.memory.conversation.slice(-5);
+
+const hints=[];
+
+for(const x of recent){
+
+for(
+const e of (x.entities||[]).slice(0,8)
+)
+hints.push(e);
+
+}
+
+return {
+recent,
+relevantEntities:
+this.unique(hints).slice(-20)
+};
+}
+
+resolveContextQuestion(q){
+
+const s=String(q).trim();
+const n=this.norm(s);
+
+const short=s.length<90;
+
+const ref=
+/\b(il|elle|ils|elles|sa|son|ses|leur|leurs|celui|celle|ceux|celles|cet|cette|et pourquoi|et comment|et sa|et son|et ses)\b/
+.test(n);
+
+if(!short&&!ref)
+return s;
+
+const ctx=this.buildContext(s);
+
+if(!ctx.relevantEntities.length)
+return s;
+
+return `${s} ${ctx.relevantEntities.slice(-3).join(' ')}`.trim();
+}
+
+isLikelyUserText(q,mode){
+
+if(
+mode==='rewrite'||
+mode==='summary'
+)
+return String(q).length>180||/[:\n]/.test(q);
+
+return false;
+}
+
+buildTaskPlan(q,mode,info){
+
+const plan={
+mode,
+objective:q.trim(),
+subject:this.stripTaskPrefix(q),
+constraints:this.extractTaskConstraints(q),
+steps:[]
+};
+
+if(
+mode==='rewrite'||
+mode==='summary'
+){
+
+plan.steps=[
+'extraire le texte fourni',
+'transformer le texte',
+'vérifier la conservation du sens'
+];
+
+return plan;
+}
+
+plan.steps=[
+'identifier le sujet et les contraintes',
+'rechercher des preuves',
+'croiser les sources',
+'construire les relations utiles',
+'vérifier',
+'produire le format demandé'
+];
+
+return plan;
+}
+
+sentenceSplit(text){
+
+return this.clean(text)
+.split(/(?<=[.!?])\s+/)
+.map(x=>x.trim())
+.filter(x=>x.length>20);
+}
+
+summarizeText(text,limit=5){
+
+const s=this.sentenceSplit(text);
+
+if(!s.length)
+return '';
+
+const freq=new Map();
+
+for(const w of this.words(text))
+freq.set(w,(freq.get(w)||0)+1);
+
+const scored=
+s.map((x,i)=>{
+
+const score=
+this.words(x)
+.reduce(
+(a,w)=>a+(freq.get(w)||0),
+0
+)/
+Math.max(
+1,
+this.words(x).length
+);
+
+return {
+x,
+i,
+score
+};
+
+})
+.sort((a,b)=>b.score-a.score)
+.slice(0,limit)
+.sort((a,b)=>a.i-b.i);
+
+return scored
+.map(x=>x.x)
+.join(' ');
+}
+
+rewriteText(text,style='simple'){
+
+let out=this.clean(text);
+
+out=
+out
+.replace(/\s+/g,' ')
+.replace(/\s+([,.;!?])/g,'$1')
+.trim();
+
+if(style==='simple'){
+
+out=
+out
+.replace(/cependant/gi,'mais')
+.replace(/néanmoins/gi,'mais')
+.replace(/en outre/gi,'aussi');
+
+}
+
+return out;
+}
+
+extractSubjectForResearch(q){
+
+let s=this.stripTaskPrefix(q);
+
+s=
+s.replace(
+/\b(?:en\s+\d+\s+mots?|en\s+\d+\s+paragraphes?|pour\s+(?:un|une)\s+(?:eleve|élève|débutant|expert))\b/gi,
+''
+)
+.trim();
+
+return s;
+}
+
+async targetedResearch(info,plan,signal){
+
+const allResults=[];
+const allDocs=[];
+const allFacts=[];
+const allRelations=[];
+const usedQueries=[];
+
+let passes=0;
+
+let queries=this.buildQueries(info);
+
+if(
+plan.mode==='writing'||
+plan.mode==='outline'
+)
+queries=[
+this.extractSubjectForResearch(info.raw),
+...queries
+];
+
+for(let pass=0;pass<3;pass++){
+
+passes++;
+
+this.step(
+`Recherche adaptative ${pass+1}/3`
+);
+
+usedQueries.push(...queries);
+
+const results=
+await this.searchAll(
+this.unique(queries).slice(0,8),
+signal
+);
+
+allResults.push(...results);
+
+const ids=
+await this.discoverConcepts(
+results,
+info,
+signal
+);
+
+const ents=
+await this.wikidataEntities(
+ids,
+signal
+);
+
+const facts=
+await this.buildWikidataFacts(
+ents,
+signal
+);
+
+allFacts.push(...facts);
+
+for(
+const r of this.uniqueResults(results).slice(0,28)
+){
+
+const s=
+this.sources.find(
+x=>x.id===r.source
+);
+
+if(!s)
+continue;
+
+try{
+
+const d=
+await this.fetchExtract(
+s,
+r.title,
+signal
+);
+
+if(d)
+allDocs.push(d);
+
+}catch(e){}
+
+}
+
+const passages=
+this.selectPassages(
+this.buildPassages(
+allDocs,
+info
+),
+24
+);
+
+const rel=
+passages.flatMap(
+p=>this.extractTextRelations(p.text)
+);
+
+allRelations.push(...rel);
+
+const graph=
+this.buildKnowledgeGraph(
+allFacts,
+allRelations
+);
+
+const need=
+this.findMissingNeeds(
+info,
+plan,
+graph,
+passages
+);
+
+if(!need.length)
+break;
+
+queries=need;
+}
+
+return {
+results:this.uniqueResults(allResults),
+docs:allDocs,
+facts:allFacts,
+relations:allRelations,
+passes,
+usedQueries:this.unique(usedQueries)
+};
+
+}
+
+findMissingNeeds(info,plan,graph,passages){
+
+const need=[];
+
+const labels=
+[...graph.nodes.values()]
+.map(x=>x.label);
+
+const joined=
+this.norm(labels.join(' '));
+
+if(
+info.type==='superlative'&&
+!this.solveSuperlative(graph,info)
+)
+need.push(
+`${info.raw} données quantitatives valeur classement`
+);
+
+if(
+(plan.mode==='fact'||
+plan.mode==='research'||
+plan.mode==='verification')&&
+!passages.length
+)
+need.push(info.raw);
+
+if(
+plan.mode==='comparison'&&
+labels.length<2
+)
+need.push(
+`${info.raw} comparaison caractéristiques`
+);
+
+if(
+plan.mode==='writing'&&
+passages.length<3
+)
+need.push(
+`${this.extractSubjectForResearch(info.raw)} faits principaux contexte`
+);
+
+if(!joined&&info.terms.length)
+need.push(info.terms.join(' '));
+
+return this.unique(need).slice(0,5);
+}
+
+buildEvidenceMatrix(passages,facts,relations,info){
+
+const matrix=[];
+
+for(const p of passages.slice(0,20))
+
+matrix.push({
+kind:'text',
+source:p.source,
+title:p.title,
+text:p.text,
+score:p.score
+});
+
+for(const f of facts.slice(0,80))
+
+matrix.push({
+kind:'structured',
+source:'wikidata',
+subject:f.subject,
+relation:f.propertyId,
+object:f.object,
+value:f.value,
+score:.7
+});
+
+for(const r of relations.slice(0,80))
+
+matrix.push({
+kind:'relation',
+source:'text',
+subject:r.subject,
+relation:r.relation,
+object:r.object,
+score:.55
+});
+
+return matrix;
+}
+
+verifyResult(result,info,matrix,graph){
+
+if(!result)
+return {
+ok:false,
+confidence:0,
+reasons:['aucun résultat structuré']
+};
+
+const sourceSet=
+new Set(
+matrix
+.map(x=>x.source)
+.filter(Boolean)
+);
+
+const relevant=
+matrix.filter(
+x=>
+this.termScore(
+`${x.subject||''} ${x.object||''} ${x.text||''}`,
+info
+)>.12
+);
+
+const structured=
+matrix.filter(
+x=>x.kind==='structured'
+).length;
+
+const confidence=
+Math.min(
+1,
+.35*Math.min(1,relevant.length/5)+
+.25*Math.min(1,sourceSet.size/3)+
+.2*(structured?1:0)+
+.2*(result.candidate?1:0)
+);
+
+return {
+ok:confidence>=.35,
+confidence,
+reasons:[
+`${relevant.length} éléments pertinents`,
+`${sourceSet.size} sources distinctes`,
+structured
+?`${structured} éléments structurés Wikidata`
+:'peu de données structurées'
+]
+};
+}
+
+writeFromEvidence(subject,passages,constraints){
+
+const selected=
+this.selectPassages(
+passages,
+12
+);
+
+const facts=[];
+
+for(const p of selected){
+
+const s=this.sentenceSplit(p.text);
+
+for(const x of s){
+
+if(
+this.termScore(
+x,
+{
+terms:this.words(subject),
+phrases:[],
+domains:[],
+superlative:{is:false}
+}
+)>.15
+)
+facts.push(x);
+
+}
+}
+
+const unique=[];
+
+for(const f of facts)
+
+if(
+unique.every(
+x=>this.similarity(x,f)<.72
+)
+)
+unique.push(f);
+
+const intro=
+`${subject} est un sujet qui peut être présenté à partir de plusieurs éléments complémentaires.`;
+
+const body=
+unique
+.slice(
+0,
+Math.max(
+3,
+constraints.length?8:6
+)
+)
+.join(' ');
+
+const conclusion=
+unique.length
+?`Ces éléments permettent de situer les principaux aspects de ${subject} et d’en dégager une vue d’ensemble.`
+:`Les sources disponibles ne permettent pas de construire une synthèse suffisamment étayée sur ${subject}.`;
+
+let text=[
+intro,
+body,
+conclusion
+]
+.filter(Boolean)
+.join('\n\n');
+
+if(constraints.format==='liste')
+
+text=
+unique
+.slice(0,10)
+.map(x=>`• ${x}`)
+.join('\n');
+
+if(constraints.format==='plan')
+
+text=[
+'Introduction',
+...unique.slice(0,6)
+.map((x,i)=>`${i+1}. ${x}`),
+'Conclusion'
+]
+.join('\n');
+
+return this.cleanFinalText(text)
+.replace(/\n /g,'\n');
+}
+
+compareFromEvidence(info,passages,graph){
+
+const candidates=
+this.findCandidateNodes(
+graph,
+info
+).slice(0,6);
+
+if(candidates.length<2){
+
+const chunks=
+this.selectPassages(
+passages,
+6
+)
+.map(p=>`• ${p.text}`);
+
+return chunks.join('\n');
+}
+
+const lines=[];
+
+for(const n of candidates.slice(0,4)){
+
+const edges=
+graph.edges
+.filter(e=>e.from===n.id)
+.slice(0,5);
+
+const vals=
+edges
+.map(
+e=>
+`${e.labelText||e.label}: ${e.raw?.object||e.value||e.to}`
+)
+.join('; ');
+
+lines.push(
+`• ${n.label}${vals?` — ${vals}`:''}`
+);
+
+}
+
+return lines.join('\n');
+}
+
+outlineFromEvidence(subject,passages){
+
+const p=
+this.selectPassages(
+passages,
+9
+);
+
+const sections=[];
+
+for(const x of p){
+
+const s=
+this.sentenceSplit(x.text)[0];
+
+if(s)
+sections.push(s);
+}
+
+return [
+`Introduction — contexte général de ${subject}`,
+'1. Définition et éléments essentiels',
+...sections.slice(0,3)
+.map((x,i)=>`${i+2}. ${x}`),
+'Conclusion — synthèse des éléments principaux'
+]
+.join('\n');
+}
+
+generalAnswer(info,passages,graph){
+
+const gr=
+this.graphAnswer(
+graph,
+info,
+passages
+);
+
+if(gr)
+return gr;
+
+const selected=
+this.selectPassages(
+passages,
+6
+);
+
+if(!selected.length)
+return null;
+
+return {
+answerText:
+selected
+.map(x=>x.text)
+.join(' '),
+candidate:null
+};
+}
+
+async solveTask(q,signal){
+
+const resolved=
+this.resolveContextQuestion(q);
+
+const mode=
+this.detectTaskMode(resolved);
+
+const info=
+this.analyzeQuestion(resolved);
+
+const plan=
+this.buildTaskPlan(
+resolved,
+mode,
+info
+);
+
+plan.originalQuestion=q;
+
+this.taskState=plan;
+
+if(
+(mode==='summary'||mode==='rewrite')&&
+this.isLikelyUserText(q,mode)
+){
+
+this.step(
+mode==='summary'
+?'Résumé du texte fourni'
+:'Reformulation du texte fourni'
+);
+
+const text=
+this.stripTaskPrefix(q);
+
+const answer=
+mode==='summary'
+?this.summarizeText(text,6)
+:this.rewriteText(
+text,
+plan.constraints.style
+);
+
+return {
+info,
+plan,
+answerText:answer,
+passages:[],
+facts:[],
+relations:[],
+graph:this.createGraph(),
+research:null,
+verification:{
+ok:true,
+confidence:.9,
+reasons:['transformation locale']
+}
+};
+}
+
+this.step('Planification de la tâche');
+
+const research=
+await this.targetedResearch(
+info,
+plan,
+signal
+);
+
+const passages=
+this.selectPassages(
+this.buildPassages(
+research.docs,
+info
+),
+28
+);
+
+const relations=
+research.relations;
+
+const graph=
+this.buildKnowledgeGraph(
+research.facts,
+relations
+);
+
+const matrix=
+this.buildEvidenceMatrix(
+passages,
+research.facts,
+relations,
+info
+);
+
+let raw=null;
+
+if(mode==='writing')
+
+raw={
+answerText:
+this.writeFromEvidence(
+this.extractSubjectForResearch(q),
+passages,
+plan.constraints
+)
+};
+
+else if(mode==='outline')
+
+raw={
+answerText:
+this.outlineFromEvidence(
+this.extractSubjectForResearch(q),
+passages
+)
+};
+
+else if(mode==='comparison')
+
+raw={
+answerText:
+this.compareFromEvidence(
+info,
+passages,
+graph
+)
+};
+
+else
+
+raw=
+this.generalAnswer(
+info,
+passages,
+graph
+);
+
+if(!raw)
+
+raw={
+answerText:
+'Je n’ai pas trouvé suffisamment d’éléments concordants pour répondre avec confiance.'
+};
+
+const verification=
+this.verifyResult(
+raw,
+info,
+matrix,
+graph
+);
+
+return {
+info,
+plan,
+answerText:raw.answerText,
+passages,
+facts:research.facts,
+relations,
+graph,
+research,
+verification
+};
+}
+
+rememberV7(q,out){
+
+const now=this.now();
+
+const entities=
+this.unique(
+(out.research?.results||[])
+.slice(0,20)
+.map(x=>x.title)
+)
+.slice(0,20);
+
+this.addUnique(
+this.memory.conversation,
+{
+question:q,
+answer:out.answerText,
+time:now,
+type:out.info.type,
+mode:out.plan.mode,
+entities
+},
+this.hash(`${q}|${out.answerText}`)
+);
+
+for(
+const c of this.unique(
+[
+...(out.info.terms||[]),
+...(out.info.phrases||[])
+]
+.filter(x=>x.length>2)
+).slice(0,30)
+)
+
+this.addUnique(
+this.memory.concepts,
+{
+label:c,
+lastSeen:now
+},
+this.hash(this.norm(c))
+);
+
+this.addUnique(
+this.memory.taskHistory,
+{
+time:now,
+mode:out.plan.mode,
+type:out.info.type,
+confidence:out.verification.confidence,
+passes:out.research?.passes||0
+},
+this.hash(`${now}|${out.plan.mode}|${out.info.raw}`)
+);
+
+for(const e of entities)
+
+this.addUnique(
+this.memory.entities,
+{
+label:e,
+lastSeen:now,
+type:this.inferEntityType(e)
+},
+this.hash(this.norm(e))
+);
+
+for(const r of out.relations.slice(0,100))
+
+this.addUnique(
+this.memory.relations,
+{
+subject:r.subject,
+relation:r.relation,
+object:r.object,
+lastSeen:now
+},
+this.hash(`${r.subject}|${r.relation}|${r.object}`)
+);
+
+for(const f of out.facts.slice(0,100))
+
+this.addUnique(
+this.memory.relations,
+{
+subject:f.subject,
+relation:f.propertyId,
+object:f.object,
+value:f.value,
+source:'wikidata',
+lastSeen:now
+},
+this.hash(`${f.subject}|${f.propertyId}|${f.object}|${f.value}`)
+);
+
+for(const p of out.passages.slice(0,40))
+
+this.addUnique(
+this.memory.evidence,
+{
+source:p.source,
+title:p.title,
+text:p.text,
+score:p.score,
+lastSeen:now
+},
+this.hash(`${p.source}|${p.title}|${p.text}`)
+);
+
+for(
+const s of this.unique(
+out.passages.map(p=>p.source)
+)
+)
+
+this.addUnique(
+this.memory.sources,
+{
+source:s,
+lastSeen:now
+},
+this.hash(s)
+);
+
+this.memory.statistics.runs++;
+this.memory.statistics.successes++;
+
+this.memory.statistics.totalSearchPasses+=
+out.research?.passes||0;
+
+this.memory.statistics.totalSources+=
+this.unique(
+out.passages.map(p=>p.source)
+).length;
+
+this.memory.statistics.lastRun=now;
+
+this.learnStrategy(out);
+
+this.savePersistentMemory();
+
+this.sessionMemory.push({
+q,
+answer:out.answerText,
+time:Date.now(),
+entities
+});
+
+if(this.sessionMemory.length>30)
+this.sessionMemory.shift();
+}
+
+learnStrategy(out){
+
+const key=
+`${out.plan.mode}|${out.info.type}`;
+
+const existing=
+this.memory.learnedStrategies.find(
+x=>x.key===key
+);
+
+if(existing){
+
+existing.uses++;
+
+existing.avgConfidence=
+(
+existing.avgConfidence*(existing.uses-1)+
+out.verification.confidence
+)/
+existing.uses;
+
+existing.avgPasses=
+(
+existing.avgPasses*(existing.uses-1)+
+(out.research?.passes||0)
+)/
+existing.uses;
+
+}else{
+
+this.memory.learnedStrategies.push({
+key,
+uses:1,
+avgConfidence:
+out.verification.confidence,
+avgPasses:
+out.research?.passes||0
+});
+
+}
+}
+
+memoryStats(){
+
+const s=this.memory.statistics;
+
+return {
+conversation:this.memory.conversation.length,
+concepts:this.memory.concepts.length,
+entities:this.memory.entities.length,
+relations:this.memory.relations.length,
+evidence:this.memory.evidence.length,
+sources:this.memory.sources.length,
+strategies:this.memory.learnedStrategies.length,
+runs:s.runs
+};
+}
+
+exportMemory(){
+
+this.memory.savedAt=this.now();
+
+const payload={
+memoryFormat:'pyramidal-v7',
+exportedAt:this.now(),
+memory:this.memory
+};
+
+const blob=
+new Blob(
+[JSON.stringify(payload,null,2)],
+{type:'application/json'}
+);
+
+const url=
+URL.createObjectURL(blob);
+
+const a=
+document.createElement('a');
+
+a.href=url;
+
+a.download=
+`memoire-pyramidal-v7-${new Date().toISOString().slice(0,10)}.json`;
+
+a.click();
+
+setTimeout(
+()=>URL.revokeObjectURL(url),
+500
+);
+
+this.savePersistentMemory();
+}
+
+async readMemoryFile(file){
+return JSON.parse(await file.text());
+}
+
+importMemory(raw,merge=false){
+
+const incoming=
+this.migrateMemory(raw);
+
+if(!merge)
+this.memory=incoming;
+else
+this.mergeMemory(incoming);
+
+this.savePersistentMemory();
+
+return this.memoryStats();
+}
+
+mergeMemory(incoming){
+
+for(
+const k of [
+'conversation',
+'concepts',
+'entities',
+'relations',
+'evidence',
+'sources',
+'learnedStrategies'
+]
+)
+
+for(const item of incoming[k]||[])
+this.addUnique(
+this.memory[k],
+item
+);
+
+this.memory.statistics={
+...this.memory.statistics,
+
+runs:
+(this.memory.statistics.runs||0)+
+(incoming.statistics?.runs||0),
+
+successes:
+(this.memory.statistics.successes||0)+
+(incoming.statistics?.successes||0),
+
+failures:
+(this.memory.statistics.failures||0)+
+(incoming.statistics?.failures||0),
+
+totalSearchPasses:
+(this.memory.statistics.totalSearchPasses||0)+
+(incoming.statistics?.totalSearchPasses||0),
+
+totalSources:
+(this.memory.statistics.totalSources||0)+
+(incoming.statistics?.totalSources||0)
+};
+}
+
+resetMemory(){
+
+this.memory=
+this.defaultMemory();
+
+this.sessionMemory=[];
+
+this.savePersistentMemory();
+}
+
+async run(q){
+
+if(this.busy)
+throw new Error('Moteur déjà occupé.');
+
+this.busy=true;
+
+this.abortController=
+new AbortController();
+
+try{
+
+const out=
+await this.solveTask(
+q,
+this.abortController.signal
+);
+
+this.step('Vérification finale');
+
+this.rememberV7(q,out);
+
+return this.finalizeResult(
+out.info,
+out.answerText,
+out.passages,
+{
+confidence:out.verification.confidence,
+entities:
+out.research?.results?.slice(0,20)
+.map(x=>x.title)||[],
+task:out.plan,
+verification:out.verification,
+mode:out.plan.mode
+}
+);
+
+}catch(e){
+
+this.memory.statistics.failures++;
+
+this.savePersistentMemory();
+
+if(e.name==='AbortError')
+throw e;
+
+throw e;
+
+}finally{
+
+this.busy=false;
+this.abortController=null;
+
+}
+
+}
+
+}
+
+
+const chat=document.getElementById('chat');
+const input=document.getElementById('input');
+const send=document.getElementById('send');
+const welcome=document.getElementById('welcome');
+const drawerBackdrop=document.getElementById('drawerBackdrop');
+const memoryStatsEl=document.getElementById('memoryStats');
+const engineStatus=document.getElementById('engineStatus');
 
 let activeStep=null;
-let currentStepNumber=0;
 
 function scrollBottom(){
-
-  chat.scrollTop=chat.scrollHeight;
+chat.scrollTop=chat.scrollHeight;
 }
 
 function removeWelcome(){
-
-  const welcome=document.getElementById("welcome");
-
-  if(welcome){
-    welcome.remove();
-  }
+if(welcome)
+welcome.remove();
 }
 
 function addUserMessage(text){
 
-  removeWelcome();
+removeWelcome();
 
-  const message=document.createElement("div");
+const d=document.createElement('div');
 
-  message.className="message user";
+d.className='message user';
 
-  const bubble=document.createElement("div");
+d.innerHTML=
+`<div class="bubble">${engine.escapeHTML(text)}</div>`;
 
-  bubble.className="bubble";
+chat.appendChild(d);
 
-  bubble.textContent=text;
-
-  message.appendChild(bubble);
-
-  chat.appendChild(message);
-
-  scrollBottom();
+scrollBottom();
 }
 
-function showStep(text,number){
+function showStep(label){
 
-  if(activeStep){
-    activeStep.remove();
-    activeStep=null;
-  }
+if(activeStep)
+activeStep.remove();
 
-  currentStepNumber=number;
+const d=document.createElement('div');
 
-  const line=document.createElement("div");
+d.className='step';
 
-  line.className="step-line";
+d.innerHTML=
+`<span class="spinner"></span><span>${engine.escapeHTML(label)}</span>`;
 
-  line.innerHTML=
-    '<span class="step-number">'+
-    number+
-    '</span>'+
-    '<span class="step-spinner"></span>'+
-    '<span>'+
-    escapeForHTML(text)+
-    '</span>';
+chat.appendChild(d);
 
-  chat.appendChild(line);
+activeStep=d;
 
-  activeStep=line;
-
-  scrollBottom();
-
-  status.textContent="Étape "+number;
+scrollBottom();
 }
 
 function removeStep(){
 
-  if(activeStep){
-    activeStep.remove();
-    activeStep=null;
-  }
+if(activeStep){
 
-  status.textContent="Réponse terminée";
+activeStep.remove();
+activeStep=null;
 
-  scrollBottom();
 }
-
-function escapeForHTML(value){
-
-  return String(value||"")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
 }
 
 function addAssistantMessage(result){
 
-  const message=document.createElement("div");
+removeStep();
 
-  message.className="message assistant";
+const d=document.createElement('div');
 
-  const answer=document.createElement("div");
+d.className='message assistant';
 
-  answer.className="answer";
+const b=document.createElement('div');
 
-  answer.textContent=result.answerText||"";
+b.className='bubble';
 
-  message.appendChild(answer);
+const text=document.createElement('div');
 
-  const actions=document.createElement("div");
+text.textContent=
+result.answerText||'';
 
-  actions.className="answer-actions";
+b.appendChild(text);
 
-  const copy=document.createElement("button");
+const actions=
+document.createElement('div');
 
-  copy.className="copy";
+actions.className='answerActions';
 
-  copy.textContent="Copier";
+const copy=
+document.createElement('button');
 
-  copy.addEventListener("click",async()=>{
+copy.className='miniBtn';
 
-    try{
+copy.textContent='Copier';
 
-      await navigator.clipboard.writeText(
-        result.answerText||""
-      );
+copy.onclick=async()=>{
 
-      copy.textContent="Copié";
+try{
 
-      setTimeout(()=>{
-        copy.textContent="Copier";
-      },1200);
+await navigator.clipboard.writeText(
+result.answerText||''
+);
 
-    }catch(error){
+copy.textContent='Copié';
 
-      const area=document.createElement("textarea");
+setTimeout(
+()=>copy.textContent='Copier',
+900
+);
 
-      area.value=result.answerText||"";
+}catch(e){
 
-      document.body.appendChild(area);
+copy.textContent='Erreur';
 
-      area.select();
-
-      document.execCommand("copy");
-
-      area.remove();
-
-      copy.textContent="Copié";
-
-      setTimeout(()=>{
-        copy.textContent="Copier";
-      },1200);
-    }
-  });
-
-  actions.appendChild(copy);
-
-  message.appendChild(actions);
-
-  const sourceText=
-    formatSourceText(result);
-
-  if(sourceText){
-
-    const sources=document.createElement("div");
-
-    sources.className="sources";
-
-    sources.textContent=
-      sourceText;
-
-    message.appendChild(sources);
-  }
-
-  chat.appendChild(message);
-
-  scrollBottom();
 }
 
-function formatSourceText(result){
+};
 
-  const names=[];
+actions.appendChild(copy);
 
-  for(const item of result.evidence||[]){
+b.appendChild(actions);
 
-    const source=item.source;
+if(result.sources?.length){
 
-    if(
-      source&&
-      !names.includes(source)
-    ){
-      names.push(source);
-    }
-  }
+const src=
+document.createElement('div');
 
-  if(
-    result.stats&&
-    result.stats.facts>0&&
-    !names.includes("Wikidata")
-  ){
-    names.unshift("Wikidata");
-  }
+src.className='sources';
 
-  return names
-    .slice(0,7)
-    .join(" · ");
+src.innerHTML=
+result.sources
+.map(
+s=>
+`<span class="sourceItem">${engine.escapeHTML(s)}</span>`
+)
+.join('');
+
+b.appendChild(src);
+
+}
+
+const conf=
+document.createElement('div');
+
+conf.className='confidence';
+
+const c=
+Math.round(
+(result.confidence||0)*100
+);
+
+conf.innerHTML=
+`Confiance indicative : <strong>${c}%</strong>${result.meta?.mode?` · mode ${engine.escapeHTML(result.meta.mode)}`:''}`;
+
+b.appendChild(conf);
+
+d.appendChild(b);
+
+chat.appendChild(d);
+
+scrollBottom();
+}
+
+function setStatus(){
+
+const s=engine.memoryStats();
+
+memoryStatsEl.innerHTML=
+Object.entries(s)
+.map(
+([k,v])=>
+`<div class="stat"><small>${engine.escapeHTML(k)}</small><strong>${v}</strong></div>`
+)
+.join('');
+
+engineStatus.textContent=
+`Moteur ${engine.version} · mémoire locale ${engine.memory.savedAt?'active':'initialisée'} · dernière sauvegarde : ${engine.memory.savedAt||'aucune'}`;
+}
+
+function openDrawer(){
+
+drawerBackdrop.classList.add('open');
+
+setStatus();
+}
+
+function closeDrawer(){
+
+drawerBackdrop.classList.remove('open');
 }
 
 async function submit(){
 
-  const text=input.value.trim();
+const q=input.value.trim();
 
-  if(!text)return;
+if(!q||engine.busy)
+return;
 
-  if(engine.busy)return;
+input.value='';
 
-  addUserMessage(text);
+resizeInput();
 
-  input.value="";
-  resizeInput();
+addUserMessage(q);
 
-  send.disabled=true;
+send.disabled=true;
 
-  status.textContent="Recherche...";
+try{
 
-  try{
+const result=
+await engine.run(q);
 
-    const result=
-      await engine.run(text);
+addAssistantMessage(result);
 
-    removeStep();
+}catch(e){
 
-    addAssistantMessage(result);
+removeStep();
 
-    status.textContent=
-      "Terminé · "+
-      Math.round(
-        (result.confidence||0)*100
-      )+
-      "% de confiance";
+const d=document.createElement('div');
 
-  }catch(error){
+d.className='message assistant';
 
-    removeStep();
+d.innerHTML=
+`<div class="bubble">Erreur : ${engine.escapeHTML(e.message||String(e))}</div>`;
 
-    const message=document.createElement("div");
+chat.appendChild(d);
 
-    message.className="message assistant";
+scrollBottom();
 
-    const answer=document.createElement("div");
+}finally{
 
-    answer.className="answer";
+send.disabled=false;
 
-    answer.textContent=
-      "Une erreur est survenue pendant la recherche. "+
-      "Vérifie ta connexion Internet puis réessaie.";
+setStatus();
 
-    message.appendChild(answer);
+input.focus();
 
-    chat.appendChild(message);
-
-    status.textContent="Erreur";
-
-    console.error(error);
-
-  }finally{
-
-    send.disabled=false;
-
-    input.focus();
-
-    scrollBottom();
-  }
+}
 }
 
 function resizeInput(){
 
-  input.style.height="auto";
+input.style.height='auto';
 
-  input.style.height=
-    Math.min(
-      input.scrollHeight,
-      150
-    )+"px";
+input.style.height=
+Math.min(
+input.scrollHeight,
+150
+)+'px';
 }
 
-input.addEventListener(
-  "input",
-  resizeInput
+
+document.getElementById('menuBtn').onclick=
+openDrawer;
+
+document.getElementById('closeDrawer').onclick=
+closeDrawer;
+
+drawerBackdrop.addEventListener(
+'click',
+e=>{
+if(e.target===drawerBackdrop)
+closeDrawer();
+}
+);
+
+document.getElementById('clearBtn').onclick=()=>{
+
+chat.innerHTML='';
+
+const w=
+document.createElement('div');
+
+w.id='welcome';
+
+w.className='welcome';
+
+w.innerHTML=
+'<b>Conversation effacée.</b><br>La mémoire persistante reste intacte. Elle peut être réinitialisée depuis le menu.';
+
+chat.appendChild(w);
+
+engine.sessionMemory=[];
+
+scrollBottom();
+};
+
+document.getElementById('exportBtn').onclick=
+()=>engine.exportMemory();
+
+document.getElementById('importBtn').onclick=
+()=>document.getElementById('importInput').click();
+
+document.getElementById('mergeBtn').onclick=
+()=>document.getElementById('mergeInput').click();
+
+document.getElementById('resetMemoryBtn').onclick=()=>{
+
+if(
+confirm(
+'Réinitialiser toute la mémoire locale du moteur ?'
+)
+){
+
+engine.resetMemory();
+
+setStatus();
+
+}
+
+};
+
+document.getElementById('importInput')
+.addEventListener(
+'change',
+async e=>{
+
+const f=e.target.files?.[0];
+
+if(!f)
+return;
+
+try{
+
+engine.importMemory(
+await engine.readMemoryFile(f),
+false
+);
+
+alert('Mémoire importée.');
+
+}catch(err){
+
+alert('Fichier mémoire invalide.');
+
+}
+
+e.target.value='';
+
+setStatus();
+
+}
+);
+
+document.getElementById('mergeInput')
+.addEventListener(
+'change',
+async e=>{
+
+const f=e.target.files?.[0];
+
+if(!f)
+return;
+
+try{
+
+engine.importMemory(
+await engine.readMemoryFile(f),
+true
+);
+
+alert('Mémoire fusionnée.');
+
+}catch(err){
+
+alert('Fichier mémoire invalide.');
+
+}
+
+e.target.value='';
+
+setStatus();
+
+}
 );
 
 input.addEventListener(
-  "keydown",
-  event=>{
-
-    if(
-      event.key==="Enter" &&
-      !event.shiftKey
-    ){
-
-      event.preventDefault();
-
-      submit();
-    }
-  }
+'input',
+resizeInput
 );
 
-send.addEventListener(
-  "click",
-  submit
+input.addEventListener(
+'keydown',
+e=>{
+
+if(
+e.key==='Enter'&&
+!e.shiftKey
+){
+
+e.preventDefault();
+
+submit();
+
+}
+
+}
 );
 
-clearBtn.addEventListener(
-  "click",
-  ()=>{
-
-    if(engine.busy)return;
-
-    chat.innerHTML=
-      '<div class="welcome" id="welcome">'+
-      '<strong>Moteur prêt.</strong><br>'+
-      'Pose une question. Le moteur recherche les sources publiques, extrait les éléments pertinents, construit des relations et tente de vérifier la réponse.'+
-      '</div>';
-
-    status.textContent="Prêt";
-
-    engine.sessionMemory=[];
-
-    input.focus();
-  }
-);
-
-
-/* =========================================================
-   INITIALISATION
-   ========================================================= */
+send.onclick=submit;
 
 const engine=
-  new PyramidV6(showStep);
+new PyramidV7(showStep);
 
-input.focus();
+setStatus();
 
 </script>
+
 </body>
-   </html>
+</html>
