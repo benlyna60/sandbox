@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Synthétiseur Pyramidal Multi-Sources V7.1</title>
+<title>Synthétiseur Pyramidal Multi-Sources V8</title>
 
 <style>
 :root{
@@ -14,9 +14,11 @@
 --text:#e7edf4;
 --muted:#8b98a8;
 --accent:#5aa9ff;
+--agent:#b58cff;
 --user:#26384d;
 --danger:#ef6b73;
 --ok:#5dcc91;
+--warn:#e7b85c;
 --shadow:0 12px 32px rgba(0,0,0,.28)
 }
 
@@ -32,12 +34,20 @@ font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-ser
 
 body{overflow:hidden}
 
+button,textarea{
+font-family:inherit
+}
+
 .app{
 height:100dvh;
 display:flex;
 flex-direction:column;
 min-height:0
 }
+
+/* =========================================================
+HEADER
+========================================================= */
 
 .header{
 height:64px;
@@ -46,23 +56,44 @@ border-bottom:1px solid var(--border);
 background:rgba(13,17,23,.96);
 display:flex;
 align-items:center;
-gap:10px;
+gap:9px;
 padding:0 12px;
 z-index:10
 }
 
-.menuBtn,.clearBtn{
-width:38px;
+.menuBtn,
+.clearBtn,
+.modeBtn{
 height:38px;
 border:1px solid var(--border);
 background:var(--panel);
 color:var(--text);
 border-radius:9px;
-cursor:pointer;
+cursor:pointer
+}
+
+.menuBtn,
+.clearBtn{
+width:38px;
 font-size:19px
 }
 
-.menuBtn:hover,.clearBtn:hover{
+.modeBtn{
+padding:0 11px;
+font-size:12px;
+font-weight:700;
+white-space:nowrap
+}
+
+.modeBtn.agent{
+color:#d6bfff;
+border-color:rgba(181,140,255,.55);
+background:rgba(181,140,255,.08)
+}
+
+.menuBtn:hover,
+.clearBtn:hover,
+.modeBtn:hover{
 border-color:#40516a
 }
 
@@ -89,6 +120,10 @@ overflow:hidden;
 text-overflow:ellipsis
 }
 
+/* =========================================================
+CHAT
+========================================================= */
+
 .chat{
 flex:1;
 min-height:0;
@@ -96,7 +131,9 @@ overflow-y:auto;
 padding:18px 14px 12px
 }
 
-.chat::-webkit-scrollbar{width:8px}
+.chat::-webkit-scrollbar{
+width:8px
+}
 
 .chat::-webkit-scrollbar-thumb{
 background:#293241;
@@ -132,7 +169,12 @@ background:transparent;
 border-color:transparent;
 padding-left:0;
 padding-right:0;
-max-width:88%
+max-width:92%
+}
+
+.agentMessage .bubble{
+border-left:2px solid var(--agent);
+padding-left:11px
 }
 
 .answerActions{
@@ -168,6 +210,10 @@ color:var(--danger);
 border-color:rgba(239,107,115,.45)
 }
 
+/* =========================================================
+SOURCES
+========================================================= */
+
 .sources{
 margin-top:9px;
 color:var(--muted);
@@ -181,6 +227,76 @@ margin:2px 6px 2px 0;
 padding:2px 5px;
 border:1px solid var(--border);
 border-radius:5px
+}
+
+/* =========================================================
+AGENT
+========================================================= */
+
+.agentPanel{
+margin:0 0 14px;
+padding:11px 12px;
+border:1px solid rgba(181,140,255,.25);
+background:rgba(181,140,255,.045);
+border-radius:10px
+}
+
+.agentTop{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px
+}
+
+.agentTitle{
+font-size:11px;
+font-weight:700;
+color:#d6bfff
+}
+
+.agentGoal{
+margin-top:5px;
+font-size:12px;
+line-height:1.45;
+color:var(--text)
+}
+
+.agentProgress{
+height:4px;
+background:#252d38;
+border-radius:10px;
+overflow:hidden;
+margin-top:9px
+}
+
+.agentProgressBar{
+height:100%;
+width:0%;
+background:var(--agent);
+transition:width .25s ease
+}
+
+.agentMeta{
+display:flex;
+justify-content:space-between;
+gap:8px;
+margin-top:6px;
+font-size:9px;
+color:var(--muted)
+}
+
+.stopAgent{
+border:1px solid rgba(239,107,115,.4);
+background:transparent;
+color:var(--danger);
+border-radius:7px;
+padding:5px 8px;
+font-size:10px;
+cursor:pointer
+}
+
+.stopAgent:hover{
+background:rgba(239,107,115,.08)
 }
 
 .step{
@@ -202,9 +318,17 @@ border-radius:50%;
 animation:spin .75s linear infinite
 }
 
+.agentSpinner{
+border-top-color:var(--agent)
+}
+
 @keyframes spin{
 to{transform:rotate(360deg)}
 }
+
+/* =========================================================
+COMPOSER
+========================================================= */
 
 .composer{
 flex:0 0 auto;
@@ -247,10 +371,19 @@ font-weight:700;
 cursor:pointer
 }
 
+.send.agentSend{
+background:var(--agent);
+color:#10091a
+}
+
 .send:disabled{
 opacity:.5;
 cursor:not-allowed
 }
+
+/* =========================================================
+WELCOME
+========================================================= */
 
 .welcome{
 color:var(--muted);
@@ -264,6 +397,10 @@ padding:0 10px
 .welcome b{
 color:var(--text)
 }
+
+/* =========================================================
+DRAWER
+========================================================= */
 
 .drawerBackdrop{
 position:fixed;
@@ -282,7 +419,7 @@ position:absolute;
 left:0;
 top:0;
 bottom:0;
-width:min(340px,88vw);
+width:min(360px,90vw);
 background:var(--panel);
 border-right:1px solid var(--border);
 box-shadow:var(--shadow);
@@ -381,6 +518,16 @@ line-height:1.45;
 margin-top:8px
 }
 
+.agentStatusBox{
+padding:9px;
+background:var(--panel2);
+border:1px solid var(--border);
+border-radius:8px;
+font-size:10px;
+line-height:1.5;
+color:var(--muted)
+}
+
 .hidden{
 display:none!important
 }
@@ -395,11 +542,29 @@ font-size:10px
 color:var(--text)
 }
 
+/* =========================================================
+RESPONSIVE
+========================================================= */
+
 @media(max-width:600px){
 
 .header{
 height:58px;
-flex-basis:58px
+flex-basis:58px;
+padding:0 8px
+}
+
+.brand b{
+font-size:13px
+}
+
+.brand span{
+font-size:9px
+}
+
+.modeBtn{
+padding:0 8px;
+font-size:10px
 }
 
 .bubble{
@@ -407,7 +572,7 @@ max-width:88%
 }
 
 .assistant .bubble{
-max-width:94%
+max-width:96%
 }
 
 .composer{
@@ -421,10 +586,6 @@ min-width:58px
 .chat{
 padding:14px 10px
 }
-
-.brand b{
-font-size:14px
-}
 }
 </style>
 </head>
@@ -435,25 +596,47 @@ font-size:14px
 
 <header class="header">
 
-<button id="menuBtn" class="menuBtn" aria-label="Menu">☰</button>
+<button
+id="menuBtn"
+class="menuBtn"
+aria-label="Menu"
+>☰</button>
 
 <div class="brand">
-<b>Synthétiseur Pyramidal Multi-Sources V7.1</b>
-<span>Recherche • raisonnement • rédaction • mémoire persistante • Wikimedia / Wikidata</span>
+<b>Synthétiseur Pyramidal Multi-Sources V8</b>
+<span id="headerStatus">
+Discussion • recherche • raisonnement • mémoire locale
+</span>
 </div>
 
-<button id="clearBtn" class="clearBtn" title="Effacer la conversation">×</button>
+<button
+id="modeBtn"
+class="modeBtn"
+title="Changer de mode"
+>Discussion</button>
+
+<button
+id="clearBtn"
+class="clearBtn"
+title="Effacer la conversation"
+>×</button>
 
 </header>
 
 <main id="chat" class="chat">
 
 <div id="welcome" class="welcome">
-<b>V7.1 prête.</b><br>
-Pose une question, donne un sujet ou demande une définition,
-une comparaison, une vérification, une synthèse ou une rédaction.
-Le moteur recherche progressivement les informations publiques,
-croise les preuves disponibles et conserve son apprentissage local.
+
+<b>V8 prête.</b><br>
+
+Mode <b>Discussion</b> : pose une question, demande une
+définition, une comparaison, une vérification, une synthèse
+ou une rédaction.<br><br>
+
+Mode <b>Agent</b> : donne un objectif. L'agent va rechercher,
+enrichir, croiser et vérifier les informations progressivement
+jusqu'à atteindre son objectif ou jusqu'à ce que tu l'arrêtes.
+
 </div>
 
 </main>
@@ -466,20 +649,67 @@ rows="1"
 placeholder="Écris une question ou une tâche…"
 ></textarea>
 
-<button id="send" class="send">Envoyer</button>
+<button
+id="send"
+class="send"
+>Envoyer</button>
 
 </div>
 
 </div>
 
 
-<div id="drawerBackdrop" class="drawerBackdrop">
+<!-- =======================================================
+DRAWER
+======================================================= -->
 
-<aside class="drawer" role="dialog" aria-label="Mémoire et configuration">
+<div
+id="drawerBackdrop"
+class="drawerBackdrop"
+>
+
+<aside
+class="drawer"
+role="dialog"
+aria-label="Mémoire et configuration"
+>
 
 <div class="drawerHead">
-<b>Menu V7.1</b>
-<button id="closeDrawer" class="closeBtn">×</button>
+
+<b>Menu V8</b>
+
+<button
+id="closeDrawer"
+class="closeBtn"
+>×</button>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>Mode moteur</h3>
+
+<button
+class="action"
+id="discussionBtn"
+>
+● Mode Discussion
+</button>
+
+<button
+class="action"
+id="agentBtn"
+>
+◆ Mode Agent
+</button>
+
+<div class="notice">
+Le mode Agent est destiné aux objectifs nécessitant
+plusieurs recherches successives. Il conserve son état
+de mission séparément de la conversation affichée.
+</div>
+
 </div>
 
 
@@ -487,19 +717,31 @@ placeholder="Écris une question ou une tâche…"
 
 <h3>Mémoire</h3>
 
-<button class="action" id="exportBtn">
+<button
+class="action"
+id="exportBtn"
+>
 ⇩ Exporter la mémoire JSON
 </button>
 
-<button class="action" id="importBtn">
+<button
+class="action"
+id="importBtn"
+>
 ⇧ Importer une mémoire JSON
 </button>
 
-<button class="action" id="mergeBtn">
+<button
+class="action"
+id="mergeBtn"
+>
 ⊕ Fusionner une mémoire JSON
 </button>
 
-<button class="action" id="resetMemoryBtn">
+<button
+class="action"
+id="resetMemoryBtn"
+>
 ♲ Réinitialiser la mémoire
 </button>
 
@@ -518,9 +760,9 @@ accept="application/json,.json"
 >
 
 <div class="notice">
-La mémoire conserve les conversations, concepts, entités,
+La mémoire conserve les conversations, concepts,
 relations, preuves, sources, recherches, stratégies,
-évaluations et statistiques.
+missions Agent, évaluations et statistiques.
 </div>
 
 </div>
@@ -530,7 +772,10 @@ relations, preuves, sources, recherches, stratégies,
 
 <h3>État du moteur</h3>
 
-<div id="memoryStats" class="stats"></div>
+<div
+id="memoryStats"
+class="stats"
+></div>
 
 <div
 id="engineStatus"
@@ -543,16 +788,32 @@ style="margin-top:9px"
 
 <div class="drawerSection">
 
-<h3>Principe V7.1</h3>
+<h3>Mission Agent</h3>
+
+<div
+id="agentStatusBox"
+class="agentStatusBox"
+>
+Aucune mission active.
+</div>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>Principe V8</h3>
 
 <div class="statusLine">
-Comprendre → chercher → enrichir → relier →
-vérifier → répondre → mémoriser → apprendre.
+Comprendre → planifier → chercher → observer les lacunes →
+enrichir → relier → vérifier → recommencer → synthétiser →
+mémoriser.
 </div>
 
 <div class="notice">
-Le moteur ne possède pas de réponses factuelles codées en dur.
-Les faits sont recherchés dynamiquement dans les sources publiques.
+L'agent ne dispose pas d'une base de faits codée en dur.
+Il construit progressivement son état à partir des
+sources publiques disponibles.
 </div>
 
 </div>
@@ -566,14 +827,19 @@ Les faits sont recherchés dynamiquement dans les sources publiques.
 'use strict';
 
 
-class PyramidV7_1{
+/* =========================================================
+   PYRAMID V8
+========================================================= */
 
+class PyramidV8{
 
-constructor(stepCallback){
+constructor(stepCallback,agentCallback){
 
 this.stepCallback=stepCallback;
 
-this.version='V7.1';
+this.agentCallback=agentCallback;
+
+this.version='V8';
 
 this.sources=[
 
@@ -627,6 +893,13 @@ host:'https://fr.wikibooks.org'
 },
 
 {
+id:'wikinews',
+label:'Wikinews',
+lang:'fr',
+host:'https://fr.wikinews.org'
+},
+
+{
 id:'wikidata',
 label:'Wikidata',
 lang:'all',
@@ -650,15 +923,22 @@ this.stopwords=new Set(
 
 
 this.cache=new Map();
+
 this.searchCache=new Map();
+
 this.wikidataCache=new Map();
 
 this.busy=false;
+
 this.abortController=null;
+
+this.mode='discussion';
 
 this.sessionMemory=[];
 
 this.memory=this.defaultMemory();
+
+this.agentMission=null;
 
 this.loadPersistentMemory();
 
@@ -667,10 +947,22 @@ this.taskState={};
 }
 
 
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+
 step(label){
 
 if(this.stepCallback)
 this.stepCallback(label);
+
+}
+
+
+agentUpdate(data){
+
+if(this.agentCallback)
+this.agentCallback(data);
 
 }
 
@@ -694,20 +986,68 @@ h=Math.imul(h,16777619);
 
 }
 
-return (h>>>0).toString(16);
+return(h>>>0).toString(16);
 
 }
 
+
+sleep(ms){
+
+return new Promise(
+resolve=>setTimeout(resolve,ms)
+);
+
+}
+
+
+async interruptibleSleep(ms,signal){
+
+if(signal?.aborted)
+throw new DOMException('Aborted','AbortError');
+
+return new Promise((resolve,reject)=>{
+
+const timer=setTimeout(resolve,ms);
+
+if(signal){
+
+signal.addEventListener(
+'abort',
+()=>{
+
+clearTimeout(timer);
+
+reject(
+new DOMException(
+'Aborted',
+'AbortError'
+)
+);
+
+},
+{once:true}
+);
+
+}
+
+});
+
+}
+
+
+/* =========================================================
+   MÉMOIRE
+========================================================= */
 
 defaultMemory(){
 
 return{
 
-schemaVersion:2,
+schemaVersion:3,
 
 engineFamily:'Pyramidal',
 
-engineVersion:'V7.1',
+engineVersion:'V8',
 
 savedAt:null,
 
@@ -731,6 +1071,8 @@ taskHistory:[],
 
 feedback:[],
 
+agentMissions:[],
+
 statistics:{
 
 runs:0,
@@ -747,7 +1089,15 @@ totalSearchPasses:0,
 
 totalSources:0,
 
-lastRun:null
+agentRuns:0,
+
+agentCompleted:0,
+
+agentStopped:0,
+
+lastRun:null,
+
+lastAgentRun:null
 
 }
 
@@ -768,9 +1118,12 @@ const out={
 ...m
 };
 
-out.schemaVersion=2;
+out.schemaVersion=3;
+
 out.engineFamily='Pyramidal';
-out.engineVersion='V7.1';
+
+out.engineVersion='V8';
+
 
 for(const k of [
 
@@ -783,7 +1136,8 @@ for(const k of [
 'searches',
 'learnedStrategies',
 'taskHistory',
-'feedback'
+'feedback',
+'agentMissions'
 
 ]){
 
@@ -792,6 +1146,7 @@ out[k]=Array.isArray(out[k])
 :[];
 
 }
+
 
 out.statistics={
 ...base.statistics,
@@ -827,7 +1182,7 @@ try{
 
 const raw=
 localStorage.getItem(
-'pyramidal_v7_memory'
+'pyramidal_v8_memory'
 );
 
 if(raw){
@@ -836,6 +1191,25 @@ this.memory=
 this.migrateMemory(
 JSON.parse(raw)
 );
+
+}else{
+
+/*
+Compatibilité V7.1
+*/
+const old=
+localStorage.getItem(
+'pyramidal_v7_memory'
+);
+
+if(old){
+
+this.memory=
+this.migrateMemory(
+JSON.parse(old)
+);
+
+}
 
 }
 
@@ -856,7 +1230,7 @@ try{
 this.memory.savedAt=this.now();
 
 localStorage.setItem(
-'pyramidal_v7_memory',
+'pyramidal_v8_memory',
 JSON.stringify(this.memory)
 );
 
@@ -876,6 +1250,7 @@ addUnique(list,item,key){
 const k=
 key||
 this.hash(JSON.stringify(item));
+
 
 if(
 !list.some(
@@ -898,6 +1273,10 @@ return false;
 
 }
 
+
+/* =========================================================
+   TEXTE
+========================================================= */
 
 norm(s){
 
@@ -949,9 +1328,11 @@ return[
 
 decodeEntities(s){
 
-const el=document.createElement('textarea');
+const el=
+document.createElement('textarea');
 
-el.innerHTML=String(s??'');
+el.innerHTML=
+String(s??'');
 
 return el.value;
 
@@ -990,13 +1371,11 @@ String(s??'')
 .split('\n')
 
 .map(
-
 x=>
 x
 .replace(/\s+/g,' ')
 .replace(/\s+([,.;:!?])/g,'$1')
 .trim()
-
 )
 
 .join('\n')
@@ -1029,30 +1408,23 @@ m=>({
 }
 
 
-async sleep(ms){
-
-return new Promise(r=>setTimeout(r,ms));
-
-}
-
-
 /* =========================================================
    COMPRÉHENSION
 ========================================================= */
-
 
 extractTerms(q){
 
 return this.unique(
 this.words(q)
-).slice(0,22);
+).slice(0,24);
 
 }
 
 
 extractPhrases(q){
 
-const raw=String(q??'').toLowerCase();
+const raw=
+String(q??'').toLowerCase();
 
 const out=[];
 
@@ -1069,13 +1441,12 @@ out.push(...quoted);
 
 for(const m of raw.matchAll(
 
-/\b(?:du|de|des|d[’']|dans|sur|pour|entre|chez|au|aux|en)\s+([\p{L}\p{N}][\p{L}\p{N}' -]{2,60})/giu
+/\b(?:du|de|des|d[’']|dans|sur|pour|entre|chez|au|aux|en)\s+([\p{L}\p{N}][\p{L}\p{N}' -]{2,70})/giu
 
 )){
 
 out.push(
-m[1]
-.trim()
+m[1].trim()
 );
 
 }
@@ -1094,7 +1465,7 @@ x.replace(/[?!.,;:]+$/,'')
 x=>x.length>2
 )
 
-).slice(0,8);
+).slice(0,10);
 
 }
 
@@ -1102,6 +1473,7 @@ x=>x.length>2
 detectQuestionType(q){
 
 const n=this.norm(q);
+
 
 if(
 /\b(definition|definir|définir|signifie|signification|qu'est-ce que|qu est ce que|quest ce que)\b/
@@ -1171,6 +1543,7 @@ const is=
 
 .test(n);
 
+
 return{
 
 is,
@@ -1197,14 +1570,14 @@ for(const p of this.extractPhrases(q))
 out.push(p);
 
 
-const n=String(q??'')
-
+const n=
+String(q??'')
 .replace(/[’']/g,' ');
 
 
 for(const m of n.matchAll(
 
-/\b(?:d|de|des|du|dans|sur|au|aux|en)\s+([\p{L}][\p{L}'-]*(?:\s+[\p{L}][\p{L}'-]*){0,4})/giu
+/\b(?:d|de|des|du|dans|sur|au|aux|en)\s+([\p{L}][\p{L}'-]*(?:\s+[\p{L}][\p{L}'-]*){0,5})/giu
 
 )){
 
@@ -1213,7 +1586,7 @@ out.push(m[1]);
 }
 
 
-return this.unique(out).slice(0,8);
+return this.unique(out).slice(0,10);
 
 }
 
@@ -1243,6 +1616,55 @@ domains:this.extractDomainCandidates(q)
    REQUÊTES
 ========================================================= */
 
+requestedRelationTerms(info){
+
+const keys=[
+
+'capitale',
+'population',
+'superficie',
+'hauteur',
+'longueur',
+'altitude',
+'date',
+'naissance',
+'mort',
+'auteur',
+'genre',
+'langue',
+'siege',
+'siège',
+'president',
+'président',
+'fondateur',
+'fondation',
+'monnaie',
+'frontiere',
+'frontière',
+'continent',
+'pays',
+'ville',
+'situé',
+'situe',
+'position',
+'lieu',
+'origine'
+
+];
+
+
+const n=this.norm(info.raw||'');
+
+
+return keys.filter(
+k=>
+n.includes(
+this.norm(k)
+)
+);
+
+}
+
 
 buildQueries(info){
 
@@ -1253,18 +1675,10 @@ const terms=info.terms.join(' ');
 const arr=[];
 
 
-/*
-Recherche 1 :
-question exacte.
-*/
+if(q)
 arr.push(q);
 
 
-/*
-Recherche 2 :
-uniquement les termes importants.
-Seulement si cela apporte réellement quelque chose.
-*/
 if(
 terms &&
 this.norm(q)!==this.norm(terms)
@@ -1272,22 +1686,22 @@ this.norm(q)!==this.norm(terms)
 arr.push(terms);
 
 
-/*
-Pour une relation précise, on crée UNE requête ciblée,
-pas une explosion de requêtes.
-*/
 const relations=
 this.requestedRelationTerms(info);
-
-if(relations.length){
 
 const subject=
 this.extractResearchSubject(info);
 
-if(subject){
+
+if(
+relations.length&&
+subject
+){
+
+for(const r of relations.slice(0,2)){
 
 arr.push(
-`${subject} ${relations[0]}`
+`${subject} ${r}`
 );
 
 }
@@ -1295,9 +1709,6 @@ arr.push(
 }
 
 
-/*
-Superlatif.
-*/
 if(info.superlative.is){
 
 arr.push(
@@ -1308,9 +1719,6 @@ arr.push(
 }
 
 
-/*
-Comparaison.
-*/
 if(info.type==='comparison'){
 
 arr.push(
@@ -1321,9 +1729,12 @@ arr.push(
 
 
 return this.unique(
-arr.map(x=>x.trim())
+
+arr
+.map(x=>x.trim())
 .filter(Boolean)
-).slice(0,5);
+
+).slice(0,7);
 
 }
 
@@ -1331,6 +1742,7 @@ arr.map(x=>x.trim())
 extractResearchSubject(info){
 
 let s=info.raw;
+
 
 s=s.replace(
 
@@ -1350,9 +1762,7 @@ s=s.replace(
 ).trim();
 
 
-const relation=this.requestedRelationTerms(info);
-
-for(const r of relation){
+for(const r of this.requestedRelationTerms(info)){
 
 const re=
 new RegExp(
@@ -1365,6 +1775,18 @@ s=s.replace(re,' ');
 }
 
 
+s=s.replace(
+
+/\b(de|du|des|d|la|le|les|l|au|aux|en)\b/giu,
+
+' '
+
+);
+
+
+s=s.replace(/[?!.,;:]+$/,'');
+
+
 return this.clean(s);
 
 }
@@ -1373,7 +1795,6 @@ return this.clean(s);
 /* =========================================================
    API
 ========================================================= */
-
 
 async api(host,params,signal){
 
@@ -1393,7 +1814,10 @@ origin:'*'
 
 .forEach(
 ([k,v])=>
-u.searchParams.set(k,String(v))
+u.searchParams.set(
+k,
+String(v)
+)
 );
 
 
@@ -1419,9 +1843,8 @@ return r.json();
 
 
 /* =========================================================
-   RECHERCHE WIKIMEDIA
+   WIKIMEDIA
 ========================================================= */
-
 
 async searchSource(source,query,signal){
 
@@ -1460,7 +1883,9 @@ source:source.id,
 
 title:x.title,
 
-snippet:this.clean(x.snippet||''),
+snippet:this.clean(
+x.snippet||''
+),
 
 pageid:x.pageid
 
@@ -1474,27 +1899,37 @@ return res;
 }
 
 
-/*
-V7.1 :
-on évite de lancer toutes les sources pour chaque requête.
-
-Les sources principales sont testées d'abord.
-Les autres sont utilisées pour diversifier si nécessaire.
-*/
 async searchAll(queries,signal){
 
 const all=[];
 
+
 const primary=[
-this.sources.find(s=>s.id==='wikipedia'),
-this.sources.find(s=>s.id==='wiktionary'),
-this.sources.find(s=>s.id==='wikibooks')
+
+this.sources.find(
+s=>s.id==='wikipedia'
+),
+
+this.sources.find(
+s=>s.id==='wiktionary'
+),
+
+this.sources.find(
+s=>s.id==='wikibooks'
+)
+
 ].filter(Boolean);
 
 
 for(const q of queries){
 
 for(const source of primary){
+
+if(signal?.aborted)
+throw new DOMException(
+'Aborted',
+'AbortError'
+);
 
 try{
 
@@ -1507,18 +1942,40 @@ signal
 
 all.push(...r);
 
-}catch(e){}
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+}
 
 }
 
 
-if(all.length<6){
+if(all.length<8){
 
 const secondary=[
-this.sources.find(s=>s.id==='wikiversity'),
-this.sources.find(s=>s.id==='wikivoyage'),
-this.sources.find(s=>s.id==='wikisource'),
-this.sources.find(s=>s.id==='wikiquote')
+
+this.sources.find(
+s=>s.id==='wikiversity'
+),
+
+this.sources.find(
+s=>s.id==='wikivoyage'
+),
+
+this.sources.find(
+s=>s.id==='wikisource'
+),
+
+this.sources.find(
+s=>s.id==='wikiquote'
+),
+
+this.sources.find(
+s=>s.id==='wikinews'
+)
+
 ].filter(Boolean);
 
 
@@ -1535,31 +1992,39 @@ signal
 
 all.push(...r);
 
-}catch(e){}
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
 
 }
 
 }
 
+}
 
-if(all.length>=12)
+
+if(all.length>=16)
 break;
 
 
-await this.sleep(25);
+await this.interruptibleSleep(
+25,
+signal
+);
 
 }
 
 
-return this.uniqueResults(all).slice(0,60);
+return this.uniqueResults(all)
+.slice(0,80);
 
 }
 
 
 /* =========================================================
-   EXTRACTION DES PAGES
+   PAGES
 ========================================================= */
-
 
 async fetchExtract(source,title,signal){
 
@@ -1593,7 +2058,9 @@ signal
 );
 
 
-const pages=data?.query?.pages||{};
+const pages=
+data?.query?.pages||{};
+
 
 const p=
 Object.values(pages)[0];
@@ -1609,9 +2076,13 @@ title:p.title||title,
 
 url:
 p.fullurl||
-`${source.host}/wiki/${encodeURIComponent(p.title||title)}`,
+`${source.host}/wiki/${encodeURIComponent(
+p.title||title
+)}`,
 
-text:this.clean(p.extract||''),
+text:this.clean(
+p.extract||''
+),
 
 pageid:p.pageid,
 
@@ -1626,21 +2097,19 @@ return out;
 
 }
 
-}catch(e){}
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+}
 
 
-/*
-Le fallback est géré par le résultat de recherche :
-le snippet reste une preuve utilisable.
-*/
 return null;
 
 }
 
 
-/*
-Convertit les résultats de recherche en documents de secours.
-*/
 buildSnippetDocs(results){
 
 return results
@@ -1653,7 +2122,12 @@ source:r.source,
 
 title:r.title,
 
-url:`${this.sources.find(s=>s.id===r.source)?.host||''}/wiki/${encodeURIComponent(r.title)}`,
+url:
+`${this.sources.find(
+s=>s.id===r.source
+)?.host||''}/wiki/${encodeURIComponent(
+r.title
+)}`,
 
 text:r.snippet,
 
@@ -1671,7 +2145,6 @@ fromSnippet:true
 /* =========================================================
    WIKIDATA
 ========================================================= */
-
 
 async wikidataSearch(query,signal){
 
@@ -1719,11 +2192,17 @@ match:x.match?.text||''
 }));
 
 
-this.wikidataCache.set(`s|${key}`,out);
+this.wikidataCache.set(
+`s|${key}`,
+out
+);
 
 return out;
 
 }catch(e){
+
+if(e.name==='AbortError')
+throw e;
 
 return[];
 
@@ -1776,13 +2255,18 @@ signal
 );
 
 
-const out=data?.entities||{};
+const out=
+data?.entities||{};
+
 
 this.wikidataCache.set(key,out);
 
 return out;
 
 }catch(e){
+
+if(e.name==='AbortError')
+throw e;
 
 return{};
 
@@ -1802,17 +2286,40 @@ e?.labels?.en?.value||
 
 getClaimValue(claim){
 
-const dv=claim?.mainsnak?.datavalue;
+const dv=
+claim?.mainsnak?.datavalue;
+
 
 if(!dv)
 return null;
 
 
-if(dv.type==='wikibase-entityid')
+if(dv.type==='wikibase-entityid'){
+
+const rawId=
+dv.value.id||
+(
+dv.value['numeric-id']!=null
+?
+`${dv.value['entity-type']==='property'
+?'P'
+:'Q'
+}${dv.value['numeric-id']}`
+:''
+);
+
+
 return{
-id:`Q${dv.value.id}`,
-raw:dv.value.id
+
+id:/^[QP]\d+$/i.test(rawId)
+?rawId
+:`Q${dv.value['numeric-id']}`,
+
+raw:rawId
+
 };
+
+}
 
 
 if(dv.type==='string')
@@ -1842,7 +2349,8 @@ value:dv.value
 
 if(dv.type==='globecoordinate')
 return{
-value:`${dv.value.latitude}, ${dv.value.longitude}`,
+value:
+`${dv.value.latitude}, ${dv.value.longitude}`,
 lat:dv.value.latitude,
 lon:dv.value.longitude
 };
@@ -1855,11 +2363,6 @@ value:String(dv.value)
 }
 
 
-/*
-P31 / types de propriétés.
-On recherche seulement les propriétés réellement
-présentes sur les entités découvertes.
-*/
 async buildWikidataFacts(entities,signal){
 
 const ids=Object.keys(entities);
@@ -1911,11 +2414,13 @@ of Object.entries(e.claims||{})
 ){
 
 const propertyLabel=
-this.labelOfEntity(props[pid])||pid;
+this.labelOfEntity(
+props[pid]
+)||pid;
 
 
 for(
-const c of (claims||[]).slice(0,6)
+const c of(claims||[]).slice(0,6)
 ){
 
 const v=
@@ -1928,8 +2433,14 @@ continue;
 
 let objectLabel=
 v.id
-?(this.labelOfEntity(entities[v.id])||v.id)
-:(v.value??'');
+?
+(
+this.labelOfEntity(
+entities[v.id]
+)||v.id
+)
+:
+(v.value??'');
 
 
 out.push({
@@ -1946,14 +2457,15 @@ objectId:v.id||null,
 
 object:objectLabel,
 
-value:v.amount??v.value??'',
+value:
+v.amount??v.value??'',
 
 source:'wikidata'
 
 });
 
 
-if(out.length>=1800)
+if(out.length>=2000)
 return out;
 
 }
@@ -1968,13 +2480,14 @@ return out;
 }
 
 
-/*
-V7.1 :
-les termes importants ET le sujet sont envoyés à Wikidata.
-*/
+/* =========================================================
+   CONCEPTS
+========================================================= */
+
 async discoverConcepts(results,info,signal){
 
 const found=[];
+
 
 const candidates=
 this.unique([
@@ -1989,12 +2502,20 @@ this.extractResearchSubject(info),
 
 ])
 
-.filter(x=>x&&x.length>2)
+.filter(
+x=>x&&x.length>2
+)
 
-.slice(0,7);
+.slice(0,10);
 
 
 for(const t of candidates){
+
+if(signal?.aborted)
+throw new DOMException(
+'Aborted',
+'AbortError'
+);
 
 try{
 
@@ -2005,7 +2526,12 @@ signal
 )
 );
 
-}catch(e){}
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+}
 
 }
 
@@ -2018,9 +2544,8 @@ found.map(x=>x.id)
 
 
 /* =========================================================
-   SCORE / PREUVES
+   SCORE
 ========================================================= */
-
 
 termScore(text,info){
 
@@ -2028,22 +2553,31 @@ const n=this.norm(text);
 
 const terms=info.terms;
 
+
 if(!terms.length)
 return 0;
 
 
 let hits=0;
 
+
 for(const t of terms){
 
-if(n.includes(this.norm(t)))
+if(
+n.includes(
+this.norm(t)
+)
+)
 hits++;
 
 }
 
 
 return hits/
-Math.max(1,terms.length);
+Math.max(
+1,
+terms.length
+);
 
 }
 
@@ -2052,15 +2586,21 @@ phraseScore(text,info){
 
 const n=this.norm(text);
 
+
 if(!info.phrases.length)
 return 0;
 
 
 let hits=0;
 
+
 for(const p of info.phrases){
 
-if(n.includes(this.norm(p)))
+if(
+n.includes(
+this.norm(p)
+)
+)
 hits++;
 
 }
@@ -2092,7 +2632,9 @@ let hits=0;
 for(const r of requested){
 
 if(
-n.includes(this.norm(r))
+n.includes(
+this.norm(r)
+)
 )
 hits++;
 
@@ -2101,7 +2643,11 @@ hits++;
 
 return Math.min(
 1,
-hits/Math.max(1,requested.length)
+hits/
+Math.max(
+1,
+requested.length
+)
 );
 
 }
@@ -2129,25 +2675,41 @@ return /(plus grand|plus grande|plus haut|plus haute|plus long|plus longue|plus 
 score(item,info){
 
 const text=
-`${item.title||''} ${item.snippet||''} ${item.text||''}`;
+`${item.title||''} ${
+item.snippet||''
+} ${
+item.text||''
+}`;
 
 
 const term=
-this.termScore(text,info);
+this.termScore(
+text,
+info
+);
+
 
 const phrase=
-this.phraseScore(text,info);
+this.phraseScore(
+text,
+info
+);
+
 
 const relation=
-this.relationScore(text,info);
+this.relationScore(
+text,
+info
+);
+
 
 const sup=
-this.superlativeScore(text,info);
+this.superlativeScore(
+text,
+info
+);
 
 
-/*
-Filtrage volontairement moins agressif.
-*/
 return
 
 .38*term+
@@ -2162,6 +2724,10 @@ return
 
 }
 
+
+/* =========================================================
+   PASSAGES
+========================================================= */
 
 buildPassages(docs,info){
 
@@ -2200,8 +2766,7 @@ url:d.url||'',
 
 text:text,
 
-score:
-this.score(
+score:this.score(
 d,
 info
 ),
@@ -2216,7 +2781,7 @@ continue;
 
 
 for(
-const s of sentences.slice(0,16)
+const s of sentences.slice(0,18)
 ){
 
 out.push({
@@ -2229,8 +2794,7 @@ url:d.url||'',
 
 text:s,
 
-score:
-this.score(
+score:this.score(
 {...d,text:s},
 info
 ),
@@ -2251,9 +2815,13 @@ return out;
 
 similarity(a,b){
 
-const A=new Set(this.words(a));
+const A=new Set(
+this.words(a)
+);
 
-const B=new Set(this.words(b));
+const B=new Set(
+this.words(b)
+);
 
 
 if(!A.size||!B.size)
@@ -2263,9 +2831,12 @@ return 0;
 let inter=0;
 
 
-for(const x of A)
+for(const x of A){
+
 if(B.has(x))
 inter++;
+
+}
 
 
 return inter/
@@ -2278,7 +2849,9 @@ selectPassages(passages,n=20){
 
 const sorted=[...passages]
 
-.sort((a,b)=>b.score-a.score);
+.sort(
+(a,b)=>b.score-a.score
+);
 
 
 const out=[];
@@ -2315,9 +2888,8 @@ return out;
 
 
 /* =========================================================
-   RELATIONS TEXTUELLES
+   RELATIONS
 ========================================================= */
-
 
 extractTextRelations(text){
 
@@ -2356,8 +2928,9 @@ out.push({
 
 subject:s,
 
-relation:
-this.inferRelationFromText(m[0]),
+relation:this.inferRelationFromText(
+m[0]
+),
 
 object:o,
 
@@ -2372,7 +2945,7 @@ text:m[0]
 }
 
 
-return out.slice(0,120);
+return out.slice(0,160);
 
 }
 
@@ -2381,20 +2954,32 @@ inferRelationFromText(text){
 
 const n=this.norm(text);
 
+
 if(n.includes('capitale'))
 return'capitale';
+
 
 if(n.includes('superficie'))
 return'superficie';
 
-if(n.includes('population')||n.includes('habitants'))
+
+if(
+n.includes('population')||
+n.includes('habitants')
+)
 return'population';
+
 
 if(n.includes('mesure'))
 return'mesure';
 
-if(n.includes('situe')||n.includes('trouve'))
+
+if(
+n.includes('situe')||
+n.includes('trouve')
+)
 return'situation';
+
 
 return'relation';
 
@@ -2404,7 +2989,6 @@ return'relation';
 /* =========================================================
    GRAPH
 ========================================================= */
-
 
 createGraph(){
 
@@ -2425,7 +3009,8 @@ if(!node||!node.id)
 return;
 
 
-const old=g.nodes.get(node.id);
+const old=
+g.nodes.get(node.id);
 
 
 g.nodes.set(
@@ -2448,9 +3033,11 @@ if(!edge)
 return;
 
 
-const from=edge.from??edge.subject;
+const from=
+edge.from??edge.subject;
 
-const to=edge.to??edge.object;
+const to=
+edge.to??edge.object;
 
 
 if(!from||!to)
@@ -2465,9 +3052,11 @@ from,
 
 to,
 
-subject:edge.subject??from,
+subject:
+edge.subject??from,
 
-object:edge.object??to
+object:
+edge.object??to
 
 });
 
@@ -2519,9 +3108,13 @@ from:a,
 
 to:b,
 
-label:f.propertyLabel||f.propertyId,
+label:
+f.propertyLabel||
+f.propertyId,
 
-labelText:f.propertyLabel||f.propertyId,
+labelText:
+f.propertyLabel||
+f.propertyId,
 
 value:f.value,
 
@@ -2590,60 +3183,8 @@ return g;
 
 
 /* =========================================================
-   RELATIONS DEMANDÉES
+   GRAPH ANSWERS
 ========================================================= */
-
-
-requestedRelationTerms(info){
-
-const keys=[
-
-'capitale',
-'population',
-'superficie',
-'hauteur',
-'longueur',
-'altitude',
-'date',
-'naissance',
-'mort',
-'auteur',
-'genre',
-'langue',
-'siege',
-'siège',
-'president',
-'président',
-'fondateur',
-'fondation',
-'monnaie',
-'frontiere',
-'frontière',
-'continent',
-'pays',
-'ville',
-'situé',
-'situe',
-'position',
-'lieu',
-'origine',
-'origine'
-
-];
-
-
-const n=this.norm(info.raw||'');
-
-
-return keys.filter(
-k=>
-n.includes(
-this.norm(k)
-)
-);
-
-}
-
 
 relationMatches(label,need){
 
@@ -2677,9 +3218,6 @@ if(!terms.length)
 return null;
 
 
-/*
-Priorité forte aux relations demandées.
-*/
 for(const term of terms){
 
 for(const e of edges){
@@ -2712,7 +3250,8 @@ return arr
 
 .map(n=>{
 
-const label=this.norm(n.label);
+const label=
+this.norm(n.label);
 
 let hits=0;
 
@@ -2728,7 +3267,9 @@ hits++;
 let relationBonus=0;
 
 
-for(const r of this.requestedRelationTerms(info)){
+for(
+const r of this.requestedRelationTerms(info)
+){
 
 if(
 g.edges.some(
@@ -2751,7 +3292,10 @@ return{
 
 _score:
 hits/
-Math.max(1,info.terms.length)+
+Math.max(
+1,
+info.terms.length
+)+
 relationBonus
 
 };
@@ -2770,11 +3314,6 @@ x=>x._score>.05
 .slice(0,30);
 
 }
-
-
-/* =========================================================
-   SUPERLATIFS
-========================================================= */
 
 
 parseNumber(s){
@@ -2811,8 +3350,7 @@ e=>e.from===nodeId
 
 ...e,
 
-num:
-this.parseNumber(
+num:this.parseNumber(
 e.value??e.raw?.object
 )
 
@@ -2825,7 +3363,7 @@ e=>e.num!==null
 }
 
 
-propertyMatchesSuperlative(label,info){
+propertyMatchesSuperlative(label){
 
 const n=this.norm(label);
 
@@ -2857,12 +3395,16 @@ const scored=[];
 
 for(const n of pool){
 
-for(const e of this.getNumericEdges(g,n.id)){
+for(
+const e of this.getNumericEdges(
+g,
+n.id
+)
+){
 
 if(
 this.propertyMatchesSuperlative(
-e.labelText||e.label,
-info
+e.labelText||e.label
 )
 ){
 
@@ -2907,11 +3449,6 @@ return scored[0];
 }
 
 
-/* =========================================================
-   RÉPONSE GRAPHE
-========================================================= */
-
-
 graphAnswer(g,info,passages){
 
 if(info.superlative.is){
@@ -2931,47 +3468,14 @@ win.node.label;
 
 const value=
 this.cleanFinalText(
-String(win.edge.value??'')
+String(
+win.edge.value??''
+)
 );
 
 
 if(value)
 answer+=` — ${value}`;
-
-
-const requested=
-this.requestedRelationTerms(info);
-
-
-const extra=
-this.findRelationFromNode(
-g,
-win.node,
-requested
-);
-
-
-if(
-extra &&
-extra!==win.edge
-){
-
-const object=
-extra.raw?.object||
-extra.raw?.value||
-extra.object||
-extra.to||
-'';
-
-
-if(
-object &&
-this.norm(object)!==
-this.norm(value)
-)
-answer+=` — ${object}`;
-
-}
 
 
 return{
@@ -2989,11 +3493,6 @@ evidence:passages
 }
 
 
-/*
-Cas normal :
-on cherche d'abord l'entité,
-puis LA relation demandée.
-*/
 const candidates=
 this.findCandidateNodes(
 g,
@@ -3057,7 +3556,6 @@ return null;
    SYNTHÈSE
 ========================================================= */
 
-
 synthesize(info,passages,graphResult){
 
 if(graphResult?.answerText)
@@ -3069,13 +3567,15 @@ graphResult.answerText
 const selected=
 this.selectPassages(
 passages,
-7
+8
 );
 
 
-if(!selected.length)
+if(!selected.length){
 
 return'Je n’ai pas trouvé suffisamment d’éléments fiables dans les sources consultées.';
+
+}
 
 
 const pieces=[];
@@ -3084,16 +3584,21 @@ const pieces=[];
 for(const p of selected){
 
 const t=
-this.cleanFinalText(p.text);
+this.cleanFinalText(
+p.text
+);
 
 
 if(
 
-t &&
+t&&
 
 pieces.every(
 x=>
-this.similarity(x,t)<.74
+this.similarity(
+x,
+t
+)<.74
 )
 
 )
@@ -3110,339 +3615,7 @@ if(info.type==='fact')
 return pieces.slice(0,4).join(' ');
 
 
-return pieces.slice(0,5).join(' ');
-
-}
-
-
-/* =========================================================
-   RECHERCHE ADAPTATIVE
-========================================================= */
-
-
-async targetedResearch(info,signal){
-
-const allResults=[];
-const allDocs=[];
-const allFacts=[];
-const allRelations=[];
-const usedQueries=[];
-
-let passes=0;
-
-
-/*
-PASSAGE 1 :
-recherche normale.
-*/
-let queries=
-this.buildQueries(info);
-
-
-for(let pass=0;pass<3;pass++){
-
-passes++;
-
-this.step(
-`Recherche adaptative ${pass+1}/3`
-);
-
-
-queries=
-this.unique(queries)
-.slice(0,5);
-
-
-usedQueries.push(...queries);
-
-
-const results=
-await this.searchAll(
-queries,
-signal
-);
-
-
-allResults.push(...results);
-
-
-/*
-Wikidata est interrogé après avoir identifié
-le sujet, pas avant.
-*/
-const ids=
-await this.discoverConcepts(
-results,
-info,
-signal
-);
-
-
-const ents=
-await this.wikidataEntities(
-ids,
-signal
-);
-
-
-const facts=
-await this.buildWikidataFacts(
-ents,
-signal
-);
-
-
-allFacts.push(...facts);
-
-
-/*
-Extraction des pages :
-limitation volontaire pour rester léger.
-*/
-const candidates=
-this.uniqueResults(results)
-.slice(0,18);
-
-
-for(const r of candidates){
-
-const source=
-this.sources.find(
-x=>x.id===r.source
-);
-
-
-if(!source)
-continue;
-
-
-try{
-
-const d=
-await this.fetchExtract(
-source,
-r.title,
-signal
-);
-
-
-if(d)
-allDocs.push(d);
-
-}catch(e){}
-
-}
-
-
-const snippetDocs=
-this.buildSnippetDocs(
-results
-);
-
-
-allDocs.push(...snippetDocs);
-
-
-const passages=
-this.selectPassages(
-
-this.buildPassages(
-allDocs,
-info
-),
-
-24
-
-);
-
-
-const relations=
-passages.flatMap(
-p=>
-this.extractTextRelations(p.text)
-);
-
-
-allRelations.push(...relations);
-
-
-const graph=
-this.buildKnowledgeGraph(
-allFacts,
-allRelations
-);
-
-
-/*
-Si une relation précise existe, on arrête tôt.
-*/
-const direct=
-this.graphAnswer(
-graph,
-info,
-passages
-);
-
-
-if(
-direct &&
-direct.answerText
-){
-
-break;
-
-}
-
-
-/*
-Sinon on construit un fallback ciblé.
-*/
-queries=
-this.buildFallbackQueries(
-info,
-results,
-passages,
-pass
-);
-
-
-if(!queries.length)
-break;
-
-}
-
-
-return{
-
-results:this.uniqueResults(allResults),
-
-docs:this.uniqueDocs(allDocs),
-
-facts:this.uniqueFacts(allFacts),
-
-relations:this.uniqueRelations(allRelations),
-
-passes,
-
-usedQueries:this.unique(usedQueries)
-
-};
-
-}
-
-
-/* =========================================================
-   FALLBACKS
-========================================================= */
-
-
-buildFallbackQueries(info,results,passages,pass){
-
-const out=[];
-
-
-/*
-Fallback 1 :
-sujet + relation.
-*/
-const subject=
-this.extractResearchSubject(info);
-
-
-const relations=
-this.requestedRelationTerms(info);
-
-
-if(
-subject &&
-relations.length
-){
-
-out.push(
-`${subject} ${relations[0]}`
-);
-
-}
-
-
-/*
-Fallback 2 :
-termes importants.
-*/
-if(
-pass===1 &&
-info.terms.length
-){
-
-out.push(
-info.terms.slice(0,8).join(' ')
-);
-
-}
-
-
-/*
-Fallback 3 :
-un titre prometteur.
-*/
-if(
-pass===1 &&
-results.length
-){
-
-const title=
-results
-.slice(0,4)
-.find(
-r=>
-this.termScore(
-`${r.title} ${r.snippet}`,
-info
-)>.15
-)?.title;
-
-
-if(title)
-out.push(title);
-
-}
-
-
-/*
-Fallback 4 :
-question relationnelle + contexte.
-*/
-if(
-pass===2 &&
-relations.length
-){
-
-out.push(
-`${info.raw} ${relations.join(' ')}`
-);
-
-}
-
-
-/*
-Dernier fallback :
-si des snippets existent, leur contenu est déjà
-exploitable et on ne multiplie plus les requêtes.
-*/
-if(
-pass>=2 &&
-passages.some(p=>p.fromSnippet)
-){
-
-return[];
-
-}
-
-
-return this.unique(
-out
-.filter(Boolean)
-).slice(0,3);
+return pieces.slice(0,6).join(' ');
 
 }
 
@@ -3450,7 +3623,6 @@ out
 /* =========================================================
    DÉDUPLICATION
 ========================================================= */
-
 
 uniqueResults(arr){
 
@@ -3544,12 +3716,13 @@ return[...m.values()];
    VÉRIFICATION
 ========================================================= */
 
-
 aggregateEvidence(passages){
 
 const sources=
 this.unique(
-passages.map(p=>p.source)
+passages.map(
+p=>p.source
+)
 );
 
 
@@ -3583,7 +3756,7 @@ averageScore:avg
 }
 
 
-verifyResult(result,info,passages,graph){
+verifyResult(result,info,passages){
 
 if(!result){
 
@@ -3593,7 +3766,9 @@ ok:false,
 
 confidence:0,
 
-reasons:['aucun résultat']
+reasons:[
+'aucun résultat'
+]
 
 };
 
@@ -3609,12 +3784,17 @@ passages
 const relevant=
 passages.filter(
 p=>
-this.termScore(p.text,info)>.08
+this.termScore(
+p.text,
+info
+)>.08
 );
 
 
 const relationTerms=
-this.requestedRelationTerms(info);
+this.requestedRelationTerms(
+info
+);
 
 
 const relationEvidence=
@@ -3667,19 +3847,23 @@ confidence+=.15;
 
 
 if(
-relationTerms.length &&
+relationTerms.length&&
 relationEvidence
 )
 confidence+=.15;
 
 
 confidence=
-Math.min(1,confidence);
+Math.min(
+1,
+confidence
+);
 
 
 return{
 
-ok:confidence>=.30,
+ok:
+confidence>=.30,
 
 confidence,
 
@@ -3690,8 +3874,10 @@ reasons:[
 `${ev.sourceCount} sources distinctes`,
 
 relationTerms.length
-?`${relationEvidence} éléments liés à la relation demandée`
-:'aucune relation spécifique demandée'
+?
+`${relationEvidence} éléments liés à la relation demandée`
+:
+'aucune relation spécifique demandée'
 
 ]
 
@@ -3704,10 +3890,10 @@ relationTerms.length
    TÂCHES
 ========================================================= */
 
-
 extractTaskConstraints(q){
 
 let length='';
+
 
 const m=
 String(q).match(
@@ -3739,15 +3925,24 @@ style=sm[1];
 let format='paragraphes';
 
 
-if(/\bliste|puces|bullet/i.test(this.norm(q)))
+if(
+this.norm(q).includes('liste')||
+this.norm(q).includes('puces')
+)
 format='liste';
 
 
-if(/\bplan|sommaire|structure/i.test(this.norm(q)))
+if(
+this.norm(q).includes('plan')||
+this.norm(q).includes('sommaire')||
+this.norm(q).includes('structure')
+)
 format='plan';
 
 
-if(/\btableau|table/i.test(this.norm(q)))
+if(
+this.norm(q).includes('tableau')
+)
 format='tableau';
 
 
@@ -3831,7 +4026,8 @@ return'research';
 
 stripTaskPrefix(q){
 
-let s=String(q).trim();
+let s=
+String(q).trim();
 
 
 s=s.replace(
@@ -3846,8 +4042,12 @@ s=s.replace(
 const colon=s.indexOf(':');
 
 
-if(colon>=0&&colon<100)
-s=s.slice(colon+1).trim();
+if(
+colon>=0&&
+colon<100
+)
+s=
+s.slice(colon+1).trim();
 
 
 return s;
@@ -3859,18 +4059,25 @@ sentenceSplit(text){
 
 return this.clean(text)
 
-.split(/(?<=[.!?])\s+/)
+.split(
+/(?<=[.!?])\s+/
+)
 
-.map(x=>x.trim())
+.map(
+x=>x.trim()
+)
 
-.filter(x=>x.length>20);
+.filter(
+x=>x.length>20
+);
 
 }
 
 
 summarizeText(text,limit=5){
 
-const s=this.sentenceSplit(text);
+const s=
+this.sentenceSplit(text);
 
 
 if(!s.length)
@@ -3881,7 +4088,10 @@ const freq=new Map();
 
 
 for(const w of this.words(text))
-freq.set(w,(freq.get(w)||0)+1);
+freq.set(
+w,
+(freq.get(w)||0)+1
+);
 
 
 return s
@@ -3895,7 +4105,8 @@ i,
 score:
 this.words(x)
 .reduce(
-(a,w)=>a+(freq.get(w)||0),
+(a,w)=>
+a+(freq.get(w)||0),
 0
 )/
 Math.max(
@@ -3909,13 +4120,18 @@ this.words(x).length
 (a,b)=>b.score-a.score
 )
 
-.slice(0,limit)
+.slice(
+0,
+limit
+)
 
 .sort(
 (a,b)=>a.i-b.i
 )
 
-.map(x=>x.x)
+.map(
+x=>x.x
+)
 
 .join(' ');
 
@@ -3924,7 +4140,8 @@ this.words(x).length
 
 rewriteText(text,style='simple'){
 
-let out=this.clean(text);
+let out=
+this.clean(text);
 
 
 out=
@@ -3970,7 +4187,11 @@ const facts=[];
 
 for(const p of selected){
 
-for(const s of this.sentenceSplit(p.text)){
+for(
+const s of this.sentenceSplit(
+p.text
+)
+){
 
 if(
 this.termScore(
@@ -3998,7 +4219,10 @@ for(const f of facts){
 if(
 unique.every(
 x=>
-this.similarity(x,f)<.72
+this.similarity(
+x,
+f
+)<.72
 )
 )
 unique.push(f);
@@ -4009,8 +4233,13 @@ unique.push(f);
 if(constraints.format==='liste'){
 
 return unique
+
 .slice(0,10)
-.map(x=>`• ${x}`)
+
+.map(
+x=>`• ${x}`
+)
+
 .join('\n');
 
 }
@@ -4061,11 +4290,15 @@ if(candidates.length>=2){
 const lines=[];
 
 
-for(const n of candidates.slice(0,4)){
+for(
+const n of candidates.slice(0,4)
+){
 
 const edges=
 graph.edges
-.filter(e=>e.from===n.id)
+.filter(
+e=>e.from===n.id
+)
 .slice(0,6);
 
 
@@ -4074,14 +4307,22 @@ edges
 
 .map(
 e=>
-`${e.labelText||e.label}: ${e.raw?.object||e.value||e.to}`
+`${e.labelText||e.label}: ${
+e.raw?.object||
+e.value||
+e.to
+}`
 )
 
 .join('; ');
 
 
 lines.push(
-`• ${n.label}${vals?` — ${vals}`:''}`
+`• ${n.label}${
+vals
+?` — ${vals}`
+:''
+}`
 );
 
 }
@@ -4127,7 +4368,9 @@ const lines=[
 for(const x of p){
 
 const s=
-this.sentenceSplit(x.text)[0];
+this.sentenceSplit(
+x.text
+)[0];
 
 
 if(s)
@@ -4149,9 +4392,336 @@ return lines.join('\n');
 
 
 /* =========================================================
-   SOLVE TASK
+   RECHERCHE NORMALE
 ========================================================= */
 
+async targetedResearch(info,signal){
+
+const allResults=[];
+
+const allDocs=[];
+
+const allFacts=[];
+
+const allRelations=[];
+
+const usedQueries=[];
+
+let passes=0;
+
+let queries=
+this.buildQueries(info);
+
+
+for(let pass=0;pass<3;pass++){
+
+passes++;
+
+
+this.step(
+`Recherche adaptative ${pass+1}/3`
+);
+
+
+queries=
+this.unique(queries)
+.slice(0,7);
+
+
+usedQueries.push(...queries);
+
+
+const results=
+await this.searchAll(
+queries,
+signal
+);
+
+
+allResults.push(...results);
+
+
+const ids=
+await this.discoverConcepts(
+results,
+info,
+signal
+);
+
+
+const ents=
+await this.wikidataEntities(
+ids,
+signal
+);
+
+
+const facts=
+await this.buildWikidataFacts(
+ents,
+signal
+);
+
+
+allFacts.push(...facts);
+
+
+const candidates=
+this.uniqueResults(
+results
+)
+.slice(0,22);
+
+
+for(const r of candidates){
+
+const source=
+this.sources.find(
+x=>x.id===r.source
+);
+
+
+if(!source)
+continue;
+
+
+try{
+
+const d=
+await this.fetchExtract(
+source,
+r.title,
+signal
+);
+
+
+if(d)
+allDocs.push(d);
+
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+}
+
+}
+
+
+allDocs.push(
+...this.buildSnippetDocs(
+results
+)
+);
+
+
+const passages=
+this.selectPassages(
+
+this.buildPassages(
+allDocs,
+info
+),
+
+30
+
+);
+
+
+const relations=
+passages.flatMap(
+p=>
+this.extractTextRelations(
+p.text
+)
+);
+
+
+allRelations.push(
+...relations
+);
+
+
+const graph=
+this.buildKnowledgeGraph(
+allFacts,
+allRelations
+);
+
+
+const direct=
+this.graphAnswer(
+graph,
+info,
+passages
+);
+
+
+if(
+direct&&
+direct.answerText
+)
+break;
+
+
+queries=
+this.buildFallbackQueries(
+info,
+results,
+passages,
+pass
+);
+
+
+if(!queries.length)
+break;
+
+
+}
+
+
+return{
+
+results:this.uniqueResults(
+allResults
+),
+
+docs:this.uniqueDocs(
+allDocs
+),
+
+facts:this.uniqueFacts(
+allFacts
+),
+
+relations:this.uniqueRelations(
+allRelations
+),
+
+passes,
+
+usedQueries:this.unique(
+usedQueries
+)
+
+};
+
+}
+
+
+buildFallbackQueries(
+info,
+results,
+passages,
+pass
+){
+
+const out=[];
+
+
+const subject=
+this.extractResearchSubject(
+info
+);
+
+
+const relations=
+this.requestedRelationTerms(
+info
+);
+
+
+if(
+subject&&
+relations.length
+){
+
+for(
+const r of relations.slice(0,2)
+){
+
+out.push(
+`${subject} ${r}`
+);
+
+}
+
+}
+
+
+if(
+pass===1&&
+info.terms.length
+){
+
+out.push(
+info.terms
+.slice(0,10)
+.join(' ')
+);
+
+}
+
+
+if(
+pass===1&&
+results.length
+){
+
+const title=
+results
+.slice(0,6)
+.find(
+r=>
+this.termScore(
+`${r.title} ${r.snippet}`,
+info
+)>.15
+)?.title;
+
+
+if(title)
+out.push(title);
+
+}
+
+
+if(
+pass===2&&
+relations.length
+){
+
+out.push(
+`${info.raw} ${relations.join(' ')}`
+);
+
+}
+
+
+if(
+pass>=2&&
+passages.some(
+p=>p.fromSnippet
+)
+){
+
+return[];
+
+}
+
+
+return this.unique(
+out
+.filter(Boolean)
+)
+.slice(0,4);
+
+}
+
+
+/* =========================================================
+   SOLVE TASK
+========================================================= */
 
 async solveTask(q,signal){
 
@@ -4179,7 +4749,7 @@ constraints
 
 
 if(
-(mode==='summary'||mode==='rewrite') &&
+(mode==='summary'||mode==='rewrite')&&
 String(q).length>180
 ){
 
@@ -4236,8 +4806,9 @@ usedQueries:[]
 verification:{
 ok:true,
 confidence:.9,
-reasons:['transformation locale']
-
+reasons:[
+'transformation locale'
+]
 }
 
 };
@@ -4245,7 +4816,9 @@ reasons:['transformation locale']
 }
 
 
-this.step('Compréhension de la demande');
+this.step(
+'Compréhension de la demande'
+);
 
 
 const research=
@@ -4263,24 +4836,16 @@ research.docs,
 info
 ),
 
-28
+32
 
 );
-
-
-const relations=
-research.relations;
 
 
 const graph=
 this.buildKnowledgeGraph(
 research.facts,
-relations
+research.relations
 );
-
-
-const matrixPassages=
-passages;
 
 
 let raw=null;
@@ -4289,14 +4854,12 @@ let raw=null;
 if(mode==='writing'){
 
 raw={
-
 answerText:
 this.writeFromEvidence(
 this.extractResearchSubject(info),
 passages,
 constraints
 )
-
 };
 
 }
@@ -4304,13 +4867,11 @@ constraints
 else if(mode==='outline'){
 
 raw={
-
 answerText:
 this.outlineFromEvidence(
 this.extractResearchSubject(info),
 passages
 )
-
 };
 
 }
@@ -4318,14 +4879,12 @@ passages
 else if(mode==='comparison'){
 
 raw={
-
 answerText:
 this.compareFromEvidence(
 info,
 passages,
 graph
 )
-
 };
 
 }
@@ -4343,14 +4902,12 @@ passages
 if(!raw){
 
 raw={
-
 answerText:
 this.synthesize(
 info,
 passages,
 null
 )
-
 };
 
 }
@@ -4362,8 +4919,7 @@ const verification=
 this.verifyResult(
 raw,
 info,
-matrixPassages,
-graph
+passages
 );
 
 
@@ -4383,7 +4939,7 @@ passages,
 
 facts:research.facts,
 
-relations,
+relations:research.relations,
 
 graph,
 
@@ -4397,22 +4953,1507 @@ verification
 
 
 /* =========================================================
-   MÉMOIRE
+   AGENT : ÉVALUATION DE L'OBJECTIF
 ========================================================= */
 
+evaluateAgentState(mission){
 
-rememberV7(q,out){
+const info=
+this.analyzeQuestion(
+mission.goal
+);
+
+
+const passages=
+mission.passages||[];
+
+
+const facts=
+mission.facts||[];
+
+
+const relations=
+mission.relations||[];
+
+
+const sources=
+this.unique(
+passages.map(
+p=>p.source
+)
+);
+
+
+const relevant=
+passages.filter(
+p=>
+this.termScore(
+p.text,
+info
+)>.08
+);
+
+
+const relationTerms=
+this.requestedRelationTerms(
+info
+);
+
+
+const relationEvidence=
+relationTerms.length
+
+?
+
+passages.filter(
+p=>
+relationTerms.some(
+r=>
+this.norm(p.text)
+.includes(
+this.norm(r)
+)
+)
+).length
+
+:
+
+0;
+
+
+let score=0;
+
+
+score+=Math.min(
+30,
+relevant.length*3
+);
+
+
+score+=Math.min(
+20,
+sources.length*4
+);
+
+
+score+=Math.min(
+20,
+facts.length/4
+);
+
+
+score+=Math.min(
+15,
+relations.length/4
+);
+
+
+if(
+relationTerms.length
+){
+
+score+=Math.min(
+15,
+relationEvidence*3
+);
+
+}else{
+
+score+=10;
+
+}
+
+
+score=Math.min(
+100,
+Math.round(score)
+);
+
+
+const coverage={
+
+terms:
+this.coverageTerms(
+info,
+passages
+),
+
+relations:
+relationTerms.length
+?
+Math.min(
+1,
+relationEvidence/
+Math.max(
+1,
+relationTerms.length*2
+)
+)
+:1,
+
+sources:
+Math.min(
+1,
+sources.length/4
+),
+
+facts:
+Math.min(
+1,
+facts.length/12
+)
+
+};
+
+
+const gaps=[];
+
+
+if(coverage.terms<.55)
+gaps.push(
+'certains termes importants sont encore peu documentés'
+);
+
+
+if(coverage.relations<.55)
+gaps.push(
+'les relations demandées sont insuffisamment documentées'
+);
+
+
+if(coverage.sources<.5)
+gaps.push(
+'la diversité des sources est encore faible'
+);
+
+
+if(coverage.facts<.45)
+gaps.push(
+'le nombre de faits structurés est encore limité'
+);
+
+
+return{
+
+score,
+
+coverage,
+
+gaps,
+
+ready:
+score>=78&&
+gaps.length<=1,
+
+sources:sources.length,
+
+relevant:relevant.length,
+
+facts:facts.length,
+
+relations:relations.length
+
+};
+
+}
+
+
+coverageTerms(info,passages){
+
+if(!info.terms.length)
+return 1;
+
+
+const text=
+this.norm(
+passages
+.map(
+p=>p.text
+)
+.join(' ')
+);
+
+
+let hits=0;
+
+
+for(const t of info.terms){
+
+if(
+text.includes(
+this.norm(t)
+)
+)
+hits++;
+
+}
+
+
+return hits/
+info.terms.length;
+
+}
+
+
+/* =========================================================
+   AGENT : NOUVELLES REQUÊTES
+========================================================= */
+
+agentGenerateQueries(mission,evaluation){
+
+const info=
+this.analyzeQuestion(
+mission.goal
+);
+
+
+const out=[];
+
+const subject=
+this.extractResearchSubject(
+info
+);
+
+
+const relations=
+this.requestedRelationTerms(
+info
+);
+
+
+/*
+1. Combler les relations manquantes.
+*/
+
+for(const r of relations){
+
+const already=
+(mission.passages||[]).filter(
+p=>
+this.norm(p.text)
+.includes(
+this.norm(r)
+)
+).length;
+
+
+if(already<2&&subject){
+
+out.push(
+`${subject} ${r}`
+);
+
+}
+
+}
+
+
+/*
+2. Rechercher les concepts importants
+encore peu présents.
+*/
+
+const corpus=
+this.norm(
+(mission.passages||[])
+.map(p=>p.text)
+.join(' ')
+);
+
+
+const missingTerms=
+info.terms.filter(
+t=>
+!corpus.includes(
+this.norm(t)
+)
+);
+
+
+for(const t of missingTerms.slice(0,5)){
+
+out.push(
+`${subject||info.raw} ${t}`
+);
+
+}
+
+
+/*
+3. Diversification des sources.
+*/
+
+if(
+evaluation.sources<4
+){
+
+out.push(
+`${subject||info.raw} histoire`
+);
+
+out.push(
+`${subject||info.raw} données`
+);
+
+}
+
+
+/*
+4. Requête ciblée sur les lacunes.
+*/
+
+for(
+const gap of evaluation.gaps.slice(0,2)
+){
+
+if(
+gap.includes('relations')&&
+subject
+){
+
+out.push(
+`${subject} faits caractéristiques`
+);
+
+}
+
+}
+
+
+/*
+5. Exploration des titres prometteurs.
+*/
+
+const promising=
+(mission.results||[])
+
+.slice(0,10)
+
+.map(
+r=>r.title
+)
+.filter(Boolean);
+
+
+for(
+const title of promising.slice(0,3)
+){
+
+out.push(title);
+
+}
+
+
+return this.unique(
+
+out
+
+.map(
+x=>String(x).trim()
+)
+
+.filter(Boolean)
+
+)
+
+.slice(0,8);
+
+}
+
+
+/* =========================================================
+   AGENT : FUSION DES DONNÉES
+========================================================= */
+
+async agentResearchPass(mission,queries,signal){
+
+if(signal?.aborted)
+throw new DOMException(
+'Aborted',
+'AbortError'
+);
+
+
+mission.pass++;
+
+this.agentUpdate({
+
+phase:
+`Recherche ${mission.pass}`,
+
+pass:
+mission.pass,
+
+maxPasses:
+mission.maxPasses,
+
+score:
+mission.score||0,
+
+goal:
+mission.goal
+
+});
+
+
+this.step(
+`Agent : recherche ${mission.pass}`
+);
+
+
+mission.queries.push(
+...queries
+);
+
+
+const results=
+await this.searchAll(
+queries,
+signal
+);
+
+
+mission.results.push(
+...results
+);
+
+
+this.agentUpdate({
+
+phase:
+'Analyse des résultats',
+
+pass:
+mission.pass,
+
+score:
+mission.score||0,
+
+goal:
+mission.goal
+
+});
+
+
+const info=
+this.analyzeQuestion(
+mission.goal
+);
+
+
+const ids=
+await this.discoverConcepts(
+results,
+info,
+signal
+);
+
+
+const entities=
+await this.wikidataEntities(
+ids,
+signal
+);
+
+
+const facts=
+await this.buildWikidataFacts(
+entities,
+signal
+);
+
+
+mission.facts.push(
+...facts
+);
+
+
+const candidates=
+this.uniqueResults(
+results
+)
+.slice(0,24);
+
+
+for(const r of candidates){
+
+if(signal?.aborted)
+throw new DOMException(
+'Aborted',
+'AbortError'
+);
+
+
+const source=
+this.sources.find(
+x=>x.id===r.source
+);
+
+
+if(!source)
+continue;
+
+
+try{
+
+const d=
+await this.fetchExtract(
+source,
+r.title,
+signal
+);
+
+
+if(d)
+mission.docs.push(d);
+
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+}
+
+}
+
+
+mission.docs.push(
+...this.buildSnippetDocs(
+results
+)
+);
+
+
+const passages=
+this.selectPassages(
+
+this.buildPassages(
+mission.docs,
+info
+),
+
+45
+
+);
+
+
+mission.passages=passages;
+
+
+const relations=
+passages.flatMap(
+p=>
+this.extractTextRelations(
+p.text
+)
+);
+
+
+mission.relations=
+this.uniqueRelations(
+[
+...(mission.relations||[]),
+...relations
+]
+);
+
+
+const graph=
+this.buildKnowledgeGraph(
+mission.facts,
+mission.relations
+);
+
+
+mission.graph=graph;
+
+
+const direct=
+this.graphAnswer(
+graph,
+info,
+passages
+);
+
+
+if(
+direct?.answerText
+){
+
+mission.directAnswer=
+direct.answerText;
+
+}
+
+
+const evaluation=
+this.evaluateAgentState(
+mission
+);
+
+
+mission.score=
+evaluation.score;
+
+
+mission.evaluation=
+evaluation;
+
+
+this.agentUpdate({
+
+phase:
+evaluation.ready
+?'Objectif presque atteint'
+:'Lacunes détectées',
+
+pass:
+mission.pass,
+
+maxPasses:
+mission.maxPasses,
+
+score:evaluation.score,
+
+gaps:evaluation.gaps,
+
+goal:mission.goal
+
+});
+
+
+return{
+
+results,
+
+passages,
+
+evaluation,
+
+direct
+
+};
+
+}
+
+
+/* =========================================================
+   AGENT : BOUCLE AUTONOME
+========================================================= */
+
+async runAgent(goal){
+
+if(this.busy)
+throw new Error(
+'Moteur déjà occupé.'
+);
+
+
+this.busy=true;
+
+this.abortController=
+new AbortController();
+
+
+const signal=
+this.abortController.signal;
+
+
+const mission={
+
+id:this.hash(
+`${goal}|${Date.now()}`
+),
+
+goal:String(goal).trim(),
+
+startedAt:this.now(),
+
+finishedAt:null,
+
+status:'running',
+
+pass:0,
+
+/*
+Protection contre les boucles infinies.
+Ce n'est pas une limite de recherche conceptuelle :
+elle protège simplement le navigateur.
+*/
+maxPasses:12,
+
+score:0,
+
+queries:[],
+
+results:[],
+
+docs:[],
+
+passages:[],
+
+facts:[],
+
+relations:[],
+
+graph:null,
+
+evaluation:null,
+
+directAnswer:null
+
+};
+
+
+this.agentMission=mission;
+
+this.memory.statistics.agentRuns++;
+
+
+this.agentUpdate({
+
+phase:'Objectif reçu',
+
+pass:0,
+
+maxPasses:mission.maxPasses,
+
+score:0,
+
+goal:mission.goal,
+
+gaps:[]
+});
+
+
+try{
+
+this.step(
+'Agent : analyse de l’objectif'
+);
+
+
+const info=
+this.analyzeQuestion(
+goal
+);
+
+
+let queries=
+this.buildQueries(info);
+
+
+/*
+Si la question est trop courte, l'agent
+commence quand même avec l'objectif brut.
+*/
+
+if(!queries.length)
+queries=[goal];
+
+
+for(let i=0;i<mission.maxPasses;i++){
+
+if(signal.aborted){
+
+mission.status='stopped';
+
+break;
+
+}
+
+
+const beforeResults=
+mission.results.length;
+
+const beforeFacts=
+mission.facts.length;
+
+const beforeRelations=
+mission.relations.length;
+
+
+const passResult=
+await this.agentResearchPass(
+mission,
+queries,
+signal
+);
+
+
+const evaluation=
+passResult.evaluation;
+
+
+if(
+evaluation.ready
+){
+
+mission.status='completed';
+
+break;
+
+}
+
+
+/*
+Convergence :
+si deux passages successifs n'apportent
+pratiquement plus rien, l'agent arrête
+l'exploration inutile.
+*/
+
+const newResults=
+mission.results.length-beforeResults;
+
+const newFacts=
+mission.facts.length-beforeFacts;
+
+const newRelations=
+mission.relations.length-beforeRelations;
+
+
+if(
+mission.pass>=4&&
+newResults===0&&
+newFacts===0&&
+newRelations===0
+){
+
+mission.status='completed';
+
+mission.evaluation.ready=true;
+
+break;
+
+}
+
+
+queries=
+this.agentGenerateQueries(
+mission,
+evaluation
+);
+
+
+/*
+Aucune nouvelle piste :
+on considère l'objectif atteint
+au niveau des sources disponibles.
+*/
+
+if(!queries.length){
+
+mission.status='completed';
+
+break;
+
+}
+
+
+await this.interruptibleSleep(
+120,
+signal
+);
+
+}
+
+
+if(
+mission.status==='running'
+)
+mission.status='completed';
+
+
+mission.finishedAt=this.now();
+
+
+/*
+Synthèse finale.
+*/
+
+this.step(
+'Agent : synthèse finale'
+);
+
+
+const finalInfo=
+this.analyzeQuestion(
+goal
+);
+
+
+const finalPassages=
+this.selectPassages(
+mission.passages,
+20
+);
+
+
+const finalGraph=
+mission.graph||
+this.buildKnowledgeGraph(
+mission.facts,
+mission.relations
+);
+
+
+let raw=
+this.graphAnswer(
+finalGraph,
+finalInfo,
+finalPassages
+);
+
+
+if(!raw){
+
+raw={
+
+answerText:
+this.synthesize(
+finalInfo,
+finalPassages,
+null
+)
+
+};
+
+}
+
+
+const verification=
+this.verifyResult(
+raw,
+finalInfo,
+finalPassages
+);
+
+
+const result={
+
+answerText:
+this.cleanFinalText(
+raw.answerText
+),
+
+sources:
+this.unique(
+finalPassages
+.slice(0,12)
+.map(
+p=>
+`${p.source}: ${p.title}`
+)
+),
+
+passages:finalPassages,
+
+confidence:
+verification.confidence,
+
+entities:
+this.unique(
+mission.results
+.slice(0,30)
+.map(
+x=>x.title
+)
+),
+
+meta:{
+
+mode:'agent',
+
+type:finalInfo.type,
+
+answerId:
+this.hash(
+`${goal}|${mission.id}`
+),
+
+missionId:
+mission.id,
+
+passes:
+mission.pass,
+
+agentScore:
+mission.evaluation?.score||0,
+
+agentStatus:
+mission.status,
+
+gaps:
+mission.evaluation?.gaps||[]
+
+}
+
+};
+
+
+this.saveAgentMission(
+mission,
+result
+);
+
+
+this.rememberAgent(
+goal,
+result,
+mission
+);
+
+
+return result;
+
+
+}catch(e){
+
+if(e.name==='AbortError'){
+
+mission.status='stopped';
+
+mission.finishedAt=this.now();
+
+this.memory.statistics.agentStopped++;
+
+this.saveAgentMission(
+mission,
+null
+);
+
+this.savePersistentMemory();
+
+return{
+
+answerText:
+'Mission Agent arrêtée.',
+
+sources:[],
+
+passages:[],
+
+confidence:0,
+
+entities:[],
+
+meta:{
+
+mode:'agent',
+
+missionId:mission.id,
+
+passes:mission.pass,
+
+agentScore:mission.score,
+
+agentStatus:'stopped',
+
+answerId:
+this.hash(
+`${goal}|${mission.id}`
+)
+
+}
+
+};
+
+}
+
+
+mission.status='failed';
+
+mission.finishedAt=this.now();
+
+this.memory.statistics.failures++;
+
+this.saveAgentMission(
+mission,
+null
+);
+
+this.savePersistentMemory();
+
+throw e;
+
+}finally{
+
+this.busy=false;
+
+this.abortController=null;
+
+this.agentUpdate({
+
+phase:
+mission.status==='stopped'
+?'Mission arrêtée'
+:'Mission terminée',
+
+pass:mission.pass,
+
+maxPasses:mission.maxPasses,
+
+score:mission.score,
+
+goal:mission.goal,
+
+gaps:
+mission.evaluation?.gaps||[]
+
+});
+
+}
+
+}
+
+
+/* =========================================================
+   STOP AGENT
+========================================================= */
+
+stopAgent(){
+
+if(
+this.busy&&
+this.abortController
+){
+
+this.abortController.abort();
+
+return true;
+
+}
+
+return false;
+
+}
+
+
+/* =========================================================
+   MÉMOIRE AGENT
+========================================================= */
+
+saveAgentMission(mission,result){
+
+const summary={
+
+id:mission.id,
+
+goal:mission.goal,
+
+startedAt:mission.startedAt,
+
+finishedAt:mission.finishedAt,
+
+status:mission.status,
+
+passes:mission.pass,
+
+score:
+mission.evaluation?.score||
+mission.score||
+0,
+
+queries:
+this.unique(
+mission.queries
+)
+.slice(0,100),
+
+sources:
+this.unique(
+mission.passages.map(
+p=>p.source
+)
+),
+
+gaps:
+mission.evaluation?.gaps||[],
+
+result:
+result?.answerText||''
+
+};
+
+
+this.addUnique(
+
+this.memory.agentMissions,
+
+summary,
+
+mission.id
+
+);
+
+
+if(
+this.memory.agentMissions.length>100
+)
+this.memory.agentMissions.shift();
+
+
+if(
+mission.status==='completed'
+)
+this.memory.statistics.agentCompleted++;
+
+
+this.memory.statistics.lastAgentRun=
+this.now();
+
+}
+
+
+rememberAgent(goal,result,mission){
 
 const now=this.now();
 
 
-const entities=
+this.addUnique(
+
+this.memory.conversation,
+
+{
+
+question:goal,
+
+answer:result.answerText,
+
+time:now,
+
+type:result.meta?.type||'research',
+
+mode:'agent',
+
+entities:result.entities||[],
+
+missionId:mission.id,
+
+agentScore:
+mission.evaluation?.score||
+mission.score||
+0
+
+},
+
+this.hash(
+`${goal}|${result.answerText}|${mission.id}`
+)
+
+);
+
+
+const concepts=
 this.unique(
 
-(out.research?.results||[])
-.slice(0,20)
-.map(x=>x.title)
+[
+...this.words(goal),
 
+...this.extractPhrases(goal)
+
+]
+
+).slice(0,40);
+
+
+for(const c of concepts){
+
+this.addUnique(
+
+this.memory.concepts,
+
+{
+
+label:c,
+
+lastSeen:now,
+
+origin:'agent'
+
+},
+
+this.hash(
+this.norm(c)
+)
+
+);
+
+}
+
+
+for(
+const r of mission.relations.slice(0,150)
+){
+
+this.addUnique(
+
+this.memory.relations,
+
+{
+
+subject:r.subject,
+
+relation:r.relation,
+
+object:r.object,
+
+lastSeen:now,
+
+origin:'agent'
+
+},
+
+this.hash(
+`${r.subject}|${r.relation}|${r.object}`
+)
+
+);
+
+}
+
+
+for(
+const f of mission.facts.slice(0,150)
+){
+
+this.addUnique(
+
+this.memory.relations,
+
+{
+
+subject:f.subject,
+
+relation:
+f.propertyLabel||
+f.propertyId,
+
+object:f.object,
+
+value:f.value,
+
+source:'wikidata',
+
+lastSeen:now,
+
+origin:'agent'
+
+},
+
+this.hash(
+`${f.subject}|${f.propertyId}|${f.object}|${f.value}`
+)
+
+);
+
+}
+
+
+for(
+const p of mission.passages.slice(0,80)
+){
+
+this.addUnique(
+
+this.memory.evidence,
+
+{
+
+source:p.source,
+
+title:p.title,
+
+text:p.text,
+
+score:p.score,
+
+fromSnippet:!!p.fromSnippet,
+
+lastSeen:now,
+
+missionId:mission.id
+
+},
+
+this.hash(
+`${p.source}|${p.title}|${p.text}`
+)
+
+);
+
+}
+
+
+for(
+const query of this.unique(
+mission.queries
+).slice(0,100)
+){
+
+this.addUnique(
+
+this.memory.searches,
+
+{
+
+query,
+
+type:'agent',
+
+mode:'agent',
+
+missionId:mission.id,
+
+time:now
+
+},
+
+this.hash(
+`${query}|agent|${mission.id}`
+)
+
+);
+
+}
+
+
+this.memory.statistics.runs++;
+
+this.memory.statistics.successes++;
+
+this.memory.statistics.totalSearchPasses+=
+mission.pass;
+
+this.memory.statistics.totalSources+=
+this.unique(
+mission.passages.map(
+p=>p.source
+)
+).length;
+
+this.memory.statistics.lastRun=now;
+
+
+this.savePersistentMemory();
+
+}
+
+
+/* =========================================================
+   MÉMOIRE NORMALE
+========================================================= */
+
+rememberV8(q,out){
+
+const now=this.now();
+
+
+const answerId=
+out.meta?.answerId||
+this.hash(
+`${q}|${Date.now()}`
 );
 
 
@@ -4428,16 +6469,18 @@ answer:out.answerText,
 
 time:now,
 
-type:out.info.type,
+type:out.meta?.type||'research',
 
-mode:out.plan.mode,
+mode:out.meta?.mode||'discussion',
 
-entities
+entities:out.entities||[],
+
+_answerId:answerId
 
 },
 
 this.hash(
-`${q}|${out.answerText}`
+`${q}|${out.answerText}|${answerId}`
 )
 
 );
@@ -4447,8 +6490,14 @@ for(
 const c of this.unique(
 
 [
-...(out.info.terms||[]),
-...(out.info.phrases||[])
+
+...(out.meta?.type
+? [out.meta.type]
+:[]),
+
+...this.words(q),
+
+...this.extractPhrases(q)
 
 ]
 
@@ -4456,7 +6505,7 @@ const c of this.unique(
 x=>x.length>2
 )
 
-).slice(0,30)
+).slice(0,35)
 ){
 
 this.addUnique(
@@ -4481,7 +6530,7 @@ this.norm(c)
 
 
 for(
-const r of out.relations.slice(0,100)
+const r of(out.relations||[]).slice(0,100)
 ){
 
 this.addUnique(
@@ -4510,7 +6559,7 @@ this.hash(
 
 
 for(
-const f of out.facts.slice(0,100)
+const f of(out.facts||[]).slice(0,100)
 ){
 
 this.addUnique(
@@ -4521,7 +6570,9 @@ this.memory.relations,
 
 subject:f.subject,
 
-relation:f.propertyLabel||f.propertyId,
+relation:
+f.propertyLabel||
+f.propertyId,
 
 object:f.object,
 
@@ -4543,7 +6594,7 @@ this.hash(
 
 
 for(
-const p of out.passages.slice(0,40)
+const p of(out.passages||[]).slice(0,50)
 ){
 
 this.addUnique(
@@ -4577,7 +6628,9 @@ this.hash(
 
 for(
 const s of this.unique(
-out.passages.map(p=>p.source)
+(out.passages||[]).map(
+p=>p.source
+)
 )
 ){
 
@@ -4601,9 +6654,9 @@ this.hash(s)
 
 
 for(
-const query of
-(out.research?.usedQueries||[])
-.slice(0,20)
+const query of(
+out.research?.usedQueries||[]
+).slice(0,30)
 ){
 
 this.addUnique(
@@ -4614,16 +6667,16 @@ this.memory.searches,
 
 query,
 
-type:out.info.type,
+type:out.meta?.type||'research',
 
-mode:out.plan.mode,
+mode:'discussion',
 
 time:now
 
 },
 
 this.hash(
-`${query}|${out.info.type}|${out.plan.mode}`
+`${query}|discussion`
 )
 
 );
@@ -4641,7 +6694,9 @@ out.research?.passes||0;
 this.memory.statistics.totalSources+=
 
 this.unique(
-out.passages.map(p=>p.source)
+(out.passages||[]).map(
+p=>p.source
+)
 ).length;
 
 this.memory.statistics.lastRun=now;
@@ -4661,26 +6716,27 @@ answer:out.answerText,
 
 time:Date.now(),
 
-entities
+answerId,
+
+entities:out.entities||[]
 
 });
 
 
-if(this.sessionMemory.length>30)
+if(this.sessionMemory.length>50)
 this.sessionMemory.shift();
 
 }
 
 
 /* =========================================================
-   APPRENTISSAGE DES STRATÉGIES
+   STRATÉGIES
 ========================================================= */
-
 
 learnStrategy(out){
 
 const key=
-`${out.plan.mode}|${out.info.type}`;
+`${out.meta?.mode||'discussion'}|${out.meta?.type||'research'}`;
 
 
 let existing=
@@ -4709,7 +6765,9 @@ score:0
 
 };
 
-this.memory.learnedStrategies.push(existing);
+this.memory.learnedStrategies.push(
+existing
+);
 
 }
 
@@ -4720,22 +6778,25 @@ existing.uses++;
 existing.avgConfidence=
 
 (
-existing.avgConfidence*(existing.uses-1)+
-out.verification.confidence
-)/existing.uses;
+existing.avgConfidence*
+(existing.uses-1)+
+(out.confidence||0)
+)/
+existing.uses;
 
 
 existing.avgPasses=
 
 (
-existing.avgPasses*(existing.uses-1)+
-(out.research?.passes||0)
-)/existing.uses;
+existing.avgPasses*
+(existing.uses-1)+
+(out.meta?.passes||
+out.research?.passes||
+0)
+)/
+existing.uses;
 
 
-/*
-Le score est recalculé lors des évaluations.
-*/
 existing.score=
 existing.positive-
 existing.negative;
@@ -4744,6 +6805,10 @@ existing.negative;
 
 
 recordFeedback(answerId,value){
+
+if(!answerId)
+return;
+
 
 const item={
 
@@ -4756,7 +6821,9 @@ time:this.now()
 };
 
 
-this.memory.feedback.push(item);
+this.memory.feedback.push(
+item
+);
 
 
 if(this.memory.feedback.length>300)
@@ -4771,9 +6838,6 @@ if(value==='down')
 this.memory.statistics.negativeFeedback++;
 
 
-/*
-Retrouver la stratégie utilisée pour cette réponse.
-*/
 const conversation=
 this.memory.conversation
 .find(
@@ -4818,34 +6882,9 @@ this.savePersistentMemory();
 }
 
 
-/*
-Associe l'identifiant d'une réponse à sa stratégie.
-*/
-attachAnswerId(q,answerId){
-
-const item=
-[...this.memory.conversation]
-.reverse()
-.find(
-x=>x.question===q
-);
-
-
-if(item){
-
-item._answerId=answerId;
-
-this.savePersistentMemory();
-
-}
-
-}
-
-
 /* =========================================================
    STATS
 ========================================================= */
-
 
 memoryStats(){
 
@@ -4854,25 +6893,44 @@ const s=this.memory.statistics;
 
 return{
 
-conversation:this.memory.conversation.length,
+conversation:
+this.memory.conversation.length,
 
-concepts:this.memory.concepts.length,
+concepts:
+this.memory.concepts.length,
 
-entities:this.memory.entities.length,
+entities:
+this.memory.entities.length,
 
-relations:this.memory.relations.length,
+relations:
+this.memory.relations.length,
 
-evidence:this.memory.evidence.length,
+evidence:
+this.memory.evidence.length,
 
-sources:this.memory.sources.length,
+sources:
+this.memory.sources.length,
 
-searches:this.memory.searches.length,
+searches:
+this.memory.searches.length,
 
-strategies:this.memory.learnedStrategies.length,
+strategies:
+this.memory.learnedStrategies.length,
 
-feedback:this.memory.feedback.length,
+missions:
+this.memory.agentMissions.length,
 
-runs:s.runs
+feedback:
+this.memory.feedback.length,
+
+runs:
+s.runs,
+
+agentRuns:
+s.agentRuns,
+
+agentCompleted:
+s.agentCompleted
 
 };
 
@@ -4880,9 +6938,8 @@ runs:s.runs
 
 
 /* =========================================================
-   EXPORT / IMPORT
+   EXPORT
 ========================================================= */
-
 
 exportMemory(){
 
@@ -4891,7 +6948,7 @@ this.memory.savedAt=this.now();
 
 const payload={
 
-memoryFormat:'pyramidal-v7.1',
+memoryFormat:'pyramidal-v8',
 
 exportedAt:this.now(),
 
@@ -4930,7 +6987,7 @@ a.href=url;
 
 
 a.download=
-`memoire-pyramidal-v7.1-${new Date().toISOString().slice(0,10)}.json`;
+`memoire-pyramidal-v8-${new Date().toISOString().slice(0,10)}.json`;
 
 
 a.click();
@@ -4991,12 +7048,15 @@ const k of [
 'searches',
 'learnedStrategies',
 'taskHistory',
-'feedback'
+'feedback',
+'agentMissions'
 
 ]
 ){
 
-for(const item of incoming[k]||[]){
+for(
+const item of incoming[k]||[]
+){
 
 this.addUnique(
 this.memory[k],
@@ -5038,7 +7098,19 @@ totalSearchPasses:
 
 totalSources:
 (this.memory.statistics.totalSources||0)+
-(incoming.statistics?.totalSources||0)
+(incoming.statistics?.totalSources||0),
+
+agentRuns:
+(this.memory.statistics.agentRuns||0)+
+(incoming.statistics?.agentRuns||0),
+
+agentCompleted:
+(this.memory.statistics.agentCompleted||0)+
+(incoming.statistics?.agentCompleted||0),
+
+agentStopped:
+(this.memory.statistics.agentStopped||0)+
+(incoming.statistics?.agentStopped||0)
 
 };
 
@@ -5052,24 +7124,30 @@ this.defaultMemory();
 
 this.sessionMemory=[];
 
+this.agentMission=null;
+
 this.savePersistentMemory();
 
 }
 
 
 /* =========================================================
-   RUN
+   RUN NORMAL
 ========================================================= */
-
 
 async run(q){
 
 if(this.busy)
-throw new Error('Moteur déjà occupé.');
+throw new Error(
+'Moteur déjà occupé.'
+);
+
+
+if(this.mode==='agent')
+return this.runAgent(q);
 
 
 this.busy=true;
-
 
 this.abortController=
 new AbortController();
@@ -5084,16 +7162,18 @@ this.abortController.signal
 );
 
 
-this.step('Vérification finale');
-
-
-this.rememberV7(
-q,
-out
+this.step(
+'Vérification finale'
 );
 
 
-return{
+const answerId=
+this.hash(
+`${q}|${Date.now()}`
+);
+
+
+const result={
 
 answerText:
 this.cleanFinalText(
@@ -5118,25 +7198,41 @@ out.verification.confidence,
 entities:
 out.research?.results
 ?.slice(0,20)
-.map(x=>x.title)||[],
+.map(
+x=>x.title
+)||[],
+
+facts:out.facts||[],
+
+relations:out.relations||[],
+
+research:out.research,
 
 meta:{
 
 type:out.info.type,
 
-mode:out.plan.mode,
+mode:'discussion',
 
-verification:out.verification,
+verification:
+out.verification,
 
 task:out.plan,
 
-answerId:this.hash(
-`${q}|${Date.now()}`
-)
+answerId
 
 }
 
 };
+
+
+this.rememberV8(
+q,
+result
+);
+
+
+return result;
 
 
 }catch(e){
@@ -5169,7 +7265,6 @@ this.abortController=null;
    INTERFACE
 ========================================================= */
 
-
 const chat=
 document.getElementById('chat');
 
@@ -5182,6 +7277,12 @@ document.getElementById('send');
 const welcome=
 document.getElementById('welcome');
 
+const modeBtn=
+document.getElementById('modeBtn');
+
+const headerStatus=
+document.getElementById('headerStatus');
+
 const drawerBackdrop=
 document.getElementById('drawerBackdrop');
 
@@ -5191,9 +7292,15 @@ document.getElementById('memoryStats');
 const engineStatus=
 document.getElementById('engineStatus');
 
+const agentStatusBox=
+document.getElementById('agentStatusBox');
 
 let activeStep=null;
 
+
+/* =========================================================
+   AFFICHAGE
+========================================================= */
 
 function scrollBottom(){
 
@@ -5223,11 +7330,16 @@ document.createElement('div');
 d.className='message user';
 
 
-d.innerHTML=
+const b=
+document.createElement('div');
 
-`<div class="bubble">${
-engine.escapeHTML(text)
-}</div>`;
+
+b.className='bubble';
+
+b.textContent=text;
+
+
+d.appendChild(b);
 
 
 chat.appendChild(d);
@@ -5251,10 +7363,29 @@ document.createElement('div');
 d.className='step';
 
 
-d.innerHTML=
+const spinner=
+document.createElement('span');
 
-`<span class="spinner"></span>
-<span>${engine.escapeHTML(label)}</span>`;
+
+spinner.className=
+'spinner'+
+(
+engine.mode==='agent'
+?' agentSpinner'
+:''
+);
+
+
+const text=
+document.createElement('span');
+
+
+text.textContent=label;
+
+
+d.appendChild(spinner);
+
+d.appendChild(text);
 
 
 chat.appendChild(d);
@@ -5282,9 +7413,217 @@ activeStep=null;
 
 
 /* =========================================================
-   MESSAGE ASSISTANT
+   AGENT PANEL
 ========================================================= */
 
+let activeAgentPanel=null;
+
+
+function createAgentPanel(goal){
+
+const panel=
+document.createElement('div');
+
+
+panel.className='agentPanel';
+
+
+const top=
+document.createElement('div');
+
+
+top.className='agentTop';
+
+
+const title=
+document.createElement('div');
+
+
+title.className='agentTitle';
+
+title.textContent=
+'◆ MISSION AGENT';
+
+
+const stop=
+document.createElement('button');
+
+
+stop.className='stopAgent';
+
+stop.textContent='Arrêter';
+
+
+stop.onclick=()=>{
+
+engine.stopAgent();
+
+stop.disabled=true;
+
+stop.textContent='Arrêt…';
+
+};
+
+
+top.appendChild(title);
+
+top.appendChild(stop);
+
+
+const goalEl=
+document.createElement('div');
+
+
+goalEl.className='agentGoal';
+
+goalEl.textContent=goal;
+
+
+const progress=
+document.createElement('div');
+
+
+progress.className='agentProgress';
+
+
+const bar=
+document.createElement('div');
+
+
+bar.className='agentProgressBar';
+
+
+progress.appendChild(bar);
+
+
+const meta=
+document.createElement('div');
+
+
+meta.className='agentMeta';
+
+
+const phase=
+document.createElement('span');
+
+
+phase.textContent=
+'Initialisation…';
+
+
+const score=
+document.createElement('span');
+
+
+score.textContent='0%';
+
+
+meta.appendChild(phase);
+
+meta.appendChild(score);
+
+
+panel.appendChild(top);
+
+panel.appendChild(goalEl);
+
+panel.appendChild(progress);
+
+panel.appendChild(meta);
+
+
+chat.appendChild(panel);
+
+
+activeAgentPanel={
+
+panel,
+
+bar,
+
+phase,
+
+score,
+
+stop
+
+};
+
+
+scrollBottom();
+
+}
+
+
+function updateAgentPanel(data){
+
+if(!activeAgentPanel)
+return;
+
+
+const max=
+data.maxPasses||12;
+
+
+const pass=
+data.pass||0;
+
+
+const score=
+Math.max(
+0,
+Math.min(
+100,
+Number(data.score)||0
+)
+);
+
+
+const progress=
+Math.max(
+score,
+Math.min(
+100,
+(pass/max)*100
+)
+);
+
+
+activeAgentPanel.bar.style.width=
+`${progress}%`;
+
+
+activeAgentPanel.phase.textContent=
+data.phase||
+'Agent en cours…';
+
+
+activeAgentPanel.score.textContent=
+`${score}%`;
+
+
+if(
+data.phase==='Mission arrêtée'||
+data.phase==='Mission terminée'
+){
+
+activeAgentPanel.stop.disabled=true;
+
+activeAgentPanel.stop.textContent=
+data.phase==='Mission arrêtée'
+?'Arrêté'
+:'Terminé';
+
+}
+
+scrollBottom();
+
+}
+
+
+/* =========================================================
+   ASSISTANT
+========================================================= */
 
 function addAssistantMessage(result){
 
@@ -5295,7 +7634,13 @@ const d=
 document.createElement('div');
 
 
-d.className='message assistant';
+d.className=
+'message assistant'+
+(
+result.meta?.mode==='agent'
+?' agentMessage'
+:''
+);
 
 
 const b=
@@ -5317,11 +7662,9 @@ b.appendChild(text);
 
 
 /*
-Actions :
-👍 = feedback positif
-👎 = feedback négatif
-📋 = copie EXACTEMENT answerText
+Actions.
 */
+
 const actions=
 document.createElement('div');
 
@@ -5338,6 +7681,7 @@ up.className='miniBtn';
 up.textContent='👍';
 
 up.title='Bonne réponse';
+
 
 up.onclick=()=>{
 
@@ -5403,14 +7747,6 @@ copy.onclick=async()=>{
 
 try{
 
-/*
-IMPORTANT :
-seul answerText est copié.
-Aucune source.
-Aucune confiance.
-Aucun bouton.
-Aucun HTML.
-*/
 await navigator.clipboard.writeText(
 result.answerText||''
 );
@@ -5453,6 +7789,7 @@ b.appendChild(actions);
 /*
 Sources.
 */
+
 if(result.sources?.length){
 
 const src=
@@ -5462,19 +7799,20 @@ document.createElement('div');
 src.className='sources';
 
 
-src.innerHTML=
-result.sources
+for(const s of result.sources){
 
-.map(
+const span=
+document.createElement('span');
 
-s=>
-`<span class="sourceItem">${
-engine.escapeHTML(s)
-}</span>`
 
-)
+span.className='sourceItem';
 
-.join('');
+span.textContent=s;
+
+
+src.appendChild(span);
+
+}
 
 
 b.appendChild(src);
@@ -5485,6 +7823,7 @@ b.appendChild(src);
 /*
 Confiance.
 */
+
 const conf=
 document.createElement('div');
 
@@ -5498,14 +7837,24 @@ Math.round(
 );
 
 
-conf.innerHTML=
+let extra='';
 
+
+if(result.meta?.mode==='agent'){
+
+extra=
+` · Agent ${result.meta.passes||0} passages · objectif ${result.meta.agentScore||0}%`;
+
+}
+
+
+conf.innerHTML=
 `Confiance indicative :
 <strong>${c}%</strong>${
 result.meta?.mode
 ?` · mode ${engine.escapeHTML(result.meta.mode)}`
 :''
-}`;
+}${engine.escapeHTML(extra)}`;
 
 
 b.appendChild(conf);
@@ -5519,24 +7868,6 @@ chat.appendChild(d);
 
 scrollBottom();
 
-
-/*
-Associer l'identifiant de réponse
-à l'entrée mémoire correspondante.
-*/
-if(result.meta?.answerId){
-
-setTimeout(()=>{
-
-engine.attachAnswerId(
-result._question||'',
-result.meta.answerId
-);
-
-},0);
-
-}
-
 }
 
 
@@ -5544,36 +7875,135 @@ result.meta.answerId
    STATUS
 ========================================================= */
 
-
 function setStatus(){
 
 const s=
 engine.memoryStats();
 
 
-memoryStatsEl.innerHTML=
+memoryStatsEl.innerHTML='';
 
-Object.entries(s)
 
-.map(
+for(const [k,v] of Object.entries(s)){
 
-([k,v])=>
+const div=
+document.createElement('div');
 
-`<div class="stat">
-<small>${engine.escapeHTML(k)}</small>
-<strong>${v}</strong>
-</div>`
 
-)
+div.className='stat';
 
-.join('');
+
+const small=
+document.createElement('small');
+
+
+small.textContent=k;
+
+
+const strong=
+document.createElement('strong');
+
+
+strong.textContent=v;
+
+
+div.appendChild(small);
+
+div.appendChild(strong);
+
+
+memoryStatsEl.appendChild(div);
+
+}
 
 
 engineStatus.textContent=
 
-`Moteur ${engine.version} · mémoire locale active · dernière sauvegarde : ${
+`Moteur ${engine.version} · ${
+engine.mode==='agent'
+?'mode Agent'
+:'mode Discussion'
+} · mémoire locale active · dernière sauvegarde : ${
 engine.memory.savedAt||'aucune'
 }`;
+
+
+if(engine.agentMission){
+
+const m=
+engine.agentMission;
+
+
+agentStatusBox.textContent=
+
+`Objectif : ${m.goal}
+État : ${m.status}
+Passages : ${m.pass}
+Progression : ${m.score||0}%
+Recherches : ${engine.unique(m.queries||[]).length}
+Preuves : ${(m.passages||[]).length}`;
+
+}else{
+
+agentStatusBox.textContent=
+'Aucune mission active.';
+
+}
+
+}
+
+
+/* =========================================================
+   MODE
+========================================================= */
+
+function setMode(mode){
+
+engine.mode=mode;
+
+
+if(mode==='agent'){
+
+modeBtn.textContent='◆ Agent';
+
+modeBtn.classList.add('agent');
+
+modeBtn.title=
+'Mode Agent actif';
+
+send.classList.add('agentSend');
+
+send.textContent='Lancer';
+
+input.placeholder=
+'Décris l’objectif que l’Agent doit atteindre…';
+
+headerStatus.textContent=
+'Agent autonome • recherche adaptative • vérification • mémoire';
+
+}else{
+
+modeBtn.textContent='Discussion';
+
+modeBtn.classList.remove('agent');
+
+modeBtn.title=
+'Mode Discussion actif';
+
+send.classList.remove('agentSend');
+
+send.textContent='Envoyer';
+
+input.placeholder=
+'Écris une question ou une tâche…';
+
+headerStatus.textContent=
+'Discussion • recherche • raisonnement • mémoire locale';
+
+}
+
+
+setStatus();
 
 }
 
@@ -5581,7 +8011,6 @@ engine.memory.savedAt||'aucune'
 /* =========================================================
    DRAWER
 ========================================================= */
-
 
 function openDrawer(){
 
@@ -5603,10 +8032,10 @@ drawerBackdrop.classList.remove('open');
    SUBMIT
 ========================================================= */
 
-
 async function submit(){
 
-const q=input.value.trim();
+const q=
+input.value.trim();
 
 
 if(!q||engine.busy)
@@ -5624,20 +8053,22 @@ addUserMessage(q);
 send.disabled=true;
 
 
+if(engine.mode==='agent'){
+
+createAgentPanel(q);
+
+}
+
+
 try{
 
 const result=
 await engine.run(q);
 
 
-/*
-Conserver la question pour l'association
-du feedback avec la bonne stratégie.
-*/
-result._question=q;
-
-
-addAssistantMessage(result);
+addAssistantMessage(
+result
+);
 
 
 }catch(e){
@@ -5652,18 +8083,25 @@ document.createElement('div');
 d.className='message assistant';
 
 
-d.innerHTML=
+const b=
+document.createElement('div');
 
-`<div class="bubble">
-Erreur : ${engine.escapeHTML(e.message||String(e))}
-</div>`;
 
+b.className='bubble';
+
+
+b.textContent=
+`Erreur : ${
+e.message||String(e)
+}`;
+
+
+d.appendChild(b);
 
 chat.appendChild(d);
 
 
 scrollBottom();
-
 
 }finally{
 
@@ -5677,6 +8115,10 @@ input.focus();
 
 }
 
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
 
 function resizeInput(){
 
@@ -5697,7 +8139,6 @@ input.scrollHeight,
    ÉVÉNEMENTS
 ========================================================= */
 
-
 document.getElementById('menuBtn').onclick=
 openDrawer;
 
@@ -5707,17 +8148,43 @@ closeDrawer;
 
 
 drawerBackdrop.addEventListener(
-
 'click',
-
 e=>{
 
 if(e.target===drawerBackdrop)
 closeDrawer();
 
 }
-
 );
+
+
+modeBtn.onclick=()=>{
+
+setMode(
+engine.mode==='agent'
+?'discussion'
+:'agent'
+);
+
+};
+
+
+document.getElementById('discussionBtn').onclick=()=>{
+
+setMode('discussion');
+
+closeDrawer();
+
+};
+
+
+document.getElementById('agentBtn').onclick=()=>{
+
+setMode('agent');
+
+closeDrawer();
+
+};
 
 
 document.getElementById('clearBtn').onclick=()=>{
@@ -5735,7 +8202,6 @@ w.className='welcome';
 
 
 w.innerHTML=
-
 '<b>Conversation effacée.</b><br>La mémoire persistante reste intacte.';
 
 
@@ -5743,6 +8209,8 @@ chat.appendChild(w);
 
 
 engine.sessionMemory=[];
+
+activeAgentPanel=null;
 
 
 scrollBottom();
@@ -5786,7 +8254,8 @@ document.getElementById('importInput')
 
 async e=>{
 
-const f=e.target.files?.[0];
+const f=
+e.target.files?.[0];
 
 
 if(!f)
@@ -5801,11 +8270,15 @@ false
 );
 
 
-alert('Mémoire importée avec succès.');
+alert(
+'Mémoire importée avec succès.'
+);
 
 }catch(err){
 
-alert('Fichier mémoire invalide.');
+alert(
+'Fichier mémoire invalide.'
+);
 
 }
 
@@ -5826,7 +8299,8 @@ document.getElementById('mergeInput')
 
 async e=>{
 
-const f=e.target.files?.[0];
+const f=
+e.target.files?.[0];
 
 
 if(!f)
@@ -5841,11 +8315,15 @@ true
 );
 
 
-alert('Mémoire fusionnée avec succès.');
+alert(
+'Mémoire fusionnée avec succès.'
+);
 
 }catch(err){
 
-alert('Fichier mémoire invalide.');
+alert(
+'Fichier mémoire invalide.'
+);
 
 }
 
@@ -5872,7 +8350,7 @@ input.addEventListener(
 e=>{
 
 if(
-e.key==='Enter' &&
+e.key==='Enter'&&
 !e.shiftKey
 ){
 
@@ -5894,14 +8372,21 @@ send.onclick=submit;
    INITIALISATION
 ========================================================= */
 
-
 const engine=
-new PyramidV7_1(showStep);
+new PyramidV8(
 
+showStep,
+
+updateAgentPanel
+
+);
+
+
+setMode('discussion');
 
 setStatus();
 
 </script>
 
 </body>
-  </html>
+   </html>
