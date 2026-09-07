@@ -1,5 +1,125 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-07 16:25:00
+TITRE: En visite au Groenland, von der Leyen annonce une enveloppe de 200 millions d’euros
+LIEN: https://www.ledevoir.com/monde/europe/1007063/visite-groenland-von-der-leyen-annonce-enveloppe-200-millions-euros
+CONTENU: L’Union européenne cherche à soutenir le territoire face aux velléités de Donald Trump.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-07 14:55:00
+TITRE: «Je m’excuserai pas de gouverner», dit Christine Fréchette
+LIEN: https://www.ledevoir.com/politique/quebec/1007000/je-excuserai-pas-gouverner-dit-christine-frechette
+CONTENU: La cheffe caquiste a défendu sa décision de rassembler le Conseil des ministres face à la guerre tarifaire en cours.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-07 12:45:00
+TITRE: Israël mène de nouvelles frappes meurtrières dans le sud du Liban
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1006988/israel-mene-nouvelles-frappes-meurtrieres-sud-liban
+CONTENU: Les plus récents bombardements ont fait 11 morts, dont deux nourrissons, a rapporté lundi un média d’État libanais.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-07 15:30:00
+TITRE: Québec solidaire veut augmenter le salaire minimum à 20$ l’heure
+LIEN: https://www.ledevoir.com/politique/quebec/1007003/quebec-solidaire-veut-augmenter-salaire-minimum-20-heure
+CONTENU: Il s’agirait d’une augmentation de 3,40$, le salaire minimum étant présentement établi à 16,60$ l’heure.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-07 14:15:00
+TITRE: Treize jours après la catastrophe, jour de deuil et de frustration au Népal
+LIEN: https://www.ledevoir.com/monde/asie/1006994/treize-jours-apres-catastrophe-jour-deuil-frustration-nepal
+CONTENU: La catastrophe a fait au moins 1399 morts et plus de 5500 disparus, selon les plus récents bilans provisoires.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-07 15:28:18
+TITRE: Grand âge et perte d’audition : le manque de dépistage finit par coûter cher
+LIEN: https://theconversation.com/grand-age-et-perte-daudition-le-manque-de-depistage-finit-par-couter-cher-290467
+CONTENU: La perte auditive, qui survient avec l’âge, reste mal dépistée et prise en charge. Pourtant les données démontrent l’intérêt des appareils auditifs pour prévenir les chutes et le déclin cognitif.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-07 13:51:23
+TITRE: Gloria Steinem, l’art de mettre un mouvement en marche
+LIEN: https://theconversation.com/gloria-steinem-lart-de-mettre-un-mouvement-en-marche-291299
+CONTENU: Pendant toute sa vie, Gloria Steinem, grande figure féministe, a sillonné l’Amérique pour aller à la rencontre des autres. Elle raconte ces périples.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-07 13:49:46
+TITRE: Le RN veut interdire le foulard islamique dans l’espace public : une rupture avec les principes de liberté religieuse et de non-discrimination
+LIEN: https://theconversation.com/le-rn-veut-interdire-le-foulard-islamique-dans-lespace-public-une-rupture-avec-les-principes-de-liberte-religieuse-et-de-non-discrimination-291079
+CONTENU: Le Rassemblement national souhaite interdire le foulard islamique dans l’espace public, s’il emporte l’élection présidentielle. Le principe invoqué par le RN est la lutte contre l’islamisme. Or, les données de la recherche ne permettent pas de réduire le port du voile à une motivation politique.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-07 13:48:57
+TITRE: Fire and floods are usually treated as separate hazards. Portugal’s Pinhal Interior shows why they are part of the same cycle
+LIEN: https://theconversation.com/fire-and-floods-are-usually-treated-as-separate-hazards-portugals-pinhal-interior-shows-why-they-are-part-of-the-same-cycle-290857
+CONTENU: As storms, wildfires, and floods strike in ever-closer succession, an architect with disaster risk science expertise explains why resilience is built between hazards, not during them.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-07 13:48:33
+TITRE: En 50 ans, comment ont évolué les positions des médecins sur l’avortement
+LIEN: https://theconversation.com/en-50-ans-comment-ont-evolue-les-positions-des-medecins-sur-lavortement-268461
+CONTENU: En quelque cinquante&amp;nbsp;ans, les positions des médecins ont évolué concernant l’interruption volontaire de grossesse (IVG). Les oppositions des années&amp;nbsp;1970 se sont affaiblies et le corps médical est majoritairement favorable au droit à l’avortement.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-07 13:47:40
+TITRE: Incendies en Algérie : l’exceptionnelle résilience du peuple comme ressource politique du pouvoir
+LIEN: https://theconversation.com/incendies-en-algerie-lexceptionnelle-resilience-du-peuple-comme-ressource-politique-du-pouvoir-291087
+CONTENU: En Algérie, les incendies révèlent les failles de l’État, mais aussi une solidarité citoyenne que le pouvoir célèbre tout en cherchant à la récupérer.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-07 13:46:15
+TITRE: Fournitures scolaires : petite mythologie de la liste, de l’Antiquité à Roland Barthes
+LIEN: https://theconversation.com/fournitures-scolaires-petite-mythologie-de-la-liste-de-lantiquite-a-roland-barthes-291191
+CONTENU: Avec ses allures d’inventaire, la liste de fournitures scolaires masque le rapport de pouvoir qu’elle pose et les questions économiques qu’elle soulève.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-07 13:46:01
+TITRE: Pourquoi les forêts françaises sont-elles si peu assurées ?
+LIEN: https://theconversation.com/pourquoi-les-forets-francaises-sont-elles-si-peu-assurees-291005
+CONTENU: Seulement 7,5&amp;nbsp;% de la forêt privée française est assurée contre l’incendie et/ou la tempête.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-07 13:45:58
+TITRE: Assurés, mais pas couverts contre certaines catastrophes naturelles, ce que nous enseignent les leçons tirées des incendies en Gironde
+LIEN: https://theconversation.com/assures-mais-pas-couverts-contre-certaines-catastrophes-naturelles-ce-que-nous-enseignent-les-lecons-tirees-des-incendies-en-gironde-289257
+CONTENU: Près de 15&amp;nbsp;000&amp;nbsp;entreprises paralysées en Gironde&amp;nbsp;: être assuré ne signifie pas être indemnisé. Face au risque climatique, l’assurabilité passe par l’adaptation.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-07 13:45:33
+TITRE: États-Unis, Arabie saoudite, Russie : à chacun sa manière de vaciller pour les trois grands du pétrole
+LIEN: https://theconversation.com/etats-unis-arabie-saoudite-russie-a-chacun-sa-maniere-de-vaciller-pour-les-trois-grands-du-petrole-291056
+CONTENU: La crise d’Ormuz a déstabilisé les marchés pétroliers, dans le prolongement du conflit russo-ukrainien, mettant au jour les faiblesses des principaux pays producteurs, au centre d’un jeu chaotique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-09-07 16:30:03
 TITRE: Une loi de finances pour 6 mois, c’est possible ?
