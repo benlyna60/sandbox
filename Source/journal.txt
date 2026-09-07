@@ -1,5 +1,61 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-07 17:11:59
+TITRE: Pétrole : au Venezuela, l’équation impossible de Washington
+LIEN: https://www.lemonde.fr/economie/article/2026/09/07/petrole-au-venezuela-l-equation-impossible-de-washington_6767983_3234.html
+CONTENU: Les modalités de l’accord pétrolier conclu entre Washington et Caracas restent floues. La mainmise des Etats-Unis sur les réserves vénézuéliennes ne permettra pas de compenser dans l’immédiat les barils perdus au Moyen-Orient.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-07 16:30:11
+TITRE: Niveau des élèves : « Toute modification du système scolaire devrait être pilotée avec le souci de son évaluation »
+LIEN: https://www.lemonde.fr/societe/article/2026/09/07/niveau-des-eleves-toute-modification-du-systeme-scolaire-devrait-etre-pilotee-avec-le-souci-de-son-evaluation_6767976_3224.html
+CONTENU: Alors que les résultats de la nouvelle édition de l’étude PISA doivent être dévoilés mardi, le Haut-Commissariat à la stratégie et au plan a mené une enquête sur les faiblesses structurelles de l’éducation nationale. Son rapporteur, Pierre-Yves Cusset, présente ses travaux au « Monde ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-07 19:27:11
+TITRE: Violences sexistes et sexuelles : les associations retournent dans la rue pour faire aboutir la loi intégrale
+LIEN: https://www.lemonde.fr/societe/article/2026/09/07/violences-sexistes-et-sexuelles-les-associations-retournent-dans-la-rue-pour-faire-aboutir-la-loi-integrale_6767994_3224.html
+CONTENU: La proposition de loi intégrale est arrivée lundi en commission spéciale à l’Assemblée nationale, où elle sera amendée, avant son examen en séance publique début octobre. Ses 69 articles ont été élaborés à partir de propositions formulées par une coalition d’associations féministes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-07 20:34:00
+TITRE: Violences dans le périscolaire à Paris : Emmanuel Grégoire inaugure une nouvelle école de formation des animateurs
+LIEN: https://www.lemonde.fr/societe/article/2026/09/07/violences-dans-le-periscolaire-a-paris-emmanuel-gregoire-inaugure-une-nouvelle-ecole-de-formation-des-animateurs_6767996_3224.html
+CONTENU: Ce programme de formation de cent heures, obligatoire, s’appliquera aux 3 000 animateurs titulaires et contractuels de la filière, a précisé le maire de Paris.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-07 20:33:51
+TITRE: EN DIRECT, guerre en Ukraine : Volodymyr Zelensky évoque la possibilité d’une nouvelle session de négociations trilatérales
+LIEN: https://www.lemonde.fr/international/live/2026/09/07/en-direct-guerre-en-ukraine-volodymyr-zelensky-evoque-la-possibilite-d-une-nouvelle-session-de-negociations-trilaterales_6766818_3210.html
+CONTENU: « Nous avons septembre et octobre pour trouver un moyen de parler », a déclaré le président ukrainien. « Je pense que le président Trump peut trouver un moyen de lancer réellement le processus de négociation avant le froid de l’hiver », a-t-il ajouté.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-07 20:19:05
+TITRE: En Colombie, le soldat de la Légion étrangère française pris en otage par une guérilla est « sain et sauf »
+LIEN: https://www.lemonde.fr/international/article/2026/09/07/en-colombie-le-soldat-de-la-legion-etrangere-francaise-pris-en-otage-par-une-guerilla-est-sain-et-sauf_6767995_3210.html
+CONTENU: Le soldat colombien de la Légion étrangère française, enlevé le 6 août par des guérilleros, a réussi à leur échapper, a annoncé lundi l’état-major des armées français.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-07 18:57:52
+TITRE: Budget 2027 : le gouvernement se distancie de la « piste » d’un nouvel impôt sur l’épargne salariale et saisit la justice après la fuite de « travaux internes »
+LIEN: https://www.lemonde.fr/politique/article/2026/09/07/budget-2027-le-gouvernement-tempere-la-piste-d-un-nouvel-impot-sur-l-epargne-salariale-et-saisit-la-justice-apres-la-fuite-de-travaux-internes_6767990_823448.html
+CONTENU: Matignon a fait savoir que Sébastien Lecornu ne s’était « jamais prononcé en faveur » de cette idée, évoquée dans « Les Echos ». Un signalement a été transmis à la procureure de la République de Paris, ont annoncé les services du premier ministre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-07 21:28:13
 TITRE: La Nouvelle-Écosse entame les travaux après les inondations au Cap-Breton
