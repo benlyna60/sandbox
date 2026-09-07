@@ -1,5 +1,125 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-07 20:00:00
+TITRE: Le journal de 22h00 du lundi 07 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-22h00/le-journal-de-22h00-du-lundi-07-septembre-2026-9402468
+CONTENU: Article de référence : "Le journal de 22h00 du lundi 07 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-07 18:30:00
+TITRE: Le 20h30/minuit du lundi 07 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-20h30-minuit/le-20h30-minuit-du-lundi-07-septembre-2026-2585915
+CONTENU: Article de référence : "Le 20h30/minuit du lundi 07 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-07 18:00:00
+TITRE: Le journal de 20h00 du lundi 07 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-info-a-20h00/le-journal-de-20h00-du-lundi-07-septembre-2026-5709465
+CONTENU: Article de référence : "Le journal de 20h00 du lundi 07 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-07 20:54:11
+TITRE: Retraités, salariés, ménages...qui va payer la dette ? - 07/09
+LIEN: https://www.bfmtv.com/replay-emissions/bfm-grand-soir/video-retraites-salaries-menages-qui-va-payer-la-dette-07-09_VN-202609070956.html
+CONTENU: Chaque soir, Maxime Switek vous accompagne de 21h à 00h dans BFM Grand Soir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-07 20:50:49
+TITRE: Salariés de la tour Eiffel en grève: "Le monument sera ouvert à 9h30 demain matin", assure Diane Davoine, secrétaire du comité social et économique de la tour Eiffel
+LIEN: https://www.bfmtv.com/societe/greves/video-salaries-de-la-tour-eiffel-en-greve-le-monument-sera-ouvert-a-9h30-demain-matin-assure-diane-davoine-secretaire-du-comite-social-et-economique-de-la-tour-eiffel_VN-202609070955.html
+CONTENU: La tour Eiffel est restée fermée ce lundi 7 septembre en raison d'une assemblée générale de ses salariés. Ils protestent contre l'éviction samedi dernier du personnel féminin lors de la visite d'une délégation de l'organisation religieuse hindoue BAPS.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-07 20:41:23
+TITRE: CHOIX D'YVES THRÉARD - Campagne 2027: Le Pen et Mélenchon dictent le tempo
+LIEN: https://www.bfmtv.com/politique/elections/presidentielle/video-choix-d-yves-threard-campagne-2027-le-pen-et-melenchon-dictent-le-tempo_VN-202609070948.html
+CONTENU: Tous les soirs, les chroniqueurs du 22h BFM font leur choix dans l'actualité.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-07 20:37:42
+TITRE: Le RN prêt à “couper le robinet” à l’Ukraine ? - 07/09
+LIEN: https://www.bfmtv.com/replay-emissions/bfm-grand-soir/video-le-rn-pret-a-couper-le-robinet-a-l-ukraine-07-09_VN-202609070944.html
+CONTENU: Chaque soir, Maxime Switek vous accompagne de 21h à 00h dans BFM Grand Soir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-07 20:34:48
+TITRE: "Totalement inacceptable", besoin de "clarté", "honte"... La classe politique s'insurge après l'éviction du personnel féminin de la tour Eiffel lors de la visite d'un groupe religieux hindou
+LIEN: https://www.bfmtv.com/politique/totalement-inacceptable-besoin-de-clarte-honte-la-classe-politique-s-insurge-apres-l-eviction-du-personnel-feminin-de-la-tour-eiffel-lors-de-la-visite-d-un-groupe-religieux-hindou_AN-202609070939.html
+CONTENU: La tour Eiffel est au cœur d'une polémique ce lundi 7 septembre, après que son personnel féminin a été mis à l'écart samedi, lors de la visite d'un groupe religieux hindou. L'événement a suscité de nombreuses réactions au sein de la classe politique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-07 20:32:23
+TITRE: Taxer l'épargne salariale, Lecornu fait marche arrière ? - 07/09
+LIEN: https://www.bfmtv.com/replay-emissions/bfm-grand-soir/video-taxer-l-epargne-salariale-lecornu-fait-marche-arriere-07-09_VN-202609070943.html
+CONTENU: Chaque soir, Maxime Switek vous accompagne de 21h à 00h dans BFM Grand Soir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-07 20:31:16
+TITRE: LE CHOIX D'ELSA VIDAL – Soutenir l'Ukraine, ça nous coûte vraiment si cher ?
+LIEN: https://www.bfmtv.com/international/europe/ukraine/video-le-choix-d-elsa-vidal-soutenir-l-ukraine-ca-nous-coute-vraiment-si-cher_VN-202609070940.html
+CONTENU: Tous les soirs, les chroniqueurs du 22h BFM font leur choix dans l'actualité.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-07 20:25:14
+TITRE: Cartes Pokémon, luxe, jouets... Plus de 27.000 contrefaçons saisies par les douanes lors de la Braderie de Lille
+LIEN: https://www.bfmtv.com/grand-lille/cartes-pokemon-luxe-jouets-plus-de-27-000-contrefacons-saisies-par-les-douanes-lors-de-la-braderie-de-lille_AV-202609070931.html
+CONTENU: Lors de la Braderie de Lille 2026, qui s'est déroulée ce samedi 5 et dimanche 6 septembre, les douaniers ont saisi plus de 27.000 contrefaçons.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-07 20:20:00
+TITRE: Résultats Loto FDJ: le tirage du lundi 7 septembre 2026
+LIEN: https://www.bfmtv.com/loto/resultats-loto-fdj-le-tirage-du-lundi-7-septembre-2026_AN-202609070028.html
+CONTENU: C'est le premier tirage Loto de la semaine qui s'est tenu ce lundi 7 septembre 2026. Les résultats du tirage au sort sont désormais accessibles sur cette page.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-07 19:54:48
+TITRE: Mort de l'ex-rugbyman argentin Aramburu: à l'ouverture procès, Loïk Le Priol dit avoir «tiré» pour se «défendre»
+LIEN: https://www.rfi.fr/fr/france/20260907-ouourour
+CONTENU: En mars 2022, l’ex-international argentin de rugby Federico Aramburu était tué par balles en plein cœur de Paris. Le procès de 4 personnes impliquées dans sa mort, dont deux sympathisants d’ultra-droite déjà condamnés dans une même affaire pour violences aggravées, Loick le Priol et Romain Bouvier, s’est ouvert ce lundi 7 septembre devant la Cour d’assises de Paris. Loïk Le Priol est jugé pour assassinat, c’est-à-dire meurtre avec préméditation, Romain Bouvier pour tentative d’assassinat. Des qualifications qu’ils ont contestées lors de leur première déclaration.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-07 20:22:17
+TITRE: Donald Trump menace de s'en prendre aux ventes de l'avionneur canadien Bombardier aux États-Unis
+LIEN: https://www.rfi.fr/fr/%C3%A9conomie/20260907-donald-trump-menace-de-s-en-prendre-aux-ventes-de-l-avionneur-canadien-bombardier-aux-%C3%A9tats-unis
+CONTENU: Donald Trump a menacé lundi 7 septembre de s'en prendre aux ventes de l'avionneur canadien Bombardier, à quelques heures de l'entrée en vigueur de surtaxes canadiennes touchant une série de produits américains, en plein conflit commercial entre les deux voisins.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-07 20:04:22
+TITRE: Pourquoi le Rassemblement national en France a rompu ses liens avec l'AfD allemand
+LIEN: https://www.rfi.fr/fr/europe/20260907-pourquoi-le-rassemblement-national-en-france-a-rompu-ses-liens-avec-l-afd-allemand
+CONTENU: Au lendemain de la victoire retentissante de l'AfD en Saxe-Anhalt, personne au Rassemblement national ne s'en félicite. Seule une formation d'extrême droite, Reconquête! salue ce résultat historique. De son côté, Marine Le Pen, candidate RN à la prochaine présidentielle, est restée silencieuse. Autrefois alliés, le parti à la flamme et l'AfD ont rompu leurs liens.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-09-07 17:45:52
 TITRE: C'est un document de travail qui a fuité: Matignon dit que rien n'est tranché sur l'épargne salariale et saisit la justice (Sébastien Lecornu renoncerait même à l'instauration de prélèvements sociaux)
