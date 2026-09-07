@@ -1,4 +1,28 @@
 ----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-07 08:26:12
+TITRE: Les 20 langages informatiques les plus populaires en septembre 2026
+LIEN: https://www.blogdumoderateur.com/20-langages-informatiques-populaires-septembre-2026/
+CONTENU: Le haut du classement TIOBE reste stable sur un an, tandis que Julia est désormais proche de réintégrer le top 20.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-07 07:50:00
+TITRE: DocuWare passe sa GED à l’IA : ce que change le « nouveau DocuWare »
+LIEN: https://www.blogdumoderateur.com/nouveau-docuware-ged-ia/
+CONTENU: Assistant conversationnel, extraction sans paramétrage, interface repensée : DocuWare déploie à l’automne une nouvelle version de sa plateforme documentaire, présentée au salon TechSolutions les 14 et 15 octobre.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-07 06:00:18
+TITRE: 5 formations pour devenir un expert en UX et UI design
+LIEN: https://www.blogdumoderateur.com/selection-formation-ux-ui-design-317/
+CONTENU: Cette sélection de formations vous apprend à maîtriser les techniques de l'UX et de l'UI design.
+
+----------------------------------------
 CATEGORIE: ESSAIS
 SOURCE: Le Monde (Idées & Analyses)
 DATE: 2026-09-07 08:45:04
