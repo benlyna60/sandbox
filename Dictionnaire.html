@@ -3,70 +3,428 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Synthétiseur Pyramidal Multi-Sources V7</title>
+<title>Synthétiseur Pyramidal Multi-Sources V7.1</title>
+
 <style>
-:root{--bg:#0d1117;--panel:#151b23;--panel2:#1b222c;--border:#293241;--text:#e7edf4;--muted:#8b98a8;--accent:#5aa9ff;--accent2:#78c2ff;--user:#26384d;--danger:#ef6b73;--ok:#5dcc91;--shadow:0 12px 32px rgba(0,0,0,.28)}
+:root{
+--bg:#0d1117;
+--panel:#151b23;
+--panel2:#1b222c;
+--border:#293241;
+--text:#e7edf4;
+--muted:#8b98a8;
+--accent:#5aa9ff;
+--user:#26384d;
+--danger:#ef6b73;
+--ok:#5dcc91;
+--shadow:0 12px 32px rgba(0,0,0,.28)
+}
+
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+
+html,body{
+margin:0;
+height:100%;
+background:var(--bg);
+color:var(--text);
+font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+}
+
 body{overflow:hidden}
-.app{height:100dvh;display:flex;flex-direction:column;min-height:0}
-.header{height:64px;flex:0 0 64px;border-bottom:1px solid var(--border);background:rgba(13,17,23,.96);display:flex;align-items:center;gap:10px;padding:0 12px;z-index:10}
-.menuBtn,.clearBtn{width:38px;height:38px;border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:9px;cursor:pointer;font-size:19px}
-.menuBtn:hover,.clearBtn:hover{border-color:#40516a}
-.brand{min-width:0;flex:1}
-.brand b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand span{display:block;color:var(--muted);font-size:11px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chat{flex:1;min-height:0;overflow-y:auto;padding:18px 14px 12px}
+
+.app{
+height:100dvh;
+display:flex;
+flex-direction:column;
+min-height:0
+}
+
+.header{
+height:64px;
+flex:0 0 64px;
+border-bottom:1px solid var(--border);
+background:rgba(13,17,23,.96);
+display:flex;
+align-items:center;
+gap:10px;
+padding:0 12px;
+z-index:10
+}
+
+.menuBtn,.clearBtn{
+width:38px;
+height:38px;
+border:1px solid var(--border);
+background:var(--panel);
+color:var(--text);
+border-radius:9px;
+cursor:pointer;
+font-size:19px
+}
+
+.menuBtn:hover,.clearBtn:hover{
+border-color:#40516a
+}
+
+.brand{
+min-width:0;
+flex:1
+}
+
+.brand b{
+display:block;
+font-size:15px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis
+}
+
+.brand span{
+display:block;
+color:var(--muted);
+font-size:11px;
+margin-top:2px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis
+}
+
+.chat{
+flex:1;
+min-height:0;
+overflow-y:auto;
+padding:18px 14px 12px
+}
+
 .chat::-webkit-scrollbar{width:8px}
-.chat::-webkit-scrollbar-thumb{background:#293241;border-radius:8px}
-.message{display:flex;margin:0 0 12px}
-.message.user{justify-content:flex-end}
-.bubble{max-width:78%;padding:10px 12px;border-radius:12px;border:1px solid var(--border);line-height:1.48;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
-.user .bubble{background:var(--user)}
-.assistant .bubble{background:transparent;border-color:transparent;padding-left:0;padding-right:0;max-width:88%}
-.answerActions{display:flex;gap:7px;margin-top:8px}
-.miniBtn{border:1px solid var(--border);background:var(--panel);color:var(--muted);border-radius:7px;padding:5px 8px;font-size:11px;cursor:pointer}
-.miniBtn:hover{color:var(--text);border-color:#40516a}
-.sources{margin-top:9px;color:var(--muted);font-size:10px;line-height:1.45}
-.sourceItem{display:inline-block;margin:2px 6px 2px 0;padding:2px 5px;border:1px solid var(--border);border-radius:5px}
-.step{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px;margin:3px 0 12px;padding-left:2px}
-.spinner{width:12px;height:12px;border:2px solid #354152;border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.composer{flex:0 0 auto;border-top:1px solid var(--border);background:var(--bg);padding:10px 12px 12px;display:flex;gap:8px;align-items:flex-end}
-.composer textarea{flex:1;resize:none;min-height:42px;max-height:150px;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:11px 12px;outline:none;font:inherit;font-size:14px;line-height:1.35}
-.composer textarea:focus{border-color:#46617e}
-.send{height:42px;min-width:70px;border:0;border-radius:10px;background:var(--accent);color:#07111b;font-weight:700;cursor:pointer}
-.send:disabled{opacity:.5;cursor:not-allowed}
-.welcome{color:var(--muted);font-size:13px;line-height:1.6;max-width:760px;margin:30px auto;padding:0 10px}
-.welcome b{color:var(--text)}
-.drawerBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:20}
-.drawerBackdrop.open{display:block}
-.drawer{position:absolute;left:0;top:0;bottom:0;width:min(340px,88vw);background:var(--panel);border-right:1px solid var(--border);box-shadow:var(--shadow);padding:16px;overflow-y:auto}
-.drawerHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.drawerHead b{font-size:15px}
-.closeBtn{border:0;background:none;color:var(--muted);font-size:24px;cursor:pointer}
-.drawerSection{border-top:1px solid var(--border);padding:13px 0}
-.drawerSection:first-of-type{border-top:0}
-.drawerSection h3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 9px}
-.drawer button.action{width:100%;text-align:left;padding:9px 10px;margin:4px 0;border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:8px;cursor:pointer;font-size:12px}
-.drawer button.action:hover{border-color:#40516a}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.stat{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px}
-.stat small{display:block;color:var(--muted);font-size:9px}
-.stat strong{display:block;font-size:15px;margin-top:2px}
-.statusLine{font-size:11px;color:var(--muted);line-height:1.5}
-.notice{font-size:10px;color:var(--muted);line-height:1.45;margin-top:8px}
-.hidden{display:none!important}
-.confidence{margin-top:7px;color:var(--muted);font-size:10px}
-.confidence strong{color:var(--text)}
+
+.chat::-webkit-scrollbar-thumb{
+background:#293241;
+border-radius:8px
+}
+
+.message{
+display:flex;
+margin:0 0 12px
+}
+
+.message.user{
+justify-content:flex-end
+}
+
+.bubble{
+max-width:78%;
+padding:10px 12px;
+border-radius:12px;
+border:1px solid var(--border);
+line-height:1.48;
+font-size:14px;
+white-space:pre-wrap;
+overflow-wrap:anywhere
+}
+
+.user .bubble{
+background:var(--user)
+}
+
+.assistant .bubble{
+background:transparent;
+border-color:transparent;
+padding-left:0;
+padding-right:0;
+max-width:88%
+}
+
+.answerActions{
+display:flex;
+gap:5px;
+margin-top:8px;
+align-items:center
+}
+
+.miniBtn{
+border:1px solid var(--border);
+background:var(--panel);
+color:var(--muted);
+border-radius:7px;
+padding:4px 7px;
+font-size:11px;
+cursor:pointer;
+line-height:1
+}
+
+.miniBtn:hover{
+color:var(--text);
+border-color:#40516a
+}
+
+.miniBtn.active-good{
+color:var(--ok);
+border-color:rgba(93,204,145,.45)
+}
+
+.miniBtn.active-bad{
+color:var(--danger);
+border-color:rgba(239,107,115,.45)
+}
+
+.sources{
+margin-top:9px;
+color:var(--muted);
+font-size:10px;
+line-height:1.45
+}
+
+.sourceItem{
+display:inline-block;
+margin:2px 6px 2px 0;
+padding:2px 5px;
+border:1px solid var(--border);
+border-radius:5px
+}
+
+.step{
+display:flex;
+align-items:center;
+gap:8px;
+color:var(--muted);
+font-size:11px;
+margin:3px 0 12px;
+padding-left:2px
+}
+
+.spinner{
+width:12px;
+height:12px;
+border:2px solid #354152;
+border-top-color:var(--accent);
+border-radius:50%;
+animation:spin .75s linear infinite
+}
+
+@keyframes spin{
+to{transform:rotate(360deg)}
+}
+
+.composer{
+flex:0 0 auto;
+border-top:1px solid var(--border);
+background:var(--bg);
+padding:10px 12px 12px;
+display:flex;
+gap:8px;
+align-items:flex-end
+}
+
+.composer textarea{
+flex:1;
+resize:none;
+min-height:42px;
+max-height:150px;
+background:var(--panel);
+border:1px solid var(--border);
+color:var(--text);
+border-radius:10px;
+padding:11px 12px;
+outline:none;
+font:inherit;
+font-size:14px;
+line-height:1.35
+}
+
+.composer textarea:focus{
+border-color:#46617e
+}
+
+.send{
+height:42px;
+min-width:70px;
+border:0;
+border-radius:10px;
+background:var(--accent);
+color:#07111b;
+font-weight:700;
+cursor:pointer
+}
+
+.send:disabled{
+opacity:.5;
+cursor:not-allowed
+}
+
+.welcome{
+color:var(--muted);
+font-size:13px;
+line-height:1.6;
+max-width:760px;
+margin:30px auto;
+padding:0 10px
+}
+
+.welcome b{
+color:var(--text)
+}
+
+.drawerBackdrop{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.5);
+display:none;
+z-index:20
+}
+
+.drawerBackdrop.open{
+display:block
+}
+
+.drawer{
+position:absolute;
+left:0;
+top:0;
+bottom:0;
+width:min(340px,88vw);
+background:var(--panel);
+border-right:1px solid var(--border);
+box-shadow:var(--shadow);
+padding:16px;
+overflow-y:auto
+}
+
+.drawerHead{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:14px
+}
+
+.drawerHead b{
+font-size:15px
+}
+
+.closeBtn{
+border:0;
+background:none;
+color:var(--muted);
+font-size:24px;
+cursor:pointer
+}
+
+.drawerSection{
+border-top:1px solid var(--border);
+padding:13px 0
+}
+
+.drawerSection:first-of-type{
+border-top:0
+}
+
+.drawerSection h3{
+font-size:11px;
+text-transform:uppercase;
+letter-spacing:.08em;
+color:var(--muted);
+margin:0 0 9px
+}
+
+.drawer button.action{
+width:100%;
+text-align:left;
+padding:9px 10px;
+margin:4px 0;
+border:1px solid var(--border);
+background:var(--panel2);
+color:var(--text);
+border-radius:8px;
+cursor:pointer;
+font-size:12px
+}
+
+.drawer button.action:hover{
+border-color:#40516a
+}
+
+.stats{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:7px
+}
+
+.stat{
+background:var(--panel2);
+border:1px solid var(--border);
+border-radius:8px;
+padding:8px
+}
+
+.stat small{
+display:block;
+color:var(--muted);
+font-size:9px
+}
+
+.stat strong{
+display:block;
+font-size:15px;
+margin-top:2px
+}
+
+.statusLine{
+font-size:11px;
+color:var(--muted);
+line-height:1.5
+}
+
+.notice{
+font-size:10px;
+color:var(--muted);
+line-height:1.45;
+margin-top:8px
+}
+
+.hidden{
+display:none!important
+}
+
+.confidence{
+margin-top:7px;
+color:var(--muted);
+font-size:10px
+}
+
+.confidence strong{
+color:var(--text)
+}
+
 @media(max-width:600px){
-.header{height:58px;flex-basis:58px}
-.bubble{max-width:88%}
-.assistant .bubble{max-width:94%}
-.composer{padding:8px}
-.send{min-width:58px}
-.chat{padding:14px 10px}
-.brand b{font-size:14px}
+
+.header{
+height:58px;
+flex-basis:58px
+}
+
+.bubble{
+max-width:88%
+}
+
+.assistant .bubble{
+max-width:94%
+}
+
+.composer{
+padding:8px
+}
+
+.send{
+min-width:58px
+}
+
+.chat{
+padding:14px 10px
+}
+
+.brand b{
+font-size:14px
+}
 }
 </style>
 </head>
@@ -76,29 +434,40 @@ body{overflow:hidden}
 <div class="app">
 
 <header class="header">
+
 <button id="menuBtn" class="menuBtn" aria-label="Menu">☰</button>
 
 <div class="brand">
-<b>Synthétiseur Pyramidal Multi-Sources V7</b>
+<b>Synthétiseur Pyramidal Multi-Sources V7.1</b>
 <span>Recherche • raisonnement • rédaction • mémoire persistante • Wikimedia / Wikidata</span>
 </div>
 
 <button id="clearBtn" class="clearBtn" title="Effacer la conversation">×</button>
+
 </header>
 
 <main id="chat" class="chat">
 
 <div id="welcome" class="welcome">
-<b>V7 prête.</b><br>
-Pose une question, demande une explication, une comparaison, une synthèse ou la rédaction d’un texte.
-Le moteur cherche des preuves publiques, raisonne sur les relations et conserve son apprentissage générique dans une mémoire locale exportable.
+<b>V7.1 prête.</b><br>
+Pose une question, donne un sujet ou demande une définition,
+une comparaison, une vérification, une synthèse ou une rédaction.
+Le moteur recherche progressivement les informations publiques,
+croise les preuves disponibles et conserve son apprentissage local.
 </div>
 
 </main>
 
 <div class="composer">
-<textarea id="input" rows="1" placeholder="Écris une question ou une tâche…"></textarea>
+
+<textarea
+id="input"
+rows="1"
+placeholder="Écris une question ou une tâche…"
+></textarea>
+
 <button id="send" class="send">Envoyer</button>
+
 </div>
 
 </div>
@@ -109,26 +478,49 @@ Le moteur cherche des preuves publiques, raisonne sur les relations et conserve 
 <aside class="drawer" role="dialog" aria-label="Mémoire et configuration">
 
 <div class="drawerHead">
-<b>Menu V7</b>
+<b>Menu V7.1</b>
 <button id="closeDrawer" class="closeBtn">×</button>
 </div>
+
 
 <div class="drawerSection">
 
 <h3>Mémoire</h3>
 
-<button class="action" id="exportBtn">⇩ Exporter la mémoire JSON</button>
-<button class="action" id="importBtn">⇧ Importer une mémoire JSON</button>
-<button class="action" id="mergeBtn">⊕ Fusionner une mémoire JSON</button>
-<button class="action" id="resetMemoryBtn">♲ Réinitialiser la mémoire</button>
+<button class="action" id="exportBtn">
+⇩ Exporter la mémoire JSON
+</button>
 
-<input id="importInput" class="hidden" type="file" accept="application/json,.json">
-<input id="mergeInput" class="hidden" type="file" accept="application/json,.json">
+<button class="action" id="importBtn">
+⇧ Importer une mémoire JSON
+</button>
+
+<button class="action" id="mergeBtn">
+⊕ Fusionner une mémoire JSON
+</button>
+
+<button class="action" id="resetMemoryBtn">
+♲ Réinitialiser la mémoire
+</button>
+
+<input
+id="importInput"
+class="hidden"
+type="file"
+accept="application/json,.json"
+>
+
+<input
+id="mergeInput"
+class="hidden"
+type="file"
+accept="application/json,.json"
+>
 
 <div class="notice">
-La mémoire contient l’état appris localement :
-conversations, concepts, entités, relations, preuves, sources, stratégies et statistiques.
-Elle ne contient pas de réponses factuelles codées en dur.
+La mémoire conserve les conversations, concepts, entités,
+relations, preuves, sources, recherches, stratégies,
+évaluations et statistiques.
 </div>
 
 </div>
@@ -140,54 +532,122 @@ Elle ne contient pas de réponses factuelles codées en dur.
 
 <div id="memoryStats" class="stats"></div>
 
-<div id="engineStatus" class="statusLine" style="margin-top:9px"></div>
+<div
+id="engineStatus"
+class="statusLine"
+style="margin-top:9px"
+></div>
 
 </div>
 
 
 <div class="drawerSection">
 
-<h3>Principe V7</h3>
+<h3>Principe V7.1</h3>
 
 <div class="statusLine">
-Comprendre → planifier → chercher → enrichir → relier → vérifier → répondre → mémoriser.
+Comprendre → chercher → enrichir → relier →
+vérifier → répondre → mémoriser → apprendre.
 </div>
 
 <div class="notice">
-Les URL et règles linguistiques du moteur sont de l’infrastructure générique.
-Les faits sont récupérés dynamiquement depuis les sources publiques.
+Le moteur ne possède pas de réponses factuelles codées en dur.
+Les faits sont recherchés dynamiquement dans les sources publiques.
 </div>
 
 </div>
 
 </aside>
+
 </div>
 
 
 <script>
 'use strict';
 
-class PyramidV6 {
+
+class PyramidV7_1{
+
 
 constructor(stepCallback){
 
 this.stepCallback=stepCallback;
 
+this.version='V7.1';
+
 this.sources=[
-{id:'wikipedia',label:'Wikipedia',lang:'fr',host:'https://fr.wikipedia.org'},
-{id:'wiktionary',label:'Wiktionnaire',lang:'fr',host:'https://fr.wiktionary.org'},
-{id:'wikiversity',label:'Wikiversité',lang:'fr',host:'https://fr.wikiversity.org'},
-{id:'wikivoyage',label:'Wikivoyage',lang:'fr',host:'https://fr.wikivoyage.org'},
-{id:'wikisource',label:'Wikisource',lang:'fr',host:'https://fr.wikisource.org'},
-{id:'wikiquote',label:'Wikiquote',lang:'fr',host:'https://fr.wikiquote.org'},
-{id:'wikibooks',label:'Wikilivres',lang:'fr',host:'https://fr.wikibooks.org'},
-{id:'wikidata',label:'Wikidata',lang:'all',host:'https://www.wikidata.org'}
+
+{
+id:'wikipedia',
+label:'Wikipédia',
+lang:'fr',
+host:'https://fr.wikipedia.org'
+},
+
+{
+id:'wiktionary',
+label:'Wiktionnaire',
+lang:'fr',
+host:'https://fr.wiktionary.org'
+},
+
+{
+id:'wikiversity',
+label:'Wikiversité',
+lang:'fr',
+host:'https://fr.wikiversity.org'
+},
+
+{
+id:'wikivoyage',
+label:'Wikivoyage',
+lang:'fr',
+host:'https://fr.wikivoyage.org'
+},
+
+{
+id:'wikisource',
+label:'Wikisource',
+lang:'fr',
+host:'https://fr.wikisource.org'
+},
+
+{
+id:'wikiquote',
+label:'Wikiquote',
+lang:'fr',
+host:'https://fr.wikiquote.org'
+},
+
+{
+id:'wikibooks',
+label:'Wikilivres',
+lang:'fr',
+host:'https://fr.wikibooks.org'
+},
+
+{
+id:'wikidata',
+label:'Wikidata',
+lang:'all',
+host:'https://www.wikidata.org'
+}
+
 ];
 
+
 this.stopwords=new Set(
-('a à au aux avec ce ceci cela ces cet cette comme dans de des du elle en est et eu eux il ils je la le les leur lui ma mais me mes moi mon ne nos notre nous on ou par pas pour que quel quelle quelles quels qui quoi se sera son sont sur ta te tes toi ton tu un une vos votre vous y d afin alors ainsi après avant aucun aussi autre autres car ce dont donc entre été être même moins plus quand sans sous très via')
-.split(/\s+/)
+
+('a à au aux avec ce ceci cela ces cet cette comme dans de des du '
++'elle elles en est et eu eux il ils je la le les leur leurs lui '
++'ma mais me mes moi mon ne nos notre nous on ou par pas pour que '
++'quel quelle quelles quels qui quoi se sera son sont sur ta te tes '
++'toi ton tu un une uns unes vos votre vous y afin alors ainsi après '
++'avant aucun aucune aussi autre autres car ce dont donc entre été '
++'être même moins plus quand sans sous très via est-ce estce').split(/\s+/)
+
 );
+
 
 this.cache=new Map();
 this.searchCache=new Map();
@@ -195,155 +655,539 @@ this.wikidataCache=new Map();
 
 this.busy=false;
 this.abortController=null;
+
 this.sessionMemory=[];
+
+this.memory=this.defaultMemory();
+
+this.loadPersistentMemory();
+
+this.taskState={};
+
 }
+
 
 step(label){
-if(this.stepCallback)this.stepCallback(label);
+
+if(this.stepCallback)
+this.stepCallback(label);
+
 }
+
+
+now(){
+
+return new Date().toISOString();
+
+}
+
+
+hash(s){
+
+let h=2166136261;
+
+for(const ch of String(s)){
+
+h^=ch.charCodeAt(0);
+
+h=Math.imul(h,16777619);
+
+}
+
+return (h>>>0).toString(16);
+
+}
+
+
+defaultMemory(){
+
+return{
+
+schemaVersion:2,
+
+engineFamily:'Pyramidal',
+
+engineVersion:'V7.1',
+
+savedAt:null,
+
+conversation:[],
+
+concepts:[],
+
+entities:[],
+
+relations:[],
+
+evidence:[],
+
+sources:[],
+
+searches:[],
+
+learnedStrategies:[],
+
+taskHistory:[],
+
+feedback:[],
+
+statistics:{
+
+runs:0,
+
+successes:0,
+
+failures:0,
+
+positiveFeedback:0,
+
+negativeFeedback:0,
+
+totalSearchPasses:0,
+
+totalSources:0,
+
+lastRun:null
+
+}
+
+};
+
+}
+
+
+normalizeMemory(m){
+
+const base=this.defaultMemory();
+
+if(!m||typeof m!=='object')
+return base;
+
+const out={
+...base,
+...m
+};
+
+out.schemaVersion=2;
+out.engineFamily='Pyramidal';
+out.engineVersion='V7.1';
+
+for(const k of [
+
+'conversation',
+'concepts',
+'entities',
+'relations',
+'evidence',
+'sources',
+'searches',
+'learnedStrategies',
+'taskHistory',
+'feedback'
+
+]){
+
+out[k]=Array.isArray(out[k])
+?out[k]
+:[];
+
+}
+
+out.statistics={
+...base.statistics,
+...(m.statistics||{})
+};
+
+return out;
+
+}
+
+
+migrateMemory(raw){
+
+if(Array.isArray(raw)){
+
+return this.normalizeMemory({
+conversation:raw
+});
+
+}
+
+if(raw?.memoryFormat&&raw.memory)
+raw=raw.memory;
+
+return this.normalizeMemory(raw);
+
+}
+
+
+loadPersistentMemory(){
+
+try{
+
+const raw=
+localStorage.getItem(
+'pyramidal_v7_memory'
+);
+
+if(raw){
+
+this.memory=
+this.migrateMemory(
+JSON.parse(raw)
+);
+
+}
+
+}catch(e){
+
+this.memory=
+this.defaultMemory();
+
+}
+
+}
+
+
+savePersistentMemory(){
+
+try{
+
+this.memory.savedAt=this.now();
+
+localStorage.setItem(
+'pyramidal_v7_memory',
+JSON.stringify(this.memory)
+);
+
+return true;
+
+}catch(e){
+
+return false;
+
+}
+
+}
+
+
+addUnique(list,item,key){
+
+const k=
+key||
+this.hash(JSON.stringify(item));
+
+if(
+!list.some(
+x=>
+(x._key||
+this.hash(JSON.stringify(x)))===k
+)
+){
+
+list.push({
+...item,
+_key:k
+});
+
+return true;
+
+}
+
+return false;
+
+}
+
 
 norm(s){
+
 return String(s??'')
+
 .toLowerCase()
+
 .normalize('NFD')
+
 .replace(/[\u0300-\u036f]/g,'')
+
 .replace(/[’']/g,"'")
+
 .replace(/[^\p{L}\p{N}\s-]/gu,' ')
+
 .replace(/\s+/g,' ')
+
 .trim();
+
 }
+
 
 words(s){
+
 return this.norm(s)
+
 .split(/\s+/)
-.filter(w=>w&&!this.stopwords.has(w)&&w.length>1);
+
+.filter(
+w=>
+w &&
+!this.stopwords.has(w) &&
+w.length>1
+);
+
 }
+
 
 unique(arr){
-return [...new Set((arr||[]).filter(Boolean))];
+
+return[
+...new Set(
+(arr||[]).filter(Boolean)
+)
+];
+
 }
+
 
 decodeEntities(s){
+
 const el=document.createElement('textarea');
+
 el.innerHTML=String(s??'');
+
 return el.value;
+
 }
+
 
 clean(s){
+
 return this.decodeEntities(
+
 String(s??'')
+
 .replace(/<[^>]*>/g,' ')
+
 .replace(/\[\d+\]/g,' ')
+
 .replace(/\s+/g,' ')
+
 .trim()
+
 );
+
 }
+
 
 cleanFinalText(s){
+
 return this.decodeEntities(
+
 String(s??'')
+
 .replace(/<[^>]*>/g,' ')
+
 .replace(/\[\d+\]/g,' ')
+
 .split('\n')
-.map(x=>x.replace(/\s+/g,' ').replace(/\s+([,.;:!?])/g,'$1').trim())
-.join('\n')
+
+.map(
+
+x=>
+x
+.replace(/\s+/g,' ')
+.replace(/\s+([,.;:!?])/g,'$1')
 .trim()
+
+)
+
+.join('\n')
+
+.trim()
+
 );
+
 }
 
+
 escapeHTML(s){
+
 return String(s??'').replace(
+
 /[&<>'"]/g,
+
 m=>({
+
 '&':'&amp;',
 '<':'&lt;',
 '>':'&gt;',
 "'":'&#39;',
 '"':'&quot;'
+
 }[m])
+
 );
+
 }
+
 
 async sleep(ms){
+
 return new Promise(r=>setTimeout(r,ms));
+
 }
 
+
+/* =========================================================
+   COMPRÉHENSION
+========================================================= */
+
+
 extractTerms(q){
-return this.unique(this.words(q)).slice(0,28);
+
+return this.unique(
+this.words(q)
+).slice(0,22);
+
 }
+
 
 extractPhrases(q){
 
 const raw=String(q??'').toLowerCase();
+
 const out=[];
 
 const quoted=[
-...raw.matchAll(/["“”«»]([^"“”«»]+)["“”«»]/g)
+
+...raw.matchAll(
+/["“«]([^"”»]+)["”»]/g
+)
+
 ].map(m=>m[1]);
 
 out.push(...quoted);
 
-for(
-const m of raw.matchAll(
-/\b(?:du|de|des|d[’']|dans|sur|pour|entre|chez)\s+([\p{L}\p{N}][\p{L}\p{N}' -]{2,60})/giu
-)
-){
-out.push(m[1].trim());
+
+for(const m of raw.matchAll(
+
+/\b(?:du|de|des|d[’']|dans|sur|pour|entre|chez|au|aux|en)\s+([\p{L}\p{N}][\p{L}\p{N}' -]{2,60})/giu
+
+)){
+
+out.push(
+m[1]
+.trim()
+);
+
 }
+
 
 return this.unique(
+
 out
-.map(x=>x.replace(/[?!.,;:]+$/,''))
-.filter(x=>x.length>2)
-).slice(0,12);
+
+.map(
+x=>
+x.replace(/[?!.,;:]+$/,'')
+)
+
+.filter(
+x=>x.length>2
+)
+
+).slice(0,8);
+
 }
 
-detectSuperlative(q){
-
-const n=this.norm(q);
-
-return {
-is:/(plus grand|plus grande|plus gros|plus grosse|plus haut|plus haute|plus long|plus longue|plus petit|plus petite|plus vieux|plus vieille|plus ancien|plus ancienne|meilleur|meilleure|maximum|maximal|maximale|minimum|minimal|minimale|le plus|la plus|les plus|le moins|la moins|les moins)/.test(n),
-
-direction:/(moins|minimum|minimal|minimale|plus petit|plus petite|plus court|plus courte)/.test(n)
-?'min'
-:'max'
-};
-}
 
 detectQuestionType(q){
 
 const n=this.norm(q);
 
-if(/\b(comment|de quelle maniere|de quelle façon|de quelle facon)\b/.test(n))
-return 'procedure';
+if(
+/\b(definition|definir|définir|signifie|signification|qu'est-ce que|qu est ce que|quest ce que)\b/
+.test(n)
+)
+return'definition';
 
-if(/\b(pourquoi)\b/.test(n))
-return 'explanation';
 
-if(/\b(comment|qu'est-ce que|qu est ce que|que signifie|definition|définition)\b/.test(n))
-return 'definition';
+if(
+/\b(compare|comparaison|comparer|difference|différence|versus|vs)\b/
+.test(n)
+)
+return'comparison';
 
-if(/\b(compare|comparaison|difference|différence|versus|vs)\b/.test(n))
-return 'comparison';
 
-if(/\b(resume|résume|résumer|synthese|synthèse)\b/.test(n))
-return 'summary';
+if(
+/\b(resume|résume|résumer|synthese|synthèse)\b/
+.test(n)
+)
+return'summary';
 
-if(/\b(reformule|reformulation|corrige|correction|simplifie|simplification)\b/.test(n))
-return 'rewrite';
 
-if(/\b(redige|rédige|redaction|rédaction|ecris|écris|texte|paragraphe|article|discours|lettre)\b/.test(n))
-return 'writing';
+if(
+/\b(redige|rédige|redaction|rédaction|ecris|écris|texte|paragraphe|article|discours|lettre)\b/
+.test(n)
+)
+return'writing';
+
+
+if(
+/\b(pourquoi)\b/
+.test(n)
+)
+return'explanation';
+
+
+if(
+/\b(comment|de quelle maniere|de quelle manière|de quelle facon|de quelle façon)\b/
+.test(n)
+)
+return'procedure';
+
+
+if(
+/\b(qui|quel|quelle|quels|quelles|ou|où|combien|quand)\b/
+.test(n)
+)
+return'fact';
+
 
 if(this.detectSuperlative(q).is)
-return 'superlative';
+return'superlative';
 
-if(/\b(qui|quel|quelle|quels|quelles|où|ou|combien|quand)\b/.test(n))
-return 'fact';
 
-return 'research';
+return'research';
+
 }
+
+
+detectSuperlative(q){
+
+const n=this.norm(q);
+
+const is=
+
+/\b(plus grand|plus grande|plus gros|plus grosse|plus haut|plus haute|plus long|plus longue|plus petit|plus petite|plus vieux|plus vieille|plus ancien|plus ancienne|meilleur|meilleure|maximum|maximal|maximale|minimum|minimal|minimale|le plus|la plus|les plus|le moins|la moins|les moins)\b/
+
+.test(n);
+
+return{
+
+is,
+
+direction:
+
+/\b(moins|minimum|minimal|minimale|plus petit|plus petite|plus court|plus courte|le moins|la moins|les moins)\b/
+
+.test(n)
+
+?'min'
+:'max'
+
+};
+
+}
+
 
 extractDomainCandidates(q){
 
@@ -352,142 +1196,388 @@ const out=[];
 for(const p of this.extractPhrases(q))
 out.push(p);
 
-const n=String(q??'').replace(/[’']/g,' ');
 
-for(
-const m of n.matchAll(
+const n=String(q??'')
+
+.replace(/[’']/g,' ');
+
+
+for(const m of n.matchAll(
+
 /\b(?:d|de|des|du|dans|sur|au|aux|en)\s+([\p{L}][\p{L}'-]*(?:\s+[\p{L}][\p{L}'-]*){0,4})/giu
-)
-)
+
+)){
+
 out.push(m[1]);
 
-return this.unique(out).slice(0,10);
 }
+
+
+return this.unique(out).slice(0,8);
+
+}
+
 
 analyzeQuestion(q){
 
-return {
-raw:q.trim(),
+return{
+
+raw:String(q??'').trim(),
+
 terms:this.extractTerms(q),
+
 phrases:this.extractPhrases(q),
+
 type:this.detectQuestionType(q),
+
 superlative:this.detectSuperlative(q),
+
 domains:this.extractDomainCandidates(q)
+
 };
 
 }
+
+
+/* =========================================================
+   REQUÊTES
+========================================================= */
+
 
 buildQueries(info){
 
 const q=info.raw;
+
 const terms=info.terms.join(' ');
-const phrases=info.phrases;
 
-const arr=[q];
+const arr=[];
 
-if(terms&&terms!==this.norm(q))
+
+/*
+Recherche 1 :
+question exacte.
+*/
+arr.push(q);
+
+
+/*
+Recherche 2 :
+uniquement les termes importants.
+Seulement si cela apporte réellement quelque chose.
+*/
+if(
+terms &&
+this.norm(q)!==this.norm(terms)
+)
 arr.push(terms);
 
-for(const p of phrases)
-arr.push(`${p} ${terms}`.trim());
 
-if(info.type==='superlative')
-arr.push(`${q} superficie population hauteur longueur date valeur`);
+/*
+Pour une relation précise, on crée UNE requête ciblée,
+pas une explosion de requêtes.
+*/
+const relations=
+this.requestedRelationTerms(info);
 
-if(info.type==='comparison')
-arr.push(`${q} comparaison difference`);
+if(relations.length){
+
+const subject=
+this.extractResearchSubject(info);
+
+if(subject){
+
+arr.push(
+`${subject} ${relations[0]}`
+);
+
+}
+
+}
+
+
+/*
+Superlatif.
+*/
+if(info.superlative.is){
+
+arr.push(
+`${q} valeur`,
+`${q} classement`
+);
+
+}
+
+
+/*
+Comparaison.
+*/
+if(info.type==='comparison'){
+
+arr.push(
+`${q} caractéristiques`
+);
+
+}
+
 
 return this.unique(
-arr.map(x=>x.trim()).filter(Boolean)
-).slice(0,8);
+arr.map(x=>x.trim())
+.filter(Boolean)
+).slice(0,5);
+
 }
+
+
+extractResearchSubject(info){
+
+let s=info.raw;
+
+s=s.replace(
+
+/^(quelle|quel|quels|quelles|qui|ou|où|combien|quand|pourquoi|comment)\b/iu,
+
+''
+
+).trim();
+
+
+s=s.replace(
+
+/^(est|sont|se trouve|se situe|est situe|est situé)\b/iu,
+
+''
+
+).trim();
+
+
+const relation=this.requestedRelationTerms(info);
+
+for(const r of relation){
+
+const re=
+new RegExp(
+`\\b${r.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\b`,
+'i'
+);
+
+s=s.replace(re,' ');
+
+}
+
+
+return this.clean(s);
+
+}
+
+
+/* =========================================================
+   API
+========================================================= */
+
 
 async api(host,params,signal){
 
-const u=new URL(host+'/w/api.php');
+const u=
+new URL(host+'/w/api.php');
+
 
 Object.entries({
-...params,
-format:'json',
-origin:'*'
-})
-.forEach(([k,v])=>u.searchParams.set(k,String(v)));
 
-const r=await fetch(u,{
+...params,
+
+format:'json',
+
+origin:'*'
+
+})
+
+.forEach(
+([k,v])=>
+u.searchParams.set(k,String(v))
+);
+
+
+const r=
+await fetch(
+u,
+{
 signal,
-headers:{Accept:'application/json'}
-});
+headers:{
+Accept:'application/json'
+}
+}
+);
+
 
 if(!r.ok)
 throw new Error(`HTTP ${r.status}`);
 
+
 return r.json();
+
 }
+
+
+/* =========================================================
+   RECHERCHE WIKIMEDIA
+========================================================= */
+
 
 async searchSource(source,query,signal){
 
-const key=`${source.id}|${this.norm(query)}`;
+const key=
+`${source.id}|${this.norm(query)}`;
+
 
 if(this.searchCache.has(key))
 return this.searchCache.get(key);
 
-const p={
+
+const data=
+await this.api(
+
+source.host,
+
+{
 action:'query',
 list:'search',
 srsearch:query,
-srlimit:'8',
+srlimit:'6',
 srnamespace:'0'
-};
+},
 
-const data=await this.api(source.host,p,signal);
+signal
 
-const res=(data?.query?.search||[])
+);
+
+
+const res=
+(data?.query?.search||[])
+
 .map(x=>({
+
 source:source.id,
+
 title:x.title,
+
 snippet:this.clean(x.snippet||''),
+
 pageid:x.pageid
+
 }));
+
 
 this.searchCache.set(key,res);
 
 return res;
+
 }
 
+
+/*
+V7.1 :
+on évite de lancer toutes les sources pour chaque requête.
+
+Les sources principales sont testées d'abord.
+Les autres sont utilisées pour diversifier si nécessaire.
+*/
 async searchAll(queries,signal){
 
 const all=[];
 
+const primary=[
+this.sources.find(s=>s.id==='wikipedia'),
+this.sources.find(s=>s.id==='wiktionary'),
+this.sources.find(s=>s.id==='wikibooks')
+].filter(Boolean);
+
+
 for(const q of queries){
 
-for(
-const source of this.sources.filter(
-s=>s.id!=='wikidata'
-)
-){
+for(const source of primary){
 
 try{
-const r=await this.searchSource(source,q,signal);
+
+const r=
+await this.searchSource(
+source,
+q,
+signal
+);
+
 all.push(...r);
+
 }catch(e){}
 
 }
 
-await this.sleep(20);
+
+if(all.length<6){
+
+const secondary=[
+this.sources.find(s=>s.id==='wikiversity'),
+this.sources.find(s=>s.id==='wikivoyage'),
+this.sources.find(s=>s.id==='wikisource'),
+this.sources.find(s=>s.id==='wikiquote')
+].filter(Boolean);
+
+
+for(const source of secondary){
+
+try{
+
+const r=
+await this.searchSource(
+source,
+q,
+signal
+);
+
+all.push(...r);
+
+}catch(e){}
+
 }
 
-return this.uniqueResults(all).slice(0,80);
 }
+
+
+if(all.length>=12)
+break;
+
+
+await this.sleep(25);
+
+}
+
+
+return this.uniqueResults(all).slice(0,60);
+
+}
+
+
+/* =========================================================
+   EXTRACTION DES PAGES
+========================================================= */
+
 
 async fetchExtract(source,title,signal){
 
-const key=`${source.id}|${title}`;
+const key=
+`${source.id}|${title}`;
+
 
 if(this.cache.has(key))
 return this.cache.get(key);
 
-const data=await this.api(
+
+try{
+
+const data=
+await this.api(
+
 source.host,
+
 {
 action:'query',
 prop:'extracts|info',
@@ -497,75 +1587,182 @@ inprop:'url',
 titles:title,
 redirects:'1'
 },
+
 signal
+
 );
 
+
 const pages=data?.query?.pages||{};
-const p=Object.values(pages)[0];
 
-const out=p?{
+const p=
+Object.values(pages)[0];
+
+
+if(p){
+
+const out={
+
 source:source.id,
-title:p.title||title,
-url:p.fullurl||`${source.host}/wiki/${encodeURIComponent(p.title||title)}`,
-text:this.clean(p.extract||''),
-pageid:p.pageid
-}:null;
 
-if(out)
+title:p.title||title,
+
+url:
+p.fullurl||
+`${source.host}/wiki/${encodeURIComponent(p.title||title)}`,
+
+text:this.clean(p.extract||''),
+
+pageid:p.pageid,
+
+fromSnippet:false
+
+};
+
+
 this.cache.set(key,out);
 
 return out;
+
 }
+
+}catch(e){}
+
+
+/*
+Le fallback est géré par le résultat de recherche :
+le snippet reste une preuve utilisable.
+*/
+return null;
+
+}
+
+
+/*
+Convertit les résultats de recherche en documents de secours.
+*/
+buildSnippetDocs(results){
+
+return results
+
+.filter(r=>r.snippet)
+
+.map(r=>({
+
+source:r.source,
+
+title:r.title,
+
+url:`${this.sources.find(s=>s.id===r.source)?.host||''}/wiki/${encodeURIComponent(r.title)}`,
+
+text:r.snippet,
+
+snippet:r.snippet,
+
+pageid:r.pageid,
+
+fromSnippet:true
+
+}));
+
+}
+
+
+/* =========================================================
+   WIKIDATA
+========================================================= */
+
 
 async wikidataSearch(query,signal){
 
 const key=this.norm(query);
 
+
 if(this.wikidataCache.has(`s|${key}`))
 return this.wikidataCache.get(`s|${key}`);
 
-const data=await this.api(
+
+try{
+
+const data=
+await this.api(
+
 'https://www.wikidata.org',
+
 {
 action:'wbsearchentities',
 search:query,
 language:'fr',
 uselang:'fr',
 type:'item',
-limit:'12'
+limit:'8'
 },
+
 signal
+
 );
 
-const out=(data?.search||[])
+
+const out=
+(data?.search||[])
+
 .map(x=>({
+
 id:x.id,
+
 label:x.label||'',
+
 description:x.description||'',
+
 match:x.match?.text||''
+
 }));
+
 
 this.wikidataCache.set(`s|${key}`,out);
 
 return out;
+
+}catch(e){
+
+return[];
+
 }
+
+}
+
 
 async wikidataEntities(ids,signal){
 
-const cleanIds=this.unique(ids)
-.filter(x=>/^[QP]\d+$/i.test(x))
-.slice(0,25);
+const cleanIds=
+this.unique(ids)
+
+.filter(
+x=>/^[QP]\d+$/i.test(x)
+)
+
+.slice(0,30);
+
 
 if(!cleanIds.length)
-return {};
+return{};
 
-const key=`e|${cleanIds.sort().join(',')}`;
+
+const key=
+`e|${[...cleanIds].sort().join(',')}`;
+
 
 if(this.wikidataCache.has(key))
 return this.wikidataCache.get(key);
 
-const data=await this.api(
+
+try{
+
+const data=
+await this.api(
+
 'https://www.wikidata.org',
+
 {
 action:'wbgetentities',
 ids:cleanIds.join('|'),
@@ -573,384 +1770,561 @@ languages:'fr|en',
 props:'labels|descriptions|aliases|claims|sitelinks',
 formatversion:'2'
 },
+
 signal
+
 );
+
 
 const out=data?.entities||{};
 
 this.wikidataCache.set(key,out);
 
 return out;
+
+}catch(e){
+
+return{};
+
 }
 
-async wikidataProperties(ids,signal){
-return this.wikidataEntities(ids,signal);
 }
 
-getClaimValue(claim,entities){
+
+labelOfEntity(e){
+
+return e?.labels?.fr?.value||
+e?.labels?.en?.value||
+'';
+
+}
+
+
+getClaimValue(claim){
 
 const dv=claim?.mainsnak?.datavalue;
 
 if(!dv)
 return null;
 
+
 if(dv.type==='wikibase-entityid')
-return {
+return{
 id:`Q${dv.value.id}`,
 raw:dv.value.id
 };
 
+
 if(dv.type==='string')
-return {value:dv.value};
+return{
+value:dv.value
+};
+
 
 if(dv.type==='monolingualtext')
-return {value:dv.value.text};
+return{
+value:dv.value.text
+};
+
 
 if(dv.type==='quantity')
-return {
+return{
 value:dv.value,
 amount:Number(dv.value)
 };
 
+
 if(dv.type==='time')
-return {value:dv.value};
+return{
+value:dv.value
+};
+
 
 if(dv.type==='globecoordinate')
-return {
+return{
 value:`${dv.value.latitude}, ${dv.value.longitude}`,
 lat:dv.value.latitude,
 lon:dv.value.longitude
 };
 
-return {
+
+return{
 value:String(dv.value)
 };
+
 }
 
-labelOfEntity(e){
-return e?.labels?.fr?.value||e?.labels?.en?.value||'';
-}
 
+/*
+P31 / types de propriétés.
+On recherche seulement les propriétés réellement
+présentes sur les entités découvertes.
+*/
 async buildWikidataFacts(entities,signal){
 
 const ids=Object.keys(entities);
 
-const propertyIds=this.unique(
+if(!ids.length)
+return[];
+
+
+const propertyIds=
+this.unique(
+
 ids.flatMap(
-id=>Object.keys(entities[id]?.claims||{})
+id=>
+Object.keys(
+entities[id]?.claims||{}
 )
 )
-.filter(x=>/^P\d+$/i.test(x))
-.slice(0,120);
 
-let props={};
+)
 
-try{
-props=await this.wikidataEntities(propertyIds,signal);
-}catch(e){}
+.filter(
+x=>/^P\d+$/i.test(x)
+)
+
+.slice(0,80);
+
+
+const props=
+await this.wikidataEntities(
+propertyIds,
+signal
+);
+
 
 const out=[];
+
 
 for(const id of ids){
 
 const e=entities[id];
-const label=this.labelOfEntity(e)||id;
 
-for(const [pid,claims] of Object.entries(e.claims||{})){
+const label=
+this.labelOfEntity(e)||id;
+
+
+for(
+const [pid,claims]
+of Object.entries(e.claims||{})
+){
 
 const propertyLabel=
 this.labelOfEntity(props[pid])||pid;
 
-for(const c of (claims||[]).slice(0,5)){
 
-const v=this.getClaimValue(c,entities);
+for(
+const c of (claims||[]).slice(0,6)
+){
+
+const v=
+this.getClaimValue(c);
+
 
 if(!v)
 continue;
+
 
 let objectLabel=
 v.id
 ?(this.labelOfEntity(entities[v.id])||v.id)
 :(v.value??'');
 
+
 out.push({
+
 subjectId:id,
+
 subject:label,
+
 propertyId:pid,
+
 propertyLabel,
+
 objectId:v.id||null,
+
 object:objectLabel,
+
 value:v.amount??v.value??'',
+
 source:'wikidata'
+
 });
 
-if(out.length>=2500)
+
+if(out.length>=1800)
 return out;
-}
-}
+
 }
 
-return out;
 }
 
+}
+
+
+return out;
+
+}
+
+
+/*
+V7.1 :
+les termes importants ET le sujet sont envoyés à Wikidata.
+*/
 async discoverConcepts(results,info,signal){
-
-const terms=this.unique(
-[...info.terms,...info.phrases]
-).slice(0,12);
 
 const found=[];
 
-for(const t of terms.slice(0,8)){
+const candidates=
+this.unique([
+
+...info.domains,
+
+...info.phrases,
+
+this.extractResearchSubject(info),
+
+...info.terms
+
+])
+
+.filter(x=>x&&x.length>2)
+
+.slice(0,7);
+
+
+for(const t of candidates){
 
 try{
+
 found.push(
-...await this.wikidataSearch(t,signal)
+...await this.wikidataSearch(
+t,
+signal
+)
 );
+
 }catch(e){}
 
 }
 
+
 return this.unique(
 found.map(x=>x.id)
 );
-}
-
-async secondPass(info,results,signal){
-
-const titles=this.unique(
-results.map(r=>r.title)
-).slice(0,10);
-
-const q=[];
-
-for(const t of titles){
-
-if(info.type==='fact'||info.type==='superlative')
-q.push(`${t} ${info.terms.slice(-4).join(' ')}`);
-else
-q.push(t);
 
 }
 
-return this.searchAll(
-this.unique(q).slice(0,5),
-signal
-);
-}
 
-inferEntityType(text){
+/* =========================================================
+   SCORE / PREUVES
+========================================================= */
 
-const n=this.norm(text);
-
-if(/\b(pays|royaume|republique|république|etat|état|nation)\b/.test(n))
-return 'country';
-
-if(/\b(ville|municipalite|municipalité|commune|capitale)\b/.test(n))
-return 'city';
-
-if(/\b(personne|ecrivain|écrivain|scientifique|artiste|acteur|actrice|politicien|politicienne)\b/.test(n))
-return 'person';
-
-if(/\b(montagne|sommet|volcan)\b/.test(n))
-return 'mountain';
-
-if(/\b(entreprise|societe|société|organisation|institution)\b/.test(n))
-return 'organization';
-
-return 'entity';
-}
 
 termScore(text,info){
 
 const n=this.norm(text);
+
 const terms=info.terms;
 
-let s=0;
+if(!terms.length)
+return 0;
 
-for(const t of terms)
-if(n.includes(t))
-s++;
 
-return s/Math.max(1,terms.length);
+let hits=0;
+
+for(const t of terms){
+
+if(n.includes(this.norm(t)))
+hits++;
+
 }
+
+
+return hits/
+Math.max(1,terms.length);
+
+}
+
 
 phraseScore(text,info){
 
 const n=this.norm(text);
-let s=0;
 
-for(const p of info.phrases)
+if(!info.phrases.length)
+return 0;
+
+
+let hits=0;
+
+for(const p of info.phrases){
+
 if(n.includes(this.norm(p)))
-s++;
+hits++;
+
+}
+
 
 return Math.min(
 1,
-s/Math.max(1,info.phrases.length)
+hits/info.phrases.length
 );
+
 }
 
-domainScore(text,info){
-
-const n=this.norm(text);
-let s=0;
-
-for(const d of info.domains)
-if(n.includes(this.norm(d)))
-s++;
-
-return Math.min(
-1,
-s/Math.max(1,info.domains.length)
-);
-}
-
-superlativeScore(text,info){
-
-if(!info.superlative.is)
-return .5;
-
-const n=this.norm(text);
-
-return /(plus grand|plus grande|plus haut|plus haute|plus long|plus longue|plus petit|plus petite|superficie|population|hauteur|longueur|maximum|minimum)/.test(n)
-?.9
-:.1;
-}
 
 relationScore(text,info){
 
 const n=this.norm(text);
 
-const keys=[
-'capitale',
-'situe',
-'situé',
-'continent',
-'pays',
-'date',
-'naissance',
-'mort',
-'auteur',
-'genre',
-'population',
-'superficie',
-'hauteur',
-'longueur',
-'prix',
-'annee',
-'année',
-'epoque',
-'époque',
-'langue'
-];
+const requested=
+this.requestedRelationTerms(info);
+
+
+if(!requested.length)
+return .25;
+
 
 let hits=0;
 
-for(const k of keys)
-if(n.includes(this.norm(k)))
+
+for(const r of requested){
+
+if(
+n.includes(this.norm(r))
+)
 hits++;
 
-return Math.min(1,hits/4);
 }
 
-typePenalty(text,info){
-return .0;
+
+return Math.min(
+1,
+hits/Math.max(1,requested.length)
+);
+
 }
 
-driftPenalty(text,info){
+
+superlativeScore(text,info){
+
+if(!info.superlative.is)
+return .3;
+
 
 const n=this.norm(text);
-const overlap=this.termScore(n,info);
 
-return overlap<.12?.35:0;
+
+return /(plus grand|plus grande|plus haut|plus haute|plus long|plus longue|plus petit|plus petite|superficie|population|hauteur|longueur|maximum|minimum|altitude|distance|taille)/
+
+.test(n)
+
+?.9
+:.1;
+
 }
+
 
 score(item,info){
 
 const text=
 `${item.title||''} ${item.snippet||''} ${item.text||''}`;
 
+
+const term=
+this.termScore(text,info);
+
+const phrase=
+this.phraseScore(text,info);
+
+const relation=
+this.relationScore(text,info);
+
+const sup=
+this.superlativeScore(text,info);
+
+
+/*
+Filtrage volontairement moins agressif.
+*/
 return
-.28*this.termScore(text,info)+
-.16*this.phraseScore(text,info)+
-.16*this.domainScore(text,info)+
-.14*this.superlativeScore(text,info)+
-.16*this.relationScore(text,info)-
-.10*this.driftPenalty(text,info);
+
+.38*term+
+
+.18*phrase+
+
+.25*relation+
+
+.14*sup+
+
+(item.fromSnippet?.05:0);
+
 }
+
 
 buildPassages(docs,info){
 
 const out=[];
 
+
 for(const d of docs){
 
-const sentences=this.clean(
+const text=
+this.clean(
 d.text||d.snippet||''
-)
-.split(/(?<=[.!?])\s+/)
-.filter(s=>s.length>35);
+);
 
-for(const s of sentences.slice(0,18)){
+
+if(!text)
+continue;
+
+
+const sentences=
+text
+.split(/(?<=[.!?])\s+/)
+.filter(
+s=>s.length>25
+);
+
+
+if(d.fromSnippet){
 
 out.push({
+
 source:d.source,
+
 title:d.title,
+
 url:d.url||'',
+
+text:text,
+
+score:
+this.score(
+d,
+info
+),
+
+fromSnippet:true
+
+});
+
+continue;
+
+}
+
+
+for(
+const s of sentences.slice(0,16)
+){
+
+out.push({
+
+source:d.source,
+
+title:d.title,
+
+url:d.url||'',
+
 text:s,
-score:this.score({...d,text:s},info)
+
+score:
+this.score(
+{...d,text:s},
+info
+),
+
+fromSnippet:false
+
 });
 
 }
+
 }
 
+
 return out;
+
 }
+
 
 similarity(a,b){
 
 const A=new Set(this.words(a));
+
 const B=new Set(this.words(b));
+
 
 if(!A.size||!B.size)
 return 0;
 
+
 let inter=0;
+
 
 for(const x of A)
 if(B.has(x))
 inter++;
 
-return inter/(A.size+B.size-inter);
+
+return inter/
+(A.size+B.size-inter);
+
 }
+
 
 selectPassages(passages,n=20){
 
 const sorted=[...passages]
+
 .sort((a,b)=>b.score-a.score);
 
+
 const out=[];
+
 
 for(const p of sorted){
 
 if(
+
 out.every(
-x=>this.similarity(x.text,p.text)<.82
+x=>
+this.similarity(
+x.text,
+p.text
+)<.86
 )
-)
+
+){
+
 out.push(p);
+
+}
+
 
 if(out.length>=n)
 break;
+
 }
 
+
 return out;
+
 }
+
+
+/* =========================================================
+   RELATIONS TEXTUELLES
+========================================================= */
+
 
 extractTextRelations(text){
 
 const out=[];
+
 const clean=this.clean(text);
+
 
 const patterns=[
 
@@ -966,316 +2340,264 @@ const patterns=[
 
 ];
 
+
 for(const re of patterns){
 
 for(const m of clean.matchAll(re)){
 
 const s=this.clean(m[1]);
+
 const o=this.clean(m[2]);
+
 
 if(s&&o){
 
 out.push({
+
 subject:s,
-relation:'relation',
+
+relation:
+this.inferRelationFromText(m[0]),
+
 object:o,
+
 text:m[0]
+
 });
 
 }
 
 }
+
 }
 
-return out.slice(0,100);
+
+return out.slice(0,120);
+
 }
 
-parseNumber(s){
 
-const x=String(s??'')
-.replace(/\s/g,'')
-.replace(/,/g,'.')
-.replace(/[^0-9.+-]/g,'');
+inferRelationFromText(text){
 
-const n=Number(x);
+const n=this.norm(text);
 
-return Number.isFinite(n)?n:null;
+if(n.includes('capitale'))
+return'capitale';
+
+if(n.includes('superficie'))
+return'superficie';
+
+if(n.includes('population')||n.includes('habitants'))
+return'population';
+
+if(n.includes('mesure'))
+return'mesure';
+
+if(n.includes('situe')||n.includes('trouve'))
+return'situation';
+
+return'relation';
+
 }
+
+
+/* =========================================================
+   GRAPH
+========================================================= */
+
 
 createGraph(){
-return {
+
+return{
+
 nodes:new Map(),
+
 edges:[]
+
 };
+
 }
+
 
 addNode(g,node){
 
 if(!node||!node.id)
 return;
 
+
 const old=g.nodes.get(node.id);
 
+
 g.nodes.set(
+
 node.id,
+
 {
 ...(old||{}),
 ...node
 }
+
 );
+
 }
+
 
 addEdge(g,edge){
 
 if(!edge)
 return;
 
+
 const from=edge.from??edge.subject;
+
 const to=edge.to??edge.object;
+
 
 if(!from||!to)
 return;
 
+
 g.edges.push({
+
 ...edge,
+
 from,
+
 to,
+
 subject:edge.subject??from,
+
 object:edge.object??to
+
 });
+
 }
 
-normalizeRelationLabel(s){
-
-return this.norm(s)
-.replace(/\b(du|de|des|la|le|les|un|une)\b/g,' ')
-.replace(/\s+/g,' ')
-.trim();
-}
-
-relationMatches(label,need){
-
-const a=this.normalizeRelationLabel(label);
-const b=this.normalizeRelationLabel(need);
-
-if(!a||!b)
-return false;
-
-return a===b||a.includes(b)||b.includes(a);
-}
-
-propertyMatchesSuperlative(label,info){
-
-const n=this.norm(label);
-
-if(info.superlative.direction==='max')
-
-return /(superficie|population|hauteur|longueur|taille|altitude|distance|annee|année|date|poids|prix)/.test(n);
-
-return /(population|superficie|hauteur|longueur|taille|distance|poids|prix)/.test(n);
-}
 
 buildKnowledgeGraph(facts,relations){
 
 const g=this.createGraph();
 
+
 for(const f of facts){
 
-this.addNode(g,{
-id:f.subjectId||`t:${this.norm(f.subject)}`,
-label:f.subject,
-type:this.inferEntityType(f.subject)
-});
+const a=
+f.subjectId||
+`t:${this.norm(f.subject)}`;
+
+
+const b=
+f.objectId||
+`v:${this.norm(f.object)}`;
+
 
 this.addNode(g,{
-id:f.objectId||`v:${this.norm(f.object)}`,
-label:f.object,
-type:this.inferEntityType(f.object)
+
+id:a,
+
+label:f.subject,
+
+type:'entity'
+
 });
+
+
+this.addNode(g,{
+
+id:b,
+
+label:f.object,
+
+type:'value'
+
+});
+
 
 this.addEdge(g,{
-from:f.subjectId||`t:${this.norm(f.subject)}`,
-to:f.objectId||`v:${this.norm(f.object)}`,
-label:f.propertyLabel||f.propertyId||'propriete',
+
+from:a,
+
+to:b,
+
+label:f.propertyLabel||f.propertyId,
+
 labelText:f.propertyLabel||f.propertyId,
+
 value:f.value,
+
 source:'wikidata',
+
 raw:f
+
 });
 
 }
+
 
 for(const r of relations){
 
-const a=`t:${this.norm(r.subject)}`;
-const b=`v:${this.norm(r.object)}`;
+const a=
+`t:${this.norm(r.subject)}`;
+
+const b=
+`v:${this.norm(r.object)}`;
+
 
 this.addNode(g,{
+
 id:a,
+
 label:r.subject,
-type:this.inferEntityType(r.subject)
+
+type:'entity'
+
 });
 
+
 this.addNode(g,{
+
 id:b,
+
 label:r.object,
-type:this.inferEntityType(r.object)
+
+type:'value'
+
 });
+
 
 this.addEdge(g,{
+
 from:a,
+
 to:b,
+
 label:r.relation,
+
 labelText:r.relation,
+
 source:'text',
+
 raw:r
+
 });
 
 }
+
 
 return g;
-}
-
-findCandidateNodes(g,info){
-
-const arr=[...g.nodes.values()];
-const terms=info.terms;
-
-return arr
-.map(n=>{
-
-const t=this.norm(n.label);
-const hits=terms.filter(
-x=>t.includes(x)
-).length;
-
-return {
-...n,
-_score:hits/Math.max(1,terms.length)
-};
-
-})
-.filter(
-x=>
-x._score>.05||
-info.domains.some(
-d=>this.norm(x.label)===this.norm(d)
-)
-)
-.sort((a,b)=>b._score-a._score)
-.slice(0,30);
-}
-
-getNumericEdges(g,nodeId){
-
-return g.edges
-.filter(e=>e.from===nodeId)
-.map(e=>({
-...e,
-num:this.parseNumber(
-e.value??e.raw?.object
-)
-}))
-.filter(e=>e.num!==null);
-}
-
-nodeMatchesDomain(g,node,domain){
-
-const dn=this.norm(domain);
-
-if(this.norm(node.label)===dn)
-return true;
-
-if(
-this.norm(node.label).includes(dn)||
-dn.includes(this.norm(node.label))
-)
-return true;
-
-const related=g.edges.filter(
-e=>e.from===node.id||e.to===node.id
-);
-
-return related.some(
-e=>
-this.norm(
-e.raw?.object||
-e.raw?.subject||
-''
-).includes(dn)||
-this.norm(
-e.labelText||e.label||''
-).includes(dn)
-);
-}
-
-solveSuperlative(g,info){
-
-const candidates=this.findCandidateNodes(g,info);
-
-let pool=candidates;
-
-if(info.domains.length){
-
-const filtered=candidates.filter(
-n=>info.domains.some(
-d=>this.nodeMatchesDomain(g,n,d)
-)
-);
-
-pool=
-filtered.length
-?filtered
-:[...g.nodes.values()]
-.filter(
-n=>this.getNumericEdges(g,n.id).length
-);
-}
-
-if(!pool.length)
-
-pool=[...g.nodes.values()]
-.filter(
-n=>this.getNumericEdges(g,n.id).length
-);
-
-const scored=[];
-
-for(const n of pool){
-
-for(const e of this.getNumericEdges(g,n.id)){
-
-if(
-this.propertyMatchesSuperlative(
-e.labelText||e.label,
-info
-)
-)
-scored.push({
-node:n,
-edge:e
-});
 
 }
 
-}
 
-if(!scored.length)
-return null;
+/* =========================================================
+   RELATIONS DEMANDÉES
+========================================================= */
 
-scored.sort(
-(a,b)=>
-info.superlative.direction==='max'
-?b.edge.num-a.edge.num
-:a.edge.num-b.edge.num
-);
-
-return scored[0];
-}
 
 requestedRelationTerms(info){
 
 const keys=[
+
 'capitale',
 'population',
 'superficie',
@@ -1301,154 +2623,325 @@ const keys=[
 'pays',
 'ville',
 'situé',
-'situe'
+'situe',
+'position',
+'lieu',
+'origine',
+'origine'
+
 ];
+
 
 const n=this.norm(info.raw||'');
 
+
 return keys.filter(
-k=>n.includes(this.norm(k))
+k=>
+n.includes(
+this.norm(k)
+)
 );
+
 }
+
+
+relationMatches(label,need){
+
+const a=this.norm(label);
+
+const b=this.norm(need);
+
+
+if(!a||!b)
+return false;
+
+
+return(
+a===b||
+a.includes(b)||
+b.includes(a)
+);
+
+}
+
 
 findRelationFromNode(g,node,terms){
 
-const edges=g.edges.filter(
+const edges=
+g.edges.filter(
 e=>e.from===node.id
 );
 
-if(!terms?.length)
+
+if(!terms.length)
 return null;
+
+
+/*
+Priorité forte aux relations demandées.
+*/
+for(const term of terms){
 
 for(const e of edges){
 
 if(
-terms.some(
-t=>
 this.relationMatches(
 e.labelText||e.label,
-t
-)||
-this.norm(
-e.raw?.propertyLabel||
-e.raw?.property||
-''
-).includes(this.norm(t))
+term
 )
 )
 return e;
 
 }
 
+}
+
+
 return null;
+
 }
 
-findEntityByLabel(g,query){
 
-const n=this.norm(query);
+findCandidateNodes(g,info){
 
-return
-[...g.nodes.values()]
-.sort(
-(a,b)=>
-this.norm(a.label).length-
-this.norm(b.label).length
+const arr=
+[...g.nodes.values()];
+
+
+return arr
+
+.map(n=>{
+
+const label=this.norm(n.label);
+
+let hits=0;
+
+
+for(const t of info.terms){
+
+if(label.includes(t))
+hits++;
+
+}
+
+
+let relationBonus=0;
+
+
+for(const r of this.requestedRelationTerms(info)){
+
+if(
+g.edges.some(
+e=>
+e.from===n.id&&
+this.relationMatches(
+e.labelText||e.label,
+r
 )
-.find(
-x=>this.norm(x.label)===n
-)||
-[...g.nodes.values()]
-.find(
-x=>this.norm(x.label).includes(n)
-);
+)
+)
+relationBonus+=.4;
+
 }
 
-validateCandidate(candidate,passages,info){
 
-if(!candidate)
-return {
-ok:false,
-score:0,
-reason:'Aucun candidat'
+return{
+
+...n,
+
+_score:
+hits/
+Math.max(1,info.terms.length)+
+relationBonus
+
 };
 
-const evidence=passages.filter(
-p=>this.termScore(p.text,info)>.15
-);
+})
 
-return {
-ok:true,
-score:Math.min(
-1,
-.4+Math.min(.6,evidence.length/5)
-),
-evidence:evidence.slice(0,6)
-};
+
+.filter(
+x=>x._score>.05
+)
+
+.sort(
+(a,b)=>b._score-a._score
+)
+
+.slice(0,30);
+
 }
 
-findContradictions(values){
 
-const groups=new Map();
+/* =========================================================
+   SUPERLATIFS
+========================================================= */
 
-for(const v of values){
 
-const k=this.norm(
-v.key||v.label||''
-);
+parseNumber(s){
 
-if(!groups.has(k))
-groups.set(k,[]);
+const x=
+String(s??'')
 
-groups.get(k).push(v);
+.replace(/\s/g,'')
+
+.replace(/,/g,'.')
+
+.replace(/[^0-9.+-]/g,'');
+
+
+const n=Number(x);
+
+
+return Number.isFinite(n)
+?n
+:null;
+
 }
 
-const out=[];
 
-for(const [k,arr] of groups){
+getNumericEdges(g,nodeId){
 
-const nums=this.unique(
-arr.map(x=>x.num)
-.filter(x=>x!==null)
+return g.edges
+
+.filter(
+e=>e.from===nodeId
+)
+
+.map(e=>({
+
+...e,
+
+num:
+this.parseNumber(
+e.value??e.raw?.object
+)
+
+}))
+
+.filter(
+e=>e.num!==null
 );
 
-if(nums.length>1)
-out.push({
-key:k,
-values:arr
+}
+
+
+propertyMatchesSuperlative(label,info){
+
+const n=this.norm(label);
+
+
+return /(superficie|population|hauteur|longueur|taille|altitude|distance|annee|année|date|poids|prix)/
+
+.test(n);
+
+}
+
+
+solveSuperlative(g,info){
+
+const candidates=
+this.findCandidateNodes(
+g,
+info
+);
+
+
+const pool=
+candidates.length
+?candidates
+:[...g.nodes.values()];
+
+
+const scored=[];
+
+
+for(const n of pool){
+
+for(const e of this.getNumericEdges(g,n.id)){
+
+if(
+this.propertyMatchesSuperlative(
+e.labelText||e.label,
+info
+)
+){
+
+scored.push({
+
+node:n,
+
+edge:e
+
 });
+
 }
 
-return out;
 }
 
-aggregateEvidence(passages){
+}
 
-const sources=this.unique(
-passages.map(p=>p.source)
+
+if(!scored.length)
+return null;
+
+
+scored.sort(
+
+(a,b)=>
+
+info.superlative.direction==='max'
+
+?
+
+b.edge.num-a.edge.num
+
+:
+
+a.edge.num-b.edge.num
+
 );
 
-const avg=passages.length
-?passages.reduce((a,b)=>a+b.score,0)/passages.length
-:0;
 
-return {
-count:passages.length,
-sourceCount:sources.length,
-sources,
-averageScore:avg
-};
+return scored[0];
+
 }
+
+
+/* =========================================================
+   RÉPONSE GRAPHE
+========================================================= */
+
 
 graphAnswer(g,info,passages){
 
 if(info.superlative.is){
 
-const win=this.solveSuperlative(g,info);
+const win=
+this.solveSuperlative(
+g,
+info
+);
+
 
 if(win){
 
+let answer=
+win.node.label;
+
+
+const value=
+this.cleanFinalText(
+String(win.edge.value??'')
+);
+
+
+if(value)
+answer+=` — ${value}`;
+
+
 const requested=
 this.requestedRelationTerms(info);
+
 
 const extra=
 this.findRelationFromNode(
@@ -1457,76 +2950,113 @@ win.node,
 requested
 );
 
-const value=
-this.cleanFinalText(
-String(win.edge.value??'')
-);
-
-let answer=win.node.label;
-
-if(value)
-answer+=` — ${value}`;
 
 if(
-extra&&
+extra &&
 extra!==win.edge
 ){
 
 const object=
 extra.raw?.object||
 extra.raw?.value||
-extra.to||
 extra.object||
+extra.to||
 '';
 
+
 if(
-object&&
+object &&
 this.norm(object)!==
 this.norm(value)
 )
 answer+=` — ${object}`;
+
 }
 
-return {
+
+return{
+
 answerText:answer,
+
 candidate:win,
+
 evidence:passages
+
 };
 
 }
+
 }
 
-const cands=
-this.findCandidateNodes(g,info);
 
-if(cands.length){
+/*
+Cas normal :
+on cherche d'abord l'entité,
+puis LA relation demandée.
+*/
+const candidates=
+this.findCandidateNodes(
+g,
+info
+);
 
-const node=cands[0];
 
-const e=
+const relations=
+this.requestedRelationTerms(info);
+
+
+for(const node of candidates){
+
+const edge=
 this.findRelationFromNode(
 g,
 node,
-info.terms
+relations
 );
 
-if(e){
 
-return {
+if(edge){
+
+const object=
+edge.raw?.object||
+edge.raw?.value||
+edge.object||
+edge.to||
+'';
+
+
+if(object){
+
+return{
+
 answerText:
-`${node.label} — ${e.raw?.object||e.to||e.object||''}.`,
+`${node.label} — ${object}.`,
+
 candidate:{
 node,
-edge:e
+edge
 },
+
 evidence:passages
+
 };
 
 }
+
 }
 
-return null;
 }
+
+
+return null;
+
+}
+
+
+/* =========================================================
+   SYNTHÈSE
+========================================================= */
+
 
 synthesize(info,passages,graphResult){
 
@@ -1535,750 +3065,62 @@ return this.cleanFinalText(
 graphResult.answerText
 );
 
+
 const selected=
 this.selectPassages(
 passages,
 7
 );
 
+
 if(!selected.length)
-return 'Je ne dispose pas de suffisamment de sources pour répondre de façon fiable.';
+
+return'Je n’ai pas trouvé suffisamment d’éléments fiables dans les sources consultées.';
+
 
 const pieces=[];
+
 
 for(const p of selected){
 
 const t=
 this.cleanFinalText(p.text);
 
+
 if(
-t&&
+
+t &&
+
 pieces.every(
-x=>this.similarity(x,t)<.72
+x=>
+this.similarity(x,t)<.74
 )
+
 )
 pieces.push(t);
+
 }
+
 
 if(info.type==='definition')
 return pieces.slice(0,3).join(' ');
 
+
+if(info.type==='fact')
+return pieces.slice(0,4).join(' ');
+
+
 return pieces.slice(0,5).join(' ');
-}
-
-formatSources(passages){
-
-return this.unique(
-passages
-.slice(0,8)
-.map(p=>`${p.source}: ${p.title}`)
-);
-}
-
-remember(q,result){
-
-this.sessionMemory.push({
-q,
-answer:result.answerText||'',
-time:Date.now(),
-entities:result.entities||[]
-});
-
-if(this.sessionMemory.length>30)
-this.sessionMemory.shift();
-}
-
-uniqueResults(arr){
-
-const m=new Map();
-
-for(const x of arr||[]){
-
-const k=
-`${x.source}|${this.norm(x.title)}`;
-
-if(!m.has(k))
-m.set(k,x);
-}
-
-return [...m.values()];
-}
-
-finalizeResult(info,answerText,passages,extra={}){
-
-return {
-answerText:this.cleanFinalText(answerText),
-sources:this.formatSources(passages),
-passages,
-confidence:extra.confidence??0,
-entities:extra.entities||[],
-meta:{
-type:info.type,
-mode:extra.mode||null,
-task:extra.task||null,
-verification:extra.verification||null
-}
-};
-}
-
-async run(q){
-
-if(this.busy)
-throw new Error('Moteur déjà occupé.');
-
-this.busy=true;
-this.abortController=new AbortController();
-
-try{
-
-const info=this.analyzeQuestion(q);
-
-this.step('Analyse de la demande');
-
-const queries=this.buildQueries(info);
-
-this.step('Recherche multi-sources');
-
-const results=
-await this.searchAll(
-queries,
-this.abortController.signal
-);
-
-this.step('Enrichissement Wikidata');
-
-const ids=
-await this.discoverConcepts(
-results,
-info,
-this.abortController.signal
-);
-
-const ents=
-await this.wikidataEntities(
-ids,
-this.abortController.signal
-);
-
-const facts=
-await this.buildWikidataFacts(
-ents,
-this.abortController.signal
-);
-
-this.step('Deuxième passage ciblé');
-
-const more=
-await this.secondPass(
-info,
-results,
-this.abortController.signal
-);
-
-const docs=[];
-
-for(
-const r of [...results,...more].slice(0,45)
-){
-
-const s=
-this.sources.find(
-x=>x.id===r.source
-);
-
-if(s){
-
-try{
-
-const d=
-await this.fetchExtract(
-s,
-r.title,
-this.abortController.signal
-);
-
-if(d)
-docs.push(d);
-
-}catch(e){}
-
-}
-}
-
-this.step('Construction des preuves');
-
-const passages=
-this.selectPassages(
-this.buildPassages(
-docs,
-info
-),
-20
-);
-
-const relations=
-passages.flatMap(
-p=>this.extractTextRelations(p.text)
-);
-
-const graph=
-this.buildKnowledgeGraph(
-facts,
-relations
-);
-
-this.step('Raisonnement et vérification');
-
-const gr=
-this.graphAnswer(
-graph,
-info,
-passages
-);
-
-const answer=
-this.synthesize(
-info,
-passages,
-gr
-);
-
-const ev=
-this.aggregateEvidence(
-passages
-);
-
-const confidence=
-Math.min(
-1,
-.45*ev.averageScore+
-.2*Math.min(1,ev.sourceCount/3)+
-.35*(gr?1:0)
-);
-
-const result=
-this.finalizeResult(
-info,
-answer,
-passages,
-{
-confidence,
-entities:
-[...graph.nodes.values()]
-.slice(0,20)
-.map(x=>x.label)
-}
-);
-
-this.remember(q,result);
-
-return result;
-
-}catch(e){
-
-if(e.name==='AbortError')
-throw e;
-
-throw e;
-
-}finally{
-
-this.busy=false;
-this.abortController=null;
-
-}
-
-}
 
 }
 
 
-class PyramidV7 extends PyramidV6 {
+/* =========================================================
+   RECHERCHE ADAPTATIVE
+========================================================= */
 
-constructor(stepCallback){
 
-super(stepCallback);
-
-this.version='V7';
-
-this.memory=
-this.defaultMemory();
-
-this.loadPersistentMemory();
-
-this.taskState={};
-}
-
-defaultMemory(){
-
-return {
-schemaVersion:1,
-engineFamily:'Pyramidal',
-engineVersion:'V7',
-savedAt:null,
-conversation:[],
-concepts:[],
-entities:[],
-relations:[],
-evidence:[],
-sources:[],
-learnedStrategies:[],
-taskHistory:[],
-statistics:{
-runs:0,
-successes:0,
-failures:0,
-totalSearchPasses:0,
-totalSources:0,
-lastRun:null
-}
-};
-
-}
-
-now(){
-return new Date().toISOString();
-}
-
-hash(s){
-
-let h=2166136261;
-
-for(const ch of String(s)){
-
-h^=ch.charCodeAt(0);
-h=Math.imul(h,16777619);
-
-}
-
-return (h>>>0).toString(16);
-}
-
-normalizeMemory(m){
-
-const base=this.defaultMemory();
-
-if(!m||typeof m!=='object')
-return base;
-
-const out={
-...base,
-...m
-};
-
-out.schemaVersion=1;
-out.engineFamily='Pyramidal';
-out.engineVersion='V7';
-
-for(
-const k of [
-'conversation',
-'concepts',
-'entities',
-'relations',
-'evidence',
-'sources',
-'learnedStrategies',
-'taskHistory'
-]
-)
-out[k]=
-Array.isArray(out[k])
-?out[k]
-:[];
-
-out.statistics={
-...base.statistics,
-...(m.statistics||{})
-};
-
-return out;
-}
-
-migrateMemory(raw){
-
-if(Array.isArray(raw))
-return this.normalizeMemory({
-conversation:raw
-});
-
-if(raw?.memoryFormat&&raw.memory)
-raw=raw.memory;
-
-return this.normalizeMemory(raw);
-}
-
-loadPersistentMemory(){
-
-try{
-
-const raw=
-localStorage.getItem(
-'pyramidal_v7_memory'
-);
-
-if(raw)
-this.memory=
-this.migrateMemory(
-JSON.parse(raw)
-);
-
-}catch(e){
-
-this.memory=
-this.defaultMemory();
-
-}
-}
-
-savePersistentMemory(){
-
-try{
-
-this.memory.savedAt=
-this.now();
-
-localStorage.setItem(
-'pyramidal_v7_memory',
-JSON.stringify(this.memory)
-);
-
-return true;
-
-}catch(e){
-
-return false;
-
-}
-}
-
-addUnique(list,item,key){
-
-const k=
-key||
-this.hash(
-JSON.stringify(item)
-);
-
-if(
-!list.some(
-x=>
-(x._key||
-this.hash(JSON.stringify(x)))===k
-)
-){
-
-list.push({
-...item,
-_key:k
-});
-
-return true;
-}
-
-return false;
-}
-
-extractTaskConstraints(q){
-
-const n=this.norm(q);
-
-const words=
-String(q).match(
-/\b\d+(?:[.,]\d+)?\s*(?:mots?|pages?|paragraphes?|phrases?)\b/iu
-)||[];
-
-const length=words[0]||'';
-
-let style='neutre';
-
-if(
-/\b(formel|professionnel|scolaire|academique|académique|simple|vulgarise|vulgarisé|argumentatif|convaincant)\b/i
-.test(q)
-){
-
-style=
-q.match(
-/\b(formel|professionnel|scolaire|academique|académique|simple|vulgarise|vulgarisé|argumentatif|convaincant)\b/i
-)?.[1]||style;
-
-}
-
-let format='paragraphes';
-
-if(/\bliste|puces|bullet/i.test(n))
-format='liste';
-
-if(/\bplan|sommaire|structure/i.test(n))
-format='plan';
-
-if(/\btableau|table/i.test(n))
-format='tableau';
-
-return {
-length,
-style,
-format,
-audience:
-/\b(enfant|débutant|debutant|secondaire|universite|université|expert)\b/i
-.test(q)
-?q.match(
-/\b(enfant|débutant|debutant|secondaire|universite|université|expert)\b/i
-)?.[1]
-:'general'
-};
-
-}
-
-detectTaskMode(q){
-
-const n=this.norm(q);
-
-if(
-/\b(corrige|corriger|correction|reformule|reformuler|simplifie|simplifier)\b/.test(n)
-)
-return 'rewrite';
-
-if(
-/\b(resume|résume|résumer|synthese|synthèse)\b/.test(n)
-)
-return 'summary';
-
-if(
-/\b(redige|rédige|redaction|rédaction|ecris|écris|ecrit|écrit|texte|paragraphe|article|discours)\b/.test(n)
-)
-return 'writing';
-
-if(
-/\b(plan|structure|sommaire)\b/.test(n)
-)
-return 'outline';
-
-if(
-/\b(compare|comparaison|difference|différence|versus|vs)\b/.test(n)
-)
-return 'comparison';
-
-if(
-/\b(verifie|vérifie|verification|vérification|est-ce vrai|est ce vrai)\b/.test(n)
-)
-return 'verification';
-
-if(
-/\b(explique|explication|pourquoi|comment)\b/.test(n)&&
-!/\bcomment écrire|comment rediger|comment rédiger\b/.test(n)
-)
-return 'explanation';
-
-if(this.detectSuperlative(q).is)
-return 'superlative';
-
-return 'research';
-}
-
-stripTaskPrefix(q){
-
-let s=String(q).trim();
-
-const m=
-s.match(
-/^(rédige|redige|écris|ecris|résume|resume|reformule|reformuler|corrige|corriger|explique|compare|vérifie|verifie)\b\s*/i
-);
-
-if(m)
-s=s.slice(m[0].length).trim();
-
-const colon=s.indexOf(':');
-
-if(colon>=0&&colon<100)
-s=s.slice(colon+1).trim();
-
-return s.replace(
-/^(?:un|une|le|la|les)\s+(?:texte|article|paragraphe|discours|plan|resume|résumé)\s+(?:sur|de|du|des|concernant)\s+/i,
-''
-).trim();
-}
-
-buildContext(q){
-
-const recent=
-this.memory.conversation.slice(-5);
-
-const hints=[];
-
-for(const x of recent){
-
-for(
-const e of (x.entities||[]).slice(0,8)
-)
-hints.push(e);
-
-}
-
-return {
-recent,
-relevantEntities:
-this.unique(hints).slice(-20)
-};
-}
-
-resolveContextQuestion(q){
-
-const s=String(q).trim();
-const n=this.norm(s);
-
-const short=s.length<90;
-
-const ref=
-/\b(il|elle|ils|elles|sa|son|ses|leur|leurs|celui|celle|ceux|celles|cet|cette|et pourquoi|et comment|et sa|et son|et ses)\b/
-.test(n);
-
-if(!short&&!ref)
-return s;
-
-const ctx=this.buildContext(s);
-
-if(!ctx.relevantEntities.length)
-return s;
-
-return `${s} ${ctx.relevantEntities.slice(-3).join(' ')}`.trim();
-}
-
-isLikelyUserText(q,mode){
-
-if(
-mode==='rewrite'||
-mode==='summary'
-)
-return String(q).length>180||/[:\n]/.test(q);
-
-return false;
-}
-
-buildTaskPlan(q,mode,info){
-
-const plan={
-mode,
-objective:q.trim(),
-subject:this.stripTaskPrefix(q),
-constraints:this.extractTaskConstraints(q),
-steps:[]
-};
-
-if(
-mode==='rewrite'||
-mode==='summary'
-){
-
-plan.steps=[
-'extraire le texte fourni',
-'transformer le texte',
-'vérifier la conservation du sens'
-];
-
-return plan;
-}
-
-plan.steps=[
-'identifier le sujet et les contraintes',
-'rechercher des preuves',
-'croiser les sources',
-'construire les relations utiles',
-'vérifier',
-'produire le format demandé'
-];
-
-return plan;
-}
-
-sentenceSplit(text){
-
-return this.clean(text)
-.split(/(?<=[.!?])\s+/)
-.map(x=>x.trim())
-.filter(x=>x.length>20);
-}
-
-summarizeText(text,limit=5){
-
-const s=this.sentenceSplit(text);
-
-if(!s.length)
-return '';
-
-const freq=new Map();
-
-for(const w of this.words(text))
-freq.set(w,(freq.get(w)||0)+1);
-
-const scored=
-s.map((x,i)=>{
-
-const score=
-this.words(x)
-.reduce(
-(a,w)=>a+(freq.get(w)||0),
-0
-)/
-Math.max(
-1,
-this.words(x).length
-);
-
-return {
-x,
-i,
-score
-};
-
-})
-.sort((a,b)=>b.score-a.score)
-.slice(0,limit)
-.sort((a,b)=>a.i-b.i);
-
-return scored
-.map(x=>x.x)
-.join(' ');
-}
-
-rewriteText(text,style='simple'){
-
-let out=this.clean(text);
-
-out=
-out
-.replace(/\s+/g,' ')
-.replace(/\s+([,.;!?])/g,'$1')
-.trim();
-
-if(style==='simple'){
-
-out=
-out
-.replace(/cependant/gi,'mais')
-.replace(/néanmoins/gi,'mais')
-.replace(/en outre/gi,'aussi');
-
-}
-
-return out;
-}
-
-extractSubjectForResearch(q){
-
-let s=this.stripTaskPrefix(q);
-
-s=
-s.replace(
-/\b(?:en\s+\d+\s+mots?|en\s+\d+\s+paragraphes?|pour\s+(?:un|une)\s+(?:eleve|élève|débutant|expert))\b/gi,
-''
-)
-.trim();
-
-return s;
-}
-
-async targetedResearch(info,plan,signal){
+async targetedResearch(info,signal){
 
 const allResults=[];
 const allDocs=[];
@@ -2288,16 +3130,14 @@ const usedQueries=[];
 
 let passes=0;
 
-let queries=this.buildQueries(info);
 
-if(
-plan.mode==='writing'||
-plan.mode==='outline'
-)
-queries=[
-this.extractSubjectForResearch(info.raw),
-...queries
-];
+/*
+PASSAGE 1 :
+recherche normale.
+*/
+let queries=
+this.buildQueries(info);
+
 
 for(let pass=0;pass<3;pass++){
 
@@ -2307,16 +3147,29 @@ this.step(
 `Recherche adaptative ${pass+1}/3`
 );
 
+
+queries=
+this.unique(queries)
+.slice(0,5);
+
+
 usedQueries.push(...queries);
+
 
 const results=
 await this.searchAll(
-this.unique(queries).slice(0,8),
+queries,
 signal
 );
 
+
 allResults.push(...results);
 
+
+/*
+Wikidata est interrogé après avoir identifié
+le sujet, pas avant.
+*/
 const ids=
 await this.discoverConcepts(
 results,
@@ -2324,11 +3177,13 @@ info,
 signal
 );
 
+
 const ents=
 await this.wikidataEntities(
 ids,
 signal
 );
+
 
 const facts=
 await this.buildWikidataFacts(
@@ -2336,28 +3191,40 @@ ents,
 signal
 );
 
+
 allFacts.push(...facts);
 
-for(
-const r of this.uniqueResults(results).slice(0,28)
-){
 
-const s=
+/*
+Extraction des pages :
+limitation volontaire pour rester léger.
+*/
+const candidates=
+this.uniqueResults(results)
+.slice(0,18);
+
+
+for(const r of candidates){
+
+const source=
 this.sources.find(
 x=>x.id===r.source
 );
 
-if(!s)
+
+if(!source)
 continue;
+
 
 try{
 
 const d=
 await this.fetchExtract(
-s,
+source,
 r.title,
 signal
 );
+
 
 if(d)
 allDocs.push(d);
@@ -2366,21 +3233,38 @@ allDocs.push(d);
 
 }
 
+
+const snippetDocs=
+this.buildSnippetDocs(
+results
+);
+
+
+allDocs.push(...snippetDocs);
+
+
 const passages=
 this.selectPassages(
+
 this.buildPassages(
 allDocs,
 info
 ),
+
 24
+
 );
 
-const rel=
+
+const relations=
 passages.flatMap(
-p=>this.extractTextRelations(p.text)
+p=>
+this.extractTextRelations(p.text)
 );
 
-allRelations.push(...rel);
+
+allRelations.push(...relations);
+
 
 const graph=
 this.buildKnowledgeGraph(
@@ -2388,263 +3272,780 @@ allFacts,
 allRelations
 );
 
-const need=
-this.findMissingNeeds(
-info,
-plan,
+
+/*
+Si une relation précise existe, on arrête tôt.
+*/
+const direct=
+this.graphAnswer(
 graph,
+info,
 passages
 );
 
-if(!need.length)
+
+if(
+direct &&
+direct.answerText
+){
+
 break;
 
-queries=need;
 }
 
-return {
+
+/*
+Sinon on construit un fallback ciblé.
+*/
+queries=
+this.buildFallbackQueries(
+info,
+results,
+passages,
+pass
+);
+
+
+if(!queries.length)
+break;
+
+}
+
+
+return{
+
 results:this.uniqueResults(allResults),
-docs:allDocs,
-facts:allFacts,
-relations:allRelations,
+
+docs:this.uniqueDocs(allDocs),
+
+facts:this.uniqueFacts(allFacts),
+
+relations:this.uniqueRelations(allRelations),
+
 passes,
+
 usedQueries:this.unique(usedQueries)
+
 };
 
 }
 
-findMissingNeeds(info,plan,graph,passages){
 
-const need=[];
+/* =========================================================
+   FALLBACKS
+========================================================= */
 
-const labels=
-[...graph.nodes.values()]
-.map(x=>x.label);
 
-const joined=
-this.norm(labels.join(' '));
+buildFallbackQueries(info,results,passages,pass){
+
+const out=[];
+
+
+/*
+Fallback 1 :
+sujet + relation.
+*/
+const subject=
+this.extractResearchSubject(info);
+
+
+const relations=
+this.requestedRelationTerms(info);
+
 
 if(
-info.type==='superlative'&&
-!this.solveSuperlative(graph,info)
-)
-need.push(
-`${info.raw} données quantitatives valeur classement`
+subject &&
+relations.length
+){
+
+out.push(
+`${subject} ${relations[0]}`
 );
 
-if(
-(plan.mode==='fact'||
-plan.mode==='research'||
-plan.mode==='verification')&&
-!passages.length
-)
-need.push(info.raw);
-
-if(
-plan.mode==='comparison'&&
-labels.length<2
-)
-need.push(
-`${info.raw} comparaison caractéristiques`
-);
-
-if(
-plan.mode==='writing'&&
-passages.length<3
-)
-need.push(
-`${this.extractSubjectForResearch(info.raw)} faits principaux contexte`
-);
-
-if(!joined&&info.terms.length)
-need.push(info.terms.join(' '));
-
-return this.unique(need).slice(0,5);
 }
 
-buildEvidenceMatrix(passages,facts,relations,info){
 
-const matrix=[];
+/*
+Fallback 2 :
+termes importants.
+*/
+if(
+pass===1 &&
+info.terms.length
+){
 
-for(const p of passages.slice(0,20))
+out.push(
+info.terms.slice(0,8).join(' ')
+);
 
-matrix.push({
-kind:'text',
-source:p.source,
-title:p.title,
-text:p.text,
-score:p.score
-});
-
-for(const f of facts.slice(0,80))
-
-matrix.push({
-kind:'structured',
-source:'wikidata',
-subject:f.subject,
-relation:f.propertyId,
-object:f.object,
-value:f.value,
-score:.7
-});
-
-for(const r of relations.slice(0,80))
-
-matrix.push({
-kind:'relation',
-source:'text',
-subject:r.subject,
-relation:r.relation,
-object:r.object,
-score:.55
-});
-
-return matrix;
 }
 
-verifyResult(result,info,matrix,graph){
 
-if(!result)
-return {
-ok:false,
-confidence:0,
-reasons:['aucun résultat structuré']
-};
+/*
+Fallback 3 :
+un titre prometteur.
+*/
+if(
+pass===1 &&
+results.length
+){
 
-const sourceSet=
-new Set(
-matrix
-.map(x=>x.source)
+const title=
+results
+.slice(0,4)
+.find(
+r=>
+this.termScore(
+`${r.title} ${r.snippet}`,
+info
+)>.15
+)?.title;
+
+
+if(title)
+out.push(title);
+
+}
+
+
+/*
+Fallback 4 :
+question relationnelle + contexte.
+*/
+if(
+pass===2 &&
+relations.length
+){
+
+out.push(
+`${info.raw} ${relations.join(' ')}`
+);
+
+}
+
+
+/*
+Dernier fallback :
+si des snippets existent, leur contenu est déjà
+exploitable et on ne multiplie plus les requêtes.
+*/
+if(
+pass>=2 &&
+passages.some(p=>p.fromSnippet)
+){
+
+return[];
+
+}
+
+
+return this.unique(
+out
 .filter(Boolean)
+).slice(0,3);
+
+}
+
+
+/* =========================================================
+   DÉDUPLICATION
+========================================================= */
+
+
+uniqueResults(arr){
+
+const m=new Map();
+
+
+for(const x of arr||[]){
+
+const k=
+`${x.source}|${this.norm(x.title)}`;
+
+
+if(!m.has(k))
+m.set(k,x);
+
+}
+
+
+return[...m.values()];
+
+}
+
+
+uniqueDocs(arr){
+
+const m=new Map();
+
+
+for(const x of arr||[]){
+
+const k=
+`${x.source}|${this.norm(x.title)}|${this.norm(x.text).slice(0,120)}`;
+
+
+if(!m.has(k))
+m.set(k,x);
+
+}
+
+
+return[...m.values()];
+
+}
+
+
+uniqueFacts(arr){
+
+const m=new Map();
+
+
+for(const x of arr||[]){
+
+const k=
+`${x.subjectId}|${x.propertyId}|${x.objectId}|${x.value}`;
+
+
+if(!m.has(k))
+m.set(k,x);
+
+}
+
+
+return[...m.values()];
+
+}
+
+
+uniqueRelations(arr){
+
+const m=new Map();
+
+
+for(const x of arr||[]){
+
+const k=
+`${this.norm(x.subject)}|${this.norm(x.relation)}|${this.norm(x.object)}`;
+
+
+if(!m.has(k))
+m.set(k,x);
+
+}
+
+
+return[...m.values()];
+
+}
+
+
+/* =========================================================
+   VÉRIFICATION
+========================================================= */
+
+
+aggregateEvidence(passages){
+
+const sources=
+this.unique(
+passages.map(p=>p.source)
 );
+
+
+const avg=
+passages.length
+
+?
+
+passages.reduce(
+(a,b)=>a+b.score,
+0
+)/passages.length
+
+:
+
+0;
+
+
+return{
+
+count:passages.length,
+
+sourceCount:sources.length,
+
+sources,
+
+averageScore:avg
+
+};
+
+}
+
+
+verifyResult(result,info,passages,graph){
+
+if(!result){
+
+return{
+
+ok:false,
+
+confidence:0,
+
+reasons:['aucun résultat']
+
+};
+
+}
+
+
+const ev=
+this.aggregateEvidence(
+passages
+);
+
 
 const relevant=
-matrix.filter(
-x=>
-this.termScore(
-`${x.subject||''} ${x.object||''} ${x.text||''}`,
-info
-)>.12
+passages.filter(
+p=>
+this.termScore(p.text,info)>.08
 );
 
-const structured=
-matrix.filter(
-x=>x.kind==='structured'
-).length;
 
-const confidence=
+const relationTerms=
+this.requestedRelationTerms(info);
+
+
+const relationEvidence=
+relationTerms.length
+
+?
+
+passages.filter(
+p=>
+relationTerms.some(
+r=>
+this.norm(p.text)
+.includes(
+this.norm(r)
+)
+)
+).length
+
+:
+
+0;
+
+
+let confidence=0;
+
+
+confidence+=
 Math.min(
-1,
-.35*Math.min(1,relevant.length/5)+
-.25*Math.min(1,sourceSet.size/3)+
-.2*(structured?1:0)+
-.2*(result.candidate?1:0)
+.40,
+relevant.length*.07
 );
 
-return {
-ok:confidence>=.35,
+
+confidence+=
+Math.min(
+.20,
+ev.sourceCount*.07
+);
+
+
+confidence+=
+Math.min(
+.20,
+ev.averageScore*.25
+);
+
+
+if(result.candidate)
+confidence+=.15;
+
+
+if(
+relationTerms.length &&
+relationEvidence
+)
+confidence+=.15;
+
+
+confidence=
+Math.min(1,confidence);
+
+
+return{
+
+ok:confidence>=.30,
+
 confidence,
+
 reasons:[
-`${relevant.length} éléments pertinents`,
-`${sourceSet.size} sources distinctes`,
-structured
-?`${structured} éléments structurés Wikidata`
-:'peu de données structurées'
+
+`${relevant.length} preuves pertinentes`,
+
+`${ev.sourceCount} sources distinctes`,
+
+relationTerms.length
+?`${relationEvidence} éléments liés à la relation demandée`
+:'aucune relation spécifique demandée'
+
 ]
+
 };
+
 }
+
+
+/* =========================================================
+   TÂCHES
+========================================================= */
+
+
+extractTaskConstraints(q){
+
+let length='';
+
+const m=
+String(q).match(
+
+/\b\d+(?:[.,]\d+)?\s*(?:mots?|pages?|paragraphes?|phrases?)\b/iu
+
+);
+
+
+if(m)
+length=m[0];
+
+
+let style='neutre';
+
+
+const sm=
+String(q).match(
+
+/\b(formel|professionnel|scolaire|académique|academique|simple|vulgarisé|vulgarise|argumentatif|convaincant)\b/i
+
+);
+
+
+if(sm)
+style=sm[1];
+
+
+let format='paragraphes';
+
+
+if(/\bliste|puces|bullet/i.test(this.norm(q)))
+format='liste';
+
+
+if(/\bplan|sommaire|structure/i.test(this.norm(q)))
+format='plan';
+
+
+if(/\btableau|table/i.test(this.norm(q)))
+format='tableau';
+
+
+return{
+
+length,
+
+style,
+
+format,
+
+audience:'general'
+
+};
+
+}
+
+
+detectTaskMode(q){
+
+const n=this.norm(q);
+
+
+if(
+/\b(corrige|corriger|correction|reformule|reformuler|simplifie|simplifier)\b/
+.test(n)
+)
+return'rewrite';
+
+
+if(
+/\b(resume|résume|résumer|synthese|synthèse)\b/
+.test(n)
+)
+return'summary';
+
+
+if(
+/\b(redige|rédige|redaction|rédaction|ecris|écris|ecrit|écrit|texte|paragraphe|article|discours|lettre)\b/
+.test(n)
+)
+return'writing';
+
+
+if(
+/\b(plan|structure|sommaire)\b/
+.test(n)
+)
+return'outline';
+
+
+if(
+/\b(compare|comparaison|difference|différence|versus|vs)\b/
+.test(n)
+)
+return'comparison';
+
+
+if(
+/\b(verifie|vérifie|verification|vérification|est-ce vrai|est ce vrai)\b/
+.test(n)
+)
+return'verification';
+
+
+if(
+/\b(explique|explication|pourquoi|comment)\b/
+.test(n)
+)
+return'explanation';
+
+
+if(this.detectSuperlative(q).is)
+return'superlative';
+
+
+return'research';
+
+}
+
+
+stripTaskPrefix(q){
+
+let s=String(q).trim();
+
+
+s=s.replace(
+
+/^(rédige|redige|écris|ecris|résume|resume|reformule|reformuler|corrige|corriger|explique|compare|vérifie|verifie)\b\s*/i,
+
+''
+
+);
+
+
+const colon=s.indexOf(':');
+
+
+if(colon>=0&&colon<100)
+s=s.slice(colon+1).trim();
+
+
+return s;
+
+}
+
+
+sentenceSplit(text){
+
+return this.clean(text)
+
+.split(/(?<=[.!?])\s+/)
+
+.map(x=>x.trim())
+
+.filter(x=>x.length>20);
+
+}
+
+
+summarizeText(text,limit=5){
+
+const s=this.sentenceSplit(text);
+
+
+if(!s.length)
+return'';
+
+
+const freq=new Map();
+
+
+for(const w of this.words(text))
+freq.set(w,(freq.get(w)||0)+1);
+
+
+return s
+
+.map((x,i)=>({
+
+x,
+
+i,
+
+score:
+this.words(x)
+.reduce(
+(a,w)=>a+(freq.get(w)||0),
+0
+)/
+Math.max(
+1,
+this.words(x).length
+)
+
+}))
+
+.sort(
+(a,b)=>b.score-a.score
+)
+
+.slice(0,limit)
+
+.sort(
+(a,b)=>a.i-b.i
+)
+
+.map(x=>x.x)
+
+.join(' ');
+
+}
+
+
+rewriteText(text,style='simple'){
+
+let out=this.clean(text);
+
+
+out=
+out
+
+.replace(/\s+/g,' ')
+
+.replace(/\s+([,.;!?])/g,'$1')
+
+.trim();
+
+
+if(style==='simple'){
+
+out=
+out
+
+.replace(/cependant/gi,'mais')
+
+.replace(/néanmoins/gi,'mais')
+
+.replace(/en outre/gi,'aussi');
+
+}
+
+
+return out;
+
+}
+
 
 writeFromEvidence(subject,passages,constraints){
 
 const selected=
 this.selectPassages(
 passages,
-12
+10
 );
+
 
 const facts=[];
 
+
 for(const p of selected){
 
-const s=this.sentenceSplit(p.text);
-
-for(const x of s){
+for(const s of this.sentenceSplit(p.text)){
 
 if(
 this.termScore(
-x,
+s,
 {
 terms:this.words(subject),
 phrases:[],
 domains:[],
 superlative:{is:false}
 }
-)>.15
+)>.10
 )
-facts.push(x);
+facts.push(s);
 
 }
+
 }
+
 
 const unique=[];
 
-for(const f of facts)
+
+for(const f of facts){
 
 if(
 unique.every(
-x=>this.similarity(x,f)<.72
+x=>
+this.similarity(x,f)<.72
 )
 )
 unique.push(f);
 
-const intro=
-`${subject} est un sujet qui peut être présenté à partir de plusieurs éléments complémentaires.`;
+}
 
-const body=
-unique
-.slice(
-0,
-Math.max(
-3,
-constraints.length?8:6
-)
-)
-.join(' ');
 
-const conclusion=
-unique.length
-?`Ces éléments permettent de situer les principaux aspects de ${subject} et d’en dégager une vue d’ensemble.`
-:`Les sources disponibles ne permettent pas de construire une synthèse suffisamment étayée sur ${subject}.`;
+if(constraints.format==='liste'){
 
-let text=[
-intro,
-body,
-conclusion
-]
-.filter(Boolean)
-.join('\n\n');
-
-if(constraints.format==='liste')
-
-text=
-unique
+return unique
 .slice(0,10)
 .map(x=>`• ${x}`)
 .join('\n');
 
-if(constraints.format==='plan')
-
-text=[
-'Introduction',
-...unique.slice(0,6)
-.map((x,i)=>`${i+1}. ${x}`),
-'Conclusion'
-]
-.join('\n');
-
-return this.cleanFinalText(text)
-.replace(/\n /g,'\n');
 }
+
+
+if(constraints.format==='plan'){
+
+return[
+
+`Introduction — ${subject}`,
+
+...unique
+.slice(0,6)
+.map(
+(x,i)=>
+`${i+1}. ${x}`
+),
+
+'Conclusion'
+
+].join('\n');
+
+}
+
+
+return this.cleanFinalText(
+
+unique
+.slice(0,8)
+.join(' ')
+
+);
+
+}
+
 
 compareFromEvidence(info,passages,graph){
 
@@ -2654,34 +4055,30 @@ graph,
 info
 ).slice(0,6);
 
-if(candidates.length<2){
 
-const chunks=
-this.selectPassages(
-passages,
-6
-)
-.map(p=>`• ${p.text}`);
-
-return chunks.join('\n');
-}
+if(candidates.length>=2){
 
 const lines=[];
+
 
 for(const n of candidates.slice(0,4)){
 
 const edges=
 graph.edges
 .filter(e=>e.from===n.id)
-.slice(0,5);
+.slice(0,6);
+
 
 const vals=
 edges
+
 .map(
 e=>
 `${e.labelText||e.label}: ${e.raw?.object||e.value||e.to}`
 )
+
 .join('; ');
+
 
 lines.push(
 `• ${n.label}${vals?` — ${vals}`:''}`
@@ -2689,93 +4086,101 @@ lines.push(
 
 }
 
+
 return lines.join('\n');
+
 }
+
+
+return this.selectPassages(
+passages,
+6
+)
+
+.map(
+p=>`• ${p.text}`
+)
+
+.join('\n');
+
+}
+
 
 outlineFromEvidence(subject,passages){
 
 const p=
 this.selectPassages(
 passages,
-9
+7
 );
 
-const sections=[];
+
+const lines=[
+
+`Introduction — contexte général de ${subject}`,
+
+'1. Définition et éléments essentiels'
+
+];
+
 
 for(const x of p){
 
 const s=
 this.sentenceSplit(x.text)[0];
 
+
 if(s)
-sections.push(s);
+lines.push(
+`${lines.length}. ${s}`
+);
+
 }
 
-return [
-`Introduction — contexte général de ${subject}`,
-'1. Définition et éléments essentiels',
-...sections.slice(0,3)
-.map((x,i)=>`${i+2}. ${x}`),
+
+lines.push(
 'Conclusion — synthèse des éléments principaux'
-]
-.join('\n');
-}
-
-generalAnswer(info,passages,graph){
-
-const gr=
-this.graphAnswer(
-graph,
-info,
-passages
 );
 
-if(gr)
-return gr;
 
-const selected=
-this.selectPassages(
-passages,
-6
-);
+return lines.join('\n');
 
-if(!selected.length)
-return null;
-
-return {
-answerText:
-selected
-.map(x=>x.text)
-.join(' '),
-candidate:null
-};
 }
+
+
+/* =========================================================
+   SOLVE TASK
+========================================================= */
+
 
 async solveTask(q,signal){
 
-const resolved=
-this.resolveContextQuestion(q);
-
 const mode=
-this.detectTaskMode(resolved);
+this.detectTaskMode(q);
+
 
 const info=
-this.analyzeQuestion(resolved);
+this.analyzeQuestion(q);
 
-const plan=
-this.buildTaskPlan(
-resolved,
+
+const constraints=
+this.extractTaskConstraints(q);
+
+
+this.taskState={
+
 mode,
-info
-);
 
-plan.originalQuestion=q;
+question:q,
 
-this.taskState=plan;
+constraints
+
+};
+
 
 if(
-(mode==='summary'||mode==='rewrite')&&
-this.isLikelyUserText(q,mode)
+(mode==='summary'||mode==='rewrite') &&
+String(q).length>180
 ){
 
 this.step(
@@ -2784,54 +4189,88 @@ mode==='summary'
 :'Reformulation du texte fourni'
 );
 
-const text=
-this.stripTaskPrefix(q);
 
 const answer=
 mode==='summary'
-?this.summarizeText(text,6)
-:this.rewriteText(
-text,
-plan.constraints.style
+
+?
+
+this.summarizeText(
+this.stripTaskPrefix(q),
+6
+)
+
+:
+
+this.rewriteText(
+this.stripTaskPrefix(q),
+constraints.style
 );
 
-return {
+
+return{
+
 info,
-plan,
+
+plan:{
+mode,
+constraints
+},
+
 answerText:answer,
+
 passages:[],
+
 facts:[],
+
 relations:[],
+
 graph:this.createGraph(),
-research:null,
+
+research:{
+passes:0,
+results:[],
+usedQueries:[]
+},
+
 verification:{
 ok:true,
 confidence:.9,
 reasons:['transformation locale']
-}
-};
+
 }
 
-this.step('Planification de la tâche');
+};
+
+}
+
+
+this.step('Compréhension de la demande');
+
 
 const research=
 await this.targetedResearch(
 info,
-plan,
 signal
 );
 
+
 const passages=
 this.selectPassages(
+
 this.buildPassages(
 research.docs,
 info
 ),
+
 28
+
 );
+
 
 const relations=
 research.relations;
+
 
 const graph=
 this.buildKnowledgeGraph(
@@ -2839,373 +4278,738 @@ research.facts,
 relations
 );
 
-const matrix=
-this.buildEvidenceMatrix(
-passages,
-research.facts,
-relations,
-info
-);
+
+const matrixPassages=
+passages;
+
 
 let raw=null;
 
-if(mode==='writing')
+
+if(mode==='writing'){
 
 raw={
+
 answerText:
 this.writeFromEvidence(
-this.extractSubjectForResearch(q),
+this.extractResearchSubject(info),
 passages,
-plan.constraints
+constraints
 )
+
 };
 
-else if(mode==='outline')
+}
+
+else if(mode==='outline'){
 
 raw={
+
 answerText:
 this.outlineFromEvidence(
-this.extractSubjectForResearch(q),
+this.extractResearchSubject(info),
 passages
 )
+
 };
 
-else if(mode==='comparison')
+}
+
+else if(mode==='comparison'){
 
 raw={
+
 answerText:
 this.compareFromEvidence(
 info,
 passages,
 graph
 )
+
 };
 
-else
+}
+
+else{
 
 raw=
-this.generalAnswer(
+this.graphAnswer(
+graph,
 info,
-passages,
-graph
+passages
 );
 
-if(!raw)
+
+if(!raw){
 
 raw={
+
 answerText:
-'Je n’ai pas trouvé suffisamment d’éléments concordants pour répondre avec confiance.'
+this.synthesize(
+info,
+passages,
+null
+)
+
 };
+
+}
+
+}
+
 
 const verification=
 this.verifyResult(
 raw,
 info,
-matrix,
+matrixPassages,
 graph
 );
 
-return {
+
+return{
+
 info,
-plan,
-answerText:raw.answerText,
+
+plan:{
+mode,
+constraints
+},
+
+answerText:
+raw.answerText,
+
 passages,
+
 facts:research.facts,
+
 relations,
+
 graph,
+
 research,
+
 verification
+
 };
+
 }
+
+
+/* =========================================================
+   MÉMOIRE
+========================================================= */
+
 
 rememberV7(q,out){
 
 const now=this.now();
 
+
 const entities=
 this.unique(
+
 (out.research?.results||[])
 .slice(0,20)
 .map(x=>x.title)
-)
-.slice(0,20);
+
+);
+
 
 this.addUnique(
+
 this.memory.conversation,
+
 {
+
 question:q,
+
 answer:out.answerText,
+
 time:now,
+
 type:out.info.type,
+
 mode:out.plan.mode,
+
 entities
+
 },
-this.hash(`${q}|${out.answerText}`)
+
+this.hash(
+`${q}|${out.answerText}`
+)
+
 );
+
 
 for(
 const c of this.unique(
+
 [
 ...(out.info.terms||[]),
 ...(out.info.phrases||[])
+
 ]
-.filter(x=>x.length>2)
-).slice(0,30)
+
+.filter(
+x=>x.length>2
 )
 
+).slice(0,30)
+){
+
 this.addUnique(
+
 this.memory.concepts,
+
 {
+
 label:c,
+
 lastSeen:now
+
 },
-this.hash(this.norm(c))
+
+this.hash(
+this.norm(c)
+)
+
 );
 
-this.addUnique(
-this.memory.taskHistory,
-{
-time:now,
-mode:out.plan.mode,
-type:out.info.type,
-confidence:out.verification.confidence,
-passes:out.research?.passes||0
-},
-this.hash(`${now}|${out.plan.mode}|${out.info.raw}`)
-);
+}
 
-for(const e of entities)
+
+for(
+const r of out.relations.slice(0,100)
+){
 
 this.addUnique(
-this.memory.entities,
-{
-label:e,
-lastSeen:now,
-type:this.inferEntityType(e)
-},
-this.hash(this.norm(e))
-);
 
-for(const r of out.relations.slice(0,100))
-
-this.addUnique(
 this.memory.relations,
+
 {
+
 subject:r.subject,
+
 relation:r.relation,
+
 object:r.object,
+
 lastSeen:now
+
 },
-this.hash(`${r.subject}|${r.relation}|${r.object}`)
+
+this.hash(
+`${r.subject}|${r.relation}|${r.object}`
+)
+
 );
 
-for(const f of out.facts.slice(0,100))
+}
+
+
+for(
+const f of out.facts.slice(0,100)
+){
 
 this.addUnique(
+
 this.memory.relations,
+
 {
+
 subject:f.subject,
-relation:f.propertyId,
+
+relation:f.propertyLabel||f.propertyId,
+
 object:f.object,
+
 value:f.value,
+
 source:'wikidata',
+
 lastSeen:now
+
 },
-this.hash(`${f.subject}|${f.propertyId}|${f.object}|${f.value}`)
+
+this.hash(
+`${f.subject}|${f.propertyId}|${f.object}|${f.value}`
+)
+
 );
 
-for(const p of out.passages.slice(0,40))
+}
+
+
+for(
+const p of out.passages.slice(0,40)
+){
 
 this.addUnique(
+
 this.memory.evidence,
+
 {
+
 source:p.source,
+
 title:p.title,
+
 text:p.text,
+
 score:p.score,
+
+fromSnippet:!!p.fromSnippet,
+
 lastSeen:now
+
 },
-this.hash(`${p.source}|${p.title}|${p.text}`)
+
+this.hash(
+`${p.source}|${p.title}|${p.text}`
+)
+
 );
+
+}
+
 
 for(
 const s of this.unique(
 out.passages.map(p=>p.source)
 )
-)
+){
 
 this.addUnique(
+
 this.memory.sources,
+
 {
+
 source:s,
+
 lastSeen:now
+
 },
+
 this.hash(s)
+
 );
 
+}
+
+
+for(
+const query of
+(out.research?.usedQueries||[])
+.slice(0,20)
+){
+
+this.addUnique(
+
+this.memory.searches,
+
+{
+
+query,
+
+type:out.info.type,
+
+mode:out.plan.mode,
+
+time:now
+
+},
+
+this.hash(
+`${query}|${out.info.type}|${out.plan.mode}`
+)
+
+);
+
+}
+
+
 this.memory.statistics.runs++;
+
 this.memory.statistics.successes++;
 
 this.memory.statistics.totalSearchPasses+=
 out.research?.passes||0;
 
 this.memory.statistics.totalSources+=
+
 this.unique(
 out.passages.map(p=>p.source)
 ).length;
 
 this.memory.statistics.lastRun=now;
 
+
 this.learnStrategy(out);
+
 
 this.savePersistentMemory();
 
+
 this.sessionMemory.push({
+
 q,
+
 answer:out.answerText,
+
 time:Date.now(),
+
 entities
+
 });
+
 
 if(this.sessionMemory.length>30)
 this.sessionMemory.shift();
+
 }
+
+
+/* =========================================================
+   APPRENTISSAGE DES STRATÉGIES
+========================================================= */
+
 
 learnStrategy(out){
 
 const key=
 `${out.plan.mode}|${out.info.type}`;
 
-const existing=
+
+let existing=
 this.memory.learnedStrategies.find(
 x=>x.key===key
 );
 
-if(existing){
+
+if(!existing){
+
+existing={
+
+key,
+
+uses:0,
+
+positive:0,
+
+negative:0,
+
+avgConfidence:0,
+
+avgPasses:0,
+
+score:0
+
+};
+
+this.memory.learnedStrategies.push(existing);
+
+}
+
 
 existing.uses++;
 
+
 existing.avgConfidence=
+
 (
 existing.avgConfidence*(existing.uses-1)+
 out.verification.confidence
-)/
-existing.uses;
+)/existing.uses;
+
 
 existing.avgPasses=
+
 (
 existing.avgPasses*(existing.uses-1)+
 (out.research?.passes||0)
-)/
-existing.uses;
+)/existing.uses;
 
-}else{
 
-this.memory.learnedStrategies.push({
-key,
-uses:1,
-avgConfidence:
-out.verification.confidence,
-avgPasses:
-out.research?.passes||0
-});
+/*
+Le score est recalculé lors des évaluations.
+*/
+existing.score=
+existing.positive-
+existing.negative;
 
 }
+
+
+recordFeedback(answerId,value){
+
+const item={
+
+id:answerId,
+
+value,
+
+time:this.now()
+
+};
+
+
+this.memory.feedback.push(item);
+
+
+if(this.memory.feedback.length>300)
+this.memory.feedback.shift();
+
+
+if(value==='up')
+this.memory.statistics.positiveFeedback++;
+
+
+if(value==='down')
+this.memory.statistics.negativeFeedback++;
+
+
+/*
+Retrouver la stratégie utilisée pour cette réponse.
+*/
+const conversation=
+this.memory.conversation
+.find(
+x=>x._answerId===answerId
+);
+
+
+if(conversation){
+
+const key=
+`${conversation.mode}|${conversation.type}`;
+
+
+const strategy=
+this.memory.learnedStrategies
+.find(
+x=>x.key===key
+);
+
+
+if(strategy){
+
+if(value==='up')
+strategy.positive++;
+
+
+if(value==='down')
+strategy.negative++;
+
+
+strategy.score=
+strategy.positive-
+strategy.negative;
+
 }
+
+}
+
+
+this.savePersistentMemory();
+
+}
+
+
+/*
+Associe l'identifiant d'une réponse à sa stratégie.
+*/
+attachAnswerId(q,answerId){
+
+const item=
+[...this.memory.conversation]
+.reverse()
+.find(
+x=>x.question===q
+);
+
+
+if(item){
+
+item._answerId=answerId;
+
+this.savePersistentMemory();
+
+}
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
 
 memoryStats(){
 
 const s=this.memory.statistics;
 
-return {
+
+return{
+
 conversation:this.memory.conversation.length,
+
 concepts:this.memory.concepts.length,
+
 entities:this.memory.entities.length,
+
 relations:this.memory.relations.length,
+
 evidence:this.memory.evidence.length,
+
 sources:this.memory.sources.length,
+
+searches:this.memory.searches.length,
+
 strategies:this.memory.learnedStrategies.length,
+
+feedback:this.memory.feedback.length,
+
 runs:s.runs
+
 };
+
 }
+
+
+/* =========================================================
+   EXPORT / IMPORT
+========================================================= */
+
 
 exportMemory(){
 
 this.memory.savedAt=this.now();
 
+
 const payload={
-memoryFormat:'pyramidal-v7',
+
+memoryFormat:'pyramidal-v7.1',
+
 exportedAt:this.now(),
+
 memory:this.memory
+
 };
+
 
 const blob=
 new Blob(
-[JSON.stringify(payload,null,2)],
-{type:'application/json'}
+
+[
+JSON.stringify(
+payload,
+null,
+2
+)
+],
+
+{
+type:'application/json'
+}
+
 );
+
 
 const url=
 URL.createObjectURL(blob);
 
+
 const a=
 document.createElement('a');
 
+
 a.href=url;
 
+
 a.download=
-`memoire-pyramidal-v7-${new Date().toISOString().slice(0,10)}.json`;
+`memoire-pyramidal-v7.1-${new Date().toISOString().slice(0,10)}.json`;
+
 
 a.click();
+
 
 setTimeout(
 ()=>URL.revokeObjectURL(url),
 500
 );
 
+
 this.savePersistentMemory();
+
 }
 
+
 async readMemoryFile(file){
-return JSON.parse(await file.text());
+
+return JSON.parse(
+await file.text()
+);
+
 }
+
 
 importMemory(raw,merge=false){
 
 const incoming=
 this.migrateMemory(raw);
 
+
 if(!merge)
 this.memory=incoming;
+
 else
 this.mergeMemory(incoming);
 
+
 this.savePersistentMemory();
 
+
 return this.memoryStats();
+
 }
+
 
 mergeMemory(incoming){
 
 for(
 const k of [
+
 'conversation',
 'concepts',
 'entities',
 'relations',
 'evidence',
 'sources',
-'learnedStrategies'
-]
-)
+'searches',
+'learnedStrategies',
+'taskHistory',
+'feedback'
 
-for(const item of incoming[k]||[])
+]
+){
+
+for(const item of incoming[k]||[]){
+
 this.addUnique(
 this.memory[k],
 item
 );
 
+}
+
+}
+
+
 this.memory.statistics={
+
 ...this.memory.statistics,
 
 runs:
@@ -3220,6 +5024,14 @@ failures:
 (this.memory.statistics.failures||0)+
 (incoming.statistics?.failures||0),
 
+positiveFeedback:
+(this.memory.statistics.positiveFeedback||0)+
+(incoming.statistics?.positiveFeedback||0),
+
+negativeFeedback:
+(this.memory.statistics.negativeFeedback||0)+
+(incoming.statistics?.negativeFeedback||0),
+
 totalSearchPasses:
 (this.memory.statistics.totalSearchPasses||0)+
 (incoming.statistics?.totalSearchPasses||0),
@@ -3227,8 +5039,11 @@ totalSearchPasses:
 totalSources:
 (this.memory.statistics.totalSources||0)+
 (incoming.statistics?.totalSources||0)
+
 };
+
 }
+
 
 resetMemory(){
 
@@ -3238,17 +5053,27 @@ this.defaultMemory();
 this.sessionMemory=[];
 
 this.savePersistentMemory();
+
 }
+
+
+/* =========================================================
+   RUN
+========================================================= */
+
 
 async run(q){
 
 if(this.busy)
 throw new Error('Moteur déjà occupé.');
 
+
 this.busy=true;
+
 
 this.abortController=
 new AbortController();
+
 
 try{
 
@@ -3258,24 +5083,61 @@ q,
 this.abortController.signal
 );
 
+
 this.step('Vérification finale');
 
-this.rememberV7(q,out);
 
-return this.finalizeResult(
-out.info,
-out.answerText,
-out.passages,
-{
-confidence:out.verification.confidence,
-entities:
-out.research?.results?.slice(0,20)
-.map(x=>x.title)||[],
-task:out.plan,
-verification:out.verification,
-mode:out.plan.mode
-}
+this.rememberV7(
+q,
+out
 );
+
+
+return{
+
+answerText:
+this.cleanFinalText(
+out.answerText
+),
+
+sources:
+this.unique(
+out.passages
+.slice(0,8)
+.map(
+p=>
+`${p.source}: ${p.title}`
+)
+),
+
+passages:out.passages,
+
+confidence:
+out.verification.confidence,
+
+entities:
+out.research?.results
+?.slice(0,20)
+.map(x=>x.title)||[],
+
+meta:{
+
+type:out.info.type,
+
+mode:out.plan.mode,
+
+verification:out.verification,
+
+task:out.plan,
+
+answerId:this.hash(
+`${q}|${Date.now()}`
+)
+
+}
+
+};
+
 
 }catch(e){
 
@@ -3283,14 +5145,17 @@ this.memory.statistics.failures++;
 
 this.savePersistentMemory();
 
+
 if(e.name==='AbortError')
 throw e;
+
 
 throw e;
 
 }finally{
 
 this.busy=false;
+
 this.abortController=null;
 
 }
@@ -3300,233 +5165,505 @@ this.abortController=null;
 }
 
 
-const chat=document.getElementById('chat');
-const input=document.getElementById('input');
-const send=document.getElementById('send');
-const welcome=document.getElementById('welcome');
-const drawerBackdrop=document.getElementById('drawerBackdrop');
-const memoryStatsEl=document.getElementById('memoryStats');
-const engineStatus=document.getElementById('engineStatus');
+/* =========================================================
+   INTERFACE
+========================================================= */
+
+
+const chat=
+document.getElementById('chat');
+
+const input=
+document.getElementById('input');
+
+const send=
+document.getElementById('send');
+
+const welcome=
+document.getElementById('welcome');
+
+const drawerBackdrop=
+document.getElementById('drawerBackdrop');
+
+const memoryStatsEl=
+document.getElementById('memoryStats');
+
+const engineStatus=
+document.getElementById('engineStatus');
+
 
 let activeStep=null;
 
+
 function scrollBottom(){
-chat.scrollTop=chat.scrollHeight;
+
+chat.scrollTop=
+chat.scrollHeight;
+
 }
 
+
 function removeWelcome(){
+
 if(welcome)
 welcome.remove();
+
 }
+
 
 function addUserMessage(text){
 
 removeWelcome();
 
-const d=document.createElement('div');
+
+const d=
+document.createElement('div');
+
 
 d.className='message user';
 
+
 d.innerHTML=
-`<div class="bubble">${engine.escapeHTML(text)}</div>`;
+
+`<div class="bubble">${
+engine.escapeHTML(text)
+}</div>`;
+
 
 chat.appendChild(d);
 
+
 scrollBottom();
+
 }
+
 
 function showStep(label){
 
 if(activeStep)
 activeStep.remove();
 
-const d=document.createElement('div');
+
+const d=
+document.createElement('div');
+
 
 d.className='step';
 
+
 d.innerHTML=
-`<span class="spinner"></span><span>${engine.escapeHTML(label)}</span>`;
+
+`<span class="spinner"></span>
+<span>${engine.escapeHTML(label)}</span>`;
+
 
 chat.appendChild(d);
 
+
 activeStep=d;
 
+
 scrollBottom();
+
 }
+
 
 function removeStep(){
 
 if(activeStep){
 
 activeStep.remove();
+
 activeStep=null;
 
 }
+
 }
+
+
+/* =========================================================
+   MESSAGE ASSISTANT
+========================================================= */
+
 
 function addAssistantMessage(result){
 
 removeStep();
 
-const d=document.createElement('div');
+
+const d=
+document.createElement('div');
+
 
 d.className='message assistant';
 
-const b=document.createElement('div');
+
+const b=
+document.createElement('div');
+
 
 b.className='bubble';
 
-const text=document.createElement('div');
+
+const text=
+document.createElement('div');
+
 
 text.textContent=
 result.answerText||'';
 
+
 b.appendChild(text);
 
+
+/*
+Actions :
+👍 = feedback positif
+👎 = feedback négatif
+📋 = copie EXACTEMENT answerText
+*/
 const actions=
 document.createElement('div');
 
+
 actions.className='answerActions';
+
+
+const up=
+document.createElement('button');
+
+
+up.className='miniBtn';
+
+up.textContent='👍';
+
+up.title='Bonne réponse';
+
+up.onclick=()=>{
+
+if(up.classList.contains('active-good'))
+return;
+
+
+up.classList.add('active-good');
+
+down.classList.remove('active-bad');
+
+
+engine.recordFeedback(
+result.meta?.answerId,
+'up'
+);
+
+};
+
+
+const down=
+document.createElement('button');
+
+
+down.className='miniBtn';
+
+down.textContent='👎';
+
+down.title='Mauvaise réponse';
+
+
+down.onclick=()=>{
+
+if(down.classList.contains('active-bad'))
+return;
+
+
+down.classList.add('active-bad');
+
+up.classList.remove('active-good');
+
+
+engine.recordFeedback(
+result.meta?.answerId,
+'down'
+);
+
+};
+
 
 const copy=
 document.createElement('button');
 
+
 copy.className='miniBtn';
 
-copy.textContent='Copier';
+copy.textContent='📋';
+
+copy.title='Copier la réponse';
+
 
 copy.onclick=async()=>{
 
 try{
 
+/*
+IMPORTANT :
+seul answerText est copié.
+Aucune source.
+Aucune confiance.
+Aucun bouton.
+Aucun HTML.
+*/
 await navigator.clipboard.writeText(
 result.answerText||''
 );
 
-copy.textContent='Copié';
+
+copy.textContent='✓';
+
 
 setTimeout(
-()=>copy.textContent='Copier',
+()=>copy.textContent='📋',
 900
 );
 
+
 }catch(e){
 
-copy.textContent='Erreur';
+copy.textContent='!';
+
+
+setTimeout(
+()=>copy.textContent='📋',
+900
+);
 
 }
 
 };
 
+
+actions.appendChild(up);
+
+actions.appendChild(down);
+
 actions.appendChild(copy);
+
 
 b.appendChild(actions);
 
+
+/*
+Sources.
+*/
 if(result.sources?.length){
 
 const src=
 document.createElement('div');
 
+
 src.className='sources';
+
 
 src.innerHTML=
 result.sources
+
 .map(
+
 s=>
-`<span class="sourceItem">${engine.escapeHTML(s)}</span>`
+`<span class="sourceItem">${
+engine.escapeHTML(s)
+}</span>`
+
 )
+
 .join('');
+
 
 b.appendChild(src);
 
 }
 
+
+/*
+Confiance.
+*/
 const conf=
 document.createElement('div');
 
+
 conf.className='confidence';
+
 
 const c=
 Math.round(
 (result.confidence||0)*100
 );
 
+
 conf.innerHTML=
-`Confiance indicative : <strong>${c}%</strong>${result.meta?.mode?` · mode ${engine.escapeHTML(result.meta.mode)}`:''}`;
+
+`Confiance indicative :
+<strong>${c}%</strong>${
+result.meta?.mode
+?` · mode ${engine.escapeHTML(result.meta.mode)}`
+:''
+}`;
+
 
 b.appendChild(conf);
 
+
 d.appendChild(b);
+
 
 chat.appendChild(d);
 
+
 scrollBottom();
+
+
+/*
+Associer l'identifiant de réponse
+à l'entrée mémoire correspondante.
+*/
+if(result.meta?.answerId){
+
+setTimeout(()=>{
+
+engine.attachAnswerId(
+result._question||'',
+result.meta.answerId
+);
+
+},0);
+
 }
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
 
 function setStatus(){
 
-const s=engine.memoryStats();
+const s=
+engine.memoryStats();
+
 
 memoryStatsEl.innerHTML=
+
 Object.entries(s)
+
 .map(
+
 ([k,v])=>
-`<div class="stat"><small>${engine.escapeHTML(k)}</small><strong>${v}</strong></div>`
+
+`<div class="stat">
+<small>${engine.escapeHTML(k)}</small>
+<strong>${v}</strong>
+</div>`
+
 )
+
 .join('');
 
+
 engineStatus.textContent=
-`Moteur ${engine.version} · mémoire locale ${engine.memory.savedAt?'active':'initialisée'} · dernière sauvegarde : ${engine.memory.savedAt||'aucune'}`;
+
+`Moteur ${engine.version} · mémoire locale active · dernière sauvegarde : ${
+engine.memory.savedAt||'aucune'
+}`;
+
 }
+
+
+/* =========================================================
+   DRAWER
+========================================================= */
+
 
 function openDrawer(){
 
 drawerBackdrop.classList.add('open');
 
 setStatus();
+
 }
+
 
 function closeDrawer(){
 
 drawerBackdrop.classList.remove('open');
+
 }
+
+
+/* =========================================================
+   SUBMIT
+========================================================= */
+
 
 async function submit(){
 
 const q=input.value.trim();
 
+
 if(!q||engine.busy)
 return;
+
 
 input.value='';
 
 resizeInput();
 
+
 addUserMessage(q);
 
+
 send.disabled=true;
+
 
 try{
 
 const result=
 await engine.run(q);
 
+
+/*
+Conserver la question pour l'association
+du feedback avec la bonne stratégie.
+*/
+result._question=q;
+
+
 addAssistantMessage(result);
+
 
 }catch(e){
 
 removeStep();
 
-const d=document.createElement('div');
+
+const d=
+document.createElement('div');
+
 
 d.className='message assistant';
 
+
 d.innerHTML=
-`<div class="bubble">Erreur : ${engine.escapeHTML(e.message||String(e))}</div>`;
+
+`<div class="bubble">
+Erreur : ${engine.escapeHTML(e.message||String(e))}
+</div>`;
+
 
 chat.appendChild(d);
 
+
 scrollBottom();
+
 
 }finally{
 
@@ -3537,63 +5674,93 @@ setStatus();
 input.focus();
 
 }
+
 }
+
 
 function resizeInput(){
 
 input.style.height='auto';
 
+
 input.style.height=
+
 Math.min(
 input.scrollHeight,
 150
 )+'px';
+
 }
+
+
+/* =========================================================
+   ÉVÉNEMENTS
+========================================================= */
 
 
 document.getElementById('menuBtn').onclick=
 openDrawer;
 
+
 document.getElementById('closeDrawer').onclick=
 closeDrawer;
 
+
 drawerBackdrop.addEventListener(
+
 'click',
+
 e=>{
+
 if(e.target===drawerBackdrop)
 closeDrawer();
+
 }
+
 );
+
 
 document.getElementById('clearBtn').onclick=()=>{
 
 chat.innerHTML='';
 
+
 const w=
 document.createElement('div');
+
 
 w.id='welcome';
 
 w.className='welcome';
 
+
 w.innerHTML=
-'<b>Conversation effacée.</b><br>La mémoire persistante reste intacte. Elle peut être réinitialisée depuis le menu.';
+
+'<b>Conversation effacée.</b><br>La mémoire persistante reste intacte.';
+
 
 chat.appendChild(w);
 
+
 engine.sessionMemory=[];
 
+
 scrollBottom();
+
 };
+
 
 document.getElementById('exportBtn').onclick=
 ()=>engine.exportMemory();
 
+
 document.getElementById('importBtn').onclick=
 ()=>document.getElementById('importInput').click();
 
+
 document.getElementById('mergeBtn').onclick=
 ()=>document.getElementById('mergeInput').click();
+
 
 document.getElementById('resetMemoryBtn').onclick=()=>{
 
@@ -3611,15 +5778,20 @@ setStatus();
 
 };
 
+
 document.getElementById('importInput')
 .addEventListener(
+
 'change',
+
 async e=>{
 
 const f=e.target.files?.[0];
 
+
 if(!f)
 return;
+
 
 try{
 
@@ -3628,7 +5800,8 @@ await engine.readMemoryFile(f),
 false
 );
 
-alert('Mémoire importée.');
+
+alert('Mémoire importée avec succès.');
 
 }catch(err){
 
@@ -3636,22 +5809,29 @@ alert('Fichier mémoire invalide.');
 
 }
 
+
 e.target.value='';
 
 setStatus();
 
 }
+
 );
+
 
 document.getElementById('mergeInput')
 .addEventListener(
+
 'change',
+
 async e=>{
 
 const f=e.target.files?.[0];
 
+
 if(!f)
 return;
+
 
 try{
 
@@ -3660,7 +5840,8 @@ await engine.readMemoryFile(f),
 true
 );
 
-alert('Mémoire fusionnée.');
+
+alert('Mémoire fusionnée avec succès.');
 
 }catch(err){
 
@@ -3668,24 +5849,30 @@ alert('Fichier mémoire invalide.');
 
 }
 
+
 e.target.value='';
 
 setStatus();
 
 }
+
 );
+
 
 input.addEventListener(
 'input',
 resizeInput
 );
 
+
 input.addEventListener(
+
 'keydown',
+
 e=>{
 
 if(
-e.key==='Enter'&&
+e.key==='Enter' &&
 !e.shiftKey
 ){
 
@@ -3696,16 +5883,25 @@ submit();
 }
 
 }
+
 );
+
 
 send.onclick=submit;
 
+
+/* =========================================================
+   INITIALISATION
+========================================================= */
+
+
 const engine=
-new PyramidV7(showStep);
+new PyramidV7_1(showStep);
+
 
 setStatus();
 
 </script>
 
 </body>
-</html>
+  </html>
