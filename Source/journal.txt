@@ -1,4 +1,12 @@
 ----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-07 05:00:19
+TITRE: Générer une image avec l’IA : comment structurer un prompt efficace
+LIEN: https://www.blogdumoderateur.com/generer-image-ia-comment-structurer-prompt-efficace/
+CONTENU: Adobe a publié un guide de prompting pour Firefly. Olivier Huard, Senior Solution Consultant chez Adobe France, en détaille les principes et donne ses conseils d'expert.
+
+----------------------------------------
 CATEGORIE: UNIVERSITÉ & RECHERCHE
 SOURCE: Phys.org
 DATE: 2026-09-07 00:30:02
