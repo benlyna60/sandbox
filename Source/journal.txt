@@ -1,5 +1,37 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-07 13:00:00
+TITRE: Le 15/17 du lundi 07 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-15-17/le-15-17-du-lundi-07-septembre-2026-5137087
+CONTENU: Les invités de 15 à 17h, sur France Info radio
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-07 11:33:00
+TITRE: En Saxe-Anhalt, "le cordon sanitaire contre l'extrême droite a sauté", selon un spécialiste de l'Europe
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/en-saxe-anhalt-le-cordon-sanitaire-contre-l-extreme-droite-a-saute-selon-un-specialiste-de-l-europe-9114515
+CONTENU: Avec 44% des voix, l'AfD sort très largement victorieuse des élections régionales qui se sont tenues dimanche en Saxe-Anhalt. C'est la première fois depuis 1945 qu'un parti d'extrême droite est en position favorable pour diriger une région allemande.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-07 12:44:19
+TITRE: Serbie: des milliers de personnes rassemblées à Belgrade pour les obsèques du criminel de guerre Ratko Mladic
+LIEN: https://www.rfi.fr/fr/europe/20260907-serbie-obs%C3%A8ques-du-criminel-de-guerre-ratko-mladic-milliers-de-personnes-belgrade
+CONTENU: Des milliers de personnes se sont rassemblées ce lundi à Belgrade avant les funérailles de l'ex-chef militaire des Serbes de Bosnie, Ratko Mladic, Bruxelles rejettant de nouveau toute « glorification » d'un homme condamné pour génocide durant la guerre de Bosnie des années 1990.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-07 13:58:40
+TITRE: Guerre en Ukraine: Kiev prépare la suite des négociations après la visite des émissaires américains
+LIEN: https://www.rfi.fr/fr/europe/20260907-guerre-en-ukraine-kiev-pr%C3%A9pare-la-suite-des-n%C3%A9gociations-apr%C3%A8s-la-visite-des-%C3%A9missaires-am%C3%A9ricains
+CONTENU: Le président ukrainien a indiqué lundi 7 septembre préparer la suite des négociations après la visite des envoyés de Donald Trump à Moscou et Kiev pour tenter de relancer le processus diplomatique visant à mettre fin à l'invasion russe de l'Ukraine. Il n'a cependant pas semblé optimiste sur une potentielle fin de la guerre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-09-07 11:40:13
 TITRE: L'homme qui a tué sa voisine avant de retourner son arme contre lui dans le Finistère est mort à l'hôpital
