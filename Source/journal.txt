@@ -1,5 +1,53 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-07 11:00:00
+TITRE: Le journal de 13h00 du lundi 07 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-13h00/le-journal-de-13h00-du-lundi-07-septembre-2026-6165502
+CONTENU: Article de référence : "Le journal de 13h00 du lundi 07 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-07 10:00:00
+TITRE: Le journal de 12h00 du lundi 07 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-12h00/le-journal-de-12h00-du-lundi-07-septembre-2026-8841516
+CONTENU: Article de référence : "Le journal de 12h00 du lundi 07 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-07 10:00:00
+TITRE: Le 12/15 du lundi 07 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-12-15/le-12-15-du-lundi-07-septembre-2026-7539607
+CONTENU: Article de référence : "Le 12/15 du lundi 07 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-07 10:07:14
+TITRE: Les «agents jetables» de Moscou: la nouvelle arme de la guerre hybride russe
+LIEN: https://www.rfi.fr/fr/europe/20260907-agents-jetables-de-moscou-la-nouvelle-arme-de-la-guerre-hybride-russe
+CONTENU: Après plusieurs tentatives de sabotage à Düsseldorf et à Munich et la découverte de drones chargés d’explosifs près de l’aéroport de Leipzig, au début du mois d’août, les autorités allemandes s’inquiètent d’une nouvelle étape dans les opérations de déstabilisation attribuées à la Russie. Au cœur de cette stratégie : les « agents jetables », des recrues éphémères, souvent anonymes, et difficiles à relier aux services russes. Un mode opératoire qui s’est progressivement imposé en Europe depuis l’invasion de l’Ukraine en 2022.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-07 09:42:02
+TITRE: Nigeria: la méga-raffinerie Dangote bientôt cotée en bourse pour financer un doublement de sa production
+LIEN: https://www.rfi.fr/fr/afrique/20260907-nigeria-m%C3%A9ga-raffinerie-dangote-cot%C3%A9e-bourse-financer-un-doublement-de-sa-production
+CONTENU: La méga-raffinerie Dangote sera bientôt cotée en bourse, à Lagos. Le régulateur nigérian a approuvé le 4 septembre cette introduction qui devrait intervenir le 14 septembre. Aliko Dangote, l'homme le plus riche d'Afrique cherche à lever 1,6 milliard de dollars dans ce qui pourrait être la plus importante introduction en bourse d'Afrique. Objectif : financer l'expansion de son infrastructure pour, à terme, doubler sa capacité de production.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-07 10:00:11
+TITRE: « Dans le sud du Liban, la reconstruction ne peut avancer sans une évaluation environnementale »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/07/dans-le-sud-du-liban-la-reconstruction-ne-peut-avancer-sans-une-evaluation-environnementale_6767927_3232.html
+CONTENU: Plus de la moitié de la zone détruite par l’armée israélienne est vulnérable du point de vue géologique et hydrologique à la contamination des sols et de l’eau par les polluants liés à la guerre, affirme, dans une tribune au « Monde », l’expert en hydrogéologie Ahmad El-Hajj.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-09-07 09:17:50
 TITRE: Météo-France a enregistré 40,3 °C à Lavaur, dans le Tarn, dimanche, nouveau record national de chaleur pour septembre
