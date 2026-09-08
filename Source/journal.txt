@@ -1,5 +1,13 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-08 01:24:06
+TITRE: France: exténués par des incendies historiques et par le manque de moyens, les pompiers entrent en grève
+LIEN: https://www.rfi.fr/fr/france/20260908-france-ext%C3%A9nu%C3%A9s-par-des-incendies-historiques-et-par-le-manque-de-moyens-les-pompiers-entrent-en-gr%C3%A8ve
+CONTENU: Après les incendies historiques de l’été, l’intersyndicale des pompiers a lancé un préavis de grève nationale du 8 septembre au 20 octobre 2026. Le mouvement social vise à dénoncer le manque de mesures concrètes dans la gestion des services départementaux d’incendie et de secours (SDIS). L’intersyndicale dénonce le manque de moyens et de recrutements et espère faire adopter un projet de loi de modernisation de la sécurité civile.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-07 22:36:00
 TITRE: Quoi retenir de la longue fin de semaine?
