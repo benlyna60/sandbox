@@ -1,5 +1,29 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-08 03:22:30
+TITRE: "Mon regard sur moi-même reste très difficile", confie Amélie Nothomb
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-monde-d-elodie/le-monde-d-elodie-du-mardi-08-septembre-2026-8222702
+CONTENU: Tous les jours, une personnalité s'invite dans le monde d'Élodie Suigo. Mardi 8 septembre 2026, la romancière belge Amélie Nothomb. Elle publie son nouveau livre "L'adolescence du perroquet", aux éditions Albin Michel.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-08 03:00:00
+TITRE: Le 5/6 du mardi 08 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-5-6/le-5-6-du-mardi-08-septembre-2026-2485300
+CONTENU: Article de référence : "Le 5/6 du mardi 08 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-08 03:00:00
+TITRE: Le journal de 5h00 du mardi 08 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-5h00/le-journal-de-5h00-du-mardi-08-septembre-2026-7468239
+CONTENU: Article de référence : "Le journal de 5h00 du mardi 08 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: RFI (Actualités)
 DATE: 2026-09-08 01:24:06
 TITRE: France: exténués par des incendies historiques et par le manque de moyens, les pompiers entrent en grève
