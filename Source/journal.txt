@@ -1,4 +1,52 @@
 ----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-09 10:21:14
+TITRE: Souveraineté numérique : les solutions européennes, pas à la hauteur des grands groupes ?
+LIEN: https://www.blogdumoderateur.com/souverainete-numerique-solutions-europeennes-pas-hauteur-grands-groupes/
+CONTENU: France Digitale et EY ont interrogé 21 grands groupes français sur leur rapport aux fournisseurs numériques étrangers. La quasi-totalité y voit désormais un risque, sans toutefois savoir comment le mesurer.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-09 10:01:48
+TITRE: Avec Muse, Meta mise sur un agent IA capable d’exécuter les tâches du quotidien
+LIEN: https://www.blogdumoderateur.com/muse-meta-mise-agent-ia-capable-executer-taches-quotidien/
+CONTENU: Meta dévoile Muse, un agent IA qui exécute des tâches concrètes à la place de l'utilisateur, en s'appuyant sur une machine virtuelle sécurisée dédiée.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-09 10:00:21
+TITRE: OpenAI dévoile ChatGPT Images 2.5, son nouveau modèle de pointe pour la génération d’images
+LIEN: https://www.blogdumoderateur.com/openai-devoile-chatgpt-images-2-5/
+CONTENU: Plus rapide, suivant mieux les consignes mêmes lors de longues conversations, ChatGPT Images 2.5 s'accompagne aussi d'une nouvelle fonctionnalité, baptisée Sketch, qui transforme un croquis en image.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-09 09:59:46
+TITRE: Maintenance : comment passer du correctif au préventif
+LIEN: https://www.blogdumoderateur.com/maintenance-comment-passer-correctif-preventif/
+CONTENU: Le service maintenance ne se limite plus à réparer dans l'urgence. Structurer la donnée du parc équipements devient la condition d'un pilotage préventif efficace. Décryptage avec Corim solutions.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-09 09:53:16
+TITRE: GEO : pourquoi vos prix échappent aux réponses des IA
+LIEN: https://www.blogdumoderateur.com/geo-pourquoi-prix-echappent-reponses-ia/
+CONTENU: Les agents IA récupèrent presque tout le contenu d'un site. Sauf les prix, qui partent souvent chez des tiers. Une étude et notre test montrent où ça coince.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-09 09:51:46
+TITRE: Créez votre compte BDM pour accéder à 100 % de nos contenus
+LIEN: https://www.blogdumoderateur.com/creez-compte-bdm-acceder-contenus/
+CONTENU: Nouveau : vous pouvez désormais créer un compte BDM, gratuitement. Contenus réservés, newsletter dédiée, fonctionnalités à venir : on vous explique tout.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-09 04:00:00
