@@ -1,0 +1,10294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Moteur d'apprentissage sémantique V11.1</title>
+
+<style>
+:root{
+  --bg:#1e1e1c;
+  --bg-soft:#1e1e1c;
+  --panel:#242422;
+  --panel2:#2a2a27;
+  --panel3:#33332f;
+  --border:rgba(207,195,178,.16);
+  --border-strong:rgba(207,195,178,.30);
+  --text:#cfc3b2;
+  --muted:rgba(207,195,178,.68);
+  --accent:#cfc3b2;
+  --accent-ink:#1e1e1c;
+  --agent:#c5a8ff;
+  --user:#2a333b;
+  --danger:#ef777f;
+  --ok:#73d29a;
+  --warn:#e8c36d;
+  --hyp:#e8c36d;
+  --shadow:0 20px 60px rgba(0,0,0,.34);
+  --radius:18px;
+}
+
+html[data-theme="light"]{
+  --bg:#cfc3b2;
+  --bg-soft:#cfc3b2;
+  --panel:#d8cdbd;
+  --panel2:#c5b9a8;
+  --panel3:#b9ac9a;
+  --border:rgba(30,30,28,.16);
+  --border-strong:rgba(30,30,28,.30);
+  --text:#1e1e1c;
+  --muted:rgba(30,30,28,.68);
+  --accent:#1e1e1c;
+  --accent-ink:#cfc3b2;
+  --user:#bfb2a1;
+  --shadow:0 18px 50px rgba(30,30,28,.14);
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{overflow:hidden}
+
+button,textarea,input,select{
+  font-family:inherit;
+}
+
+.app{
+  height:100dvh;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+
+.header{
+  height:64px;
+  flex:0 0 64px;
+  border-bottom:1px solid var(--border);
+  background:rgba(13,17,23,.97);
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:0 12px;
+  z-index:10;
+}
+
+.menuBtn,
+.clearBtn,
+.modeBtn{
+  height:38px;
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--text);
+  border-radius:9px;
+  cursor:pointer;
+}
+
+.menuBtn,
+.clearBtn{
+  width:38px;
+  font-size:19px;
+}
+
+.modeBtn{
+  padding:0 11px;
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.modeBtn.agent{
+  color:#d6bfff;
+  border-color:rgba(181,140,255,.55);
+  background:rgba(181,140,255,.08);
+}
+
+.modeBtn.learning{
+  color:#9ff0c1;
+  border-color:rgba(93,204,145,.45);
+  background:rgba(93,204,145,.07);
+}
+
+.menuBtn:hover,
+.clearBtn:hover,
+.modeBtn:hover{
+  border-color:var(--border-strong);
+}
+
+.brand{
+  min-width:0;
+  flex:1;
+}
+
+.brand b{
+  display:block;
+  font-size:15px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.brand span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:2px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.learnDot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--ok);
+  opacity:.75;
+  box-shadow:0 0 0 3px rgba(93,204,145,.08);
+}
+
+.learnDot.busy{
+  background:var(--agent);
+  animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+  50%{opacity:.3}
+}
+
+.chat{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding:18px 14px 12px;
+}
+
+.chat::-webkit-scrollbar{
+  width:8px;
+}
+
+.chat::-webkit-scrollbar-thumb{
+  background:var(--border-strong);
+  border-radius:8px;
+}
+
+.message{
+  display:flex;
+  margin:0 0 12px;
+}
+
+.message.user{
+  justify-content:flex-end;
+}
+
+.bubble{
+  max-width:78%;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  line-height:1.48;
+  font-size:14px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.user .bubble{
+  background:var(--user);
+}
+
+.assistant .bubble{
+  background:transparent;
+  border-color:transparent;
+  padding-left:0;
+  padding-right:0;
+  max-width:92%;
+}
+
+.agentMessage .bubble{
+  border-left:2px solid var(--agent);
+  padding-left:11px;
+}
+
+.backgroundMessage .bubble{
+  border-left:2px solid var(--ok);
+  padding-left:11px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.answerActions{
+  display:flex;
+  gap:5px;
+  margin-top:8px;
+  align-items:center;
+}
+
+.miniBtn{
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--muted);
+  border-radius:7px;
+  padding:4px 7px;
+  font-size:11px;
+  cursor:pointer;
+  line-height:1;
+}
+
+.miniBtn:hover{
+  color:var(--text);
+  border-color:var(--border-strong);
+}
+
+.miniBtn.active-good{
+  color:var(--ok);
+  border-color:rgba(93,204,145,.45);
+}
+
+.miniBtn.active-bad{
+  color:var(--danger);
+  border-color:rgba(239,107,115,.45);
+}
+
+.sources{
+  margin-top:9px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.45;
+}
+
+.sourceItem{
+  display:inline-block;
+  margin:2px 6px 2px 0;
+  padding:2px 5px;
+  border:1px solid var(--border);
+  border-radius:5px;
+}
+
+a.sourceItem{
+  color:var(--accent);
+  text-decoration:none;
+  border-color:rgba(90,169,255,.4);
+}
+
+a.sourceItem:hover{
+  text-decoration:underline;
+}
+
+.agentPanel{
+  margin:0 0 14px;
+  padding:11px 12px;
+  border:1px solid rgba(181,140,255,.25);
+  background:rgba(181,140,255,.045);
+  border-radius:10px;
+}
+
+.agentTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.agentTitle{
+  font-size:11px;
+  font-weight:700;
+  color:#d6bfff;
+}
+
+.agentGoal{
+  margin-top:5px;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.agentProgress{
+  height:4px;
+  background:var(--panel3);
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:9px;
+}
+
+.agentProgressBar{
+  height:100%;
+  width:0%;
+  background:var(--agent);
+  transition:width .25s ease;
+}
+
+.agentMeta{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:6px;
+  font-size:9px;
+  color:var(--muted);
+}
+
+.stopAgent{
+  border:1px solid rgba(239,107,115,.4);
+  background:transparent;
+  color:var(--danger);
+  border-radius:7px;
+  padding:5px 8px;
+  font-size:10px;
+  cursor:pointer;
+}
+
+.step{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--muted);
+  font-size:11px;
+  margin:3px 0 12px;
+  padding-left:2px;
+}
+
+.spinner{
+  width:12px;
+  height:12px;
+  border:2px solid var(--border-strong);
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:spin .75s linear infinite;
+}
+
+.agentSpinner{
+  border-top-color:var(--agent);
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.composer{
+  flex:0 0 auto;
+  border-top:1px solid var(--border);
+  background:var(--bg);
+  padding:10px 12px 12px;
+  display:flex;
+  gap:8px;
+  align-items:flex-end;
+}
+
+.composer textarea{
+  flex:1;
+  resize:none;
+  min-height:42px;
+  max-height:150px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  color:var(--text);
+  border-radius:10px;
+  padding:11px 12px;
+  outline:none;
+  font:inherit;
+  font-size:14px;
+  line-height:1.35;
+}
+
+.composer textarea:focus{
+  border-color:#46617e;
+}
+
+.send{
+  height:42px;
+  min-width:70px;
+  border:0;
+  border-radius:10px;
+  background:var(--accent);
+  color:var(--accent-ink);
+  font-weight:700;
+  cursor:pointer;
+}
+
+.send.agentSend{
+  background:var(--agent);
+  color:#10091a;
+}
+
+.send:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.welcome{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  max-width:780px;
+  margin:30px auto;
+  padding:0 10px;
+}
+
+.welcome b{
+  color:var(--text);
+}
+
+.drawerBackdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  z-index:20;
+}
+
+.drawerBackdrop.open{
+  display:block;
+}
+
+.drawer{
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:min(390px,94vw);
+  background:var(--panel);
+  border-right:1px solid var(--border);
+  box-shadow:var(--shadow);
+  padding:16px;
+  overflow-y:auto;
+}
+
+
+.drawer{
+  width:min(390px,94vw);
+  max-height:100dvh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.drawerHead{flex:0 0 auto}
+.drawerSection{flex:0 0 auto}
+.drawerSection > h3{
+  cursor:pointer;
+  user-select:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.drawerSection > h3::after{content:'⌄';font-size:14px;transition:transform .18s ease}
+.drawerSection.collapsed > h3::after{transform:rotate(-90deg)}
+.drawerSection.collapsed > :not(h3){display:none}
+.pluginStatusBox{
+  max-height:min(42vh,360px);
+  overflow-y:auto;
+  padding-right:4px;
+  scrollbar-width:thin;
+}
+.pluginStatusBox::-webkit-scrollbar{width:6px}
+.pluginStatusBox::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:8px}
+.drawerBody{flex:1;min-height:0;overflow-y:auto;padding-right:4px}
+
+.drawerHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.drawerHead b{
+  font-size:15px;
+}
+
+.closeBtn{
+  border:0;
+  background:none;
+  color:var(--muted);
+  font-size:24px;
+  cursor:pointer;
+}
+
+.drawerSection{
+  border-top:1px solid var(--border);
+  padding:13px 0;
+}
+
+.drawerSection:first-of-type{
+  border-top:0;
+}
+
+.drawerSection h3{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:var(--muted);
+  margin:0 0 9px;
+}
+
+.drawer button.action{
+  width:100%;
+  text-align:left;
+  padding:9px 10px;
+  margin:4px 0;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  color:var(--text);
+  border-radius:8px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.drawer button.action:hover{
+  border-color:var(--border-strong);
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+
+.stat{
+  background:var(--panel2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px;
+}
+
+.stat small{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.stat strong{
+  display:block;
+  font-size:15px;
+  margin-top:2px;
+}
+
+.statusLine,
+.notice{
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.notice{
+  margin-top:8px;
+}
+
+.agentStatusBox,
+.pluginStatusBox,
+.graphStatusBox,
+.learningBox{
+  padding:9px;
+  background:var(--panel2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:10px;
+  line-height:1.5;
+  color:var(--muted);
+  white-space:pre-wrap;
+}
+
+.learningBox{
+  background:rgba(93,204,145,.04);
+  border-color:rgba(93,204,145,.18);
+}
+
+.hidden{
+  display:none!important;
+}
+
+.confidence{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.confidence strong{
+  color:var(--text);
+}
+
+.badge{
+  display:inline-block;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  border-radius:5px;
+  padding:2px 5px;
+  margin:2px 3px 2px 0;
+  font-size:9px;
+  color:var(--muted);
+}
+
+.badge.ok{
+  color:var(--ok);
+  border-color:rgba(93,204,145,.35);
+}
+
+.badge.warn{
+  color:var(--warn);
+  border-color:rgba(231,184,92,.35);
+}
+
+.badge.agent{
+  color:#d6bfff;
+  border-color:rgba(181,140,255,.35);
+}
+
+.memoryViewer{
+  max-height:220px;
+  overflow:auto;
+  background:#0a0e13;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px;
+  font-size:9px;
+  line-height:1.45;
+  color:#b7c2cf;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+
+/* =========================================================
+   MODERN RESPONSIVE UI — desktop / tablet / phone
+========================================================= */
+
+body{
+  background:
+    radial-gradient(circle at 50% -20%, rgba(238,232,216,.06), transparent 42%),
+    var(--bg);
+  transition:background .25s ease,color .25s ease;
+}
+
+.app{
+  max-width:1540px;
+  margin:0 auto;
+  height:100dvh;
+  background:var(--bg);
+}
+
+.header{
+  height:72px;
+  flex-basis:72px;
+  padding:0 22px;
+  gap:12px;
+  border-bottom:1px solid var(--border);
+  background:rgba(30,30,28,.92);
+  backdrop-filter:blur(18px);
+}
+
+html[data-theme="light"] .header{
+  background:rgba(207,195,178,.94);
+}
+
+.menuBtn,.clearBtn,.modeBtn,.themeBtn{
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--text);
+  border-radius:12px;
+  transition:.2s ease;
+}
+
+.menuBtn,.clearBtn,.themeBtn{
+  width:40px;
+  height:40px;
+}
+
+.menuBtn{font-size:18px}
+.themeBtn{font-size:17px;cursor:pointer}
+.clearBtn{font-size:18px}
+
+.menuBtn:hover,.clearBtn:hover,.modeBtn:hover,.themeBtn:hover{
+  border-color:var(--border-strong);
+  transform:translateY(-1px);
+}
+
+.brand b{font-size:15px;letter-spacing:-.01em}
+.brand span{font-size:11px}
+
+.workspace{
+  flex:1;
+  min-height:0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:0;
+}
+
+.sideNav,.rightPanel{
+  display:none!important;
+  min-height:0;
+  overflow:auto;
+  padding:22px 16px;
+  background:rgba(12,17,21,.52);
+}
+
+html[data-theme="light"] .sideNav,
+html[data-theme="light"] .rightPanel{
+  background:rgba(248,245,238,.55);
+}
+
+.sideNav{border-right:1px solid var(--border)}
+.rightPanel{border-left:1px solid var(--border)}
+
+.navTitle{
+  padding:3px 10px 20px;
+}
+.navTitle strong{display:block;font-size:15px}
+.navTitle span{display:block;margin-top:5px;color:var(--muted);font-size:11px}
+
+.navList{display:grid;gap:5px}
+.navItem{
+  width:100%;
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--muted);
+  border-radius:12px;
+  padding:10px 11px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:12px;
+  text-align:left;
+  cursor:pointer;
+}
+.navItem:hover,.navItem.active{
+  color:var(--text);
+  background:var(--panel2);
+  border-color:var(--border);
+}
+.navIcon{width:19px;text-align:center;font-size:15px}
+
+.systemCard,.sideCard{
+  margin-top:18px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+html[data-theme="light"] .systemCard,
+html[data-theme="light"] .sideCard{
+  background:rgba(255,255,255,.36);
+}
+
+.systemHead,.cardHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.systemHead{font-size:11px;font-weight:700}
+.systemDot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(115,210,154,.09)}
+
+.sideStats{display:grid;gap:9px;margin-top:14px}
+.sideStat{display:flex;justify-content:space-between;gap:10px;font-size:10px;color:var(--muted)}
+.sideStat strong{color:var(--text);font-weight:600}
+
+.centerPane{
+  min-width:0;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.025),transparent 38%);
+}
+
+.chat{
+  width:min(920px,100%);
+  margin:0 auto;
+  padding:28px 28px 18px;
+}
+
+.composer{
+  width:min(920px,100%);
+  margin:0 auto;
+  border:0;
+  background:transparent;
+  padding:12px 28px 24px;
+  gap:10px;
+}
+
+.composer textarea{
+  min-height:52px;
+  border-radius:17px;
+  background:var(--panel);
+  border-color:var(--border);
+  padding:15px 17px;
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.send{
+  min-width:58px;
+  width:58px;
+  height:52px;
+  border-radius:17px;
+  background:var(--accent);
+  color:var(--accent-ink);
+  font-size:0;
+  position:relative;
+}
+.send::after{content:'→';font-size:20px}
+
+.chat::-webkit-scrollbar{width:7px}
+.chat::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:10px}
+
+.bubble{
+  border-radius:17px;
+  padding:13px 15px;
+  font-size:14px;
+  box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+.user .bubble{background:var(--user);border-color:var(--border)}
+.assistant .bubble{background:var(--panel);border:1px solid var(--border);padding:15px;max-width:88%;}
+.agentMessage .bubble{border-left:2px solid var(--agent)}
+
+.welcome{
+  margin:70px auto;
+  padding:24px;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:var(--panel);
+  box-shadow:var(--shadow);
+}
+
+.sideCard h3{margin:0;font-size:12px;color:var(--text)}
+.cardCount{font-size:11px;color:var(--muted)}
+.pluginRows{display:grid;gap:3px;margin-top:12px}
+.pluginRow{display:flex;align-items:center;gap:9px;padding:8px 4px;color:var(--muted);font-size:10px}
+.pluginRow strong{color:var(--text);font-weight:500;flex:1}
+.pluginDot{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.pluginDot.off{background:#777f84}
+
+.memoryRows{display:grid;gap:11px;margin-top:13px}
+.memoryRow{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}
+.memoryRow strong{color:var(--text);font-size:12px}
+
+.learningText{margin-top:10px;color:var(--muted);font-size:10px;line-height:1.55}
+.progressTrack{height:5px;border-radius:8px;background:var(--panel3);overflow:hidden;margin-top:12px}
+.progressTrack span{display:block;height:100%;width:62%;background:var(--accent);border-radius:8px}
+
+.themeBtn.lightMode{background:var(--panel2)}
+
+@media(max-width:1100px){
+  .workspace{grid-template-columns:200px minmax(0,1fr)}
+  .rightPanel{display:none}
+}
+
+@media(max-width:600px){
+
+  .header{
+    height:58px;
+    flex-basis:58px;
+    padding:0 8px;
+  }
+
+  .brand b{
+    font-size:13px;
+  }
+
+  .brand span{
+    font-size:9px;
+  }
+
+  .modeBtn{
+    padding:0 8px;
+    font-size:10px;
+  }
+
+  .bubble{
+    max-width:88%;
+  }
+
+  .assistant .bubble{
+    max-width:96%;
+  }
+
+  .composer{
+    padding:8px;
+  }
+
+  .send{
+    min-width:58px;
+  }
+
+  .workspace{
+    display:block;
+  }
+
+  .sideNav,
+  .rightPanel{
+    display:none;
+  }
+
+  .centerPane{
+    height:calc(100dvh - 58px);
+  }
+
+  .chat{
+    width:100%;
+    padding:14px 10px 8px;
+  }
+
+  .composer{
+    width:100%;
+    padding:8px 10px calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .composer textarea{
+    min-height:48px;
+    border-radius:15px;
+    font-size:14px;
+  }
+
+  .send{
+    width:48px;
+    min-width:48px;
+    height:48px;
+    border-radius:15px;
+  }
+
+  .send::after{font-size:18px}
+
+  .themeBtn,.clearBtn,.menuBtn{
+    width:36px;
+    height:36px;
+  }
+
+  .header{
+    gap:6px;
+  }
+
+  .brand b{max-width:155px}
+  .brand span{max-width:155px}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+
+<button id="menuBtn" class="menuBtn" aria-label="Menu">☰</button>
+
+<div class="brand">
+<b>Semantic Learning Engine</b>
+<span id="headerStatus">
+Discussion • graphe sémantique • plugins • mémoire locale
+</span>
+</div>
+
+<div id="learnDot" class="learnDot" title="Moteur actif"></div>
+
+</header>
+
+<div class="workspace">
+
+<aside class="sideNav" aria-label="Navigation">
+  <div class="navTitle">
+    <strong>Semantic Learning</strong>
+    <span>V11.1 · moteur local</span>
+  </div>
+  <div class="navList">
+    <button class="navItem active" type="button" onclick="document.getElementById('input').focus()"><span class="navIcon">◌</span>Chat</button>
+    <button class="navItem" type="button" onclick="openDrawer()"><span class="navIcon">□</span>Notes</button>
+    <button class="navItem" type="button" onclick="openDrawer()"><span class="navIcon">✦</span>Apprentissage</button>
+    <button class="navItem" type="button" onclick="openDrawer()"><span class="navIcon">▣</span>GS1 — Mémoire</button>
+    <button class="navItem" type="button" onclick="openDrawer()"><span class="navIcon">✣</span>Plugins</button>
+    <button class="navItem" type="button" onclick="openDrawer()"><span class="navIcon">⚙</span>Paramètres</button>
+  </div>
+  <div class="systemCard">
+    <div class="systemHead"><span><span class="systemDot" style="display:inline-block;margin-right:7px"></span>Système actif</span><span>›</span></div>
+    <div class="sideStats">
+      <div class="sideStat"><span>Plugins disponibles</span><strong id="uiPluginCount">0</strong></div>
+      <div class="sideStat"><span>Compétences acquises</span><strong id="uiSkillCount">0</strong></div>
+      <div class="sideStat"><span>Expériences</span><strong id="uiExperienceCount">0</strong></div>
+    </div>
+  </div>
+</aside>
+
+<section class="centerPane">
+
+<main id="chat" class="chat">
+
+<div id="welcome" class="welcome">
+
+<b>V11.0 prête.</b><br>
+
+Le moteur ne contient aucun LLM et ne dépend d'aucun service d'IA.
+Il recherche des informations documentaires, extrait des concepts et relations,
+construit un graphe, compare les preuves, teste les relations et conserve leur provenance.
+
+<br><br>
+
+<b>Discussion</b> : question, recherche, comparaison, explication ou synthèse.
+
+<br>
+
+<b>Agent</b> : objectif long avec plusieurs passes de recherche.
+
+<br><br>
+
+<b>Architecture :</b>
+Recherche → preuves → concepts → relations → graphe → plugins →
+raisonnement → validation → hypothèses → apprentissage → mémoire.
+
+</div>
+
+</main>
+
+<div class="composer">
+
+<textarea
+id="input"
+rows="1"
+placeholder="Écris une question ou une tâche…"
+></textarea>
+
+<button id="send" class="send">
+Envoyer
+</button>
+
+</div>
+
+</section>
+
+<aside class="rightPanel" aria-label="État du moteur">
+  <div class="sideCard">
+    <div class="cardHead"><h3>Plugins actifs</h3><span class="cardCount" id="uiPluginActiveCount">0</span></div>
+    <div class="pluginRows" id="uiPluginRows">
+      <div class="pluginRow"><span class="pluginDot off"></span><strong>Aucun plugin chargé</strong></div>
+    </div>
+  </div>
+
+  <div class="sideCard">
+    <div class="cardHead"><h3>Mémoire GS1</h3><span class="cardCount">local</span></div>
+    <div class="memoryRows">
+      <div class="memoryRow"><span>Compétences</span><strong id="uiMemorySkills">0</strong></div>
+      <div class="memoryRow"><span>Expériences</span><strong id="uiMemoryExperiences">0</strong></div>
+      <div class="memoryRow"><span>Consolidations</span><strong id="uiMemoryConsolidations">0</strong></div>
+    </div>
+  </div>
+
+  <div class="sideCard">
+    <div class="cardHead"><h3>Apprentissage en cours</h3><span>✦</span></div>
+    <div class="learningText" id="uiLearningText">Le système analyse les résultats pour consolider de nouvelles compétences.</div>
+    <div class="progressTrack"><span id="uiLearningProgress"></span></div>
+  </div>
+</aside>
+
+</div>
+
+</div>
+
+
+<div id="drawerBackdrop" class="drawerBackdrop">
+
+<aside class="drawer" role="dialog" aria-label="Menu V11">
+
+<div class="drawerHead">
+
+<b>Menu V11</b>
+
+<button id="closeDrawer" class="closeBtn">
+×
+</button>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>Interface</h3>
+
+<button id="themeBtn" class="action" type="button" aria-label="Changer le thème" title="Mode jour / nuit">☾  Mode jour / nuit</button>
+
+<button id="clearBtn" class="action" type="button" title="Effacer la conversation">×  Effacer la conversation</button>
+
+<button id="modeBtn" class="action" type="button">Discussion</button>
+
+</div>
+
+<div class="drawerSection">
+
+<h3>Mode moteur</h3>
+
+<button class="action" id="discussionBtn">
+● Mode Discussion
+</button>
+
+<button class="action" id="agentBtn">
+◆ Mode Agent
+</button>
+
+<div class="notice">
+L'Agent fonctionne séparément de la discussion et peut effectuer plusieurs
+passes jusqu'à convergence, arrêt ou limite de recherche.
+</div>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>Plugins</h3>
+
+<button class="action" id="addPluginBtn">
+＋ Ajouter un plugin .js
+</button>
+
+<input
+id="pluginInput"
+class="hidden"
+type="file"
+accept=".js,text/javascript,application/javascript"
+multiple
+>
+
+<div id="pluginStatusBox" class="pluginStatusBox">
+Aucun plugin externe chargé.
+</div>
+
+<div class="notice">
+Les plugins sont des fichiers externes. Le moteur conserve leur historique et leurs apprentissages dans GS1, pas leur code source.
+</div>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>Apprentissage</h3>
+
+<div id="learningBox" class="learningBox">
+Apprentissage en attente.
+</div>
+
+<div class="notice">
+Le moteur mémorise les expériences, les succès, les échecs,
+les relations découvertes et les stratégies efficaces.
+</div>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>Graphe sémantique</h3>
+
+<div id="graphStatusBox" class="graphStatusBox">
+Aucun graphe actif.
+</div>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>Mémoire</h3>
+
+<button class="action" id="exportBtn">
+⇩ Exporter la mémoire JSON
+</button>
+
+<button class="action" id="importBtn">
+⇧ Importer une mémoire JSON
+</button>
+
+<button class="action" id="mergeBtn">
+⊕ Fusionner une mémoire JSON
+</button>
+
+<button class="action" id="resetMemoryBtn">
+♲ Réinitialiser la mémoire
+</button>
+
+<button class="action" id="inspectMemoryBtn">
+⌕ Inspecter la mémoire
+</button>
+
+<input
+id="importInput"
+class="hidden"
+type="file"
+accept="application/json,.json"
+>
+
+<input
+id="mergeInput"
+class="hidden"
+type="file"
+accept="application/json,.json"
+>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>État du moteur</h3>
+
+<div id="memoryStats" class="stats"></div>
+
+<div
+id="engineStatus"
+class="statusLine"
+style="margin-top:9px"
+></div>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>Mission Agent</h3>
+
+<div id="agentStatusBox" class="agentStatusBox">
+Aucune mission active.
+</div>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>Dernières structures</h3>
+
+<div id="memoryViewer" class="memoryViewer">
+Aucune structure récente.
+</div>
+
+</div>
+
+
+<div class="drawerSection">
+
+<h3>Principe V11</h3>
+
+<div class="statusLine">
+
+Comprendre
+→ décomposer
+→ rechercher
+→ collecter les preuves
+→ extraire les concepts
+→ créer les relations
+→ construire le graphe
+→ activer les plugins
+→ raisonner
+→ vérifier
+→ créer éventuellement une hypothèse
+→ valider
+→ mémoriser
+→ apprendre.
+
+</div>
+
+</div>
+
+</aside>
+
+</div>
+
+
+<script>
+
+'use strict';
+
+/* =========================================================
+   V10
+   MOTEUR D'APPRENTISSAGE SÉMANTIQUE AUTONOME
+
+   Aucun LLM.
+   Aucune API d'IA.
+   Aucun raisonnement externalisé.
+
+   Les sources externes sont utilisées comme sources
+   documentaires.
+
+   Le raisonnement et la structuration sont locaux.
+========================================================= */
+
+
+class SemanticV11{
+
+
+constructor(stepCallback,agentCallback,learningCallback){
+
+this.stepCallback=stepCallback;
+this.agentCallback=agentCallback;
+this.learningCallback=learningCallback;
+
+this.version='V11.0';
+
+this.personalReference={
+  id:'mere',
+  label:'Mère (interface perso)',
+  url:'https://gondofo.github.io/interface-/'
+};
+
+
+this.sources=[
+
+{
+ id:'wikipedia',
+ label:'Wikipédia',
+ lang:'fr',
+ host:'https://fr.wikipedia.org'
+},
+
+{
+ id:'wiktionary',
+ label:'Wiktionnaire',
+ lang:'fr',
+ host:'https://fr.wiktionary.org'
+},
+
+{
+ id:'wikiversity',
+ label:'Wikiversité',
+ lang:'fr',
+ host:'https://fr.wikiversity.org'
+},
+
+{
+ id:'wikivoyage',
+ label:'Wikivoyage',
+ lang:'fr',
+ host:'https://fr.wikivoyage.org'
+},
+
+{
+ id:'wikisource',
+ label:'Wikisource',
+ lang:'fr',
+ host:'https://fr.wikisource.org'
+},
+
+{
+ id:'wikiquote',
+ label:'Wikiquote',
+ lang:'fr',
+ host:'https://fr.wikiquote.org'
+},
+
+{
+ id:'wikibooks',
+ label:'Wikilivres',
+ lang:'fr',
+ host:'https://fr.wikibooks.org'
+},
+
+{
+ id:'wikinews',
+ label:'Wikinews',
+ lang:'fr',
+ host:'https://fr.wikinews.org'
+},
+
+{
+ id:'wikidata',
+ label:'Wikidata',
+ lang:'all',
+ host:'https://www.wikidata.org'
+}
+
+];
+
+
+this.stopwords=new Set(
+
+('a à au aux avec ce ceci cela ces cet cette comme dans de des du elle elles en est et eu eux il ils je la le les leur leurs lui ma mais me mes moi mon ne nos notre nous on ou par pas pour que quel quelle quelles quels qui quoi se sera son sont sur ta te tes toi ton tu un une uns unes vos votre vous y afin alors ainsi après avant aucun aucune aussi autre autres car ce dont donc entre été être même moins plus quand sans sous très via est-ce estce').split(/\s+/)
+
+);
+
+
+this.cache=new Map();
+this.searchCache=new Map();
+this.wikidataCache=new Map();
+
+this.busy=false;
+this.learningBusy=false;
+
+this.abortController=null;
+this.learningController=null;
+
+this.mode='discussion';
+
+this.sessionMemory=[];
+
+this.memory=this.defaultMemory();
+
+this.agentMission=null;
+
+this.currentGraph=null;
+
+this.plugins=new Map();
+
+this.loadPersistentMemory();
+
+}
+
+
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+
+step(label){
+
+if(this.stepCallback)
+this.stepCallback(label);
+
+}
+
+
+agentUpdate(data){
+
+if(this.agentCallback)
+this.agentCallback(data);
+
+}
+
+
+learningUpdate(data){
+
+if(this.learningCallback)
+this.learningCallback(data);
+
+}
+
+
+now(){
+
+return new Date().toISOString();
+
+}
+
+
+hash(s){
+
+let h=2166136261;
+
+for(const ch of String(s)){
+
+h^=ch.charCodeAt(0);
+
+h=Math.imul(h,16777619);
+
+}
+
+return(h>>>0).toString(16);
+
+}
+
+
+async interruptibleSleep(ms,signal){
+
+if(signal?.aborted)
+throw new DOMException('Aborted','AbortError');
+
+return new Promise((resolve,reject)=>{
+let settled=false;
+const onAbort=()=>{
+ if(settled) return;
+ settled=true;
+ clearTimeout(timer);
+ if(signal) signal.removeEventListener('abort',onAbort);
+ reject(new DOMException('Aborted','AbortError'));
+};
+const timer=setTimeout(()=>{
+ if(settled) return;
+ settled=true;
+ if(signal) signal.removeEventListener('abort',onAbort);
+ resolve();
+},ms);
+if(signal) signal.addEventListener('abort',onAbort,{once:true});
+});
+}
+
+
+
+norm(s){
+
+return String(s??'')
+
+.toLowerCase()
+
+.normalize('NFD')
+
+.replace(/[\u0300-\u036f]/g,'')
+
+.replace(/[’']/g,"'")
+
+.replace(/[^\p{L}\p{N}\s-]/gu,' ')
+
+.replace(/\s+/g,' ')
+
+.trim();
+
+}
+
+
+words(s){
+
+return this.norm(s)
+
+.split(/\s+/)
+
+.filter(w=>w&&!this.stopwords.has(w)&&w.length>1);
+
+}
+
+
+unique(a){
+
+return[...new Set((a||[]).filter(Boolean))];
+
+}
+
+
+clean(s){
+
+return String(s??'')
+
+.replace(/<[^>]*>/g,' ')
+
+.replace(/\[\d+\]/g,' ')
+
+.replace(/\s+/g,' ')
+
+.trim();
+
+}
+
+
+cleanFinalText(s){
+
+return this.clean(s)
+
+.replace(/\s+([,.;:!?])/g,'$1');
+
+}
+
+
+similarity(a,b){
+
+const A=new Set(this.words(a));
+const B=new Set(this.words(b));
+
+if(!A.size||!B.size)
+return 0;
+
+let intersection=0;
+
+for(const x of A)
+if(B.has(x))
+intersection++;
+
+return intersection/(A.size+B.size-intersection);
+
+}
+
+
+addUnique(list,item,key){
+
+const k=key||this.hash(JSON.stringify(item));
+
+if(
+!list.some(
+x=>(x._key||this.hash(JSON.stringify(x)))===k
+)
+){
+
+list.push({
+...item,
+_key:k
+});
+
+return true;
+
+}
+
+return false;
+
+}
+
+
+/* =========================================================
+   MÉMOIRE V11
+========================================================= */
+
+defaultMemory(){
+
+return{
+
+schemaVersion:13,
+
+engineFamily:'SemanticLearningEngine',
+
+engineVersion:'V11.0',
+
+savedAt:null,
+
+conversation:[],
+
+concepts:[],
+
+entities:[],
+
+relations:[],
+
+rules:[],
+
+evidence:[],
+
+sources:[],
+
+searches:[],
+
+discoveries:[],
+
+hypotheses:[],
+
+validations:[],
+
+pluginExperiences:[],
+
+learnedStrategies:[],
+
+pluginRegistry:{},
+
+learnedSkills:{},
+
+taskHistory:[],
+
+feedback:[],
+
+agentMissions:[],
+
+semanticPaths:[],
+
+consolidation:[],
+orchestrationExperiences:[],
+orchestrationCandidates:[],
+composedSkills:{},
+skillUsage:[],
+
+adaptiveLearning:{
+
+concepts:[],
+
+contexts:[],
+
+questions:[],
+
+clarifications:[],
+
+validations:[],
+
+events:[]
+
+},
+
+statistics:{
+
+runs:0,
+
+successes:0,
+
+failures:0,
+
+positiveFeedback:0,
+
+negativeFeedback:0,
+
+totalSearchPasses:0,
+
+totalSources:0,
+
+agentRuns:0,
+
+agentCompleted:0,
+
+agentStopped:0,
+
+learningRuns:0,
+
+learningCompleted:0,
+
+learningUncertain:0,
+
+learningConfirmed:0,
+
+pluginRuns:0,
+
+pluginSuccesses:0,
+
+pluginFailures:0,
+
+newRelations:0,
+
+validatedRelations:0,
+
+rejectedRelations:0,
+
+consolidations:0,
+
+lastRun:null,
+
+lastAgentRun:null,
+
+lastLearningRun:null
+
+}
+
+};
+
+}
+
+
+normalizeMemory(m){
+
+const base=this.defaultMemory();
+
+if(!m||typeof m!=='object')
+return base;
+
+const out={
+...base,
+...m
+};
+
+for(
+const k of [
+
+'conversation',
+'concepts',
+'entities',
+'relations',
+'rules',
+'evidence',
+'sources',
+'searches',
+'discoveries',
+'hypotheses',
+'validations',
+'pluginExperiences',
+'learnedStrategies',
+'taskHistory',
+'feedback',
+'agentMissions',
+'semanticPaths',
+'consolidation',
+'orchestrationExperiences',
+'orchestrationCandidates',
+'skillUsage'
+
+]
+){
+
+out[k]=Array.isArray(out[k])
+?out[k]
+:[];
+
+}
+
+
+out.pluginRegistry={
+...base.pluginRegistry,
+...(m.pluginRegistry||{})
+};
+
+out.learnedSkills={
+...base.learnedSkills,
+...(m.learnedSkills||{})
+};
+out.composedSkills={
+...base.composedSkills,
+...(m.composedSkills||{})
+};
+
+out.adaptiveLearning={
+...base.adaptiveLearning,
+...(m.adaptiveLearning||{})
+};
+
+
+for(
+const k of Object.keys(base.adaptiveLearning)
+){
+
+out.adaptiveLearning[k]=Array.isArray(
+out.adaptiveLearning[k]
+)
+?out.adaptiveLearning[k]
+:[];
+
+}
+
+
+out.statistics={
+...base.statistics,
+...(m.statistics||{})
+};
+
+out.schemaVersion=13;
+out.engineVersion='V11.0';
+
+return out;
+
+}
+
+
+migrateMemory(raw){
+
+if(Array.isArray(raw))
+return this.normalizeMemory({
+conversation:raw
+});
+
+if(raw?.memoryFormat&&raw.memory)
+raw=raw.memory;
+
+return this.normalizeMemory(raw);
+
+}
+
+
+loadPersistentMemory(){
+
+try{
+
+const raw=localStorage.getItem(
+'semantic_v11_memory'
+);
+
+if(raw){
+
+this.memory=this.migrateMemory(
+JSON.parse(raw)
+);
+
+return;
+
+}
+
+const legacyV10=localStorage.getItem('semantic_v10_memory');
+if(legacyV10){
+ this.memory=this.migrateMemory(JSON.parse(legacyV10));
+ this.savePersistentMemory();
+ return;
+}
+
+const old=localStorage.getItem(
+'pyramidal_v9_memory'
+);
+
+if(old){
+
+this.memory=this.migrateMemory(
+JSON.parse(old)
+);
+
+this.savePersistentMemory();
+
+}
+
+}catch(e){
+
+this.memory=this.defaultMemory();
+
+}
+
+}
+
+
+compactMemory(){
+ const limits={conversation:300,searches:500,discoveries:500,pluginExperiences:500,taskHistory:300,feedback:300,agentMissions:100,semanticPaths:500,orchestrationExperiences:500,orchestrationCandidates:200,skillUsage:500};
+ for(const [key,max] of Object.entries(limits)){
+  if(Array.isArray(this.memory[key])&&this.memory[key].length>max)
+   this.memory[key]=this.memory[key].slice(-max);
+ }
+ return this.memory;
+}
+
+savePersistentMemory(){
+
+try{
+this.compactMemory();
+
+this.memory.savedAt=this.now();
+
+localStorage.setItem(
+'semantic_v11_memory',
+JSON.stringify(this.memory)
+);
+
+return true;
+
+}catch(e){
+
+return false;
+
+}
+
+}
+
+
+memoryStats(){
+
+const s=this.memory.statistics;
+
+return{
+
+conversation:this.memory.conversation.length,
+
+concepts:this.memory.concepts.length,
+
+relations:this.memory.relations.length,
+
+rules:this.memory.rules.length,
+
+evidence:this.memory.evidence.length,
+
+sources:this.memory.sources.length,
+
+searches:this.memory.searches.length,
+
+hypotheses:this.memory.hypotheses.length,
+
+discoveries:this.memory.discoveries.length,
+
+validations:this.memory.validations.length,
+
+pluginExperiences:this.memory.pluginExperiences.length,
+
+strategies:this.memory.learnedStrategies.length,
+
+paths:this.memory.semanticPaths.length,
+
+consolidations:this.memory.consolidation.length,
+
+externalPlugins:Object.values(this.memory.pluginRegistry).filter(x=>x.external).length,
+
+learnedSkills:Object.keys(this.memory.learnedSkills).length,
+
+agentMissions:this.memory.agentMissions.length,
+
+learningRuns:s.learningRuns,
+
+confirmed:s.learningConfirmed,
+
+uncertain:s.learningUncertain,
+
+newRelations:s.newRelations,
+
+validatedRelations:s.validatedRelations
+
+};
+
+}
+
+
+exportMemory(){
+
+const payload={
+
+memoryFormat:'semantic-v11',
+
+exportedAt:this.now(),
+
+memory:this.memory
+
+};
+
+const blob=new Blob(
+
+[JSON.stringify(payload,null,2)],
+
+{type:'application/json'}
+
+);
+
+const url=URL.createObjectURL(blob);
+
+const a=document.createElement('a');
+
+a.href=url;
+
+a.download=
+`memoire-semantic-v11-${new Date().toISOString().slice(0,10)}.json`;
+
+a.click();
+
+setTimeout(
+()=>URL.revokeObjectURL(url),
+500
+);
+
+this.savePersistentMemory();
+
+}
+
+
+async readMemoryFile(file){
+
+return JSON.parse(
+await file.text()
+);
+
+}
+
+
+importMemory(raw,merge=false){
+
+const incoming=this.migrateMemory(raw);
+
+if(!merge){
+
+this.memory=incoming;
+
+}else{
+
+this.mergeMemory(incoming);
+
+}
+
+this.savePersistentMemory();
+
+return this.memoryStats();
+
+}
+
+
+mergeMemory(incoming){
+
+const fields=[
+
+'conversation',
+'concepts',
+'entities',
+'relations',
+'rules',
+'evidence',
+'sources',
+'searches',
+'discoveries',
+'hypotheses',
+'validations',
+'pluginExperiences',
+'learnedStrategies',
+'taskHistory',
+'feedback',
+'agentMissions',
+'semanticPaths',
+'consolidation'
+
+];
+
+
+for(const k of fields){
+
+for(const item of incoming[k]||[]){
+
+this.addUnique(
+this.memory[k],
+item
+);
+
+}
+
+}
+
+
+for(
+const k of Object.keys(this.memory.adaptiveLearning)
+){
+
+for(
+const item of incoming.adaptiveLearning?.[k]||[]
+){
+
+this.addUnique(
+this.memory.adaptiveLearning[k],
+item
+);
+
+}
+
+}
+
+for(const [id,entry] of Object.entries(incoming.pluginRegistry||{})){
+ const current=this.memory.pluginRegistry[id];
+ this.memory.pluginRegistry[id]=current?{...current,...entry}:{...entry};
+}
+
+for(const [id,entry] of Object.entries(incoming.learnedSkills||{})){
+ const current=this.memory.learnedSkills[id];
+ if(!current||String(entry.acquiredAt||'')>String(current.acquiredAt||''))
+  this.memory.learnedSkills[id]={...entry};
+}
+
+
+}
+
+
+resetMemory(){
+
+this.memory=this.defaultMemory();
+
+this.sessionMemory=[];
+
+this.agentMission=null;
+
+this.currentGraph=null;
+
+this.savePersistentMemory();
+
+}
+
+
+/* =========================================================
+   ANALYSE DE QUESTION
+========================================================= */
+
+extractTerms(q){
+
+return this.unique(
+this.words(q)
+).slice(0,30);
+
+}
+
+
+extractPhrases(q){
+
+const raw=String(q??'').toLowerCase();
+
+const out=[];
+
+
+out.push(
+
+...[...raw.matchAll(
+/["“«]([^"”»]+)["”»]/g
+)]
+
+.map(m=>m[1])
+
+);
+
+
+for(
+const m of raw.matchAll(
+/\b(?:du|de|des|d[’']|dans|sur|pour|entre|chez|au|aux|en)\s+([\p{L}\p{N}][\p{L}\p{N}' -]{2,70})/giu
+)
+){
+
+out.push(
+m[1].trim()
+);
+
+}
+
+
+return this.unique(
+
+out
+
+.map(
+x=>x.replace(/[?!.,;:]+$/,'')
+)
+
+.filter(
+x=>x.length>2
+)
+
+).slice(0,12);
+
+}
+
+
+detectQuestionType(q){
+
+const n=this.norm(q);
+
+if(
+/\b(definition|definir|signifie|signification|qu'est-ce que|qu est ce que|quest ce que)\b/.test(n)
+)
+return'definition';
+
+if(
+/\b(compare|comparaison|comparer|difference|versus|vs)\b/.test(n)
+)
+return'comparison';
+
+if(
+/\b(resume|résume|résumer|synthese|synthèse)\b/.test(n)
+)
+return'summary';
+
+if(
+/\b(redige|rédige|redaction|rédaction|ecris|écris|texte|paragraphe|article|discours|lettre)\b/.test(n)
+)
+return'writing';
+
+if(
+/\b(pourquoi)\b/.test(n)
+)
+return'explanation';
+
+if(
+/\b(comment|de quelle maniere|de quelle manière|de quelle facon|de quelle façon)\b/.test(n)
+)
+return'procedure';
+
+if(
+/\b(qui|quel|quelle|quels|quelles|ou|où|combien|quand)\b/.test(n)
+)
+return'fact';
+
+return'research';
+
+}
+
+
+detectSuperlative(q){
+
+const n=this.norm(q);
+
+const is=/\b(?:plus grand|plus grande|plus gros|plus grosse|plus haut|plus haute|plus long|plus longue|plus petit|plus petite|plus vieux|plus vieille|plus ancien|plus ancienne|meilleur|meilleure|maximum|maximal|maximale|minimum|minimal|minimale|le plus|la plus|les plus|le moins|la moins|les moins)\b/.test(n);
+
+return{
+
+ is,
+
+ direction:/\b(?:moins|minimum|minimal|minimale|plus petit|plus petite|plus court|plus courte|le moins|la moins|les moins)\b/.test(n)
+ ?'min'
+ :'max'
+
+};
+
+}
+
+
+requestedRelationTerms(info){
+
+const keys=[
+
+'capitale',
+'population',
+'superficie',
+'hauteur',
+'longueur',
+'altitude',
+'date',
+'naissance',
+'mort',
+'auteur',
+'genre',
+'langue',
+'siege',
+'président',
+'president',
+'fondateur',
+'fondation',
+'frontiere',
+'frontière',
+'continent',
+'pays',
+'ville',
+'situé',
+'situe',
+'position',
+'lieu',
+'origine',
+'cause',
+'conséquence',
+'consequence',
+'fonction',
+'créateur',
+'createur'
+
+];
+
+const n=this.norm(info.raw||'');
+
+return keys.filter(
+k=>n.includes(this.norm(k))
+);
+
+}
+
+
+extractResearchSubject(info){
+
+let s=info.raw
+
+.replace(
+/^(quelle|quel|quels|quelles|qui|ou|où|combien|quand|pourquoi|comment)\b/iu,
+''
+)
+
+.trim();
+
+
+s=s.replace(
+
+/^(est|sont|se trouve|se situe|est situe|est situé)\b/iu,
+
+''
+
+).trim();
+
+
+for(
+const r of this.requestedRelationTerms(info)
+){
+
+s=s.replace(
+
+new RegExp(
+`\\b${r.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\b`,
+'i'
+),
+
+' '
+
+);
+
+}
+
+
+return this.clean(
+
+s
+
+.replace(
+/\b(de|du|des|d|la|le|les|l|au|aux|en)\b/giu,
+' '
+)
+
+.replace(/[?!.,;:]+$/,'')
+
+);
+
+}
+
+
+analyzeQuestion(q){
+
+return{
+
+raw:String(q??'').trim(),
+
+terms:this.extractTerms(q),
+
+phrases:this.extractPhrases(q),
+
+type:this.detectQuestionType(q),
+
+superlative:this.detectSuperlative(q),
+
+domains:this.extractPhrases(q)
+
+};
+
+}
+
+
+buildQueries(info){
+
+const arr=[
+info.raw
+];
+
+const terms=info.terms.join(' ');
+
+if(
+terms&&
+this.norm(terms)!==this.norm(info.raw)
+)
+arr.push(terms);
+
+
+const subject=this.extractResearchSubject(info);
+
+const relations=this.requestedRelationTerms(info);
+
+
+for(
+const r of relations.slice(0,5)
+){
+
+if(subject)
+arr.push(
+`${subject} ${r}`
+);
+
+}
+
+
+if(info.type==='definition'){
+
+for(
+const t of info.terms.slice(0,4)
+){
+
+arr.push(
+`${t} définition`
+);
+
+}
+
+}
+
+
+if(info.type==='explanation'){
+
+arr.push(
+`${subject} histoire`,
+`${subject} contexte`,
+`${subject} raison`
+);
+
+}
+
+
+return this.unique(
+arr.filter(Boolean)
+).slice(0,10);
+
+}
+
+
+/* =========================================================
+   API DOCUMENTAIRE
+========================================================= */
+
+async api(host,params,signal){
+
+const u=new URL(
+host+'/w/api.php'
+);
+
+Object.entries({
+
+...params,
+
+format:'json',
+
+origin:'*'
+
+}).forEach(
+([k,v])=>
+u.searchParams.set(
+k,
+String(v)
+)
+);
+
+
+const r=await fetch(
+u,
+{
+signal,
+headers:{
+Accept:'application/json'
+}
+}
+);
+
+
+if(!r.ok)
+throw new Error(
+`HTTP ${r.status}`
+);
+
+return r.json();
+
+}
+
+
+async searchSource(source,query,signal){
+
+const key=
+`${source.id}|${this.norm(query)}`;
+
+if(this.searchCache.has(key))
+return this.searchCache.get(key);
+
+
+const data=await this.api(
+
+source.host,
+
+{
+
+action:'query',
+
+list:'search',
+
+srsearch:query,
+
+srlimit:'8',
+
+srnamespace:'0'
+
+},
+
+signal
+
+);
+
+
+const res=(
+
+data?.query?.search||[]
+
+).map(
+
+x=>({
+
+source:source.id,
+
+title:x.title,
+
+snippet:this.clean(
+x.snippet||''
+),
+
+pageid:x.pageid
+
+})
+
+);
+
+
+this.searchCache.set(
+key,
+res
+);
+
+return res;
+
+}
+
+
+async searchAll(queries,signal){
+
+const all=[];
+
+
+const primary=[
+
+this.sources.find(
+s=>s.id==='wikipedia'
+),
+
+this.sources.find(
+s=>s.id==='wiktionary'
+),
+
+this.sources.find(
+s=>s.id==='wikibooks'
+)
+
+].filter(Boolean);
+
+
+for(const q of queries){
+
+for(const source of primary){
+
+if(signal?.aborted)
+throw new DOMException(
+'Aborted',
+'AbortError'
+);
+
+
+try{
+
+all.push(
+...await this.searchSource(
+source,
+q,
+signal
+)
+);
+
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+}
+
+}
+
+
+if(all.length<10){
+
+for(
+
+const source of this.sources.filter(
+
+s=>[
+
+'wikiversity',
+'wikivoyage',
+'wikisource',
+'wikiquote',
+'wikinews'
+
+].includes(s.id)
+
+)
+
+){
+
+try{
+
+all.push(
+...await this.searchSource(
+source,
+q,
+signal
+)
+);
+
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+}
+
+}
+
+}
+
+
+if(all.length>=24)
+break;
+
+}
+
+
+return this.uniqueResults(all)
+.slice(0,120);
+
+}
+
+
+async fetchExtract(source,title,signal){
+
+const key=
+`${source.id}|${title}`;
+
+if(this.cache.has(key))
+return this.cache.get(key);
+
+
+try{
+
+const data=await this.api(
+
+source.host,
+
+{
+
+action:'query',
+
+prop:'extracts|info',
+
+explaintext:'1',
+
+exsectionformat:'plain',
+
+inprop:'url',
+
+titles:title,
+
+redirects:'1'
+
+},
+
+signal
+
+);
+
+
+const p=Object.values(
+data?.query?.pages||{}
+)[0];
+
+
+if(p){
+
+const out={
+
+source:source.id,
+
+title:p.title||title,
+
+url:p.fullurl||
+`${source.host}/wiki/${encodeURIComponent(p.title||title)}`,
+
+text:this.clean(
+p.extract||''
+),
+
+pageid:p.pageid,
+
+fromSnippet:false
+
+};
+
+
+this.cache.set(
+key,
+out
+);
+
+return out;
+
+}
+
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+}
+
+
+return null;
+
+}
+
+
+buildSnippetDocs(results){
+
+return results
+
+.filter(r=>r.snippet)
+
+.map(r=>({
+
+source:r.source,
+
+title:r.title,
+
+url:`${
+
+this.sources.find(
+s=>s.id===r.source
+)?.host||''
+
+}/wiki/${encodeURIComponent(r.title)}`,
+
+text:r.snippet,
+
+snippet:r.snippet,
+
+pageid:r.pageid,
+
+fromSnippet:true
+
+}));
+
+}
+
+
+/* =========================================================
+   WIKIDATA
+========================================================= */
+
+async wikidataSearch(query,signal){
+
+const key=this.norm(query);
+
+if(
+this.wikidataCache.has(`s|${key}`)
+)
+return this.wikidataCache.get(`s|${key}`);
+
+
+try{
+
+const d=await this.api(
+
+'https://www.wikidata.org',
+
+{
+
+action:'wbsearchentities',
+
+search:query,
+
+language:'fr',
+
+uselang:'fr',
+
+type:'item',
+
+limit:'10'
+
+},
+
+signal
+
+);
+
+
+const out=(
+
+d?.search||[]
+
+).map(
+
+x=>({
+
+id:x.id,
+
+label:x.label||'',
+
+description:x.description||''
+
+})
+
+);
+
+
+this.wikidataCache.set(
+`s|${key}`,
+out
+);
+
+return out;
+
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+return[];
+
+}
+
+}
+
+
+async wikidataEntities(ids,signal){
+
+const clean=this.unique(ids)
+
+.filter(
+x=>/^[QP]\d+$/i.test(x)
+)
+
+.slice(0,40);
+
+
+if(!clean.length)
+return{};
+
+
+const key=
+`e|${[...clean].sort().join(',')}`;
+
+if(
+this.wikidataCache.has(key)
+)
+return this.wikidataCache.get(key);
+
+
+try{
+
+const d=await this.api(
+
+'https://www.wikidata.org',
+
+{
+
+action:'wbgetentities',
+
+ids:clean.join('|'),
+
+languages:'fr|en',
+
+props:'labels|descriptions|aliases|claims|sitelinks',
+
+formatversion:'2'
+
+},
+
+signal
+
+);
+
+
+const out=d?.entities||{};
+
+this.wikidataCache.set(
+key,
+out
+);
+
+return out;
+
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+return{};
+
+}
+
+}
+
+
+labelOfEntity(e){
+
+return e?.labels?.fr?.value||
+e?.labels?.en?.value||
+'';
+
+}
+
+
+getClaimValue(c){
+
+const dv=c?.mainsnak?.datavalue;
+
+if(!dv)
+return null;
+
+
+if(
+dv.type==='wikibase-entityid'
+){
+
+return{
+
+id:
+dv.value.id||
+`Q${dv.value['numeric-id']}`,
+
+raw:
+dv.value.id||
+''
+
+};
+
+}
+
+
+if(
+dv.type==='string'||
+dv.type==='monolingualtext'
+){
+
+return{
+
+value:
+dv.value?.text||
+dv.value
+
+};
+
+}
+
+
+if(
+dv.type==='quantity'
+){
+
+const amount=Number(dv.value?.amount);
+
+return{
+
+value:dv.value?.amount??dv.value,
+
+amount:Number.isFinite(amount)?amount:null,
+
+unit:dv.value?.unit||null
+
+};
+
+}
+
+
+if(dv.type==='time'){
+
+return{
+value:dv.value
+};
+
+}
+
+
+if(dv.type==='globecoordinate'){
+
+return{
+
+value:
+`${dv.value.latitude}, ${dv.value.longitude}`,
+
+lat:
+dv.value.latitude,
+
+lon:
+dv.value.longitude
+
+};
+
+}
+
+
+return{
+
+value:String(
+dv.value
+)
+
+};
+
+}
+
+
+async buildWikidataFacts(entities,signal){
+
+const ids=Object.keys(entities);
+
+if(!ids.length)
+return[];
+
+
+const propertyIds=this.unique(
+
+ids.flatMap(
+
+id=>Object.keys(
+entities[id]?.claims||{}
+)
+
+)
+
+)
+
+.filter(
+x=>/^P\d+$/i.test(x)
+)
+
+.slice(0,100);
+
+
+const props=await this.wikidataEntities(
+propertyIds,
+signal
+);
+
+
+const out=[];
+
+
+for(const id of ids){
+
+const e=entities[id];
+
+const label=
+this.labelOfEntity(e)||
+id;
+
+
+for(
+const [pid,claims]
+of Object.entries(
+e.claims||{}
+)
+){
+
+const propertyLabel=
+this.labelOfEntity(
+props[pid]
+)||
+pid;
+
+
+for(
+const c of(claims||[]).slice(0,8)
+){
+
+const v=this.getClaimValue(c);
+
+if(!v)
+continue;
+
+
+let object=v.id
+?
+(
+this.labelOfEntity(
+entities[v.id]
+)||
+v.id
+)
+:
+(
+v.value??''
+);
+
+
+out.push({
+
+subjectId:id,
+
+subject:label,
+
+propertyId:pid,
+
+propertyLabel,
+
+objectId:v.id||null,
+
+object,
+
+value:
+v.amount??
+v.value??
+'',
+
+source:'wikidata',
+
+status:'source'
+
+});
+
+
+if(out.length>=2500)
+return out;
+
+}
+
+}
+
+}
+
+return out;
+
+}
+
+
+async discoverConcepts(info,signal){
+
+const ids=[];
+
+
+for(
+const t of this.unique([
+
+...info.domains,
+
+...info.phrases,
+
+...info.terms
+
+]).slice(0,12)
+){
+
+try{
+
+ids.push(
+
+...(await this.wikidataSearch(
+t,
+signal
+)).map(
+x=>x.id
+)
+
+);
+
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+}
+
+}
+
+
+return this.unique(ids);
+
+}
+
+
+/* =========================================================
+   EXTRACTION RELATIONNELLE
+========================================================= */
+
+inferRelationFromText(text){
+
+const n=this.norm(text);
+
+
+if(/\b(?:a pour capitale|a comme capitale|dont la capitale est|est la capitale de|est capitale de)\b/.test(n))
+return'capitale_de';
+
+
+if(/\b(?:population|habitants?|personnes|compte une population)\b/.test(n))
+return'population';
+
+
+if(/\b(?:superficie|couvre une superficie|surface)\b/.test(n))
+return'superficie';
+
+
+if(
+/\baltitude\b/.test(n)
+)
+return'altitude';
+
+
+if(/\b(?:hauteur|haut de|haute de)\b/.test(n))
+return'hauteur';
+
+
+if(/\b(?:longueur|long de|longue de)\b/.test(n))
+return'longueur';
+
+
+if(/\b(?:est situe|est situé|se trouve|se situait|se situe|dans la region|dans le pays)\b/.test(n))
+return'situe_dans';
+
+
+if(
+/\bpresident\b/.test(n)
+)
+return'president';
+
+
+if(/\b(?:fondat(?:eur|rice|ion)|fondé en|fondée en)\b/.test(n))
+return'fondation';
+
+
+if(/\b(?:auteur|ecrit par)\b/.test(n))
+return'auteur';
+
+
+if(
+/\bgenre\b/.test(n)
+)
+return'genre';
+
+
+if(/\b(?:langue|langues)\b/.test(n))
+return'langue';
+
+
+if(/\b(?:siege|siege social)\b/.test(n))
+return'siege';
+
+
+if(/\b(?:frontiere|frontieres)\b/.test(n))
+return'frontiere';
+
+
+if(
+/\bcontinent\b/.test(n)
+)
+return'continent';
+
+
+if(/\b(?:origine|originaire de)\b/.test(n))
+return'origine';
+
+
+if(/\b(?:date de naissance|ne en|naquit en)\b/.test(n))
+return'naissance';
+
+
+if(/\b(?:date de mort|deces|mort en|decese en)\b/.test(n))
+return'mort';
+
+
+if(
+/\bville\b/.test(n)
+)
+return'ville';
+
+
+if(
+/\bpays\b/.test(n)
+)
+return'pays';
+
+
+if(
+/\bcause\b/.test(n)
+)
+return'cause_de';
+
+
+if(
+/\bconsequence\b/.test(n)
+)
+return'consequence_de';
+
+
+return'relation';
+
+}
+
+
+extractTextRelations(text){
+
+const clean=this.clean(text);
+
+const out=[];
+
+
+const patterns=[
+
+/([^.!?]{2,120})\s+(?:est|sont|était|étaient|devient|devint|se trouve|se situait|est situé|est situe|se situe)\s+(?:en|dans|sur|au|aux|à)\s+([^.!?]{2,100})/gi,
+
+/([^.!?]{2,120})\s+(?:a pour capitale|a comme capitale|dont la capitale est)\s+([^.!?]{2,100})/gi,
+
+/([^.!?]{2,120})\s+(?:est la capitale de|est capitale de)\s+([^.!?]{2,100})/gi,
+
+/([^.!?]{2,120})\s+(?:a une superficie de|couvre une superficie de|mesure)\s+([\d\s.,]+\s*(?:km²|km2|m|km|ha|hectares?)?)/gi,
+
+/([^.!?]{2,120})\s+(?:compte|possède|possede|a)\s+([\d\s.,]+)\s+(habitants|personnes|km²|km2|m|km)/gi,
+
+/([^.!?]{2,120})\s+(?:a une population de|compte une population de)\s+([\d\s.,]+)\s*(habitants|personnes)?/gi,
+
+/([^.!?]{2,120})\s+(?:mesure|atteint|s'élève à|s eleve a)\s+([\d\s.,]+\s*(?:m|km|cm|mm|kg|g|°C|c|ans|années?)?)/gi
+
+];
+
+
+for(const re of patterns){
+
+for(const m of clean.matchAll(re)){
+
+const subject=this.clean(
+m[1]
+)
+
+.replace(
+/^(?:et|mais|or|donc)\s+/i,
+''
+)
+
+.trim();
+
+
+let object=this.clean(
+m[2]
+);
+
+
+if(m[3])
+object=`${object} ${m[3]}`.trim();
+
+
+if(
+subject&&
+object&&
+subject.length>1&&
+object.length>0
+){
+
+const relation=
+this.inferRelationFromText(
+m[0]
+);
+
+
+const value=
+/(population|superficie|hauteur|longueur|altitude)/.test(
+this.norm(relation)
+)
+?object
+:null;
+
+
+out.push({
+
+subject,
+
+relation,
+
+object,
+
+value,
+
+text:m[0],
+
+status:'source'
+
+});
+
+}
+
+}
+
+}
+
+
+const seen=new Set();
+
+const dedup=[];
+
+
+for(const r of out){
+
+const k=
+`${this.norm(r.subject)}|${this.norm(r.relation)}|${this.norm(r.object)}`;
+
+
+if(!seen.has(k)){
+
+seen.add(k);
+
+dedup.push(r);
+
+}
+
+}
+
+
+return dedup.slice(0,250);
+
+}
+
+
+/* =========================================================
+   SCORING
+========================================================= */
+
+termScore(text,info){
+
+const n=this.norm(text);
+
+if(!info.terms.length)
+return 0;
+
+let h=0;
+
+for(
+const t of info.terms
+)
+if(n.includes(this.norm(t)))
+h++;
+
+
+return h/info.terms.length;
+
+}
+
+
+relationScore(text,info){
+
+const rs=this.requestedRelationTerms(info);
+
+if(!rs.length)
+return .25;
+
+
+const n=this.norm(text);
+
+let h=0;
+
+for(
+const r of rs
+)
+if(n.includes(this.norm(r)))
+h++;
+
+
+return Math.min(
+1,
+h/rs.length
+);
+
+}
+
+
+score(item,info){
+
+return
+
+.48*this.termScore(
+`${item.title||''} ${item.snippet||''} ${item.text||''}`,
+info
+)
+
++
+
+.32*this.relationScore(
+`${item.title||''} ${item.text||''}`,
+info
+)
+
++
+
+.20*(item.fromSnippet?.1:0);
+
+}
+
+
+buildPassages(docs,info){
+
+const out=[];
+
+
+for(const d of docs){
+
+const text=this.clean(
+d.text||d.snippet||''
+);
+
+if(!text)
+continue;
+
+
+if(d.fromSnippet){
+
+out.push({
+
+...d,
+
+text,
+
+score:this.score(
+d,
+info
+)
+
+});
+
+continue;
+
+}
+
+
+for(
+const s of text
+
+.split(
+/(?<=[.!?])\s+/
+)
+
+.filter(
+x=>x.length>25
+)
+
+.slice(0,22)
+){
+
+out.push({
+
+...d,
+
+text:s,
+
+score:this.score(
+{...d,text:s},
+info
+)
+
+});
+
+}
+
+}
+
+
+return out;
+
+}
+
+
+selectPassages(passages,n=24){
+
+const sorted=[...passages]
+.sort(
+(a,b)=>b.score-a.score
+);
+
+const out=[];
+
+
+for(const p of sorted){
+
+if(
+out.every(
+x=>this.similarity(
+x.text,
+p.text
+)<.86
+)
+)
+out.push(p);
+
+
+if(out.length>=n)
+break;
+
+}
+
+
+return out;
+
+}
+
+
+uniqueResults(a){
+
+const m=new Map();
+
+
+for(const x of a||[]){
+
+const k=
+`${x.source}|${this.norm(x.title)}`;
+
+
+if(!m.has(k))
+m.set(k,x);
+
+}
+
+
+return[...m.values()];
+
+}
+
+
+uniqueDocs(a){
+
+const m=new Map();
+
+
+for(const x of a||[]){
+
+const k=
+`${x.source}|${this.norm(x.title)}|${this.norm(x.text).slice(0,180)}`;
+
+
+if(!m.has(k))
+m.set(k,x);
+
+}
+
+
+return[...m.values()];
+
+}
+
+
+uniqueFacts(a){
+
+const m=new Map();
+
+
+for(const x of a||[]){
+
+const k=
+`${x.subjectId}|${x.propertyId}|${x.objectId}|${x.value}`;
+
+
+if(!m.has(k))
+m.set(k,x);
+
+}
+
+
+return[...m.values()];
+
+}
+
+
+uniqueRelations(a){
+
+const m=new Map();
+
+
+for(const x of a||[]){
+
+const k=
+`${this.norm(x.subject)}|${this.norm(x.relation)}|${this.norm(x.object)}`;
+
+
+if(!m.has(k))
+m.set(k,x);
+
+}
+
+
+return[...m.values()];
+
+}
+
+
+/* =========================================================
+   GRAPHE SÉMANTIQUE
+========================================================= */
+
+createGraph(){
+
+return{
+
+nodes:new Map(),
+
+edges:[],
+
+hypotheses:[],
+
+contradictions:[],
+
+paths:[]
+
+};
+
+}
+
+
+addNode(g,node){
+
+if(!node?.id)
+return;
+
+
+const old=g.nodes.get(node.id);
+
+
+g.nodes.set(
+
+node.id,
+
+{
+
+...(old||{}),
+
+...node
+
+}
+
+);
+
+}
+
+
+addEdge(g,edge){
+
+if(!edge)
+return;
+
+
+const from=edge.from??edge.subject;
+
+const to=edge.to??edge.object;
+
+
+if(!from||!to)
+return;
+
+
+const normalized={
+
+...edge,
+
+from,
+
+to,
+
+subject:edge.subject??from,
+
+object:edge.object??to,
+
+status:edge.status||'inconnu',
+
+confidence:
+Number.isFinite(edge.confidence)
+?edge.confidence
+:0,
+
+provenance:edge.provenance||[]
+
+};
+
+
+g.edges.push(
+normalized
+);
+
+}
+
+
+buildGraph(facts,relations){
+
+const g=this.createGraph();
+
+
+for(const f of facts){
+
+const a=
+f.subjectId||
+`t:${this.norm(f.subject)}`;
+
+const b=
+f.objectId||
+`v:${this.norm(f.object)}`;
+
+
+this.addNode(
+
+g,
+
+{
+
+id:a,
+
+label:f.subject,
+
+type:'entity'
+
+}
+
+);
+
+
+this.addNode(
+
+g,
+
+{
+
+id:b,
+
+label:f.object,
+
+type:'value'
+
+}
+
+);
+
+
+this.addEdge(
+
+g,
+
+{
+
+from:a,
+
+to:b,
+
+label:f.propertyLabel||
+f.propertyId||
+'relation',
+
+labelText:f.propertyLabel||
+f.propertyId,
+
+value:f.value,
+
+source:'wikidata',
+
+status:'source',
+
+confidence:.72,
+
+provenance:[
+
+{
+
+type:'source',
+
+source:'wikidata',
+
+property:f.propertyId
+
+}
+
+],
+
+raw:f
+
+}
+
+);
+
+}
+
+
+for(const r of relations){
+
+const a=
+`t:${this.norm(r.subject)}`;
+
+const b=
+`v:${this.norm(r.object)}`;
+
+
+this.addNode(
+
+g,
+
+{
+
+id:a,
+
+label:r.subject,
+
+type:'entity'
+
+}
+
+);
+
+
+this.addNode(
+
+g,
+
+{
+
+id:b,
+
+label:r.object,
+
+type:'value'
+
+}
+
+);
+
+
+this.addEdge(
+
+g,
+
+{
+
+from:a,
+
+to:b,
+
+label:r.relation||
+'relation',
+
+labelText:r.relation||
+'relation',
+
+value:r.value??r.object,
+
+source:'text',
+
+status:'source',
+
+confidence:.58,
+
+provenance:[
+
+{
+
+type:'text',
+
+text:r.text
+
+}
+
+],
+
+raw:r
+
+}
+
+);
+
+}
+
+
+return g;
+
+}
+
+
+normalizeRelationLabel(s){
+
+return this.norm(s)
+
+.replace(
+/\b(du|de|des|la|le|les|un|une|pour|a|est)\b/g,
+' '
+)
+
+.replace(
+/\s+/g,
+' '
+)
+
+.trim();
+
+}
+
+
+relationMatches(label,need){
+
+const a=this.normalizeRelationLabel(label);
+
+const b=this.normalizeRelationLabel(need);
+
+
+if(!a||!b)
+return false;
+
+
+return a===b||
+a.includes(b)||
+b.includes(a);
+
+}
+
+
+/* =========================================================
+   DÉCOUVERTE DE RELATIONS
+========================================================= */
+
+discoverNewRelations(g){
+
+const discovered=[];
+
+
+const byPair=new Map();
+
+
+for(const e of g.edges){
+
+const key=
+`${e.from}|${e.to}`;
+
+if(!byPair.has(key))
+byPair.set(key,[]);
+
+byPair.get(key).push(e);
+
+}
+
+
+for(
+const [key,edges]
+of byPair.entries()
+){
+
+const relationLabels=this.unique(
+
+edges.map(
+e=>this.normalizeRelationLabel(
+e.labelText||e.label
+)
+)
+
+);
+
+
+if(relationLabels.length<2)
+continue;
+
+
+const [from,to]=key.split('|');
+
+
+const subject=
+g.nodes.get(from)?.label||
+from;
+
+
+const object=
+g.nodes.get(to)?.label||
+to;
+
+
+const candidate=
+{
+
+id:this.hash(
+`${from}|${to}|${relationLabels.join('|')}`
+),
+
+subject,
+
+object,
+
+candidateRelations:relationLabels,
+
+reason:'plusieurs relations indépendantes relient les mêmes concepts',
+
+status:'hypothèse',
+
+confidence:Math.min(
+.69,
+.35+relationLabels.length*.08
+),
+
+provenance:edges.flatMap(
+e=>e.provenance||[]
+),
+
+createdAt:this.now()
+
+};
+
+
+discovered.push(candidate);
+
+}
+
+
+return discovered;
+
+}
+
+
+createHypothesis(subject,relation,object,reason,provenance){
+
+const h={
+
+id:this.hash(
+`${subject}|${relation}|${object}|${Date.now()}`
+),
+
+subject,
+
+relation,
+
+object,
+
+reason,
+
+status:'hypothèse',
+
+confidence:.35,
+
+provenance:provenance||[],
+
+tests:[],
+
+createdAt:this.now(),
+
+updatedAt:this.now()
+
+};
+
+
+this.addUnique(
+
+this.memory.hypotheses,
+
+h,
+
+h.id
+
+);
+
+
+return h;
+
+}
+
+
+validateHypothesis(h,passages){
+
+const related=passages.filter(
+
+p=>{
+
+const text=this.norm(
+p.text
+);
+
+return(
+
+text.includes(
+this.norm(h.subject)
+)&&
+
+text.includes(
+this.norm(h.object)
+)
+
+);
+
+}
+
+);
+
+
+const sourceCount=this.unique(
+
+related.map(
+p=>p.source
+)
+
+).length;
+
+
+let confidence=
+
+Math.min(
+
+.95,
+
+.25+
+
+related.length*.08+
+
+sourceCount*.14
+
+);
+
+
+let status='hypothèse';
+
+
+if(confidence>=.78)
+status='confirmée';
+
+else if(confidence>=.55)
+status='probable';
+
+
+h.confidence=confidence;
+
+h.status=status;
+
+h.updatedAt=this.now();
+
+h.tests.push({
+
+time:this.now(),
+
+evidence:related.length,
+
+sources:sourceCount,
+
+confidence,
+
+status
+
+});
+
+
+this.addUnique(
+
+this.memory.validations,
+
+{
+
+hypothesisId:h.id,
+
+status,
+
+confidence,
+
+evidence:related.length,
+
+sources:sourceCount,
+
+time:this.now()
+
+},
+
+this.hash(
+`${h.id}|${status}|${confidence}`
+)
+
+);
+
+
+if(status==='confirmée')
+this.memory.statistics.validatedRelations++;
+
+return h;
+
+}
+
+
+/* =========================================================
+   CHEMINS SÉMANTIQUES
+========================================================= */
+
+findSemanticPaths(g,startId,targetId,maxDepth=5){
+
+const paths=[];
+
+if(
+!g.nodes.has(startId)||
+!g.nodes.has(targetId)
+)
+return paths;
+
+
+const queue=[{
+
+node:startId,
+
+path:[startId],
+
+edges:[]
+
+}];
+
+
+while(queue.length){
+
+const current=queue.shift();
+
+
+if(current.node===targetId){
+
+paths.push(current);
+
+if(paths.length>=12)
+break;
+
+continue;
+
+}
+
+
+if(current.path.length>maxDepth)
+continue;
+
+
+const nextEdges=g.edges.filter(
+e=>e.from===current.node
+);
+
+
+for(const e of nextEdges){
+
+if(current.path.includes(e.to))
+continue;
+
+
+queue.push({
+
+node:e.to,
+
+path:[...current.path,e.to],
+
+edges:[...current.edges,e]
+
+});
+
+}
+
+}
+
+
+return paths;
+
+}
+
+
+buildSemanticPaths(g,info){
+
+const nodes=[...g.nodes.values()];
+
+const terms=this.unique([
+
+...(info.terms||[]),
+
+...(info.phrases||[])
+
+]).slice(0,8);
+
+
+const matching=nodes.filter(
+
+n=>terms.some(
+t=>this.similarity(
+n.label,
+t
+)>.5||
+this.norm(n.label)===this.norm(t)
+)
+
+);
+
+
+const paths=[];
+
+
+for(let i=0;i<matching.length;i++){
+
+for(let j=i+1;j<matching.length;j++){
+
+const p=this.findSemanticPaths(
+
+g,
+
+matching[i].id,
+
+matching[j].id,
+
+5
+
+);
+
+
+for(const x of p){
+
+paths.push({
+
+from:matching[i].label,
+
+to:matching[j].label,
+
+nodes:x.path.map(
+id=>g.nodes.get(id)?.label||id
+),
+
+relations:x.edges.map(
+e=>e.labelText||e.label
+),
+
+length:x.path.length,
+
+confidence:Math.max(
+.25,
+1-(x.path.length-1)*.12
+),
+
+status:'déduction',
+
+createdAt:this.now()
+
+});
+
+}
+
+}
+
+}
+
+
+return paths.slice(0,30);
+
+}
+
+
+/* =========================================================
+   RAISONNEMENT NUMÉRIQUE
+========================================================= */
+
+parseNumber(s){
+
+const raw=String(s??'').trim();
+
+if(!raw)
+return null;
+
+
+let x=raw
+
+.replace(/\u00a0/g,' ')
+
+.replace(/\s+/g,' ')
+
+.toLowerCase();
+
+
+let n=x
+
+.replace(
+/[^0-9,.\-+]/g,
+''
+);
+
+
+if(
+(n.match(/,/g)||[]).length===1&&
+(n.match(/\./g)||[]).length>1
+){
+
+n=n
+.replace(/\./g,'')
+.replace(',','.');
+
+}else if(
+
+(n.match(/,/g)||[]).length===1&&
+(n.match(/\./g)||[]).length===0
+
+){
+
+n=n.replace(',','.');
+
+}else{
+
+n=n.replace(/,/g,'');
+
+}
+
+
+let value=Number(n);
+
+
+if(!Number.isFinite(value))
+return null;
+
+
+if(/\bmilliard/.test(x))
+value*=1e9;
+
+else if(/\bmillion/.test(x))
+value*=1e6;
+
+else if(/\bmillier/.test(x))
+value*=1e3;
+
+
+return Number.isFinite(value)
+?value
+:null;
+
+}
+
+
+getNumericEdges(g,nodeId){
+
+return g.edges
+
+.filter(
+e=>e.from===nodeId
+)
+
+.map(e=>{
+
+const candidates=[
+
+e.value,
+
+e.raw?.value,
+
+e.raw?.object,
+
+e.raw?.amount,
+
+e.labelText,
+
+e.label
+
+];
+
+
+let num=null;
+
+
+for(
+const c of candidates
+){
+
+num=this.parseNumber(c);
+
+if(num!==null)
+break;
+
+}
+
+
+return{
+
+...e,
+
+num
+
+};
+
+})
+
+.filter(
+e=>e.num!==null
+);
+
+}
+
+
+propertyMatchesSuperlative(label,info){
+
+const n=this.norm(label);
+
+
+if(info.superlative.direction==='max')
+
+return /(superficie|population|hauteur|longueur|taille|altitude|distance|annee|date|poids|prix|nombre|habitants|mesure)/.test(n);
+
+
+return /(population|superficie|hauteur|longueur|taille|distance|poids|prix|nombre|habitants|mesure)/.test(n);
+
+}
+
+
+findCandidateNodes(g,info){
+
+const arr=[...g.nodes.values()];
+
+const terms=this.unique([
+
+...(info.terms||[]),
+
+...(info.phrases||[]),
+
+...(info.domains||[])
+
+])
+
+.map(x=>this.norm(x))
+
+.filter(Boolean);
+
+
+return arr
+
+.map(n=>{
+
+const label=this.norm(n.label);
+
+let hits=0;
+
+
+for(const t of terms){
+
+if(label===t)
+hits+=2;
+
+else if(
+label.includes(t)||
+t.includes(label)
+)
+hits+=1;
+
+else{
+
+const sim=this.similarity(
+label,
+t
+);
+
+if(sim>=.5)
+hits+=.5;
+
+}
+
+}
+
+
+return{
+
+...n,
+
+_score:
+hits/
+Math.max(
+1,
+terms.length*2
+)
+
+};
+
+})
+
+.filter(
+x=>x._score>.05
+)
+
+.sort(
+(a,b)=>b._score-a._score
+)
+
+.slice(0,40);
+
+}
+
+
+solveSuperlative(g,info){
+
+const candidates=
+this.findCandidateNodes(
+g,
+info
+);
+
+
+if(!candidates.length)
+return null;
+
+
+const scored=[];
+
+
+for(const n of candidates){
+
+for(
+const e of this.getNumericEdges(
+g,
+n.id
+)
+){
+
+if(
+this.propertyMatchesSuperlative(
+e.labelText||e.label||'',
+info
+)
+){
+
+scored.push({
+
+node:n,
+
+edge:e
+
+});
+
+}
+
+}
+
+}
+
+
+if(!scored.length)
+return null;
+
+
+scored.sort(
+
+(a,b)=>
+
+info.superlative.direction==='max'
+
+?
+
+b.edge.num-a.edge.num
+
+:
+
+a.edge.num-b.edge.num
+
+);
+
+
+return scored[0];
+
+}
+
+
+/* =========================================================
+   RÉSOLUTION DE RELATION
+========================================================= */
+
+findRelationFromNode(g,node,terms){
+
+const edges=g.edges.filter(
+e=>e.from===node.id
+);
+
+
+if(!terms?.length)
+return null;
+
+
+for(const e of edges){
+
+if(
+
+terms.some(
+
+t=>
+
+this.relationMatches(
+e.labelText||e.label,
+t
+)
+
+)
+
+){
+
+return e;
+
+}
+
+}
+
+
+return null;
+
+}
+
+
+graphMatchScore(nodeLabel,query){
+
+const a=this.norm(nodeLabel);
+
+const b=this.norm(query);
+
+
+if(!a||!b)
+return 0;
+
+
+if(a===b)
+return 1;
+
+
+if(
+a.includes(b)||
+b.includes(a)
+)
+return .82;
+
+
+return this.similarity(a,b);
+
+}
+
+
+graphAnswer(g,info,passages=[]){
+
+if(
+info.superlative?.is
+){
+
+const win=
+this.solveSuperlative(
+g,
+info
+);
+
+
+if(win){
+
+let answer=win.node.label;
+
+
+const value=
+this.cleanFinalText(
+String(
+win.edge.raw?.object||
+win.edge.value||
+''
+)
+);
+
+
+if(value)
+answer+=` — ${value}`;
+
+
+return{
+
+answerText:answer,
+
+candidate:win,
+
+status:
+win.edge.status==='source'
+?'probable'
+:'déduction',
+
+evidence:passages
+
+};
+
+}
+
+}
+
+
+const subject=
+this.extractResearchSubject(
+info
+);
+
+
+const candidates=
+
+this.findCandidateNodes(
+g,
+info
+)
+
+.map(
+
+n=>({
+
+...n,
+
+_subjectScore:
+this.graphMatchScore(
+n.label,
+subject
+)
+
+})
+
+)
+
+.sort(
+
+(a,b)=>
+
+(b._subjectScore+b._score*.35)
+
+-
+
+(a._subjectScore+a._score*.35)
+
+);
+
+
+const terms=
+this.requestedRelationTerms(info);
+
+
+for(const n of candidates){
+
+const e=
+this.findRelationFromNode(
+g,
+n,
+terms.length
+?terms
+:info.terms
+);
+
+
+if(e){
+
+const object=
+this.cleanFinalText(
+String(
+e.raw?.object||
+e.raw?.value||
+e.value||
+e.to||
+''
+)
+);
+
+
+if(object){
+
+return{
+
+answerText:
+`${n.label} — ${object}.`,
+
+candidate:{
+node:n,
+edge:e
+},
+
+status:
+e.status==='source'
+?'probable'
+:'déduction',
+
+evidence:passages
+
+};
+
+}
+
+}
+
+}
+
+
+return null;
+
+}
+
+
+/* =========================================================
+   SYNTHÈSE
+========================================================= */
+
+synthesizePluginResults(pluginResults=[]){
+
+const pieces=[];
+
+for(const item of Array.isArray(pluginResults)?pluginResults:[]){
+
+const result=item?.result;
+if(!result?.success) continue;
+
+let text='';
+
+if(typeof result.answerText==='string') text=result.answerText;
+else if(typeof result.explanation==='string') text=result.explanation;
+else if(typeof result.conclusion==='string') text=result.conclusion;
+else if(typeof result.summary==='string') text=result.summary;
+else if(typeof result.data==='string') text=result.data;
+else if(result.data&&typeof result.data==='object'){
+ const values=[];
+ for(const key of ['answer','answers','explanation','explanations','conclusion','conclusions','reasoning','reasons','summary','details']){
+  const value=result.data[key];
+  if(typeof value==='string'&&value.trim()) values.push(value.trim());
+  else if(Array.isArray(value)&&value.length) values.push(value.map(x=>typeof x==='string'?x:JSON.stringify(x)).join(' '));
+ }
+ text=values.join(' ');
+}
+
+text=this.cleanFinalText(text);
+
+if(text&&pieces.every(x=>this.similarity(x,text)<.74)) pieces.push(text);
+}
+
+return pieces.slice(0,7).join(' ');
+}
+
+synthesize(info,passages,pluginResults=[]){
+
+const selected=
+this.selectPassages(
+passages,
+10
+);
+
+const pluginText=this.synthesizePluginResults(pluginResults);
+
+if(!selected.length){
+ if(pluginText) return pluginText;
+ return'Je n’ai pas trouvé suffisamment d’éléments documentaires fiables dans les sources consultées et aucun résultat de raisonnement exploitable n’a été produit.';
+}
+
+
+const pieces=[];
+
+
+for(const p of selected){
+
+const t=
+this.cleanFinalText(
+p.text
+);
+
+
+if(
+t&&
+pieces.every(
+x=>this.similarity(x,t)<.74
+)
+)
+pieces.push(t);
+
+}
+
+
+return pieces
+
+.slice(
+0,
+info.type==='definition'
+?4
+:7
+)
+
+.join(' ');
+
+}
+
+
+/* =========================================================
+   VALIDATION
+========================================================= */
+
+verifyResult(result,info,passages){
+
+if(!result){
+
+return{
+
+ok:false,
+
+confidence:0,
+
+status:'inconnu',
+
+reasons:['aucun résultat exploitable']
+
+};
+
+}
+
+
+const sources=
+this.unique(
+passages.map(
+p=>p.source
+)
+);
+
+
+const relevant=
+passages.filter(
+p=>this.termScore(
+p.text,
+info
+)>.08
+).length;
+
+
+const contradictions=
+this.findContradictions(
+passages
+);
+
+
+let confidence=
+
+Math.min(
+
+1,
+
+relevant*.06+
+
+sources.length*.07+
+
+(
+
+passages.reduce(
+(a,b)=>a+b.score,
+0
+)
+
+/
+
+Math.max(
+1,
+passages.length
+)
+
+)*.25
+
+);
+
+
+if(
+result.candidate?.edge?.source==='wikidata'
+)
+confidence=Math.min(
+1,
+confidence+.12
+);
+
+
+let status='inconnu';
+
+
+if(
+contradictions.length
+){
+
+status='contradictoire';
+
+confidence=Math.min(
+confidence,
+.48
+);
+
+}else if(
+confidence>=.78
+){
+
+status='confirmée';
+
+}else if(
+confidence>=.55
+){
+
+status='probable';
+
+}else if(
+result.status==='déduction'
+){
+
+status='déduction';
+
+}else{
+
+status='inconnu';
+
+}
+
+
+return{
+
+ok:
+status==='confirmée'||
+status==='probable'||
+status==='déduction',
+
+confidence,
+
+status,
+
+reasons:[
+
+`${relevant} preuves pertinentes`,
+
+`${sources.length} sources distinctes`,
+
+`${contradictions.length} contradiction(s) détectée(s)`
+
+]
+
+};
+
+}
+
+
+/* =========================================================
+   CONTRADICTIONS
+========================================================= */
+
+findContradictions(passages){
+
+const contradictions=[];
+
+
+for(let i=0;i<passages.length;i++){
+
+for(let j=i+1;j<passages.length;j++){
+
+const a=passages[i];
+
+const b=passages[j];
+
+
+if(
+a.source===b.source
+)
+continue;
+
+
+const sim=this.similarity(
+a.text,
+b.text
+);
+
+
+if(sim>.35){
+
+const numsA=this.extractNumbers(
+a.text
+);
+
+const numsB=this.extractNumbers(
+b.text
+);
+
+
+if(
+numsA.length&&
+numsB.length
+){
+
+const sameSubject=
+
+this.similarity(
+a.text,
+b.text
+)>.45;
+
+
+if(
+sameSubject&&
+numsA[0]!==numsB[0]
+){
+
+contradictions.push({
+
+a,
+
+b,
+
+reason:'valeurs numériques différentes'
+
+});
+
+}
+
+}
+
+}
+
+}
+
+}
+
+
+return contradictions.slice(0,20);
+
+}
+
+
+extractNumbers(text){
+
+const matches=
+String(text).match(
+/[-+]?\d+(?:[.,]\d+)?/g
+)||[];
+
+
+return matches
+
+.map(x=>this.parseNumber(x))
+
+.filter(
+x=>x!==null
+);
+
+}
+
+
+/* =========================================================
+   PLUGIN ENGINE V11
+========================================================= */
+
+registerPlugin(plugin){
+
+if(
+!plugin||
+!plugin.id||
+typeof plugin.run!=='function'
+)
+return false;
+
+const previous=this.plugins.get(plugin.id);
+
+const registered={
+
+version:'1.0',
+
+role:'general',
+
+priority:50,
+
+uses:previous?.uses||0,
+
+successes:previous?.successes||0,
+
+failures:previous?.failures||0,
+
+totalScore:previous?.totalScore||0,
+
+...plugin
+
+};
+
+this.plugins.set(
+plugin.id,
+registered
+);
+
+this.memory.pluginRegistry[plugin.id]={
+
+id:plugin.id,
+
+name:plugin.name||plugin.id,
+
+version:registered.version,
+
+category:plugin.category||'general',
+
+role:plugin.role||'general',
+
+external:plugin.external!==false,
+
+sourceFile:plugin.sourceFile||previous?.sourceFile||null,
+
+status:'actif',
+
+firstLoadedAt:this.memory.pluginRegistry[plugin.id]?.firstLoadedAt||this.now(),
+
+lastLoadedAt:this.now()
+};
+
+this.savePersistentMemory();
+
+return true;
+
+}
+
+
+async loadPluginFile(file){
+
+if(!file)
+throw new Error('Aucun fichier plugin sélectionné.');
+
+if(!/\.js$/i.test(file.name))
+throw new Error('Le plugin doit être un fichier .js.');
+
+const source=await file.text();
+
+if(!source.trim())
+throw new Error('Le fichier plugin est vide.');
+
+const blob=new Blob(
+[source],
+{type:'text/javascript'}
+);
+
+const url=URL.createObjectURL(blob);
+
+try{
+
+const module=await import(url);
+
+let exported=module.default??module.plugin??module.plugins;
+
+let list;
+
+if(typeof exported==='function')
+exported=await exported(this);
+
+list=Array.isArray(exported)?exported:[exported];
+
+const loaded=[];
+
+for(const plugin of list){
+
+if(!plugin)
+continue;
+
+if(typeof plugin.run!=='function')
+throw new Error(`Plugin invalide : ${plugin.id||file.name}.`);
+
+plugin.external=true;
+plugin.sourceFile=file.name;
+
+if(this.registerPlugin(plugin))
+loaded.push(plugin.id);
+
+}
+
+if(!loaded.length)
+throw new Error('Aucun plugin valide trouvé dans le fichier.');
+
+return loaded;
+
+}finally{
+
+URL.revokeObjectURL(url);
+
+}
+
+}
+
+
+removePlugin(pluginId){
+
+if(!pluginId)
+return false;
+
+const plugin=this.plugins.get(pluginId);
+
+if(!plugin)
+return false;
+
+this.plugins.delete(pluginId);
+
+if(this.memory.pluginRegistry[pluginId])
+this.memory.pluginRegistry[pluginId].status='retiré';
+
+this.savePersistentMemory();
+
+return true;
+
+}
+
+
+
+registerCorePlugins(){
+
+/* Les plugins sont désormais externes. Cette méthode est conservée pour compatibilité. */
+
+}
+
+selectPlugins(context){
+
+const candidates=[];
+
+
+for(
+const plugin of this.plugins.values()
+){
+
+let usable=false;
+
+
+try{
+
+usable=
+plugin.canHandle
+?
+plugin.canHandle(context)
+:true;
+
+}catch(e){
+
+usable=false;
+
+}
+
+
+if(usable){
+
+let score=
+Number(plugin.priority||50)/100;
+
+
+const previous=
+this.memory.pluginExperiences.filter(
+x=>x.pluginId===plugin.id
+);
+
+
+if(previous.length){
+
+const successRate=
+previous.filter(
+x=>x.success
+).length/
+previous.length;
+
+
+score+=successRate*.5;
+
+}
+
+
+candidates.push({
+
+plugin,
+
+score
+
+});
+
+}
+
+}
+
+
+return candidates
+
+.sort(
+(a,b)=>b.score-a.score
+)
+
+.slice(0,8)
+
+.map(
+x=>x.plugin
+);
+
+}
+
+
+async executePlugin(plugin,context){
+const started=Date.now();
+this.memory.statistics.pluginRuns++;
+let result;
+try{
+ result=await plugin.run({...context,engine:this});
+}catch(e){
+ result={success:false,score:0,error:e?.message||String(e)};
+}
+const success=!!result?.success;
+const experience={
+ id:this.hash(`${plugin.id}|${Date.now()}|${Math.random()}`),
+ pluginId:plugin.id,
+ pluginVersion:plugin.version,
+ success,
+ score:Number(result?.score||0),
+ duration:Date.now()-started,
+ context:{question:context.info?.raw||context.question||'',type:context.info?.type||''},
+ resultSummary:success?this.summarizePluginResult(result):'execution échouée',
+ time:this.now()
+};
+this.addUnique(this.memory.pluginExperiences,experience,experience.id);
+plugin.uses=(plugin.uses||0)+1;
+if(success){plugin.successes=(plugin.successes||0)+1;this.memory.statistics.pluginSuccesses++;}
+else{plugin.failures=(plugin.failures||0)+1;this.memory.statistics.pluginFailures++;}
+await this.learnPluginStrategy(plugin,experience);
+this.savePersistentMemory();
+return result;
+}
+
+summarizePluginResult(result){
+try{
+ const data=result?.data;
+ if(data===undefined) return 'execution réussie';
+ const text=typeof data==='string'?data:JSON.stringify(data);
+ return String(text).slice(0,600);
+}catch(e){return 'execution réussie';}
+}
+
+/* =========================================================
+   APPRENTISSAGE DES PLUGINS
+========================================================= */
+
+async learnPluginStrategy(plugin,experience){
+const experiences=this.memory.pluginExperiences.filter(x=>x.pluginId===plugin.id);
+if(experiences.length<5) return;
+const successes=experiences.filter(x=>x.success).length;
+const rate=successes/experiences.length;
+const strategy={
+ pluginId:plugin.id,
+ uses:experiences.length,
+ successRate:rate,
+ averageScore:experiences.reduce((a,b)=>a+(Number(b.score)||0),0)/experiences.length,
+ updatedAt:this.now(),
+ status:rate>=.8?'efficace':rate>=.55?'acceptable':'faible'
+};
+const strategyKey=`${plugin.id}|strategy`;
+const existingStrategy=this.memory.learnedStrategies.find(x=>x._key===strategyKey||x.pluginId===plugin.id);
+if(existingStrategy) Object.assign(existingStrategy,strategy,{_key:strategyKey});
+else this.memory.learnedStrategies.push({...strategy,_key:strategyKey});
+if(rate>=.88&&experiences.length>=20) await this.considerConsolidation(plugin,strategy);
+}
+
+/* =========================================================
+   COMPÉTENCES CONSOLIDABLES
+========================================================= */
+
+isSerializableSkill(skill){
+if(!skill||typeof skill!=='object') return false;
+try{JSON.stringify(skill);return true;}catch(e){return false;}
+}
+
+canRunLearnedSkill(skill,info){
+if(!skill||!Array.isArray(skill.triggers)||skill.action!=='template') return false;
+const raw=this.norm(info?.raw||'');
+if(!raw) return false;
+return skill.triggers.some(t=>{
+ const n=this.norm(t);
+ return !!n&&(raw.includes(n)||(info?.terms||[]).some(x=>this.norm(x)===n));
+});
+}
+
+runLearnedSkill(skill,info){
+if(!this.canRunLearnedSkill(skill,info)) return null;
+const template=String(skill.template||'');
+if(!template) return null;
+return template.replace(/\{question\}/gi,info.raw||'');
+}
+
+/* =========================================================
+   CONSOLIDATION
+========================================================= */
+
+async testAndAcquireSkill(record,plugin){
+const skill=record.skillDefinition;
+if(!plugin||!skill||skill.action!=='template'){
+ record.status='non_consolidable';
+ record.failureReason='Aucune compétence déclarative exécutable compatible.';
+ this.savePersistentMemory();
+ return false;
+}
+const experiences=this.memory.pluginExperiences.filter(x=>x.pluginId===record.pluginId&&x.success&&x.context?.question).slice(-5);
+const tests=[];
+for(const exp of experiences){
+ const info=this.analyzeQuestion(exp.context.question);
+ const learnedOutput=this.runLearnedSkill(skill,info);
+ let nativeOutput=null,pluginOk=false;
+ try{
+  nativeOutput=await plugin.run({info,question:exp.context.question,passages:[],facts:[],relations:[],graph:null,engine:this,consolidationTest:true});
+  pluginOk=!!nativeOutput?.success;
+ }catch(e){pluginOk=false;}
+ const pluginText=this.summarizePluginResult(nativeOutput||{});
+ const learnedText=String(learnedOutput||'');
+ const similarity=this.similarity(pluginText,learnedText);
+ tests.push({question:exp.context.question,pluginSuccess:pluginOk,learnedAvailable:!!learnedOutput,similarity,passed:pluginOk&&!!learnedOutput,time:this.now()});
+}
+record.tests=tests;
+record.testsCompleted=tests.length;
+record.testsPassed=tests.filter(x=>x.passed).length;
+record.averageTestSimilarity=tests.length?tests.reduce((a,b)=>a+b.similarity,0)/tests.length:0;
+const acquired=tests.length===5&&record.testsPassed===5&&record.averageTestSimilarity>=.05;
+if(acquired){
+ this.memory.learnedSkills[record.pluginId]={id:skill.id||record.pluginId,pluginId:record.pluginId,pluginName:record.pluginName,acquiredAt:this.now(),action:skill.action,definition:JSON.parse(JSON.stringify(skill)),testsPassed:record.testsPassed,averageTestSimilarity:record.averageTestSimilarity};
+ record.status='acquise';record.acquiredAt=this.now();
+ this.plugins.delete(record.pluginId);
+ const reg=this.memory.pluginRegistry[record.pluginId];if(reg) reg.status='acquise';
+ this.learningUpdate({state:'acquired',message:`Compétence acquise sans plugin : ${record.pluginName||record.pluginId}`,count:1});
+}else record.status='candidat';
+this.savePersistentMemory();
+return acquired;
+}
+
+async considerConsolidation(plugin,strategy){
+const existing=this.memory.consolidation.find(x=>x.pluginId===plugin.id);
+if(existing){
+ if(existing.status==='candidat'&&existing.skillDefinition) await this.testAndAcquireSkill(existing,plugin);
+ return;
+}
+const skillDefinition=plugin.skill&&this.isSerializableSkill(plugin.skill)?JSON.parse(JSON.stringify(plugin.skill)):null;
+const record={id:this.hash(`consolidation|${plugin.id}`),pluginId:plugin.id,pluginName:plugin.name||plugin.id,reason:'performance élevée et répétée',uses:strategy.uses,successRate:strategy.successRate,averageScore:strategy.averageScore,status:'candidat',external:true,skillAvailable:!!skillDefinition,skillDefinition,testsRequired:5,testsCompleted:0,testsPassed:0,averageTestSimilarity:0,createdAt:this.now()};
+this.addUnique(this.memory.consolidation,record,record.id);
+this.memory.statistics.consolidations++;
+if(record.skillAvailable&&record.skillDefinition) await this.testAndAcquireSkill(record,plugin);
+else{record.status='non_consolidable';record.failureReason='Le plugin ne fournit pas de skill déclarative sérialisable.';}
+this.savePersistentMemory();
+}
+
+/* =========================================================
+   MÉMOIRE SÉMANTIQUE
+========================================================= */
+
+rememberConcept(label,confidence=0,context=''){
+
+if(!label)
+return;
+
+
+const normalized=this.norm(label);
+
+
+const existing=
+this.memory.concepts.find(
+x=>this.norm(x.label)===normalized
+);
+
+
+const record={
+
+label,
+
+confidence:
+
+Math.max(
+confidence,
+existing?.confidence||0
+),
+
+uses:
+(existing?.uses||0)+1,
+
+lastSeen:this.now()
+
+};
+
+
+if(existing)
+Object.assign(
+existing,
+record
+);
+
+else
+this.memory.concepts.push(
+record
+);
+
+
+if(context){
+
+this.addUnique(
+
+this.memory.adaptiveLearning.contexts,
+
+{
+
+label,
+
+context,
+
+confidence,
+
+lastSeen:this.now()
+
+},
+
+this.hash(
+`${normalized}|${this.norm(context)}`
+)
+
+);
+
+}
+
+}
+
+
+rememberRelation(relation){
+
+if(!relation)
+return;
+
+
+const normalized={
+
+id:
+relation.id||
+this.hash(
+`${relation.subject}|${relation.relation}|${relation.object}`
+),
+
+subject:relation.subject,
+
+relation:relation.relation,
+
+object:relation.object,
+
+status:
+relation.status||
+'source',
+
+confidence:
+Number(relation.confidence)||.5,
+
+provenance:
+relation.provenance||[],
+
+createdAt:
+relation.createdAt||
+this.now(),
+
+updatedAt:this.now()
+
+};
+
+
+this.addUnique(
+
+this.memory.relations,
+
+normalized,
+
+normalized.id
+
+);
+
+}
+
+
+rememberEvidence(passages){
+
+for(
+const p of passages||[]
+){
+
+this.addUnique(
+
+this.memory.evidence,
+
+{
+
+source:p.source,
+
+title:p.title,
+
+url:p.url,
+
+text:p.text,
+
+score:p.score,
+
+time:this.now()
+
+},
+
+this.hash(
+`${p.source}|${p.title}|${p.text}`
+)
+
+);
+
+}
+
+}
+
+
+/* =========================================================
+   TÂCHES
+========================================================= */
+
+detectTaskMode(q){
+
+const n=this.norm(q);
+
+
+if(
+/\b(corrige|corriger|correction|reformule|reformuler|simplifie|simplifier)\b/.test(n)
+)
+return'rewrite';
+
+
+if(
+/\b(resume|résume|résumer|synthese|synthèse)\b/.test(n)
+)
+return'summary';
+
+
+if(
+/\b(redige|rédige|redaction|rédaction|ecris|écris|texte|paragraphe|article|discours|lettre)\b/.test(n)
+)
+return'writing';
+
+
+if(
+/\b(compare|comparaison|difference|différence|versus|vs)\b/.test(n)
+)
+return'comparison';
+
+
+if(
+/\b(verifie|vérifie|verification|vérification|est-ce vrai|est ce vrai)\b/.test(n)
+)
+return'verification';
+
+
+if(
+/\b(explique|explication|pourquoi|comment)\b/.test(n)
+)
+return'explanation';
+
+
+return this.detectSuperlative(q).is
+?'superlative'
+:'research';
+
+}
+
+
+stripTaskPrefix(q){
+
+return String(q)
+
+.replace(
+
+/^(rédige|redige|écris|ecris|résume|resume|reformule|reformuler|corrige|corriger|explique|compare|vérifie|verifie)\b\s*/i,
+
+''
+
+)
+
+.trim();
+
+}
+
+
+sentenceSplit(t){
+
+return this.clean(t)
+
+.split(
+/(?<=[.!?])\s+/
+)
+
+.map(
+x=>x.trim()
+)
+
+.filter(
+x=>x.length>20
+);
+
+}
+
+
+summarizeText(text){
+
+return this.sentenceSplit(text)
+.slice(0,6)
+.join(' ');
+
+}
+
+
+rewriteText(text){
+
+return this.cleanFinalText(text);
+
+}
+
+
+writeFromEvidence(subject,p){
+
+return this.selectPassages(
+p,
+8
+)
+
+.map(
+x=>x.text
+)
+
+.filter(Boolean)
+
+.slice(0,8)
+
+.join(' ');
+
+}
+
+
+compareFromEvidence(info,p){
+
+return this.selectPassages(
+p,
+8
+)
+
+.map(
+x=>`• ${x.text}`
+)
+
+.join('\n');
+
+}
+
+
+/* =========================================================
+   RECHERCHE CIBLÉE
+========================================================= */
+
+async targetedResearch(info,signal){
+
+const allResults=[];
+
+const allDocs=[];
+
+const allFacts=[];
+
+const allRelations=[];
+
+const usedQueries=[];
+
+let passes=0;
+
+let queries=this.buildQueries(info);
+
+
+for(let pass=0;pass<4;pass++){
+
+passes++;
+
+
+this.step(
+`Recherche documentaire ${pass+1}/4`
+);
+
+
+usedQueries.push(
+...queries
+);
+
+
+const results=
+await this.searchAll(
+queries,
+signal
+);
+
+
+allResults.push(
+...results
+);
+
+
+const ids=
+await this.discoverConcepts(
+info,
+signal
+);
+
+
+const ents=
+await this.wikidataEntities(
+ids,
+signal
+);
+
+
+allFacts.push(
+
+...await this.buildWikidataFacts(
+ents,
+signal
+)
+
+);
+
+
+for(
+const r of this.uniqueResults(
+results
+).slice(0,25)
+){
+
+const source=
+this.sources.find(
+x=>x.id===r.source
+);
+
+
+if(!source)
+continue;
+
+
+try{
+
+const d=
+await this.fetchExtract(
+source,
+r.title,
+signal
+);
+
+
+if(d)
+allDocs.push(d);
+
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+}
+
+}
+
+
+allDocs.push(
+...this.buildSnippetDocs(results)
+);
+
+
+const passages=
+this.selectPassages(
+
+this.buildPassages(
+
+this.uniqueDocs(allDocs),
+
+info
+
+),
+
+35
+
+);
+
+
+const extracted=
+passages.flatMap(
+p=>this.extractTextRelations(
+p.text
+)
+);
+
+
+allRelations.push(
+...extracted
+);
+
+
+const graph=
+this.buildGraph(
+
+this.uniqueFacts(allFacts),
+
+this.uniqueRelations(allRelations)
+
+);
+
+
+const discovered=
+this.discoverNewRelations(
+graph
+);
+
+
+if(discovered.length){
+
+this.memory.statistics.newRelations+=
+discovered.length;
+
+
+for(
+const d of discovered
+){
+
+this.addUnique(
+
+this.memory.discoveries,
+
+d,
+
+d.id
+
+);
+
+}
+
+}
+
+
+const direct=
+this.graphAnswer(
+graph,
+info,
+passages
+);
+
+
+if(direct)
+break;
+
+
+if(pass===0){
+
+queries=this.unique([
+
+`${this.extractResearchSubject(info)} contexte`,
+
+`${this.extractResearchSubject(info)} définition`,
+
+`${info.raw} faits`
+
+])
+
+.slice(0,7);
+
+}else if(
+pass===1
+){
+
+queries=this.unique([
+
+`${info.raw} histoire`,
+
+`${info.raw} données`,
+
+`${info.raw} sources`
+
+])
+
+.slice(0,7);
+
+}else{
+
+break;
+
+}
+
+}
+
+
+return{
+
+results:
+this.uniqueResults(allResults),
+
+docs:
+this.uniqueDocs(allDocs),
+
+facts:
+this.uniqueFacts(allFacts),
+
+relations:
+this.uniqueRelations(allRelations),
+
+passes,
+
+usedQueries:
+this.unique(usedQueries)
+
+};
+
+}
+
+
+skillMatches(skill,info){
+ if(!skill||!Array.isArray(skill.triggers)||!info) return false;
+ const raw=this.norm(info.raw||'');
+ if(!raw) return false;
+ return skill.triggers.some(t=>{const n=this.norm(t);return !!n&&(raw.includes(n)||(info.terms||[]).some(x=>this.norm(x)===n));});
+}
+
+runDeclarativeSkill(skill,info,depth=0){
+ if(depth>8||!skill||!info||!this.skillMatches(skill,info)) return null;
+ const action=String(skill.action||'').toLowerCase();
+ if(action==='template'||action==='transform'){const template=String(skill.template||skill.transform||'');return template?template.replace(/\{question\}/gi,info.raw||''):null;}
+ if(action==='rules'){for(const rule of Array.isArray(skill.rules)?skill.rules:[]){const when=Array.isArray(rule.when)?rule.when:[rule.when];if(when.some(x=>x&&this.norm(info.raw||'').includes(this.norm(x))))return String(rule.answer??rule.output??'').replace(/\{question\}/gi,info.raw||'')||null;}return null;}
+ if(action==='chain'){const outputs=[];for(const step of Array.isArray(skill.steps)?skill.steps:[]){const out=this.runDeclarativeSkill(step?.definition||step,info,depth+1);if(out)outputs.push(String(out));}return outputs.length?outputs.join('\n\n'):null;}
+ return null;
+}
+
+canRunLearnedSkill(skill,info){return !!this.runDeclarativeSkill(skill,info);}
+runLearnedSkill(skill,info){return this.runDeclarativeSkill(skill,info);}
+
+findLearnedSkill(q){
+ const info=this.analyzeQuestion(q);let best=null;
+ const entries=[...Object.entries(this.memory.learnedSkills||{}),...Object.entries(this.memory.composedSkills||{})];
+ for(const [id,entry] of entries){const definition=entry?.definition||entry;const answerText=this.runDeclarativeSkill(definition,info);if(!answerText)continue;const score=Number(entry?.averageTestSimilarity||entry?.score||0)+Number(entry?.uses||0)*0.0001;if(!best||score>best.score)best={pluginId:entry?.pluginId||id,skillId:definition.id||id,answerText,score};}
+ if(best){this.memory.skillUsage=Array.isArray(this.memory.skillUsage)?this.memory.skillUsage:[];this.addUnique(this.memory.skillUsage,{skillId:best.skillId,pluginId:best.pluginId,question:q,time:this.now()},this.hash(`${best.skillId}|${q}`));this.savePersistentMemory();}
+ return best;
+}
+
+findOrchestrator(){for(const plugin of this.plugins.values())if(plugin?.role==='orchestrator'||plugin?.category==='orchestration'||plugin?.id==='orchestrateur')return plugin;return null;}
+
+async runOrchestrator(context){const orchestrator=this.findOrchestrator();if(!orchestrator)return null;try{return await this.executePlugin(orchestrator,{...context,centralRouting:true});}catch(e){return{success:false,score:0,error:e?.message||String(e)};}}
+
+recordOrchestrationCandidate(pluginIds,question,score){
+ const ids=[...new Set((pluginIds||[]).filter(Boolean))].sort();if(ids.length<2)return;
+ const experiences=this.memory.orchestrationExperiences,candidates=this.memory.orchestrationCandidates,key=ids.join('|');
+ let rec=experiences.find(x=>x.combinationKey===key);if(!rec){rec={id:this.hash(`orchestration|${key}`),combinationKey:key,plugins:ids,uses:0,successes:0,averageScore:0,questions:[],createdAt:this.now()};experiences.push(rec);}
+ const old=Number(rec.uses)||0;rec.uses=old+1;if(Number(score||0)>=0.6)rec.successes=(rec.successes||0)+1;rec.averageScore=((Number(rec.averageScore)||0)*old+Number(score||0))/rec.uses;rec.questions=Array.isArray(rec.questions)?rec.questions:[];rec.questions.push(question);if(rec.questions.length>10)rec.questions=rec.questions.slice(-10);rec.updatedAt=this.now();
+ if(rec.uses>=5&&rec.successes/rec.uses>=0.8&&rec.averageScore>=0.6){const candidate={id:this.hash(`orchestration-candidate|${key}`),combinationKey:key,plugins:ids,uses:rec.uses,successRate:rec.successes/rec.uses,averageScore:rec.averageScore,status:'candidat_competence',updatedAt:this.now()};const existing=candidates.find(x=>x.combinationKey===key);if(existing)Object.assign(existing,candidate);else candidates.push(candidate);this.tryBuildComposedSkill(candidate);}
+}
+
+tryBuildComposedSkill(candidate){
+ if(!candidate||candidate.plugins.length<2)return false;const definitions=[];
+ for(const pluginId of candidate.plugins){const entry=this.memory.learnedSkills?.[pluginId];if(!entry?.definition||!['template','transform','rules','chain'].includes(String(entry.definition.action||'').toLowerCase()))return false;definitions.push({pluginId,definition:entry.definition});}
+ const id=`compose_${this.hash(candidate.combinationKey)}`;this.memory.composedSkills=this.memory.composedSkills||{};this.memory.composedSkills[id]={id,pluginIds:[...candidate.plugins],definition:{id,action:'chain',triggers:definitions.flatMap(x=>x.definition.triggers||[]),capabilities:['composition','orchestration'],steps:definitions},uses:candidate.uses,averageTestSimilarity:candidate.averageScore,status:'acquise',acquiredAt:this.now()};candidate.status='acquise_composee';return true;
+}
+
+/* =========================================================
+   ROUTAGE CONVERSATIONNEL LOCAL
+========================================================= */
+
+isConversational(q){
+ const n=this.norm(q);
+ if(!n) return false;
+ return /^(bonjour|bonsoir|salut|allo|coucou|hey|hello|merci|merci beaucoup|ca va|ça va|comment vas tu|comment allez vous|bonne journee|bonne soirée|a bientot|à bientot|bye)\b/.test(n)
+   || /^(tu vas bien|vous allez bien|quoi de neuf|qui es tu|qui êtes vous)\b/.test(n);
+}
+
+conversationReply(q){
+ const n=this.norm(q);
+ if(/^(merci|merci beaucoup)\b/.test(n)) return 'Avec plaisir 🙂';
+ if(/(bonne journee|bonne soirée|a bientot|à bientot|bye)/.test(n)) return 'À bientôt 🙂';
+ if(/(ca va|ça va|comment vas tu|comment allez vous|tu vas bien|vous allez bien)/.test(n)) return 'Ça va bien, merci 🙂 Prêt à discuter ou à chercher quelque chose.';
+ if(/(qui es tu|qui êtes vous)/.test(n)) return 'Je suis le moteur sémantique V11.0 : je peux discuter, rechercher, comparer et structurer des informations.';
+ return 'Bonjour 🙂 Que veux-tu faire ?';
+}
+
+/* =========================================================
+   SOLVE TASK
+========================================================= */
+
+async solveTask(q,signal){
+
+if(this.isConversational(q)){
+ const info=this.analyzeQuestion(q);
+ return{info,answerText:this.conversationReply(q),passages:[],facts:[],relations:[],research:{passes:0,results:[],usedQueries:[]},verification:{ok:true,confidence:.98,status:'conversation',reasons:['échange conversationnel local — aucune recherche nécessaire']}};
+}
+
+const learnedHit=this.findLearnedSkill(q);
+if(learnedHit){
+ const info=this.analyzeQuestion(q);
+ return{info,answerText:learnedHit.answerText,passages:[],facts:[],relations:[],research:{passes:0,results:[],usedQueries:[]},verification:{ok:true,confidence:.95,status:'compétence acquise',reasons:[`réponse produite par la compétence acquise ${learnedHit.pluginId} sans plugin externe`]}};
+}
+
+const mode=
+this.detectTaskMode(q);
+
+const info=
+this.analyzeQuestion(q);
+
+/* ---------- ROUTAGE CENTRAL V11 ---------- */
+const routingContext={info,question:q,passages:[],facts:[],relations:[],graph:null};
+const orchestrator=this.findOrchestrator();
+let orchestrationResult=null;
+if(orchestrator){this.step('Orchestration centrale');orchestrationResult=await this.runOrchestrator(routingContext);}
+
+
+if(
+(mode==='summary'||mode==='rewrite')&&
+q.length>180
+){
+
+const text=
+this.stripTaskPrefix(q);
+
+
+return{
+
+info,
+
+answerText:
+
+mode==='summary'
+
+?
+
+this.summarizeText(text)
+
+:
+
+this.rewriteText(text),
+
+passages:[],
+
+facts:[],
+
+relations:[],
+
+research:{
+passes:0,
+results:[],
+usedQueries:[]
+},
+
+verification:{
+
+ok:true,
+
+confidence:.9,
+
+status:'confirmée',
+
+reasons:[
+'transformation locale'
+]
+
+}
+
+};
+
+}
+
+
+this.step(
+'Compréhension structurelle'
+);
+
+
+/* ---------- PLUGIN COMPRÉHENSION ---------- */
+
+const context={
+
+info,
+
+question:q,
+
+passages:[],
+
+facts:[],
+
+relations:[],
+
+graph:null
+
+};
+
+
+const selectedPlugins=
+this.selectPlugins(
+context
+);
+
+
+const pluginResults=[];
+if(orchestrationResult)pluginResults.push({plugin:orchestrator,result:orchestrationResult});
+const orchestratedIds=new Set(Array.isArray(orchestrationResult?.data?.pluginsSelectionnes)?orchestrationResult.data.pluginsSelectionnes.map(x=>x.id):[]);
+for(
+const plugin of selectedPlugins.slice(0,3)
+){
+ if(plugin.id===orchestrator?.id||orchestratedIds.has(plugin.id))continue;
+
+const result=
+await this.executePlugin(
+plugin,
+context
+);
+
+
+pluginResults.push({
+
+plugin,
+
+result
+
+});
+
+}
+
+
+this.step(
+'Planification de la recherche'
+);
+
+
+const research=
+await this.targetedResearch(
+info,
+signal
+);
+
+
+const passages=
+this.selectPassages(
+
+this.buildPassages(
+research.docs,
+info
+),
+
+40
+
+);
+
+
+const graph=
+this.buildGraph(
+research.facts,
+research.relations
+);
+
+
+this.currentGraph=graph;
+
+
+this.step(
+'Construction du graphe sémantique'
+);
+
+
+/* ---------- PLUGINS POST-RECHERCHE ---------- */
+
+const postContext={
+
+info,
+
+question:q,
+
+passages,
+
+facts:research.facts,
+
+relations:research.relations,
+
+graph
+
+};
+
+
+const postPlugins=
+this.selectPlugins(
+postContext
+);
+
+
+for(
+const plugin of postPlugins
+){
+
+if(
+pluginResults.some(
+x=>x.plugin.id===plugin.id
+)
+)
+continue;
+
+
+const result=
+await this.executePlugin(
+plugin,
+postContext
+);
+
+
+pluginResults.push({
+
+plugin,
+
+result
+
+});
+
+
+}
+
+
+this.step(
+'Détection des relations nouvelles'
+);
+
+
+const discoveries=
+this.discoverNewRelations(
+graph
+);
+
+
+for(
+const d of discoveries
+){
+
+this.addUnique(
+
+this.memory.discoveries,
+
+d,
+
+d.id
+
+);
+
+}
+
+
+const paths=
+this.buildSemanticPaths(
+graph,
+info
+);
+
+
+for(
+const p of paths
+){
+
+this.addUnique(
+
+this.memory.semanticPaths,
+
+p,
+
+this.hash(
+JSON.stringify(p)
+)
+
+);
+
+}
+
+
+let raw;
+
+
+if(mode==='comparison'){
+
+raw={
+
+answerText:
+this.compareFromEvidence(
+info,
+passages
+),
+
+status:'probable'
+
+};
+
+}else{
+
+raw=
+this.graphAnswer(
+graph,
+info,
+passages
+);
+
+if(!raw){
+
+raw={
+
+answerText:
+this.synthesize(
+info,
+passages,
+pluginResults
+),
+
+status:
+passages.length
+?'probable'
+:'inconnu'
+
+};
+
+}
+
+}
+
+
+/* ---------- HYPOTHÈSES ---------- */
+
+if(
+raw?.candidate?.edge
+){
+
+const edge=
+raw.candidate.edge;
+
+
+if(
+edge.status!=='source'
+){
+
+const hypothesis=
+this.createHypothesis(
+
+raw.candidate.node.label,
+
+edge.labelText||
+edge.label,
+
+edge.raw?.object||
+edge.raw?.value||
+edge.value,
+
+'Relation issue du raisonnement local',
+
+edge.provenance
+
+);
+
+
+this.validateHypothesis(
+hypothesis,
+passages
+);
+
+}
+
+}
+
+
+/* ---------- VALIDATION ---------- */
+
+this.step(
+'Validation des preuves'
+);
+
+
+const verification=
+this.verifyResult(
+raw,
+info,
+passages
+);
+
+
+return{
+
+info,
+
+answerText:
+raw.answerText,
+
+passages,
+
+facts:
+research.facts,
+
+relations:
+research.relations,
+
+research,
+
+graph,
+
+paths,
+
+discoveries,
+
+plugins:pluginResults,
+
+verification
+
+};
+
+}
+
+
+/* =========================================================
+   MÉMOIRE APRÈS RÉPONSE
+========================================================= */
+
+rememberV10(q,out){
+
+const now=this.now();
+
+const answerId=
+out.meta?.answerId||
+this.hash(
+`${q}|${Date.now()}`
+);
+
+
+this.addUnique(
+
+this.memory.conversation,
+
+{
+
+question:q,
+
+answer:out.answerText,
+
+time:now,
+
+type:out.meta?.type||'research',
+
+mode:'discussion',
+
+confidence:
+out.confidence||0,
+
+status:
+out.verification?.status||
+
+'inconnu',
+
+_answerId:answerId
+
+},
+
+this.hash(
+`${q}|${out.answerText}|${answerId}`
+)
+
+);
+
+
+for(
+const c of this.unique([
+
+...this.words(q),
+
+...this.extractPhrases(q)
+
+]).slice(0,45)
+){
+
+this.rememberConcept(
+c,
+0,
+q
+);
+
+}
+
+
+this.rememberEvidence(
+out.passages
+);
+
+
+for(
+const r of out.relations||[]
+){
+
+this.rememberRelation({
+
+subject:r.subject,
+
+relation:r.relation,
+
+object:r.object,
+
+status:'source',
+
+confidence:.55,
+
+provenance:[{
+
+type:'source',
+
+source:'text',
+
+text:r.text
+
+}]
+
+});
+
+}
+
+
+for(
+const d of out.discoveries||[]
+){
+
+this.addUnique(
+
+this.memory.discoveries,
+
+d,
+
+d.id
+
+);
+
+}
+
+
+for(
+const p of out.paths||[]
+){
+
+this.addUnique(
+
+this.memory.semanticPaths,
+
+p,
+
+this.hash(
+JSON.stringify(p)
+)
+
+);
+
+}
+
+
+for(
+const query of out.research?.usedQueries||[]
+){
+
+this.addUnique(
+
+this.memory.searches,
+
+{
+
+query,
+
+type:
+out.meta?.type||'research',
+
+mode:'discussion',
+
+time:now
+
+},
+
+this.hash(
+`${query}|discussion`
+)
+
+);
+
+}
+
+
+this.memory.statistics.runs++;
+
+this.memory.statistics.successes++;
+
+this.memory.statistics.totalSearchPasses+=
+out.research?.passes||0;
+
+this.memory.statistics.totalSources+=
+this.unique(
+(out.passages||[])
+.map(p=>p.source)
+).length;
+
+this.memory.statistics.lastRun=now;
+
+
+this.savePersistentMemory();
+
+
+this.sessionMemory.push({
+
+q,
+
+answer:out.answerText,
+
+time:Date.now(),
+
+answerId
+
+});
+
+
+if(
+this.sessionMemory.length>50
+)
+this.sessionMemory.shift();
+
+}
+
+
+/* =========================================================
+   APPRENTISSAGE DISCRET
+========================================================= */
+
+getMemoryConcept(label){
+
+const n=this.norm(label);
+
+return this.memory.adaptiveLearning.concepts.find(
+
+x=>this.norm(x.label)===n
+
+)||null;
+
+}
+
+
+getConceptConfidence(label,context=''){
+
+const c=
+this.getMemoryConcept(label);
+
+
+if(!c)
+return 0;
+
+
+let base=
+Number(c.confidence)||0;
+
+
+const ctx=
+this.findContext(
+label,
+context
+);
+
+
+if(ctx)
+base=Math.max(
+base,
+Number(ctx.confidence)||0
+);
+
+
+return Math.min(
+1,
+base
+);
+
+}
+
+
+findContext(label,context){
+
+const ln=this.norm(label);
+
+const cn=this.norm(context);
+
+
+return this.memory.adaptiveLearning.contexts.find(
+
+x=>
+
+this.norm(x.label)===ln&&
+
+(!cn||
+this.similarity(
+x.context,
+context
+)>.25)
+
+)||null;
+
+}
+
+
+extractLearningCandidates(q){
+
+const info=
+this.analyzeQuestion(q);
+
+const cands=[];
+
+
+for(
+const p of info.phrases
+){
+
+cands.push({
+
+label:p,
+
+reason:'phrase'
+
+});
+
+}
+
+
+for(
+const t of info.terms
+){
+
+if(t.length>=4){
+
+cands.push({
+
+label:t,
+
+reason:'term'
+
+});
+
+}
+
+}
+
+
+return cands.filter(
+
+(x,i,a)=>
+
+a.findIndex(
+
+y=>
+
+this.norm(y.label)===this.norm(x.label)
+
+)===i
+
+).slice(0,12);
+
+}
+
+
+estimateCandidateConfidence(
+label,
+q,
+passages
+){
+
+const local=
+this.getConceptConfidence(
+label,
+q
+);
+
+
+if(local)
+return local;
+
+
+const n=this.norm(label);
+
+
+const relevant=
+passages.filter(
+
+p=>
+
+this.norm(p.text)
+.includes(n)
+
+);
+
+
+const sources=
+this.unique(
+relevant.map(
+p=>p.source
+)
+).length;
+
+
+if(!relevant.length)
+return 0;
+
+
+return Math.min(
+
+1,
+
+.25+
+
+Math.min(
+.35,
+relevant.length*.10
+)+
+
+Math.min(
+.30,
+sources*.12
+)
+
+);
+
+}
+
+
+learningNeed(label,q,passages){
+
+const current=
+this.getConceptConfidence(
+label,
+q
+);
+
+
+const fresh=
+this.estimateCandidateConfidence(
+label,
+q,
+passages
+);
+
+
+return Math.max(
+current,
+fresh
+)<.70;
+
+}
+
+
+async lookupLearningTerm(
+label,
+context,
+signal
+){
+
+const queries=[
+
+label,
+
+`${label} définition`,
+
+`${label} contexte`
+
+];
+
+
+const results=
+await this.searchAll(
+queries,
+signal
+);
+
+
+const docs=[];
+
+
+for(
+const r of this.uniqueResults(
+results
+).slice(0,14)
+){
+
+const source=
+this.sources.find(
+s=>s.id===r.source
+);
+
+
+if(!source)
+continue;
+
+
+try{
+
+const d=
+await this.fetchExtract(
+source,
+r.title,
+signal
+);
+
+
+if(d)
+docs.push(d);
+
+}catch(e){
+
+if(e.name==='AbortError')
+throw e;
+
+}
+
+}
+
+
+const passages=
+this.selectPassages(
+
+this.buildPassages(
+
+this.uniqueDocs(docs),
+
+{
+
+raw:label,
+
+terms:this.words(label),
+
+phrases:[label],
+
+domains:[label],
+
+superlative:{is:false}
+
+}
+
+),
+
+20
+
+);
+
+
+const sourceCount=
+this.unique(
+passages.map(
+p=>p.source
+)
+).length;
+
+
+const relevant=
+passages.filter(
+
+p=>
+
+this.norm(p.text)
+.includes(
+this.norm(label)
+)
+
+).length;
+
+
+const confidence=
+Math.min(
+
+1,
+
+relevant*.12+
+sourceCount*.18+
+.20
+
+);
+
+
+return{
+
+label,
+
+context,
+
+results,
+
+passages,
+
+sourceCount,
+
+relevant,
+
+confidence
+
+};
+
+}
+
+
+learnConcept(data){
+
+const now=this.now();
+
+const existing=
+this.getMemoryConcept(
+data.label
+);
+
+
+const record=
+existing||
+
+{
+
+label:data.label,
+
+confidence:0,
+
+sources:[],
+
+uses:0,
+
+validated:0,
+
+uncertain:0,
+
+lastSeen:now
+
+};
+
+
+record.confidence=
+Math.max(
+Number(record.confidence)||0,
+data.confidence||0
+);
+
+
+record.sources=
+this.unique([
+
+...(record.sources||[]),
+
+...(data.sources||[])
+
+]);
+
+
+record.uses=
+(record.uses||0)+1;
+
+
+record.lastSeen=now;
+
+
+if(
+data.confidence>=.70
+)
+record.validated=
+(record.validated||0)+1;
+
+else
+record.uncertain=
+(record.uncertain||0)+1;
+
+
+if(!existing){
+
+this.memory.adaptiveLearning.concepts.push(
+record
+);
+
+}else{
+
+Object.assign(
+existing,
+record
+);
+
+}
+
+
+if(data.context){
+
+const key=
+this.hash(
+`${this.norm(data.label)}|${this.norm(data.context)}`
+);
+
+
+this.addUnique(
+
+this.memory.adaptiveLearning.contexts,
+
+{
+
+label:data.label,
+
+context:data.context,
+
+confidence:data.confidence,
+
+source:data.source||'public',
+
+lastSeen:now
+
+},
+
+key
+
+);
+
+}
+
+
+this.addUnique(
+
+this.memory.adaptiveLearning.validations,
+
+{
+
+label:data.label,
+
+confidence:data.confidence,
+
+sources:data.sources||[],
+
+time:now,
+
+context:data.context||''
+
+},
+
+this.hash(
+`${data.label}|${data.context}|${data.confidence}`
+)
+
+);
+
+}
+
+
+async backgroundLearn(question,result){
+
+if(
+this.learningBusy||
+this.mode==='agent'
+)
+return;
+
+
+this.learningBusy=true;
+
+this.learningController=
+new AbortController();
+
+
+const signal=
+this.learningController.signal;
+
+
+const stats=
+this.memory.statistics;
+
+
+stats.learningRuns++;
+
+
+try{
+
+const candidates=
+this.extractLearningCandidates(
+question
+);
+
+
+const passages=
+result.passages||[];
+
+
+const todo=
+candidates.filter(
+
+c=>
+
+this.learningNeed(
+c.label,
+question,
+passages
+)
+
+);
+
+
+this.learningUpdate({
+
+state:'working',
+
+message:
+`Vérification discrète : ${todo.length} notion(s)`,
+
+count:todo.length
+
+});
+
+
+for(
+const c of todo.slice(0,6)
+){
+
+if(signal.aborted)
+break;
+
+
+const found=
+await this.lookupLearningTerm(
+c.label,
+question,
+signal
+);
+
+
+const sources=
+this.unique(
+found.passages.map(
+p=>p.source
+)
+);
+
+
+let confidence=
+found.confidence;
+
+
+if(
+sources.includes('wiktionary')&&
+sources.includes('wikipedia')
+){
+
+confidence=
+Math.min(
+1,
+confidence+.15
+);
+
+}
+
+
+this.learnConcept({
+
+label:c.label,
+
+context:question,
+
+confidence,
+
+sources,
+
+source:'public'
+
+});
+
+
+if(confidence>=.70)
+stats.learningConfirmed++;
+
+else
+stats.learningUncertain++;
+
+
+this.addUnique(
+
+this.memory.adaptiveLearning.events,
+
+{
+
+type:
+confidence>=.70
+?'validated'
+:'uncertain',
+
+label:c.label,
+
+confidence,
+
+sources,
+
+time:this.now()
+
+},
+
+this.hash(
+`${c.label}|${question}|${confidence}`
+)
+
+);
+
+}
+
+
+stats.learningCompleted++;
+
+stats.lastLearningRun=this.now();
+
+this.memory.statistics=stats;
+
+this.savePersistentMemory();
+
+
+this.learningUpdate({
+
+state:'done',
+
+message:
+
+todo.length
+
+?
+
+`Apprentissage terminé : ${todo.length} notion(s) traitée(s).`
+
+:
+
+'Aucune vérification supplémentaire nécessaire.',
+
+count:todo.length
+
+});
+
+
+}catch(e){
+
+if(
+e.name!=='AbortError'
+){
+
+this.learningUpdate({
+
+state:'error',
+
+message:
+'Apprentissage discret interrompu.',
+
+count:0
+
+});
+
+}
+
+}finally{
+
+this.learningBusy=false;
+
+this.learningController=null;
+
+}
+
+}
+
+
+stopLearning(){
+
+if(
+this.learningController
+)
+this.learningController.abort();
+
+}
+
+
+/* =========================================================
+   AGENT V11
+========================================================= */
+
+async runAgent(goal){
+
+if(this.busy)
+throw new Error(
+'Moteur déjà occupé.'
+);
+
+
+this.busy=true;
+
+this.abortController=
+new AbortController();
+
+
+const signal=
+this.abortController.signal;
+
+
+const mission={
+
+id:
+this.hash(
+`${goal}|${Date.now()}`
+),
+
+goal:
+String(goal).trim(),
+
+startedAt:
+this.now(),
+
+finishedAt:null,
+
+status:'running',
+
+pass:0,
+
+maxPasses:15,
+
+score:0,
+
+queries:[],
+
+results:[],
+
+docs:[],
+
+passages:[],
+
+facts:[],
+
+relations:[],
+
+discoveries:[],
+
+paths:[],
+
+plugins:[],
+
+evaluation:null
+
+};
+
+
+this.agentMission=mission;
+
+this.memory.statistics.agentRuns++;
+
+
+try{
+
+let queries=
+this.buildQueries(
+this.analyzeQuestion(goal)
+);
+
+
+if(!queries.length)
+queries=[goal];
+
+
+for(
+let i=0;
+i<mission.maxPasses;
+i++
+){
+
+if(signal.aborted){
+
+mission.status='stopped';
+
+break;
+
+}
+
+
+mission.pass++;
+
+
+this.agentUpdate({
+
+phase:
+`Recherche ${mission.pass}`,
+
+pass:mission.pass,
+
+maxPasses:mission.maxPasses,
+
+score:mission.score,
+
+goal:mission.goal
+
+});
+
+
+mission.queries.push(
+...queries
+);
+
+
+const info=
+this.analyzeQuestion(goal);
+
+
+const res=
+await this.searchAll(
+queries,
+signal
+);
+
+
+mission.results=
+this.uniqueResults([
+
+...mission.results,
+
+...res
+
+]);
+
+
+const ids=
+await this.discoverConcepts(
+info,
+signal
+);
+
+
+const ents=
+await this.wikidataEntities(
+ids,
+signal
+);
+
+
+mission.facts=
+this.uniqueFacts([
+
+...mission.facts,
+
+...await this.buildWikidataFacts(
+ents,
+signal
+)
+
+]);
+
+
+for(
+const r of this.uniqueResults(
+res
+).slice(0,22)
+){
+
+const source=
+this.sources.find(
+s=>s.id===r.source
+);
+
+
+if(!source)
+continue;
+
+
+try{
+
+const d=
+await this.fetchExtract(
+source,
+r.title,
+signal
+);
+
+
+if(d)
+mission.docs.push(d);
+
+}catch(e){
+
+if(
+e.name==='AbortError'
+)
+throw e;
+
+}
+
+}
+
+
+mission.docs=
+this.uniqueDocs([
+
+...mission.docs,
+
+...this.buildSnippetDocs(res)
+
+]);
+
+
+mission.passages=
+this.selectPassages(
+
+this.buildPassages(
+mission.docs,
+info
+),
+
+50
+
+);
+
+
+const extracted=
+mission.passages.flatMap(
+p=>this.extractTextRelations(
+p.text
+)
+);
+
+
+mission.relations=
+this.uniqueRelations([
+
+...mission.relations,
+
+...extracted
+
+]);
+
+
+const graph=
+this.buildGraph(
+mission.facts,
+mission.relations
+);
+
+
+const discoveries=
+this.discoverNewRelations(
+graph
+);
+
+
+mission.discoveries=[
+...mission.discoveries,
+
+...discoveries
+
+];
+
+
+const paths=
+this.buildSemanticPaths(
+graph,
+info
+);
+
+
+mission.paths=[
+...mission.paths,
+
+...paths
+
+];
+
+
+const context={
+
+info,
+
+question:goal,
+
+passages:mission.passages,
+
+facts:mission.facts,
+
+relations:mission.relations,
+
+graph
+
+};
+
+
+const plugins=
+this.selectPlugins(
+context
+);
+
+
+for(
+const plugin of plugins
+){
+
+const pr=
+await this.executePlugin(
+plugin,
+context
+);
+
+
+mission.plugins.push({
+
+pluginId:plugin.id,
+
+success:
+pr.success,
+
+score:
+pr.score||0
+
+});
+
+}
+
+
+const direct=
+this.graphAnswer(
+graph,
+info,
+mission.passages
+);
+
+
+const sources=
+this.unique(
+mission.passages.map(
+p=>p.source
+)
+);
+
+
+const relevant=
+mission.passages.filter(
+p=>this.termScore(
+p.text,
+info
+)>.08
+).length;
+
+
+const contradictionCount=
+this.findContradictions(
+mission.passages
+).length;
+
+
+mission.score=Math.min(
+
+100,
+
+Math.round(
+
+relevant*3+
+
+sources.length*8+
+
+mission.facts.length/4+
+
+mission.paths.length*2-
+
+contradictionCount*8
+
+)
+
+);
+
+
+this.agentUpdate({
+
+phase:'Analyse des lacunes',
+
+pass:mission.pass,
+
+maxPasses:mission.maxPasses,
+
+score:mission.score,
+
+goal:mission.goal
+
+});
+
+
+if(
+
+direct&&
+sources.length>=2&&
+contradictionCount===0
+
+){
+
+mission.status='completed';
+
+break;
+
+}
+
+
+if(
+mission.score>=88&&
+sources.length>=2
+){
+
+mission.status='completed';
+
+break;
+
+}
+
+
+if(
+info.superlative?.is&&
+!this.solveSuperlative(
+graph,
+info
+)
+){
+
+queries=this.unique([
+
+`${goal} superficie population hauteur longueur altitude valeur`,
+
+`${goal} classement données quantitatives`,
+
+`${this.extractResearchSubject(info)} statistiques`
+
+])
+
+.slice(0,8);
+
+}else{
+
+queries=this.unique([
+
+`${this.extractResearchSubject(info)} ${this.requestedRelationTerms(info).join(' ')}`,
+
+`${goal} faits`,
+
+`${goal} sources`,
+
+`${goal} contexte`
+
+])
+
+.slice(0,8);
+
+}
+
+
+if(!queries.length){
+
+mission.status='completed';
+
+break;
+
+}
+
+
+await this.interruptibleSleep(
+150,
+signal
+);
+
+}
+
+
+if(
+mission.status==='running'
+)
+mission.status='completed';
+
+
+mission.finishedAt=
+this.now();
+
+
+const info=
+this.analyzeQuestion(goal);
+
+
+const passages=
+this.selectPassages(
+mission.passages,
+24
+);
+
+
+const graph=
+this.buildGraph(
+mission.facts,
+mission.relations
+);
+
+
+const raw=
+this.graphAnswer(
+graph,
+info,
+passages
+)||{
+
+answerText:
+this.synthesize(
+info,
+passages
+),
+
+status:
+passages.length
+?'probable'
+:'inconnu'
+
+};
+
+
+const ver=
+this.verifyResult(
+raw,
+info,
+passages
+);
+
+
+const result={
+
+answerText:
+this.cleanFinalText(
+raw.answerText
+),
+
+sources:[
+
+...this.unique(
+passages
+.slice(0,14)
+.map(
+p=>`${p.source}: ${p.title}`
+)
+),
+
+`${this.personalReference.id}: ${this.personalReference.label}`
+
+],
+
+passages,
+
+confidence:
+ver.confidence,
+
+entities:
+this.unique(
+mission.results
+.slice(0,40)
+.map(
+x=>x.title
+)
+),
+
+facts:mission.facts,
+
+relations:mission.relations,
+
+discoveries:mission.discoveries,
+
+paths:mission.paths,
+
+meta:{
+
+mode:'agent',
+
+type:info.type,
+
+answerId:
+this.hash(
+`${goal}|${mission.id}`
+),
+
+missionId:
+mission.id,
+
+passes:
+mission.pass,
+
+agentScore:
+mission.score,
+
+agentStatus:
+mission.status,
+
+verification:ver
+
+}
+
+};
+
+
+this.saveAgentMission(
+mission,
+result
+);
+
+
+this.memory.statistics.lastAgentRun=
+this.now();
+
+
+if(
+mission.status==='completed'
+)
+this.memory.statistics.agentCompleted++;
+
+
+this.savePersistentMemory();
+
+
+return result;
+
+
+}catch(e){
+
+if(
+e.name==='AbortError'
+){
+
+mission.status='stopped';
+
+mission.finishedAt=
+this.now();
+
+this.memory.statistics.agentStopped++;
+
+this.savePersistentMemory();
+
+
+return{
+
+answerText:
+'Mission Agent arrêtée.',
+
+sources:[],
+
+passages:[],
+
+confidence:0,
+
+entities:[],
+
+meta:{
+
+mode:'agent',
+
+missionId:mission.id,
+
+passes:mission.pass,
+
+agentScore:mission.score,
+
+agentStatus:'stopped',
+
+answerId:
+this.hash(
+`${goal}|${mission.id}`
+)
+
+}
+
+};
+
+}
+
+
+mission.status='failed';
+
+this.memory.statistics.failures++;
+
+this.savePersistentMemory();
+
+throw e;
+
+
+}finally{
+
+this.busy=false;
+
+this.abortController=null;
+
+
+this.agentUpdate({
+
+phase:
+
+mission.status==='stopped'
+
+?
+
+'Mission arrêtée'
+
+:
+
+mission.status==='failed'
+
+?
+
+'Mission en erreur'
+
+:
+
+'Mission terminée',
+
+pass:mission.pass,
+
+maxPasses:mission.maxPasses,
+
+score:mission.score,
+
+goal:mission.goal
+
+});
+
+}
+
+}
+
+
+saveAgentMission(m,r){
+
+this.addUnique(
+
+this.memory.agentMissions,
+
+{
+
+id:m.id,
+
+goal:m.goal,
+
+startedAt:m.startedAt,
+
+finishedAt:m.finishedAt,
+
+status:m.status,
+
+passes:m.pass,
+
+score:m.score,
+
+queries:
+this.unique(
+m.queries
+).slice(0,150),
+
+sources:
+this.unique(
+m.passages.map(
+p=>p.source
+)
+),
+
+discoveries:
+m.discoveries?.length||0,
+
+paths:
+m.paths?.length||0,
+
+plugins:
+m.plugins||[],
+
+result:
+r?.answerText||''
+
+},
+
+m.id
+
+);
+
+
+if(
+this.memory.agentMissions.length>100
+)
+this.memory.agentMissions.shift();
+
+}
+
+
+stopAgent(){
+
+if(
+this.busy&&
+this.abortController
+){
+
+this.abortController.abort();
+
+return true;
+
+}
+
+return false;
+
+}
+
+
+/* =========================================================
+   RUN PRINCIPAL
+========================================================= */
+
+async run(q){
+
+if(this.busy)
+throw new Error(
+'Moteur déjà occupé.'
+);
+
+
+if(this.mode==='agent')
+return this.runAgent(q);
+
+
+this.busy=true;
+
+this.abortController=
+new AbortController();
+
+
+try{
+
+const out=
+await this.solveTask(
+q,
+this.abortController.signal
+);
+
+
+const answerId=
+this.hash(
+`${q}|${Date.now()}`
+);
+
+
+const result={
+
+answerText:
+this.cleanFinalText(
+out.answerText
+),
+
+sources:[
+
+...this.unique(
+(out.passages||[])
+.slice(0,10)
+.map(
+p=>`${p.source}: ${p.title}`
+)
+),
+
+`${this.personalReference.id}: ${this.personalReference.label}`
+
+],
+
+passages:out.passages,
+
+confidence:
+out.verification.confidence,
+
+entities:
+out.research?.results
+?.slice(0,25)
+.map(
+x=>x.title
+)||[],
+
+facts:
+out.facts||[],
+
+relations:
+out.relations||[],
+
+discoveries:
+out.discoveries||[],
+
+paths:
+out.paths||[],
+
+plugins:
+out.plugins||[],
+
+research:
+out.research,
+
+verification:
+out.verification,
+
+meta:{
+
+type:
+out.info.type,
+
+mode:'discussion',
+
+answerId,
+
+status:
+out.verification.status
+
+}
+
+};
+
+
+this.rememberV10(
+q,
+result
+);
+
+
+setTimeout(
+()=>this.backgroundLearn(
+q,
+result
+),
+60
+);
+
+
+return result;
+
+
+}catch(e){
+
+this.memory.statistics.failures++;
+
+this.savePersistentMemory();
+
+throw e;
+
+
+}finally{
+
+this.busy=false;
+
+this.abortController=null;
+
+}
+
+}
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+recordFeedback(answerId,value){
+
+if(!answerId)
+return;
+
+
+this.memory.feedback.push({
+
+id:answerId,
+
+value,
+
+time:this.now()
+
+});
+
+
+if(
+this.memory.feedback.length>300
+)
+this.memory.feedback.shift();
+
+
+if(value==='up')
+this.memory.statistics.positiveFeedback++;
+
+
+if(value==='down')
+this.memory.statistics.negativeFeedback++;
+
+
+this.savePersistentMemory();
+
+}
+
+
+/* =========================================================
+   MÉMOIRE / VISUALISATION
+========================================================= */
+
+getRecentStructures(){
+
+return{
+
+relations:
+this.memory.relations.slice(-8),
+
+hypotheses:
+this.memory.hypotheses.slice(-5),
+
+discoveries:
+this.memory.discoveries.slice(-5),
+
+strategies:
+this.memory.learnedStrategies.slice(-5),
+
+consolidation:
+this.memory.consolidation.slice(-5)
+
+};
+
+}
+
+}
+
+
+/* =========================================================
+   INTERFACE
+========================================================= */
+
+const chat=
+document.getElementById('chat');
+
+const input=
+document.getElementById('input');
+
+const send=
+document.getElementById('send');
+
+const welcome=
+document.getElementById('welcome');
+
+const modeBtn=
+document.getElementById('modeBtn');
+
+const headerStatus=
+document.getElementById('headerStatus');
+
+const drawerBackdrop=
+document.getElementById('drawerBackdrop');
+
+const memoryStatsEl=
+document.getElementById('memoryStats');
+
+const engineStatus=
+document.getElementById('engineStatus');
+
+const agentStatusBox=
+document.getElementById('agentStatusBox');
+
+const learningBox=
+document.getElementById('learningBox');
+
+const pluginStatusBox=
+document.getElementById('pluginStatusBox');
+
+const addPluginBtn=
+document.getElementById('addPluginBtn');
+
+const pluginInput=
+document.getElementById('pluginInput');
+
+const graphStatusBox=
+document.getElementById('graphStatusBox');
+
+const memoryViewer=
+document.getElementById('memoryViewer');
+
+const learnDot=
+document.getElementById('learnDot');
+
+
+let activeStep=null;
+
+let activeAgentPanel=null;
+
+
+/* =========================================================
+   UI
+========================================================= */
+
+function scrollBottom(){
+
+chat.scrollTop=
+chat.scrollHeight;
+
+}
+
+
+function removeWelcome(){
+
+if(welcome)
+welcome.remove();
+
+}
+
+
+function addUserMessage(text){
+
+removeWelcome();
+
+
+const d=
+document.createElement('div');
+
+d.className='message user';
+
+
+const b=
+document.createElement('div');
+
+b.className='bubble';
+
+b.textContent=text;
+
+
+d.appendChild(b);
+
+chat.appendChild(d);
+
+scrollBottom();
+
+}
+
+
+function showStep(label){
+
+if(activeStep)
+activeStep.remove();
+
+
+const d=
+document.createElement('div');
+
+d.className='step';
+
+
+const s=
+document.createElement('span');
+
+s.className=
+'spinner'+
+(
+engine.mode==='agent'
+?' agentSpinner'
+:''
+);
+
+
+const t=
+document.createElement('span');
+
+t.textContent=label;
+
+
+d.append(s,t);
+
+chat.appendChild(d);
+
+activeStep=d;
+
+scrollBottom();
+
+}
+
+
+function removeStep(){
+
+if(activeStep){
+
+activeStep.remove();
+
+activeStep=null;
+
+}
+
+}
+
+
+/* =========================================================
+   AGENT UI
+========================================================= */
+
+function createAgentPanel(goal){
+
+const panel=
+document.createElement('div');
+
+panel.className='agentPanel';
+
+
+const top=
+document.createElement('div');
+
+top.className='agentTop';
+
+
+const title=
+document.createElement('div');
+
+title.className='agentTitle';
+
+title.textContent=
+'◆ MISSION AGENT';
+
+
+const stop=
+document.createElement('button');
+
+stop.type='button';
+stop.className='stopAgent';
+
+stop.textContent='Arrêter';
+
+
+stop.onclick=()=>{
+
+engine.stopAgent();
+
+stop.disabled=true;
+
+stop.textContent='Arrêt…';
+
+};
+
+
+top.append(
+title,
+stop
+);
+
+
+const goalEl=
+document.createElement('div');
+
+goalEl.className='agentGoal';
+
+goalEl.textContent=goal;
+
+
+const progress=
+document.createElement('div');
+
+progress.className='agentProgress';
+
+
+const bar=
+document.createElement('div');
+
+bar.className='agentProgressBar';
+
+
+progress.appendChild(bar);
+
+
+const meta=
+document.createElement('div');
+
+meta.className='agentMeta';
+
+
+const phase=
+document.createElement('span');
+
+phase.textContent='Initialisation…';
+
+
+const score=
+document.createElement('span');
+
+score.textContent='0%';
+
+
+meta.append(
+phase,
+score
+);
+
+
+panel.append(
+top,
+goalEl,
+progress,
+meta
+);
+
+
+chat.appendChild(panel);
+
+activeAgentPanel={
+
+panel,
+
+bar,
+
+phase,
+
+score,
+
+stop
+
+};
+
+
+scrollBottom();
+
+}
+
+
+function updateAgentPanel(data){
+
+if(!activeAgentPanel)
+return;
+
+
+const max=
+data.maxPasses||15;
+
+const pass=
+data.pass||0;
+
+const score=
+Math.max(
+0,
+Math.min(
+100,
+Number(data.score)||0
+)
+);
+
+
+activeAgentPanel.bar.style.width=
+
+`${Math.max(
+
+score,
+
+Math.min(
+100,
+pass/max*100
+)
+
+)}%`;
+
+
+activeAgentPanel.phase.textContent=
+data.phase||
+'Agent en cours…';
+
+
+activeAgentPanel.score.textContent=
+`${score}%`;
+
+
+if(
+/Mission arrêtée|Mission terminée|Mission en erreur/
+.test(
+data.phase||''
+)
+){
+
+activeAgentPanel.stop.disabled=true;
+
+activeAgentPanel.stop.textContent=
+
+data.phase==='Mission arrêtée'
+
+?
+
+'Arrêté'
+
+:
+
+data.phase==='Mission en erreur'
+
+?
+
+'Erreur'
+
+:
+
+'Terminé';
+
+}
+
+
+scrollBottom();
+
+}
+
+
+/* =========================================================
+   LEARNING UI
+========================================================= */
+
+function updateLearningPanel(data){
+
+learnDot.classList.toggle(
+'busy',
+data.state==='working'
+);
+
+
+learningBox.textContent=
+data.message||
+'Apprentissage en attente.';
+
+
+if(
+data.state==='working'
+)
+learningBox.textContent+=
+' Le travail continue en arrière-plan.';
+
+
+setStatus();
+
+}
+
+
+/* =========================================================
+   BACKGROUND MESSAGE
+========================================================= */
+
+function addBackgroundMessage(text){
+
+const d=
+document.createElement('div');
+
+d.className=
+'message assistant backgroundMessage';
+
+
+const b=
+document.createElement('div');
+
+b.className='bubble';
+
+b.textContent='↳ '+text;
+
+
+d.appendChild(b);
+
+chat.appendChild(d);
+
+scrollBottom();
+
+}
+
+
+/* =========================================================
+   ASSISTANT
+========================================================= */
+
+function addAssistantMessage(result){
+
+removeStep();
+
+
+const d=
+document.createElement('div');
+
+
+d.className=
+'message assistant'+
+(
+result.meta?.mode==='agent'
+?' agentMessage'
+:''
+);
+
+
+const b=
+document.createElement('div');
+
+b.className='bubble';
+
+
+const text=
+document.createElement('div');
+
+text.textContent=
+result.answerText||'';
+
+
+b.appendChild(text);
+
+
+/* ACTIONS */
+
+const actions=
+document.createElement('div');
+
+actions.className='answerActions';
+
+
+const up=
+document.createElement('button');
+
+up.className='miniBtn';
+
+up.textContent='👍';
+
+
+const down=
+document.createElement('button');
+
+down.className='miniBtn';
+
+down.textContent='👎';
+
+
+const copy=
+document.createElement('button');
+
+copy.className='miniBtn';
+
+copy.textContent='📋';
+
+
+up.onclick=()=>{
+
+up.classList.add(
+'active-good'
+);
+
+down.classList.remove(
+'active-bad'
+);
+
+engine.recordFeedback(
+result.meta?.answerId,
+'up'
+);
+
+};
+
+
+down.onclick=()=>{
+
+down.classList.add(
+'active-bad'
+);
+
+up.classList.remove(
+'active-good'
+);
+
+engine.recordFeedback(
+result.meta?.answerId,
+'down'
+);
+
+};
+
+
+copy.onclick=async()=>{
+
+try{
+
+await navigator.clipboard.writeText(
+result.answerText||''
+);
+
+copy.textContent='✓';
+
+setTimeout(
+()=>copy.textContent='📋',
+900
+);
+
+}catch(e){
+
+copy.textContent='!';
+
+setTimeout(
+()=>copy.textContent='📋',
+900
+);
+
+}
+
+};
+
+
+actions.append(
+up,
+down,
+copy
+);
+
+
+b.appendChild(actions);
+
+
+/* SOURCES */
+
+if(
+result.sources?.length
+){
+
+const src=
+document.createElement('div');
+
+src.className='sources';
+
+
+for(
+const s of result.sources
+){
+
+if(
+s.startsWith('mere:')
+){
+
+const a=
+document.createElement('a');
+
+a.className='sourceItem';
+
+a.href=
+engine.personalReference.url;
+
+a.target='_blank';
+
+a.rel=
+'noopener noreferrer';
+
+a.textContent=
+s.slice(5).trim();
+
+src.appendChild(a);
+
+}else{
+
+const span=
+document.createElement('span');
+
+span.className='sourceItem';
+
+span.textContent=s;
+
+src.appendChild(span);
+
+}
+
+}
+
+
+b.appendChild(src);
+
+}
+
+
+/* STATUS */
+
+const conf=
+document.createElement('div');
+
+conf.className='confidence';
+
+
+const status=
+result.verification?.status||
+result.meta?.status||
+'inconnu';
+
+
+conf.innerHTML=
+
+`Statut : <strong>${engine.escapeHTML?engine.escapeHTML(status):status}</strong> · Confiance indicative : <strong>${Math.round((result.confidence||0)*100)}%</strong> · mode ${status==='confirmée'?'validé':'local'}`;
+
+
+b.appendChild(conf);
+
+
+/* STRUCTURES */
+
+if(
+result.discoveries?.length||
+result.paths?.length||
+result.plugins?.length
+){
+
+const info=
+document.createElement('div');
+
+info.className='sources';
+
+
+if(result.plugins?.length){
+
+const span=
+document.createElement('span');
+
+span.className='badge agent';
+
+span.textContent=
+`${result.plugins.length} plugin(s)`;
+
+info.appendChild(span);
+
+}
+
+
+if(result.discoveries?.length){
+
+const span=
+document.createElement('span');
+
+span.className='badge warn';
+
+span.textContent=
+`${result.discoveries.length} relation(s) candidate(s)`;
+
+info.appendChild(span);
+
+}
+
+
+if(result.paths?.length){
+
+const span=
+document.createElement('span');
+
+span.className='badge';
+
+span.textContent=
+`${result.paths.length} chemin(s)`;
+
+info.appendChild(span);
+
+}
+
+
+b.appendChild(info);
+
+}
+
+
+d.appendChild(b);
+
+chat.appendChild(d);
+
+scrollBottom();
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setStatus(){
+
+const s=
+engine.memoryStats();
+
+
+memoryStatsEl.innerHTML='';
+
+
+for(
+const[k,v]
+of Object.entries(s)
+){
+
+const div=
+document.createElement('div');
+
+div.className='stat';
+
+
+const sm=
+document.createElement('small');
+
+sm.textContent=k;
+
+
+const st=
+document.createElement('strong');
+
+st.textContent=v;
+
+
+div.append(
+sm,
+st
+);
+
+memoryStatsEl.appendChild(div);
+
+}
+
+
+engineStatus.textContent=
+
+`Moteur ${engine.version} · ${
+engine.mode==='agent'
+?'mode Agent'
+:'mode Discussion'
+} · graphe sémantique · mémoire locale · dernière sauvegarde : ${
+engine.memory.savedAt||'aucune'
+}`;
+
+
+/* PLUGINS */
+
+const plugins=
+[...engine.plugins.values()];
+
+
+pluginStatusBox.innerHTML='';
+const title=document.createElement('div');
+title.textContent=`${plugins.length} capacité(s) chargée(s).`;
+pluginStatusBox.appendChild(title);
+for(const p of plugins){
+ const row=document.createElement('div');
+ row.style.display='flex'; row.style.alignItems='center'; row.style.gap='6px'; row.style.marginTop='6px';
+ const label=document.createElement('span');
+ label.style.flex='1';
+ label.textContent=`• ${p.name} [${p.category||'general'}] · ${p.uses||0} utilisation(s) · ${p.successes||0} succès`;
+ row.appendChild(label);
+ const btn=document.createElement('button');
+ btn.type='button'; btn.className='miniBtn'; btn.textContent='Retirer';
+ btn.onclick=()=>{ engine.removePlugin(p.id); setStatus(); };
+ row.appendChild(btn);
+ pluginStatusBox.appendChild(row);
+}
+
+
+/* MODERN UI SYNC */
+try{
+  const skillCount=Object.keys(engine.memory?.learnedSkills||{}).length;
+  const expCount=engine.memory?.experiences?.length||0;
+  const consolCount=engine.memory?.consolidations?.length||0;
+  document.getElementById('uiPluginCount').textContent=plugins.length;
+  document.getElementById('uiPluginActiveCount').textContent=`${plugins.length} actif(s)`;
+  document.getElementById('uiSkillCount').textContent=skillCount;
+  document.getElementById('uiExperienceCount').textContent=expCount;
+  document.getElementById('uiMemorySkills').textContent=skillCount;
+  document.getElementById('uiMemoryExperiences').textContent=expCount;
+  document.getElementById('uiMemoryConsolidations').textContent=consolCount;
+
+  const rows=document.getElementById('uiPluginRows');
+  rows.innerHTML='';
+  if(!plugins.length){
+    rows.innerHTML='<div class="pluginRow"><span class="pluginDot off"></span><strong>Aucun plugin chargé</strong></div>';
+  }else{
+    for(const p of plugins.slice(0,10)){
+      const row=document.createElement('div');
+      row.className='pluginRow';
+      row.innerHTML=`<span class="pluginDot"></span><strong></strong><span>${p.successes||0}/${p.uses||0}</span>`;
+      row.querySelector('strong').textContent=p.name||p.id||'Plugin';
+      rows.appendChild(row);
+    }
+  }
+
+  const learningText=(document.getElementById('learningBox')?.textContent||'').trim();
+  document.getElementById('uiLearningText').textContent=learningText||'Le système analyse les résultats pour consolider de nouvelles compétences.';
+  const learned=skillCount;
+  const exp=Math.min(expCount,100);
+  document.getElementById('uiLearningProgress').style.width=(learned?Math.min(95,25+learned*15):Math.min(70,exp*0.7))+'%';
+}catch(e){}
+
+/* GRAPH */
+
+if(engine.currentGraph){
+
+graphStatusBox.textContent=
+
+`Nœuds : ${engine.currentGraph.nodes.size}\n`+
+
+`Relations : ${engine.currentGraph.edges.length}\n`+
+
+`Hypothèses : ${engine.currentGraph.hypotheses.length}\n`+
+
+`Contradictions : ${engine.currentGraph.contradictions.length}`;
+
+}else{
+
+graphStatusBox.textContent=
+'Aucun graphe actif.';
+
+}
+
+
+/* AGENT */
+
+if(engine.agentMission){
+
+const m=
+engine.agentMission;
+
+
+agentStatusBox.textContent=
+
+`Objectif : ${m.goal}\n`+
+
+`État : ${m.status}\n`+
+
+`Passages : ${m.pass}\n`+
+
+`Progression : ${m.score||0}%\n`+
+
+`Recherches : ${engine.unique(m.queries||[]).length}\n`+
+
+`Découvertes : ${m.discoveries?.length||0}\n`+
+
+`Chemins : ${m.paths?.length||0}`;
+
+}else{
+
+agentStatusBox.textContent=
+'Aucune mission active.';
+
+}
+
+
+try{
+
+memoryViewer.textContent=
+JSON.stringify(
+engine.getRecentStructures(),
+null,
+2
+);
+
+}catch(e){
+
+memoryViewer.textContent=
+"Impossible d'afficher les structures.";
+
+}
+
+}
+
+
+/* =========================================================
+   MODE
+========================================================= */
+
+function setMode(mode){
+
+engine.mode=mode;
+
+
+if(mode==='agent'){
+
+modeBtn.textContent='◆ Agent';
+
+modeBtn.classList.add('agent');
+
+send.classList.add('agentSend');
+
+send.textContent='Lancer';
+
+input.placeholder=
+"Décris l'objectif que l'Agent doit atteindre…";
+
+
+headerStatus.textContent=
+'Agent autonome • recherche • graphe • validation • apprentissage';
+
+}else{
+
+modeBtn.textContent='Discussion';
+
+modeBtn.classList.remove('agent');
+
+send.classList.remove('agentSend');
+
+send.textContent='Envoyer';
+
+input.placeholder=
+'Écris une question ou une tâche…';
+
+
+headerStatus.textContent=
+'Discussion • graphe sémantique • plugins • mémoire locale';
+
+}
+
+
+setStatus();
+
+}
+
+
+function openDrawer(){
+
+drawerBackdrop.classList.add('open');
+
+setStatus();
+
+}
+
+
+function closeDrawer(){
+
+drawerBackdrop.classList.remove('open');
+
+}
+
+
+/* =========================================================
+   SUBMIT
+========================================================= */
+
+async function submit(){
+
+const q=
+input.value.trim();
+
+
+if(!q||engine.busy)
+return;
+
+
+input.value='';
+
+resizeInput();
+
+
+addUserMessage(q);
+
+
+send.disabled=true;
+
+
+if(
+engine.mode==='agent'
+)
+createAgentPanel(q);
+
+
+try{
+
+const result=
+await engine.run(q);
+
+
+addAssistantMessage(result);
+
+
+}catch(e){
+
+removeStep();
+
+
+const d=
+document.createElement('div');
+
+d.className='message assistant';
+
+
+const b=
+document.createElement('div');
+
+b.className='bubble';
+
+
+b.textContent=
+`Erreur : ${e.message||String(e)}`;
+
+
+d.appendChild(b);
+
+chat.appendChild(d);
+
+scrollBottom();
+
+}finally{
+
+send.disabled=false;
+
+setStatus();
+
+input.focus();
+
+}
+
+}
+
+
+function resizeInput(){
+
+input.style.height='auto';
+
+input.style.height=
+Math.min(
+input.scrollHeight,
+150
+)+'px';
+
+}
+
+
+/* =========================================================
+   MENU — SECTIONS REPLIABLES
+========================================================= */
+
+document.querySelectorAll('.drawerSection > h3').forEach((title,index)=>{
+  title.setAttribute('role','button');
+  title.setAttribute('tabindex','0');
+  title.setAttribute('aria-expanded',index<2?'true':'false');
+  const section=title.parentElement;
+  if(index>=2) section.classList.add('collapsed');
+  const toggle=()=>{
+    const collapsed=section.classList.toggle('collapsed');
+    title.setAttribute('aria-expanded',String(!collapsed));
+  };
+  title.addEventListener('click',toggle);
+  title.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}
+  });
+});
+
+/* =========================================================
+   THÈME JOUR / NUIT
+========================================================= */
+
+const themeBtn=document.getElementById('themeBtn');
+
+function applyTheme(theme){
+  document.documentElement.dataset.theme=theme;
+  themeBtn.textContent=theme==='light'?'☀  Mode nuit':'☾  Mode jour';
+  themeBtn.title=theme==='light'?'Passer en mode nuit':'Passer en mode jour';
+  try{localStorage.setItem('semantic-v11-theme',theme)}catch(e){}
+}
+
+let savedTheme='dark';
+try{savedTheme=localStorage.getItem('semantic-v11-theme')||'dark'}catch(e){}
+applyTheme(savedTheme==='light'?'light':'dark');
+
+themeBtn.onclick=()=>applyTheme(document.documentElement.dataset.theme==='light'?'dark':'light');
+
+/* =========================================================
+   ÉVÉNEMENTS
+========================================================= */
+
+document
+.getElementById('menuBtn')
+.onclick=openDrawer;
+
+
+document
+.getElementById('closeDrawer')
+.onclick=closeDrawer;
+
+
+drawerBackdrop.addEventListener(
+'click',
+e=>{
+if(
+e.target===drawerBackdrop
+)
+closeDrawer();
+}
+);
+
+
+modeBtn.onclick=()=>{
+
+setMode(
+engine.mode==='agent'
+?'discussion'
+:'agent'
+);
+
+};
+
+
+document
+.getElementById('discussionBtn')
+.onclick=()=>{
+
+setMode('discussion');
+
+closeDrawer();
+
+};
+
+
+document
+.getElementById('agentBtn')
+.onclick=()=>{
+
+setMode('agent');
+
+closeDrawer();
+
+};
+
+
+document
+.getElementById('clearBtn')
+.onclick=()=>{
+
+chat.innerHTML=
+
+`<div id="welcome" class="welcome">
+<b>Conversation effacée.</b><br>
+La mémoire persistante, les relations, les expériences des plugins,
+les découvertes et l'apprentissage restent intacts.
+</div>`;
+
+activeAgentPanel=null;
+
+scrollBottom();
+
+};
+
+
+document
+.getElementById('exportBtn')
+.onclick=()=>{
+
+engine.exportMemory();
+
+};
+
+
+document
+.getElementById('importBtn')
+.onclick=()=>{
+
+document
+.getElementById('importInput')
+.click();
+
+};
+
+
+document
+.getElementById('mergeBtn')
+.onclick=()=>{
+
+document
+.getElementById('mergeInput')
+.click();
+
+};
+
+
+document
+.getElementById('resetMemoryBtn')
+.onclick=()=>{
+
+if(
+confirm(
+'Réinitialiser toute la mémoire locale du moteur V11 ?'
+)
+){
+
+engine.resetMemory();
+
+setStatus();
+
+}
+
+};
+
+
+document
+.getElementById('inspectMemoryBtn')
+.onclick=()=>{
+
+openDrawer();
+
+memoryViewer.textContent=
+JSON.stringify(
+engine.memory,
+null,
+2
+);
+
+};
+
+
+document
+.getElementById('importInput')
+.addEventListener(
+'change',
+async e=>{
+
+const f=
+e.target.files?.[0];
+
+if(!f)
+return;
+
+
+try{
+
+engine.importMemory(
+await engine.readMemoryFile(f),
+false
+);
+
+alert(
+'Mémoire V11 importée avec succès.'
+);
+
+}catch(err){
+
+alert(
+'Fichier mémoire invalide.'
+);
+
+}
+
+
+e.target.value='';
+
+setStatus();
+
+}
+
+);
+
+
+document
+.getElementById('mergeInput')
+.addEventListener(
+'change',
+async e=>{
+
+const f=
+e.target.files?.[0];
+
+if(!f)
+return;
+
+
+try{
+
+engine.importMemory(
+await engine.readMemoryFile(f),
+true
+);
+
+alert(
+'Mémoire V11 fusionnée avec succès.'
+);
+
+}catch(err){
+
+alert(
+'Fichier mémoire invalide.'
+);
+
+}
+
+
+e.target.value='';
+
+setStatus();
+
+}
+
+);
+
+
+addPluginBtn.onclick=()=>{
+pluginInput.click();
+};
+
+pluginInput.addEventListener(
+'change',
+async e=>{
+const files=[...e.target.files||[]];
+if(!files.length)
+return;
+
+let loaded=0;
+const errors=[];
+
+for(const file of files){
+try{
+const ids=await engine.loadPluginFile(file);
+loaded+=ids.length;
+}catch(err){
+errors.push(`${file.name}: ${err.message||String(err)}`);
+}
+}
+
+if(errors.length){
+alert(`${loaded} plugin(s) chargé(s).\n\n${errors.join('\n')}`);
+}else{
+alert(`${loaded} plugin(s) chargé(s) avec succès.`);
+}
+
+setStatus();
+e.target.value='';
+});
+
+
+input.addEventListener(
+'input',
+resizeInput
+);
+
+
+input.addEventListener(
+'keydown',
+e=>{
+
+if(
+e.key==='Enter'&&
+!e.shiftKey
+){
+
+e.preventDefault();
+
+submit();
+
+}
+
+}
+);
+
+
+send.type='button';
+send.addEventListener('click',submit);
+
+
+/* =========================================================
+   CRÉATION DU MOTEUR
+========================================================= */
+
+const engine=
+new SemanticV11(
+
+showStep,
+
+updateAgentPanel,
+
+updateLearningPanel
+
+);
+
+
+/* Petit correctif utilitaire pour l'interface */
+
+engine.escapeHTML=function(s){
+
+return String(s??'')
+
+.replace(
+/[&<>'"]/g,
+
+m=>
+
+({
+
+'&':'&amp;',
+
+'<':'&lt;',
+
+'>':'&gt;',
+
+"'":'&#39;',
+
+'"':'&quot;'
+
+}[m])
+
+);
+
+};
+
+
+/* INITIALISATION */
+
+setMode('discussion');
+
+setStatus();
+
+
+</script>
+
+</body>
+   </html>
