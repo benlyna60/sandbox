@@ -1,5 +1,53 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 00:30:53
+TITRE: Cuba ne sera «jamais» une colonie, dit son président après un message de Trump
+LIEN: https://www.ledevoir.com/monde/ameriques/1007459/cuba-ne-sera-jamais-colonie-dit-president-apres-message-trump
+CONTENU: Washington ne cache pas sa volonté de voir un changement de régime chez son voisin et ennemi idéologique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-08 14:31:00
+TITRE: Le «bouclier» tarifaire de Fréchette attaqué de toutes parts par ses rivaux électoraux
+LIEN: https://www.ledevoir.com/politique/quebec/1007234/frechette-presente-bouclier-fait-appels-offres-reponse-intimidateur-trump
+CONTENU: Ses adversaires politiques l’apparentent plutôt à un coup d’épée dans l’eau.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-08 17:39:13
+TITRE: La ville de New York a dissimulé des informations sur la qualité de l’air après le 11 Septembre
+LIEN: https://www.ledevoir.com/monde/etats-unis/1007309/ville-new-york-dissimule-informations-qualite-air-apres-11-septembre
+CONTENU: Zohran Mamdani a annoncé la publication de documents révélant, selon lui, des dissimulations de la ville sur le sujet.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-08 21:47:00
+TITRE: Les dangers en ligne constitueraient  la principale menace pour les enfants
+LIEN: https://www.ledevoir.com/economie/techno/1007402/dangers-ligne-constituent-desormais-principale-menace-enfants
+CONTENU: Un nouveau rapport indique que la tuerie à Tumbler Ridge a constitué un tournant décisif.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-08 19:31:00
+TITRE: Toujours incarcéré, Guy Turcotte demandera des sorties de prison avec escorte
+LIEN: https://www.ledevoir.com/actualites/justice/1007339/toujours-incarcere-guy-turcotte-demandera-sorties-prison-escorte
+CONTENU: La décision qui sera rendue par la Commission des libérations conditionnelles restera probablement secrète.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-09 00:38:15
+TITRE: Guerre en Ukraine: à Kiev, le couvre-feu assoupli pour faciliter la vie des habitants
+LIEN: https://www.rfi.fr/fr/europe/20260909-guerre-en-ukraine-%C3%A0-kiev-le-couvre-feu-assoupli-pour-faciliter-la-vie-des-habitants
+CONTENU: À Kiev, le couvre-feu en vigueur depuis 2022 va être raccourci d'une heure à partir du jeudi 10 septembre 2026. Un assouplissement qui vise à faciliter le quotidien des habitants qui doivent déjà planifier leurs déplacements en fonction des alertes aériennes, en permettant notamment aux transports de fonctionner plus longtemps pour que chacun puisse rentrer chez soi le soir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-09-08 18:16:54
 TITRE: Zohran Mamdani dénonce des dissimulations sur la toxicité de l’air à New York après le 11-Septembre : « Des gens sont tombés malades parce que les dirigeants leur ont menti »
