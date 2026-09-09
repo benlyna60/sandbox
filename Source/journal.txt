@@ -1,5 +1,29 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 22:10:31
+TITRE: À Dallas, Trump mise sur sa personne pour sauver les élections de mi-mandat
+LIEN: https://www.ledevoir.com/monde/etats-unis/1007789/dallas-trump-mise-personne-sauver-elections-mi-mandat
+CONTENU: À moins de deux mois du scrutin du 3 novembre, les projections sont sombres pour les républicains.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 04:00:00
+TITRE: Une seule campagne, mais plusieurs réalités à recadrer
+LIEN: https://www.ledevoir.com/opinion/idees/1007429/seule-campagne-mais-plusieurs-realites-recadrer
+CONTENU: Aujourd’hui, ce sont de plus en plus les contenus qui trouvent les citoyens, et non l’inverse.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 21:33:03
+TITRE: Tempête tarifaire, candidat conservateur démissionnaire et référendum minoritaire
+LIEN: https://www.ledevoir.com/politique/quebec/1007774/tempete-tarifaire-candidat-conservateur-demissionnaire-referendum-minoritaire
+CONTENU: Le Parti conservateur a perdu un premier candidat, mercredi, en raison de propos homophobes et antiavortement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: France Info (Fil info)
 DATE: 2026-09-09 21:00:00
 TITRE: Le journal de 23h00 du mercredi 09 septembre 2026
