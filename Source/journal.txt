@@ -1,5 +1,117 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-09 16:00:00
+TITRE: Le journal de 18h00 du mercredi 09 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-18h00/le-journal-de-18h00-du-mercredi-09-septembre-2026-3425360
+CONTENU: Article de référence : "Le journal de 18h00 du mercredi 09 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-09 15:46:00
+TITRE: Espace : l'Europe peut-elle se montrer ambitieuse ?
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-informes-de-17h50/les-informes-de-17h50-du-mercredi-09-septembre-2026-5654890
+CONTENU: Emmanuel Macron inaugurait, ce mercredi 9 septembre, le premier Sommet spatial international de Paris. Si les entreprises américaines l'ont boudé, le président a pu annoncer 20 milliards de financement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-09 15:00:00
+TITRE: Racisme, sexisme, complotisme… La vidéo d’un policier municipal de Carcassonne indigne la classe politique
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-17h00/racisme-sexisme-complotisme-la-video-d-un-policier-municipal-de-carcassonne-indigne-la-classe-politique-8558202
+CONTENU: A Carcassonne, une vidéo d'une patrouille de la police municipale a créé une vive polémique après les propos violents tenus par le chef de patrouille. Dans le reste de l'actualité, la hausse des carburants atteint des sommets alors que Sébastien Lecornu planche toujours sur son budget.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-09 15:00:00
+TITRE: Le 17/19h30 du mercredi 09 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-17-19h30/le-17-19h30-du-mercredi-09-septembre-2026-5300216
+CONTENU: Les invités du 9 septembre 2026
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-09 17:10:01
+TITRE: The surprising place where giant dinosaurs incubated their eggs
+LIEN: https://phys.org/news/2026-09-giant-dinosaurs-incubated-eggs.html
+CONTENU: Finding a fossilized dinosaur egg is exceptionally rare, but finding a stash of more than 250 shell fragments in the chilly southern reaches of the planet is even more surprising. The discoveries come from southernmost Patagonia in Argentina, where giant, long-necked titanosaurs roamed toward the end of the dinosaur era. Previous egg discoveries suggested that these massive beasts usually nested much farther north.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-09 17:00:06
+TITRE: Canada's last epishelf lake is gone for good, study confirms
+LIEN: https://phys.org/news/2026-09-canada-epishelf-lake-good.html
+CONTENU: Canada's last epishelf lake drained into the Arctic Ocean following the 2020 breakup of the Milne Ice Shelf and will not recover, a new study confirms.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-09 17:00:02
+TITRE: When benefit corporations get certified, is it 'greenwashing' in stereo?
+LIEN: https://phys.org/news/2026-09-benefit-corporations-certified-greenwashing-stereo.html
+CONTENU: The term "benefit corporation" is becoming increasingly familiar as a label for companies with a hybrid commitment to the social good and profit-making. Interestingly, the term itself has taken on a hybrid meaning.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-09 16:40:08
+TITRE: Restoring Australia's she-oaks means listening to Indigenous knowledges
+LIEN: https://phys.org/news/2026-09-australia-oaks-indigenous-knowledges.html
+CONTENU: In Australia, many Indigenous communities have connections and stories linked to the she-oak.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-09 16:40:02
+TITRE: Tiny 2D cracks creep through materials before triggering sudden fracture, experiments reveal
+LIEN: https://phys.org/news/2026-09-tiny-2d-materials-triggering-sudden.html
+CONTENU: We have all seen something suddenly break: a phone screen cracks, a plastic object snaps or a piece of glass shatters. To our eyes, the failure seems to happen all at once. But what if the most important part of the break happens long before the final snap?
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-09 16:27:09
+TITRE: The 'costly son' hypothesis: Why bigger sons may make births riskier across species
+LIEN: https://phys.org/news/2026-09-son-hypothesis-bigger-sons-births.html
+CONTENU: A new comparative review, published in The Anatomical Record, examines factors that may lead to birth complications among humans and other mammals. The study suggests that fetal sex may play an important role in risky births in humans and several other species.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-09 16:20:08
+TITRE: Taking the sting out of fire ants with genomics
+LIEN: https://phys.org/news/2026-09-ants-genomics.html
+CONTENU: Fire ants have earned their reputation as one of Australia's most damaging invasive pests. From ruined picnics to serious impacts on agriculture, biodiversity and public health, they are notoriously difficult to control.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-09 16:20:02
+TITRE: Layer-based design offers new route to topological magnets
+LIEN: https://phys.org/news/2026-09-layer-based-route-topological-magnets.html
+CONTENU: Topological quantum materials combine unusual electronic states with properties such as magnetism or superconductivity, offering possibilities for future electronics and quantum technologies. Researchers at Tohoku University have now shown that changing the number of layers in a crystal can provide a systematic way to design topological magnets. The work is published in the Journal of the American Chemical Society.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-09 16:00:06
+TITRE: Forever chemicals break apart into fluoride under UV treatment, revealing a cleanup roadmap
+LIEN: https://phys.org/news/2026-09-chemicals-fluoride-uv-treatment-revealing.html
+CONTENU: UC Riverside environmental engineers have identified key chemical reactions that occur when ultraviolet light is used to destroy "forever chemical" pollutants in water, providing a roadmap for developing more effective cleanup technologies.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-09 16:00:04
+TITRE: UK subsidies for land-based seafood farming would boost tree-planting policy
+LIEN: https://phys.org/news/2026-09-uk-subsidies-based-seafood-farming.html
+CONTENU: Subsidies for emerging technology that allows seafood to be produced on land would boost the UK's food security and deliver significant climate benefits, new research shows.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-09-09 15:50:10
 TITRE: Un "casier judiciaire" des locataires mauvais payeurs? Cette idée lancée par le ministre du Logement est une "condamnation à une mort sociale", dénoncent  des associations
