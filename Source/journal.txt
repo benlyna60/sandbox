@@ -1,6 +1,14 @@
 ----------------------------------------
 CATEGORIE: TECH
 SOURCE: Le Blog du Modérateur
+DATE: 2026-09-09 14:02:44
+TITRE: DMA : Google va réduire la visibilité de certains de ses services dans les résultats de recherche
+LIEN: https://www.blogdumoderateur.com/dma-google-reduire-visibilite-services-resultats-recherche/
+CONTENU: Pour se conformer au DMA et éviter de nouvelles sanctions, Google revoit la place accordée à certains de ses services, comme Hotels ou Flights, dans les résultats de recherche en Europe. La firme déplore une dégradation de l'expérience.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
 DATE: 2026-09-09 10:21:14
 TITRE: Souveraineté numérique : les solutions européennes, pas à la hauteur des grands groupes ?
 LIEN: https://www.blogdumoderateur.com/souverainete-numerique-solutions-europeennes-pas-hauteur-grands-groupes/
