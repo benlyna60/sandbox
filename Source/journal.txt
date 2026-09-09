@@ -1,5 +1,85 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 04:00:00
+TITRE: Téhéran frappe en Jordanie et dans le Golfe après des attaques sur ses pétroliers
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1007468/teheran-frappe-jordanie-golfe-apres-attaques-petroliers-iraniens
+CONTENU: L’Iran dit aussi avoir capturé l’un des drones sous-marins «les plus modernes de l’armée américaine».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 04:00:00
+TITRE: Une visite de l’hôpital équin de la Faculté de médecine vétérinaire de l’UdeM
+LIEN: https://www.ledevoir.com/actualites/education/1007435/visite-hopital-equin-faculte-medecine-veterinaire-udem
+CONTENU: Unique au Québec et le plus grand au Canada, il soigne 1900 chevaux chaque année. «Le Devoir» s’est rendu sur place.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 04:00:00
+TITRE: Pour émuler Vivaldi au rythme des saisons
+LIEN: https://www.ledevoir.com/culture/musique/1007342/emuler-vivaldi-rythme-saisons
+CONTENU: «Les quatre saisons du Québec», de François Dompierre, est la seconde collaboration entre le compositeur et Francis Choinière
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 04:00:00
+TITRE: Les tout-petits rapportent beaucoup à l’économie
+LIEN: https://www.ledevoir.com/economie/1007438/tout-petits-rapportent-beaucoup-economie
+CONTENU: Chaque dollar investi dans la petite enfance générerait de deux à quatre fois plus de gains économiques.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 04:00:00
+TITRE: Faire payer les riches, mode d’emploi
+LIEN: https://www.ledevoir.com/opinion/chroniques/1007414/faire-payer-riches-mode-emploi
+CONTENU: Le 1 % le plus riche au Québec détenait en 1999 le cinquième de la richesse. Ils en possèdent maintenant le quart.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 04:00:00
+TITRE: «Un renversement»: ce que la politique fait aux femmes (et vice versa)
+LIEN: https://www.ledevoir.com/culture/ecrans/1007399/renversement-ce-politique-fait-femmes-vice-versa
+CONTENU: Sexisme, insultes et «boys’ club» : 12 femmes de pouvoir témoignent dans le film de la réalisatrice Amélie Hardy.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 04:00:00
+TITRE: Je ne suis pas un poteau, je suis un réverbère!
+LIEN: https://www.ledevoir.com/opinion/libre-opinion/1007372/je-ne-suis-pas-poteau-je-suis-reverbere
+CONTENU: La profondeur d’une équipe se mesure aussi à la qualité de son quatrième trio. Même en politique!
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 04:00:00
+TITRE: Zelensky face aux épreuves
+LIEN: https://www.ledevoir.com/opinion/editoriaux/1007360/zelensky-face-epreuves
+CONTENU: Les chefs de guerre sont rarement récompensés pour leurs efforts, même ceux qui gagnent.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 04:00:00
+TITRE: La route est encore longue
+LIEN: https://www.ledevoir.com/opinion/chroniques/1007315/route-est-encore-longue
+CONTENU: À cinquante ans, j’ai assez de kilomètres au compteur pour repérer les raccourcis intellectuels des politiciens.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-09 04:00:00
+TITRE: Requiem pour un mort qui se porte bien
+LIEN: https://www.ledevoir.com/opinion/chroniques/1007285/requiem-mort-porte-bien
+CONTENU: On n’enterre pas tout un secteur aussi facilement; le logiciel a encore du bon devant lui.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-09-09 04:15:10
 TITRE: En Israël, les révélations sur l’alerte reçue par Benyamin Nétanyahou avant le 7-Octobre provoquent un séisme politique
