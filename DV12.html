@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Semantic Learning Engine V12</title>
+<style>
+:root{
+  --bg:#1e1e1c;--panel:#252523;--panel2:#2d2d2a;--panel3:#363632;
+  --text:#cfc3b2;--muted:rgba(207,195,178,.68);--border:rgba(207,195,178,.16);
+  --strong:rgba(207,195,178,.32);--accent:#cfc3b2;--ink:#1e1e1c;
+  --ok:#73d29a;--warn:#e8c36d;--danger:#ef777f;--agent:#c5a8ff;
+  --user:#2a333b;--shadow:0 20px 60px rgba(0,0,0,.34)
+}
+html[data-theme=light]{
+  --bg:#cfc3b2;--panel:#d8cdbd;--panel2:#c5b9a8;--panel3:#b9ac9a;
+  --text:#1e1e1c;--muted:rgba(30,30,28,.68);--border:rgba(30,30,28,.16);
+  --strong:rgba(30,30,28,.32);--accent:#1e1e1c;--ink:#cfc3b2;--user:#bfb2a1
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{overflow:hidden}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.app{height:100dvh;display:flex;flex-direction:column;min-height:0;max-width:1540px;margin:auto}
+.header{height:68px;flex:0 0 68px;display:flex;align-items:center;gap:10px;padding:0 18px;
+border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--bg) 92%,transparent);
+backdrop-filter:blur(16px);z-index:5}
+.iconBtn,.modeBtn{height:40px;border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:11px}
+.iconBtn{width:40px;font-size:18px}.modeBtn{padding:0 11px;font-size:11px;font-weight:700}
+.brand{min-width:0;flex:1}.brand b{display:block;font-size:15px}.brand span{display:block;color:var(--muted);font-size:10px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(115,210,154,.08)}.dot.busy{background:var(--agent);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.workspace{flex:1;min-height:0;display:flex}
+.center{min-width:0;min-height:0;flex:1;display:flex;flex-direction:column}
+.chat{flex:1;min-height:0;overflow:auto;width:min(920px,100%);margin:auto;padding:28px 24px 16px}
+.chat::-webkit-scrollbar,.drawerBody::-webkit-scrollbar,.list::-webkit-scrollbar{width:7px}
+.chat::-webkit-scrollbar-thumb,.drawerBody::-webkit-scrollbar-thumb,.list::-webkit-scrollbar-thumb{background:var(--strong);border-radius:8px}
+.message{display:flex;margin:0 0 12px}.message.user{justify-content:flex-end}
+.bubble{max-width:88%;padding:13px 15px;border-radius:17px;border:1px solid var(--border);line-height:1.5;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 8px 25px rgba(0,0,0,.08)}
+.user .bubble{background:var(--user)}.assistant .bubble{background:var(--panel)}
+.meta{font-size:10px;color:var(--muted);margin-top:7px}.source{display:inline-block;margin:3px 5px 0 0;padding:2px 5px;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-size:9px}
+.welcome{max-width:780px;margin:70px auto;padding:24px;border:1px solid var(--border);border-radius:20px;background:var(--panel);box-shadow:var(--shadow);color:var(--muted);line-height:1.6;font-size:13px}
+.welcome b{color:var(--text)}
+.composer{flex:0 0 auto;width:min(920px,100%);margin:auto;display:flex;gap:9px;align-items:flex-end;padding:10px 24px 22px}
+textarea{flex:1;min-height:52px;max-height:150px;resize:none;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:17px;padding:14px 16px;outline:none}
+textarea:focus{border-color:var(--strong)}.send{width:58px;height:52px;border:0;border-radius:17px;background:var(--accent);color:var(--ink);font-weight:800;font-size:20px}
+.drawerBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:20}
+.drawerBackdrop.open{display:block}.drawer{position:absolute;left:0;top:0;bottom:0;width:min(400px,94vw);background:var(--panel);
+border-right:1px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:0}
+.drawerHead{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--border)}
+.drawerHead b{font-size:15px}.close{border:0;background:transparent;color:var(--muted);font-size:24px}
+.drawerBody{flex:1;min-height:0;overflow:auto;padding:8px 14px 24px;overscroll-behavior:contain}
+.section{border-bottom:1px solid var(--border);padding:12px 0}.section h3{margin:0 0 8px;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.action{width:100%;text-align:left;padding:9px 10px;margin:3px 0;border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:9px;font-size:11px}
+.action:hover,.iconBtn:hover,.modeBtn:hover{border-color:var(--strong)}
+.sectionTitle{width:100%;display:flex;justify-content:space-between;align-items:center;border:0;background:transparent;color:var(--muted);padding:4px 0;cursor:pointer}
+.section.collapsed .sectionContent{display:none}.section.collapsed .chev{transform:rotate(-90deg)}
+.chev{transition:.18s}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}.stat{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px}.stat small{display:block;color:var(--muted);font-size:9px}.stat strong{display:block;font-size:14px;margin-top:2px}
+.list{max-height:260px;overflow:auto}.row{display:flex;gap:8px;align-items:center;padding:7px 3px;font-size:10px;color:var(--muted)}.row strong{color:var(--text);font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pill{font-size:8px;border:1px solid var(--border);padding:2px 5px;border-radius:5px}.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.bad{color:var(--danger)}
+.notice{font-size:10px;color:var(--muted);line-height:1.5}.hidden{display:none!important}
+.fileInput{display:none}
+@media(max-width:600px){
+ .header{height:58px;flex-basis:58px;padding:0 8px;gap:6px}.brand b{font-size:13px}.brand span{font-size:9px}.iconBtn{width:36px;height:36px}
+ .modeBtn{font-size:10px;padding:0 8px}.chat{padding:14px 10px 8px}.composer{padding:8px 10px calc(10px + env(safe-area-inset-bottom))}
+ .bubble{max-width:94%}.send{width:48px;height:48px;border-radius:15px}.drawer{width:min(390px,96vw)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header">
+<button id="menuBtn" class="iconBtn" aria-label="Ouvrir le menu">☰</button>
+<div class="brand"><b>Semantic Learning Engine</b><span id="headerStatus">V12 • Core générique • plugins externes • apprentissage</span></div>
+<div id="dot" class="dot" title="Moteur actif"></div>
+<button id="themeBtn" class="iconBtn" aria-label="Changer le thème">☾</button>
+</header>
+<div class="workspace">
+<main class="center">
+<div id="chat" class="chat">
+<div class="welcome"><b>Semantic Learning Engine V12</b><br>
+Core générique : il ne contient aucune compétence métier spécifique. Les capacités viennent de plugins externes, qui partagent un protocole de contexte commun. Le Core supervise l'exécution, la mémoire, la validation et l'apprentissage. Une compétence consolidée peut ensuite être exécutée sans son plugin.</div>
+</div>
+<form id="composer" class="composer">
+<textarea id="input" rows="1" placeholder="Écris une question ou une tâche…"></textarea>
+<button id="send" class="send" type="submit" aria-label="Envoyer">→</button>
+</form>
+</main>
+</div>
+</div>
+
+<div id="backdrop" class="drawerBackdrop">
+<aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="Menu principal">
+<div class="drawerHead"><b>Contrôle du moteur</b><button id="closeBtn" class="close" aria-label="Fermer">×</button></div>
+<div id="drawerBody" class="drawerBody">
+<section class="section">
+<button class="sectionTitle" data-toggle><span>État du système</span><span class="chev">⌄</span></button>
+<div class="sectionContent">
+<div class="stats">
+<div class="stat"><small>Plugins actifs</small><strong id="statPlugins">0</strong></div>
+<div class="stat"><small>Compétences acquises</small><strong id="statSkills">0</strong></div>
+<div class="stat"><small>Expériences</small><strong id="statExp">0</strong></div>
+<div class="stat"><small>Validations</small><strong id="statVal">0</strong></div>
+</div>
+<p id="systemNotice" class="notice"></p>
+</div>
+</section>
+
+<section class="section">
+<button class="sectionTitle" data-toggle><span>Plugins externes</span><span class="chev">⌄</span></button>
+<div class="sectionContent">
+<button id="loadPlugins" class="action">＋ Charger un ou plusieurs plugins .js</button>
+<input id="pluginFiles" class="fileInput" type="file" accept=".js,text/javascript" multiple>
+<div id="pluginList" class="list"></div>
+<p class="notice">Aucun plugin n'est intégré au Core. Un plugin peut être ajouté, retiré, remplacé ou devenir inutile après consolidation.</p>
+</div>
+</section>
+
+<section class="section">
+<button class="sectionTitle" data-toggle><span>Apprentissage / consolidation</span><span class="chev">⌄</span></button>
+<div class="sectionContent">
+<div id="learningStatus" class="notice"></div>
+<div id="skillList" class="list"></div>
+</div>
+</section>
+
+<section class="section">
+<button class="sectionTitle" data-toggle><span>Mémoire GS1</span><span class="chev">⌄</span></button>
+<div class="sectionContent">
+<button id="exportMemory" class="action">Exporter GS1.json</button>
+<button id="resetMemory" class="action">Réinitialiser la mémoire locale</button>
+<pre id="memoryPreview" class="notice"></pre>
+</div>
+</section>
+
+<section class="section">
+<button class="sectionTitle" data-toggle><span>Validation / diagnostic</span><span class="chev">⌄</span></button>
+<div class="sectionContent">
+<button id="selfTest" class="action">Lancer l'auto-test générique</button>
+<div id="diagnostic" class="notice"></div>
+</div>
+</section>
+
+<section class="section">
+<button class="sectionTitle" data-toggle><span>Interface</span><span class="chev">⌄</span></button>
+<div class="sectionContent">
+<button id="clearChat" class="action">Effacer la conversation</button>
+<button id="closeMenu" class="action">Fermer le menu</button>
+<p class="notice">Le corps du menu est une zone de défilement indépendante. Les sections du bas restent accessibles sur écran court et mobile.</p>
+</div>
+</section>
+</div>
+</aside>
+</div>
+
+<script>
+'use strict';
+
+/* ============================================================
+   SEMANTIC LEARNING ENGINE V12
+   ------------------------------------------------------------
+   Core = mécanisme générique.
+   Aucune compétence métier spécifique n'est codée ici.
+   Les plugins sont externes et interchangeables.
+
+   Contrat plugin minimal :
+   {
+     id, name?, version?, priority?,
+     manifest?: {
+       role?, capabilities?, consumes?, produces?,
+       dependencies?, conflicts?, tags?
+     },
+     canHandle?(context): boolean|number,
+     run(context): Promise/result,
+     skill?: DeclarativeSkill
+   }
+
+   Resultat plugin normalisé :
+   {
+     success:boolean,
+     score:number,
+     data:any,
+     produces?:string[],
+     effects?:object,
+     confidence?:number,
+     continue?:boolean,
+     needsVerification?:boolean,
+     error?:string
+   }
+
+   Une skill consolidable doit être déclarative et sérialisable.
+   Le Core ne transforme pas arbitrairement du JS en code natif :
+   il apprend/exécute un modèle déclaratif explicite fourni par
+   le plugin. C'est la frontière nécessaire pour rester générique.
+============================================================ */
+
+const GS1_KEY='SemanticLearningEngine.V12.GS1';
+
+class SemanticV12{
+  constructor(){
+    this.version='V12.0';
+    this.plugins=new Map();
+    this.busy=false;
+    this.listeners={step:[],learning:[]};
+    this.memory=this.loadMemory();
+    this.stats={runs:0,pluginRuns:0,pluginSuccesses:0,pluginFailures:0};
+  }
+
+  on(type,fn){if(this.listeners[type])this.listeners[type].push(fn)}
+  emit(type,payload){for(const fn of this.listeners[type]||[]){try{fn(payload)}catch{}}}
+  now(){return new Date().toISOString()}
+  uid(prefix='id'){return prefix+'_'+Math.random().toString(36).slice(2,10)+'_'+Date.now().toString(36)}
+  norm(v){return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim()}
+  clone(v){return JSON.parse(JSON.stringify(v))}
+  finite(v,d=0){const n=Number(v);return Number.isFinite(n)?n:d}
+
+  defaultMemory(){
+    return {
+      schemaVersion:1,engineFamily:'SemanticLearningEngine',engineVersion:'V12.0',
+      createdAt:this.now(),updatedAt:this.now(),
+      conversation:[],pluginExperiences:[],pluginRegistry:{},
+      learnedStrategies:[],learnedSkills:{},consolidation:[],
+      validationHistory:[],taskHistory:[],feedback:[],skillUsage:[],
+      contextHistory:[],statistics:{runs:0,pluginRuns:0,pluginSuccesses:0,pluginFailures:0}
+    };
+  }
+
+  loadMemory(){
+    try{
+      const raw=localStorage.getItem(GS1_KEY);
+      if(!raw)return this.defaultMemory();
+      const m=JSON.parse(raw), d=this.defaultMemory();
+      return {...d,...m,statistics:{...d.statistics,...(m.statistics||{})}};
+    }catch{return this.defaultMemory()}
+  }
+
+  save(){
+    this.memory.updatedAt=this.now();
+    try{localStorage.setItem(GS1_KEY,JSON.stringify(this.memory))}catch{}
+  }
+
+  registerPlugin(plugin){
+    if(!plugin||typeof plugin!=='object')throw new Error('Plugin invalide.');
+    if(!plugin.id||typeof plugin.run!=='function')throw new Error('Un plugin doit fournir id et run().');
+    const id=String(plugin.id);
+    const previous=this.plugins.get(id);
+    const manifest=plugin.manifest&&typeof plugin.manifest==='object'?plugin.manifest:{};
+    const normalized={
+      ...plugin,id,
+      name:String(plugin.name||id),
+      version:String(plugin.version||'1.0.0'),
+      priority:Math.max(0,Math.min(100,this.finite(plugin.priority,50))),
+      manifest:{
+        role:manifest.role||'worker',
+        capabilities:this.arr(manifest.capabilities),
+        consumes:this.arr(manifest.consumes),
+        produces:this.arr(manifest.produces),
+        dependencies:this.arr(manifest.dependencies),
+        conflicts:this.arr(manifest.conflicts),
+        tags:this.arr(manifest.tags)
+      },
+      uses:previous?.uses||0,successes:previous?.successes||0,failures:previous?.failures||0
+    };
+    this.plugins.set(id,normalized);
+    const old=this.memory.pluginRegistry[id]||{};
+    this.memory.pluginRegistry[id]={
+      ...old,id,name:normalized.name,version:normalized.version,
+      manifest:normalized.manifest,external:true,status:'active',
+      firstLoadedAt:old.firstLoadedAt||this.now(),lastLoadedAt:this.now()
+    };
+    this.save();this.renderState();return normalized;
+  }
+
+  arr(v){return Array.isArray(v)?v.filter(x=>x!==null&&x!==undefined).map(String):[]}
+
+  async loadPluginFile(file){
+    if(!file||!/\.js$/i.test(file.name))throw new Error('Seuls les fichiers .js sont acceptés.');
+    const source=await file.text();
+    const blob=new Blob([source],{type:'text/javascript'});
+    const url=URL.createObjectURL(blob);
+    try{
+      const mod=await import(url);
+      let exported=mod.default??mod.plugin??mod.plugins;
+      if(typeof exported==='function')exported=await exported(this);
+      const list=Array.isArray(exported)?exported:[exported];
+      const ids=[];
+      for(const p of list){
+        if(p&&typeof p.run==='function'){p.external=true;p.sourceFile=file.name;this.registerPlugin(p);ids.push(p.id)}
+      }
+      if(!ids.length)throw new Error(`Aucun plugin valide dans ${file.name}.`);
+      return ids;
+    }finally{URL.revokeObjectURL(url)}
+  }
+
+  removePlugin(id){
+    if(!this.plugins.has(id))return false;
+    this.plugins.delete(id);
+    if(this.memory.pluginRegistry[id])this.memory.pluginRegistry[id].status='retired';
+    this.save();this.renderState();return true;
+  }
+
+  activePlugins(){return [...this.plugins.values()].filter(p=>this.memory.pluginRegistry[p.id]?.status!=='retired')}
+
+  /* ---------- Protocole de contexte commun ---------- */
+
+  makeContext(question){
+    return {
+      protocol:'SLE-V12',
+      protocolVersion:1,
+      question:String(question),
+      normalizedQuestion:this.norm(question),
+      timestamp:this.now(),
+      pass:0,
+      state:{
+        facts:[],relations:[],artifacts:[],claims:[],
+        pluginResults:[],signals:[],decisions:[],renderHints:[]
+      },
+      memory:{
+        learnedSkills:this.memory.learnedSkills,
+        learnedStrategies:this.memory.learnedStrategies
+      }
+    };
+  }
+
+  mergePluginResult(context,plugin,result){
+    const r=this.normalizeResult(result,plugin);
+    context.state.pluginResults.push({
+      pluginId:plugin.id,pluginName:plugin.name,
+      success:r.success,score:r.score,data:r.data,
+      produces:r.produces,confidence:r.confidence,
+      needsVerification:r.needsVerification,continue:r.continue
+    });
+    if(Array.isArray(r.effects?.facts))context.state.facts.push(...r.effects.facts);
+    if(Array.isArray(r.effects?.relations))context.state.relations.push(...r.effects.relations);
+    if(Array.isArray(r.effects?.artifacts))context.state.artifacts.push(...r.effects.artifacts);
+    if(Array.isArray(r.effects?.claims))context.state.claims.push(...r.effects.claims);
+    if(Array.isArray(r.effects?.signals))context.state.signals.push(...r.effects.signals);
+    if(Array.isArray(r.effects?.decisions))context.state.decisions.push(...r.effects.decisions);
+    if(Array.isArray(r.effects?.renderHints))context.state.renderHints.push(...r.effects.renderHints);
+    return r;
+  }
+
+  normalizeResult(result,plugin){
+    if(result===undefined||result===null)return {success:false,score:0,data:null,produces:[],confidence:0,error:'Résultat vide.'};
+    if(typeof result==='string')return {success:true,score:.5,data:result,produces:[],confidence:.5};
+    if(typeof result!=='object')return {success:true,score:.5,data:result,produces:[],confidence:.5};
+    return {
+      success:result.success!==false,
+      score:Math.max(0,Math.min(1,this.finite(result.score,result.success===false?0:.5))),
+      data:result.data??result.output??result.answer??result.response??null,
+      produces:this.arr(result.produces),
+      confidence:Math.max(0,Math.min(1,this.finite(result.confidence,result.score))),
+      continue:result.continue!==false,
+      needsVerification:!!result.needsVerification,
+      effects:result.effects&&typeof result.effects==='object'?result.effects:{},
+      error:result.error?String(result.error):undefined
+    };
+  }
+
+  /* ---------- Sélection générique ---------- */
+
+  compatible(plugin,context,selected){
+    const m=plugin.manifest||{};
+    const conflicts=new Set(this.arr(m.conflicts));
+    if(selected.some(p=>conflicts.has(p.id)||(p.manifest?.conflicts||[]).includes(plugin.id)))return false;
+    const deps=this.arr(m.dependencies);
+    if(deps.some(id=>!this.plugins.has(id)&&!this.memory.learnedSkills[id]))return false;
+    if(typeof plugin.canHandle==='function'){
+      try{
+        const v=plugin.canHandle(context);
+        if(v===false||v===0)return false;
+        return typeof v==='number'?v:1;
+      }catch{return false}
+    }
+    return 1;
+  }
+
+  scorePlugin(plugin,context,selected){
+    const gate=this.compatible(plugin,context,selected);
+    if(!gate)return -Infinity;
+    const uses=this.memory.pluginExperiences.filter(x=>x.pluginId===plugin.id);
+    const success=uses.length?uses.filter(x=>x.success).length/uses.length:.5;
+    const priority=this.finite(plugin.priority,50)/100;
+    const capabilityBonus=plugin.manifest?.capabilities?.length?Math.min(.2,plugin.manifest.capabilities.length*.03):0;
+    return priority*.5+success*.25+capabilityBonus*.1+gate*.15;
+  }
+
+  plan(context){
+    const all=this.activePlugins();
+    const selected=[];
+    for(let pass=0;pass<all.length&&selected.length<8;pass++){
+      let best=null,bestScore=-Infinity;
+      for(const p of all){
+        if(selected.includes(p))continue;
+        const s=this.scorePlugin(p,context,selected);
+        if(s>bestScore){bestScore=s;best=p}
+      }
+      if(!best)break;
+      selected.push(best);
+    }
+    return selected;
+  }
+
+  async executePlugin(plugin,context){
+    const started=performance.now();
+    let raw;
+    try{
+      raw=await plugin.run(this.cloneContextForPlugin(context));
+    }catch(e){
+      raw={success:false,score:0,data:null,error:e?.message||String(e)};
+    }
+    const result=this.normalizeResult(raw,plugin);
+    const duration=Math.round(performance.now()-started);
+    const exp={
+      id:this.uid('exp'),pluginId:plugin.id,pluginVersion:plugin.version,
+      success:result.success,score:result.score,duration,
+      context:{question:context.question,pass:context.pass},
+      resultSummary:this.summarize(result),time:this.now()
+    };
+    this.memory.pluginExperiences.push(exp);
+    if(this.memory.pluginExperiences.length>5000)this.memory.pluginExperiences.shift();
+    plugin.uses=(plugin.uses||0)+1;
+    if(result.success){plugin.successes=(plugin.successes||0)+1;this.memory.statistics.pluginSuccesses++}
+    else{plugin.failures=(plugin.failures||0)+1;this.memory.statistics.pluginFailures++}
+    this.memory.statistics.pluginRuns++;
+    this.learnFromExecution(plugin,exp,result);
+    this.save();this.renderState();
+    return result;
+  }
+
+  cloneContextForPlugin(context){
+    /* Le plugin reçoit le même protocole et un snapshot indépendant.
+       Le résultat officiel repasse par mergePluginResult(). */
+    return this.clone(context);
+  }
+
+  summarize(result){
+    try{
+      let d=result.data;
+      if(d===null||d===undefined)return result.error||'exécution sans donnée';
+      if(typeof d==='string')return d.slice(0,1000);
+      return JSON.stringify(d).slice(0,1000);
+    }catch{return 'résultat non sérialisable'}
+  }
+
+  /* ---------- Boucle de supervision / passes ---------- */
+
+  async solve(question){
+    const q=String(question||'').trim();
+    if(!q)return {answerText:'',context:null,verification:{ok:false}};
+    this.busy=true;this.renderBusy(true);
+    this.memory.statistics.runs++;this.stats.runs++;
+    const context=this.makeContext(q);
+    const selectedIds=new Set();
+    const maxPasses=5;
+    try{
+      for(let pass=0;pass<maxPasses;pass++){
+        context.pass=pass+1;
+        this.emit('step',{text:`Passe ${pass+1} — planification générique`});
+        const plan=this.plan(context).filter(p=>!selectedIds.has(p.id));
+        if(!plan.length)break;
+        let progress=false;
+        for(const plugin of plan){
+          selectedIds.add(plugin.id);
+          this.emit('step',{text:`Plugin : ${plugin.name}`});
+          const result=await this.executePlugin(plugin,context);
+          this.mergePluginResult(context,plugin,result);
+          if(result.success)progress=true;
+        }
+        if(!progress)break;
+        if(context.state.pluginResults.some(r=>r.continue===false))break;
+        /* Les nouveaux artefacts sont visibles à la passe suivante.
+           Le Core ne décide pas du domaine : il ne fait que rejouer le protocole. */
+      }
+
+      const learned=this.findLearnedSkill(q);
+      let answer=learned?.answerText||this.synthesize(context);
+      if(!answer)answer='Je n’ai pas obtenu de résultat exploitable avec les capacités actuellement chargées.';
+      const verification=this.validateFinal(answer,context);
+      this.memory.taskHistory.push({
+        id:this.uid('task'),question:q,answerText:answer,
+        plugins:context.state.pluginResults.map(x=>x.pluginId),
+        verification,time:this.now()
+      });
+      if(this.memory.taskHistory.length>1000)this.memory.taskHistory.shift();
+      this.memory.contextHistory.push({
+        question:q,passCount:context.pass,
+        resultCount:context.state.pluginResults.length,time:this.now()
+      });
+      if(this.memory.contextHistory.length>1000)this.memory.contextHistory.shift();
+      this.save();
+      return {answerText:answer,context,verification,learned};
+    }finally{
+      this.busy=false;this.renderBusy(false);
+    }
+  }
+
+  synthesize(context){
+    const parts=[];
+    for(const r of context.state.pluginResults){
+      if(!r.success)continue;
+      const d=r.data;
+      const candidates=[];
+      if(typeof d==='string')candidates.push(d);
+      else if(d&&typeof d==='object'){
+        for(const key of ['answerText','answer','response','explanation','conclusion','summary','result','details','reasoning']){
+          if(typeof d[key]==='string')candidates.push(d[key]);
+        }
+      }
+      for(const x of candidates)if(x.trim()&&!parts.includes(x.trim()))parts.push(x.trim());
+    }
+    if(parts.length)return parts.slice(0,8).join('\n\n');
+    const claims=context.state.claims.filter(x=>typeof x==='string');
+    return [...new Set(claims)].slice(0,8).join('\n\n');
+  }
+
+  validateFinal(answer,context){
+    const successful=context.state.pluginResults.filter(x=>x.success);
+    const failed=context.state.pluginResults.filter(x=>!x.success);
+    const scores=successful.map(x=>this.finite(x.score,0));
+    const confidence=scores.length?scores.reduce((a,b)=>a+b,0)/scores.length:0;
+    const needs=successful.some(x=>x.needsVerification);
+    const ok=!!answer&&successful.length>0&&!needs;
+    const record={id:this.uid('val'),ok,confidence,successful:successful.length,failed:failed.length,time:this.now()};
+    this.memory.validationHistory.push(record);
+    if(this.memory.validationHistory.length>2000)this.memory.validationHistory.shift();
+    return {ok,confidence,status:needs?'à vérifier':ok?'validé':'insuffisant',reasons:[
+      `${successful.length} plugin(s) avec résultat exploitable`,
+      failed.length?`${failed.length} échec(s)`: 'aucun échec de plugin',
+      needs?'au moins un plugin demande une vérification':'aucune vérification supplémentaire demandée'
+    ]};
+  }
+
+  /* ---------- Apprentissage ---------- */
+
+  learnFromExecution(plugin,exp,result){
+    const list=this.memory.pluginExperiences.filter(x=>x.pluginId===plugin.id);
+    if(list.length<3)return;
+    const successRate=list.filter(x=>x.success).length/list.length;
+    const avg=list.reduce((a,x)=>a+this.finite(x.score),0)/list.length;
+    const rec={pluginId:plugin.id,uses:list.length,successRate,averageScore:avg,
+      status:successRate>=.85&&avg>=.65?'effective':successRate>=.55?'acceptable':'weak',updatedAt:this.now()};
+    const i=this.memory.learnedStrategies.findIndex(x=>x.pluginId===plugin.id);
+    if(i>=0)this.memory.learnedStrategies[i]=rec;else this.memory.learnedStrategies.push(rec);
+
+    if(plugin.skill&&list.filter(x=>x.success).length>=5&&successRate>=.85&&avg>=.65){
+      const existing=this.memory.consolidation.find(x=>x.pluginId===plugin.id);
+      if(!existing||existing.status!=='acquired')this.considerConsolidation(plugin,rec);
+    }
+  }
+
+  isSerializableSkill(skill){
+    if(!skill||typeof skill!=='object')return false;
+    try{JSON.stringify(skill);return true}catch{return false}
+  }
+
+  skillMatches(skill,question){
+    const triggers=this.arr(skill?.triggers);
+    const q=this.norm(question);
+    if(!q||!triggers.length)return false;
+    return triggers.some(t=>{
+      const n=this.norm(t);
+      return n&&q.includes(n);
+    });
+  }
+
+  runDeclarativeSkill(skill,question,depth=0){
+    if(depth>10||!skill||!this.skillMatches(skill,question))return null;
+    const q=String(question);
+    const action=this.norm(skill.action);
+    if(action==='template'){
+      const t=String(skill.template||'');
+      return t?t.replace(/\{question\}/gi,q):null;
+    }
+    if(action==='rules'){
+      for(const rule of Array.isArray(skill.rules)?skill.rules:[]){
+        const when=this.arr(rule.when);
+        if(when.some(x=>this.norm(q).includes(this.norm(x)))){
+          const out=rule.answer??rule.output??rule.result;
+          if(typeof out==='string')return out.replace(/\{question\}/gi,q);
+        }
+      }
+      return null;
+    }
+    if(action==='transform'){
+      const t=String(skill.template||skill.transform||'');
+      return t?t.replace(/\{question\}/gi,q):null;
+    }
+    if(action==='chain'){
+      const out=[];
+      for(const step of Array.isArray(skill.steps)?skill.steps:[]){
+        const s=step?.definition||step;
+        const x=this.runDeclarativeSkill(s,q,depth+1);
+        if(x)out.push(x);
+      }
+      return out.length?out.join('\n\n'):null;
+    }
+    return null;
+  }
+
+  considerConsolidation(plugin,strategy){
+    if(!this.isSerializableSkill(plugin.skill)){
+      this.memory.consolidation.push({
+        id:this.uid('cons'),pluginId:plugin.id,pluginName:plugin.name,
+        status:'non_consolidable',reason:'Le plugin ne fournit pas de compétence déclarative sérialisable.',
+        time:this.now()
+      });
+      return;
+    }
+    let rec=this.memory.consolidation.find(x=>x.pluginId===plugin.id);
+    if(rec&&rec.status==='acquired')return;
+    if(!rec){
+      rec={id:this.uid('cons'),pluginId:plugin.id,pluginName:plugin.name,status:'candidate',
+        skillDefinition:this.clone(plugin.skill),tests:[],time:this.now()};
+      this.memory.consolidation.push(rec);
+    }
+    this.testAndAcquire(rec,plugin);
+  }
+
+  async testAndAcquire(rec,plugin){
+    const samples=this.memory.pluginExperiences.filter(x=>x.pluginId===plugin.id&&x.success&&x.context?.question).slice(-5);
+    if(samples.length<5)return false;
+    const tests=[];
+    for(const exp of samples){
+      const out=this.runDeclarativeSkill(rec.skillDefinition,exp.context.question);
+      let native;
+      try{native=this.normalizeResult(await plugin.run({
+        protocol:'SLE-V12',protocolVersion:1,question:exp.context.question,normalizedQuestion:this.norm(exp.context.question),
+        timestamp:this.now(),pass:0,state:{facts:[],relations:[],artifacts:[],claims:[],pluginResults:[],signals:[],decisions:[],renderHints:[]},
+        memory:{learnedSkills:this.memory.learnedSkills,learnedStrategies:this.memory.learnedStrategies},
+        consolidationTest:true
+      }),plugin)}catch{native={success:false,score:0,data:null}}
+      const a=this.norm(this.summarize(native)),b=this.norm(out||'');
+      const similarity=this.textSimilarity(a,b);
+      tests.push({question:exp.context.question,available:!!out,native:native.success,similarity,passed:!!out&&native.success&&similarity>=.6,time:this.now()});
+    }
+    rec.tests=tests;rec.testsPassed=tests.filter(x=>x.passed).length;rec.averageSimilarity=tests.reduce((a,x)=>a+x.similarity,0)/tests.length;
+    if(rec.testsPassed===5&&rec.averageSimilarity>=.6){
+      this.memory.learnedSkills[plugin.id]={
+        id:rec.skillDefinition.id||plugin.id,pluginId:plugin.id,pluginName:plugin.name,
+        definition:this.clone(rec.skillDefinition),acquiredAt:this.now(),
+        testsPassed:rec.testsPassed,averageSimilarity:rec.averageSimilarity,uses:0,status:'acquired'
+      };
+      rec.status='acquired';rec.acquiredAt=this.now();
+      this.removePlugin(plugin.id);
+      this.emit('learning',{message:`Compétence acquise sans plugin : ${plugin.name}`});
+    }else rec.status='candidate';
+    this.save();this.renderState();
+    return rec.status==='acquired';
+  }
+
+  textSimilarity(a,b){
+    if(!a||!b)return 0;if(a===b)return 1;
+    const A=new Set(a.split(/\s+/).filter(Boolean)),B=new Set(b.split(/\s+/).filter(Boolean));
+    let inter=0;for(const x of A)if(B.has(x))inter++;
+    return inter/Math.max(1,A.size+B.size-inter);
+  }
+
+  findLearnedSkill(question){
+    let best=null;
+    for(const [id,entry] of Object.entries(this.memory.learnedSkills||{})){
+      const def=entry?.definition||entry;
+      if(!this.skillMatches(def,question))continue;
+      const answer=this.runDeclarativeSkill(def,question);
+      if(!answer)continue;
+      const score=this.finite(entry.averageSimilarity,.6)+this.finite(entry.uses,0)*.0001;
+      if(!best||score>best.score)best={pluginId:entry.pluginId||id,skillId:def.id||id,answerText:answer,score};
+    }
+    if(best){
+      const key=best.skillId+'|'+this.norm(question);
+      if(!this.memory.skillUsage.some(x=>x.key===key))this.memory.skillUsage.push({key,skillId:best.skillId,pluginId:best.pluginId,time:this.now()});
+      const e=this.memory.learnedSkills[best.pluginId];if(e)e.uses=(e.uses||0)+1;
+      this.save();
+    }
+    return best;
+  }
+
+  /* ---------- Outils UI / diagnostics ---------- */
+
+  exportGS1(){
+    const blob=new Blob([JSON.stringify(this.memory,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='GS1.json';a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  }
+
+  reset(){
+    localStorage.removeItem(GS1_KEY);
+    this.memory=this.defaultMemory();
+    this.renderState();
+  }
+
+  renderBusy(v){
+    document.getElementById('dot').classList.toggle('busy',v);
+    document.getElementById('headerStatus').textContent=v?'V12 • supervision • exécution • apprentissage…':'V12 • Core générique • plugins externes • apprentissage';
+  }
+
+  renderState(){
+    const m=this.memory;
+    document.getElementById('statPlugins').textContent=this.activePlugins().length;
+    document.getElementById('statSkills').textContent=Object.keys(m.learnedSkills||{}).length;
+    document.getElementById('statExp').textContent=m.pluginExperiences.length;
+    document.getElementById('statVal').textContent=m.validationHistory.length;
+    document.getElementById('systemNotice').textContent=
+      `Core V12 générique. ${this.activePlugins().length} plugin(s) actif(s), ${Object.keys(m.learnedSkills||{}).length} compétence(s) consolidée(s).`;
+    const pl=document.getElementById('pluginList');pl.innerHTML='';
+    for(const p of this.activePlugins()){
+      const row=document.createElement('div');row.className='row';
+      const b=document.createElement('strong');b.textContent=p.name;
+      const pill=document.createElement('span');pill.className='pill ok';pill.textContent=p.manifest?.role||'worker';
+      const x=document.createElement('button');x.className='action';x.style.width='auto';x.style.margin='0';x.textContent='Retirer';
+      x.onclick=()=>this.removePlugin(p.id);
+      row.append(b,pill,x);pl.appendChild(row);
+    }
+    const sl=document.getElementById('skillList');sl.innerHTML='';
+    for(const [id,s] of Object.entries(m.learnedSkills||{})){
+      const row=document.createElement('div');row.className='row';
+      const b=document.createElement('strong');b.textContent=s.pluginName||id;
+      const pill=document.createElement('span');pill.className='pill ok';pill.textContent='acquise';
+      row.append(b,pill);sl.appendChild(row);
+    }
+    document.getElementById('learningStatus').textContent=
+      `${m.consolidation.length} tentative(s) de consolidation. Une compétence n'est acquise qu'après 5 tests réussis avec similarité ≥ 0,60.`;
+    document.getElementById('memoryPreview').textContent=
+      `schemaVersion: ${m.schemaVersion}\nengineVersion: ${m.engineVersion}\nplugins: ${Object.keys(m.pluginRegistry).length}\nexperiences: ${m.pluginExperiences.length}\nskills: ${Object.keys(m.learnedSkills).length}`;
+  }
+}
+
+const engine=new SemanticV12();
+
+function el(id){return document.getElementById(id)}
+function addMessage(text,kind='assistant',meta=''){
+  const wrap=document.createElement('div');wrap.className='message '+kind;
+  const b=document.createElement('div');b.className='bubble';b.textContent=text;
+  if(meta){const m=document.createElement('div');m.className='meta';m.textContent=meta;b.appendChild(m)}
+  wrap.appendChild(b);el('chat').appendChild(wrap);el('chat').scrollTop=el('chat').scrollHeight;
+}
+function resizeInput(){const x=el('input');x.style.height='auto';x.style.height=Math.min(150,Math.max(52,x.scrollHeight))+'px'}
+
+async function submitQuestion(){
+  const q=el('input').value.trim();
+  if(!q||engine.busy)return;
+  el('input').value='';resizeInput();addMessage(q,'user');
+  try{
+    const r=await engine.solve(q);
+    const meta=r.verification?`${r.verification.status} • confiance ${(r.verification.confidence*100).toFixed(0)}%`:'';
+    addMessage(r.answerText,'assistant',meta);
+  }catch(e){addMessage('Erreur d’exécution : '+(e?.message||String(e)),'assistant')}
+}
+
+function openDrawer(){el('backdrop').classList.add('open');engine.renderState()}
+function closeDrawer(){el('backdrop').classList.remove('open')}
+
+el('menuBtn').onclick=openDrawer;el('closeBtn').onclick=closeDrawer;el('closeMenu').onclick=closeDrawer;
+el('backdrop').addEventListener('click',e=>{if(e.target===el('backdrop'))closeDrawer()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+document.querySelectorAll('[data-toggle]').forEach(btn=>btn.addEventListener('click',()=>btn.closest('.section').classList.toggle('collapsed')));
+el('composer').addEventListener('submit',e=>{e.preventDefault();submitQuestion()});
+el('input').addEventListener('input',resizeInput);
+el('input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitQuestion()}});
+
+el('themeBtn').onclick=()=>{
+  const light=document.documentElement.getAttribute('data-theme')==='light';
+  document.documentElement.setAttribute('data-theme',light?'dark':'light');
+  localStorage.setItem('SLE-V12-theme',light?'dark':'light');
+  el('themeBtn').textContent=light?'☾':'☀';
+};
+const savedTheme=localStorage.getItem('SLE-V12-theme');
+if(savedTheme)document.documentElement.setAttribute('data-theme',savedTheme);
+el('themeBtn').textContent=document.documentElement.getAttribute('data-theme')==='light'?'☀':'☾';
+
+el('loadPlugins').onclick=()=>el('pluginFiles').click();
+el('pluginFiles').addEventListener('change',async e=>{
+  const files=[...e.target.files];
+  for(const file of files){
+    try{const ids=await engine.loadPluginFile(file);addMessage(`Plugin chargé : ${ids.join(', ')}`,'assistant')}
+    catch(err){addMessage(`Impossible de charger ${file.name} : ${err?.message||String(err)}`,'assistant')}
+  }
+  e.target.value='';engine.renderState();
+});
+
+el('exportMemory').onclick=()=>engine.exportGS1();
+el('resetMemory').onclick=()=>{
+  if(confirm('Réinitialiser toute la mémoire GS1 locale ?')){engine.reset();addMessage('Mémoire GS1 réinitialisée.','assistant')}
+};
+el('clearChat').onclick=()=>{el('chat').innerHTML='<div class="welcome"><b>Semantic Learning Engine V12</b><br>Conversation effacée. Le Core et la mémoire GS1 restent inchangés.</div>';closeDrawer()};
+el('selfTest').onclick=()=>{
+  const checks=[];
+  checks.push(['protocole',engine.makeContext('test').protocol==='SLE-V12']);
+  checks.push(['mémoire',!!engine.memory&&engine.memory.schemaVersion===1]);
+  checks.push(['runtime déclaratif',engine.runDeclarativeSkill({triggers:['abc'],action:'template',template:'ok {question}'},'abc')==='ok abc']);
+  checks.push(['menu scrollable',getComputedStyle(el('drawerBody')).overflowY==='auto']);
+  const ok=checks.every(x=>x[1]);
+  el('diagnostic').textContent=checks.map(x=>(x[1]?'✓ ':'✗ ')+x[0]).join('\n')+(ok?'\n\nAuto-test : OK':'\n\nAuto-test : échec');
+};
+
+engine.on('step',p=>{el('headerStatus').textContent='V12 • '+p.text});
+engine.on('learning',p=>{addMessage('Apprentissage : '+p.message,'assistant')});
+engine.renderState();
+
+/* Exposition minimale pour plugins externes et tests manuels. */
+window.SemanticLearningEngineV12=engine;
+window.SLEV12={engine,openDrawer,closeDrawer};
+</script>
+</body>
+</html>
