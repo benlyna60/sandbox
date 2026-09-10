@@ -1,5 +1,21 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-10 03:55:40
+TITRE: 20% de ses députés doivent avoir vécu la guerre, il a même créé une "ENA russe" pour les vétérans: pourquoi Poutine veut des militaires partout au sommet de l'État
+LIEN: https://www.bfmtv.com/economie/international/20-de-ses-deputes-doivent-avoir-vecu-la-guerre-il-a-meme-cree-une-ena-russe-pour-les-veterans-pourquoi-poutine-veut-des-militaires-partout-au-sommet-de-l-etat_AN-202609100059.html
+CONTENU: Dernière ligne droite avant les élections russes, locales et fédérales, du 18 au 20 septembre. Dix partis sont en lice, sur fond de guerre en Ukraine et de frappes qui s’intensifient des deux côtés. Un signal à ne pas manquer: ces élections voient émerger une nouvelle génération de candidats, passés par le front ukrainien.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-10 02:30:00
+TITRE: SONDAGE BFMTV. Pas plus de 1,84 euro le litre d'essence ou de gazole: les Français se serrent de plus en plus la ceinture face à la flambée des prix des carburants
+LIEN: https://www.bfmtv.com/economie/entreprises/energie/sondage-bfmtv-pas-plus-de-1-84-euro-le-litre-d-essence-ou-de-gazole-les-francais-se-serrent-de-plus-en-plus-la-ceinture-face-a-la-flambee-des-prix-des-carburants_AV-202609100040.html
+CONTENU: D'après un sondage Elabe pour BFMTV, alors que les prix des carburants continuent de flamber, les Français fixent en moyenne à 1,84 euro le litre d'essence ou de gazole comme seuil au delà duquel le prix deviendrait trop cher et inacceptable.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: RFI (Actualités)
 DATE: 2026-09-10 00:21:11
 TITRE: Au sommet sur l'espace à Paris, la gouvernance mondiale spatiale au cœur des échanges
