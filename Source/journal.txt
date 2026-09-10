@@ -1,5 +1,13 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-10 00:21:11
+TITRE: Au sommet sur l'espace à Paris, la gouvernance mondiale spatiale au cœur des échanges
+LIEN: https://www.rfi.fr/fr/monde/20260910-au-sommet-sur-l-espace-%C3%A0-paris-la-gouvernance-mondiale-spatiale-au-c%C5%93ur-des-%C3%A9changes
+CONTENU: Le sommet international sur le spatial se poursuit à Paris ce jeudi 10 septembre 2026. Après l'annonce de 5 milliards d’euros d’investissements mercredi, parmi lesquels un renouvellement de confiance entre le géant américain Amazon et l'entreprise française ArianeGroup, s'ouvre ce jeudi une séquence diplomatique. Six chefs d’États sont annoncés et une quinzaine d’États seront représentés au niveau ministériel. En réunissant un maximum d’acteurs au Grand Palais, l’Élysée espère ainsi favoriser le dialogue sur la gouvernance mondiale de l'espace. C’est aussi l’occasion de pousser l’agenda européen.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-09-09 22:54:24
 TITRE: iPhone 18 Pro et Pro Max: modules photo améliorés, puce surpuissante, et prix... tout ce qu'il faut savoir sur les nouveaux smartphones haut de gamme d'Apple
