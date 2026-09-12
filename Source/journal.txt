@@ -1,5 +1,69 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 21:00:00
+TITRE: Le journal de 23h00 du samedi 12 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-23h00/le-journal-de-23h00-du-samedi-12-septembre-2026-2427573
+CONTENU: Article de référence : "Le journal de 23h00 du samedi 12 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 20:00:00
+TITRE: Le journal de 22h00 du samedi 12 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-22h00/le-journal-de-22h00-du-samedi-12-septembre-2026-8396604
+CONTENU: Article de référence : "Le journal de 22h00 du samedi 12 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 18:00:00
+TITRE: Le 20/minuit du samedi 12 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-20-minuit-du-week-end/le-20-minuit-du-samedi-12-septembre-2026-7428459
+CONTENU: Article de référence : "Le 20/minuit du samedi 12 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-12 20:50:26
+TITRE: Allemagne: des dizaines de milliers de manifestants contre l'extrême droite après sa victoire en Saxe-Anhalt
+LIEN: https://www.rfi.fr/fr/europe/20260912-allemagne-des-dizaines-de-milliers-de-manifestants-contre-l-extr%C3%AAme-droite-apr%C3%A8s-sa-victoire-en-saxe-anhalt
+CONTENU: Des dizaines de milliers de personnes ont manifesté samedi 12 septembre à Berlin contre l’extrême droite, une semaine après la victoire de l’Alternative pour l’Allemagne (AfD) en Saxe-Anhalt, où le parti a recueilli près de 44% des voix. À l’appel de 80 organisations, partis, syndicats et associations, les manifestants ont défilé en faveur d’une société ouverte et démocratique, alors que de nouveaux scrutins se profilent en Allemagne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-12 21:24:06
+TITRE: «Il ne sait absolument pas de quoi il parle»: les propos de Trump sur une Irlande «unifiée» surprennent
+LIEN: https://www.rfi.fr/fr/europe/20260912-il-ne-sait-absolument-pas-de-quoi-il-parle-les-propos-de-trump-sur-une-irlande-unifi%C3%A9e-surprennent
+CONTENU: En déplacement en Irlande, le président américain a fait des déclarations plaidant pour une Irlande « unifiée ». Des propos qui ont surpris au sein de la population irlandaise, surtout au sein du cortège de personnes qui protestaient contre la venue de Donald Trump dans leur pays.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-12 18:11:52
+TITRE: «C’est pour nous chasser définitivement»: en Cisjordanie occupée, Masafer Yatta face à la violence qui s’intensifie
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260912-c-est-pour-nous-chasser-d%C3%A9finitivement-en-cisjordanie-occup%C3%A9e-masafer-yatta-face-%C3%A0-la-violence-qui-s-intensifie
+CONTENU: L’ONU a alerté vendredi 11 septembre sur l’accélération des déplacements forcés en Cisjordanie occupée et sur la destruction, en seulement deux jours, de trois communautés palestiniennes à Masafer Yatta. Une soixantaine de personnes, dont la moitié sont des enfants, ont été sommées de partir. Cette région du sud de la Cisjordanie, près d’Hébron, est en grande partie classée par Israël comme zone militaire destinée à l’entraînement de son armée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-12 18:41:21
+TITRE: Royaume-Uni: le parti anti-immigration Reform UK engrange deux dons record de cryptomilliardaires
+LIEN: https://www.rfi.fr/fr/europe/20260912-royaume-uni-le-parti-anti-immigration-reform-uk-engrange-deux-dons-record-de-cryptomilliardaires
+CONTENU: Au Royaume-Uni, le parti populiste et anti-immigration Reform UK vient d'engranger une somme record, propulsé par les fortunes de l’univers des cryptomonnaies.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-12 18:00:01
+TITRE: Chems-Eddine Hafiz, recteur de la Grande Mosquée de Paris : « Les musulmans de France ne sont pas les hôtes de la République. Ils en sont les citoyens »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/12/chems-eddine-hafiz-recteur-de-la-grande-mosquee-de-paris-les-musulmans-de-france-ne-sont-pas-les-hotes-de-la-republique-ils-en-sont-les-citoyens_6771814_3232.html
+CONTENU: En réaction à la proposition du Rassemblement national d’interdire le voile dans l’espace public, le recteur de la Grande Mosquée de Paris, rappelle, dans une tribune au « Monde », que punir une femme à qui on aurait imposé le port d’un foulard ne la libère en rien.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-12 04:00:00
 TITRE: Le Québec entre crispation et détente de la guerre tarifaire
