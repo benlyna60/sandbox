@@ -1,5 +1,389 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-12 04:00:00
+TITRE: Quand l’anglais dialogue avec le français sur les planches montréalaises
+LIEN: https://www.ledevoir.com/culture/theatre/1007639/quand-anglais-dialogue-francais-planches-montrealaises
+CONTENU: La tendance consistant à intégrer des termes en anglais dans des pièces en français se prolongera-t-elle cette saison ?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-12 04:00:00
+TITRE: L’opportuniste
+LIEN: https://www.ledevoir.com/opinion/chroniques/1008440/opportuniste
+CONTENU: En réalité, c’est un vote pour le PLQ qui pourrait ouvrir la porte à un référendum.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-12 04:00:00
+TITRE: Du rayonnement des palmarès à l’ère de l’écoute en ligne
+LIEN: https://www.ledevoir.com/culture/musique/1007327/rayonnement-palmares-ere-ecoute-ligne
+CONTENU: Ces monuments de prescription musicale peuvent-ils jouer du coude avec la personnalisation des algorithmes?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-12 04:00:00
+TITRE: De la pop et plus encore en musique cet automne
+LIEN: https://www.ledevoir.com/culture/musique/1007567/pop-plus-encore-musique-cet-automne
+CONTENU: Les bacs se remplissent de nouveautés et les salles du Québec accueillent une bonne brochette d’artistes internationaux.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-12 12:10:00
+TITRE: «Les Quatre saisons» de Dompierre, bonne idée et grand succès
+LIEN: https://www.ledevoir.com/culture/musique/1008530/quatre-saisons-dompierre-bonne-idee-grand-succes
+CONTENU: Francis Choinière et l’Orchestre FILMharmonique ont offert un concert vivant et inventif.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-12 04:20:07
+TITRE: Comment l’IA a suscité un vent de panique cet été, dans le sillage du piratage de Hugging Face
+LIEN: https://www.lemonde.fr/pixels/article/2026/09/12/comment-l-ia-a-suscite-un-vent-de-panique-cet-ete-dans-le-sillage-du-piratage-de-hugging-face_6770981_4408996.html
+CONTENU: Plusieurs événements au cours desquels des intelligences artificielles ont échappé à leurs concepteurs ont provoqué des craintes sur les capacités des IA en matière de cybersécurité. Une inquiétude pas entièrement justifiée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-12 10:30:06
+TITRE: L’Arabie saoudite ferme le pipeline qui lui sert à contourner le détroit d’Ormuz après des frappes de drones en provenance d’Irak
+LIEN: https://www.lemonde.fr/international/article/2026/09/12/l-arabie-saoudite-ferme-le-pipeline-qui-lui-sert-a-contourner-le-detroit-d-ormuz-apres-des-frappes-de-drones-en-provenance-d-irak_6771330_3210.html
+CONTENU: Alors que houthistes yéménites contrôlent l’accès à la mer Rouge, l’oléoduc Est-Ouest, seule alternative terrestre au détroit d’Ormuz, a été visé le 10 septembre. Les deux principales voies d’exportation du royaume saoudien sont désormais menacées par les attaques de l’axe pro-iranien.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-12 08:13:35
+TITRE: Franchises médicales : le plafond annuel passe de 100 à 140 euros le 1ᵉʳ octobre
+LIEN: https://www.lemonde.fr/politique/article/2026/09/12/franchises-medicales-le-plafond-annuel-passe-de-100-a-140-euros-le-1-octobre_6771228_823448.html
+CONTENU: Le décret, paru samedi, prévoit également une réévaluation tous les ans à partir de 2028, en janvier, de ce plafond, sur la base de l’inflation.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-12 10:00:21
+TITRE: EN DIRECT, guerre en Ukraine : Kiev a mené dans la nuit des frappes contre plusieurs sites militaires de l’armée russe dans les territoires ukrainiens occupés
+LIEN: https://www.lemonde.fr/international/live/2026/09/12/en-direct-guerre-en-ukraine-kiev-a-mene-dans-la-nuit-des-frappes-contre-plusieurs-objectifs-militaires-de-l-armee-russe-dans-les-territoires-ukrainiens-occupes_6766818_3210.html
+CONTENU: L’Ukraine dit avoir frappé des points de commandement et des lieux de stockage de drones russes en territoire occupé dans la nuit de vendredi à samedi, dans les oblasts de Zaporijia, Kherson, Louhansk et Donetsk.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-12 03:30:07
+TITRE: Communiquer vraiment avec son animal, un fantasme en passe de se réaliser ?
+LIEN: https://www.lemonde.fr/m-perso/article/2026/09/12/communiquer-vraiment-avec-son-animal-un-fantasme-en-passe-de-se-realiser_6770839_4497916.html
+CONTENU: « Au bestiaire ! ». Une firme chinoise commercialise un collier qui permettrait de traduire en langage humain les sons émis par son animal de compagnie. Une invention qui s’inscrit dans une pratique en vogue : la communication animale. Mais peut-on vraiment dialoguer avec son chat ou son chien ?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-12 08:36:59
+TITRE: EN DIRECT, présidentielle 2027 : Jean-Luc Mélenchon et Fabien Roussel à la Fête de « L’Huma » ; Bruno Retailleau avec les Jeunes Républicains… Suivez le déplacement des candidats
+LIEN: https://www.lemonde.fr/politique/live/2026/09/12/en-direct-presidentielle-2027-jean-luc-melenchon-et-fabien-roussel-a-la-fete-de-l-huma-bruno-retailleau-avec-les-jeunes-lr-suivez-le-deplacement-des-candidats_6770586_823448.html
+CONTENU: A gauche, l’ancien président socialiste François Hollande, toujours pas candidat mais plus que jamais en campagne, se rendra lui à Frangy-en-Bresse (Saône-et-Loire), pour la traditionnelle Fête de la rose du PS. Les députés du RN se retrouveront eux au Touquet, samedi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-12 11:00:11
+TITRE: Vingt-cinq djihadistes français détenus en Irak saisissent la CEDH pour demander leur rapatriement en France
+LIEN: https://www.lemonde.fr/societe/article/2026/09/12/vingt-cinq-djihadistes-francais-detenus-en-irak-saisissent-la-cedh-pour-demander-leur-rapatriement-en-france_6771364_3224.html
+CONTENU: Ces membres du groupe Etat islamique avaient été discrètement transférés de la Syrie vers l’Irak, où ils encourent la peine de mort. Leurs avocats dénoncent le refus de Paris de les juger en France, ce qui constitue, selon eux, une entorse à l’Etat de droit laissant place à « l’arbitraire des décisions de l’exécutif ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-12 07:30:08
+TITRE: Le réchauffement climatique rendra-t-il les orages plus dangereux ?
+LIEN: https://www.lemonde.fr/les-decodeurs/article/2026/09/12/le-rechauffement-climatique-rendra-t-il-les-orages-plus-dangereux_6771159_4355770.html
+CONTENU: L’été 2026 a été le théâtre d’une succession de canicules historiques, parfois suivies d’intempéries d’une grande intensité. Quelles sont les conséquences du réchauffement de l’atmosphère sur la fréquence et la virulence de ces tempêtes ?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 13:55:00
+TITRE: J'ai testé pour vous un coaching pour chanter comme Céline Dion
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/j-ai-teste-pour-vous/j-ai-teste-pour-vous-du-samedi-12-septembre-2026-8428414
+CONTENU: Pour sa nouvelle immersion, Ingrid Pohu a mis ses cordes vocales à contribution. Elle a poussé la note avec la coach vocale Elena Hurstel.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 13:52:30
+TITRE: Info immobilier du samedi 12 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/info-immobilier/info-immobilier-du-samedi-12-septembre-2026-5026183
+CONTENU: Article de référence : "Info immobilier du samedi 12 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 12:50:30
+TITRE: Le journal des outremers du samedi 12 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-des-outremers/le-journal-des-outremers-du-samedi-12-septembre-2026-2748690
+CONTENU: Article de référence : "Le journal des outremers du samedi 12 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 12:20:30
+TITRE: L'invité culture du samedi 12 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-invite-culture/l-invite-culture-du-samedi-12-septembre-2026-7610132
+CONTENU: Article de référence : "L'invité culture du samedi 12 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 12:00:00
+TITRE: Le 14/17 du samedi 12 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-14-17-du-week-end/le-14-17-du-samedi-12-septembre-2026-3450856
+CONTENU: Article de référence : "Le 14/17 du samedi 12 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 11:00:00
+TITRE: Le journal de 13h00 du samedi 12 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-13h00/le-journal-de-13h00-du-samedi-12-septembre-2026-2611976
+CONTENU: Article de référence : "Le journal de 13h00 du samedi 12 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 10:00:00
+TITRE: Le journal de 12h00 du samedi 12 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-12h00/le-journal-de-12h00-du-samedi-12-septembre-2026-6907564
+CONTENU: Article de référence : "Le journal de 12h00 du samedi 12 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 09:24:00
+TITRE: "Il y a eu un avant et un après" : Érick Benzi se confie sur sa collaboration avec Céline Dion et Jean-Jacques Goldman
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/il-y-a-eu-un-avant-et-un-apres-eric-benzi-se-confie-sur-sa-collaboration-avec-celine-dion-et-jean-jacques-goldman-6353911
+CONTENU: Pour franceinfo, Erick Benzi revient sur l’enregistrement des premiers albums de Céline Dion en français aux côtés de Jean-Jacques Goldman, et sur le choc que fut pour lui sa première rencontre avec la chanteuse en studio.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 08:00:00
+TITRE: Le 10/14 du samedi 12 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-10-14-du-week-end/le-10-14-du-samedi-12-septembre-2026-4075350
+CONTENU: Article de référence : "Le 10/14 du samedi 12 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-12 07:39:30
+TITRE: La France va-t-elle entrer en récession ? Comment l’éviter ?
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-informes-de-l-eco/les-informes-de-l-eco-du-samedi-12-septembre-2026-2641901
+CONTENU: Tous les samedis, deux économistes débattent des sujets qui marquent l’actualité économique et sociale.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-12 12:47:16
+TITRE: Elle a refusé d'avorter en raison d'un anomalie foetale: bataille judiciaire entre une mère porteuse et des parents aux États-Unis
+LIEN: https://www.bfmtv.com/international/amerique-nord/etats-unis/elle-a-refuse-d-avorter-en-raison-d-un-anomalie-foetale-bataille-judiciaire-entre-une-mere-porteuse-et-des-parents-aux-etats-unis_AN-202609120216.html
+CONTENU: Aux États-Unis, une mère porteuse a saisi la Cour suprême pour demander la garde du bébé qu'elle a porté. L'enfant est né avec une malformation cardiaque et elle accuse les parents de l'enfant de ne pas vouloir lui accorder les soins médicaux nécessaires.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-12 12:31:42
+TITRE: Check-up Santé - Samedi 12 septembre
+LIEN: https://www.bfmtv.com/economie/replay-emissions/check-up-sante/video-check-up-sante-samedi-12-septembre_VN-202609120213.html
+CONTENU: BFM BUSINESS PARTENAIRE - Ce samedi 12 septembre, Philippe Berta, professeur émérite, senior advisor chez DGA Group et président de GenR, Frédéric Bizard, professeur d'économie à l'ESCP et président fondateur de l'Institut Santé, et Rémy Teston, directeur général de Buzz E-Santé, étaient les invités dans l'émission Check-up Santé, présentée par Fabien Guez. Check-up Santé est à voir le samedi sur BFM Business.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-12 12:21:33
+TITRE: Céline Dion quitte son hôtel avant son premier concert parisien
+LIEN: https://www.bfmtv.com/culture/video-celine-dion-quitte-son-hotel-avant-son-premier-concert-parisien_VN-202609120211.html
+CONTENU: Elle n’avait plus donné de concert depuis six ans. Pour son grand retour, Céline Dion a choisi la France, sa deuxième patrie comme elle aime à le dire, pour une série de concerts à Paris. Deux ans après avoir chanté l’hymne à l’amour sur la Tour Eiffel pour les JO 2024, la chanteuse revient donc célébrer ses retrouvailles avec le public français, qui l’a vue percer.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-12 12:14:38
+TITRE: Des touristes portés par des Ougandais: la pratique qui choque et rappelle l’époque coloniale
+LIEN: https://www.bfmtv.com/international/video-des-touristes-portes-par-des-ougandais-la-pratique-qui-choque-et-rappelle-l-epoque-coloniale_VN-202609120208.html
+CONTENU: Dans le parc national de Bwindi en Ouganda, des touristes occidentaux sont transportés sur des chaises par des locaux. La prestation est facturée entre 300 et 500 dollars. Les vidéos de cette pratique ont suscité l’indignation de nombreux internautes. Beaucoup y voient une situation humiliante rappelant l’époque coloniale et l’exploitation des Africains par les Occidentaux.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-12 12:11:50
+TITRE: Gilets jaunes: les renseignements sur le qui-vive
+LIEN: https://www.bfmtv.com/police-justice/video-gilets-jaunes-les-renseignements-sur-le-qui-vive_VN-202609120207.html
+CONTENU: Les Gilets jaunes vont-ils faire leur retour? Il est encore trop tôt pour le dire, mais les services de renseignement commencent à surveiller les différents appels relayés sur les réseaux sociaux. De possibles troubles à l'ordre public sont craints par les autorités.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-12 12:11:09
+TITRE: Près de 300 personnes rassemblées sur un terrain privé pour une free-party dans le Calvados, la préfecture menace de "sanctions sévères" participants et organisateurs
+LIEN: https://www.bfmtv.com/normandie/calvados/pres-de-300-personnes-rassemblees-sur-un-terrain-prive-pour-une-free-party-dans-le-calvados-la-prefecture-menace-de-sanctions-severes_AD-202609120206.html
+CONTENU: Les fêtards sont rassemblés sur un terrain privé au sud de Caen. Les organisateurs et participants s'exposent à des sanctions judiciaires pouvant aller jusqu'à deux ans de prison et 30.000 euros d'amende.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-12 12:02:07
+TITRE: Rentrée politique: distancé dans les sondages, Bruno Retailleau veut tenter de s'imposer dans la bataille de la droite et du centre
+LIEN: https://www.bfmtv.com/politique/les-republicains/video-rentree-politique-distance-dans-les-sondages-bruno-retailleau-veut-tenter-de-s-imposer-dans-la-bataille-de-la-droite-et-du-centre_VN-202609120204.html
+CONTENU: Pris en étau entre Marine Le Pen et Édouard Philippe, le candidat des Républicains n'arrive pas, pour l'instant, à passer le mur du son. Ses proches continuent d'y croire, persuadés que la campagne présidentielle ne fait que commencer et que la persévérance de l'ancien ministre de l’Intérieur va finir par payer.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-12 12:00:12
+TITRE: INFO BFMTV. Un retour des Gilets jaunes? Le renseignement territorial invite à une "vigilance particulière" en raison de possibles troubles à l'ordre public
+LIEN: https://www.bfmtv.com/police-justice/info-bfmtv-un-retour-des-gilets-jaunes-le-renseignement-territorial-invite-a-une-vigilance-particuliere-en-raison-de-possibles-troubles-a-l-ordre-public_AN-202609120200.html
+CONTENU: Les Gilets jaunes vont-ils faire leur retour? Il est encore trop tôt pour le dire, mais les services de renseignement commencent à surveiller les différents appels relayés sur les réseaux sociaux. De possibles troubles à l'ordre public sont craints par les autorités.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-12 11:57:06
+TITRE: Marine le Pen fait sa rentrée au Touquet
+LIEN: https://www.bfmtv.com/politique/elections/presidentielle/video-marine-le-pen-fait-sa-rentree-au-touquet_VN-202609120199.html
+CONTENU: Le Rassemblement national fait sa rentrée parlementaire ce week-end au Palais des Congrès du Touquet. Les deux leaders, Jordan Bardella et Marine Le Pen, sont attendus. La candidate à la présidentielle poursuivra sa rentrée politique demain, avec son discours de rentrée depuis son fief d'Hénin-Beaumont.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-12 10:51:33
+TITRE: DIRECT- Moyen-Orient: les pays des Brics exhortent à la «retenue maximale» dans le conflit
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260912-direct-moyen-orient-les-r%C3%A9actions-apr%C3%A8s-la-prise-de-contr%C3%B4le-de-la-c%C3%B4te-y%C3%A9m%C3%A9nite-par-les-houthis
+CONTENU: Au Yémen, les forces gouvernementales tentent de reprendre le territoire conquis par les Houthis dans leur offensive éclair cette semaine. Ce samedi 12 septembre, le gouvernement yéménite, soutenu par l'Arabie saoudite, dit viser les combattants rebelles par les airs. Les réactions, notamment iranienne et américaine, ne se sont pas fait attendre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-12 07:59:57
+TITRE: Législatives en Israël: un scrutin polarisé autour de Benyamin Netanyahu et l’onde de choc du 7-Octobre
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260912-l%C3%A9gislatives-en-isra%C3%ABl-un-scrutin-polaris%C3%A9-autour-de-benyamin-netanyahu-et-l-onde-de-choc-du-7-octobre
+CONTENU: La semaine politique a été agitée en Israël. Des élections législatives sont prévues le 27 octobre 2026 et le scrutin s’annonce serré. Trente-huit partis étaient inscrits à la clôture des listes, le mardi 8 septembre. Le même jour, le journal Haaretz publiait des informations selon lesquelles Benyamin Netanyahu aurait été prévenu que le Hamas préparait une attaque dix jours avant le 7-Octobre. Un peu plus tard dans la journée, douze pays, dont le Royaume-Uni et la France, ont annoncé des sanctions commerciales contre les produits issus des colonies israéliennes, illégales au regard du droit international. C’est dans ce contexte tendu que sept millions d'Israéliens sont appelés à voter en octobre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-12 09:53:18
+TITRE: Bulgarie: explosion dans un entrepôt du fabricant d'armes Emco, dont les munitions sont utilisées en Ukraine
+LIEN: https://www.rfi.fr/fr/europe/20260912-bulgarie-explosion-et-incendies-dans-un-d%C3%A9p%C3%B4t-de-munitions-emco-a-priori-destin%C3%A9es-%C3%A0-l-ukraine
+CONTENU: Une explosion suivie d'incendies s'est produite, le vendredi 11 septembre 2026, sur un site de stockage de munitions dans le centre de la Bulgarie. Ce sinistre intervient quelques semaines seulement après un incendie survenu dans un autre dépôt de munitions bulgare, a indiqué, ce 12 septembre, la police du pays.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-12 12:28:52
+TITRE: Biodiversité: plus de la moitié des oiseaux migrateurs en déclin, selon un rapport de l'ONG BirdLife
+LIEN: https://www.rfi.fr/fr/environnement/20260912-biodiversit%C3%A9-plus-de-la-moiti%C3%A9-des-oiseaux-migrateurs-en-d%C3%A9clin-selon-un-rapport-de-l-ong-birdlife
+CONTENU: Comme chaque année, des milliards d'oiseaux migrent sur de très longues distances à travers le monde. Les voies migratoires traversent des océans et des continents et relient tous les pays du monde. Mais selon le dernier rapport de l'ONG internationale BirdLife, les oiseaux migrateurs sont en grande difficulté.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-12 13:56:24
+TITRE: Crimes sous l’eau : les robots, une nouvelle compétence pour les enquêteurs subaquatiques
+LIEN: https://theconversation.com/crimes-sous-leau-les-robots-une-nouvelle-competence-pour-les-enqueteurs-subaquatiques-286604
+CONTENU: Les techniciens en investigations subaquatiques interviennent sur des scènes de crime sous-marines. Les engins téléopérés, ou ROV, ont une autonomie de cinq à dix&amp;nbsp;fois supérieure à celle d’un plongeur.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-12 13:54:31
+TITRE: PISA 2025 and school rankings: are we asking the right questions about schooling?
+LIEN: https://theconversation.com/pisa-2025-and-school-rankings-are-we-asking-the-right-questions-about-schooling-291712
+CONTENU: Are education systems succeeding in transforming individual abilities into collective opportunities? This is what rankings ought to be measuring rather than reducing education to a few figures.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-12 08:47:48
+TITRE: Coopération, confiance en soi, curiosité… Ce que PISA nous apprend des compétences sociales et émotionnelles des élèves
+LIEN: https://theconversation.com/cooperation-confiance-en-soi-curiosite-ce-que-pisa-nous-apprend-des-competences-sociales-et-emotionnelles-des-eleves-291692
+CONTENU: Si les enquêtes PISA documentent les performances scolaires des élèves, elles incitent à s’intéresser, au-delà des simples résultats, au développement de compétences sociales et émotionnelles.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-09-12 08:46:31
+TITRE: Apple vs Union européenne : quand le DMA fracture une tribu de 1,5 milliard de personnes
+LIEN: https://theconversation.com/apple-vs-union-europeenne-quand-le-dma-fracture-une-tribu-de-1-5-milliard-de-personnes-288825
+CONTENU: Priver les utilisateurs européens d’iPhone de Siri AI, ce n’est pas leur retirer une fonctionnalité, c’est les déclasser au sein de leur tribu.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-12 13:30:01
+TITRE: Tiny cyanobacteria may be the secret heroes of ocean carbon sequestration
+LIEN: https://phys.org/news/2026-09-tiny-cyanobacteria-secret-heroes-ocean.html
+CONTENU: A process known as the biological carbon pump (BCP) moves organic carbon from near the ocean's surface to the ocean floor. That carbon often stays there for hundreds or thousands of years, making the BCP a primary source of carbon sequestration in the oceans. Scientists have thought that relatively large phytoplankton are more efficient at exporting carbon to the deep ocean than tiny cyanobacteria, but new research by Jingjing Zhang and colleagues published in AGU Advances now calls that belief into question.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-12 12:40:01
+TITRE: Why are the stars around our galaxy's black hole missing their companions?
+LIEN: https://phys.org/news/2026-09-stars-galaxy-black-hole-companions.html
+CONTENU: A new study suggests that the young stars orbiting the Milky Way's central black hole may have a surprisingly ordinary origin. But the black hole's influence may be what makes their origin look more exotic than it really is. Along with shaping their orbits, it may also destroy their stellar companions. The paper outlining this work was published in Astronomy &amp; Astrophysics on Aug. 11.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-12 12:00:08
+TITRE: Rubin observatory peers deep into the famous COSMOS field
+LIEN: https://phys.org/news/2026-09-rubin-observatory-peers-deep-famous.html
+CONTENU: The COSMOS field, or Cosmic Evolution Survey Deep Field, is one of the most famous patches of the universe observed by astronomers. Located in the constellation Sextans, this region was photographed by the Hubble Space Telescope (HST) in segments from 2003 to 2005 using its Advanced Camera for Surveys (ACS). With support from ground-based and other space-based telescopes, the resulting images were then stitched together to create a stunning picture of cosmic evolution.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-12 13:00:09
+TITRE: « Si l’on veut se donner les moyens humains d’affronter la transition écologique, il est indispensable d’accroître le taux d’activité des jeunes et des seniors »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/12/si-l-on-veut-se-donner-les-moyens-humains-d-affronter-la-transition-ecologique-il-est-indispensable-d-accroitre-le-taux-d-activite-des-jeunes-et-des-seniors_6771438_3232.html
+CONTENU: D’un côté, la France est loin derrière les autres pays développés en volume d’heures travaillées par habitant. De l’autre, la transition écologique demande plus de travail, constate, dans une tribune au « Monde », l’économiste Jean-Eric Hyafil.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-12 10:00:10
+TITRE: Valentin Grimaud, essayiste : « La venue de Céline Dion à Paris ravive une forme d’union sacrée en France »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/12/valentin-grimaud-essayiste-la-venue-de-celine-dion-a-paris-ravive-une-forme-d-union-sacree-en-france_6771295_3232.html
+CONTENU: Si la France ne l’a pas toujours accueillie à bras ouverts, la star québécoise suscite désormais l’admiration. L’emploi de ses chansons, notamment au cinéma, témoigne d’une forme d’universalité, souligne l’auteur de « Céline Dion. Vestale », dans une tribune au « Monde ».
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-12 08:45:11
+TITRE: Le piège se referme sur l’économie française
+LIEN: https://www.lemonde.fr/politique/article/2026/09/12/le-piege-se-referme-sur-l-economie-francaise_6771262_823448.html
+CONTENU: La France doit investir davantage pour financer sa réindustrialisation et s’adapter au changement climatique, tout en réduisant un déficit public qui rogne ses marges de manœuvre. Mais les débats sur le budget 2027 et l’élection présidentielle compliquent cette équation.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-12 08:00:21
+TITRE: François-Xavier de Vaujany, professeur en sciences de gestion : « La réponse à la crise existentielle que nous traversons ne viendra pas d’un grand calcul réalisé par une IA surpuissante »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/12/francois-xavier-de-vaujany-professeur-en-sciences-de-gestion-la-reponse-a-la-crise-existentielle-que-nous-traversons-ne-viendra-pas-d-un-grand-calcul-realise-par-une-ia-surpuissante_6771194_3232.html
+CONTENU: Les entreprises et les Etats doivent bâtir une nouvelle architecture de décision plus scientifique et plus démocratique pour répondre aux grands défis sociétaux, estime le  professeur en sciences de gestion, dans une tribune au « Monde ».
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-12 06:30:14
+TITRE: Thomas Piketty : « Pour sortir des contradictions actuelles, il faut repenser la prospérité dans le respect des limites planétaires »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/12/thomas-piketty-pour-sortir-des-contradictions-actuelles-il-faut-repenser-la-prosperite-dans-le-respect-des-limites-planetaires_6771090_3232.html
+CONTENU: L’adaptation de l’économie au dérèglement climatique doit aller de pair avec la démocratie économique, l’autogestion, l’égalité politique et territoriale et la démarchandisation, estime l’économiste dans sa chronique au « Monde ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-09-12 08:05:32
 TITRE: Déraillement d'un train en Seine-Maritime: la piste d'un acte malveillant "privilégiée"
