@@ -1,6 +1,446 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-15 14:44:00
+TITRE: Les chefs de parti s’affrontent pour la première fois ce soir
+LIEN: https://www.ledevoir.com/politique/quebec/1009109/premier-debat-face-a-face-tva-chefs-election-quebec
+CONTENU: Pour ce premier débat de trois, ils pourront s’exprimer sur l’économie, les services et l’avenir du Québec.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-15 04:00:00
+TITRE: Limoilou se mobilise pour empêcher l’expulsion d’une famille
+LIEN: https://www.ledevoir.com/actualites/immigration/1008962/limoilou-mobilise-empecher-expulsion-famille
+CONTENU: À Québec, la communauté de l’école Saint-Fidèle veut empêcher le renvoi d’une mère et de son fils vers le Congo.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-15 18:22:08
+TITRE: Un fonds d’investissement doté de 50 milliards pour les grands projets du Canada voit le jour
+LIEN: https://www.ledevoir.com/economie/1009202/fonds-investissement-dote-50-milliards-grands-projets-canada-voit-jour
+CONTENU: La plus grande caisse de retraite du pays et Brookfields s’associent pour répondre à l’appel du premier ministre Carney.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-15 04:00:00
+TITRE: Penser comme les castors pour sauver des milieux humides
+LIEN: https://www.ledevoir.com/actualites/environnement/1008986/penser-comme-castors-sauver-milieux-humides
+CONTENU: Des écologistes construisent des barrages inspirés de ceux bâtis par ces rongeurs emblématiques.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-15 14:26:00
+TITRE: L’UE dénonce les «provocations» russes après les incidents au Danemark et en Lituanie
+LIEN: https://www.ledevoir.com/monde/europe/1009106/danemark-accuse-russie-avoir-tire-fusees-eclairantes-vers-helicopteres
+CONTENU: Le gouvernement danois a accusé mardi la Russie d’avoir tiré des fusées éclairantes vers un de ses hélicoptères.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-15 10:42:00
+TITRE: Catherine Ringer, célèbre voix du groupe rock Les Rita Mitsouko, est morte
+LIEN: https://www.ledevoir.com/culture/musique/1009061/catherine-ringer-celebre-voix-groupe-rock-rita-mitsouko-est-morte
+CONTENU: Avec son compagnon Fred Chichin, elle a fait danser les foules avec «Andy», «Marcia Baïla» et «C’est comme ça».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-15 16:17:55
+TITRE: Les États-Unis admettent disposer d’armes dans l’espace, ce que dénoncent Pékin et Moscou
+LIEN: https://www.ledevoir.com/monde/etats-unis/1009160/etats-unis-admettent-disposer-armes-espace-ce-denoncent-pekin-moscou
+CONTENU: «L’annonce américaine montrait la volonté d’envoyer un message» à ses rivaux, analyse une source sécuritaire européenne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-15 15:56:27
+TITRE: Rachida Dati devant le tribunal correctionnel de Paris dans l’affaire Ghosn-Renault
+LIEN: https://www.lemonde.fr/societe/article/2026/09/15/rachida-dati-devant-le-tribunal-correctionnel-de-paris-dans-l-affaire-ghosn-renault_6774445_3224.html
+CONTENU: A partir de mercredi, l’ancienne ministre est jugée notamment pour « corruption passive » et « trafic d’influence passif » pour 900 000 euros perçus, entre 2009 et 2013, de l’ex-PDG de Renault-Nissan Carlos Ghosn, lui aussi renvoyé.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-15 16:41:54
+TITRE: Loi intégrale sur les violences sexistes et sexuelles : Sébastien Lecornu s’engage mais reste flou sur les moyens supplémentaires
+LIEN: https://www.lemonde.fr/societe/article/2026/09/15/loi-integrale-sur-les-violences-sexistes-et-sexuelles-sebastien-lecornu-s-engage-mais-reste-flou-sur-les-moyens-supplementaires_6774457_3224.html
+CONTENU: Dans une tribune au « Monde », mardi 15 septembre, le premier ministre évoque pour la première fois une « trajectoire pluriannuelle » de moyens consacrés à la lutte contre les violences sexistes et sexuelles, mais reste muet sur les montants supplémentaires qui pourraient être engagés.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-15 16:30:10
+TITRE: La direction de Radio France maintient Charles Sapin sur France Inter, les syndicats déposent un nouveau préavis de grève
+LIEN: https://www.lemonde.fr/economie/article/2026/09/15/la-direction-de-radio-france-maintient-charles-sapin-sur-france-inter-les-syndicats-deposent-un-nouveau-preavis-de-greve_6774453_3234.html
+CONTENU: Des syndicats de France Télévisions s’élèvent aussi contre le directeur adjoint de la rédaction de « Valeurs actuelles », qui, le 13 septembre sur la chaîne Franceinfo, a défendu « la priorité nationale » dans l’attribution des logements sociaux.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-15 17:08:57
+TITRE: IA : un ancien chercheur de Google DeepMind alerte à son tour sur un risque existentiel
+LIEN: https://www.lemonde.fr/pixels/article/2026/09/15/ia-un-ancien-chercheur-de-google-deepmind-alerte-a-son-tour-sur-un-risque-existentiel_6774468_4408996.html
+CONTENU: Après plusieurs incidents impliquant des agents d’intelligence artificielle, les mises en garde et les initiatives pour mieux encadrer l’IA se multiplient. OpenAI, Anthropic et Google DeepMind envisagent un organe commun de supervision des risques, tandis que Mistral, qui reconnaît des dangers réels, conteste les appels à ralentir le développement de la technologie.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-15 16:16:42
+TITRE: A Mayotte, des fouilles révèlent que la mosquée de Tsingoni, la plus vieille de France, date du XIIIᵉ siècle
+LIEN: https://www.lemonde.fr/sciences/article/2026/09/15/a-mayotte-des-fouilles-revelent-que-la-mosquee-de-tsingoni-la-plus-vieille-de-france-date-du-xiii-siecle_6774450_1650684.html
+CONTENU: Classé au titre des monuments historiques depuis 2015, l’édifice a été restauré entre juillet et septembre 2023. Des scientifiques de l’Inrap ont eu recours à la datation au carbone 14 pour revoir l’« âge » du bâtiment.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-15 14:47:13
+TITRE: EN DIRECT, guerre en Ukraine : « Poutine ne s’arrêtera pas, à moins qu’on ne l’arrête », affirme Kaja Kallas
+LIEN: https://www.lemonde.fr/international/live/2026/09/15/en-direct-guerre-en-ukraine-la-russie-qualifie-la-dissuasion-nucleaire-avancee-proposee-par-emmanuel-macron-en-mars-d-imprudente_6772184_3210.html
+CONTENU: L’Union européenne doit imposer « un coût plus élevé » à la Russie pour répondre à la multiplication des attaques hybrides, a assuré, mardi, la cheffe de la diplomatie de l’UE.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-15 04:05:07
+TITRE: « Plutôt mourir que d’être renvoyé en Libye » : l’odyssée infernale des migrants en Méditerranée centrale
+LIEN: https://www.lemonde.fr/international/article/2026/09/15/plutot-mourir-que-d-etre-renvoye-en-libye-l-odyssee-infernale-des-migrants-en-mediterranee-centrale_6774330_3210.html
+CONTENU: « Le Monde » a embarqué en juillet à bord de l’« Ocean Viking », le navire de sauvetage affrété par SOS Méditerranée. Secourus en haute mer par l’ONG française, des rescapés témoignent d’un cycle de violences sans fin depuis leurs pays d’origine jusqu’à la Méditerranée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-15 15:15:44
+TITRE: Bande de Gaza : l’ONU exige l’accès des enquêteurs pour documenter les soupçons de crimes de guerre
+LIEN: https://www.lemonde.fr/international/article/2026/09/15/bande-de-gaza-l-onu-exige-l-acces-des-enqueteurs-pour-documenter-les-soupcons-de-crimes-de-guerre_6774439_3210.html
+CONTENU: Des centaines de corps exhumés à Gaza soulèvent de vives inquiétudes sur la préservation des preuves et l’identification des victimes, alors que les opérations de récupération restent entravées.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-15 14:00:09
+TITRE: En matière de budget européen, la France et l’Allemagne campent sur des positions très éloignées
+LIEN: https://www.lemonde.fr/international/article/2026/09/15/en-matiere-de-budget-europeen-la-france-et-l-allemagne-campent-sur-des-positions-tres-eloignees_6774427_3210.html
+CONTENU: Le président du Conseil européen, Antonio Costa, a entrepris un tour des capitales européennes pour trouver la voie d’un compromis entre les Vingt-Sept sur le futur budget de l’UE pour les années 2028-2034. Il fait étape à Paris mardi 15 septembre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-15 15:33:08
+TITRE: Malgré des dossards de plus en plus chers et difficiles à obtenir, l'engouement pour la course à pied ne faiblit pas chez les femmes
+LIEN: https://rmc.bfmtv.com/conso/loisirs/malgre-des-dossards-de-plus-en-plus-chers-et-difficiles-a-obtenir-l-engouement-pour-la-course-a-pied-ne-faiblit-pas-chez-les-femmes_AN-202609150622.html
+CONTENU: La célèbre course La Parisienne a rassemblé près de 20.000 participantes ce dimanche 13 septembre pour sa 29ème édition. Celle-ci est le reflet d'une hausse de la pratique de ce sport par les femmes. Reportage.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-15 15:30:25
+TITRE: Cambriolages de casernes de pompiers dans le Rhône: la préfecture met en place un plan de sécurisation et de sûreté renforcées
+LIEN: https://www.bfmtv.com/lyon/cambriolages-de-casernes-de-pompiers-dans-le-rhone-la-prefecture-met-en-place-un-plan-de-securisation-et-de-surete-renforcees_AV-202609150619.html
+CONTENU: Ce mardi 15 septembre, la préfecture du Rhône a annoncé mettre en place un plan de sécurisation des casernes de pompiers, victimes depuis plusieurs semaines de vols avec effraction. Les mesures portent déjà leurs fruits.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-15 15:27:42
+TITRE: "Une initiative imprudente": Moscou estime que la "dissuasion nucléaire avancée" proposée par la France représente un "risque"
+LIEN: https://www.bfmtv.com/international/asie/russie/une-initiative-imprudente-moscou-estime-que-la-dissuasion-nucleaire-avancee-proposee-par-la-france-represente-un-risque_AD-202609150616.html
+CONTENU: La Finlande, voisine de la Russie, a décidé de rejoindre la "dissuasion nucléaire avancée" proposée par la France, devenant le dixième partenaire européen à se joindre à l'initiative lancée en début d'année par Emmanuel Macron.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-15 15:25:21
+TITRE: Marschall Truchot : Carburants : le gouvernement joue-t-il avec le feu ? - 15/09
+LIEN: https://www.bfmtv.com/replay-emissions/bfm-story/video-marschall-truchot-carburants-le-gouvernement-joue-t-il-avec-le-feu-15-09_VN-202609150624.html
+CONTENU: Marschall Truchot, du lundi au jeudi de 17h à 18h45 avec Olivier Truchot &amp; Alain Marschall. Deux heures pour faire un tour complet de l’actualité en présence d’invités pour expliquer et débattre sur les grands sujets qui ont marqué la journée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-15 15:21:23
+TITRE: Raoul, Ginger et Simone: qui sont les enfants de Catherine Ringer et Fred Chichin, duo avec qui la France a vécu une vraie histoire d’amour?
+LIEN: https://www.bfmtv.com/people/raoul-ginger-et-simone-qui-sont-les-enfants-de-catherine-ringer-et-fred-chichin-duo-avec-qui-la-france-a-vecu-une-vraie-histoire-d-amour_AN-202609150613.html
+CONTENU: Ils ont signé conjointement le communiqué envoyé à l’AFP annonçant le décès de leur mère à 68 ans des suites d’un cancer foudroyant. Portrait des trois enfants du couple qui a dynamité les codes de la chanson française.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-15 15:16:35
+TITRE: "Un niveau jamais observé pour une mi-septembre": la sécheresse continue de s'aggraver et aucune pluie n'est attendue dans les prochaines semaines
+LIEN: https://www.bfmtv.com/meteo/secheresse/un-niveau-jamais-observe-pour-une-mi-septembre-la-secheresse-continue-de-s-aggraver-et-aucune-pluie-n-est-attendue-dans-les-prochaines-semaines_AV-202609150610.html
+CONTENU: La France subit une sécheresse exceptionnelle, résultat de plusieurs mois sans précipitations et d'un été très chaud. De quoi envoyer un avertissement très clair concernant le changement climatique, qui entraîne une hausse des températures et une baisse de la pluviométrie sur certaines régions durant l'été.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-15 15:10:28
+TITRE: Hausse des carburants: "La colère doit s'exprimer", assure Jean-Pierre Mercier, porte-parole "Lutte Ouvrière"
+LIEN: https://www.bfmtv.com/politique/video-hausse-des-carburants-la-colere-doit-s-exprimer-assure-jean-pierre-mercier-porte-parole-lutte-ouvriere_VN-202609150608.html
+CONTENU: Des pêcheurs bloquent depuis 3h, ce mardi matin, la sortie du terminal pétrolier de Fos, où une cinquantaine de camions-citernes sont à l’arrêt, pour protester contre la hausse des prix du carburant et la dégradation de leurs conditions de travail.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-15 15:08:50
+TITRE: "Une lourde défaite pour l'Amérique": Donald Trump fustige la décision de la Cour suprême sur le vote par correspondance
+LIEN: https://www.bfmtv.com/international/amerique-nord/etats-unis/une-lourde-defaite-pour-l-amerique-donald-trump-fustige-la-decision-de-la-cour-supreme-sur-le-vote-par-correspondance_AD-202609150605.html
+CONTENU: Alors que la Cour suprême a rejeté un recours de l'administration Trump visant à permettre d'encadrer plus strictement le vote par correspondance, Donald Trump a dénoncé une décision "horrible" et "hautement politique".
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-15 12:04:54
+TITRE: Le Raid intervient suite au braquage d'une bijouterie à Lyon, un des braqueurs est activement recherché
+LIEN: https://www.bfmtv.com/lyon/faits-divers/le-raid-intervient-suite-au-braquage-d-une-bijouterie-a-lyon-un-des-braqueurs-est-activement-recherche_AN-202609150493.html
+CONTENU: À Lyon, dans le quartier Saint-Georges, une bijouterie a été braquée ce mardi matin. Un important dispositif de sécurité avait été mis en place, avec notamment l'intervention du Raid. Le braqueur est actuellement recherché.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-15 16:13:46
+TITRE: Moyen-Orient: l’Arabie saoudite promet de riposter avec «fermeté» aux attaques houthies
+LIEN: http://www.rfi.fr/fr/moyen-orient/20260915-moyen-orient-l-arabie-saoudite-promet-de-riposter-avec-fermet%C3%A9-aux-attaques-houthies
+CONTENU: L'Arabie saoudite a promis mardi 15 septembre de riposter avec « fermeté » après de nouvelles attaques des Houthis du Yémen. Ces rebelles pro-iraniens poursuivent leur offensive pour consolider leur contrôle du stratégique détroit de Bab el-Mandeb, un territoire stratégique pour le commerce mondial. Une alerte de risque d’attaque a d’ailleurs été émise pour la ville sainte de la Mecque, une première.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-15 16:20:56
+TITRE: France: pour le budget 2027, Sébastien Lecornu demande ne pas augmenter les dépenses de l'État
+LIEN: http://www.rfi.fr/fr/france/20260915-france-pour-le-budget-2027-s%C3%A9bastien-lecornu-demande-ne-pas-augmenter-les-d%C3%A9penses-de-l-%C3%A9tat
+CONTENU: Sébastien Lecornu a demandé à ses ministres, au nom de l'« exemplarité » et dans un contexte de finances publiques dégradées, de ne pas augmenter les dépenses de l'État, hors défense, dans le budget pour 2027.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-15 16:06:02
+TITRE: Le fils de Trump confirme qu'un homme d'affaires russe a financé une partie des festivités liées à son mariage
+LIEN: http://www.rfi.fr/fr/am%C3%A9riques/20260915-le-fils-de-trump-confirme-qu-un-homme-d-affaires-russe-a-financ%C3%A9-une-partie-des-festivit%C3%A9s-li%C3%A9es-%C3%A0-son-mariage
+CONTENU: Un cadeau de mariage embarrassant pour le fils aîné du président américain. Donald Trump Jr. confirme qu'un homme d'affaires russe proche du Kremlin a bien financé les luxueuses festivités aux Bahamas qui ont suivi son union. Le couple dément toute corruption.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-15 14:45:04
+TITRE: Mort de Catherine Ringer: la voix mythique du duo rock français Rita Mitsouko
+LIEN: http://www.rfi.fr/fr/musique/20260915-mort-de-catherine-ringer-la-voix-mythique-du-duo-rock-fran%C3%A7ais-rita-mitsouko
+CONTENU: Catherine Ringer, la chanteuse du mythique duo de rock français, les Rita Mitsouko, est décédée d'un cancer à l'âge de 68 ans, ont annoncé mardi 15 septembre à l'AFP ses enfants.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-15 15:40:11
+TITRE: Un riche homme d'affaires malien victime du cambriolage au palace parisien Plaza Athénée
+LIEN: http://www.rfi.fr/fr/afrique/20260915-un-riche-homme-d-affaires-malien-victime-du-cambriolage-au-palace-parisien-plaza-ath%C3%A9n%C3%A9e
+CONTENU: En France, un audacieux cambriolage a eu lieu dans l'un des plus somptueux hôtels parisiens. Dans la nuit du mardi 8 au mercredi 9 septembre, deux individus se sont introduits dans l'une des chambres du palace en escaladant la façade. Ils seraient repartis avec un butin de près d'un million d'euros selon la victime du cambriolage dont on connait à ce jour l'identité.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-15 17:59:38
+TITRE: «J’ai tout donné»: les confessions du gardien sénégalais Édouard Mendy après sa retraite internationale
+LIEN: http://www.rfi.fr/fr/afrique-foot/20260915-j-ai-tout-donn%C3%A9-les-confessions-du-gardien-s%C3%A9n%C3%A9galais-%C3%A9douard-mendy-apr%C3%A8s-sa-retraite-internationale
+CONTENU: À 34 ans, après huit années au sommet avec le Sénégal, deux Coupes du monde et deux sacres continentaux, Édouard Mendy a tourné la page de la sélection. Considéré comme l’un des meilleurs gardiens africains de l’histoire et nommé cette année pour le Trophée Yachine, il se confie en exclusivité sur RFI : les raisons de sa décision, son rôle de leader, l’échec du Mondial 2026, ainsi que ses souvenirs de la tanière, alors qu’il se consacre désormais pleinement à son club Al-Ahli et à ses engagements éducatifs et entrepreneuriaux au Sénégal.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-15 16:38:40
+TITRE: TotalEnergies mise sur l'IA de Mistral pour «développer l’exploration de pétrole et de gaz»
+LIEN: http://www.rfi.fr/fr/%C3%A9conomie/20260915-totalenergies-mise-sur-l-ia-de-mistral-pour-d%C3%A9velopper-l-exploration-de-p%C3%A9trole-et-de-gaz
+CONTENU: Le géant français des hydrocarbures TotalEnergies a annoncé mardi 15 septembre un partenariat de trois ans avec l'entreprise française d'intelligence artificielle Mistral, représentant un investissement de plus de 100 millions d'euros. L’alliance vise à « accompagner l’exploration, la caractérisation et le développement des réservoirs de pétrole et de gaz », selon un communiqué.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-15 17:13:58
+TITRE: Donald Trump est «obsédé par le fait que la Chine rattrape les États-Unis» en matière d'IA
+LIEN: http://www.rfi.fr/fr/podcasts/invit%C3%A9-international/20260915-donald-trump-est-obs%C3%A9d%C3%A9-par-le-fait-que-la-chine-rattrape-les-%C3%A9tats-unis-en-mati%C3%A8re-d-ia
+CONTENU: Les dirigeants du secteur de l’intelligence artificielle alertent sur les risques posés par l'essor rapide de leur technologie. Plusieurs incidents ont fait craindre récemment que les concepteurs d'agents d'IA perdent le contrôle de leur création. Donald Trump, qui s’oppose fermement à tout ralentissement, dénonce un « complot » alors que Pékin a qualifié les avertissements de « propagande alarmiste ». Pendant ce temps, Wall Street et les marchés asiatiques dévissent, inquiets pour l’avenir du secteur. L'IA pourrait-elle anéantir l’humanité ou est-ce exagéré ? Entretien avec Philippe Barbet, professeur émérite d’économie à l’université Sorbonne Paris Nord et chercheur associé à l’Iris.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-15 17:02:30
+TITRE: Chili: la marine surveille de près des bateaux géants chinois accusés de surpêche
+LIEN: http://www.rfi.fr/fr/am%C3%A9riques/20260915-chili-la-marine-surveille-de-pr%C3%A8s-des-bateaux-g%C3%A9ants-chinois-accus%C3%A9s-de-surp%C3%AAche
+CONTENU: Au Chili, la marine nationale surveille une importante flotte d’environ 300 bateaux chinois située au large de ses côtes dans les eaux internationales. Ils pêchent l’encornet géant, un calamar rougeâtre en abondance dans cette partie du Pacifique sud et consommé notamment en Asie et en Europe. Cette flotte chinoise qui depuis 2024 se rapproche du Chili à la suite de la décision du pays voisin, le Pérou, de durcir la réglementation dans ses ports pour les bateaux de pêche étrangers.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-15 16:32:37
+TITRE: Sommet des Brics: l’intelligence artificielle au service de la désinformation
+LIEN: http://www.rfi.fr/fr/monde/20260915-sommet-des-brics-l-intelligence-artificielle-au-service-de-la-d%C3%A9sinformation
+CONTENU: En Inde, le sommet des Brics s’est conclu par une déclaration commune des onze pays membres dimanche 13 septembre. Sur les réseaux sociaux, cette 18e édition n’échappe pas à la désinformation. Plusieurs contenus mensongers, générés par intelligence artificielle, cumulent plusieurs millions de vues.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-15 18:20:06
+TITRE: 3D food printing of balanced vegetarian dishes from rice and lentil flours
+LIEN: https://phys.org/news/2026-09-3d-food-vegetarian-dishes-rice.html
+CONTENU: Rice and lentils are a pairing that goes a long way back, whether as khichdi in India or mujaddara in the Middle East. On its own, each is a source of incomplete protein, short on certain essential amino acids—but paired together, they fill each other's gaps, and lentils also blunt white rice's high glycemic index.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-15 18:20:01
+TITRE: Greenhouse gas benefits of agricultural irrigation far outweigh emissions costs, study finds
+LIEN: https://phys.org/news/2026-09-greenhouse-gas-benefits-agricultural-irrigation.html
+CONTENU: Irrigating U.S. crops prevents higher greenhouse gas emissions by avoiding land conversion, new research by Colorado State University shows. Agricultural irrigation allows the United States to grow more food on less land. If irrigation were suddenly shut off, the land-use change required to make up for lost yields would produce significantly more greenhouse gas emissions than irrigation emits—363 times more.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-15 18:00:06
+TITRE: Heat-stable enzyme from deep-sea microbe turns nitrogen gas into ammonia
+LIEN: https://phys.org/news/2026-09-stable-enzyme-deep-sea-microbe.html
+CONTENU: Microorganisms can do remarkable things—for example, nitrogen fixation, the conversion of nitrogen gas (N₂) into a form that organisms can use. Although nitrogen gas makes up around 78% of Earth's atmosphere, plants and animals cannot directly use it.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-15 18:00:01
+TITRE: How advertising turns our insecurities into profit—and how you can resist the manipulation
+LIEN: https://phys.org/news/2026-09-advertising-insecurities-profit-resist.html
+CONTENU: Have you ever bought something not because you wanted it, but because you were afraid of what might happen if you didn't? Maybe you worried about looking older, falling behind at work or simply not fitting in.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-15 17:50:02
+TITRE: Wild dogs make the longest recorded journey of any terrestrial mammal in Africa
+LIEN: https://phys.org/news/2026-09-wild-dogs-longest-journey-terrestrial.html
+CONTENU: African wild dogs (Lycaon pictus) travel incredibly long distances to search for a mate and new places to breed. They typically embark on these mammoth treks as young adults and often face numerous hazards along the way. These include busy highways, expanding human settlements and deadly wire poaching snares.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-15 17:40:10
+TITRE: Avoiding a sticky situation: How cells stop messenger RNAs from clumping together
+LIEN: https://phys.org/news/2026-09-sticky-situation-cells-messenger-rnas.html
+CONTENU: Messenger RNA, or mRNA, is best known for carrying genetic instructions from DNA to the cellular machinery that makes proteins. But all RNA molecules have another, less appreciated property: They are naturally sticky.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-15 17:40:05
+TITRE: Frontline safety concerns mount among property managers, new survey shows
+LIEN: https://phys.org/news/2026-09-frontline-safety-mount-property-survey.html
+CONTENU: Safety and security challenges are creating unprecedented strain for frontline property management professionals, according to a new bilingual survey conducted by Portland State University's Center for Real Estate. Initiated after industry partners raised alarms about changing workplace conditions, the study offers insight into the daily risks experienced by property management staff at multifamily and commercial properties.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-15 17:20:13
+TITRE: CubeSat instrument extends solar storm warnings 10x
+LIEN: https://phys.org/news/2026-09-cubesat-instrument-solar-storm-10x.html
+CONTENU: The sun is the reason life exists on our small, blue planet. It provides solar radiation that warms the planet and ignites intricate biochemical processes like photosynthesis, producing oxygen for life to breathe. However, while the sun is known for giving life, it can also take it away with solar flares, geomagnetic storms and solar radiation storms, collectively referred to as space weather.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-15 17:20:07
+TITRE: Satellite data reveal ESG scores track public image more than actual forest loss
+LIEN: https://phys.org/news/2026-09-satellite-reveal-esg-scores-track.html
+CONTENU: Environmental sustainability researchers at NUS found that widely used environmental, social and governance (ESG) ratings often fail to reflect companies' actual exposure to deforestation, highlighting the need to integrate satellite-based environmental data into sustainable investing frameworks.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-15 17:00:05
+TITRE: How individual cells 'surf' chemical waves to form a collective
+LIEN: https://phys.org/news/2026-09-individual-cells-surf-chemical.html
+CONTENU: Researchers have developed an innovative imaging technique to visualize the transition of single cells into multicellular organisms in new detail.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-15 17:00:31
+TITRE: « Cybercombattante » : dans les coulisses des enquêtes visant hackeurs, escrocs et pédocriminels
+LIEN: https://www.lemonde.fr/pixels/article/2026/09/15/cybercombattante-dans-les-coulisses-des-enquetes-visant-hackeurs-escrocs-et-pedocriminels_6774466_4408996.html
+CONTENU: Mi-récit, mi-autobiographie, le livre de Johanna Brousse, la patronne du « parquet cyber » français, lève un coin de voile sur le travail des enquêteurs et des magistrats spécialisés.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-15 16:17:43
+TITRE: Vu par… Arend Van Dam
+LIEN: https://www.lemonde.fr/idees/article/2026/09/15/vu-par-arend-van-dam_6774451_3232.html
+CONTENU: Le dessin paru en une du « Monde » le 15 septembre est signé par le dessinateur néerlandais, membre de l’association Cartooning for Peace.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-15 14:19:32
+TITRE: Yémen : les Houthis s’emparent d’un détroit stratégique
+LIEN: https://www.lemonde.fr/liberons-les-crayons/article/2026/09/15/yemen-les-houthis-s-emparent-d-un-detroit-strategique_6774431_6598835.html
+CONTENU: Les rebelles Houthis du Yémen ont pris le contrôle, vendredi 11 septembre, du détroit de Bab El-Mandeb, une voie maritime cruciale pour le commerce mondial. Vu par Marco de Angelis (Italie).
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-15 14:10:51
+TITRE: Sébastien Lecornu, premier ministre : « La mort de Lyhanna nous oblige. Nous proposerons une trajectoire pluriannuelle avec un socle de départ de 1,5 milliard d’euros contre les violences sexistes et sexuelles en 2027 »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/15/sebastien-lecornu-premier-ministre-la-mort-de-lyhanna-nous-oblige-nous-proposerons-une-trajectoire-pluriannuelle-avec-1-5-milliard-d-euros-contre-les-violences-sexistes-et-sexuelles-des-2027_6774429_3232.html
+CONTENU: Dans une tribune au « Monde », le premier ministre annonce pour la première fois les montants qu’il entend associer à la « loi intégrale » contre les violences sexistes et sexuelles, qui sera discutée au Parlement à l’automne 2026.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-15 14:00:15
+TITRE: A Mayotte, l’échec de la « méthode Notre-Dame » choisie par l’Etat pour la reconstruction
+LIEN: https://www.lemonde.fr/idees/article/2026/09/15/a-mayotte-l-echec-de-la-methode-notre-dame-choisie-par-l-etat-pour-la-reconstruction_6774428_3232.html
+CONTENU: Inspirée par le chantier réussi de la cathédrale parisienne, la méthode suivie par l’Etat pour reconstruire le département ne fonctionne pas. Pourtant conscient des lacunes des collectivités dans le territoire, le gouvernement se tourne vers les élus locaux. Une façon de partager le poids d’un bilan critiqué, à l’approche de l’élection présidentielle de 2027.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-15 13:00:09
+TITRE: Nicolas Guillou, juge français de la CPI : « Ce n’est pas en abandonnant la justice et le droit international que nous retrouverons davantage de souveraineté »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/15/nicolas-guillou-juge-francais-de-la-cpi-ce-n-est-pas-en-abandonnant-la-justice-et-le-droit-international-que-nous-retrouverons-davantage-de-souverainete_6774422_3232.html
+CONTENU: La marche vers un Etat de droit international, lancée sur les ruines de la seconde guerre mondiale, est aujourd’hui entravée, constate, dans une tribune au « Monde », le magistrat, qui voit arriver une nouvelle menace : le remplacement du droit par du code informatique.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-15 12:33:55
+TITRE: Charles Sapin à Radio France : « La direction de la radio fait l’aveu d’une impuissance face à ce qu’elle préfère qualifier d’accident navrant »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/15/charles-sapin-a-radio-france-la-direction-de-la-radio-fait-l-aveu-d-une-impuissance-face-a-ce-qu-elle-prefere-qualifier-d-accident-navrant_6774418_3232.html
+CONTENU: L’écrivaine Cloé Korman décrypte, dans une tribune au « Monde », les étapes qui ont mené à l’arrivée polémique sur le service public du directeur adjoint du magazine ultraconservateur « Valeurs actuelles ».
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-15 14:52:04
+TITRE: Humanist AI : les règles que Microsoft veut imposer à ses propres modèles d’IA
+LIEN: https://www.blogdumoderateur.com/humanist-ai-regles-microsoft-veut-imposer-propres-modeles-ia/
+CONTENU: Publié pour consultation publique, ce code de conduite n'entraîne encore aucun modèle d'IA. Microsoft l'annonce comme la future référence de son développement à partir de 2027.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-15 14:02:18
+TITRE: iPhone : comment régler l’effet Liquid Glass avec iOS 27
+LIEN: https://www.blogdumoderateur.com/iphone-comment-regler-effet-liquid-glass-ios-27/
+CONTENU: Sur la dernière version du système d'exploitation de l'iPhone, Apple a intégré un curseur offrant plus de flexibilité sur l'apparence de Liquid Glass.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-15 13:40:02
+TITRE: Les taux journaliers moyens des métiers de la tech en 2027
+LIEN: https://www.blogdumoderateur.com/taux-journaliers-moyens-metiers-tech-2027/
+CONTENU: Michael Page détaille les principaux taux journaliers moyens (TJM) de 21 métiers tech recherchés en freelance et en management de transition, de 300 à plus de 1 500 € par jour.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-15 12:01:21
 TITRE: «Le Québec est au centre de la transformation de l’économie», dit Eric Girard à Toronto
 LIEN: https://www.ledevoir.com/economie/1009076/quebec-est-centre-transformation-economie-dit-eric-girard-toronto
