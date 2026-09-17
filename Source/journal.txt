@@ -1,5 +1,293 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-17 04:00:00
+TITRE: Pas si cubaines, les épiceries publiques
+LIEN: https://www.ledevoir.com/opinion/chroniques/1009649/pas-si-cubaines-epiceries-publiques
+CONTENU: La proposition n’existe pas dans un vase clos, elle a des précédents, et Québec solidaire n’a rien inventé.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-17 04:00:00
+TITRE: Six films à voir à l’occasion des Championnats du monde de cyclisme
+LIEN: https://www.ledevoir.com/culture/cinema/1009610/six-films-voir-occasion-championnats-monde-cyclisme
+CONTENU: De la fiction au documentaire, un rapide tour de piste de films qui permettent de considérer le vélo autrement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-17 04:00:00
+TITRE: Mourir, ça ressemble à ça
+LIEN: https://www.ledevoir.com/opinion/idees/1009601/mourir-ressemble
+CONTENU: On tue l’avenir pour épargner le présent. On est pas écœurés de mourir (bande de caves) ?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-17 04:00:00
+TITRE: Le gaz de schiste, «un non-sens» pour le Québec, selon un conseiller du gouvernement
+LIEN: https://www.ledevoir.com/actualites/environnement/1009604/gaz-schiste-non-sens-quebec-selon-conseiller-gouvernement
+CONTENU: Le président du comité climatique qui conseille le gouvernement insiste sur la transition énergétique. Entrevue.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-17 04:00:00
+TITRE: L’efficace stratégie de Carney pour combattre l’incertitude
+LIEN: https://www.ledevoir.com/opinion/idees/1009598/efficace-strategie-carney-combattre-incertitude
+CONTENU: Il s’agit d’une excellente semaine pour le Canada dans un contexte de guerre tarifaire.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-17 04:00:00
+TITRE: Marie Grégoire revisite «Ne tirez pas sur l’oiseau moqueur»
+LIEN: https://www.ledevoir.com/lire/1009613/marie-gregoire-revisite-ne-tirez-pas-oiseau-moqueur
+CONTENU: « Ne tirez pas sur l’oiseau moqueur », de Harper Lee, revisité par Marie Grégoire
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-17 04:00:00
+TITRE: La campagne électorale où la culture est audible
+LIEN: https://www.ledevoir.com/culture/1009589/campagne-electorale-ou-culture-est-audible
+CONTENU: La culture «n’est pas la grande oubliée habituelle de cette campagne», souligne une députée libérale.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-17 04:00:00
+TITRE: Le PQ dénonce une psychiatre au Collège des médecins pour des propos jugés hostiles
+LIEN: https://www.ledevoir.com/politique/quebec/1009643/pq-denonce-psychiatre-college-medecins-propos-juges-hostiles
+CONTENU: Selon la Dre Marie-Ève Cotton, ces plaintes en déontologie constituent une «tentative d’intimidation».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-17 04:00:00
+TITRE: La taille de l’État en question
+LIEN: https://www.ledevoir.com/opinion/idees/1009655/taille-etat-question
+CONTENU: Pourquoi ce genre d’engagement revient-il constamment, et pourquoi ça ne mène jamais nulle part?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-17 04:00:00
+TITRE: Au Québec, les fuites de vieux puits de gaz de schiste s’aggravent depuis des années
+LIEN: https://www.ledevoir.com/actualites/environnement/1009607/quebec-fuites-vieux-puits-gaz-schiste-aggravent-depuis-annees
+CONTENU: Des puits forés sans le consentement des citoyens sont toujours présents et ils laissent fuir un puissant GES.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-17 04:00:00
+TITRE: Le 6/9 du jeudi 17 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-6-9/le-6-9-du-jeudi-17-septembre-2026-8466171
+CONTENU: Article de référence : "Le 6/9 du jeudi 17 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-17 04:00:00
+TITRE: Le journal de 6h00 du jeudi 17 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-6h00/le-journal-de-6h00-du-jeudi-17-septembre-2026-4593322
+CONTENU: Article de référence : "Le journal de 6h00 du jeudi 17 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-17 03:55:00
+TITRE: Le reveil de l'eco du jeudi 17 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-reveil-de-l-eco/le-reveil-de-l-eco-du-jeudi-17-septembre-2026-7642393
+CONTENU: Article de référence : "Le reveil de l'eco du jeudi 17 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-17 03:50:00
+TITRE: Le choix franceinfo: du jeudi 17 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-choix-de-franceinfo/le-choix-franceinfo-du-jeudi-17-septembre-2026-9976340
+CONTENU: Article de référence : "Le choix franceinfo: du jeudi 17 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-17 03:22:30
+TITRE: Le monde d'Elodie du jeudi 17 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-monde-d-elodie/le-monde-d-elodie-du-jeudi-17-septembre-2026-9301256
+CONTENU: Article de référence : "Le monde d'Elodie du jeudi 17 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-17 03:00:00
+TITRE: Le journal de 5h00 du jeudi 17 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-5h00/le-journal-de-5h00-du-jeudi-17-septembre-2026-2681731
+CONTENU: Article de référence : "Le journal de 5h00 du jeudi 17 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-17 03:00:00
+TITRE: Le 5/6 du jeudi 17 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-5-6/le-5-6-du-jeudi-17-septembre-2026-2925280
+CONTENU: Article de référence : "Le 5/6 du jeudi 17 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-17 03:00:00
+TITRE: Interrogez BFM: trouvez une réponse rapide à toutes vos questions sur l’actualité dans notre application
+LIEN: https://www.bfmtv.com/bfmtv-et-vous/making-of/interrogez-bfm-trouvez-une-reponse-rapide-a-toutes-vos-questions-sur-l-actualite-dans-notre-application_AN-202609170032.html
+CONTENU: Pourquoi le phénomène El Niño perturbe-t-il le trafic du canal de Panama? Où fera-t-il le plus chaud ce week-end en France? Quelles sont les affiches à venir de Ligue 1 ou de Top 14? Grâce à son nouvel outil développé avec Mistral, l’application BFM répond à toutes vos interrogations.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-16 23:32:35
+TITRE: Le Forum BFMTV – Carburant : la France inflammable ?
+LIEN: https://www.bfmtv.com/replay-emissions/les-emissions-speciales/video-le-forum-bfmtv-carburant-la-france-inflammable_VN-202609160959.html
+CONTENU: Revoir notre grande émission spéciale "Forum BFMTV – Carburant : la France inflammable ?" présentée par Maxime Switek ce mercredi 16 septembre sur BFMTV. En cette rentrée, la chaîne propose une soirée spéciale pour permettre de débattre en direct des sujets au cœur des préoccupations des Français, tels que le pouvoir d'achat et la hausse des prix du carburant.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-16 22:16:28
+TITRE: La grogne sociale se répand dans le monde face à la flambée des prix du diesel et du fioul
+LIEN: http://www.rfi.fr/fr/%C3%A9conomie/20260916-la-grogne-sociale-se-r%C3%A9pand-dans-le-monde-face-%C3%A0-la-flamb%C3%A9e-des-prix-du-diesel-et-du-fioul
+CONTENU: Des pêcheurs français aux paysans de Bolivie, la grogne monte un peu partout dans le monde contre la hausse des prix des carburants et en particulier du diesel et du fioul, qui ont augmenté encore plus vite que les prix de l'essence, depuis le déclenchement de la guerre au Moyen-Orient.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-16 22:01:02
+TITRE: L’UE veut une interdiction des réseaux sociaux avant 13 ans pour protéger les enfants
+LIEN: http://www.rfi.fr/fr/europe/20260916-l-ue-veut-une-interdiction-des-r%C3%A9seaux-sociaux-avant-13-ans-pour-prot%C3%A9ger-les-enfants
+CONTENU: C’est un projet soutenu en Europe notamment par Emmanuel Macron et qui reçoit désormais le soutien de la Commission européenne : interdire l’accès aux réseaux sociaux aux moins de 13 ans pour les protéger des impacts négatifs de ces plateformes sur l’éducation et la santé mentale. Ursula von der Leyen en a fait l’annonce ce mercredi à l’occasion de son discours sur l’État de l’Union.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-16 23:14:39
+TITRE: RDC: des dizaines de morts après la chute d’un camion dans une rivière du sud du pays
+LIEN: http://www.rfi.fr/fr/afrique/20260916-rdc-des-dizaines-de-morts-apr%C3%A8s-la-chute-d-un-camion-dans-une-rivi%C3%A8re-du-sud-du-pays
+CONTENU: Dans le Haut-Katanga, dans le sud de la République démocratique du Congo (RDC), un terrible accident de la circulation s’est produit dans la nuit de mardi 15 à mercredi 16 septembre 2026, à une trentaine de kilomètres du village de Kyubi, dans le territoire de Mitwaba. Un camion qui transportait à la fois des personnes et des marchandises a fini sa course dans une rivière. Le bilan est lourd : 33 morts selon le ministre provincial des Transports à Lubumbashi. Mais des sources indépendantes font état de 41 décès parmi les passagers.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-16 21:07:02
+TITRE: Ukraine: à Otchakov, vivre sous la pression russe, à quelques kilomètres du front
+LIEN: http://www.rfi.fr/fr/europe/20260916-ukraine-%C3%A0-otchakov-vivre-sous-la-pression-russe-%C3%A0-quelques-kilom%C3%A8tres-du-front
+CONTENU: Dans de nombreux endroits du pays, le conflit est gelé depuis cinq ans. Comme à Otchakov, petite ville portuaire du sud de l'Ukraine qui vit depuis 5 ans à une poignée de kilomètres seulement des troupes russes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-16 22:05:58
+TITRE: Israël: la société civile, inquiète, se prépare à surveiller les législatives du 27 octobre
+LIEN: http://www.rfi.fr/fr/podcasts/reportage-international/20260916-isra%C3%ABl-la-soci%C3%A9t%C3%A9-civile-inqui%C3%A8te-se-pr%C3%A9pare-%C3%A0-surveiller-les-l%C3%A9gislatives-du-27-octobre
+CONTENU: Les élections israéliennes se dérouleront le 27 octobre prochain. Le président Isaac Herzog a mis en garde ses concitoyens au mois de juillet : il assure que diverses menaces pèsent sur le scrutin, il leur demande d’être vigilants face aux violences qui pourraient compromettre l’intégrité du vote, aux fausses informations, à la remise en question des résultats. La société civile s’organise pour surveiller une élection qui s’annonce cruciale pour l’avenir du pays.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-16 21:11:34
+TITRE: Palestine: à Gaza, les recherches de victimes de l'effondrement d'un immeuble bombardé par Israël
+LIEN: http://www.rfi.fr/fr/moyen-orient/20260916-palestine-%C3%A0-gaza-les-recherches-de-victimes-de-l-effondrement-d-un-immeuble-bombard%C3%A9-par-isra%C3%ABl
+CONTENU: À Gaza, les opérations de secours se poursuivent péniblement, pour retrouver les personnes ensevelies sous les décombres ​d'un immeuble de la ville de Gaza. Endommagé par un bombardement israélien, il a fini par s'effondrer, causant la mort d'au moins 20 Palestiniens, dont six enfants. Une centaine de personnes seraient toujours sous les gravats.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-17 01:20:02
+TITRE: Tracking visits to public points of interest can inform community health measures
+LIEN: https://phys.org/news/2026-09-tracking-community-health.html
+CONTENU: It's not so much where people live, but where they frequently spend their time, that can provide useful information for predicting community health measures. A team led by geographers in the Penn State College of Earth and Mineral Sciences found that adding place visitation data—geographic data points collected from millions of anonymous cellphone users with GPS-enabled devices—to a population health model increased the model's predictive performance by an average of 7.5%.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-17 00:40:01
+TITRE: Sharks on the move expose the need for international conservation efforts
+LIEN: https://phys.org/news/2026-09-sharks-expose-international-efforts.html
+CONTENU: Understanding the migration pathways of sharks and rays is key to conserving some of the world's most endangered marine species, according to new University of Queensland research.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-17 00:20:01
+TITRE: Survey reveals significant gap across 64 countries between commitment to the rule of law and its implementation
+LIEN: https://phys.org/news/2026-09-survey-reveals-significant-gap-countries.html
+CONTENU: A new report by the International Bar Association (IBA) has found a significant gap between the importance legal professionals attach to fundamental rule of law principles and their assessment of how effectively those principles are implemented in practice.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-17 00:00:04
+TITRE: Forest structure matters more than topography in shaping plant diversity in Southern Apennine old-growth forests
+LIEN: https://phys.org/news/2026-09-forest-topography-diversity-southern-apennine.html
+CONTENU: A study in Pollino National Park shows that large trees, complex canopies and deadwood diversity play a major role in shaping vascular plant communities, highlighting the ecological value of one of Italy's most remarkable old-growth forest landscapes.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-16 23:50:01
+TITRE: Long-term oyster reef restoration shows clear success in murky waters
+LIEN: https://phys.org/news/2026-09-term-oyster-reef-success-murky.html
+CONTENU: Large-scale oyster reef restoration in the Chesapeake Bay is successfully creating three-dimensional habitats that support larger, more diverse fish communities, according to new research from scientists at the University of Maryland, Baltimore County (UMBC), the Smithsonian Environmental Research Center and the National Oceanic and Atmospheric Administration (NOAA). The study, published in Ecosphere, provides compelling evidence that restoration efforts are shifting underwater ecosystems from communities dominated by small, transient schooling fish to those supporting larger, resident species.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-16 23:40:05
+TITRE: Device simulates natural conditions to grow biofilms and test their antibiotic susceptibility more accurately
+LIEN: https://phys.org/news/2026-09-device-simulates-natural-conditions-biofilms.html
+CONTENU: Biofilms are complex microbial communities that adhere to a surface and encase themselves in a viscous matrix they produce. This structure protects bacteria from antibiotics and the immune system far more effectively than if they lived in a free-floating state, making biofilms one of the most common causes of hard-to-treat chronic infections—such as respiratory infections in people with cystic fibrosis and chronic obstructive pulmonary disease (COPD), chronic wounds, or infections associated with catheters and prosthetic devices. Added to this is the global rise in antibiotic resistance, which makes it increasingly urgent to have tools capable of predicting which treatment will work in each case.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-16 23:40:01
+TITRE: Hot electrons reveal electronic collisions may raise resistance in twisted graphene
+LIEN: https://phys.org/news/2026-09-hot-electrons-reveal-electronic-collisions.html
+CONTENU: When a material heats up, its electrical resistance often rises. The harder question is what, exactly, is getting in the way. The electrons carrying the current may be scattered by vibrations of the material's atomic lattice, known as phonons. They may also collide with one another. Frustratingly, a conventional temperature test warms the electrons and the lattice together, so the effects arrive tangled in the same resistance measurement.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-16 23:30:01
+TITRE: Building big with DNA gets a software upgrade
+LIEN: https://phys.org/news/2026-09-big-dna-software.html
+CONTENU: Forty-four years ago, Nadrian Seeman published his groundbreaking ideas on using DNA as a structural material, expanding DNA's significance far beyond its role as a carrier of genetic information. Since then, the steadily growing field of DNA nanotechnology has seen numerous innovations. One was the DNA origami technique, which enables researchers to fold a single long strand of DNA into a desired 2D or 3D shape.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-16 23:20:04
+TITRE: ChatGPT at university: Study maps why students stick with AI for learning
+LIEN: https://phys.org/news/2026-09-chatgpt-university-students-ai.html
+CONTENU: What factors influence students' decisions about whether they will continue to use ChatGPT for learning in the future? This was the question addressed by a new study from ELTE's Faculty of Informatics, which used an interpretable machine learning framework to identify the factors that most strongly influence the use of generative artificial intelligence in higher education.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-16 23:20:01
+TITRE: Thinking outside the binding site: Drug molecule makes a square peg fit a round hole
+LIEN: https://phys.org/news/2026-09-site-drug-molecule-square-peg.html
+CONTENU: A square peg doesn't fit a round hole. But what if the peg could change the shape of the hole? A newly developed drug molecule can do something surprisingly similar when binding to its target protein, according to a University at Buffalo-led study published Tuesday (Sept. 15) in Angewandte Chemie International Edition.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-17 04:00:20
+TITRE: « Travailler et se former pour répondre à la crise climatique » : comment « écologiser » le travail ?
+LIEN: https://www.lemonde.fr/vie-au-travail/article/2026/09/17/travailler-et-se-former-pour-repondre-a-la-crise-climatique-comment-ecologiser-le-travail_6775969_6768900.html
+CONTENU: Dans une publication en ligne, des chercheurs du Centre d’études et de recherches sur les qualifications mettent en lumière les évolutions apportées au travail par certaines entreprises, aujourd’hui minoritaires, pour répondre à la crise climatique et environnementale.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-09-16 17:03:13
 TITRE: Qui sont les morts de la canicule ?  « Le Monde » raconte des vies derrière les chiffres
