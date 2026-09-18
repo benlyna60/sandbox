@@ -1,0 +1,4752 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Aventure V7.1</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --blue: #3b82f6;
+    --blue-bg: #dbeafe;
+
+    --green: #22c55e;
+    --green-bg: #dcfce7;
+
+    --purple: #8b5cf6;
+    --purple-bg: #ede9fe;
+
+    --orange: #f97316;
+    --orange-bg: #ffedd5;
+
+    --yellow: #eab308;
+    --yellow-bg: #fef9c3;
+
+    --red: #ef4444;
+    --red-bg: #fee2e2;
+
+    --pink: #ec4899;
+    --pink-bg: #fce7f3;
+
+    --brown: #92400e;
+    --brown-bg: #fef3c7;
+
+    --gray: #64748b;
+    --gray-bg: #f1f5f9;
+
+    --dark: #172033;
+    --border: #d8dee9;
+    --white: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f7fb;
+    color: var(--dark);
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.app {
+    max-width: 1500px;
+    margin: auto;
+    padding: 18px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 18px 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 18px rgba(0,0,0,.05);
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.subtitle {
+    margin-top: 5px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.progress-box {
+    min-width: 220px;
+}
+
+.progress-text {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #e2e8f0;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #22c55e;
+    transition: width .3s;
+}
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.tab-button {
+    border: 1px solid var(--border);
+    background: white;
+    padding: 11px 16px;
+    border-radius: 12px;
+    font-weight: 800;
+}
+
+.tab-button.active {
+    background: #172033;
+    color: white;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 270px minmax(0, 1fr) 280px;
+    gap: 15px;
+}
+
+.panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.04);
+}
+
+.panel h2,
+.panel h3 {
+    margin-top: 0;
+}
+
+.small-text {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   PALETTE
+========================================================= */
+
+.palette {
+    display: grid;
+    gap: 9px;
+}
+
+.palette-button {
+    width: 100%;
+    border: 0;
+    border-radius: 13px;
+    padding: 12px;
+    text-align: left;
+    font-weight: 900;
+    transition: transform .12s;
+}
+
+.palette-button:hover {
+    transform: translateY(-1px);
+}
+
+.p-blue { background: var(--blue-bg); color: #1d4ed8; }
+.p-green { background: var(--green-bg); color: #15803d; }
+.p-purple { background: var(--purple-bg); color: #6d28d9; }
+.p-orange { background: var(--orange-bg); color: #c2410c; }
+.p-yellow { background: var(--yellow-bg); color: #854d0e; }
+.p-red { background: var(--red-bg); color: #b91c1c; }
+.p-pink { background: var(--pink-bg); color: #be185d; }
+.p-brown { background: var(--brown-bg); color: #78350f; }
+.p-gray { background: var(--gray-bg); color: #334155; }
+
+/* =========================================================
+   PROGRAMME
+========================================================= */
+
+.program-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.program-area {
+    min-height: 400px;
+    padding: 12px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 16px;
+    background: #f8fafc;
+}
+
+.empty-program {
+    text-align: center;
+    padding: 65px 20px;
+    color: #64748b;
+}
+
+.empty-program strong {
+    display: block;
+    color: #334155;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+/* =========================================================
+   BOUTONS
+========================================================= */
+
+.btn {
+    border: 0;
+    border-radius: 11px;
+    padding: 10px 14px;
+    font-weight: 800;
+}
+
+.btn-dark {
+    background: #172033;
+    color: white;
+}
+
+.btn-green {
+    background: #16a34a;
+    color: white;
+}
+
+.btn-red {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-light {
+    background: white;
+    border: 1px solid var(--border);
+}
+
+.btn-small {
+    padding: 7px 9px;
+    font-size: 12px;
+}
+
+/* =========================================================
+   BOÎTES PYTHON
+========================================================= */
+
+/*
+    IMPORTANT V7.1
+
+    Toute la boîte prend maintenant la couleur de sa fonction.
+    Le body n'est plus blanc.
+*/
+
+.node {
+    margin: 10px 0;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 2px solid rgba(0,0,0,.10);
+    box-shadow: 0 3px 9px rgba(0,0,0,.07);
+}
+
+.node-print {
+    background: var(--blue-bg);
+    border-color: #93c5fd;
+}
+
+.node-variable {
+    background: var(--green-bg);
+    border-color: #86efac;
+}
+
+.node-ask {
+    background: var(--purple-bg);
+    border-color: #c4b5fd;
+}
+
+.node-calc {
+    background: var(--orange-bg);
+    border-color: #fdba74;
+}
+
+.node-if {
+    background: var(--yellow-bg);
+    border-color: #fde047;
+}
+
+.node-repeat {
+    background: var(--red-bg);
+    border-color: #fca5a5;
+}
+
+.node-list {
+    background: var(--pink-bg);
+    border-color: #f9a8d4;
+}
+
+.node-text {
+    background: var(--brown-bg);
+    border-color: #fcd34d;
+}
+
+.node-comment {
+    background: var(--gray-bg);
+    border-color: #cbd5e1;
+}
+
+.node-head {
+    padding: 11px 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-bottom: 1px solid rgba(0,0,0,.10);
+}
+
+.node-title {
+    font-weight: 950;
+}
+
+.node-actions {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.node-actions button {
+    border: 0;
+    border-radius: 8px;
+    padding: 5px 7px;
+    background: rgba(255,255,255,.65);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.node-body {
+    padding: 13px;
+    background: transparent;
+}
+
+.node-label {
+    display: block;
+    font-weight: 800;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.node-input {
+    width: 100%;
+    border: 2px solid rgba(0,0,0,.12);
+    border-radius: 10px;
+    padding: 9px;
+    background: rgba(255,255,255,.72);
+}
+
+.node-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 10px;
+}
+
+.node-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 130px 1fr;
+    gap: 10px;
+}
+
+.node-hint {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #475569;
+    font-weight: 600;
+}
+
+/* =========================================================
+   ZONES ENFANTS
+========================================================= */
+
+.children-zone {
+    margin-top: 12px;
+    padding: 10px;
+    border: 2px dashed rgba(0,0,0,.18);
+    border-radius: 12px;
+    background: rgba(255,255,255,.25);
+}
+
+.children-title {
+    font-size: 12px;
+    font-weight: 900;
+    margin-bottom: 7px;
+}
+
+.children-empty {
+    font-size: 12px;
+    color: #64748b;
+    padding: 7px;
+}
+
+.add-child-btn {
+    margin-top: 8px;
+    border: 0;
+    border-radius: 9px;
+    padding: 7px 10px;
+    background: rgba(255,255,255,.75);
+    font-weight: 800;
+}
+
+/* =========================================================
+   DROITE
+========================================================= */
+
+.side-box {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 11px;
+    margin-bottom: 12px;
+}
+
+.side-box strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.code-preview {
+    white-space: pre-wrap;
+    background: #111827;
+    color: #e5e7eb;
+    border-radius: 12px;
+    padding: 12px;
+    font-family: monospace;
+    font-size: 12px;
+    overflow-x: auto;
+}
+
+/* =========================================================
+   EXEMPLES
+========================================================= */
+
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 15px;
+}
+
+.example-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    padding: 15px;
+}
+
+.example-card h3 {
+    margin-top: 0;
+}
+
+.example-mini {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.example-code {
+    background: #111827;
+    color: #e5e7eb;
+    padding: 11px;
+    border-radius: 10px;
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+/* =========================================================
+   MODE PARENT
+========================================================= */
+
+.parent-editor {
+    width: 100%;
+    min-height: 420px;
+    resize: vertical;
+    border: 2px solid var(--border);
+    border-radius: 15px;
+    padding: 15px;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+.warning-box {
+    background: #fff7ed;
+    border: 1px solid #fdba74;
+    color: #9a3412;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 12px;
+}
+
+.success-box {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #166534;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 12px;
+}
+
+/* =========================================================
+   MODAL INFO
+========================================================= */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,.58);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    z-index: 1000;
+}
+
+.modal-backdrop.show {
+    display: flex;
+}
+
+.modal {
+    width: min(720px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.modal-close {
+    border: 0;
+    background: #f1f5f9;
+    border-radius: 10px;
+    padding: 8px 11px;
+    font-weight: bold;
+}
+
+.info-section {
+    margin-top: 15px;
+}
+
+.info-section h4 {
+    margin-bottom: 6px;
+}
+
+.info-example {
+    margin-top: 7px;
+    padding: 10px;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.hierarchy-example {
+    margin-top: 7px;
+    padding: 10px;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 1050px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .examples-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .node-grid,
+    .node-grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .app {
+        padding: 9px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="header">
+        <div class="header-top">
+
+            <div>
+                <div class="logo">🐍 Python Aventure V7.1</div>
+                <div class="subtitle">
+                    Construis ton programme avec des boîtes colorées.
+                </div>
+            </div>
+
+            <div class="progress-box">
+                <div class="progress-text">
+                    Progression : <span id="progressText">0%</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- =====================================================
+         TABS
+    ====================================================== -->
+
+    <div class="tabs">
+
+        <button type="button"
+                class="tab-button active"
+                data-tab="buildTab">
+            🧱 Construire
+        </button>
+
+        <button type="button"
+                class="tab-button"
+                data-tab="examplesTab">
+            💡 Exemples
+        </button>
+
+        <button type="button"
+                class="tab-button"
+                data-tab="codeTab">
+            🐍 Mon code
+        </button>
+
+        <button type="button"
+                class="tab-button"
+                data-tab="parentTab">
+            👨‍👩‍👧 Mode Parent
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+         CONSTRUIRE
+    ====================================================== -->
+
+    <section class="tab active" id="buildTab">
+
+        <div class="layout">
+
+            <!-- PALETTE -->
+
+            <aside class="panel">
+
+                <h2>🧰 Boîtes</h2>
+
+                <p class="small-text">
+                    Choisis une boîte pour l'ajouter à ton programme.
+                    Chaque couleur correspond à une fonction.
+                </p>
+
+                <div class="palette">
+
+                    <button type="button"
+                            class="palette-button p-blue"
+                            data-add="print">
+                        🟦 AFFICHER
+                    </button>
+
+                    <button type="button"
+                            class="palette-button p-green"
+                            data-add="variable">
+                        🟩 VARIABLE
+                    </button>
+
+                    <button type="button"
+                            class="palette-button p-purple"
+                            data-add="ask">
+                        🟪 DEMANDER
+                    </button>
+
+                    <button type="button"
+                            class="palette-button p-orange"
+                            data-add="calc">
+                        🟧 CALCULER
+                    </button>
+
+                    <button type="button"
+                            class="palette-button p-yellow"
+                            data-add="if">
+                        🟨 SI
+                    </button>
+
+                    <button type="button"
+                            class="palette-button p-red"
+                            data-add="repeat">
+                        🟥 RÉPÉTER
+                    </button>
+
+                    <button type="button"
+                            class="palette-button p-pink"
+                            data-add="list">
+                        🩷 LISTE
+                    </button>
+
+                    <button type="button"
+                            class="palette-button p-brown"
+                            data-add="text">
+                        🟫 TEXTE
+                    </button>
+
+                    <button type="button"
+                            class="palette-button p-gray"
+                            data-add="comment">
+                        ⚫ COMMENTAIRE
+                    </button>
+
+                </div>
+
+                <hr style="margin:18px 0;border:0;border-top:1px solid #e2e8f0;">
+
+                <p class="small-text">
+                    💡 Appuie sur <strong>❕</strong> sur une boîte
+                    pour apprendre à quoi elle sert.
+                </p>
+
+            </aside>
+
+            <!-- PROGRAMME -->
+
+            <main class="panel">
+
+                <div class="program-header">
+
+                    <div>
+                        <h2 style="margin-bottom:4px;">
+                            🧱 Mon algorithme
+                        </h2>
+
+                        <div class="small-text">
+                            Les boîtes du haut sont exécutées avant
+                            celles du bas.
+                        </div>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-red"
+                            id="clearProgram">
+                        🗑️ Tout effacer
+                    </button>
+
+                </div>
+
+                <div class="program-area" id="programArea">
+
+                    <div class="empty-program">
+                        <strong>Ton programme est vide.</strong>
+                        Choisis une boîte à gauche pour commencer.
+                    </div>
+
+                </div>
+
+            </main>
+
+            <!-- CÔTÉ DROIT -->
+
+            <aside class="panel">
+
+                <h2>🧠 Résumé</h2>
+
+                <div class="side-box">
+                    <strong>Nombre de boîtes</strong>
+                    <span id="nodeCount">0</span>
+                </div>
+
+                <div class="side-box">
+                    <strong>Hiérarchie</strong>
+                    <div class="small-text">
+                        Une boîte placée dans une autre devient
+                        une étape à l'intérieur de cette boîte.
+                    </div>
+                </div>
+
+                <div class="side-box">
+                    <strong>Vrai Python</strong>
+
+                    <div class="code-preview"
+                         id="smallCodePreview">
+# Ton vrai code apparaîtra ici
+                    </div>
+                </div>
+
+                <button type="button"
+                        class="btn btn-green"
+                        style="width:100%;"
+                        id="goCode">
+                    🐍 Voir mon vrai code
+                </button>
+
+            </aside>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         EXEMPLES
+    ====================================================== -->
+
+    <section class="tab" id="examplesTab">
+
+        <div class="panel">
+
+            <h2>💡 Exemples</h2>
+
+            <p class="small-text">
+                Les exemples utilisent exactement les mêmes boîtes
+                que celles que tu peux construire.
+            </p>
+
+            <div class="examples-grid">
+
+                <!-- EXEMPLE 1 -->
+
+                <div class="example-card">
+
+                    <h3>👋 Dire bonjour</h3>
+
+                    <p class="small-text">
+                        Le programme affiche un message.
+                    </p>
+
+                    <div class="example-mini">
+
+                        <div class="node node-print">
+
+                            <div class="node-head">
+                                <div class="node-title">
+                                    🟦 AFFICHER
+                                </div>
+                            </div>
+
+                            <div class="node-body">
+                                Bonjour !
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="example-code">
+print("Bonjour !")
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-dark use-example"
+                            data-example="hello">
+                        Utiliser cet exemple
+                    </button>
+
+                </div>
+
+                <!-- EXEMPLE 2 -->
+
+                <div class="example-card">
+
+                    <h3>👤 Demander un prénom</h3>
+
+                    <p class="small-text">
+                        Le programme demande quelque chose
+                        et garde la réponse.
+                    </p>
+
+                    <div class="example-mini">
+
+                        <div class="node node-ask">
+
+                            <div class="node-head">
+                                <div class="node-title">
+                                    🟪 DEMANDER
+                                </div>
+                            </div>
+
+                            <div class="node-body">
+                                Quel est ton prénom ?
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="example-code">
+prenom = input("Quel est ton prénom ?")
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-dark use-example"
+                            data-example="ask">
+                        Utiliser cet exemple
+                    </button>
+
+                </div>
+
+                <!-- EXEMPLE 3 -->
+
+                <div class="example-card">
+
+                    <h3>🤔 Faire un choix</h3>
+
+                    <p class="small-text">
+                        Une boîte SI peut contenir d'autres boîtes.
+                    </p>
+
+                    <div class="example-mini">
+
+                        <div class="node node-if">
+
+                            <div class="node-head">
+                                <div class="node-title">
+                                    🟨 SI
+                                </div>
+                            </div>
+
+                            <div class="node-body">
+
+                                prénom == "Léo"
+
+                                <div class="children-zone">
+
+                                    <div class="children-title">
+                                        ALORS
+                                    </div>
+
+                                    <div class="node node-print">
+
+                                        <div class="node-head">
+                                            <div class="node-title">
+                                                🟦 AFFICHER
+                                            </div>
+                                        </div>
+
+                                        <div class="node-body">
+                                            Bonjour Léo !
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="example-code">
+if prenom == "Léo":
+    print("Bonjour Léo !")
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-dark use-example"
+                            data-example="if">
+                        Utiliser cet exemple
+                    </button>
+
+                </div>
+
+                <!-- EXEMPLE 4 -->
+
+                <div class="example-card">
+
+                    <h3>🔁 Répéter</h3>
+
+                    <p class="small-text">
+                        Une boîte rouge peut contenir une action
+                        qui sera répétée.
+                    </p>
+
+                    <div class="example-mini">
+
+                        <div class="node node-repeat">
+
+                            <div class="node-head">
+                                <div class="node-title">
+                                    🟥 RÉPÉTER
+                                </div>
+                            </div>
+
+                            <div class="node-body">
+
+                                3 fois
+
+                                <div class="children-zone">
+
+                                    <div class="children-title">
+                                        À RÉPÉTER
+                                    </div>
+
+                                    <div class="node node-print">
+
+                                        <div class="node-head">
+                                            <div class="node-title">
+                                                🟦 AFFICHER
+                                            </div>
+                                        </div>
+
+                                        <div class="node-body">
+                                            Bonjour !
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="example-code">
+for _ in range(3):
+    print("Bonjour !")
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-dark use-example"
+                            data-example="repeat">
+                        Utiliser cet exemple
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         CODE
+    ====================================================== -->
+
+    <section class="tab" id="codeTab">
+
+        <div class="panel">
+
+            <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;">
+
+                <div>
+                    <h2>🐍 Ton vrai code Python</h2>
+
+                    <p class="small-text">
+                        Le code est généré automatiquement à partir
+                        de tes boîtes.
+                    </p>
+                </div>
+
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+
+                    <button type="button"
+                            class="btn btn-green"
+                            id="copyCode">
+                        📋 Copier
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-dark"
+                            id="testCode">
+                        ▶ Tester
+                    </button>
+
+                </div>
+
+            </div>
+
+            <pre class="code-preview"
+                 id="fullCodePreview"
+                 style="font-size:14px;min-height:300px;margin-top:15px;"></pre>
+
+            <div id="testResult"></div>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         MODE PARENT
+    ====================================================== -->
+
+    <section class="tab" id="parentTab">
+
+        <div class="panel">
+
+            <h2>👨‍👩‍👧 Mode Parent</h2>
+
+            <p class="small-text">
+                Un parent peut écrire du vrai Python ici.
+                Python Aventure essaiera ensuite de transformer
+                le programme en boîtes colorées.
+            </p>
+
+            <textarea
+                id="parentCode"
+                class="parent-editor"
+                spellcheck="false"
+                placeholder='Exemple :
+
+prenom = input("Quel est ton prénom ?")
+
+if prenom == "Léo":
+    print("Bonjour Léo !")
+else:
+    print("Bonjour !")'></textarea>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+
+                <button type="button"
+                        class="btn btn-dark"
+                        id="convertParent">
+                    🔄 Transformer en boîtes
+                </button>
+
+                <button type="button"
+                        class="btn btn-light"
+                        id="parentExample">
+                    💡 Mettre un exemple
+                </button>
+
+            </div>
+
+            <div id="parentMessage"></div>
+
+            <div class="side-box" style="margin-top:15px;">
+
+                <strong>ℹ️ Important</strong>
+
+                <div class="small-text">
+                    Le convertisseur reconnaît uniquement les
+                    éléments Python que Python Aventure sait
+                    représenter avec ses boîtes.
+
+                    <br><br>
+
+                    Si une ligne n'est pas comprise, elle sera
+                    signalée au lieu d'être transformée
+                    incorrectement.
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+<!-- =========================================================
+     MODAL INFO
+========================================================== -->
+
+<div class="modal-backdrop" id="infoModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Information
+            </h2>
+
+            <button type="button"
+                    class="modal-close"
+                    id="closeModal">
+                ✕
+            </button>
+
+        </div>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   ÉTAT
+========================================================= */
+
+let programNodes = [];
+let nextId = 1;
+
+const STORAGE_KEY = "python_aventure_v71";
+
+/* =========================================================
+   INFORMATIONS DES BOÎTES
+========================================================= */
+
+const NODE_INFO = {
+
+    print: {
+        title: "🟦 AFFICHER",
+        description: "Cette boîte sert à montrer un message ou une valeur à l'écran.",
+        use: "Utilise-la quand tu veux que ton programme dise quelque chose.",
+        hierarchy: "AFFICHER est généralement une action. Elle peut être placée à l'intérieur d'une boîte SI ou RÉPÉTER.",
+        contains: "Elle contient ce que tu veux afficher.",
+        python: 'print("Bonjour !")',
+        mistake: "Ne mets pas toute la commande Python dans la boîte. Écris seulement ce que tu veux afficher.",
+        example: "Bonjour !",
+        hierarchyExample: `
+            <div class="node node-if">
+                <div class="node-head">
+                    <div class="node-title">🟨 SI</div>
+                </div>
+                <div class="node-body">
+                    prénom == "Léo"
+
+                    <div class="children-zone">
+                        <div class="children-title">ALORS</div>
+
+                        <div class="node node-print">
+                            <div class="node-head">
+                                <div class="node-title">🟦 AFFICHER</div>
+                            </div>
+                            <div class="node-body">Bonjour Léo !</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        `
+    },
+
+    variable: {
+        title: "🟩 VARIABLE",
+        description: "Une variable sert à garder une information dans la mémoire du programme.",
+        use: "Utilise-la quand tu veux donner un nom à une information pour la réutiliser plus tard.",
+        hierarchy: "Une variable peut être créée avant une action qui utilise cette information.",
+        contains: "Elle contient un nom et une valeur.",
+        python: 'prenom = "Léo"',
+        mistake: "Le nom de la variable ne doit pas contenir d'espace.",
+        example: "Nom : prenom\nValeur : Léo",
+        hierarchyExample: `
+            <div class="node node-variable">
+                <div class="node-head">
+                    <div class="node-title">🟩 VARIABLE</div>
+                </div>
+                <div class="node-body">
+                    prenom = "Léo"
+                </div>
+            </div>
+
+            <div style="text-align:center;font-weight:bold;margin:5px;">
+                ↓ puis
+            </div>
+
+            <div class="node node-print">
+                <div class="node-head">
+                    <div class="node-title">🟦 AFFICHER</div>
+                </div>
+                <div class="node-body">
+                    prenom
+                </div>
+            </div>
+        `
+    },
+
+    ask: {
+        title: "🟪 DEMANDER",
+        description: "Cette boîte pose une question à la personne qui utilise le programme.",
+        use: "Utilise-la quand ton programme a besoin d'une réponse.",
+        hierarchy: "La réponse peut ensuite être utilisée par une autre boîte.",
+        contains: "Elle contient une question et le nom qui servira à garder la réponse.",
+        python: 'prenom = input("Quel est ton prénom ?")',
+        mistake: "N'écris pas input(...) toi-même. La boîte s'en charge.",
+        example: "Question : Quel est ton prénom ?",
+        hierarchyExample: `
+            <div class="node node-ask">
+                <div class="node-head">
+                    <div class="node-title">🟪 DEMANDER</div>
+                </div>
+                <div class="node-body">
+                    Quel est ton prénom ?
+                </div>
+            </div>
+
+            <div style="text-align:center;font-weight:bold;margin:5px;">
+                ↓ réponse gardée dans une variable
+            </div>
+
+            <div class="node node-print">
+                <div class="node-head">
+                    <div class="node-title">🟦 AFFICHER</div>
+                </div>
+                <div class="node-body">
+                    prenom
+                </div>
+            </div>
+        `
+    },
+
+    calc: {
+        title: "🟧 CALCULER",
+        description: "Cette boîte permet de faire un calcul.",
+        use: "Utilise-la pour additionner, soustraire, multiplier ou diviser.",
+        hierarchy: "Le résultat peut être enregistré dans une variable pour être utilisé ensuite.",
+        contains: "Elle contient deux nombres ou variables, une opération et un nom pour le résultat.",
+        python: "resultat = 5 + 3",
+        mistake: "Vérifie que les deux côtés du calcul contiennent bien une valeur.",
+        example: "5 + 3 → résultat : 8",
+        hierarchyExample: `
+            <div class="node node-calc">
+                <div class="node-head">
+                    <div class="node-title">🟧 CALCULER</div>
+                </div>
+                <div class="node-body">
+                    5 + 3 → resultat
+                </div>
+            </div>
+
+            <div style="text-align:center;font-weight:bold;margin:5px;">
+                ↓
+            </div>
+
+            <div class="node node-print">
+                <div class="node-head">
+                    <div class="node-title">🟦 AFFICHER</div>
+                </div>
+                <div class="node-body">
+                    resultat
+                </div>
+            </div>
+        `
+    },
+
+    if: {
+        title: "🟨 SI",
+        description: "Cette boîte permet au programme de prendre une décision.",
+        use: "Utilise-la quand quelque chose doit se produire seulement si une condition est vraie.",
+        hierarchy: "SI est une boîte qui peut contenir d'autres boîtes. Les boîtes à l'intérieur sont exécutées seulement si la condition est vraie.",
+        contains: "Elle contient une condition, puis des actions dans ALORS. Elle peut aussi avoir SINON.",
+        python: 'if prenom == "Léo":',
+        mistake: "N'oublie pas que les actions qui dépendent du SI doivent être placées à l'intérieur.",
+        example: 'SI prénom == "Léo" → dire Bonjour Léo',
+        hierarchyExample: `
+            <div class="node node-if">
+                <div class="node-head">
+                    <div class="node-title">🟨 SI</div>
+                </div>
+
+                <div class="node-body">
+
+                    prénom == "Léo"
+
+                    <div class="children-zone">
+
+                        <div class="children-title">
+                            ALORS
+                        </div>
+
+                        <div class="node node-print">
+                            <div class="node-head">
+                                <div class="node-title">
+                                    🟦 AFFICHER
+                                </div>
+                            </div>
+
+                            <div class="node-body">
+                                Bonjour Léo !
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        `
+    },
+
+    repeat: {
+        title: "🟥 RÉPÉTER",
+        description: "Cette boîte permet de répéter une ou plusieurs actions.",
+        use: "Utilise-la quand la même action doit être faite plusieurs fois.",
+        hierarchy: "Les boîtes placées à l'intérieur sont répétées.",
+        contains: "Elle contient le nombre de répétitions et les actions à répéter.",
+        python: 'for _ in range(3):',
+        mistake: "Les actions à répéter doivent être placées à l'intérieur de la boîte.",
+        example: "Répéter 3 fois → afficher Bonjour",
+        hierarchyExample: `
+            <div class="node node-repeat">
+                <div class="node-head">
+                    <div class="node-title">🟥 RÉPÉTER</div>
+                </div>
+
+                <div class="node-body">
+
+                    3 fois
+
+                    <div class="children-zone">
+
+                        <div class="children-title">
+                            À RÉPÉTER
+                        </div>
+
+                        <div class="node node-print">
+                            <div class="node-head">
+                                <div class="node-title">
+                                    🟦 AFFICHER
+                                </div>
+                            </div>
+
+                            <div class="node-body">
+                                Bonjour !
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        `
+    },
+
+    list: {
+        title: "🩷 LISTE",
+        description: "Une liste permet de garder plusieurs éléments ensemble.",
+        use: "Utilise-la quand tu as plusieurs informations du même groupe.",
+        hierarchy: "La liste peut être créée avant les actions qui utilisent son contenu.",
+        contains: "Elle contient un nom et plusieurs éléments séparés par des virgules.",
+        python: 'fruits = ["pomme", "banane"]',
+        mistake: "Sépare les éléments avec des virgules.",
+        example: "fruits → pomme, banane, orange",
+        hierarchyExample: `
+            <div class="node node-list">
+                <div class="node-head">
+                    <div class="node-title">🩷 LISTE</div>
+                </div>
+
+                <div class="node-body">
+                    fruits = pomme, banane, orange
+                </div>
+            </div>
+
+            <div style="text-align:center;font-weight:bold;margin:5px;">
+                ↓
+            </div>
+
+            <div class="node node-print">
+                <div class="node-head">
+                    <div class="node-title">🟦 AFFICHER</div>
+                </div>
+
+                <div class="node-body">
+                    fruits
+                </div>
+            </div>
+        `
+    },
+
+    text: {
+        title: "🟫 TEXTE",
+        description: "Cette boîte permet de transformer ou mesurer un texte.",
+        use: "Utilise-la pour mettre du texte en majuscules, minuscules ou connaître sa longueur.",
+        hierarchy: "Le résultat peut être conservé dans une variable puis utilisé dans une autre boîte.",
+        contains: "Elle contient le texte, l'action et le nom du résultat.",
+        python: 'resultat = texte.upper()',
+        mistake: "Vérifie que le texte ou la variable existe.",
+        example: "bonjour → BONJOUR",
+        hierarchyExample: `
+            <div class="node node-text">
+                <div class="node-head">
+                    <div class="node-title">🟫 TEXTE</div>
+                </div>
+
+                <div class="node-body">
+                    bonjour → MAJUSCULES → resultat
+                </div>
+            </div>
+
+            <div style="text-align:center;font-weight:bold;margin:5px;">
+                ↓
+            </div>
+
+            <div class="node node-print">
+                <div class="node-head">
+                    <div class="node-title">🟦 AFFICHER</div>
+                </div>
+
+                <div class="node-body">
+                    resultat
+                </div>
+            </div>
+        `
+    },
+
+    comment: {
+        title: "⚫ COMMENTAIRE",
+        description: "Un commentaire est une note pour expliquer le programme.",
+        use: "Utilise-le pour expliquer ce que fait une partie du programme.",
+        hierarchy: "Un commentaire peut être placé presque partout. Il n'est pas exécuté.",
+        contains: "Il contient simplement une explication.",
+        python: "# Ceci est une explication",
+        mistake: "Un commentaire ne sert pas à faire une action.",
+        example: "Cette partie demande le prénom.",
+        hierarchyExample: `
+            <div class="node node-comment">
+                <div class="node-head">
+                    <div class="node-title">⚫ COMMENTAIRE</div>
+                </div>
+
+                <div class="node-body">
+                    Cette partie demande le prénom.
+                </div>
+            </div>
+
+            <div class="node node-ask">
+                <div class="node-head">
+                    <div class="node-title">🟪 DEMANDER</div>
+                </div>
+
+                <div class="node-body">
+                    Quel est ton prénom ?
+                </div>
+            </div>
+        `
+    }
+
+};
+
+/* =========================================================
+   OUTILS
+========================================================= */
+
+function createId() {
+    return nextId++;
+}
+
+function pythonString(value) {
+    return JSON.stringify(String(value ?? ""));
+}
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function cloneNodes(nodes) {
+    return JSON.parse(JSON.stringify(nodes));
+}
+
+/* =========================================================
+   CRÉATION DES BOÎTES
+========================================================= */
+
+function createNode(type) {
+
+    const id = createId();
+
+    switch (type) {
+
+        case "print":
+            return {
+                id,
+                type,
+                value: "",
+                valueType: "text"
+            };
+
+        case "variable":
+            return {
+                id,
+                type,
+                name: "",
+                value: "",
+                valueType: "text"
+            };
+
+        case "ask":
+            return {
+                id,
+                type,
+                question: "",
+                name: "reponse"
+            };
+
+        case "calc":
+            return {
+                id,
+                type,
+                left: "",
+                operator: "+",
+                right: "",
+                result: ""
+            };
+
+        case "if":
+            return {
+                id,
+                type,
+                left: "",
+                operator: "==",
+                right: "",
+                leftType: "variable",
+                rightType: "text",
+                children: [],
+                elseChildren: []
+            };
+
+        case "repeat":
+            return {
+                id,
+                type,
+                count: "3",
+                children: []
+            };
+
+        case "list":
+            return {
+                id,
+                type,
+                name: "",
+                items: ""
+            };
+
+        case "text":
+            return {
+                id,
+                type,
+                source: "",
+                operation: "upper",
+                result: ""
+            };
+
+        case "comment":
+            return {
+                id,
+                type,
+                text: ""
+            };
+
+        default:
+            return null;
+    }
+}
+
+/* =========================================================
+   RENDU
+========================================================= */
+
+function renderProgram() {
+
+    const area = document.getElementById("programArea");
+
+    if (!programNodes.length) {
+
+        area.innerHTML = `
+            <div class="empty-program">
+                <strong>Ton programme est vide.</strong>
+                Choisis une boîte à gauche pour commencer.
+            </div>
+        `;
+
+    } else {
+
+        area.innerHTML = renderNodes(programNodes);
+
+    }
+
+    updateEverything();
+}
+
+function renderNodes(nodes) {
+
+    return nodes.map(node => renderNode(node)).join("");
+}
+
+function renderNode(node) {
+
+    if (!node || !NODE_INFO[node.type]) {
+        return "";
+    }
+
+    const info = NODE_INFO[node.type];
+
+    let body = "";
+
+    /* =====================================================
+       AFFICHER
+    ====================================================== */
+
+    if (node.type === "print") {
+
+        body = `
+            <label class="node-label">
+                Qu'est-ce que tu veux afficher ?
+            </label>
+
+            <input
+                class="node-input"
+                data-field="value"
+                data-id="${node.id}"
+                value="${escapeHtml(node.value)}"
+                placeholder="Bonjour !"
+            >
+
+            <div class="node-hint">
+                💡 Écris seulement le message. La boîte ajoute automatiquement le code Python.
+            </div>
+        `;
+    }
+
+    /* =====================================================
+       VARIABLE
+    ====================================================== */
+
+    else if (node.type === "variable") {
+
+        body = `
+            <div class="node-grid">
+
+                <div>
+                    <label class="node-label">
+                        Nom
+                    </label>
+
+                    <input
+                        class="node-input"
+                        data-field="name"
+                        data-id="${node.id}"
+                        value="${escapeHtml(node.name)}"
+                        placeholder="prenom"
+                    >
+                </div>
+
+                <div>
+                    <label class="node-label">
+                        Valeur
+                    </label>
+
+                    <input
+                        class="node-input"
+                        data-field="value"
+                        data-id="${node.id}"
+                        value="${escapeHtml(node.value)}"
+                        placeholder="Léo"
+                    >
+                </div>
+
+            </div>
+
+            <div class="node-hint">
+                💡 Exemple : nom = prenom, valeur = Léo.
+            </div>
+        `;
+    }
+
+    /* =====================================================
+       DEMANDER
+    ====================================================== */
+
+    else if (node.type === "ask") {
+
+        body = `
+            <div class="node-grid">
+
+                <div>
+                    <label class="node-label">
+                        Ta question
+                    </label>
+
+                    <input
+                        class="node-input"
+                        data-field="question"
+                        data-id="${node.id}"
+                        value="${escapeHtml(node.question)}"
+                        placeholder="Quel est ton prénom ?"
+                    >
+                </div>
+
+                <div>
+                    <label class="node-label">
+                        Je garde la réponse sous le nom
+                    </label>
+
+                    <input
+                        class="node-input"
+                        data-field="name"
+                        data-id="${node.id}"
+                        value="${escapeHtml(node.name)}"
+                        placeholder="prenom"
+                    >
+                </div>
+
+            </div>
+        `;
+    }
+
+    /* =====================================================
+       CALCUL
+    ====================================================== */
+
+    else if (node.type === "calc") {
+
+        body = `
+            <div class="node-grid-3">
+
+                <div>
+                    <label class="node-label">
+                        Première valeur
+                    </label>
+
+                    <input
+                        class="node-input"
+                        data-field="left"
+                        data-id="${node.id}"
+                        value="${escapeHtml(node.left)}"
+                        placeholder="5"
+                    >
+                </div>
+
+                <div>
+                    <label class="node-label">
+                        Opération
+                    </label>
+
+                    <select
+                        class="node-input"
+                        data-field="operator"
+                        data-id="${node.id}">
+
+                        <option value="+" ${node.operator === "+" ? "selected" : ""}>+</option>
+                        <option value="-" ${node.operator === "-" ? "selected" : ""}>−</option>
+                        <option value="*" ${node.operator === "*" ? "selected" : ""}>×</option>
+                        <option value="/" ${node.operator === "/" ? "selected" : ""}>÷</option>
+
+                    </select>
+                </div>
+
+                <div>
+                    <label class="node-label">
+                        Deuxième valeur
+                    </label>
+
+                    <input
+                        class="node-input"
+                        data-field="right"
+                        data-id="${node.id}"
+                        value="${escapeHtml(node.right)}"
+                        placeholder="3"
+                    >
+                </div>
+
+            </div>
+
+            <div style="margin-top:10px;">
+
+                <label class="node-label">
+                    Nom du résultat
+                </label>
+
+                <input
+                    class="node-input"
+                    data-field="result"
+                    data-id="${node.id}"
+                    value="${escapeHtml(node.result)}"
+                    placeholder="resultat"
+                >
+
+            </div>
+        `;
+    }
+
+    /* =====================================================
+       SI
+    ====================================================== */
+
+    else if (node.type === "if") {
+
+        body = `
+            <div class="node-grid">
+
+                <div>
+                    <label class="node-label">
+                        Première valeur
+                    </label>
+
+                    <input
+                        class="node-input"
+                        data-field="left"
+                        data-id="${node.id}"
+                        value="${escapeHtml(node.left)}"
+                        placeholder="prenom"
+                    >
+                </div>
+
+                <div>
+                    <label class="node-label">
+                        Comparaison
+                    </label>
+
+                    <select
+                        class="node-input"
+                        data-field="operator"
+                        data-id="${node.id}">
+
+                        <option value="==" ${node.operator === "==" ? "selected" : ""}>est égal à</option>
+                        <option value="!=" ${node.operator === "!=" ? "selected" : ""}>est différent de</option>
+                        <option value=">" ${node.operator === ">" ? "selected" : ""}>est plus grand que</option>
+                        <option value="<" ${node.operator === "<" ? "selected" : ""}>est plus petit que</option>
+                        <option value=">=" ${node.operator === ">=" ? "selected" : ""}>est supérieur ou égal à</option>
+                        <option value="<=" ${node.operator === "<=" ? "selected" : ""}>est inférieur ou égal à</option>
+
+                    </select>
+                </div>
+
+                <div>
+                    <label class="node-label">
+                        Deuxième valeur
+                    </label>
+
+                    <input
+                        class="node-input"
+                        data-field="right"
+                        data-id="${node.id}"
+                        value="${escapeHtml(node.right)}"
+                        placeholder="Léo"
+                    >
+                </div>
+
+            </div>
+
+            <div class="children-zone">
+
+                <div class="children-title">
+                    🟢 ALORS : faire ceci si la condition est vraie
+                </div>
+
+                ${
+                    node.children.length
+                    ? renderNodes(node.children)
+                    : `<div class="children-empty">
+                        Aucune boîte ici pour le moment.
+                    </div>`
+                }
+
+                <button
+                    type="button"
+                    class="add-child-btn"
+                    data-add-child="${node.id}"
+                    data-zone="then">
+                    ➕ Ajouter dans ALORS
+                </button>
+
+            </div>
+
+            <div class="children-zone">
+
+                <div class="children-title">
+                    🔴 SINON : faire ceci si la condition est fausse
+                </div>
+
+                ${
+                    node.elseChildren.length
+                    ? renderNodes(node.elseChildren)
+                    : `<div class="children-empty">
+                        SINON est vide.
+                    </div>`
+                }
+
+                <button
+                    type="button"
+                    class="add-child-btn"
+                    data-add-child="${node.id}"
+                    data-zone="else">
+                    ➕ Ajouter dans SINON
+                </button>
+
+            </div>
+        `;
+    }
+
+    /* =====================================================
+       RÉPÉTER
+    ====================================================== */
+
+    else if (node.type === "repeat") {
+
+        body = `
+            <div>
+
+                <label class="node-label">
+                    Combien de fois ?
+                </label>
+
+                <input
+                    class="node-input"
+                    type="number"
+                    min="1"
+                    max="100"
+                    data-field="count"
+                    data-id="${node.id}"
+                    value="${escapeHtml(node.count)}"
+                >
+
+            </div>
+
+            <div class="children-zone">
+
+                <div class="children-title">
+                    🔁 À RÉPÉTER
+                </div>
+
+                ${
+                    node.children.length
+                    ? renderNodes(node.children)
+                    : `<div class="children-empty">
+                        Mets ici ce que tu veux répéter.
+                    </div>`
+                }
+
+                <button
+                    type="button"
+                    class="add-child-btn"
+                    data-add-child="${node.id}"
+                    data-zone="then">
+                    ➕ Ajouter dans RÉPÉTER
+                </button>
+
+            </div>
+        `;
+    }
+
+    /* =====================================================
+       LISTE
+    ====================================================== */
+
+    else if (node.type === "list") {
+
+        body = `
+            <div class="node-grid">
+
+                <div>
+                    <label class="node-label">
+                        Nom de la liste
+                    </label>
+
+                    <input
+                        class="node-input"
+                        data-field="name"
+                        data-id="${node.id}"
+                        value="${escapeHtml(node.name)}"
+                        placeholder="fruits"
+                    >
+                </div>
+
+                <div>
+                    <label class="node-label">
+                        Éléments
+                    </label>
+
+                    <input
+                        class="node-input"
+                        data-field="items"
+                        data-id="${node.id}"
+                        value="${escapeHtml(node.items)}"
+                        placeholder="pomme, banane, orange"
+                    >
+                </div>
+
+            </div>
+        `;
+    }
+
+    /* =====================================================
+       TEXTE
+    ====================================================== */
+
+    else if (node.type === "text") {
+
+        body = `
+            <div class="node-grid">
+
+                <div>
+                    <label class="node-label">
+                        Texte ou variable
+                    </label>
+
+                    <input
+                        class="node-input"
+                        data-field="source"
+                        data-id="${node.id}"
+                        value="${escapeHtml(node.source)}"
+                        placeholder="bonjour"
+                    >
+                </div>
+
+                <div>
+                    <label class="node-label">
+                        Action
+                    </label>
+
+                    <select
+                        class="node-input"
+                        data-field="operation"
+                        data-id="${node.id}">
+
+                        <option value="upper" ${node.operation === "upper" ? "selected" : ""}>
+                            MAJUSCULES
+                        </option>
+
+                        <option value="lower" ${node.operation === "lower" ? "selected" : ""}>
+                            minuscules
+                        </option>
+
+                        <option value="length" ${node.operation === "length" ? "selected" : ""}>
+                            longueur
+                        </option>
+
+                    </select>
+                </div>
+
+            </div>
+
+            <div style="margin-top:10px;">
+
+                <label class="node-label">
+                    Nom du résultat
+                </label>
+
+                <input
+                    class="node-input"
+                    data-field="result"
+                    data-id="${node.id}"
+                    value="${escapeHtml(node.result)}"
+                    placeholder="resultat"
+                >
+
+            </div>
+        `;
+    }
+
+    /* =====================================================
+       COMMENTAIRE
+    ====================================================== */
+
+    else if (node.type === "comment") {
+
+        body = `
+            <label class="node-label">
+                Ton explication
+            </label>
+
+            <input
+                class="node-input"
+                data-field="text"
+                data-id="${node.id}"
+                value="${escapeHtml(node.text)}"
+                placeholder="Cette partie demande le prénom."
+            >
+        `;
+    }
+
+    return `
+        <div class="node node-${node.type}"
+             data-node-id="${node.id}">
+
+            <div class="node-head">
+
+                <div class="node-title">
+                    ${info.title}
+                </div>
+
+                <div class="node-actions">
+
+                    <button
+                        type="button"
+                        data-action="info"
+                        data-id="${node.id}">
+                        ❕
+                    </button>
+
+                    <button
+                        type="button"
+                        data-action="up"
+                        data-id="${node.id}">
+                        ↑
+                    </button>
+
+                    <button
+                        type="button"
+                        data-action="down"
+                        data-id="${node.id}">
+                        ↓
+                    </button>
+
+                    <button
+                        type="button"
+                        data-action="delete"
+                        data-id="${node.id}">
+                        🗑️
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="node-body">
+                ${body}
+            </div>
+
+        </div>
+    `;
+}
+
+/* =========================================================
+   RECHERCHE D'UNE BOÎTE
+========================================================= */
+
+function findNodeAndParent(nodes, id, parent = null, zone = null) {
+
+    for (let i = 0; i < nodes.length; i++) {
+
+        const node = nodes[i];
+
+        if (String(node.id) === String(id)) {
+
+            return {
+                node,
+                parent,
+                zone,
+                index: i,
+                array: nodes
+            };
+        }
+
+        if (node.children) {
+
+            const result = findNodeAndParent(
+                node.children,
+                id,
+                node,
+                "children"
+            );
+
+            if (result) return result;
+        }
+
+        if (node.elseChildren) {
+
+            const result = findNodeAndParent(
+                node.elseChildren,
+                id,
+                node,
+                "elseChildren"
+            );
+
+            if (result) return result;
+        }
+    }
+
+    return null;
+}
+
+/* =========================================================
+   AJOUT
+========================================================= */
+
+function addNode(type) {
+
+    const node = createNode(type);
+
+    if (!node) return;
+
+    programNodes.push(node);
+
+    saveState();
+    renderProgram();
+}
+
+/* =========================================================
+   AJOUT ENFANT
+========================================================= */
+
+function addChild(parentId, zone) {
+
+    const result = findNodeAndParent(programNodes, parentId);
+
+    if (!result) return;
+
+    const parent = result.node;
+
+    const choices = [
+        ["1", "print", "🟦 AFFICHER"],
+        ["2", "variable", "🟩 VARIABLE"],
+        ["3", "ask", "🟪 DEMANDER"],
+        ["4", "calc", "🟧 CALCULER"],
+        ["5", "if", "🟨 SI"],
+        ["6", "repeat", "🟥 RÉPÉTER"],
+        ["7", "list", "🩷 LISTE"],
+        ["8", "text", "🟫 TEXTE"],
+        ["9", "comment", "⚫ COMMENTAIRE"]
+    ];
+
+    let message = "Quelle boîte veux-tu ajouter ?\n\n";
+
+    choices.forEach(choice => {
+        message += choice[0] + " — " + choice[2] + "\n";
+    });
+
+    const answer = window.prompt(message);
+
+    if (!answer) return;
+
+    const selected = choices.find(
+        choice => choice[0] === answer.trim()
+    );
+
+    if (!selected) {
+
+        alert("Choisis un numéro de 1 à 9.");
+
+        return;
+    }
+
+    const child = createNode(selected[1]);
+
+    if (zone === "else") {
+
+        if (!parent.elseChildren) {
+            parent.elseChildren = [];
+        }
+
+        parent.elseChildren.push(child);
+
+    } else {
+
+        if (!parent.children) {
+            parent.children = [];
+        }
+
+        parent.children.push(child);
+    }
+
+    saveState();
+    renderProgram();
+}
+
+/* =========================================================
+   SUPPRESSION
+========================================================= */
+
+function deleteNode(id) {
+
+    const result = findNodeAndParent(programNodes, id);
+
+    if (!result) return;
+
+    const node = result.node;
+
+    const hasChildren =
+        (node.children && node.children.length > 0) ||
+        (node.elseChildren && node.elseChildren.length > 0);
+
+    if (hasChildren) {
+
+        const confirmed = window.confirm(
+            "Cette boîte contient d'autres boîtes.\n\n" +
+            "Si tu la supprimes, les boîtes à l'intérieur seront aussi supprimées.\n\n" +
+            "Veux-tu continuer ?"
+        );
+
+        if (!confirmed) return;
+    }
+
+    result.array.splice(result.index, 1);
+
+    saveState();
+    renderProgram();
+}
+
+/* =========================================================
+   DÉPLACEMENT
+========================================================= */
+
+function moveNode(id, direction) {
+
+    const result = findNodeAndParent(programNodes, id);
+
+    if (!result) return;
+
+    const array = result.array;
+    const index = result.index;
+
+    const newIndex = index + direction;
+
+    if (newIndex < 0 || newIndex >= array.length) {
+        return;
+    }
+
+    const temp = array[index];
+
+    array[index] = array[newIndex];
+    array[newIndex] = temp;
+
+    saveState();
+    renderProgram();
+}
+
+/* =========================================================
+   MODIFICATION DES CHAMPS
+========================================================= */
+
+function updateNodeField(id, field, value) {
+
+    const result = findNodeAndParent(programNodes, id);
+
+    if (!result) return;
+
+    result.node[field] = value;
+
+    saveState();
+
+    updateEverything();
+}
+
+/* =========================================================
+   GÉNÉRATEUR PYTHON
+========================================================= */
+
+function valueToPython(value, type = "text") {
+
+    const clean = String(value ?? "").trim();
+
+    if (!clean) {
+        return '""';
+    }
+
+    if (type === "number") {
+
+        if (/^-?\d+(\.\d+)?$/.test(clean)) {
+            return clean;
+        }
+    }
+
+    if (type === "variable") {
+
+        if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(clean)) {
+            return clean;
+        }
+    }
+
+    return pythonString(clean);
+}
+
+function generatePython(nodes, indentLevel = 0) {
+
+    const lines = [];
+
+    const indent = "    ".repeat(indentLevel);
+
+    for (const node of nodes) {
+
+        if (!node) continue;
+
+        /* AFFICHER */
+
+        if (node.type === "print") {
+
+            const value = node.value.trim();
+
+            if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(value)) {
+
+                lines.push(
+                    indent + "print(" + value + ")"
+                );
+
+            } else {
+
+                lines.push(
+                    indent + "print(" + pythonString(value) + ")"
+                );
+            }
+        }
+
+        /* VARIABLE */
+
+        else if (node.type === "variable") {
+
+            const name = node.name.trim();
+
+            if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name)) {
+                lines.push(
+                    indent + "# Variable invalide : " + name
+                );
+                continue;
+            }
+
+            const value = node.value.trim();
+
+            if (/^-?\d+(\.\d+)?$/.test(value)) {
+
+                lines.push(
+                    indent + name + " = " + value
+                );
+
+            } else if (
+                /^[A-Za-z_][A-Za-z0-9_]*$/.test(value) &&
+                value !== "True" &&
+                value !== "False"
+            ) {
+
+                lines.push(
+                    indent + name + " = " + value
+                );
+
+            } else {
+
+                lines.push(
+                    indent + name + " = " +
+                    pythonString(value)
+                );
+            }
+        }
+
+        /* DEMANDER */
+
+        else if (node.type === "ask") {
+
+            const name = node.name.trim();
+
+            if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name)) {
+
+                lines.push(
+                    indent +
+                    "# Nom de réponse invalide : " +
+                    name
+                );
+
+            } else {
+
+                lines.push(
+                    indent +
+                    name +
+                    " = input(" +
+                    pythonString(node.question) +
+                    ")"
+                );
+            }
+        }
+
+        /* CALCUL */
+
+        else if (node.type === "calc") {
+
+            const resultName = node.result.trim();
+
+            if (
+                !/^[A-Za-z_][A-Za-z0-9_]*$/.test(resultName)
+            ) {
+
+                lines.push(
+                    indent +
+                    "# Résultat invalide : " +
+                    resultName
+                );
+
+                continue;
+            }
+
+            const left = expressionToPython(node.left);
+            const right = expressionToPython(node.right);
+
+            lines.push(
+                indent +
+                resultName +
+                " = " +
+                left +
+                " " +
+                node.operator +
+                " " +
+                right
+            );
+        }
+
+        /* SI */
+
+        else if (node.type === "if") {
+
+            const left = expressionToPython(
+                node.left,
+                node.leftType
+            );
+
+            const right = expressionToPython(
+                node.right,
+                node.rightType
+            );
+
+            lines.push(
+                indent +
+                "if " +
+                left +
+                " " +
+                node.operator +
+                " " +
+                right +
+                ":"
+            );
+
+            if (node.children && node.children.length) {
+
+                lines.push(
+                    generatePython(
+                        node.children,
+                        indentLevel + 1
+                    )
+                );
+
+            } else {
+
+                lines.push(
+                    indent + "    pass"
+                );
+            }
+
+            if (
+                node.elseChildren &&
+                node.elseChildren.length
+            ) {
+
+                lines.push(
+                    indent + "else:"
+                );
+
+                lines.push(
+                    generatePython(
+                        node.elseChildren,
+                        indentLevel + 1
+                    )
+                );
+            }
+        }
+
+        /* RÉPÉTER */
+
+        else if (node.type === "repeat") {
+
+            let count = String(node.count).trim();
+
+            if (!/^\d+$/.test(count)) {
+                count = "1";
+            }
+
+            lines.push(
+                indent +
+                "for _ in range(" +
+                count +
+                "):"
+            );
+
+            if (node.children && node.children.length) {
+
+                lines.push(
+                    generatePython(
+                        node.children,
+                        indentLevel + 1
+                    )
+                );
+
+            } else {
+
+                lines.push(
+                    indent + "    pass"
+                );
+            }
+        }
+
+        /* LISTE */
+
+        else if (node.type === "list") {
+
+            const name = node.name.trim();
+
+            if (
+                !/^[A-Za-z_][A-Za-z0-9_]*$/.test(name)
+            ) {
+
+                lines.push(
+                    indent +
+                    "# Nom de liste invalide : " +
+                    name
+                );
+
+                continue;
+            }
+
+            const parts = node.items
+                .split(",")
+                .map(item => item.trim())
+                .filter(Boolean);
+
+            const values = parts.map(
+                item => pythonString(item)
+            );
+
+            lines.push(
+                indent +
+                name +
+                " = [" +
+                values.join(", ") +
+                "]"
+            );
+        }
+
+        /* TEXTE */
+
+        else if (node.type === "text") {
+
+            const result = node.result.trim();
+
+            if (
+                !/^[A-Za-z_][A-Za-z0-9_]*$/.test(result)
+            ) {
+
+                lines.push(
+                    indent +
+                    "# Nom de résultat invalide : " +
+                    result
+                );
+
+                continue;
+            }
+
+            const source = expressionToPython(
+                node.source
+            );
+
+            if (node.operation === "upper") {
+
+                lines.push(
+                    indent +
+                    result +
+                    " = " +
+                    source +
+                    ".upper()"
+                );
+
+            } else if (node.operation === "lower") {
+
+                lines.push(
+                    indent +
+                    result +
+                    " = " +
+                    source +
+                    ".lower()"
+                );
+
+            } else if (node.operation === "length") {
+
+                lines.push(
+                    indent +
+                    result +
+                    " = len(" +
+                    source +
+                    ")"
+                );
+            }
+        }
+
+        /* COMMENTAIRE */
+
+        else if (node.type === "comment") {
+
+            lines.push(
+                indent +
+                "# " +
+                node.text
+            );
+        }
+    }
+
+    return lines.join("\n");
+}
+
+function expressionToPython(value, type = "") {
+
+    const clean = String(value ?? "").trim();
+
+    if (!clean) {
+        return '""';
+    }
+
+    if (type === "variable") {
+
+        if (
+            /^[A-Za-z_][A-Za-z0-9_]*$/.test(clean)
+        ) {
+            return clean;
+        }
+    }
+
+    if (
+        /^-?\d+(\.\d+)?$/.test(clean)
+    ) {
+        return clean;
+    }
+
+    if (
+        clean === "True" ||
+        clean === "False"
+    ) {
+        return clean;
+    }
+
+    if (
+        /^[A-Za-z_][A-Za-z0-9_]*$/.test(clean)
+    ) {
+        return clean;
+    }
+
+    return pythonString(clean);
+}
+
+/* =========================================================
+   MISE À JOUR DE L'AFFICHAGE
+========================================================= */
+
+function updateEverything() {
+
+    const code = generatePython(programNodes);
+
+    document.getElementById(
+        "fullCodePreview"
+    ).textContent =
+        code || "# Ton vrai code apparaîtra ici";
+
+    document.getElementById(
+        "smallCodePreview"
+    ).textContent =
+        code || "# Ton vrai code apparaîtra ici";
+
+    document.getElementById(
+        "nodeCount"
+    ).textContent =
+        countNodes(programNodes);
+
+    updateProgress();
+}
+
+function countNodes(nodes) {
+
+    let count = 0;
+
+    for (const node of nodes) {
+
+        count++;
+
+        if (node.children) {
+            count += countNodes(node.children);
+        }
+
+        if (node.elseChildren) {
+            count += countNodes(node.elseChildren);
+        }
+    }
+
+    return count;
+}
+
+function updateProgress() {
+
+    const count = countNodes(programNodes);
+
+    const percent = Math.min(
+        100,
+        count * 10
+    );
+
+    document.getElementById(
+        "progressText"
+    ).textContent =
+        percent + "%";
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+        percent + "%";
+}
+
+/* =========================================================
+   SAUVEGARDE
+========================================================= */
+
+function saveState() {
+
+    try {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({
+                programNodes,
+                nextId
+            })
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Impossible de sauvegarder.",
+            error
+        );
+    }
+}
+
+function loadState() {
+
+    try {
+
+        const raw =
+            localStorage.getItem(STORAGE_KEY);
+
+        if (!raw) return;
+
+        const data =
+            JSON.parse(raw);
+
+        if (
+            data &&
+            Array.isArray(data.programNodes)
+        ) {
+
+            programNodes =
+                repairNodes(data.programNodes);
+
+            nextId =
+                Number(data.nextId) || 1;
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "Sauvegarde impossible à charger.",
+            error
+        );
+
+        programNodes = [];
+        nextId = 1;
+    }
+}
+
+function repairNodes(nodes) {
+
+    if (!Array.isArray(nodes)) {
+        return [];
+    }
+
+    return nodes
+        .map(node => {
+
+            if (!node || !NODE_INFO[node.type]) {
+                return null;
+            }
+
+            if (!node.id) {
+                node.id = createId();
+            }
+
+            if (
+                node.type === "if" ||
+                node.type === "repeat"
+            ) {
+
+                if (!Array.isArray(node.children)) {
+                    node.children = [];
+                }
+            }
+
+            if (node.type === "if") {
+
+                if (!Array.isArray(node.elseChildren)) {
+                    node.elseChildren = [];
+                }
+            }
+
+            if (node.children) {
+                node.children =
+                    repairNodes(node.children);
+            }
+
+            if (node.elseChildren) {
+                node.elseChildren =
+                    repairNodes(node.elseChildren);
+            }
+
+            return node;
+
+        })
+        .filter(Boolean);
+}
+
+/* =========================================================
+   MODAL INFO
+========================================================= */
+
+function showInfo(type) {
+
+    const info = NODE_INFO[type];
+
+    if (!info) return;
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        info.title;
+
+    document.getElementById(
+        "modalContent"
+    ).innerHTML = `
+
+        <div class="info-section">
+
+            <h4>🧠 À quoi ça sert ?</h4>
+
+            <div>
+                ${escapeHtml(info.description)}
+            </div>
+
+            <div class="info-example">
+
+                <strong>Exemple :</strong>
+
+                <div style="margin-top:7px;">
+                    ${escapeHtml(info.example)}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-section">
+
+            <h4>🎯 Quand l'utiliser ?</h4>
+
+            <div>
+                ${escapeHtml(info.use)}
+            </div>
+
+            <div class="info-example">
+
+                <strong>Exemple :</strong>
+
+                <div style="margin-top:7px;">
+                    ${escapeHtml(info.example)}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-section">
+
+            <h4>🏗️ Quelle est sa hiérarchie ?</h4>
+
+            <div>
+                ${escapeHtml(info.hierarchy)}
+            </div>
+
+            <div class="hierarchy-example">
+
+                <strong>Exemple visuel :</strong>
+
+                <div style="margin-top:8px;">
+                    ${info.hierarchyExample}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-section">
+
+            <h4>📦 Qu'est-ce qu'elle contient ?</h4>
+
+            <div>
+                ${escapeHtml(info.contains)}
+            </div>
+
+            <div class="info-example">
+
+                <strong>Exemple :</strong>
+
+                <div style="margin-top:7px;">
+                    ${escapeHtml(info.example)}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-section">
+
+            <h4>🐍 Quel vrai Python est créé ?</h4>
+
+            <div class="code-preview">
+${escapeHtml(info.python)}
+            </div>
+
+            <div class="info-example">
+
+                <strong>Exemple :</strong>
+
+                <div style="margin-top:7px;">
+                    La boîte transforme automatiquement
+                    tes informations en cette instruction Python.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-section">
+
+            <h4>⚠️ Erreur fréquente</h4>
+
+            <div>
+                ${escapeHtml(info.mistake)}
+            </div>
+
+            <div class="info-example">
+
+                <strong>Exemple :</strong>
+
+                <div style="margin-top:7px;">
+                    Écris seulement le contenu demandé
+                    dans la boîte.
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+    document
+        .getElementById("infoModal")
+        .classList.add("show");
+}
+
+function closeInfo() {
+
+    document
+        .getElementById("infoModal")
+        .classList.remove("show");
+}
+
+/* =========================================================
+   ONGLETS
+========================================================= */
+
+function openTab(tabId) {
+
+    document.querySelectorAll(".tab")
+        .forEach(tab => {
+            tab.classList.remove("active");
+        });
+
+    document.querySelectorAll(".tab-button")
+        .forEach(button => {
+            button.classList.remove("active");
+        });
+
+    const tab =
+        document.getElementById(tabId);
+
+    if (tab) {
+        tab.classList.add("active");
+    }
+
+    const button =
+        document.querySelector(
+            `[data-tab="${tabId}"]`
+        );
+
+    if (button) {
+        button.classList.add("active");
+    }
+}
+
+/* =========================================================
+   EXEMPLES
+========================================================= */
+
+function getExample(name) {
+
+    if (name === "hello") {
+
+        return [
+            {
+                id: createId(),
+                type: "print",
+                value: "Bonjour !",
+                valueType: "text"
+            }
+        ];
+    }
+
+    if (name === "ask") {
+
+        return [
+            {
+                id: createId(),
+                type: "ask",
+                question: "Quel est ton prénom ?",
+                name: "prenom"
+            }
+        ];
+    }
+
+    if (name === "if") {
+
+        return [
+            {
+                id: createId(),
+                type: "ask",
+                question: "Quel est ton prénom ?",
+                name: "prenom"
+            },
+            {
+                id: createId(),
+                type: "if",
+                left: "prenom",
+                operator: "==",
+                right: "Léo",
+                leftType: "variable",
+                rightType: "text",
+                children: [
+                    {
+                        id: createId(),
+                        type: "print",
+                        value: "Bonjour Léo !",
+                        valueType: "text"
+                    }
+                ],
+                elseChildren: [
+                    {
+                        id: createId(),
+                        type: "print",
+                        value: "Bonjour !",
+                        valueType: "text"
+                    }
+                ]
+            }
+        ];
+    }
+
+    if (name === "repeat") {
+
+        return [
+            {
+                id: createId(),
+                type: "repeat",
+                count: "3",
+                children: [
+                    {
+                        id: createId(),
+                        type: "print",
+                        value: "Bonjour !",
+                        valueType: "text"
+                    }
+                ]
+            }
+        ];
+    }
+
+    return [];
+}
+
+/* =========================================================
+   MINI MOTEUR PYTHON LOCAL
+========================================================= */
+
+class MiniPythonEngine {
+
+    constructor() {
+        this.variables = {};
+        this.output = [];
+    }
+
+    async run(code) {
+
+        this.variables = {};
+        this.output = [];
+
+        const lines =
+            code
+                .split(/\r?\n/)
+                .map(line => ({
+                    raw: line,
+                    text: line.trim(),
+                    indent: line.search(/\S|$/)
+                }));
+
+        await this.executeBlock(
+            lines,
+            0,
+            lines.length,
+            0
+        );
+
+        return this.output.join("\n");
+    }
+
+    async executeBlock(
+        lines,
+        start,
+        end,
+        baseIndent
+    ) {
+
+        let i = start;
+
+        while (i < end) {
+
+            const item = lines[i];
+
+            if (!item.text) {
+                i++;
+                continue;
+            }
+
+            if (item.text.startsWith("#")) {
+                i++;
+                continue;
+            }
+
+            if (item.indent < baseIndent) {
+                return i;
+            }
+
+            if (item.text.startsWith("if ") &&
+                item.text.endsWith(":")) {
+
+                const conditionText =
+                    item.text
+                        .slice(3, -1)
+                        .trim();
+
+                const condition =
+                    this.evaluateCondition(
+                        conditionText
+                    );
+
+                const childStart = i + 1;
+
+                let j = childStart;
+
+                while (
+                    j < end &&
+                    (
+                        !lines[j].text ||
+                        lines[j].indent > item.indent
+                    )
+                ) {
+                    j++;
+                }
+
+                if (condition) {
+
+                    await this.executeBlock(
+                        lines,
+                        childStart,
+                        j,
+                        item.indent + 4
+                    );
+                }
+
+                i = j;
+
+                if (
+                    i < end &&
+                    lines[i].text === "else:"
+                ) {
+
+                    const elseStart = i + 1;
+
+                    let k = elseStart;
+
+                    while (
+                        k < end &&
+                        (
+                            !lines[k].text ||
+                            lines[k].indent > lines[i].indent
+                        )
+                    ) {
+                        k++;
+                    }
+
+                    if (!condition) {
+
+                        await this.executeBlock(
+                            lines,
+                            elseStart,
+                            k,
+                            lines[i].indent + 4
+                        );
+                    }
+
+                    i = k;
+                }
+
+                continue;
+            }
+
+            if (
+                item.text.startsWith("for _ in range(") &&
+                item.text.endsWith("):")
+            ) {
+
+                const match =
+                    item.text.match(
+                        /^for _ in range\((\d+)\):$/
+                    );
+
+                if (match) {
+
+                    const count =
+                        Number(match[1]);
+
+                    const childStart =
+                        i + 1;
+
+                    let j = childStart;
+
+                    while (
+                        j < end &&
+                        (
+                            !lines[j].text ||
+                            lines[j].indent > item.indent
+                        )
+                    ) {
+                        j++;
+                    }
+
+                    for (
+                        let repeat = 0;
+                        repeat < count;
+                        repeat++
+                    ) {
+
+                        await this.executeBlock(
+                            lines,
+                            childStart,
+                            j,
+                            item.indent + 4
+                        );
+                    }
+
+                    i = j;
+                    continue;
+                }
+            }
+
+            if (item.text === "pass") {
+                i++;
+                continue;
+            }
+
+            await this.executeLine(item.text);
+
+            i++;
+        }
+
+        return i;
+    }
+
+    async executeLine(line) {
+
+        if (line.startsWith("print(") &&
+            line.endsWith(")")) {
+
+            const inside =
+                line.slice(6, -1);
+
+            const value =
+                this.evaluateExpression(inside);
+
+            this.output.push(
+                String(value)
+            );
+
+            return;
+        }
+
+        const inputMatch =
+            line.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*input\((.*)\)$/
+            );
+
+        if (inputMatch) {
+
+            const name = inputMatch[1];
+
+            const question =
+                this.stripQuotes(
+                    inputMatch[2]
+                );
+
+            const answer =
+                window.prompt(
+                    question
+                );
+
+            this.variables[name] =
+                answer ?? "";
+
+            return;
+        }
+
+        const assignment =
+            line.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)$/
+            );
+
+        if (assignment) {
+
+            const name =
+                assignment[1];
+
+            const expression =
+                assignment[2];
+
+            this.variables[name] =
+                this.evaluateExpression(
+                    expression
+                );
+
+            return;
+        }
+
+        throw new Error(
+            "Instruction non prise en charge : " +
+            line
+        );
+    }
+
+    evaluateCondition(condition) {
+
+        const operators =
+            ["==", "!=", ">=", "<=", ">", "<"];
+
+        for (const operator of operators) {
+
+            const index =
+                condition.indexOf(operator);
+
+            if (index !== -1) {
+
+                const left =
+                    condition.slice(
+                        0,
+                        index
+                    ).trim();
+
+                const right =
+                    condition.slice(
+                        index + operator.length
+                    ).trim();
+
+                const a =
+                    this.evaluateExpression(left);
+
+                const b =
+                    this.evaluateExpression(right);
+
+                switch (operator) {
+
+                    case "==":
+                        return a == b;
+
+                    case "!=":
+                        return a != b;
+
+                    case ">":
+                        return a > b;
+
+                    case "<":
+                        return a < b;
+
+                    case ">=":
+                        return a >= b;
+
+                    case "<=":
+                        return a <= b;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    evaluateExpression(expression) {
+
+        const value =
+            expression.trim();
+
+        if (
+            (
+                value.startsWith('"') &&
+                value.endsWith('"')
+            ) ||
+            (
+                value.startsWith("'") &&
+                value.endsWith("'")
+            )
+        ) {
+
+            return this.stripQuotes(value);
+        }
+
+        if (
+            /^-?\d+(\.\d+)?$/.test(value)
+        ) {
+
+            return Number(value);
+        }
+
+        const upperMatch =
+            value.match(
+                /^(.+)\.upper\(\)$/
+            );
+
+        if (upperMatch) {
+
+            return String(
+                this.evaluateExpression(
+                    upperMatch[1]
+                )
+            ).toUpperCase();
+        }
+
+        const lowerMatch =
+            value.match(
+                /^(.+)\.lower\(\)$/
+            );
+
+        if (lowerMatch) {
+
+            return String(
+                this.evaluateExpression(
+                    lowerMatch[1]
+                )
+            ).toLowerCase();
+        }
+
+        const lenMatch =
+            value.match(
+                /^len\((.+)\)$/
+            );
+
+        if (lenMatch) {
+
+            return String(
+                this.evaluateExpression(
+                    lenMatch[1]
+                )
+            ).length;
+        }
+
+        if (
+            Object.prototype.hasOwnProperty.call(
+                this.variables,
+                value
+            )
+        ) {
+
+            return this.variables[value];
+        }
+
+        const calc =
+            value.match(
+                /^(.+)\s*([+\-*/])\s*(.+)$/
+            );
+
+        if (calc) {
+
+            const a =
+                Number(
+                    this.evaluateExpression(
+                        calc[1]
+                    )
+                );
+
+            const b =
+                Number(
+                    this.evaluateExpression(
+                        calc[3]
+                    )
+                );
+
+            switch (calc[2]) {
+
+                case "+":
+                    return a + b;
+
+                case "-":
+                    return a - b;
+
+                case "*":
+                    return a * b;
+
+                case "/":
+                    return a / b;
+            }
+        }
+
+        return value;
+    }
+
+    stripQuotes(value) {
+
+        if (
+            (
+                value.startsWith('"') &&
+                value.endsWith('"')
+            ) ||
+            (
+                value.startsWith("'") &&
+                value.endsWith("'")
+            )
+        ) {
+
+            return value.slice(
+                1,
+                -1
+            );
+        }
+
+        return value;
+    }
+}
+
+/* =========================================================
+   PARSEUR MODE PARENT
+========================================================= */
+
+function parseParentPython(code) {
+
+    const lines =
+        code.split(/\r?\n/);
+
+    const root = [];
+
+    const stack = [
+        {
+            indent: -1,
+            children: root
+        }
+    ];
+
+    const warnings = [];
+
+    for (let lineNumber = 0;
+         lineNumber < lines.length;
+         lineNumber++) {
+
+        const raw = lines[lineNumber];
+
+        if (!raw.trim()) {
+            continue;
+        }
+
+        const indent =
+            raw.match(/^\s*/)[0]
+                .replace(/\t/g, "    ")
+                .length;
+
+        const text =
+            raw.trim();
+
+        while (
+            stack.length > 1 &&
+            indent <= stack[stack.length - 1].indent
+        ) {
+            stack.pop();
+        }
+
+        const current =
+            stack[stack.length - 1].children;
+
+        /* COMMENTAIRE */
+
+        if (text.startsWith("#")) {
+
+            current.push({
+                id: createId(),
+                type: "comment",
+                text: text.slice(1).trim()
+            });
+
+            continue;
+        }
+
+        /* IF */
+
+        const ifMatch =
+            text.match(
+                /^if\s+(.+)\s*:$/
+            );
+
+        if (ifMatch) {
+
+            const condition =
+                parseCondition(
+                    ifMatch[1]
+                );
+
+            if (!condition) {
+
+                warnings.push(
+                    "Ligne " +
+                    (lineNumber + 1) +
+                    " : condition SI non comprise."
+                );
+
+                continue;
+            }
+
+            const node = {
+                id: createId(),
+                type: "if",
+                left: condition.left,
+                operator: condition.operator,
+                right: condition.right,
+                leftType: condition.leftType,
+                rightType: condition.rightType,
+                children: [],
+                elseChildren: []
+            };
+
+            current.push(node);
+
+            stack.push({
+                indent,
+                children: node.children,
+                parentIf: node
+            });
+
+            continue;
+        }
+
+        /* ELSE */
+
+        if (text === "else:") {
+
+            const previous =
+                current[current.length - 1];
+
+            const ifNode =
+                findLastIf(current);
+
+            if (!ifNode) {
+
+                warnings.push(
+                    "Ligne " +
+                    (lineNumber + 1) +
+                    " : SINON sans SI correspondant."
+                );
+
+                continue;
+            }
+
+            stack.push({
+                indent,
+                children: ifNode.elseChildren,
+                parentIf: ifNode
+            });
+
+            continue;
+        }
+
+        /* FOR */
+
+        const forMatch =
+            text.match(
+                /^for\s+_\s+in\s+range\((\d+)\)\s*:/
+            );
+
+        if (forMatch) {
+
+            const node = {
+                id: createId(),
+                type: "repeat",
+                count: forMatch[1],
+                children: []
+            };
+
+            current.push(node);
+
+            stack.push({
+                indent,
+                children: node.children
+            });
+
+            continue;
+        }
+
+        /* PRINT */
+
+        const printMatch =
+            text.match(
+                /^print\((.*)\)$/
+            );
+
+        if (printMatch) {
+
+            const inside =
+                printMatch[1].trim();
+
+            current.push({
+                id: createId(),
+                type: "print",
+                value: stripPythonQuotes(inside),
+                valueType: isVariable(inside)
+                    ? "variable"
+                    : "text"
+            });
+
+            continue;
+        }
+
+        /* INPUT */
+
+        const inputMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*input\((.*)\)$/
+            );
+
+        if (inputMatch) {
+
+            current.push({
+                id: createId(),
+                type: "ask",
+                question:
+                    stripPythonQuotes(
+                        inputMatch[2]
+                    ),
+                name: inputMatch[1]
+            });
+
+            continue;
+        }
+
+        /* LISTE */
+
+        const listMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*\[(.*)\]$/
+            );
+
+        if (listMatch) {
+
+            const items =
+                listMatch[2]
+                    .split(",")
+                    .map(item =>
+                        stripPythonQuotes(
+                            item.trim()
+                        )
+                    )
+                    .filter(Boolean);
+
+            current.push({
+                id: createId(),
+                type: "list",
+                name: listMatch[1],
+                items: items.join(", ")
+            });
+
+            continue;
+        }
+
+        /* TEXTE UPPER */
+
+        const upperMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)\.upper\(\)$/
+            );
+
+        if (upperMatch) {
+
+            current.push({
+                id: createId(),
+                type: "text",
+                source: stripPythonQuotes(
+                    upperMatch[2]
+                ),
+                operation: "upper",
+                result: upperMatch[1]
+            });
+
+            continue;
+        }
+
+        /* TEXTE LOWER */
+
+        const lowerMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)\.lower\(\)$/
+            );
+
+        if (lowerMatch) {
+
+            current.push({
+                id: createId(),
+                type: "text",
+                source: stripPythonQuotes(
+                    lowerMatch[2]
+                ),
+                operation: "lower",
+                result: lowerMatch[1]
+            });
+
+            continue;
+        }
+
+        /* LEN */
+
+        const lenMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*len\((.+)\)$/
+            );
+
+        if (lenMatch) {
+
+            current.push({
+                id: createId(),
+                type: "text",
+                source: stripPythonQuotes(
+                    lenMatch[2]
+                ),
+                operation: "length",
+                result: lenMatch[1]
+            });
+
+            continue;
+        }
+
+        /* VARIABLE OU CALCUL */
+
+        const assignment =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)$/
+            );
+
+        if (assignment) {
+
+            const name =
+                assignment[1];
+
+            const value =
+                assignment[2].trim();
+
+            const calcMatch =
+                value.match(
+                    /^(.+)\s*([+\-*/])\s*(.+)$/
+                );
+
+            if (calcMatch) {
+
+                current.push({
+                    id: createId(),
+                    type: "calc",
+                    left: stripPythonQuotes(
+                        calcMatch[1].trim()
+                    ),
+                    operator: calcMatch[2],
+                    right: stripPythonQuotes(
+                        calcMatch[3].trim()
+                    ),
+                    result: name
+                });
+
+            } else {
+
+                current.push({
+                    id: createId(),
+                    type: "variable",
+                    name,
+                    value:
+                        stripPythonQuotes(value),
+                    valueType:
+                        isVariable(value)
+                            ? "variable"
+                            : "text"
+                });
+            }
+
+            continue;
+        }
+
+        warnings.push(
+            "Ligne " +
+            (lineNumber + 1) +
+            " non reconnue : " +
+            text
+        );
+    }
+
+    return {
+        nodes: root,
+        warnings
+    };
+}
+
+function findLastIf(nodes) {
+
+    for (
+        let i = nodes.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        if (nodes[i].type === "if") {
+            return nodes[i];
+        }
+    }
+
+    return null;
+}
+
+function parseCondition(condition) {
+
+    const operators =
+        ["==", "!=", ">=", "<=", ">", "<"];
+
+    for (const operator of operators) {
+
+        const index =
+            condition.indexOf(operator);
+
+        if (index === -1) {
+            continue;
+        }
+
+        const left =
+            condition.slice(
+                0,
+                index
+            ).trim();
+
+        const right =
+            condition.slice(
+                index + operator.length
+            ).trim();
+
+        if (!left || !right) {
+            return null;
+        }
+
+        return {
+            left:
+                stripPythonQuotes(left),
+
+            operator,
+
+            right:
+                stripPythonQuotes(right),
+
+            leftType:
+                isVariable(left)
+                    ? "variable"
+                    : "text",
+
+            rightType:
+                isVariable(right)
+                    ? "variable"
+                    : "text"
+        };
+    }
+
+    return null;
+}
+
+function stripPythonQuotes(value) {
+
+    const clean =
+        String(value ?? "").trim();
+
+    if (
+        (
+            clean.startsWith('"') &&
+            clean.endsWith('"')
+        ) ||
+        (
+            clean.startsWith("'") &&
+            clean.endsWith("'")
+        )
+    ) {
+
+        return clean.slice(
+            1,
+            -1
+        );
+    }
+
+    return clean;
+}
+
+function isVariable(value) {
+
+    return /^[A-Za-z_][A-Za-z0-9_]*$/
+        .test(
+            String(value ?? "").trim()
+        );
+}
+
+/* =========================================================
+   TEST DU PROGRAMME
+========================================================= */
+
+async function testCurrentProgram() {
+
+    const code =
+        generatePython(programNodes);
+
+    const resultBox =
+        document.getElementById(
+            "testResult"
+        );
+
+    if (!code.trim()) {
+
+        resultBox.innerHTML = `
+            <div class="warning-box">
+                Ton programme est vide.
+                Ajoute d'abord des boîtes.
+            </div>
+        `;
+
+        return;
+    }
+
+    try {
+
+        const engine =
+            new MiniPythonEngine();
+
+        const output =
+            await engine.run(code);
+
+        resultBox.innerHTML = `
+            <div class="success-box">
+
+                <strong>✅ Programme exécuté !</strong>
+
+                <div style="margin-top:8px;white-space:pre-wrap;">
+                    ${
+                        escapeHtml(
+                            output ||
+                            "(Le programme n'a rien affiché.)"
+                        )
+                    }
+                </div>
+
+            </div>
+        `;
+
+    } catch (error) {
+
+        resultBox.innerHTML = `
+            <div class="warning-box">
+
+                <strong>⚠️ Le programme a rencontré un problème.</strong>
+
+                <div style="margin-top:8px;">
+                    ${escapeHtml(error.message)}
+                </div>
+
+            </div>
+        `;
+    }
+}
+
+/* =========================================================
+   ÉVÉNEMENTS
+========================================================= */
+
+document.addEventListener(
+    "click",
+    event => {
+
+        const addButton =
+            event.target.closest(
+                "[data-add]"
+            );
+
+        if (addButton) {
+
+            addNode(
+                addButton.dataset.add
+            );
+
+            return;
+        }
+
+        const tabButton =
+            event.target.closest(
+                "[data-tab]"
+            );
+
+        if (tabButton) {
+
+            openTab(
+                tabButton.dataset.tab
+            );
+
+            return;
+        }
+
+        const actionButton =
+            event.target.closest(
+                "[data-action]"
+            );
+
+        if (actionButton) {
+
+            const action =
+                actionButton.dataset.action;
+
+            const id =
+                actionButton.dataset.id;
+
+            if (action === "info") {
+
+                const result =
+                    findNodeAndParent(
+                        programNodes,
+                        id
+                    );
+
+                if (result) {
+                    showInfo(
+                        result.node.type
+                    );
+                }
+
+            } else if (action === "delete") {
+
+                deleteNode(id);
+
+            } else if (action === "up") {
+
+                moveNode(
+                    id,
+                    -1
+                );
+
+            } else if (action === "down") {
+
+                moveNode(
+                    id,
+                    1
+                );
+            }
+
+            return;
+        }
+
+        const childButton =
+            event.target.closest(
+                "[data-add-child]"
+            );
+
+        if (childButton) {
+
+            addChild(
+                childButton.dataset.addChild,
+                childButton.dataset.zone
+            );
+
+            return;
+        }
+
+        const exampleButton =
+            event.target.closest(
+                ".use-example"
+            );
+
+        if (exampleButton) {
+
+            const example =
+                getExample(
+                    exampleButton.dataset.example
+                );
+
+            programNodes =
+                cloneNodes(example);
+
+            saveState();
+
+            renderProgram();
+
+            openTab("buildTab");
+
+            return;
+        }
+    }
+);
+
+/* =========================================================
+   INPUT / SELECT
+========================================================= */
+
+document.addEventListener(
+    "input",
+    event => {
+
+        const field =
+            event.target.closest(
+                "[data-field]"
+            );
+
+        if (!field) return;
+
+        updateNodeField(
+            field.dataset.id,
+            field.dataset.field,
+            field.value
+        );
+    }
+);
+
+document.addEventListener(
+    "change",
+    event => {
+
+        const field =
+            event.target.closest(
+                "[data-field]"
+            );
+
+        if (!field) return;
+
+        updateNodeField(
+            field.dataset.id,
+            field.dataset.field,
+            field.value
+        );
+    }
+);
+
+/* =========================================================
+   EFFACER
+========================================================= */
+
+document.getElementById(
+    "clearProgram"
+).addEventListener(
+    "click",
+    () => {
+
+        if (!programNodes.length) {
+            return;
+        }
+
+        const confirmed =
+            window.confirm(
+                "Supprimer tout le programme ?"
+            );
+
+        if (!confirmed) return;
+
+        programNodes = [];
+
+        saveState();
+
+        renderProgram();
+    }
+);
+
+/* =========================================================
+   CODE
+========================================================= */
+
+document.getElementById(
+    "goCode"
+).addEventListener(
+    "click",
+    () => {
+
+        openTab("codeTab");
+    }
+);
+
+document.getElementById(
+    "copyCode"
+).addEventListener(
+    "click",
+    async () => {
+
+        const code =
+            generatePython(
+                programNodes
+            );
+
+        try {
+
+            await navigator.clipboard.writeText(
+                code
+            );
+
+            alert(
+                "✅ Code copié !"
+            );
+
+        } catch {
+
+            alert(
+                "Impossible de copier automatiquement."
+            );
+        }
+    }
+);
+
+document.getElementById(
+    "testCode"
+).addEventListener(
+    "click",
+    testCurrentProgram
+);
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+document.getElementById(
+    "closeModal"
+).addEventListener(
+    "click",
+    closeInfo
+);
+
+document.getElementById(
+    "infoModal"
+).addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target.id ===
+            "infoModal"
+        ) {
+            closeInfo();
+        }
+    }
+);
+
+/* =========================================================
+   MODE PARENT
+========================================================= */
+
+document.getElementById(
+    "parentExample"
+).addEventListener(
+    "click",
+    () => {
+
+        document.getElementById(
+            "parentCode"
+        ).value =
+`prenom = input("Quel est ton prénom ?")
+
+if prenom == "Léo":
+    print("Bonjour Léo !")
+else:
+    print("Bonjour !")`;
+    }
+);
+
+document.getElementById(
+    "convertParent"
+).addEventListener(
+    "click",
+    () => {
+
+        const code =
+            document.getElementById(
+                "parentCode"
+            ).value;
+
+        if (!code.trim()) {
+
+            document.getElementById(
+                "parentMessage"
+            ).innerHTML = `
+                <div class="warning-box">
+                    Écris d'abord du code Python.
+                </div>
+            `;
+
+            return;
+        }
+
+        const result =
+            parseParentPython(code);
+
+        programNodes =
+            result.nodes;
+
+        saveState();
+
+        renderProgram();
+
+        let message = "";
+
+        if (result.warnings.length) {
+
+            message = `
+                <div class="warning-box">
+
+                    <strong>
+                        ⚠️ Certaines lignes n'ont pas été transformées
+                    </strong>
+
+                    <ul>
+                        ${
+                            result.warnings
+                                .map(
+                                    warning =>
+                                        `<li>${escapeHtml(warning)}</li>`
+                                )
+                                .join("")
+                        }
+                    </ul>
+
+                    Les lignes reconnues ont quand même
+                    été transformées en boîtes.
+
+                </div>
+            `;
+
+        } else {
+
+            message = `
+                <div class="success-box">
+                    ✅ Le code a été transformé en boîtes.
+                </div>
+            `;
+        }
+
+        document.getElementById(
+            "parentMessage"
+        ).innerHTML =
+            message;
+
+        openTab("buildTab");
+    }
+);
+
+/* =========================================================
+   INITIALISATION
+========================================================= */
+
+loadState();
+
+renderProgram();
+
+</script>
+
+</body>
+  </html>
