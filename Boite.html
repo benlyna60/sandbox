@@ -3,1632 +3,2818 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐍 Python Aventure V3 — Laboratoire Python</title>
 
-<title>🐍 Python Aventure — Atelier pour apprendre</title>
+<!--
+  PYODIDE
+  Version stable utilisée : 0.314.0
+  Documentation officielle :
+  https://pyodide.org/
+-->
+<script src="https://cdn.jsdelivr.net/pyodide/v0.314.0/full/pyodide.js"></script>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-        font-family: "Segoe UI", Arial, sans-serif;
-        background:
-            radial-gradient(circle at top left, #dff7ff 0%, transparent 35%),
-            radial-gradient(circle at bottom right, #f3e8ff 0%, transparent 35%),
-            #f5f7fb;
-        color: #263238;
-    }
-
-    /* =========================
-       HEADER
-    ========================= */
-
-    header {
-        background: linear-gradient(135deg, #4f46e5, #7c3aed);
-        color: white;
-        padding: 22px 30px;
-        box-shadow: 0 5px 20px rgba(0,0,0,.12);
-    }
-
-    .header-inner {
-        max-width: 1400px;
-        margin: auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .logo {
-        font-size: 25px;
-        font-weight: 800;
-    }
-
-    .subtitle {
-        margin-top: 5px;
-        opacity: .9;
-        font-size: 14px;
-    }
-
-    .progress-area {
-        min-width: 220px;
-    }
-
-    .progress-label {
-        font-size: 12px;
-        margin-bottom: 6px;
-        opacity: .9;
-    }
-
-    .progress {
-        height: 10px;
-        background: rgba(255,255,255,.25);
-        border-radius: 20px;
-        overflow: hidden;
-    }
-
-    .progress-bar {
-        height: 100%;
-        width: 20%;
-        background: #fff;
-        border-radius: 20px;
-        transition: width .3s;
-    }
-
-    /* =========================
-       LAYOUT
-    ========================= */
-
-    .container {
-        max-width: 1400px;
-        margin: 25px auto;
-        padding: 0 18px;
-        display: grid;
-        grid-template-columns: 330px 1fr 400px;
-        gap: 18px;
-    }
-
-    .panel {
-        background: rgba(255,255,255,.94);
-        border-radius: 18px;
-        padding: 20px;
-        box-shadow: 0 8px 30px rgba(31,41,55,.08);
-        border: 1px solid #e5e7eb;
-    }
-
-    h2 {
-        margin: 0 0 8px;
-        font-size: 20px;
-    }
-
-    h3 {
-        margin-top: 22px;
-    }
-
-    .description {
-        color: #64748b;
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-    /* =========================
-       BRICKS
-    ========================= */
-
-    .brick {
-        width: 100%;
-        border: none;
-        border-radius: 13px;
-        padding: 14px;
-        margin: 7px 0;
-        cursor: pointer;
-        text-align: left;
-        font-size: 15px;
-        font-weight: 700;
-        transition: .2s;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .brick:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 12px rgba(0,0,0,.1);
-    }
-
-    .brick span {
-        font-size: 23px;
-    }
-
-    .brick-print {
-        background: #dbeafe;
-        color: #1d4ed8;
-    }
-
-    .brick-variable {
-        background: #dcfce7;
-        color: #15803d;
-    }
-
-    .brick-if {
-        background: #f3e8ff;
-        color: #7e22ce;
-    }
-
-    .brick-input {
-        background: #fff7ed;
-        color: #c2410c;
-    }
-
-    .brick-comment {
-        background: #f1f5f9;
-        color: #475569;
-    }
-
-    /* =========================
-       EXAMPLES
-    ========================= */
-
-    .example {
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 11px;
-        margin: 7px 0;
-        cursor: pointer;
-        background: #fafafa;
-        transition: .2s;
-    }
-
-    .example:hover {
-        background: #f1f5f9;
-        transform: translateX(2px);
-    }
-
-    .example strong {
-        display: block;
-        margin-bottom: 3px;
-    }
-
-    .example small {
-        color: #64748b;
-    }
-
-    /* =========================
-       WORKSPACE
-    ========================= */
-
-    #workspace {
-        min-height: 420px;
-        background: #f8fafc;
-        border: 2px dashed #cbd5e1;
-        border-radius: 15px;
-        padding: 15px;
-    }
-
-    .empty-workspace {
-        min-height: 380px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: #94a3b8;
-        padding: 30px;
-    }
-
-    .empty-icon {
-        font-size: 55px;
-        margin-bottom: 10px;
-    }
-
-    .code-block {
-        background: white;
-        border: 1px solid #e2e8f0;
-        border-left: 7px solid #94a3b8;
-        border-radius: 12px;
-        padding: 12px;
-        margin-bottom: 10px;
-        box-shadow: 0 3px 8px rgba(0,0,0,.05);
-    }
-
-    .code-block[data-type="print"] {
-        border-left-color: #3b82f6;
-    }
-
-    .code-block[data-type="variable"] {
-        border-left-color: #22c55e;
-    }
-
-    .code-block[data-type="if"] {
-        border-left-color: #a855f7;
-    }
-
-    .code-block[data-type="input"] {
-        border-left-color: #f97316;
-    }
-
-    .code-block[data-type="comment"] {
-        border-left-color: #64748b;
-    }
-
-    .block-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-    }
-
-    .block-title {
-        font-weight: 700;
-        font-size: 14px;
-    }
-
-    .delete {
-        border: none;
-        background: #fee2e2;
-        color: #dc2626;
-        border-radius: 8px;
-        padding: 6px 9px;
-        cursor: pointer;
-    }
-
-    input[type="text"] {
-        border: 2px solid #cbd5e1;
-        border-radius: 8px;
-        padding: 8px;
-        margin: 5px 3px;
-        max-width: 100%;
-        font-size: 14px;
-    }
-
-    input[type="text"]:focus {
-        outline: none;
-        border-color: #6366f1;
-    }
-
-    .field-label {
-        font-size: 12px;
-        color: #64748b;
-    }
-
-    /* =========================
-       BUTTONS
-    ========================= */
-
-    .main-button {
-        width: 100%;
-        border: none;
-        border-radius: 12px;
-        padding: 13px;
-        margin-top: 10px;
-        cursor: pointer;
-        font-size: 15px;
-        font-weight: 800;
-        transition: .2s;
-    }
-
-    .main-button:hover {
-        transform: translateY(-1px);
-    }
-
-    .generate {
-        background: #16a34a;
-        color: white;
-    }
-
-    .clear {
-        background: #f1f5f9;
-        color: #334155;
-    }
-
-    .challenge {
-        background: #f59e0b;
-        color: white;
-    }
-
-    /* =========================
-       CODE
-    ========================= */
-
-    pre {
-        margin: 0;
-        background: #111827;
-        color: #e5e7eb;
-        border-radius: 13px;
-        padding: 18px;
-        min-height: 250px;
-        overflow-x: auto;
-        line-height: 1.6;
-        font-size: 14px;
-    }
-
-    .code-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .copy-button {
-        border: none;
-        background: #e2e8f0;
-        color: #334155;
-        padding: 7px 10px;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-
-    /* =========================
-       ALERTS
-    ========================= */
-
-    .alert {
-        display: none;
-        padding: 12px;
-        border-radius: 11px;
-        margin: 12px 0;
-        font-size: 14px;
-        line-height: 1.45;
-    }
-
-    .alert.error {
-        background: #fee2e2;
-        border: 1px solid #fecaca;
-        color: #991b1b;
-    }
-
-    .alert.warning {
-        background: #fef3c7;
-        border: 1px solid #fde68a;
-        color: #92400e;
-    }
-
-    .alert.success {
-        background: #dcfce7;
-        border: 1px solid #bbf7d0;
-        color: #166534;
-    }
-
-    /* =========================
-       EXPLANATION
-    ========================= */
-
-    .explanation {
-        background: #eff6ff;
-        border-left: 5px solid #3b82f6;
-        padding: 15px;
-        border-radius: 0 12px 12px 0;
-        margin-top: 15px;
-        line-height: 1.55;
-        font-size: 14px;
-    }
-
-    /* =========================
-       CONSOLE
-    ========================= */
-
-    .console {
-        background: #020617;
-        color: #86efac;
-        padding: 15px;
-        border-radius: 12px;
-        margin-top: 15px;
-        min-height: 100px;
-        font-family: monospace;
-        white-space: pre-wrap;
-    }
-
-    /* =========================
-       TIPS
-    ========================= */
-
-    .tip {
-        background: #fff7ed;
-        border: 1px solid #fed7aa;
-        color: #9a3412;
-        padding: 12px;
-        border-radius: 11px;
-        font-size: 13px;
-        margin-top: 12px;
-    }
-
-    .badge {
-        display: inline-block;
-        padding: 4px 8px;
-        border-radius: 20px;
-        background: #ede9fe;
-        color: #6d28d9;
-        font-size: 11px;
-        font-weight: 700;
-    }
-
-    /* =========================
-       CHALLENGE
-    ========================= */
-
-    .challenge-box {
-        background: linear-gradient(135deg,#fff7ed,#fffbeb);
-        border: 1px solid #fed7aa;
-        padding: 15px;
-        border-radius: 13px;
-        margin-top: 15px;
-    }
-
-    .challenge-title {
-        font-weight: 800;
-        margin-bottom: 5px;
-    }
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
-
-    @media(max-width:1100px) {
-        .container {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .panel:first-child {
-            grid-column: span 1;
-        }
-    }
-
-    @media(max-width:750px) {
-        body {
-            padding: 0;
-        }
-
-        header {
-            padding: 18px;
-        }
-
-        .header-inner {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .progress-area {
-            min-width: auto;
-        }
-
-        .container {
-            display: block;
-            padding: 10px;
-            margin: 0;
-        }
-
-        .panel {
-            margin-bottom: 15px;
-        }
-    }
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #f4f7fb;
+  --panel: #ffffff;
+  --border: #dce3ee;
+  --text: #172033;
+  --muted: #667085;
+  --primary: #5b5bd6;
+  --primary-dark: #4141a8;
+  --green: #159957;
+  --red: #d64545;
+  --orange: #e38b21;
+  --blue: #2684ff;
+  --shadow: 0 8px 24px rgba(30, 45, 80, .08);
+  --radius: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.header {
+  background: linear-gradient(135deg, #5b5bd6, #7b4fd1);
+  color: white;
+  padding: 22px 26px;
+  box-shadow: 0 4px 16px rgba(40, 35, 100, .2);
+}
+
+.header-inner {
+  max-width: 1600px;
+  margin: auto;
+}
+
+.header h1 {
+  margin: 0 0 6px;
+  font-size: 27px;
+}
+
+.header p {
+  margin: 0;
+  opacity: .92;
+}
+
+.status-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.16);
+  font-size: 13px;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ffcf33;
+}
+
+.status.ready .status-dot {
+  background: #49e68b;
+}
+
+.status.error .status-dot {
+  background: #ff6464;
+}
+
+.container {
+  max-width: 1600px;
+  margin: 22px auto;
+  padding: 0 18px;
+}
+
+.toolbar {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+  box-shadow: var(--shadow);
+  margin-bottom: 18px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 700;
+  transition: .15s;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-secondary {
+  background: #eef1f7;
+  color: #293348;
+}
+
+.btn-green {
+  background: #dff7e9;
+  color: #116b3e;
+}
+
+.btn-orange {
+  background: #fff0d9;
+  color: #8b550e;
+}
+
+.btn-red {
+  background: #ffe3e3;
+  color: #9f2525;
+}
+
+.btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+.progress-wrap {
+  min-width: 190px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.progress {
+  height: 9px;
+  background: #e8ecf3;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 20%;
+  background: linear-gradient(90deg, #5b5bd6, #159957);
+  transition: width .3s;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 300px minmax(420px, 1fr) minmax(340px, 430px);
+  gap: 18px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.panel-header {
+  padding: 15px 17px;
+  border-bottom: 1px solid var(--border);
+  background: #fafbfe;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.panel-header p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.panel-body {
+  padding: 15px;
+}
+
+.section-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  font-weight: 800;
+  color: var(--muted);
+  margin: 15px 0 9px;
+}
+
+.section-title:first-child {
+  margin-top: 0;
+}
+
+.bricks {
+  display: grid;
+  gap: 9px;
+}
+
+.brick {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: white;
+  text-align: left;
+  transition: .15s;
+}
+
+.brick:hover {
+  border-color: var(--primary);
+  box-shadow: 0 5px 15px rgba(91,91,214,.1);
+}
+
+.brick strong {
+  display: block;
+}
+
+.brick small {
+  color: var(--muted);
+}
+
+.example-list {
+  display: grid;
+  gap: 7px;
+}
+
+.example-btn {
+  border: 1px solid var(--border);
+  background: #fafbfe;
+  border-radius: 9px;
+  padding: 9px;
+  text-align: left;
+}
+
+.challenge-card {
+  background: #fff8e8;
+  border: 1px solid #f1d99d;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.challenge-card strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.challenge-card p {
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 0 0 10px;
+}
+
+.workspace {
+  display: grid;
+  gap: 14px;
+}
+
+.mode-tabs {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.mode-tab {
+  border: 1px solid var(--border);
+  background: #f7f8fb;
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-weight: 700;
+}
+
+.mode-tab.active {
+  background: #ececff;
+  border-color: #b8b8ef;
+  color: #4242a8;
+}
+
+.builder {
+  min-height: 160px;
+  border: 2px dashed #d6dcea;
+  border-radius: 13px;
+  padding: 12px;
+  background: #fbfcfe;
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 35px 15px;
+}
+
+.block {
+  background: white;
+  border: 1px solid #cfd7e5;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 9px;
+}
+
+.block:last-child {
+  margin-bottom: 0;
+}
+
+.block-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.block-number {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ececff;
+  color: #4747a8;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.block-title {
+  font-weight: 800;
+  flex: 1;
+}
+
+.delete-block {
+  border: 0;
+  background: #ffe9e9;
+  color: #9f2525;
+  border-radius: 7px;
+  padding: 5px 8px;
+}
+
+.block-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.field {
+  display: grid;
+  gap: 4px;
+}
+
+.field label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  border: 1px solid #ccd5e3;
+  border-radius: 8px;
+  padding: 8px;
+  background: white;
+}
+
+.code-area {
+  position: relative;
+}
+
+#codeEditor {
+  width: 100%;
+  min-height: 310px;
+  resize: vertical;
+  border: 1px solid #2d3442;
+  border-radius: 12px;
+  background: #171b24;
+  color: #eaf0ff;
+  padding: 16px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  line-height: 1.55;
+  tab-size: 4;
+  outline: none;
+}
+
+#codeEditor:focus {
+  border-color: #7777e8;
+  box-shadow: 0 0 0 3px rgba(91,91,214,.15);
+}
+
+.editor-tools {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 9px;
+}
+
+.console {
+  background: #10141c;
+  color: #dce7ff;
+  border-radius: 12px;
+  min-height: 150px;
+  max-height: 300px;
+  overflow: auto;
+  padding: 13px;
+  font-family: monospace;
+  font-size: 13px;
+  white-space: pre-wrap;
+}
+
+.console .ok {
+  color: #75e5a1;
+}
+
+.console .err {
+  color: #ff8888;
+}
+
+.console .info {
+  color: #8eb9ff;
+}
+
+.input-area {
+  display: none;
+  margin-top: 10px;
+  background: #f4f7ff;
+  border: 1px solid #d7def0;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.input-area.visible {
+  display: block;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.input-row input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #cbd5e4;
+  border-radius: 8px;
+  padding: 9px;
+}
+
+.teacher {
+  background: #f7f8ff;
+  border: 1px solid #dfe1fa;
+  border-radius: 12px;
+  padding: 13px;
+}
+
+.teacher-title {
+  font-weight: 800;
+  margin-bottom: 7px;
+}
+
+.teacher p {
+  margin: 7px 0;
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+.why {
+  margin-top: 9px;
+  background: white;
+  border-left: 4px solid var(--primary);
+  padding: 10px;
+  border-radius: 7px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.error-box {
+  display: none;
+  margin-top: 10px;
+  background: #fff0f0;
+  border: 1px solid #f0bcbc;
+  color: #842727;
+  border-radius: 11px;
+  padding: 12px;
+}
+
+.error-box.visible {
+  display: block;
+}
+
+.error-box strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.variables {
+  overflow-x: auto;
+}
+
+.variables table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.variables th,
+.variables td {
+  border-bottom: 1px solid var(--border);
+  padding: 8px;
+  text-align: left;
+}
+
+.variables th {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.variables code {
+  background: #eef1f7;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.steps {
+  display: grid;
+  gap: 7px;
+}
+
+.step-line {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  background: #f7f8fb;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.step-line.current {
+  background: #ececff;
+  outline: 2px solid #bcbcfa;
+}
+
+.step-number {
+  color: var(--muted);
+  text-align: center;
+  font-weight: 700;
+}
+
+.lesson {
+  line-height: 1.55;
+  font-size: 13px;
+}
+
+.lesson ul {
+  padding-left: 20px;
+}
+
+.tip {
+  background: #e9f7ff;
+  border: 1px solid #bee4f5;
+  border-radius: 11px;
+  padding: 11px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.footer {
+  max-width: 1600px;
+  margin: 18px auto 30px;
+  padding: 0 18px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+@media (max-width: 1180px) {
+  .layout {
+    grid-template-columns: 270px 1fr;
+  }
+
+  .right-panel {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 780px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .right-panel {
+    grid-column: auto;
+  }
+
+  .container {
+    padding: 0 10px;
+  }
+
+  .header {
+    padding: 18px;
+  }
+
+  .header h1 {
+    font-size: 23px;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<header>
-    <div class="header-inner">
+<header class="header">
+  <div class="header-inner">
+    <h1>🐍 Python Aventure — Laboratoire V3</h1>
+    <p>Construis, écris, exécute et comprends vraiment ton code Python.</p>
 
-        <div>
-            <div class="logo">🐍 Python Aventure</div>
-            <div class="subtitle">
-                Ton premier laboratoire pour apprendre à programmer
-            </div>
-        </div>
+    <div class="status-row">
+      <div class="status" id="pythonStatus">
+        <span class="status-dot"></span>
+        <span id="pythonStatusText">Chargement du moteur Python…</span>
+      </div>
 
-        <div class="progress-area">
-            <div class="progress-label">
-                ⭐ Progression : <span id="progressText">Débutant</span>
-            </div>
+      <div class="status">
+        ⭐ Niveau <span id="levelText">1</span>
+      </div>
 
-            <div class="progress">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-        </div>
-
+      <div class="status">
+        🏆 <span id="scoreText">0</span> points
+      </div>
     </div>
+  </div>
 </header>
 
+<main class="container">
 
-<div class="container">
+  <div class="toolbar">
 
-    <!-- =====================================
-         PANNEAU 1
-    ====================================== -->
+    <button class="btn btn-primary" id="runBtn" onclick="runPython()" disabled>
+      ▶ Exécuter Python
+    </button>
 
-    <div class="panel">
+    <button class="btn btn-secondary" onclick="stepReset()">
+      👣 Pas à pas
+    </button>
 
-        <h2>🧱 Construis ton programme</h2>
+    <button class="btn btn-secondary" onclick="stepNext()">
+      ⏭ Étape suivante
+    </button>
 
-        <p class="description">
-            Clique sur une brique pour l'ajouter.
-            Chaque brique correspond à une instruction Python.
-        </p>
+    <button class="btn btn-green" onclick="checkChallenge()">
+      🎯 Vérifier le défi
+    </button>
 
-        <button class="brick brick-print"
-                onclick="addBlock('print')">
-            <span>📢</span>
-            <div>
-                Afficher un message
-                <small>print()</small>
-            </div>
-        </button>
+    <button class="btn btn-orange" onclick="newChallenge()">
+      🧩 Nouveau défi
+    </button>
 
-        <button class="brick brick-variable"
-                onclick="addBlock('variable')">
-            <span>📦</span>
-            <div>
-                Créer une variable
-                <small>score = 10</small>
-            </div>
-        </button>
+    <button class="btn btn-red" onclick="resetAll()">
+      🗑 Réinitialiser
+    </button>
 
-        <button class="brick brick-if"
-                onclick="addBlock('if')">
-            <span>🤔</span>
-            <div>
-                Poser une condition
-                <small>if ...:</small>
-            </div>
-        </button>
+    <div class="toolbar-spacer"></div>
 
-        <button class="brick brick-input"
-                onclick="addBlock('input')">
-            <span>⌨️</span>
-            <div>
-                Poser une question
-                <small>input()</small>
-            </div>
-        </button>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progression</span>
+        <strong id="progressText">20%</strong>
+      </div>
 
-        <button class="brick brick-comment"
-                onclick="addBlock('comment')">
-            <span>💬</span>
-            <div>
-                Écrire une note
-                <small># commentaire</small>
-            </div>
-        </button>
-
-
-        <h3>📚 Exemples</h3>
-
-        <div class="example" onclick="loadExample('hello')">
-            <strong>👋 Bonjour</strong>
-            <small>Afficher un message</small>
-        </div>
-
-        <div class="example" onclick="loadExample('variable')">
-            <strong>📦 Mon score</strong>
-            <small>Créer une variable</small>
-        </div>
-
-        <div class="example" onclick="loadExample('condition')">
-            <strong>🤔 Mon premier choix</strong>
-            <small>Utiliser une condition</small>
-        </div>
-
-        <div class="example" onclick="loadExample('question')">
-            <strong>⌨️ Poser une question</strong>
-            <small>Utiliser input()</small>
-        </div>
-
-        <div class="example" onclick="loadExample('game')">
-            <strong>🎮 Mini jeu</strong>
-            <small>Variable + condition + affichage</small>
-        </div>
-
-        <div class="example" onclick="loadExample('complete')">
-            <strong>🚀 Programme complet</strong>
-            <small>Un petit programme étape par étape</small>
-        </div>
-
-        <button class="main-button challenge"
-                onclick="newChallenge()">
-            🏆 Nouveau défi
-        </button>
-
-        <button class="main-button clear"
-                onclick="clearWorkspace()">
-            🗑️ Tout effacer
-        </button>
-
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
     </div>
 
+  </div>
 
-    <!-- =====================================
-         PANNEAU 2
-    ====================================== -->
+  <div class="layout">
 
-    <div class="panel">
+    <!-- =====================================================
+         GAUCHE : OUTILS
+         ===================================================== -->
 
-        <h2>🧩 Ton programme</h2>
+    <section class="panel">
+      <div class="panel-header">
+        <h2>🧱 Construire</h2>
+        <p>Ajoute des briques pour apprendre la logique.</p>
+      </div>
 
-        <p class="description">
-            Les briques apparaissent ici dans l'ordre.
-            Tu peux modifier leurs informations ou les supprimer.
-        </p>
+      <div class="panel-body">
 
-        <div id="workspace">
+        <div class="section-title">Briques</div>
 
-            <div class="empty-workspace">
-                <div>
-                    <div class="empty-icon">🧙‍♂️</div>
-                    <strong>Ton aventure commence ici !</strong>
-                    <p>
-                        Choisis une brique à gauche pour construire
-                        ton premier programme.
-                    </p>
-                </div>
-            </div>
+        <div class="bricks">
+
+          <button class="brick" onclick="addBlock('print')">
+            <strong>🖨️ afficher</strong>
+            <small>print()</small>
+          </button>
+
+          <button class="brick" onclick="addBlock('variable')">
+            <strong>📦 variable</strong>
+            <small>Donner un nom et une valeur</small>
+          </button>
+
+          <button class="brick" onclick="addBlock('input')">
+            <strong>⌨️ question</strong>
+            <small>input()</small>
+          </button>
+
+          <button class="brick" onclick="addBlock('if')">
+            <strong>🔀 condition</strong>
+            <small>if / comparaison</small>
+          </button>
+
+          <button class="brick" onclick="addBlock('comment')">
+            <strong>💬 commentaire</strong>
+            <small>Expliquer son code</small>
+          </button>
 
         </div>
 
-        <div id="alertBox" class="alert"></div>
+        <div class="section-title">Exemples</div>
 
-        <button class="main-button generate"
-                onclick="generateCode()">
-            🚀 Vérifier et créer mon code Python
-        </button>
+        <div class="example-list">
 
-        <div class="challenge-box" id="challengeBox">
-            <div class="challenge-title">🏆 Défi du jour</div>
-            <div id="challengeText">
-                Crée une variable appelée <b>score</b>
-                contenant le nombre <b>10</b>.
-            </div>
+          <button class="example-btn" onclick="loadExample('hello')">
+            👋 Bonjour Python
+          </button>
+
+          <button class="example-btn" onclick="loadExample('variable')">
+            📦 Variable
+          </button>
+
+          <button class="example-btn" onclick="loadExample('condition')">
+            🔀 Condition
+          </button>
+
+          <button class="example-btn" onclick="loadExample('input')">
+            ⌨️ Question
+          </button>
+
+          <button class="example-btn" onclick="loadExample('math')">
+            ➕ Calcul
+          </button>
+
+          <button class="example-btn" onclick="loadExample('game')">
+            🎮 Petit jeu
+          </button>
+
         </div>
 
-    </div>
+        <div class="section-title">Défi actuel</div>
+
+        <div class="challenge-card">
+          <strong id="challengeTitle">Défi débutant</strong>
+          <p id="challengeText">
+            Affiche le message « Bonjour Python ! ».
+          </p>
+
+          <button class="btn btn-orange" onclick="checkChallenge()">
+            Vérifier
+          </button>
+        </div>
+
+      </div>
+    </section>
 
 
-    <!-- =====================================
-         PANNEAU 3
-    ====================================== -->
+    <!-- =====================================================
+         MILIEU : ESPACE DE TRAVAIL
+         ===================================================== -->
 
-    <div class="panel">
+    <section class="panel">
+      <div class="panel-header">
+        <h2>🔬 Laboratoire</h2>
+        <p>Tu peux construire avec les briques ou modifier directement le code.</p>
+      </div>
 
-        <div class="code-header">
-            <h2>🐍 Code Python</h2>
+      <div class="panel-body workspace">
 
-            <button class="copy-button"
-                    onclick="copyCode()">
-                📋 Copier
+        <div class="mode-tabs">
+
+          <button class="mode-tab active" id="tabBuilder"
+                  onclick="showMode('builder')">
+            🧱 Briques
+          </button>
+
+          <button class="mode-tab" id="tabCode"
+                  onclick="showMode('code')">
+            🐍 Code Python
+          </button>
+
+          <button class="mode-tab" id="tabSteps"
+                  onclick="showMode('steps')">
+            👣 Comprendre
+          </button>
+
+        </div>
+
+
+        <!-- CONSTRUCTEUR -->
+
+        <div id="builderMode">
+
+          <div class="builder" id="builder">
+            <div class="empty" id="emptyBuilder">
+              Ajoute une brique à gauche pour commencer.
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- CODE -->
+
+        <div id="codeMode" class="hidden">
+
+          <div class="code-area">
+
+            <textarea
+              id="codeEditor"
+              spellcheck="false"
+              aria-label="Éditeur Python"
+              oninput="onCodeChanged()"
+            ></textarea>
+
+          </div>
+
+          <div class="editor-tools">
+
+            <button class="btn btn-primary"
+                    id="runBtn2"
+                    onclick="runPython()"
+                    disabled>
+              ▶ Exécuter
             </button>
-        </div>
 
-        <pre id="output"># Ton code apparaîtra ici...</pre>
+            <button class="btn btn-secondary"
+                    onclick="formatEducationalCode()">
+              ✨ Vérifier la structure
+            </button>
 
-        <div id="explanation"
-             class="explanation"
-             style="display:none;">
+            <button class="btn btn-secondary"
+                    onclick="copyCode()">
+              📋 Copier
+            </button>
 
-            <strong>🧠 Comprendre ton programme</strong>
-
-            <div id="explanationText"></div>
-
-        </div>
-
-        <h3>🖥️ Simulation</h3>
-
-        <div class="console" id="console">
-> La simulation apparaîtra ici...
-        </div>
-
-        <div class="tip">
-
-            💡 <strong>Astuce :</strong>
-
-            Python lit généralement ton programme
-            de haut en bas.
-
-            <br><br>
-
-            C'est comme lire une recette :
-            <b>première étape → deuxième étape → troisième étape.</b>
+          </div>
 
         </div>
 
-    </div>
 
+        <!-- PAS À PAS -->
+
+        <div id="stepsMode" class="hidden">
+
+          <div class="teacher">
+            <div class="teacher-title">
+              👨‍🏫 Professeur Python
+            </div>
+
+            <div id="stepTeacherText">
+              Appuie sur « Étape suivante » pour comprendre ton programme ligne par ligne.
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <div class="section-title">Programme</div>
+            <div class="steps" id="stepsList"></div>
+          </div>
+
+        </div>
+
+
+        <!-- EXPLICATION -->
+
+        <div class="teacher">
+
+          <div class="teacher-title">
+            💡 Pourquoi ce code fonctionne ?
+          </div>
+
+          <div id="explanation" class="lesson">
+            Commence par choisir une brique ou un exemple.
+          </div>
+
+        </div>
+
+
+        <!-- ERREUR -->
+
+        <div class="error-box" id="errorBox">
+          <strong id="errorTitle">Erreur Python</strong>
+          <div id="errorExplanation"></div>
+        </div>
+
+
+        <!-- INPUT -->
+
+        <div class="input-area" id="inputArea">
+
+          <strong>⌨️ Python attend une réponse</strong>
+
+          <div class="input-row" style="margin-top:8px;">
+            <input
+              id="pythonInput"
+              type="text"
+              placeholder="Écris ta réponse…"
+              onkeydown="if(event.key === 'Enter') submitPythonInput()"
+            >
+
+            <button class="btn btn-primary"
+                    onclick="submitPythonInput()">
+              Envoyer
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- CONSOLE -->
+
+        <div>
+
+          <div class="section-title">🖥️ Console Python</div>
+
+          <div class="console" id="console">
+            <span class="info">En attente du programme…</span>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =====================================================
+         DROITE : OBSERVATION / PROFESSEUR
+         ===================================================== -->
+
+    <section class="panel right-panel">
+
+      <div class="panel-header">
+        <h2>🧠 Comprendre ce qui se passe</h2>
+        <p>Python n'est pas magique : il suit des règles.</p>
+      </div>
+
+      <div class="panel-body">
+
+        <div class="section-title">
+          📦 Variables
+        </div>
+
+        <div class="variables" id="variablesPanel">
+          <div class="empty" style="padding:15px;">
+            Aucune variable observée.
+          </div>
+        </div>
+
+
+        <div class="section-title">
+          🔎 Règle importante
+        </div>
+
+        <div class="why" id="whyBox">
+          <strong>Pourquoi l'ordre compte ?</strong>
+          <br>
+          Python lit généralement ton programme de haut en bas.
+          Une variable doit donc normalement avoir reçu une valeur
+          avant que ton programme puisse l'utiliser.
+        </div>
+
+
+        <div class="section-title">
+          📚 Mini-leçon
+        </div>
+
+        <div class="tip" id="tipBox">
+          <strong>Astuce :</strong>
+          <br>
+          Le signe <code>=</code> sert à donner une valeur à une variable.
+          Le signe <code>==</code> sert à comparer deux valeurs.
+        </div>
+
+
+        <div class="section-title">
+          🎓 Ce que tu apprends
+        </div>
+
+        <div class="lesson">
+
+          <ul>
+            <li><strong>print()</strong> affiche quelque chose.</li>
+            <li><strong>=</strong> donne une valeur.</li>
+            <li><strong>if</strong> permet de prendre une décision.</li>
+            <li><strong>:</strong> annonce un bloc d'instructions.</li>
+            <li><strong>l'indentation</strong> indique ce qui appartient au bloc.</li>
+            <li><strong>input()</strong> demande une réponse.</li>
+            <li><strong>int()</strong> transforme un texte numérique en nombre.</li>
+          </ul>
+
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
+<div class="footer">
+  Python Aventure V3 — exécution Python côté navigateur avec Pyodide.
 </div>
 
 
 <script>
+"use strict";
 
-let workspace =
-    document.getElementById("workspace");
+/* ============================================================
+   ÉTAT GLOBAL
+   ============================================================ */
 
-let challengeIndex = 0;
+let pyodide = null;
+let pyodideReady = false;
+let pythonRunning = false;
+let waitingForInput = false;
+let pendingInputResolver = null;
+
+let blocks = [];
+let blockId = 0;
+
+let currentStep = -1;
+let stepLines = [];
+
+let progress = Number(localStorage.getItem("pythonAventureProgress") || 20);
+let score = Number(localStorage.getItem("pythonAventureScore") || 0);
+let level = Number(localStorage.getItem("pythonAventureLevel") || 1);
+
+let currentChallenge = {
+  id: "hello",
+  title: "Défi débutant",
+  text: "Affiche le message « Bonjour Python ! ».",
+  tests: [
+    code => /print\s*\(\s*["']Bonjour Python!?["']\s*\)/i.test(code)
+  ]
+};
 
 
-/* =====================================================
-   AJOUTER UNE BRIQUE
-===================================================== */
+/* ============================================================
+   OUTILS DOM
+   ============================================================ */
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+function escapeHTML(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* ============================================================
+   INITIALISATION PYODIDE
+   ============================================================ */
+
+async function initializePython() {
+
+  const status = $("pythonStatus");
+  const text = $("pythonStatusText");
+
+  try {
+
+    text.textContent = "Téléchargement du moteur Python…";
+
+    pyodide = await loadPyodide();
+
+    /*
+      Sortie standard : affichée dans notre console.
+    */
+    pyodide.setStdout({
+      batched: output => {
+        appendConsole(output, "normal");
+      }
+    });
+
+    /*
+      Erreurs Python : affichées dans notre console.
+    */
+    pyodide.setStderr({
+      batched: output => {
+        appendConsole(output, "error");
+      }
+    });
+
+    /*
+      input() réel de Python.
+      Pyodide appelle cette fonction lorsqu'une entrée est nécessaire.
+    */
+    pyodide.setStdin({
+      stdin: () => {
+
+        if (!waitingForInput) {
+          waitingForInput = true;
+          showInputArea();
+        }
+
+        return new Promise(resolve => {
+          pendingInputResolver = resolve;
+        });
+      }
+    });
+
+    pyodideReady = true;
+
+    status.classList.add("ready");
+    text.textContent = "Python est prêt ✓";
+
+    $("runBtn").disabled = false;
+    $("runBtn2").disabled = false;
+
+    appendConsole(
+      "✓ Moteur Python prêt. Tu peux exécuter ton programme.",
+      "success"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.classList.add("error");
+
+    text.textContent = "Impossible de charger Python";
+
+    appendConsole(
+      "Le moteur Python n'a pas pu être chargé.",
+      "error"
+    );
+
+    showError(
+      "Moteur Python indisponible",
+      "Vérifie ta connexion Internet puis recharge la page. " +
+      "Cette version utilise Pyodide pour exécuter Python directement dans le navigateur."
+    );
+  }
+}
+
+
+/* ============================================================
+   CONSOLE
+   ============================================================ */
+
+function appendConsole(message, type = "normal") {
+
+  const consoleEl = $("console");
+
+  const line = document.createElement("div");
+
+  if (type === "error") {
+    line.className = "err";
+  } else if (type === "success") {
+    line.className = "ok";
+  } else {
+    line.className = "";
+  }
+
+  line.textContent = String(message);
+
+  consoleEl.appendChild(line);
+
+  consoleEl.scrollTop = consoleEl.scrollHeight;
+}
+
+function clearConsole() {
+
+  $("console").innerHTML =
+    '<span class="info">Console nettoyée.</span>';
+}
+
+
+/* ============================================================
+   INPUT PYTHON
+   ============================================================ */
+
+function showInputArea() {
+
+  $("inputArea").classList.add("visible");
+
+  $("pythonInput").value = "";
+
+  setTimeout(() => {
+    $("pythonInput").focus();
+  }, 50);
+}
+
+function hideInputArea() {
+
+  $("inputArea").classList.remove("visible");
+
+  waitingForInput = false;
+}
+
+function submitPythonInput() {
+
+  if (!pendingInputResolver) {
+    return;
+  }
+
+  const value = $("pythonInput").value;
+
+  const resolver = pendingInputResolver;
+
+  pendingInputResolver = null;
+
+  hideInputArea();
+
+  resolver(value);
+}
+
+
+/* ============================================================
+   ERREURS
+   ============================================================ */
+
+function showError(title, explanation) {
+
+  $("errorTitle").textContent = title;
+  $("errorExplanation").innerHTML = explanation;
+
+  $("errorBox").classList.add("visible");
+}
+
+function hideError() {
+
+  $("errorBox").classList.remove("visible");
+}
+
+function explainPythonError(error) {
+
+  const message = String(error && error.message
+    ? error.message
+    : error);
+
+  const lower = message.toLowerCase();
+
+  let title = "Erreur Python";
+  let explanation =
+    "Python a rencontré un problème dans ton programme. " +
+    "Lis le message ci-dessous et regarde particulièrement la ligne indiquée.";
+
+  if (lower.includes("syntaxerror")) {
+
+    title = "❌ SyntaxError — problème de syntaxe";
+
+    explanation =
+      "Python ne comprend pas la forme de cette instruction. " +
+      "Vérifie les parenthèses, les guillemets, les deux-points « : » " +
+      "et l'ordre des éléments.";
+  }
+
+  else if (lower.includes("indentationerror")) {
+
+    title = "📐 IndentationError — indentation incorrecte";
+
+    explanation =
+      "Python utilise les espaces au début des lignes pour savoir " +
+      "quelles instructions appartiennent à un bloc. " +
+      "Après « if ...: », la ligne suivante doit être indentée.";
+  }
+
+  else if (lower.includes("nameerror")) {
+
+    title = "📦 NameError — variable inconnue";
+
+    explanation =
+      "Python cherche une variable qui n'existe pas encore. " +
+      "Regarde si tu as écrit le même nom partout et si la variable " +
+      "a bien reçu une valeur avant d'être utilisée.";
+  }
+
+  else if (lower.includes("typeerror")) {
+
+    title = "🔢 TypeError — mauvais type de valeur";
+
+    explanation =
+      "Python reçoit un type de donnée qu'il ne peut pas utiliser " +
+      "avec cette opération. Par exemple, additionner directement " +
+      "du texte et un nombre peut provoquer cette erreur.";
+  }
+
+  else if (lower.includes("valueerror")) {
+
+    title = "🔄 ValueError — valeur incorrecte";
+
+    explanation =
+      "La commande attend une certaine forme de valeur, mais elle " +
+      "en a reçu une autre. C'est fréquent avec int() lorsque le texte " +
+      "ne représente pas un nombre.";
+  }
+
+  else if (lower.includes("zerodivisionerror")) {
+
+    title = "➗ ZeroDivisionError — division par zéro";
+
+    explanation =
+      "Un programme ne peut pas effectuer une division par zéro. " +
+      "Vérifie la valeur utilisée comme diviseur.";
+  }
+
+  else if (lower.includes("attributeerror")) {
+
+    title = "🔎 AttributeError — élément inexistant";
+
+    explanation =
+      "Ton programme essaie d'utiliser une propriété ou une méthode " +
+      "qui n'existe pas pour cet objet.";
+  }
+
+  showError(
+    title,
+    escapeHTML(explanation) +
+    "<br><br><strong>Message Python :</strong><br>" +
+    escapeHTML(message)
+  );
+}
+
+
+/* ============================================================
+   EXÉCUTION PYTHON
+   ============================================================ */
+
+async function runPython() {
+
+  if (!pyodideReady) {
+
+    showError(
+      "Python n'est pas encore prêt",
+      "Attends quelques secondes que le moteur Python termine son chargement."
+    );
+
+    return;
+  }
+
+  if (pythonRunning) {
+    return;
+  }
+
+  const code = $("codeEditor").value;
+
+  if (!code.trim()) {
+
+    showError(
+      "Programme vide",
+      "Écris du code Python ou charge un exemple avant de lancer le programme."
+    );
+
+    return;
+  }
+
+  pythonRunning = true;
+
+  hideError();
+  hideInputArea();
+
+  clearConsole();
+
+  appendConsole("▶ Exécution du programme…", "success");
+
+  $("runBtn").disabled = true;
+  $("runBtn2").disabled = true;
+
+  try {
+
+    /*
+      Nettoyage du scope pédagogique avant chaque exécution.
+      Cela évite qu'une ancienne variable reste disponible par accident.
+    */
+    await pyodide.runPythonAsync(`
+globals_to_remove = [
+    name for name in list(globals())
+    if not name.startswith("__")
+    and name not in {
+        "globals_to_remove",
+        "print",
+        "input"
+    }
+]
+
+for name in globals_to_remove:
+    try:
+        del globals()[name]
+    except Exception:
+        pass
+`);
+
+    await pyodide.runPythonAsync(code);
+
+    appendConsole("✓ Programme terminé sans erreur.", "success");
+
+    await updateVariables();
+
+    explainAfterExecution(code);
+
+    increaseProgress(5);
+
+  } catch (error) {
+
+    console.error(error);
+
+    explainPythonError(error);
+
+    appendConsole(
+      "✗ Le programme s'est arrêté à cause d'une erreur.",
+      "error"
+    );
+
+    await updateVariables();
+
+  } finally {
+
+    pythonRunning = false;
+
+    $("runBtn").disabled = false;
+    $("runBtn2").disabled = false;
+  }
+}
+
+
+/* ============================================================
+   OBSERVATION DES VARIABLES
+   ============================================================ */
+
+async function updateVariables() {
+
+  if (!pyodideReady) {
+    return;
+  }
+
+  try {
+
+    const names = await pyodide.runPythonAsync(`
+[
+    name for name in globals()
+    if not name.startswith("_")
+    and name not in {
+        "globals_to_remove"
+    }
+]
+`);
+
+    const jsNames = names.toJs
+      ? names.toJs()
+      : Array.from(names);
+
+    const rows = [];
+
+    for (const name of jsNames) {
+
+      try {
+
+        const value = pyodide.globals.get(name);
+
+        let displayValue = "";
+
+        if (value && typeof value.toJs === "function") {
+
+          const converted = value.toJs();
+
+          if (typeof converted === "object") {
+            displayValue = JSON.stringify(converted);
+          } else {
+            displayValue = String(converted);
+          }
+
+        } else {
+
+          displayValue = String(value);
+        }
+
+        if (value && typeof value.destroy === "function") {
+          value.destroy();
+        }
+
+        rows.push({
+          name,
+          value: displayValue
+        });
+
+      } catch (_) {
+        /* Variable non convertible : on ignore proprement. */
+      }
+    }
+
+    renderVariables(rows);
+
+  } catch (error) {
+
+    console.warn("Impossible de lire les variables :", error);
+  }
+}
+
+function renderVariables(rows) {
+
+  const panel = $("variablesPanel");
+
+  if (!rows.length) {
+
+    panel.innerHTML =
+      '<div class="empty" style="padding:15px;">' +
+      'Aucune variable observée.' +
+      '</div>';
+
+    return;
+  }
+
+  let html =
+    "<table>" +
+    "<thead>" +
+    "<tr>" +
+    "<th>Nom</th>" +
+    "<th>Valeur</th>" +
+    "</tr>" +
+    "</thead>" +
+    "<tbody>";
+
+  for (const row of rows) {
+
+    html +=
+      "<tr>" +
+      "<td><code>" + escapeHTML(row.name) + "</code></td>" +
+      "<td>" + escapeHTML(row.value) + "</td>" +
+      "</tr>";
+  }
+
+  html += "</tbody></table>";
+
+  panel.innerHTML = html;
+}
+
+
+/* ============================================================
+   EXPLICATION APRÈS EXÉCUTION
+   ============================================================ */
+
+function explainAfterExecution(code) {
+
+  const explanation = $("explanation");
+  const why = $("whyBox");
+  const tip = $("tipBox");
+
+  const lines = code.split("\n").filter(line => line.trim());
+
+  const hasPrint = /\bprint\s*\(/.test(code);
+  const hasVariable = /^[ \t]*[A-Za-z_][A-Za-z0-9_]*\s*=/.test(code);
+  const hasIf = /^[ \t]*if\s+.+:/m.test(code);
+  const hasInput = /\binput\s*\(/.test(code);
+  const hasInt = /\bint\s*\(/.test(code);
+  const hasComment = /^\s*#/m.test(code);
+
+  let html = "";
+
+  if (hasPrint) {
+
+    html +=
+      "<p><strong>🖨️ print()</strong> demande à Python d'afficher " +
+      "une valeur dans la console.</p>";
+  }
+
+  if (hasVariable) {
+
+    html +=
+      "<p><strong>📦 Variable :</strong> le signe <code>=</code> " +
+      "sert ici à ranger une valeur sous un nom.</p>";
+  }
+
+  if (hasIf) {
+
+    html +=
+      "<p><strong>🔀 Condition :</strong> Python évalue la condition. " +
+      "Si elle est vraie, il exécute les instructions indentées dessous.</p>";
+  }
+
+  if (hasInput) {
+
+    html +=
+      "<p><strong>⌨️ input()</strong> demande une information à la personne. " +
+      "Attention : la réponse reçue par input() est du texte.</p>";
+  }
+
+  if (hasInt) {
+
+    html +=
+      "<p><strong>🔢 int()</strong> transforme un texte représentant un nombre " +
+      "en nombre entier.</p>";
+  }
+
+  if (hasComment) {
+
+    html +=
+      "<p><strong>💬 Commentaire :</strong> une ligne qui commence par " +
+      "<code>#</code> sert aux humains et n'est pas exécutée comme une instruction.</p>";
+  }
+
+  if (!html) {
+
+    html =
+      "<p>Python lit ton programme dans l'ordre et applique les règles " +
+      "de chaque instruction.</p>";
+  }
+
+  explanation.innerHTML = html;
+
+  if (hasIf) {
+
+    why.innerHTML =
+      "<strong>Pourquoi l'indentation est importante ?</strong><br>" +
+      "Après <code>if ...:</code>, Python doit savoir quelles lignes " +
+      "appartiennent à la condition. L'indentation sert justement à " +
+      "délimiter ce bloc.";
+
+    tip.innerHTML =
+      "<strong>À retenir :</strong><br>" +
+      "<code>=</code> donne une valeur. " +
+      "<code>==</code> compare deux valeurs. " +
+      "Ce sont deux choses différentes.";
+
+  } else if (hasInput && hasInt) {
+
+    why.innerHTML =
+      "<strong>Pourquoi int(input()) ?</strong><br>" +
+      "input() reçoit du texte. Si tu veux effectuer un calcul avec " +
+      "la réponse, int() permet de convertir ce texte en nombre entier.";
+
+    tip.innerHTML =
+      "<strong>Exemple :</strong><br>" +
+      "<code>age = int(input(\"Quel âge as-tu ? \"))</code>";
+
+  } else if (hasVariable) {
+
+    why.innerHTML =
+      "<strong>Pourquoi créer la variable avant de l'utiliser ?</strong><br>" +
+      "Python doit connaître la valeur de la variable au moment où " +
+      "il arrive à l'instruction qui l'utilise.";
+
+    tip.innerHTML =
+      "<strong>À retenir :</strong><br>" +
+      "<code>score = 10</code> signifie : donne la valeur 10 à score.";
+
+  } else {
+
+    why.innerHTML =
+      "<strong>Pourquoi l'ordre compte ?</strong><br>" +
+      "Python lit généralement les instructions de haut en bas. " +
+      "Chaque ligne peut donc dépendre de ce qui a été fait avant.";
+
+    tip.innerHTML =
+      "<strong>Petit réflexe :</strong><br>" +
+      "Quand ton programme ne fonctionne pas, regarde la ligne " +
+      "où Python indique le problème, puis regarde aussi la ligne précédente.";
+  }
+}
+
+
+/* ============================================================
+   CONSTRUCTEUR DE BLOCS
+   ============================================================ */
 
 function addBlock(type, value1 = "", value2 = "") {
 
-    // Supprimer le message "espace vide"
-    const empty = workspace.querySelector(".empty-workspace");
+  const id = ++blockId;
 
-    if (empty) {
-        empty.remove();
-    }
+  const block = {
+    id,
+    type,
+    value1,
+    value2
+  };
 
-    const block = document.createElement("div");
+  blocks.push(block);
 
-    block.className = "code-block";
+  renderBlocks();
 
-    block.dataset.type = type;
+  generateCodeFromBlocks();
 
+  increaseProgress(2);
+}
 
-    let content = "";
+function deleteBlock(id) {
 
+  blocks = blocks.filter(block => block.id !== id);
 
-    /* PRINT */
+  renderBlocks();
 
-    if (type === "print") {
+  generateCodeFromBlocks();
+}
 
-        content = `
-            <div class="block-top">
+function renderBlocks() {
 
-                <div class="block-title">
-                    📢 Afficher un message
-                </div>
+  const builder = $("builder");
 
-                <button class="delete"
-                        onclick="this.closest('.code-block').remove()">
-                    🗑️
-                </button>
+  if (!blocks.length) {
 
-            </div>
+    builder.innerHTML =
+      '<div class="empty" id="emptyBuilder">' +
+      'Ajoute une brique à gauche pour commencer.' +
+      '</div>';
 
-            <div>
-                <span class="field-label">
-                    Que doit dire l'ordinateur ?
-                </span>
+    return;
+  }
 
-                <input
-                    type="text"
-                    class="value1"
-                    value="${escapeHTML(value1)}"
-                    placeholder="Bonjour !"
-                >
-            </div>
-        `;
-    }
+  let html = "";
 
+  blocks.forEach((block, index) => {
 
-    /* VARIABLE */
+    html +=
+      '<div class="block">' +
 
-    else if (type === "variable") {
+      '<div class="block-head">' +
 
-        content = `
-            <div class="block-top">
+      '<div class="block-number">' +
+      (index + 1) +
+      '</div>' +
 
-                <div class="block-title">
-                    📦 Créer une variable
-                </div>
+      '<div class="block-title">' +
+      getBlockTitle(block.type) +
+      '</div>' +
 
-                <button class="delete"
-                        onclick="this.closest('.code-block').remove()">
-                    🗑️
-                </button>
-
-            </div>
-
-            <div>
-
-                <span class="field-label">
-                    Nom de la boîte :
-                </span>
-
-                <input
-                    type="text"
-                    class="varName"
-                    value="${escapeHTML(value2)}"
-                    placeholder="score"
-                >
-
-                <br>
-
-                <span class="field-label">
-                    Ce qu'elle contient :
-                </span>
-
-                <input
-                    type="text"
-                    class="value1"
-                    value="${escapeHTML(value1)}"
-                    placeholder="10"
-                >
-
-            </div>
-        `;
-    }
-
-
-    /* IF */
-
-    else if (type === "if") {
-
-        content = `
-            <div class="block-top">
-
-                <div class="block-title">
-                    🤔 Poser une condition
-                </div>
-
-                <button class="delete"
-                        onclick="this.closest('.code-block').remove()">
-                    🗑️
-                </button>
-
-            </div>
-
-            <div>
-
-                <span class="field-label">
-                    Quelle condition doit être vraie ?
-                </span>
-
-                <input
-                    type="text"
-                    class="value1"
-                    value="${escapeHTML(value1)}"
-                    placeholder="score > 5"
-                >
-
-                <p class="field-label">
-                    Si cette condition est vraie,
-                    Python affichera un message.
-                </p>
-
-            </div>
-        `;
-    }
-
-
-    /* INPUT */
-
-    else if (type === "input") {
-
-        content = `
-            <div class="block-top">
-
-                <div class="block-title">
-                    ⌨️ Poser une question
-                </div>
-
-                <button class="delete"
-                        onclick="this.closest('.code-block').remove()">
-                    🗑️
-                </button>
-
-            </div>
-
-            <div>
-
-                <span class="field-label">
-                    Question :
-                </span>
-
-                <input
-                    type="text"
-                    class="value1"
-                    value="${escapeHTML(value1)}"
-                    placeholder="Comment t'appelles-tu ?"
-                >
-
-                <br>
-
-                <span class="field-label">
-                    Ranger la réponse dans :
-                </span>
-
-                <input
-                    type="text"
-                    class="varName"
-                    value="${escapeHTML(value2)}"
-                    placeholder="nom"
-                >
-
-            </div>
-        `;
-    }
-
-
-    /* COMMENTAIRE */
-
-    else if (type === "comment") {
-
-        content = `
-            <div class="block-top">
-
-                <div class="block-title">
-                    💬 Ajouter une note
-                </div>
-
-                <button class="delete"
-                        onclick="this.closest('.code-block').remove()">
-                    🗑️
-                </button>
-
-            </div>
-
-            <input
-                type="text"
-                class="value1"
-                value="${escapeHTML(value1)}"
-                placeholder="Ceci explique mon programme"
-                style="width:90%;"
-            >
-        `;
-    }
-
-
-    block.innerHTML = content;
-
-    workspace.appendChild(block);
-
-    updateProgress();
+      '<button class="delete-block" onclick="deleteBlock(' +
+      block.id +
+      ')">✕</button>' +
+
+      '</div>' +
+
+      '<div class="block-controls">' +
+
+      getBlockControls(block) +
+
+      '</div>' +
+
+      '</div>';
+  });
+
+  builder.innerHTML = html;
+}
+
+function getBlockTitle(type) {
+
+  const titles = {
+    print: "🖨️ Afficher",
+    variable: "📦 Variable",
+    input: "⌨️ Question",
+    if: "🔀 Condition",
+    comment: "💬 Commentaire"
+  };
+
+  return titles[type] || "Instruction";
+}
+
+function getBlockControls(block) {
+
+  if (block.type === "print") {
+
+    return `
+      <div class="field">
+        <label>Ce que Python doit afficher</label>
+        <input
+          value="${escapeHTML(block.value1)}"
+          placeholder='Ex. Bonjour !'
+          oninput="updateBlock(${block.id}, 'value1', this.value)"
+        >
+      </div>
+
+      <div class="field">
+        <label>Nature</label>
+        <select onchange="updateBlock(${block.id}, 'value2', this.value)">
+          <option value="text" ${block.value2 !== "variable" ? "selected" : ""}>
+            Texte
+          </option>
+          <option value="variable" ${block.value2 === "variable" ? "selected" : ""}>
+            Variable
+          </option>
+          <option value="expression" ${block.value2 === "expression" ? "selected" : ""}>
+            Expression
+          </option>
+        </select>
+      </div>
+    `;
+  }
+
+  if (block.type === "variable") {
+
+    return `
+      <div class="field">
+        <label>Nom de la variable</label>
+        <input
+          value="${escapeHTML(block.value1)}"
+          placeholder="score"
+          oninput="updateBlock(${block.id}, 'value1', this.value)"
+        >
+      </div>
+
+      <div class="field">
+        <label>Valeur</label>
+        <input
+          value="${escapeHTML(block.value2)}"
+          placeholder="10"
+          oninput="updateBlock(${block.id}, 'value2', this.value)"
+        >
+      </div>
+    `;
+  }
+
+  if (block.type === "input") {
+
+    return `
+      <div class="field">
+        <label>Nom de la variable</label>
+        <input
+          value="${escapeHTML(block.value1)}"
+          placeholder="prenom"
+          oninput="updateBlock(${block.id}, 'value1', this.value)"
+        >
+      </div>
+
+      <div class="field">
+        <label>Question</label>
+        <input
+          value="${escapeHTML(block.value2)}"
+          placeholder="Comment t'appelles-tu ?"
+          oninput="updateBlock(${block.id}, 'value2', this.value)"
+        >
+      </div>
+    `;
+  }
+
+  if (block.type === "if") {
+
+    return `
+      <div class="field">
+        <label>Condition Python</label>
+        <input
+          value="${escapeHTML(block.value1)}"
+          placeholder="score >= 10"
+          oninput="updateBlock(${block.id}, 'value1', this.value)"
+        >
+      </div>
+    `;
+  }
+
+  if (block.type === "comment") {
+
+    return `
+      <div class="field">
+        <label>Ton commentaire</label>
+        <input
+          value="${escapeHTML(block.value1)}"
+          placeholder="Je prépare mon programme"
+          oninput="updateBlock(${block.id}, 'value1', this.value)"
+        >
+      </div>
+    `;
+  }
+
+  return "";
+}
+
+function updateBlock(id, property, value) {
+
+  const block = blocks.find(item => item.id === id);
+
+  if (!block) {
+    return;
+  }
+
+  block[property] = value;
+
+  generateCodeFromBlocks();
 }
 
 
-/* =====================================================
-   PROTECTION HTML
-===================================================== */
+/* ============================================================
+   GÉNÉRATION DU CODE
+   ============================================================ */
 
-function escapeHTML(value) {
+function quotePythonText(text) {
 
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+  const safe = String(text)
+    .replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, "\\n");
+
+  return `"${safe}"`;
 }
 
+function isValidVariableName(name) {
 
-/* =====================================================
-   VALIDATION NOM VARIABLE
-===================================================== */
-
-function validVariableName(name) {
-
-    return /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(name);
+  return /^[A-Za-z_][A-Za-z0-9_]*$/.test(name);
 }
 
+function looksLikeNumber(value) {
 
-/* =====================================================
-   VALIDATION VALEUR
-===================================================== */
-
-function pythonValue(value) {
-
-    value = value.trim();
-
-    if (value === "") {
-        return null;
-    }
-
-    /*
-       Nombre
-    */
-
-    if (/^-?\d+(\.\d+)?$/.test(value)) {
-        return value;
-    }
-
-    /*
-       Booléens
-    */
-
-    if (value === "True" || value === "False") {
-        return value;
-    }
-
-    /*
-       Texte déjà entre guillemets
-    */
-
-    if (
-        (value.startsWith('"') && value.endsWith('"')) ||
-        (value.startsWith("'") && value.endsWith("'"))
-    ) {
-        return value;
-    }
-
-    /*
-       Sinon on transforme automatiquement
-       en texte Python.
-    */
-
-    return `"${value.replace(/"/g, '\\"')}"`;
+  return /^-?\d+(\.\d+)?$/.test(String(value).trim());
 }
 
+function looksLikeBoolean(value) {
 
-/* =====================================================
-   AFFICHER UNE ALERTE
-===================================================== */
-
-function showAlert(type, message) {
-
-    const alert = document.getElementById("alertBox");
-
-    alert.className = "alert " + type;
-
-    alert.innerHTML = message;
-
-    alert.style.display = "block";
+  return /^(True|False)$/i.test(String(value).trim());
 }
 
+function looksLikeExpression(value) {
 
-/* =====================================================
-   CACHER ALERTE
-===================================================== */
-
-function hideAlert() {
-
-    const alert = document.getElementById("alertBox");
-
-    alert.style.display = "none";
+  return /[\+\-\*\/%<>=()]|^(True|False|None)$/.test(
+    String(value).trim()
+  );
 }
 
+function convertValue(value) {
 
-/* =====================================================
-   GENERATION CODE
-===================================================== */
+  const text = String(value).trim();
 
-function generateCode() {
+  if (text === "") {
+    return '""';
+  }
 
-    hideAlert();
+  if (looksLikeNumber(text)) {
+    return text;
+  }
 
-    const blocks =
-        workspace.querySelectorAll(".code-block");
+  if (looksLikeBoolean(text)) {
+    return text[0].toUpperCase() + text.slice(1).toLowerCase();
+  }
 
+  /*
+    Si l'utilisateur écrit déjà une expression Python,
+    on la conserve.
+  */
+  if (
+    text.startsWith('"') ||
+    text.startsWith("'") ||
+    looksLikeExpression(text)
+  ) {
+    return text;
+  }
 
-    if (blocks.length === 0) {
+  /*
+    Un nom de variable valide peut être utilisé directement.
+  */
+  if (isValidVariableName(text)) {
+    return text;
+  }
 
-        showAlert(
-            "warning",
-            "💡 Ton programme est encore vide. " +
-            "Ajoute au moins une brique."
-        );
+  return quotePythonText(text);
+}
 
-        return;
-    }
+function generateCodeFromBlocks() {
 
+  const lines = [];
 
-    let code = "";
+  for (const block of blocks) {
 
-    let explanation = "";
+    if (block.type === "print") {
 
-    let simulation = "";
+      const value = String(block.value1 || "");
 
-    let errors = [];
+      if (block.value2 === "variable") {
 
-    let blockNumber = 0;
-
-
-    blocks.forEach(block => {
-
-        block.classList.remove("has-error");
-
-        blockNumber++;
-
-        const type = block.dataset.type;
-
-        const value1 =
-            block.querySelector(".value1")?.value.trim() || "";
-
-        const varName =
-            block.querySelector(".varName")?.value.trim() || "";
-
-
-        /* PRINT */
-
-        if (type === "print") {
-
-            if (!value1) {
-
-                errors.push(
-                    `Brique ${blockNumber} : ` +
-                    `écris quelque chose à afficher.`
-                );
-
-                return;
-            }
-
-            const safe =
-                value1.replace(/"/g, '\\"');
-
-            code += `print("${safe}")\n`;
-
-            explanation +=
-                `📢 <b>Afficher :</b> ` +
-                `Python utilise <b>print()</b> ` +
-                `pour montrer quelque chose à l'écran.<br><br>`;
-
-            simulation += safe + "\n";
+        if (isValidVariableName(value)) {
+          lines.push(`print(${value})`);
+        } else {
+          lines.push(`print(${quotePythonText(value)})`);
         }
 
+      } else if (block.value2 === "expression") {
 
-        /* VARIABLE */
+        lines.push(`print(${value || '""'})`);
 
-        else if (type === "variable") {
+      } else {
 
-            if (!varName) {
+        lines.push(`print(${quotePythonText(value)})`);
+      }
 
-                errors.push(
-                    `Brique ${blockNumber} : ` +
-                    `donne un nom à ta variable.`
-                );
-
-                return;
-            }
-
-            if (!validVariableName(varName)) {
-
-                errors.push(
-                    `Brique ${blockNumber} : ` +
-                    `"${varName}" n'est pas un nom de variable Python valide. ` +
-                    `Essaie par exemple : score, age ou mon_nom.`
-                );
-
-                return;
-            }
-
-            if (!value1) {
-
-                errors.push(
-                    `Brique ${blockNumber} : ` +
-                    `indique ce que contient la variable.`
-                );
-
-                return;
-            }
-
-            const val =
-                pythonValue(value1);
-
-            code += `${varName} = ${val}\n`;
-
-            explanation +=
-                `📦 <b>Variable :</b> ` +
-                `imagine une boîte appelée ` +
-                `<b>${varName}</b>. ` +
-                `Python y range ${val}.<br><br>`;
-        }
-
-
-        /* IF */
-
-        else if (type === "if") {
-
-            if (!value1) {
-
-                errors.push(
-                    `Brique ${blockNumber} : ` +
-                    `écris une condition, par exemple score > 5.`
-                );
-
-                return;
-            }
-
-            code +=
-                `if ${value1}:\n` +
-                `    print("La condition est vraie !")\n`;
-
-            explanation +=
-                `🤔 <b>Condition :</b> ` +
-                `Python vérifie si <b>${value1}</b> ` +
-                `est vrai. Si oui, il exécute ce qui est indenté dessous.<br><br>`;
-
-            simulation +=
-                "[Python vérifie la condition]\n";
-        }
-
-
-        /* INPUT */
-
-        else if (type === "input") {
-
-            if (!value1) {
-
-                errors.push(
-                    `Brique ${blockNumber} : ` +
-                    `écris la question à poser.`
-                );
-
-                return;
-            }
-
-            if (!varName) {
-
-                errors.push(
-                    `Brique ${blockNumber} : ` +
-                    `indique où ranger la réponse.`
-                );
-
-                return;
-            }
-
-            if (!validVariableName(varName)) {
-
-                errors.push(
-                    `Brique ${blockNumber} : ` +
-                    `le nom "${varName}" n'est pas valide.`
-                );
-
-                return;
-            }
-
-            const safe =
-                value1.replace(/"/g, '\\"');
-
-            code +=
-                `${varName} = input("${safe}")\n`;
-
-            explanation +=
-                `⌨️ <b>Question :</b> ` +
-                `input() permet au programme de demander ` +
-                `une information à la personne.<br><br>`;
-        }
-
-
-        /* COMMENTAIRE */
-
-        else if (type === "comment") {
-
-            if (!value1) {
-
-                errors.push(
-                    `Brique ${blockNumber} : ` +
-                    `écris ta note.`
-                );
-
-                return;
-            }
-
-            code += `# ${value1}\n`;
-
-            explanation +=
-                `💬 <b>Commentaire :</b> ` +
-                `une ligne qui commence par # est une note ` +
-                `pour les humains. Python ne l'exécute pas.<br><br>`;
-        }
-
-    });
-
-
-    document.getElementById("output").textContent =
-        code || "# Aucun code valide pour le moment.";
-
-
-    document.getElementById("explanationText").innerHTML =
-        explanation ||
-        "Corrige d'abord les erreurs pour comprendre ton programme.";
-
-
-    document.getElementById("explanation").style.display =
-        explanation ? "block" : "none";
-
-
-    document.getElementById("console").textContent =
-        simulation ||
-        "> Ton programme ne produit pas encore de résultat visible.";
-
-
-    /* ERREURS */
-
-    if (errors.length > 0) {
-
-        showAlert(
-            "error",
-            "🚨 <strong>Attention !</strong><br><br>" +
-            errors.map(e => "• " + e).join("<br>")
-        );
-
-        return;
     }
 
+    else if (block.type === "variable") {
 
-    /* SUCCÈS */
+      const name = String(block.value1 || "ma_variable").trim();
 
-    showAlert(
-        "success",
-        "🎉 Bravo ! Ton programme a été vérifié " +
-        "et le code Python a été généré."
+      const validName =
+        isValidVariableName(name)
+          ? name
+          : "ma_variable";
+
+      lines.push(
+        `${validName} = ${convertValue(block.value2)}`
+      );
+    }
+
+    else if (block.type === "input") {
+
+      const name = String(block.value1 || "reponse").trim();
+
+      const validName =
+        isValidVariableName(name)
+          ? name
+          : "reponse";
+
+      lines.push(
+        `${validName} = input(${quotePythonText(block.value2 || "Ta réponse : ")})`
+      );
+    }
+
+    else if (block.type === "if") {
+
+      const condition =
+        String(block.value1 || "True").trim();
+
+      lines.push(`if ${condition}:`);
+      lines.push(`    print("La condition est vraie !")`);
+    }
+
+    else if (block.type === "comment") {
+
+      lines.push(
+        `# ${String(block.value1 || "").replace(/\n/g, " ")}`
+      );
+    }
+  }
+
+  const code = lines.join("\n");
+
+  $("codeEditor").value = code;
+
+  updateSteps();
+
+  explainCodeStructure(code);
+}
+
+function explainCodeStructure(code) {
+
+  if (!code.trim()) {
+
+    $("explanation").innerHTML =
+      "Ajoute une brique pour créer ton premier programme.";
+
+    return;
+  }
+
+  const hasVariable =
+    /^[A-Za-z_][A-Za-z0-9_]*\s*=/m.test(code);
+
+  const hasPrint =
+    /\bprint\s*\(/.test(code);
+
+  const hasIf =
+    /^\s*if\s+.+:/m.test(code);
+
+  let message =
+    "<p>Ton programme contient " +
+    code.split("\n").filter(x => x.trim()).length +
+    " instruction(s).</p>";
+
+  if (hasVariable) {
+
+    message +=
+      "<p>📦 Tu crées ou modifies une variable. " +
+      "Le nom est à gauche du <code>=</code> et la valeur à droite.</p>";
+  }
+
+  if (hasPrint) {
+
+    message +=
+      "<p>🖨️ Tu utilises <code>print()</code> pour demander à Python " +
+      "d'afficher une information.</p>";
+  }
+
+  if (hasIf) {
+
+    message +=
+      "<p>🔀 Tu utilises une condition. Les lignes indentées " +
+      "sous <code>if</code> appartiennent à cette condition.</p>";
+  }
+
+  $("explanation").innerHTML = message;
+}
+
+
+/* ============================================================
+   MODE CODE
+   ============================================================ */
+
+function onCodeChanged() {
+
+  const code = $("codeEditor").value;
+
+  updateSteps();
+
+  explainCodeStructure(code);
+}
+
+function formatEducationalCode() {
+
+  const code = $("codeEditor").value;
+
+  hideError();
+
+  const lines = code.split("\n");
+
+  const problems = [];
+
+  lines.forEach((line, index) => {
+
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      return;
+    }
+
+    if (/^\s*if\s+.+[^:]\s*$/.test(line)) {
+
+      problems.push(
+        `Ligne ${index + 1} : une condition if doit normalement se terminer par « : ».`
+      );
+    }
+
+    if (/^[A-Za-z_][A-Za-z0-9_]*\s*=\s*[^=]+$/.test(trimmed)) {
+
+      /* C'est probablement une affectation correcte. */
+    }
+  });
+
+  if (problems.length) {
+
+    showError(
+      "🔎 Vérification pédagogique",
+      problems.map(escapeHTML).join("<br>")
     );
 
+    return;
+  }
 
-    updateProgress(true);
+  showError(
+    "✓ Structure de base correcte",
+    "Je n'ai trouvé aucun problème évident dans cette vérification. " +
+    "Le meilleur test reste d'exécuter ton programme."
+  );
+
+  $("errorBox").style.background = "#effaf3";
+  $("errorBox").style.borderColor = "#bde5cb";
+  $("errorBox").style.color = "#17633a";
 }
 
 
-/* =====================================================
-   COPIER
-===================================================== */
+/* ============================================================
+   PAS À PAS PÉDAGOGIQUE
+   ============================================================ */
 
-function copyCode() {
+function updateSteps() {
 
-    const code =
-        document.getElementById("output").textContent;
+  const code = $("codeEditor").value;
 
-    navigator.clipboard.writeText(code)
-        .then(() => {
+  stepLines = code.split("\n");
 
-            showAlert(
-                "success",
-                "📋 Code copié ! Tu peux maintenant " +
-                "le coller dans Python."
-            );
+  currentStep = -1;
 
-        })
-        .catch(() => {
+  renderSteps();
+}
 
-            showAlert(
-                "warning",
-                "⚠️ La copie automatique n'est pas disponible " +
-                "sur cet appareil."
-            );
-        });
+function stepReset() {
+
+  showMode("steps");
+
+  currentStep = -1;
+
+  renderSteps();
+
+  $("stepTeacherText").innerHTML =
+    "Le mode pas à pas va parcourir ton programme ligne par ligne. " +
+    "Appuie sur « Étape suivante » pour commencer.";
+}
+
+function stepNext() {
+
+  if (!stepLines.length) {
+
+    updateSteps();
+
+    if (!stepLines.length) {
+      return;
+    }
+  }
+
+  if (currentStep >= stepLines.length - 1) {
+
+    $("stepTeacherText").innerHTML =
+      "<strong>🏁 Fin du programme pédagogique.</strong><br>" +
+      "Tu as parcouru toutes les lignes.";
+
+    return;
+  }
+
+  currentStep++;
+
+  renderSteps();
+
+  explainCurrentStep();
+}
+
+function renderSteps() {
+
+  const container = $("stepsList");
+
+  if (!stepLines.length) {
+
+    container.innerHTML =
+      '<div class="empty" style="padding:15px;">Aucune ligne.</div>';
+
+    return;
+  }
+
+  let html = "";
+
+  stepLines.forEach((line, index) => {
+
+    const current =
+      index === currentStep
+        ? " current"
+        : "";
+
+    html +=
+      `<div class="step-line${current}">
+        <div class="step-number">${index + 1}</div>
+        <div>${escapeHTML(line || " ")}</div>
+      </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function explainCurrentStep() {
+
+  const line = stepLines[currentStep] || "";
+
+  const trimmed = line.trim();
+
+  let message = "";
+
+  if (!trimmed) {
+
+    message =
+      "Cette ligne est vide. Elle sert simplement à rendre le programme plus lisible.";
+  }
+
+  else if (trimmed.startsWith("#")) {
+
+    message =
+      "💬 C'est un commentaire. Python ne l'exécute pas comme une instruction. " +
+      "Il sert à expliquer le programme aux humains.";
+  }
+
+  else if (/^print\s*\(/.test(trimmed)) {
+
+    message =
+      "🖨️ Python rencontre print(). Il va évaluer ce qui se trouve " +
+      "entre les parenthèses puis l'afficher dans la console.";
+  }
+
+  else if (/^if\s+/.test(trimmed)) {
+
+    message =
+      "🔀 Python vérifie la condition. Si elle est vraie, il exécutera " +
+      "le bloc indenté qui suit. Si elle est fausse, il le sautera.";
+  }
+
+  else if (/^input\s*\(/.test(trimmed)) {
+
+    message =
+      "⌨️ Python demande une réponse. input() renvoie du texte.";
+  }
+
+  else if (/^[A-Za-z_][A-Za-z0-9_]*\s*=/.test(trimmed)) {
+
+    const parts = trimmed.split("=");
+
+    const variable = parts[0].trim();
+
+    message =
+      "📦 Python donne une valeur à la variable " +
+      `<code>${escapeHTML(variable)}</code>. ` +
+      "Le côté droit du « = » est évalué puis la valeur est stockée.";
+  }
+
+  else {
+
+    message =
+      "🐍 Python lit cette instruction et l'exécute selon les règles de Python.";
+  }
+
+  $("stepTeacherText").innerHTML = message;
 }
 
 
-/* =====================================================
-   EFFACER
-===================================================== */
+/* ============================================================
+   MODES
+   ============================================================ */
 
-function clearWorkspace() {
+function showMode(mode) {
 
-    workspace.innerHTML = `
-        <div class="empty-workspace">
-            <div>
-                <div class="empty-icon">🧙‍♂️</div>
-                <strong>Ton aventure recommence !</strong>
-                <p>
-                    Choisis une brique pour construire
-                    ton programme.
-                </p>
-            </div>
-        </div>
-    `;
+  $("builderMode").classList.add("hidden");
+  $("codeMode").classList.add("hidden");
+  $("stepsMode").classList.add("hidden");
 
-    document.getElementById("output").textContent =
-        "# Ton code apparaîtra ici...";
+  $("tabBuilder").classList.remove("active");
+  $("tabCode").classList.remove("active");
+  $("tabSteps").classList.remove("active");
 
-    document.getElementById("console").textContent =
-        "> La simulation apparaîtra ici...";
+  if (mode === "builder") {
 
-    document.getElementById("explanation").style.display =
-        "none";
+    $("builderMode").classList.remove("hidden");
+    $("tabBuilder").classList.add("active");
 
-    hideAlert();
+  } else if (mode === "code") {
 
-    updateProgress();
+    $("codeMode").classList.remove("hidden");
+    $("tabCode").classList.add("active");
+
+  } else {
+
+    $("stepsMode").classList.remove("hidden");
+    $("tabSteps").classList.add("active");
+  }
 }
 
 
-/* =====================================================
+/* ============================================================
    EXEMPLES
-===================================================== */
+   ============================================================ */
 
-function loadExample(example) {
+const examples = {
 
-    clearWorkspace();
+  hello: {
+    code:
+`print("Bonjour Python !")`,
+    explanation:
+      "Ton premier programme demande simplement à Python d'afficher un message."
+  },
 
+  variable: {
+    code:
+`score = 10
+print(score)`,
+    explanation:
+      "Tu crées une variable appelée score, tu lui donnes la valeur 10, puis tu affiches cette valeur."
+  },
 
-    if (example === "hello") {
+  condition: {
+    code:
+`score = 10
 
-        addBlock(
-            "print",
-            "Bonjour ! Je commence à apprendre Python."
-        );
+if score >= 10:
+    print("Bravo !")`,
+    explanation:
+      "Python crée score, vérifie ensuite si score est supérieur ou égal à 10, puis affiche le message si la condition est vraie."
+  },
 
-        addBlock(
-            "print",
-            "Python est amusant !"
-        );
-    }
+  input: {
+    code:
+`prenom = input("Comment t'appelles-tu ? ")
+print("Bonjour", prenom)`,
+    explanation:
+      "input() demande une réponse et range cette réponse dans la variable prenom."
+  },
 
+  math: {
+    code:
+`a = 5
+b = 3
+resultat = a + b
 
-    else if (example === "variable") {
+print(resultat)`,
+    explanation:
+      "Python donne des valeurs à a et b, calcule leur addition, puis range le résultat dans resultat."
+  },
 
-        addBlock(
-            "variable",
-            "10",
-            "score"
-        );
+  game: {
+    code:
+`secret = 7
 
-        addBlock(
-            "print",
-            "Mon programme a créé une variable."
-        );
-    }
+nombre = int(input("Devine le nombre : "))
 
+if nombre == secret:
+    print("Bravo !")
+else:
+    print("Ce n'est pas le bon nombre.")`,
+    explanation:
+      "Ce petit programme combine variable, input(), conversion en nombre et condition."
+  }
+};
 
-    else if (example === "condition") {
+function loadExample(name) {
 
-        addBlock(
-            "variable",
-            "10",
-            "score"
-        );
+  const example = examples[name];
 
-        addBlock(
-            "if",
-            "score > 5"
-        );
-    }
+  if (!example) {
+    return;
+  }
 
+  $("codeEditor").value = example.code;
 
-    else if (example === "question") {
+  blocks = [];
 
-        addBlock(
-            "input",
-            "Comment t'appelles-tu ?",
-            "nom"
-        );
+  updateSteps();
 
-        addBlock(
-            "print",
-            "Bonjour !"
-        );
-    }
+  $("explanation").innerHTML =
+    "<p>" +
+    escapeHTML(example.explanation) +
+    "</p>";
 
+  hideError();
 
-    else if (example === "game") {
+  showMode("code");
 
-        addBlock(
-            "variable",
-            "10",
-            "score"
-        );
+  updateVariables();
 
-        addBlock(
-            "print",
-            "Bienvenue dans le mini-jeu !"
-        );
-
-        addBlock(
-            "if",
-            "score >= 10"
-        );
-    }
-
-
-    else if (example === "complete") {
-
-        addBlock(
-            "comment",
-            "Mon premier programme"
-        );
-
-        addBlock(
-            "print",
-            "Bienvenue dans mon aventure !"
-        );
-
-        addBlock(
-            "variable",
-            "10",
-            "score"
-        );
-
-        addBlock(
-            "input",
-            "Quel est ton prénom ?",
-            "prenom"
-        );
-
-        addBlock(
-            "if",
-            "score >= 10"
-        );
-
-        addBlock(
-            "print",
-            "Bravo ! Tu as terminé le programme."
-        );
-    }
-
-
-    generateCode();
+  appendConsole(
+    "Exemple chargé : " + name,
+    "info"
+  );
 }
 
 
-/* =====================================================
-   DEFIS
-===================================================== */
+/* ============================================================
+   DÉFIS
+   ============================================================ */
 
 const challenges = [
 
-    "Crée une variable appelée <b>score</b> contenant <b>10</b>.",
+  {
+    id: "hello",
+    title: "Défi 1 — Bonjour Python",
+    text: "Affiche le message « Bonjour Python ! ».",
+    tests: [
+      code => /print\s*\(\s*["']Bonjour Python!?["']\s*\)/i.test(code)
+    ]
+  },
 
-    "Affiche le message <b>Bonjour Python !</b>.",
+  {
+    id: "variable",
+    title: "Défi 2 — Créer une variable",
+    text: "Crée une variable appelée score et donne-lui la valeur 10.",
+    tests: [
+      code => /\bscore\s*=\s*10\b/.test(code)
+    ]
+  },
 
-    "Crée une variable appelée <b>age</b> contenant <b>12</b>.",
+  {
+    id: "variable-print",
+    title: "Défi 3 — Utiliser une variable",
+    text: "Crée score = 10 puis affiche score.",
+    tests: [
+      code => /\bscore\s*=\s*10\b/.test(code),
+      code => /print\s*\(\s*score\s*\)/.test(code)
+    ]
+  },
 
-    "Crée une condition qui vérifie si <b>score > 5</b>.",
+  {
+    id: "condition",
+    title: "Défi 4 — Prendre une décision",
+    text: "Crée score = 10 puis affiche « Bravo ! » si score est supérieur ou égal à 10.",
+    tests: [
+      code => /\bscore\s*=\s*10\b/.test(code),
+      code => /if\s+score\s*>=\s*10\s*:/.test(code),
+      code => /print\s*\(\s*["']Bravo !["']\s*\)/i.test(code)
+    ]
+  },
 
-    "Demande le prénom de l'utilisateur et range-le dans une variable appelée <b>prenom</b>.",
-
-    "Construis un programme avec une variable, une condition et un message.",
-
-    "Ajoute un commentaire expliquant ton programme."
+  {
+    id: "math",
+    title: "Défi 5 — Calculer",
+    text: "Crée a = 5, b = 3 et une variable resultat contenant a + b.",
+    tests: [
+      code => /\ba\s*=\s*5\b/.test(code),
+      code => /\bb\s*=\s*3\b/.test(code),
+      code => /\bresultat\s*=\s*a\s*\+\s*b\b/.test(code)
+    ]
+  }
 
 ];
 
-
 function newChallenge() {
 
-    challengeIndex++;
+  const index =
+    Math.floor(Math.random() * challenges.length);
 
-    if (challengeIndex >= challenges.length) {
-        challengeIndex = 0;
-    }
+  currentChallenge = challenges[index];
 
-    document.getElementById("challengeText").innerHTML =
-        challenges[challengeIndex];
+  $("challengeTitle").textContent =
+    currentChallenge.title;
 
+  $("challengeText").textContent =
+    currentChallenge.text;
+
+  appendConsole(
+    "🧩 Nouveau défi : " + currentChallenge.title,
+    "info"
+  );
+}
+
+async function checkChallenge() {
+
+  const code = $("codeEditor").value;
+
+  if (!code.trim()) {
+
+    showError(
+      "Défi non terminé",
+      "Écris d'abord ton programme."
+    );
+
+    return;
+  }
+
+  const passed =
+    currentChallenge.tests.every(test => {
+
+      try {
+        return test(code);
+      } catch (_) {
+        return false;
+      }
+    });
+
+  if (!passed) {
+
+    showError(
+      "🧩 Encore un petit effort",
+      "Ton programme ne correspond pas encore à toutes les conditions du défi. " +
+      "Lis attentivement ce qui est demandé et regarde l'ordre de tes instructions."
+    );
+
+    return;
+  }
+
+  hideError();
+
+  appendConsole(
+    "🏆 Défi réussi !",
+    "success"
+  );
+
+  $("explanation").innerHTML =
+    "<p><strong>🎉 Bravo !</strong> Tu as réussi le défi.</p>" +
+    "<p>Maintenant, exécute ton programme pour vérifier concrètement " +
+    "ce que Python fait avec ton code.</p>";
+
+  score += 10;
+
+  saveProgress();
+
+  updateProgress();
+
+  increaseProgress(10);
 }
 
 
-/* =====================================================
+/* ============================================================
    PROGRESSION
-===================================================== */
+   ============================================================ */
 
-function updateProgress(success = false) {
+function increaseProgress(amount) {
 
-    const count =
-        workspace.querySelectorAll(".code-block").length;
+  progress = Math.min(100, progress + amount);
 
-    let percent = Math.min(20 + count * 10, 100);
+  updateProgress();
 
-    if (success) {
-        percent = Math.min(percent + 10, 100);
-    }
+  saveProgress();
+}
 
-    document.getElementById("progressBar").style.width =
-        percent + "%";
+function updateProgress() {
 
+  $("progressBar").style.width =
+    progress + "%";
 
-    let level = "Débutant";
+  $("progressText").textContent =
+    progress + "%";
 
-    if (percent >= 40) {
-        level = "Apprenti 🐣";
-    }
+  level =
+    Math.max(
+      1,
+      Math.min(
+        10,
+        Math.floor(progress / 10) + 1
+      )
+    );
 
-    if (percent >= 60) {
-        level = "Explorateur 🔎";
-    }
+  $("levelText").textContent =
+    level;
 
-    if (percent >= 80) {
-        level = "Petit programmeur 🧑‍💻";
-    }
+  $("scoreText").textContent =
+    score;
+}
 
-    if (percent >= 100) {
-        level = "Super programmeur 🏆";
-    }
+function saveProgress() {
 
-    document.getElementById("progressText").textContent =
-        level;
+  localStorage.setItem(
+    "pythonAventureProgress",
+    String(progress)
+  );
+
+  localStorage.setItem(
+    "pythonAventureScore",
+    String(score)
+  );
+
+  localStorage.setItem(
+    "pythonAventureLevel",
+    String(level)
+  );
 }
 
 
-/* =====================================================
+/* ============================================================
+   COPIE
+   ============================================================ */
+
+async function copyCode() {
+
+  const code = $("codeEditor").value;
+
+  if (!code.trim()) {
+    return;
+  }
+
+  try {
+
+    await navigator.clipboard.writeText(code);
+
+    appendConsole(
+      "✓ Code copié.",
+      "success"
+    );
+
+  } catch (_) {
+
+    /*
+      Fallback pour certains navigateurs.
+    */
+
+    $("codeEditor").select();
+
+    document.execCommand("copy");
+
+    appendConsole(
+      "✓ Code copié.",
+      "success"
+    );
+  }
+}
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+function resetAll() {
+
+  const confirmed =
+    confirm(
+      "Réinitialiser le programme, les blocs et la progression ?"
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  blocks = [];
+
+  $("codeEditor").value = "";
+
+  currentStep = -1;
+
+  stepLines = [];
+
+  progress = 20;
+
+  score = 0;
+
+  level = 1;
+
+  saveProgress();
+
+  renderBlocks();
+
+  renderSteps();
+
+  updateProgress();
+
+  renderVariables([]);
+
+  hideError();
+
+  hideInputArea();
+
+  clearConsole();
+
+  appendConsole(
+    "Programme réinitialisé.",
+    "info"
+  );
+
+  $("explanation").innerHTML =
+    "Commence par choisir une brique ou un exemple.";
+
+  showMode("builder");
+}
+
+
+/* ============================================================
    DÉMARRAGE
-===================================================== */
+   ============================================================ */
 
-window.onload = function() {
+function startApplication() {
 
-    loadExample("hello");
+  updateProgress();
 
-};
+  renderBlocks();
+
+  loadExample("hello");
+
+  showMode("builder");
+
+  /*
+    On relance le constructeur après le chargement
+    pour éviter que loadExample ne laisse des blocs fictifs.
+  */
+  blocks = [];
+
+  renderBlocks();
+
+  /*
+    Le code de l'exemple reste présent.
+  */
+
+  updateSteps();
+
+  initializePython();
+}
+
+window.addEventListener("load", startApplication);
 
 </script>
 
 </body>
-</html>
+   </html>
