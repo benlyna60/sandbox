@@ -1,0 +1,4398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Aventure V7</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --blue: #3b82f6;
+    --blue-bg: #eff6ff;
+
+    --green: #22c55e;
+    --green-bg: #f0fdf4;
+
+    --purple: #8b5cf6;
+    --purple-bg: #f5f3ff;
+
+    --orange: #f97316;
+    --orange-bg: #fff7ed;
+
+    --yellow: #eab308;
+    --yellow-bg: #fefce8;
+
+    --red: #ef4444;
+    --red-bg: #fef2f2;
+
+    --pink: #ec4899;
+    --pink-bg: #fdf2f8;
+
+    --brown: #92400e;
+    --brown-bg: #fffbeb;
+
+    --dark: #172033;
+    --gray: #64748b;
+    --light: #f5f7fb;
+    --border: #dbe2ea;
+    --white: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--light);
+    color: var(--dark);
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.app {
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 18px;
+}
+
+/* HEADER */
+
+header {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.subtitle {
+    margin: 6px 0 0;
+    color: var(--gray);
+}
+
+.progress-wrap {
+    min-width: 230px;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 6px;
+}
+
+.progress {
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--blue);
+    transition: width .25s ease;
+}
+
+/* TABS */
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.tab-button {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--dark);
+    padding: 11px 16px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.tab-button.active {
+    background: var(--dark);
+    color: white;
+}
+
+/* PANELS */
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr) 300px;
+    gap: 16px;
+}
+
+.panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.panel h2,
+.panel h3 {
+    margin-top: 0;
+}
+
+.small {
+    color: var(--gray);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* PALETTE */
+
+.palette {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.palette-button {
+    width: 100%;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    background: white;
+}
+
+.palette-button:hover {
+    transform: translateY(-1px);
+}
+
+.palette-button small {
+    display: block;
+    margin-top: 3px;
+    font-weight: normal;
+    color: #475569;
+}
+
+.p-print {
+    background: var(--blue-bg);
+    border-color: var(--blue);
+}
+
+.p-variable {
+    background: var(--green-bg);
+    border-color: var(--green);
+}
+
+.p-ask {
+    background: var(--purple-bg);
+    border-color: var(--purple);
+}
+
+.p-calc {
+    background: var(--orange-bg);
+    border-color: var(--orange);
+}
+
+.p-if {
+    background: var(--yellow-bg);
+    border-color: var(--yellow);
+}
+
+.p-repeat {
+    background: var(--red-bg);
+    border-color: var(--red);
+}
+
+.p-list {
+    background: var(--pink-bg);
+    border-color: var(--pink);
+}
+
+.p-text {
+    background: var(--brown-bg);
+    border-color: var(--brown);
+}
+
+.p-comment {
+    background: #f1f5f9;
+    border-color: #64748b;
+}
+
+/* PROGRAM */
+
+.program-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.program-actions {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 9px;
+    padding: 9px 12px;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: var(--blue);
+    color: white;
+    border-color: var(--blue);
+}
+
+.btn-danger {
+    background: var(--red);
+    color: white;
+    border-color: var(--red);
+}
+
+.btn-dark {
+    background: var(--dark);
+    color: white;
+    border-color: var(--dark);
+}
+
+.program-area {
+    min-height: 520px;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 14px;
+    padding: 14px;
+}
+
+.empty {
+    min-height: 470px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--gray);
+    padding: 30px;
+}
+
+/* BOXES */
+
+.node {
+    border-radius: 14px;
+    margin-bottom: 10px;
+    border: 2px solid;
+    overflow: hidden;
+    background: white;
+}
+
+.node-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 10px;
+}
+
+.node-title {
+    flex: 1;
+    font-weight: bold;
+}
+
+.node-info,
+.node-delete,
+.node-up,
+.node-down {
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: 8px;
+    background: rgba(255,255,255,.8);
+}
+
+.node-body {
+    background: rgba(255,255,255,.8);
+    padding: 12px;
+    border-top: 1px solid rgba(0,0,0,.1);
+}
+
+.node-children {
+    margin-top: 12px;
+    padding: 10px;
+    border: 2px dashed rgba(0,0,0,.16);
+    border-radius: 10px;
+    background: rgba(255,255,255,.55);
+}
+
+.child-label {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.node-print {
+    border-color: var(--blue);
+    background: var(--blue-bg);
+}
+
+.node-variable {
+    border-color: var(--green);
+    background: var(--green-bg);
+}
+
+.node-ask {
+    border-color: var(--purple);
+    background: var(--purple-bg);
+}
+
+.node-calc {
+    border-color: var(--orange);
+    background: var(--orange-bg);
+}
+
+.node-if {
+    border-color: var(--yellow);
+    background: var(--yellow-bg);
+}
+
+.node-repeat {
+    border-color: var(--red);
+    background: var(--red-bg);
+}
+
+.node-list {
+    border-color: var(--pink);
+    background: var(--pink-bg);
+}
+
+.node-text {
+    border-color: var(--brown);
+    background: var(--brown-bg);
+}
+
+.node-comment {
+    border-color: #64748b;
+    background: #f1f5f9;
+}
+
+/* FORM */
+
+.field {
+    margin-bottom: 10px;
+}
+
+.field:last-child {
+    margin-bottom: 0;
+}
+
+.field label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #475569;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 9px 10px;
+    background: white;
+}
+
+.field textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 120px 1fr;
+    gap: 8px;
+}
+
+.row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+/* RIGHT PANEL */
+
+.code-preview {
+    background: #0f172a;
+    color: #e2e8f0;
+    border-radius: 10px;
+    padding: 12px;
+    min-height: 160px;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+}
+
+.score {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.status {
+    padding: 10px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* EXAMPLES */
+
+.examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.example-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+}
+
+.example-card h3 {
+    margin-top: 0;
+}
+
+.example-boxes {
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+/* PARENT */
+
+.parent-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 16px;
+}
+
+.parent-editor {
+    width: 100%;
+    min-height: 500px;
+    resize: vertical;
+    border: 2px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 15px;
+    font-family: Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+.parent-result {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    min-height: 300px;
+}
+
+.warning {
+    background: #fff7ed;
+    border: 1px solid #fdba74;
+    color: #9a3412;
+    padding: 10px;
+    border-radius: 9px;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.success {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #166534;
+    padding: 10px;
+    border-radius: 9px;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+/* MODAL */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.modal.open {
+    display: flex;
+}
+
+.modal-card {
+    width: min(600px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.modal-card h2 {
+    margin-top: 0;
+}
+
+.info-section {
+    margin: 12px 0;
+}
+
+.info-section strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* TEST OUTPUT */
+
+.output {
+    background: #0f172a;
+    color: #e2e8f0;
+    border-radius: 10px;
+    padding: 12px;
+    min-height: 100px;
+    white-space: pre-wrap;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+}
+
+.unsupported {
+    margin-top: 10px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .palette {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .parent-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+    .app {
+        padding: 10px;
+    }
+
+    .palette {
+        grid-template-columns: 1fr;
+    }
+
+    .row,
+    .row-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .program-area {
+        min-height: 400px;
+    }
+
+    .empty {
+        min-height: 350px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+    <div class="header-top">
+        <div>
+            <h1>🐍 Python Aventure V7</h1>
+            <p class="subtitle">
+                Construis ton programme avec des boîtes colorées.
+            </p>
+        </div>
+
+        <div class="progress-wrap">
+            <div class="progress-label">
+                <span>Progression</span>
+                <span id="progressText">0%</span>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav class="tabs" aria-label="Navigation">
+    <button type="button" class="tab-button active" data-tab="build">
+        🧱 Construire
+    </button>
+
+    <button type="button" class="tab-button" data-tab="examples">
+        💡 Exemples
+    </button>
+
+    <button type="button" class="tab-button" data-tab="code">
+        🐍 Mon code
+    </button>
+
+    <button type="button" class="tab-button" data-tab="parent">
+        👨‍👩‍👧 Mode Parent
+    </button>
+</nav>
+
+<!-- =========================================================
+     CONSTRUIRE
+========================================================= -->
+
+<section id="tab-build" class="tab-panel active">
+
+<div class="layout">
+
+<!-- PALETTE -->
+
+<aside class="panel">
+
+<h2>📦 Boîtes</h2>
+
+<p class="small">
+Chaque couleur représente une famille de Python.
+Appuie sur une boîte pour l'ajouter.
+</p>
+
+<div class="palette">
+
+<button type="button" class="palette-button p-print" data-add="print">
+    🟦 AFFICHER
+    <small>Montrer quelque chose</small>
+</button>
+
+<button type="button" class="palette-button p-variable" data-add="variable">
+    🟩 VARIABLE
+    <small>Garder une information</small>
+</button>
+
+<button type="button" class="palette-button p-ask" data-add="ask">
+    🟪 DEMANDER
+    <small>Poser une question</small>
+</button>
+
+<button type="button" class="palette-button p-calc" data-add="calc">
+    🟧 CALCULER
+    <small>Faire un calcul</small>
+</button>
+
+<button type="button" class="palette-button p-if" data-add="if">
+    🟨 SI
+    <small>Prendre une décision</small>
+</button>
+
+<button type="button" class="palette-button p-repeat" data-add="repeat">
+    🟥 RÉPÉTER
+    <small>Faire plusieurs fois</small>
+</button>
+
+<button type="button" class="palette-button p-list" data-add="list">
+    🩷 LISTE
+    <small>Ranger plusieurs valeurs</small>
+</button>
+
+<button type="button" class="palette-button p-text" data-add="text">
+    🟫 TEXTE
+    <small>Travailler avec du texte</small>
+</button>
+
+<button type="button" class="palette-button p-comment" data-add="comment">
+    ⚫ COMMENTAIRE
+    <small>Ajouter une explication</small>
+</button>
+
+</div>
+
+<hr>
+
+<button type="button" class="btn btn-danger" id="clearProgram">
+    🗑️ Tout effacer
+</button>
+
+</aside>
+
+
+<!-- PROGRAMME -->
+
+<main class="panel">
+
+<div class="program-header">
+
+<div>
+    <h2>🧱 Mon algorithme</h2>
+    <div class="small">
+        Les boîtes placées à l'intérieur d'une autre boîte deviennent des instructions à l'intérieur.
+    </div>
+</div>
+
+<div class="program-actions">
+    <button type="button" class="btn" id="saveProgram">
+        💾 Sauvegarder
+    </button>
+
+    <button type="button" class="btn" id="loadProgram">
+        📂 Charger
+    </button>
+</div>
+
+</div>
+
+<div id="programArea" class="program-area"></div>
+
+</main>
+
+
+<!-- AIDE -->
+
+<aside class="panel">
+
+<h2>🧭 Comprendre</h2>
+
+<div class="status" id="helpBox">
+    Commence par choisir une boîte à gauche.
+</div>
+
+<h3>🎯 Règle simple</h3>
+
+<p class="small">
+    Une boîte représente une instruction Python.
+</p>
+
+<p class="small">
+    Les boîtes placées dans une boîte comme
+    <strong>SI</strong> ou <strong>RÉPÉTER</strong>
+    deviennent ses enfants.
+</p>
+
+<h3>📊 Score</h3>
+
+<div class="score" id="score">0</div>
+
+</aside>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     EXEMPLES
+========================================================= -->
+
+<section id="tab-examples" class="tab-panel">
+
+<div class="panel">
+
+<h2>💡 Exemples</h2>
+
+<p class="small">
+    Les exemples utilisent exactement les mêmes boîtes que celles utilisées pour construire ton programme.
+</p>
+
+<div id="examplesContainer" class="examples"></div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     MON CODE
+========================================================= -->
+
+<section id="tab-code" class="tab-panel">
+
+<div class="layout">
+
+<main class="panel">
+
+<h2>🐍 Ton vrai code Python</h2>
+
+<p class="small">
+    Le code est généré automatiquement à partir de tes boîtes.
+</p>
+
+<pre id="codePreview" class="code-preview"></pre>
+
+<div class="program-actions" style="margin-top:10px">
+
+<button type="button" class="btn btn-primary" id="testCode">
+    ▶ Tester
+</button>
+
+<button type="button" class="btn" id="copyCode">
+    📋 Copier le code
+</button>
+
+</div>
+
+<h3>🖥️ Résultat</h3>
+
+<pre id="output" class="output">Aucun test effectué.</pre>
+
+</main>
+
+<aside class="panel">
+
+<h2>🔎 Vérification</h2>
+
+<div id="validationBox" class="status">
+    Ton programme sera vérifié ici.
+</div>
+
+</aside>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     MODE PARENT
+========================================================= -->
+
+<section id="tab-parent" class="tab-panel">
+
+<div class="parent-layout">
+
+<main class="panel">
+
+<h2>👨‍👩‍👧 Mode Parent</h2>
+
+<p class="small">
+    Un parent peut coller ici du vrai code Python.
+    Python Aventure essaiera de le transformer en boîtes colorées.
+</p>
+
+<textarea
+    id="parentCode"
+    class="parent-editor"
+    spellcheck="false"
+    placeholder="Exemple :
+
+nom = input(&quot;Comment tu t'appelles ? &quot;)
+
+if nom == &quot;Léo&quot;:
+    print(&quot;Bonjour Léo !&quot;)
+else:
+    print(&quot;Bonjour !&quot;)
+"></textarea>
+
+<div class="program-actions" style="margin-top:12px">
+
+<button type="button" class="btn btn-primary" id="convertPython">
+    🔄 Transformer en boîtes
+</button>
+
+<button type="button" class="btn" id="parentExample">
+    💡 Mettre un exemple
+</button>
+
+</div>
+
+<div id="parentMessage"></div>
+
+</main>
+
+
+<aside class="panel">
+
+<h2>🧩 Comment ça marche ?</h2>
+
+<p class="small">
+    <strong>1.</strong> Le parent écrit ou colle du vrai Python.
+</p>
+
+<p class="small">
+    <strong>2.</strong> L'application reconnaît les instructions compatibles.
+</p>
+
+<p class="small">
+    <strong>3.</strong> Elle crée les boîtes correspondantes.
+</p>
+
+<p class="small">
+    <strong>4.</strong> Les indentations Python deviennent la hiérarchie des boîtes.
+</p>
+
+<p class="small">
+    <strong>5.</strong> L'enfant peut ensuite modifier les boîtes.
+</p>
+
+<hr>
+
+<h3>⚠️ Important</h3>
+
+<p class="small">
+    Si une instruction n'est pas encore comprise par la V7,
+    elle est signalée au lieu d'être inventée.
+</p>
+
+</aside>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL INFO
+========================================================= -->
+
+<div id="infoModal" class="modal">
+
+<div class="modal-card">
+
+<h2 id="modalTitle">Information</h2>
+
+<div id="modalContent"></div>
+
+<button type="button" class="btn btn-dark" id="closeModal">
+    Fermer
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+"use strict";
+
+/* ============================================================
+   ÉTAT
+============================================================ */
+
+let programNodes = [];
+let nextId = 1;
+
+
+/* ============================================================
+   UTILITAIRES
+============================================================ */
+
+function newId() {
+    return String(nextId++);
+}
+
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function pythonString(value) {
+    return JSON.stringify(String(value ?? ""));
+}
+
+function isValidIdentifier(name) {
+    return /^[A-Za-z_][A-Za-z0-9_]*$/.test(name);
+}
+
+function isNumber(value) {
+    return /^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(String(value).trim());
+}
+
+function normalizeText(value) {
+    return String(value ?? "").trim();
+}
+
+
+/* ============================================================
+   TYPES DE BOÎTES
+============================================================ */
+
+const NODE_INFO = {
+
+    print: {
+        title: "🟦 AFFICHER",
+        className: "node-print",
+        description: "Affiche quelque chose à l'écran.",
+        use: "Quand tu veux montrer un message, un nombre ou une information.",
+        hierarchy: "Cette boîte peut être placée seule ou à l'intérieur d'une boîte comme SI ou RÉPÉTER.",
+        contains: "Un message, une variable ou une expression simple.",
+        python: 'print("Bonjour")',
+        mistake: "Oublier ce que tu veux afficher."
+    },
+
+    variable: {
+        title: "🟩 VARIABLE",
+        className: "node-variable",
+        description: "Une variable garde une information pour pouvoir la réutiliser.",
+        use: "Quand tu veux donner un nom à une information.",
+        hierarchy: "Elle peut être placée dans le programme ou dans une structure.",
+        contains: "Un nom et une valeur.",
+        python: 'prenom = "Léo"',
+        mistake: "Utiliser un nom de variable qui contient des espaces."
+    },
+
+    ask: {
+        title: "🟪 DEMANDER",
+        className: "node-ask",
+        description: "Pose une question à la personne qui utilise le programme.",
+        use: "Quand ton programme a besoin d'une réponse.",
+        hierarchy: "Elle peut être utilisée seule ou dans une structure.",
+        contains: "Une question et le nom de la variable qui recevra la réponse.",
+        python: 'nom = input("Ton nom ? ")',
+        mistake: "Ne pas donner de nom à la réponse."
+    },
+
+    calc: {
+        title: "🟧 CALCULER",
+        className: "node-calc",
+        description: "Effectue un calcul.",
+        use: "Pour additionner, soustraire, multiplier ou diviser.",
+        hierarchy: "Elle peut être utilisée comme instruction dans le programme.",
+        contains: "Deux valeurs, un opérateur et éventuellement une variable résultat.",
+        python: "total = 5 + 3",
+        mistake: "Utiliser du texte à la place d'un nombre sans le vouloir."
+    },
+
+    if: {
+        title: "🟨 SI",
+        className: "node-if",
+        description: "Vérifie une condition et exécute ses boîtes enfants si elle est vraie.",
+        use: "Pour prendre une décision.",
+        hierarchy: "Les boîtes placées dedans appartiennent au SI.",
+        contains: "Une condition et des instructions enfants.",
+        python: 'if age >= 18:\\n    print("Adulte")',
+        mistake: "Mettre une condition incomplète."
+    },
+
+    repeat: {
+        title: "🟥 RÉPÉTER",
+        className: "node-repeat",
+        description: "Répète les boîtes placées à l'intérieur.",
+        use: "Quand une action doit être faite plusieurs fois.",
+        hierarchy: "Les boîtes enfants sont répétées.",
+        contains: "Un nombre de répétitions et des boîtes enfants.",
+        python: 'for _ in range(5):\\n    print("Bonjour")',
+        mistake: "Oublier le nombre de répétitions."
+    },
+
+    list: {
+        title: "🩷 LISTE",
+        className: "node-list",
+        description: "Une liste permet de ranger plusieurs valeurs ensemble.",
+        use: "Quand tu veux conserver plusieurs éléments.",
+        hierarchy: "Elle crée une donnée que les autres boîtes peuvent utiliser.",
+        contains: "Plusieurs valeurs séparées par des virgules.",
+        python: 'fruits = ["pomme", "banane"]',
+        mistake: "Oublier les virgules entre les éléments."
+    },
+
+    text: {
+        title: "🟫 TEXTE",
+        className: "node-text",
+        description: "Permet de travailler avec une valeur texte.",
+        use: "Pour compter, mettre en majuscules ou minuscules un texte.",
+        hierarchy: "Elle produit une expression qui peut être utilisée dans une autre instruction.",
+        contains: "Une valeur texte et une opération.",
+        python: 'message = "bonjour".upper()',
+        mistake: "Confondre un texte avec un nombre."
+    },
+
+    comment: {
+        title: "⚫ COMMENTAIRE",
+        className: "node-comment",
+        description: "Ajoute une note destinée à expliquer le programme.",
+        use: "Pour expliquer ce que fait une partie du programme.",
+        hierarchy: "Le commentaire ne change pas l'exécution.",
+        contains: "Un texte explicatif.",
+        python: "# Ceci est mon programme",
+        mistake: "Croire que le commentaire est exécuté."
+    }
+};
+
+
+/* ============================================================
+   CRÉATION DES NŒUDS
+============================================================ */
+
+function createNode(type) {
+
+    const base = {
+        id: newId(),
+        type: type
+    };
+
+    switch (type) {
+
+        case "print":
+            return {
+                ...base,
+                value: "",
+                valueType: "text"
+            };
+
+        case "variable":
+            return {
+                ...base,
+                name: "",
+                value: "",
+                valueType: "text"
+            };
+
+        case "ask":
+            return {
+                ...base,
+                question: "",
+                name: "reponse"
+            };
+
+        case "calc":
+            return {
+                ...base,
+                left: "",
+                operator: "+",
+                right: "",
+                result: ""
+            };
+
+        case "if":
+            return {
+                ...base,
+                left: "",
+                operator: "==",
+                right: "",
+                leftType: "variable",
+                rightType: "text",
+                children: [],
+                elseChildren: []
+            };
+
+        case "repeat":
+            return {
+                ...base,
+                count: "3",
+                children: []
+            };
+
+        case "list":
+            return {
+                ...base,
+                name: "",
+                items: ""
+            };
+
+        case "text":
+            return {
+                ...base,
+                source: "",
+                operation: "upper",
+                result: ""
+            };
+
+        case "comment":
+            return {
+                ...base,
+                text: ""
+            };
+
+        default:
+            return {
+                ...base,
+                type: "print",
+                value: "",
+                valueType: "text"
+            };
+    }
+}
+
+
+/* ============================================================
+   VALEUR PYTHON
+============================================================ */
+
+function valueToPython(value, type) {
+
+    const v = normalizeText(value);
+
+    if (!v) {
+        return '""';
+    }
+
+    if (type === "number") {
+        if (isNumber(v)) return v;
+        return "0";
+    }
+
+    if (type === "variable") {
+        if (isValidIdentifier(v)) return v;
+        return '""';
+    }
+
+    return pythonString(v);
+}
+
+
+/* ============================================================
+   RENDU
+============================================================ */
+
+function renderProgram() {
+
+    const area = document.getElementById("programArea");
+
+    if (!programNodes.length) {
+
+        area.innerHTML = `
+            <div class="empty">
+                <div>
+                    <div style="font-size:42px">🧱</div>
+                    <h3>Ton programme est vide</h3>
+                    <p>Choisis une boîte à gauche pour commencer.</p>
+                </div>
+            </div>
+        `;
+
+        updateAll();
+        return;
+    }
+
+    area.innerHTML = renderNodes(programNodes, "root");
+
+    updateAll();
+}
+
+
+function renderNodes(nodes, parentId) {
+
+    return nodes.map((node, index) => renderNode(node, parentId, index)).join("");
+}
+
+
+function renderNode(node, parentId, index) {
+
+    const info = NODE_INFO[node.type] || NODE_INFO.print;
+
+    let body = "";
+
+    if (node.type === "print") {
+
+        body = `
+            <div class="field">
+                <label>Qu'est-ce que je dois afficher ?</label>
+                <input
+                    data-id="${node.id}"
+                    data-field="value"
+                    value="${escapeHtml(node.value)}"
+                    placeholder="Bonjour !"
+                >
+            </div>
+
+            <div class="field">
+                <label>Type</label>
+                <select data-id="${node.id}" data-field="valueType">
+                    <option value="text" ${node.valueType === "text" ? "selected" : ""}>Texte</option>
+                    <option value="number" ${node.valueType === "number" ? "selected" : ""}>Nombre</option>
+                    <option value="variable" ${node.valueType === "variable" ? "selected" : ""}>Variable</option>
+                </select>
+            </div>
+        `;
+
+    } else if (node.type === "variable") {
+
+        body = `
+            <div class="row-2">
+
+                <div class="field">
+                    <label>Nom</label>
+                    <input
+                        data-id="${node.id}"
+                        data-field="name"
+                        value="${escapeHtml(node.name)}"
+                        placeholder="prenom"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Valeur</label>
+                    <input
+                        data-id="${node.id}"
+                        data-field="value"
+                        value="${escapeHtml(node.value)}"
+                        placeholder="Léo"
+                    >
+                </div>
+
+            </div>
+
+            <div class="field">
+                <label>Type de valeur</label>
+                <select data-id="${node.id}" data-field="valueType">
+                    <option value="text" ${node.valueType === "text" ? "selected" : ""}>Texte</option>
+                    <option value="number" ${node.valueType === "number" ? "selected" : ""}>Nombre</option>
+                    <option value="variable" ${node.valueType === "variable" ? "selected" : ""}>Variable</option>
+                </select>
+            </div>
+        `;
+
+    } else if (node.type === "ask") {
+
+        body = `
+            <div class="field">
+                <label>Question</label>
+                <input
+                    data-id="${node.id}"
+                    data-field="question"
+                    value="${escapeHtml(node.question)}"
+                    placeholder="Comment tu t'appelles ?"
+                >
+            </div>
+
+            <div class="field">
+                <label>Nom de la réponse</label>
+                <input
+                    data-id="${node.id}"
+                    data-field="name"
+                    value="${escapeHtml(node.name)}"
+                    placeholder="nom"
+                >
+            </div>
+        `;
+
+    } else if (node.type === "calc") {
+
+        body = `
+            <div class="row">
+
+                <div class="field">
+                    <label>Premier nombre</label>
+                    <input
+                        data-id="${node.id}"
+                        data-field="left"
+                        value="${escapeHtml(node.left)}"
+                        placeholder="5"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Opérateur</label>
+                    <select data-id="${node.id}" data-field="operator">
+                        <option value="+">+</option>
+                        <option value="-">−</option>
+                        <option value="*">×</option>
+                        <option value="/">÷</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Deuxième nombre</label>
+                    <input
+                        data-id="${node.id}"
+                        data-field="right"
+                        value="${escapeHtml(node.right)}"
+                        placeholder="3"
+                    >
+                </div>
+
+            </div>
+
+            <div class="field">
+                <label>Enregistrer le résultat dans (optionnel)</label>
+                <input
+                    data-id="${node.id}"
+                    data-field="result"
+                    value="${escapeHtml(node.result)}"
+                    placeholder="total"
+                >
+            </div>
+        `;
+
+    } else if (node.type === "if") {
+
+        body = `
+            <div class="row">
+
+                <div class="field">
+                    <label>Première valeur</label>
+                    <input
+                        data-id="${node.id}"
+                        data-field="left"
+                        value="${escapeHtml(node.left)}"
+                        placeholder="age"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Condition</label>
+                    <select data-id="${node.id}" data-field="operator">
+                        <option value="==">égal à</option>
+                        <option value="!=">différent de</option>
+                        <option value=">">plus grand que</option>
+                        <option value=">=">plus grand ou égal</option>
+                        <option value="<">plus petit que</option>
+                        <option value="<=">plus petit ou égal</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Deuxième valeur</label>
+                    <input
+                        data-id="${node.id}"
+                        data-field="right"
+                        value="${escapeHtml(node.right)}"
+                        placeholder="18"
+                    >
+                </div>
+
+            </div>
+
+            <div class="row-2">
+
+                <div class="field">
+                    <label>Type première valeur</label>
+                    <select data-id="${node.id}" data-field="leftType">
+                        <option value="variable" ${node.leftType === "variable" ? "selected" : ""}>Variable</option>
+                        <option value="text" ${node.leftType === "text" ? "selected" : ""}>Texte</option>
+                        <option value="number" ${node.leftType === "number" ? "selected" : ""}>Nombre</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Type deuxième valeur</label>
+                    <select data-id="${node.id}" data-field="rightType">
+                        <option value="text" ${node.rightType === "text" ? "selected" : ""}>Texte</option>
+                        <option value="number" ${node.rightType === "number" ? "selected" : ""}>Nombre</option>
+                        <option value="variable" ${node.rightType === "variable" ? "selected" : ""}>Variable</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="node-children">
+
+                <div class="child-label">
+                    ALORS — boîtes exécutées si la condition est vraie
+                </div>
+
+                ${node.children && node.children.length
+                    ? renderNodes(node.children, node.id + "-then")
+                    : `<div class="small">Ajoute des boîtes puis utilise-les ici.</div>`
+                }
+
+            </div>
+
+            <div class="node-children" style="margin-top:10px">
+
+                <div class="child-label">
+                    SINON — boîtes exécutées si la condition est fausse
+                </div>
+
+                ${node.elseChildren && node.elseChildren.length
+                    ? renderNodes(node.elseChildren, node.id + "-else")
+                    : `<div class="small">Aucune boîte SINON pour le moment.</div>`
+                }
+
+                <button
+                    type="button"
+                    class="btn"
+                    data-add-child="${node.id}"
+                    data-child-zone="else"
+                    style="margin-top:8px"
+                >
+                    ➕ Ajouter dans SINON
+                </button>
+
+            </div>
+
+            <div style="margin-top:8px">
+                <button
+                    type="button"
+                    class="btn"
+                    data-add-child="${node.id}"
+                    data-child-zone="then"
+                >
+                    ➕ Ajouter dans ALORS
+                </button>
+            </div>
+        `;
+
+    } else if (node.type === "repeat") {
+
+        body = `
+            <div class="field">
+                <label>Combien de fois ?</label>
+                <input
+                    type="number"
+                    min="1"
+                    max="100"
+                    data-id="${node.id}"
+                    data-field="count"
+                    value="${escapeHtml(node.count)}"
+                >
+            </div>
+
+            <div class="node-children">
+
+                <div class="child-label">
+                    À RÉPÉTER
+                </div>
+
+                ${node.children && node.children.length
+                    ? renderNodes(node.children, node.id)
+                    : `<div class="small">Ajoute une boîte à répéter.</div>`
+                }
+
+                <button
+                    type="button"
+                    class="btn"
+                    data-add-child="${node.id}"
+                    data-child-zone="children"
+                    style="margin-top:8px"
+                >
+                    ➕ Ajouter dans RÉPÉTER
+                </button>
+
+            </div>
+        `;
+
+    } else if (node.type === "list") {
+
+        body = `
+            <div class="field">
+                <label>Nom de la liste</label>
+                <input
+                    data-id="${node.id}"
+                    data-field="name"
+                    value="${escapeHtml(node.name)}"
+                    placeholder="fruits"
+                >
+            </div>
+
+            <div class="field">
+                <label>Éléments séparés par des virgules</label>
+                <input
+                    data-id="${node.id}"
+                    data-field="items"
+                    value="${escapeHtml(node.items)}"
+                    placeholder="pomme, banane, orange"
+                >
+            </div>
+        `;
+
+    } else if (node.type === "text") {
+
+        body = `
+            <div class="field">
+                <label>Texte ou variable</label>
+                <input
+                    data-id="${node.id}"
+                    data-field="source"
+                    value="${escapeHtml(node.source)}"
+                    placeholder="bonjour"
+                >
+            </div>
+
+            <div class="row-2">
+
+                <div class="field">
+                    <label>Action</label>
+                    <select data-id="${node.id}" data-field="operation">
+                        <option value="upper" ${node.operation === "upper" ? "selected" : ""}>MAJUSCULES</option>
+                        <option value="lower" ${node.operation === "lower" ? "selected" : ""}>minuscules</option>
+                        <option value="len" ${node.operation === "len" ? "selected" : ""}>compter</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Résultat dans</label>
+                    <input
+                        data-id="${node.id}"
+                        data-field="result"
+                        value="${escapeHtml(node.result)}"
+                        placeholder="message"
+                    >
+                </div>
+
+            </div>
+        `;
+
+    } else if (node.type === "comment") {
+
+        body = `
+            <div class="field">
+                <label>Ton commentaire</label>
+                <textarea
+                    data-id="${node.id}"
+                    data-field="text"
+                    placeholder="Ce programme demande le prénom."
+                >${escapeHtml(node.text)}</textarea>
+            </div>
+        `;
+    }
+
+    const canHaveChildren =
+        node.type === "if" ||
+        node.type === "repeat";
+
+    return `
+        <div
+            class="node ${info.className}"
+            data-node-id="${node.id}"
+            data-parent-id="${parentId}"
+        >
+
+            <div class="node-head">
+
+                <span class="node-title">
+                    ${info.title}
+                </span>
+
+                <button
+                    type="button"
+                    class="node-info"
+                    data-info="${node.type}"
+                    title="Explication"
+                >❕</button>
+
+                <button
+                    type="button"
+                    class="node-up"
+                    data-move-up="${node.id}"
+                    title="Monter"
+                >↑</button>
+
+                <button
+                    type="button"
+                    class="node-down"
+                    data-move-down="${node.id}"
+                    title="Descendre"
+                >↓</button>
+
+                <button
+                    type="button"
+                    class="node-delete"
+                    data-delete="${node.id}"
+                    title="Supprimer"
+                >🗑️</button>
+
+            </div>
+
+            <div class="node-body">
+
+                ${body}
+
+                ${canHaveChildren ? "" : ""}
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* ============================================================
+   RECHERCHE DE NŒUD
+============================================================ */
+
+function findNode(nodes, id) {
+
+    for (const node of nodes) {
+
+        if (node.id === id) {
+            return node;
+        }
+
+        if (node.children) {
+
+            const found = findNode(node.children, id);
+
+            if (found) return found;
+        }
+
+        if (node.elseChildren) {
+
+            const foundElse = findNode(node.elseChildren, id);
+
+            if (foundElse) return foundElse;
+        }
+    }
+
+    return null;
+}
+
+
+/* ============================================================
+   TROUVER LE TABLEAU PARENT
+============================================================ */
+
+function findParentArray(nodes, id) {
+
+    for (const node of nodes) {
+
+        if (node.id === id) {
+            return nodes;
+        }
+
+        if (node.children) {
+
+            const result = findParentArray(node.children, id);
+
+            if (result) return result;
+        }
+
+        if (node.elseChildren) {
+
+            const result = findParentArray(node.elseChildren, id);
+
+            if (result) return result;
+        }
+    }
+
+    return null;
+}
+
+
+/* ============================================================
+   AJOUT
+============================================================ */
+
+function addRootNode(type) {
+
+    programNodes.push(createNode(type));
+
+    saveAutomatically();
+    renderProgram();
+}
+
+
+function addChildNode(parentId, type, zone = "children") {
+
+    const parent = findNode(programNodes, parentId);
+
+    if (!parent) return;
+
+    if (parent.type !== "if" && parent.type !== "repeat") {
+        return;
+    }
+
+    const child = createNode(type);
+
+    if (parent.type === "if") {
+
+        if (zone === "else") {
+            if (!parent.elseChildren) parent.elseChildren = [];
+            parent.elseChildren.push(child);
+        } else {
+            if (!parent.children) parent.children = [];
+            parent.children.push(child);
+        }
+
+    } else {
+
+        if (!parent.children) parent.children = [];
+        parent.children.push(child);
+    }
+
+    saveAutomatically();
+    renderProgram();
+}
+
+
+/* ============================================================
+   SUPPRESSION
+============================================================ */
+
+function deleteNode(id) {
+
+    const array = findParentArray(programNodes, id);
+
+    if (!array) return;
+
+    const index = array.findIndex(n => n.id === id);
+
+    if (index === -1) return;
+
+    const node = array[index];
+
+    const childCount =
+        (node.children ? node.children.length : 0) +
+        (node.elseChildren ? node.elseChildren.length : 0);
+
+    if (childCount > 0) {
+
+        const ok = confirm(
+            "Cette boîte contient " +
+            childCount +
+            " boîte(s) à l'intérieur.\n\n" +
+            "Si tu la supprimes, ses boîtes enfants seront aussi supprimées.\n\n" +
+            "Continuer ?"
+        );
+
+        if (!ok) return;
+    }
+
+    array.splice(index, 1);
+
+    saveAutomatically();
+    renderProgram();
+}
+
+
+/* ============================================================
+   DÉPLACEMENT
+============================================================ */
+
+function moveNode(id, direction) {
+
+    const array = findParentArray(programNodes, id);
+
+    if (!array) return;
+
+    const index = array.findIndex(n => n.id === id);
+
+    if (index === -1) return;
+
+    const newIndex = index + direction;
+
+    if (newIndex < 0 || newIndex >= array.length) return;
+
+    const temp = array[index];
+
+    array[index] = array[newIndex];
+    array[newIndex] = temp;
+
+    saveAutomatically();
+    renderProgram();
+}
+
+
+/* ============================================================
+   MISE À JOUR DES CHAMPS
+============================================================ */
+
+function updateNodeField(id, field, value) {
+
+    const node = findNode(programNodes, id);
+
+    if (!node) return;
+
+    node[field] = value;
+
+    saveAutomatically();
+
+    updateCodeOnly();
+}
+
+
+/* ============================================================
+   GÉNÉRATEUR PYTHON
+============================================================ */
+
+function generateValue(value, type) {
+
+    return valueToPython(value, type);
+}
+
+
+function conditionToPython(node) {
+
+    const left = generateValue(node.left, node.leftType);
+    const right = generateValue(node.right, node.rightType);
+
+    return `${left} ${node.operator} ${right}`;
+}
+
+
+function generatePython(nodes, indentLevel = 0) {
+
+    const lines = [];
+    const indent = "    ".repeat(indentLevel);
+
+    for (const node of nodes) {
+
+        switch (node.type) {
+
+            case "print": {
+
+                const value = generateValue(node.value, node.valueType);
+
+                lines.push(
+                    indent + `print(${value})`
+                );
+
+                break;
+            }
+
+            case "variable": {
+
+                const name = isValidIdentifier(node.name)
+                    ? node.name
+                    : "ma_variable";
+
+                const value = generateValue(
+                    node.value,
+                    node.valueType
+                );
+
+                lines.push(
+                    indent + `${name} = ${value}`
+                );
+
+                break;
+            }
+
+            case "ask": {
+
+                const name = isValidIdentifier(node.name)
+                    ? node.name
+                    : "reponse";
+
+                lines.push(
+                    indent +
+                    `${name} = input(${pythonString(node.question)})`
+                );
+
+                break;
+            }
+
+            case "calc": {
+
+                const left =
+                    isNumber(node.left) || isValidIdentifier(node.left)
+                    ? normalizeText(node.left) || "0"
+                    : "0";
+
+                const right =
+                    isNumber(node.right) || isValidIdentifier(node.right)
+                    ? normalizeText(node.right) || "0"
+                    : "0";
+
+                const operator =
+                    ["+", "-", "*", "/"].includes(node.operator)
+                    ? node.operator
+                    : "+";
+
+                const expression =
+                    `${left} ${operator} ${right}`;
+
+                if (isValidIdentifier(node.result)) {
+
+                    lines.push(
+                        indent +
+                        `${node.result} = ${expression}`
+                    );
+
+                } else {
+
+                    lines.push(
+                        indent +
+                        expression
+                    );
+                }
+
+                break;
+            }
+
+            case "if": {
+
+                lines.push(
+                    indent +
+                    `if ${conditionToPython(node)}:`
+                );
+
+                const children =
+                    node.children || [];
+
+                if (children.length) {
+
+                    lines.push(
+                        generatePython(
+                            children,
+                            indentLevel + 1
+                        )
+                    );
+
+                } else {
+
+                    lines.push(
+                        indent + "    pass"
+                    );
+                }
+
+                const elseChildren =
+                    node.elseChildren || [];
+
+                if (elseChildren.length) {
+
+                    lines.push(
+                        indent + "else:"
+                    );
+
+                    lines.push(
+                        generatePython(
+                            elseChildren,
+                            indentLevel + 1
+                        )
+                    );
+                }
+
+                break;
+            }
+
+            case "repeat": {
+
+                let count =
+                    parseInt(node.count, 10);
+
+                if (!Number.isFinite(count)) {
+                    count = 1;
+                }
+
+                count = Math.max(
+                    1,
+                    Math.min(100, count)
+                );
+
+                lines.push(
+                    indent +
+                    `for _ in range(${count}):`
+                );
+
+                const children =
+                    node.children || [];
+
+                if (children.length) {
+
+                    lines.push(
+                        generatePython(
+                            children,
+                            indentLevel + 1
+                        )
+                    );
+
+                } else {
+
+                    lines.push(
+                        indent + "    pass"
+                    );
+                }
+
+                break;
+            }
+
+            case "list": {
+
+                const name =
+                    isValidIdentifier(node.name)
+                    ? node.name
+                    : "ma_liste";
+
+                const values =
+                    normalizeText(node.items)
+                        .split(",")
+                        .map(v => v.trim())
+                        .filter(Boolean)
+                        .map(v => pythonString(v))
+                        .join(", ");
+
+                lines.push(
+                    indent +
+                    `${name} = [${values}]`
+                );
+
+                break;
+            }
+
+            case "text": {
+
+                const source =
+                    normalizeText(node.source);
+
+                const sourcePython =
+                    isValidIdentifier(source)
+                    ? source
+                    : pythonString(source);
+
+                let expression = sourcePython;
+
+                if (node.operation === "upper") {
+                    expression += ".upper()";
+                } else if (node.operation === "lower") {
+                    expression += ".lower()";
+                } else if (node.operation === "len") {
+                    expression = `len(${sourcePython})`;
+                }
+
+                if (isValidIdentifier(node.result)) {
+
+                    lines.push(
+                        indent +
+                        `${node.result} = ${expression}`
+                    );
+
+                } else {
+
+                    lines.push(
+                        indent +
+                        expression
+                    );
+                }
+
+                break;
+            }
+
+            case "comment": {
+
+                const text =
+                    normalizeText(node.text);
+
+                lines.push(
+                    indent +
+                    "# " +
+                    text
+                );
+
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
+
+    return lines.join("\n");
+}
+
+
+function getPythonCode() {
+
+    const code =
+        generatePython(programNodes);
+
+    return code || "# Ton programme est vide.";
+}
+
+
+/* ============================================================
+   VALIDATION
+============================================================ */
+
+function validateNodes(nodes, problems = []) {
+
+    for (const node of nodes) {
+
+        if (node.type === "variable") {
+
+            if (!isValidIdentifier(node.name)) {
+
+                problems.push(
+                    "Une variable doit avoir un nom valide."
+                );
+            }
+        }
+
+        if (node.type === "ask") {
+
+            if (!isValidIdentifier(node.name)) {
+
+                problems.push(
+                    "La boîte DEMANDER a besoin d'un nom de réponse valide."
+                );
+            }
+        }
+
+        if (node.type === "if") {
+
+            if (!normalizeText(node.left) ||
+                !normalizeText(node.right)) {
+
+                problems.push(
+                    "Une boîte SI doit avoir deux valeurs."
+                );
+            }
+
+            validateNodes(
+                node.children || [],
+                problems
+            );
+
+            validateNodes(
+                node.elseChildren || [],
+                problems
+            );
+        }
+
+        if (node.type === "repeat") {
+
+            const count =
+                parseInt(node.count, 10);
+
+            if (!Number.isFinite(count) ||
+                count < 1 ||
+                count > 100) {
+
+                problems.push(
+                    "RÉPÉTER doit avoir un nombre entre 1 et 100."
+                );
+            }
+
+            validateNodes(
+                node.children || [],
+                problems
+            );
+        }
+    }
+
+    return problems;
+}
+
+
+function updateValidation() {
+
+    const box =
+        document.getElementById("validationBox");
+
+    const problems =
+        validateNodes(programNodes);
+
+    if (!programNodes.length) {
+
+        box.innerHTML =
+            "Ajoute au moins une boîte pour commencer.";
+
+        return;
+    }
+
+    if (!problems.length) {
+
+        box.innerHTML =
+            "✅ Ton programme peut être transformé en vrai code Python.";
+
+        return;
+    }
+
+    box.innerHTML =
+        "⚠️ Quelques choses doivent être vérifiées :<br><br>" +
+        problems.map(p => "• " + escapeHtml(p)).join("<br>");
+}
+
+
+/* ============================================================
+   CODE / SCORE
+============================================================ */
+
+function updateCodeOnly() {
+
+    document.getElementById("codePreview").textContent =
+        getPythonCode();
+
+    updateValidation();
+    updateProgress();
+}
+
+
+function updateProgress() {
+
+    const count =
+        countNodes(programNodes);
+
+    const progress =
+        Math.min(100, count * 10);
+
+    document.getElementById("progressBar")
+        .style.width = progress + "%";
+
+    document.getElementById("progressText")
+        .textContent = progress + "%";
+
+    document.getElementById("score")
+        .textContent = Math.min(100, count * 10);
+}
+
+
+function countNodes(nodes) {
+
+    let count = 0;
+
+    for (const node of nodes) {
+
+        count++;
+
+        if (node.children) {
+            count += countNodes(node.children);
+        }
+
+        if (node.elseChildren) {
+            count += countNodes(node.elseChildren);
+        }
+    }
+
+    return count;
+}
+
+
+function updateAll() {
+
+    updateCodeOnly();
+}
+
+
+/* ============================================================
+   INFOS
+============================================================ */
+
+function openInfo(type) {
+
+    const info =
+        NODE_INFO[type];
+
+    if (!info) return;
+
+    document.getElementById("modalTitle")
+        .textContent = info.title;
+
+    document.getElementById("modalContent")
+        .innerHTML = `
+
+        <div class="info-section">
+            <strong>🧠 À quoi ça sert ?</strong>
+            ${escapeHtml(info.description)}
+        </div>
+
+        <div class="info-section">
+            <strong>🎯 Quand l'utiliser ?</strong>
+            ${escapeHtml(info.use)}
+        </div>
+
+        <div class="info-section">
+            <strong>🧱 Hiérarchie</strong>
+            ${escapeHtml(info.hierarchy)}
+        </div>
+
+        <div class="info-section">
+            <strong>📦 Que contient-elle ?</strong>
+            ${escapeHtml(info.contains)}
+        </div>
+
+        <div class="info-section">
+            <strong>🐍 Vrai Python</strong>
+            <pre class="code-preview">${escapeHtml(
+                info.python.replace(/\\n/g, "\n")
+            )}</pre>
+        </div>
+
+        <div class="info-section">
+            <strong>⚠️ Attention</strong>
+            ${escapeHtml(info.mistake)}
+        </div>
+    `;
+
+    document.getElementById("infoModal")
+        .classList.add("open");
+}
+
+
+/* ============================================================
+   EXEMPLES
+============================================================ */
+
+const EXAMPLES = [
+
+    {
+        title: "👋 Bonjour",
+        description: "Afficher un message.",
+        nodes: [
+            {
+                type: "print",
+                value: "Bonjour !",
+                valueType: "text"
+            }
+        ]
+    },
+
+    {
+        title: "👤 Présentation",
+        description: "Demander le prénom puis l'afficher.",
+        nodes: [
+            {
+                type: "ask",
+                question: "Comment tu t'appelles ?",
+                name: "prenom"
+            },
+            {
+                type: "print",
+                value: "prenom",
+                valueType: "variable"
+            }
+        ]
+    },
+
+    {
+        title: "🔢 Calcul",
+        description: "Additionner deux nombres.",
+        nodes: [
+            {
+                type: "calc",
+                left: "5",
+                operator: "+",
+                right: "3",
+                result: "total"
+            },
+            {
+                type: "print",
+                value: "total",
+                valueType: "variable"
+            }
+        ]
+    },
+
+    {
+        title: "🔁 Répéter",
+        description: "Afficher trois fois un message.",
+        nodes: [
+            {
+                type: "repeat",
+                count: "3",
+                children: [
+                    {
+                        type: "print",
+                        value: "Bonjour !",
+                        valueType: "text"
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        title: "🧠 Décision",
+        description: "Tester une condition.",
+        nodes: [
+            {
+                type: "if",
+                left: "age",
+                operator: ">=",
+                right: "18",
+                leftType: "variable",
+                rightType: "number",
+                children: [
+                    {
+                        type: "print",
+                        value: "Tu es majeur.",
+                        valueType: "text"
+                    }
+                ],
+                elseChildren: [
+                    {
+                        type: "print",
+                        value: "Tu es mineur.",
+                        valueType: "text"
+                    }
+                ]
+            }
+        ]
+    }
+
+];
+
+
+function renderExamples() {
+
+    const container =
+        document.getElementById("examplesContainer");
+
+    container.innerHTML =
+        EXAMPLES.map((example, index) => {
+
+            const nodes =
+                convertSimpleExampleNodes(
+                    example.nodes
+                );
+
+            return `
+                <div class="example-card">
+
+                    <h3>${escapeHtml(example.title)}</h3>
+
+                    <p class="small">
+                        ${escapeHtml(example.description)}
+                    </p>
+
+                    <div class="example-boxes">
+                        ${renderNodes(nodes, "example-" + index)}
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-use-example="${index}"
+                    >
+                        ➡️ Utiliser cet exemple
+                    </button>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+
+function convertSimpleExampleNodes(nodes) {
+
+    return nodes.map(node => {
+
+        const copy = JSON.parse(
+            JSON.stringify(node)
+        );
+
+        copy.id = newId();
+
+        if (copy.children) {
+            copy.children =
+                convertSimpleExampleNodes(
+                    copy.children
+                );
+        }
+
+        if (copy.elseChildren) {
+            copy.elseChildren =
+                convertSimpleExampleNodes(
+                    copy.elseChildren
+                );
+        }
+
+        return copy;
+    });
+}
+
+
+function useExample(index) {
+
+    const example =
+        EXAMPLES[index];
+
+    if (!example) return;
+
+    programNodes =
+        convertSimpleExampleNodes(
+            example.nodes
+        );
+
+    saveAutomatically();
+    renderProgram();
+
+    activateTab("build");
+}
+
+
+/* ============================================================
+   SAUVEGARDE
+============================================================ */
+
+function saveAutomatically() {
+
+    try {
+
+        localStorage.setItem(
+            "python_aventure_v7",
+            JSON.stringify({
+                nodes: programNodes,
+                nextId: nextId
+            })
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Sauvegarde automatique impossible.",
+            error
+        );
+    }
+}
+
+
+function loadSavedProgram() {
+
+    try {
+
+        const raw =
+            localStorage.getItem(
+                "python_aventure_v7"
+            );
+
+        if (!raw) return false;
+
+        const data =
+            JSON.parse(raw);
+
+        if (!data ||
+            !Array.isArray(data.nodes)) {
+
+            return false;
+        }
+
+        programNodes =
+            repairNodes(data.nodes);
+
+        nextId =
+            Number(data.nextId) || 1;
+
+        return true;
+
+    } catch (error) {
+
+        console.warn(
+            "Chargement impossible.",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+function repairNodes(nodes) {
+
+    return nodes.map(raw => {
+
+        const node = {
+            ...createNode(raw.type),
+            ...raw
+        };
+
+        if (node.children) {
+            node.children =
+                repairNodes(node.children);
+        }
+
+        if (node.elseChildren) {
+            node.elseChildren =
+                repairNodes(node.elseChildren);
+        }
+
+        return node;
+    });
+}
+
+
+/* ============================================================
+   MODE PARENT : PARSEUR PYTHON
+============================================================ */
+
+/*
+    Le convertisseur reconnaît volontairement un sous-ensemble
+    clair et contrôlé du Python.
+
+    Il ne cherche pas à interpréter n'importe quel programme.
+    S'il rencontre une instruction inconnue, elle est signalée.
+*/
+
+
+function stripPythonComments(line) {
+
+    let insideSingle = false;
+    let insideDouble = false;
+
+    for (let i = 0; i < line.length; i++) {
+
+        const char = line[i];
+
+        if (char === "'" && !insideDouble) {
+            insideSingle = !insideSingle;
+        }
+
+        if (char === '"' && !insideSingle) {
+            insideDouble = !insideDouble;
+        }
+
+        if (char === "#" &&
+            !insideSingle &&
+            !insideDouble) {
+
+            return line.slice(0, i);
+        }
+    }
+
+    return line;
+}
+
+
+function countIndent(line) {
+
+    let count = 0;
+
+    for (const char of line) {
+
+        if (char === " ") {
+            count++;
+        } else if (char === "\t") {
+            count += 4;
+        } else {
+            break;
+        }
+    }
+
+    return count;
+}
+
+
+function parsePythonString(value) {
+
+    const text =
+        value.trim();
+
+    if (
+        (text.startsWith('"') &&
+         text.endsWith('"')) ||
+        (text.startsWith("'") &&
+         text.endsWith("'"))
+    ) {
+
+        const inner =
+            text.slice(1, -1);
+
+        return inner
+            .replace(/\\"/g, '"')
+            .replace(/\\'/g, "'")
+            .replace(/\\n/g, "\n")
+            .replace(/\\\\/g, "\\");
+    }
+
+    return null;
+}
+
+
+function parsePythonValue(value) {
+
+    const v = normalizeText(value);
+
+    const str =
+        parsePythonString(v);
+
+    if (str !== null) {
+
+        return {
+            value: str,
+            type: "text"
+        };
+    }
+
+    if (isNumber(v)) {
+
+        return {
+            value: v,
+            type: "number"
+        };
+    }
+
+    if (isValidIdentifier(v)) {
+
+        return {
+            value: v,
+            type: "variable"
+        };
+    }
+
+    return null;
+}
+
+
+function splitCondition(condition) {
+
+    const operators = [
+        ">=",
+        "<=",
+        "==",
+        "!=",
+        ">",
+        "<"
+    ];
+
+    for (const op of operators) {
+
+        const index =
+            condition.indexOf(op);
+
+        if (index !== -1) {
+
+            const left =
+                condition.slice(0, index).trim();
+
+            const right =
+                condition
+                    .slice(index + op.length)
+                    .trim();
+
+            const leftValue =
+                parsePythonValue(left);
+
+            const rightValue =
+                parsePythonValue(right);
+
+            if (!leftValue || !rightValue) {
+                return null;
+            }
+
+            return {
+                left: leftValue.value,
+                right: rightValue.value,
+                leftType: leftValue.type,
+                rightType: rightValue.type,
+                operator: op
+            };
+        }
+    }
+
+    return null;
+}
+
+
+function parsePrint(line) {
+
+    const match =
+        line.match(/^print\s*\((.*)\)\s*$/);
+
+    if (!match) return null;
+
+    const value =
+        parsePythonValue(match[1]);
+
+    if (!value) return null;
+
+    return {
+        type: "print",
+        value: value.value,
+        valueType: value.type
+    };
+}
+
+
+function parseInput(line) {
+
+    const match =
+        line.match(
+            /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*input\s*\((.*)\)\s*$/
+        );
+
+    if (!match) return null;
+
+    let question =
+        parsePythonString(match[2]);
+
+    if (question === null) {
+        question = "";
+    }
+
+    return {
+        type: "ask",
+        name: match[1],
+        question
+    };
+}
+
+
+function parseVariable(line) {
+
+    const match =
+        line.match(
+            /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)$/
+        );
+
+    if (!match) return null;
+
+    const name = match[1];
+    const expression = match[2].trim();
+
+    if (expression.startsWith("input(")) {
+        return null;
+    }
+
+    if (
+        expression.includes(".upper()") ||
+        expression.includes(".lower()") ||
+        expression.startsWith("len(")
+    ) {
+        return null;
+    }
+
+    if (/^[^+\-*/]+[\+\-*/][^+\-*/]+$/.test(expression)) {
+
+        const calc =
+            parseCalculation(
+                name,
+                expression
+            );
+
+        if (calc) return calc;
+    }
+
+    if (
+        expression.startsWith("[") &&
+        expression.endsWith("]")
+    ) {
+
+        const inside =
+            expression.slice(1, -1).trim();
+
+        const items =
+            inside
+                ? splitSimpleList(inside)
+                : [];
+
+        return {
+            type: "list",
+            name,
+            items: items
+                .map(item => {
+                    const parsed =
+                        parsePythonString(item);
+                    return parsed !== null
+                        ? parsed
+                        : item;
+                })
+                .join(", ")
+        };
+    }
+
+    const value =
+        parsePythonValue(expression);
+
+    if (!value) return null;
+
+    return {
+        type: "variable",
+        name,
+        value: value.value,
+        valueType: value.type
+    };
+}
+
+
+function splitSimpleList(text) {
+
+    const result = [];
+    let current = "";
+    let quote = null;
+
+    for (const char of text) {
+
+        if (
+            (char === '"' || char === "'")
+        ) {
+
+            if (quote === null) {
+                quote = char;
+            } else if (quote === char) {
+                quote = null;
+            }
+        }
+
+        if (char === "," && quote === null) {
+
+            result.push(current.trim());
+            current = "";
+
+        } else {
+
+            current += char;
+        }
+    }
+
+    if (current.trim()) {
+        result.push(current.trim());
+    }
+
+    return result;
+}
+
+
+function parseCalculation(resultName, expression) {
+
+    const match =
+        expression.match(
+            /^(.+?)\s*([\+\-\*\/])\s*(.+)$/
+        );
+
+    if (!match) return null;
+
+    const left =
+        normalizeText(match[1]);
+
+    const right =
+        normalizeText(match[3]);
+
+    const operator =
+        match[2];
+
+    if (
+        !(
+            isNumber(left) ||
+            isValidIdentifier(left)
+        )
+    ) {
+        return null;
+    }
+
+    if (
+        !(
+            isNumber(right) ||
+            isValidIdentifier(right)
+        )
+    ) {
+        return null;
+    }
+
+    return {
+        type: "calc",
+        left,
+        operator,
+        right,
+        result: resultName
+    };
+}
+
+
+function parseIf(line) {
+
+    const match =
+        line.match(/^if\s+(.+):\s*$/);
+
+    if (!match) return null;
+
+    const condition =
+        splitCondition(match[1]);
+
+    if (!condition) return null;
+
+    return {
+        type: "if",
+        ...condition,
+        children: [],
+        elseChildren: []
+    };
+}
+
+
+function parseElse(line) {
+
+    return /^else\s*:\s*$/.test(line);
+}
+
+
+function parseForRepeat(line) {
+
+    const match =
+        line.match(
+            /^for\s+_\s+in\s+range\s*\(\s*(\d+)\s*\)\s*:\s*$/
+        );
+
+    if (!match) return null;
+
+    const count =
+        Math.max(
+            1,
+            Math.min(
+                100,
+                parseInt(match[1], 10)
+            )
+        );
+
+    return {
+        type: "repeat",
+        count: String(count),
+        children: []
+    };
+}
+
+
+function parseComment(line) {
+
+    const trimmed =
+        line.trim();
+
+    if (!trimmed.startsWith("#")) {
+        return null;
+    }
+
+    return {
+        type: "comment",
+        text:
+            trimmed
+                .slice(1)
+                .trim()
+    };
+}
+
+
+function parseTextOperation(line) {
+
+    const match =
+        line.match(
+            /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)$/
+        );
+
+    if (!match) return null;
+
+    const result =
+        match[1];
+
+    const expression =
+        match[2].trim();
+
+    let operation = null;
+    let source = null;
+
+    if (expression.endsWith(".upper()")) {
+
+        operation = "upper";
+
+        source =
+            expression.slice(
+                0,
+                -8
+            ).trim();
+    }
+
+    if (expression.endsWith(".lower()")) {
+
+        operation = "lower";
+
+        source =
+            expression.slice(
+                0,
+                -8
+            ).trim();
+    }
+
+    if (
+        expression.startsWith("len(") &&
+        expression.endsWith(")")
+    ) {
+
+        operation = "len";
+
+        source =
+            expression.slice(
+                4,
+                -1
+            ).trim();
+    }
+
+    if (!operation) return null;
+
+    const parsed =
+        parsePythonValue(source);
+
+    if (!parsed) return null;
+
+    return {
+        type: "text",
+        source: parsed.value,
+        operation,
+        result
+    };
+}
+
+
+/* ============================================================
+   CONVERSION PRINCIPALE
+============================================================ */
+
+function convertPythonToNodes(code) {
+
+    const rawLines =
+        String(code ?? "")
+            .replace(/\r/g, "")
+            .split("\n");
+
+    const lines = [];
+
+    for (let i = 0; i < rawLines.length; i++) {
+
+        const original =
+            rawLines[i];
+
+        const withoutComment =
+            stripPythonComments(original);
+
+        const trimmed =
+            withoutComment.trim();
+
+        if (!trimmed) {
+
+            if (
+                original.trim().startsWith("#")
+            ) {
+
+                lines.push({
+                    indent: countIndent(original),
+                    text: original.trim(),
+                    number: i + 1
+                });
+            }
+
+            continue;
+        }
+
+        lines.push({
+            indent: countIndent(original),
+            text: trimmed,
+            number: i + 1
+        });
+    }
+
+    const root = [];
+    const stack = [
+        {
+            indent: -1,
+            children: root,
+            node: null,
+            zone: "children"
+        }
+    ];
+
+    const warnings = [];
+
+    let currentElseTarget = null;
+
+    for (let i = 0; i < lines.length; i++) {
+
+        const line =
+            lines[i];
+
+        while (
+            stack.length > 1 &&
+            line.indent <=
+                stack[stack.length - 1].indent
+        ) {
+
+            stack.pop();
+        }
+
+        if (parseElse(line.text)) {
+
+            const parent =
+                stack[stack.length - 1];
+
+            if (
+                parent.node &&
+                parent.node.type === "if"
+            ) {
+
+                currentElseTarget =
+                    parent.node;
+
+                stack.push({
+                    indent: line.indent,
+                    children:
+                        currentElseTarget.elseChildren,
+                    node: currentElseTarget,
+                    zone: "else"
+                });
+
+                continue;
+
+            } else {
+
+                warnings.push(
+                    `Ligne ${line.number} : ELSE sans SI compatible.`
+                );
+
+                continue;
+            }
+        }
+
+        let node = null;
+
+        node = parseComment(line.text);
+
+        if (!node) {
+            node = parsePrint(line.text);
+        }
+
+        if (!node) {
+            node = parseInput(line.text);
+        }
+
+        if (!node) {
+            node = parseIf(line.text);
+        }
+
+        if (!node) {
+            node = parseForRepeat(line.text);
+        }
+
+        if (!node) {
+            node = parseTextOperation(line.text);
+        }
+
+        if (!node) {
+            node = parseVariable(line.text);
+        }
+
+        if (!node) {
+
+            warnings.push(
+                `Ligne ${line.number} non reconnue : ${line.text}`
+            );
+
+            continue;
+        }
+
+        node.id =
+            newId();
+
+        if (node.type === "if") {
+
+            node.children =
+                node.children || [];
+
+            node.elseChildren =
+                node.elseChildren || [];
+        }
+
+        if (node.type === "repeat") {
+
+            node.children =
+                node.children || [];
+        }
+
+        const parent =
+            stack[stack.length - 1];
+
+        parent.children.push(node);
+
+        if (
+            node.type === "if" ||
+            node.type === "repeat"
+        ) {
+
+            stack.push({
+                indent: line.indent,
+                children: node.children,
+                node,
+                zone: "children"
+            });
+        }
+    }
+
+    return {
+        nodes: root,
+        warnings
+    };
+}
+
+
+/* ============================================================
+   MODE PARENT
+============================================================ */
+
+function runParentConversion() {
+
+    const code =
+        document.getElementById(
+            "parentCode"
+        ).value;
+
+    const message =
+        document.getElementById(
+            "parentMessage"
+        );
+
+    if (!normalizeText(code)) {
+
+        message.innerHTML =
+            `<div class="warning">
+                Écris ou colle du code Python avant de continuer.
+            </div>`;
+
+        return;
+    }
+
+    const result =
+        convertPythonToNodes(code);
+
+    if (!result.nodes.length) {
+
+        message.innerHTML =
+            `<div class="warning">
+                Aucune instruction compatible n'a été trouvée.
+            </div>`;
+
+        return;
+    }
+
+    programNodes =
+        result.nodes;
+
+    saveAutomatically();
+
+    renderProgram();
+
+    activateTab("build");
+
+    if (result.warnings.length) {
+
+        setTimeout(() => {
+
+            const warningText =
+                result.warnings
+                    .map(w => "• " + escapeHtml(w))
+                    .join("<br>");
+
+            message.innerHTML =
+                `<div class="warning">
+                    <strong>Boîtes créées.</strong><br>
+                    Certaines lignes n'ont pas pu être transformées :<br><br>
+                    ${warningText}
+                </div>`;
+
+        }, 100);
+
+    } else {
+
+        message.innerHTML =
+            `<div class="success">
+                ✅ Tout le code compatible a été transformé en boîtes.
+            </div>`;
+    }
+}
+
+
+/* ============================================================
+   MINI MOTEUR PYTHON LOCAL
+============================================================ */
+
+/*
+    Ce moteur n'est PAS Python complet.
+
+    Il sert uniquement à tester les instructions
+    que l'interface V7 expose.
+*/
+
+class MiniPythonEngine {
+
+    constructor(outputElement) {
+
+        this.outputElement =
+            outputElement;
+
+        this.variables = {};
+
+        this.output = [];
+    }
+
+    write(text) {
+
+        this.output.push(
+            String(text)
+        );
+    }
+
+    valueFromToken(token) {
+
+        const v =
+            normalizeText(token);
+
+        const parsed =
+            parsePythonValue(v);
+
+        if (!parsed) {
+            return "";
+        }
+
+        if (parsed.type === "variable") {
+
+            return this.variables[
+                parsed.value
+            ];
+        }
+
+        if (parsed.type === "number") {
+
+            return Number(parsed.value);
+        }
+
+        return parsed.value;
+    }
+
+    evalSimpleExpression(expression) {
+
+        const match =
+            expression.match(
+                /^(.+?)\s*([\+\-\*\/])\s*(.+)$/
+            );
+
+        if (!match) {
+
+            return this.valueFromToken(
+                expression
+            );
+        }
+
+        const left =
+            this.valueFromToken(
+                match[1]
+            );
+
+        const right =
+            this.valueFromToken(
+                match[3]
+            );
+
+        switch (match[2]) {
+
+            case "+":
+                return Number(left) + Number(right);
+
+            case "-":
+                return Number(left) - Number(right);
+
+            case "*":
+                return Number(left) * Number(right);
+
+            case "/":
+                return Number(left) / Number(right);
+
+            default:
+                return 0;
+        }
+    }
+
+    executeNodes(nodes) {
+
+        for (const node of nodes) {
+
+            switch (node.type) {
+
+                case "comment":
+                    break;
+
+                case "print": {
+
+                    let value;
+
+                    if (
+                        node.valueType === "variable"
+                    ) {
+
+                        value =
+                            this.variables[
+                                node.value
+                            ];
+
+                    } else if (
+                        node.valueType === "number"
+                    ) {
+
+                        value =
+                            Number(node.value);
+
+                    } else {
+
+                        value =
+                            node.value;
+                    }
+
+                    this.write(value ?? "");
+
+                    break;
+                }
+
+                case "variable": {
+
+                    if (
+                        node.valueType === "variable"
+                    ) {
+
+                        this.variables[node.name] =
+                            this.variables[node.value];
+
+                    } else if (
+                        node.valueType === "number"
+                    ) {
+
+                        this.variables[node.name] =
+                            Number(node.value);
+
+                    } else {
+
+                        this.variables[node.name] =
+                            node.value;
+                    }
+
+                    break;
+                }
+
+                case "ask": {
+
+                    const answer =
+                        window.prompt(
+                            node.question ||
+                            "Ta réponse ?"
+                        );
+
+                    this.variables[node.name] =
+                        answer === null
+                            ? ""
+                            : answer;
+
+                    break;
+                }
+
+                case "calc": {
+
+                    const expression =
+                        `${node.left} ${node.operator} ${node.right}`;
+
+                    const value =
+                        this.evalSimpleExpression(
+                            expression
+                        );
+
+                    if (
+                        isValidIdentifier(node.result)
+                    ) {
+
+                        this.variables[node.result] =
+                            value;
+
+                    } else {
+
+                        this.write(value);
+                    }
+
+                    break;
+                }
+
+                case "list": {
+
+                    this.variables[node.name] =
+                        normalizeText(node.items)
+                            .split(",")
+                            .map(x => x.trim())
+                            .filter(Boolean);
+
+                    break;
+                }
+
+                case "text": {
+
+                    const source =
+                        this.valueFromToken(
+                            node.source
+                        );
+
+                    let value =
+                        String(source ?? "");
+
+                    if (
+                        node.operation === "upper"
+                    ) {
+
+                        value =
+                            value.toUpperCase();
+
+                    } else if (
+                        node.operation === "lower"
+                    ) {
+
+                        value =
+                            value.toLowerCase();
+
+                    } else if (
+                        node.operation === "len"
+                    ) {
+
+                        value =
+                            value.length;
+                    }
+
+                    if (
+                        isValidIdentifier(node.result)
+                    ) {
+
+                        this.variables[node.result] =
+                            value;
+
+                    } else {
+
+                        this.write(value);
+                    }
+
+                    break;
+                }
+
+                case "if": {
+
+                    const left =
+                        this.valueFromToken(
+                            node.left
+                        );
+
+                    const right =
+                        this.valueFromToken(
+                            node.right
+                        );
+
+                    let condition = false;
+
+                    switch (node.operator) {
+
+                        case "==":
+                            condition =
+                                left == right;
+                            break;
+
+                        case "!=":
+                            condition =
+                                left != right;
+                            break;
+
+                        case ">":
+                            condition =
+                                Number(left) > Number(right);
+                            break;
+
+                        case ">=":
+                            condition =
+                                Number(left) >= Number(right);
+                            break;
+
+                        case "<":
+                            condition =
+                                Number(left) < Number(right);
+                            break;
+
+                        case "<=":
+                            condition =
+                                Number(left) <= Number(right);
+                            break;
+                    }
+
+                    if (condition) {
+
+                        this.executeNodes(
+                            node.children || []
+                        );
+
+                    } else {
+
+                        this.executeNodes(
+                            node.elseChildren || []
+                        );
+                    }
+
+                    break;
+                }
+
+                case "repeat": {
+
+                    let count =
+                        parseInt(
+                            node.count,
+                            10
+                        );
+
+                    if (!Number.isFinite(count)) {
+                        count = 1;
+                    }
+
+                    count =
+                        Math.max(
+                            1,
+                            Math.min(100, count)
+                        );
+
+                    for (
+                        let i = 0;
+                        i < count;
+                        i++
+                    ) {
+
+                        this.executeNodes(
+                            node.children || []
+                        );
+                    }
+
+                    break;
+                }
+            }
+        }
+    }
+
+    run(nodes) {
+
+        this.variables = {};
+        this.output = [];
+
+        try {
+
+            this.executeNodes(nodes);
+
+            this.outputElement.textContent =
+                this.output.length
+                    ? this.output.join("\n")
+                    : "(Le programme n'affiche rien.)";
+
+        } catch (error) {
+
+            this.outputElement.textContent =
+                "Erreur pendant le test :\n" +
+                error.message;
+        }
+    }
+}
+
+
+/* ============================================================
+   ONGLETS
+============================================================ */
+
+function activateTab(name) {
+
+    document
+        .querySelectorAll(".tab-button")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.tab === name
+            );
+        });
+
+    document
+        .querySelectorAll(".tab-panel")
+        .forEach(panel => {
+
+            panel.classList.toggle(
+                "active",
+                panel.id === "tab-" + name
+            );
+        });
+}
+
+
+/* ============================================================
+   ÉVÉNEMENTS
+============================================================ */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const tab =
+            event.target.closest(
+                ".tab-button"
+            );
+
+        if (tab) {
+
+            activateTab(
+                tab.dataset.tab
+            );
+
+            return;
+        }
+
+
+        const add =
+            event.target.closest(
+                "[data-add]"
+            );
+
+        if (add) {
+
+            addRootNode(
+                add.dataset.add
+            );
+
+            return;
+        }
+
+
+        const deleteButton =
+            event.target.closest(
+                "[data-delete]"
+            );
+
+        if (deleteButton) {
+
+            deleteNode(
+                deleteButton.dataset.delete
+            );
+
+            return;
+        }
+
+
+        const moveUp =
+            event.target.closest(
+                "[data-move-up]"
+            );
+
+        if (moveUp) {
+
+            moveNode(
+                moveUp.dataset.moveUp,
+                -1
+            );
+
+            return;
+        }
+
+
+        const moveDown =
+            event.target.closest(
+                "[data-move-down]"
+            );
+
+        if (moveDown) {
+
+            moveNode(
+                moveDown.dataset.moveDown,
+                1
+            );
+
+            return;
+        }
+
+
+        const info =
+            event.target.closest(
+                "[data-info]"
+            );
+
+        if (info) {
+
+            openInfo(
+                info.dataset.info
+            );
+
+            return;
+        }
+
+
+        const addChild =
+            event.target.closest(
+                "[data-add-child]"
+            );
+
+        if (addChild) {
+
+            const parentId =
+                addChild.dataset.addChild;
+
+            const zone =
+                addChild.dataset.childZone;
+
+            /*
+                Pour garder l'interface enfant-simple,
+                on ajoute une boîte via un petit choix.
+            */
+
+            const type =
+                prompt(
+                    "Quelle boîte veux-tu ajouter ?\n\n" +
+                    "1 = Afficher\n" +
+                    "2 = Variable\n" +
+                    "3 = Demander\n" +
+                    "4 = Calculer\n" +
+                    "5 = Si\n" +
+                    "6 = Répéter\n" +
+                    "7 = Liste\n" +
+                    "8 = Texte\n" +
+                    "9 = Commentaire"
+                );
+
+            const types = {
+                "1": "print",
+                "2": "variable",
+                "3": "ask",
+                "4": "calc",
+                "5": "if",
+                "6": "repeat",
+                "7": "list",
+                "8": "text",
+                "9": "comment"
+            };
+
+            if (types[type]) {
+
+                addChildNode(
+                    parentId,
+                    types[type],
+                    zone
+                );
+            }
+
+            return;
+        }
+
+
+        const example =
+            event.target.closest(
+                "[data-use-example]"
+            );
+
+        if (example) {
+
+            useExample(
+                Number(
+                    example.dataset.useExample
+                )
+            );
+
+            return;
+        }
+    }
+);
+
+
+/* ============================================================
+   CHANGEMENTS INPUT
+============================================================ */
+
+document.addEventListener(
+    "input",
+    function(event) {
+
+        const element =
+            event.target;
+
+        if (
+            !element.dataset ||
+            !element.dataset.id ||
+            !element.dataset.field
+        ) {
+            return;
+        }
+
+        updateNodeField(
+            element.dataset.id,
+            element.dataset.field,
+            element.value
+        );
+    }
+);
+
+
+document.addEventListener(
+    "change",
+    function(event) {
+
+        const element =
+            event.target;
+
+        if (
+            !element.dataset ||
+            !element.dataset.id ||
+            !element.dataset.field
+        ) {
+            return;
+        }
+
+        updateNodeField(
+            element.dataset.id,
+            element.dataset.field,
+            element.value
+        );
+
+        renderProgram();
+    }
+);
+
+
+/* ============================================================
+   BOUTONS PRINCIPAUX
+============================================================ */
+
+document.getElementById(
+    "clearProgram"
+).addEventListener(
+    "click",
+    function() {
+
+        if (!programNodes.length) return;
+
+        const ok =
+            confirm(
+                "Effacer tout ton programme ?"
+            );
+
+        if (!ok) return;
+
+        programNodes = [];
+
+        saveAutomatically();
+        renderProgram();
+    }
+);
+
+
+document.getElementById(
+    "saveProgram"
+).addEventListener(
+    "click",
+    function() {
+
+        saveAutomatically();
+
+        document.getElementById(
+            "helpBox"
+        ).textContent =
+            "✅ Ton programme est sauvegardé sur cet appareil.";
+    }
+);
+
+
+document.getElementById(
+    "loadProgram"
+).addEventListener(
+    "click",
+    function() {
+
+        if (
+            loadSavedProgram()
+        ) {
+
+            renderProgram();
+
+            document.getElementById(
+                "helpBox"
+            ).textContent =
+                "✅ Ton programme sauvegardé a été chargé.";
+
+        } else {
+
+            document.getElementById(
+                "helpBox"
+            ).textContent =
+                "Aucun programme sauvegardé trouvé.";
+        }
+    }
+);
+
+
+document.getElementById(
+    "testCode"
+).addEventListener(
+    "click",
+    function() {
+
+        const problems =
+            validateNodes(programNodes);
+
+        if (problems.length) {
+
+            document.getElementById(
+                "output"
+            ).textContent =
+                "Corrige d'abord :\n\n" +
+                problems.join("\n");
+
+            return;
+        }
+
+        const engine =
+            new MiniPythonEngine(
+                document.getElementById(
+                    "output"
+                )
+            );
+
+        engine.run(
+            programNodes
+        );
+    }
+);
+
+
+document.getElementById(
+    "copyCode"
+).addEventListener(
+    "click",
+    async function() {
+
+        const code =
+            getPythonCode();
+
+        try {
+
+            await navigator.clipboard.writeText(
+                code
+            );
+
+            document.getElementById(
+                "helpBox"
+            ).textContent =
+                "✅ Le vrai code Python a été copié.";
+
+        } catch (error) {
+
+            document.getElementById(
+                "helpBox"
+            ).textContent =
+                "Impossible de copier automatiquement. Sélectionne le code manuellement.";
+        }
+    }
+);
+
+
+document.getElementById(
+    "convertPython"
+).addEventListener(
+    "click",
+    runParentConversion
+);
+
+
+document.getElementById(
+    "parentExample"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "parentCode"
+        ).value =
+`nom = input("Comment tu t'appelles ?")
+
+if nom == "Léo":
+    print("Bonjour Léo !")
+else:
+    print("Bonjour !")`;
+
+        document.getElementById(
+            "parentMessage"
+        ).innerHTML =
+            `<div class="success">
+                Exemple Python chargé. Clique sur « Transformer en boîtes ».
+            </div>`;
+    }
+);
+
+
+/* ============================================================
+   MODAL
+============================================================ */
+
+document.getElementById(
+    "closeModal"
+).addEventListener(
+    "click",
+    function() {
+
+        document.getElementById(
+            "infoModal"
+        ).classList.remove("open");
+    }
+);
+
+
+document.getElementById(
+    "infoModal"
+).addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target.id === "infoModal"
+        ) {
+
+            event.currentTarget
+                .classList.remove("open");
+        }
+    }
+);
+
+
+/* ============================================================
+   INITIALISATION
+============================================================ */
+
+(function init() {
+
+    loadSavedProgram();
+
+    renderProgram();
+
+    renderExamples();
+
+    updateAll();
+
+})();
+</script>
+
+</body>
+  </html>
