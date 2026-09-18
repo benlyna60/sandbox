@@ -3,136 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de Code Python par Boîtes</title>
+    <title>Mon Premier Atelier Python 🚀</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f7f4;
             margin: 0;
             padding: 20px;
             display: flex;
             gap: 20px;
+            color: #333;
         }
         .panel {
             flex: 1;
             background: white;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
         }
-        h2 { margin-top: 0; color: #333; }
+        h2 { margin-top: 0; color: #2c3e50; display: flex; align-items: center; gap: 8px; }
+        
         .box-template {
-            background: #e3f2fd;
-            border: 1px dashed #2196f3;
-            padding: 10px;
+            background: #e1f5fe;
+            border: 2px dashed #03a9f4;
+            padding: 12px;
             margin-bottom: 10px;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            color: #0d47a1;
+            color: #0277bd;
             text-align: center;
+            transition: all 0.2s;
         }
-        .box-template:hover { background: #bbdefb; }
+        .box-template:hover { background: #b3e5fc; transform: translateY(-2px); }
         
         #workspace {
-            min-height: 300px;
-            border: 2px dashed #ccc;
-            border-radius: 6px;
-            padding: 10px;
+            min-height: 250px;
+            border: 3px dashed #b0bec5;
+            border-radius: 8px;
+            padding: 12px;
             background: #fafafa;
             margin-bottom: 15px;
         }
         .active-box {
             background: white;
-            border: 1px solid #ccc;
-            border-left: 5px solid #2196f3;
-            padding: 10px;
+            border: 2px solid #cfd8dc;
+            border-left: 6px solid #ffb74d;
+            padding: 12px;
             margin-bottom: 10px;
-            border-radius: 4px;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            transition: border 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
+        .active-box[data-type="print"] { border-left-color: #42a5f5; }
+        .active-box[data-type="variable"] { border-left-color: #66bb6a; }
+        .active-box[data-type="if"] { border-left-color: #ab47bc; }
+
         .active-box.error {
-            border-left: 5px solid #ff5252;
+            border-left: 6px solid #ef5350;
             background: #ffebee;
         }
         .active-box input {
-            padding: 5px;
-            margin-left: 10px;
-            flex: 1;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 6px;
+            margin: 0 5px;
+            border: 1px solid #b0bec5;
+            border-radius: 6px;
+            font-size: 14px;
         }
         .active-box button.delete {
             background: #ff5252;
             color: white;
             border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 6px 10px;
+            border-radius: 6px;
             cursor: pointer;
-            margin-left: 10px;
+            font-weight: bold;
         }
-        .active-box button.delete:hover { background: #ff1744; }
+        .active-box button.delete:hover { background: #d32f2f; }
         
         button.generate-btn {
-            background: #4caf50;
+            background: #66bb6a;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-size: 16px;
-            border-radius: 4px;
+            font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
+            box-shadow: 0 4px 6px rgba(102, 187, 106, 0.3);
+            transition: background 0.2s;
         }
         button.generate-btn:hover { background: #43a047; }
         
         #warning-banner {
-            background: #ffebee;
-            color: #c62828;
-            padding: 10px;
-            border-radius: 4px;
+            background: #fff3e0;
+            color: #e65100;
+            padding: 12px;
+            border-radius: 8px;
             margin-bottom: 15px;
-            border: 1px solid #ef9a9a;
+            border: 1px solid #ffe0b2;
             display: none;
             font-size: 14px;
+            font-weight: 500;
         }
 
         pre {
-            background: #272822;
-            color: #f8f8f2;
+            background: #2d3748;
+            color: #e2e8f0;
             padding: 15px;
-            border-radius: 6px;
+            border-radius: 8px;
             overflow-x: auto;
-            min-height: 150px;
+            font-size: 15px;
+        }
+
+        .explanation-box {
+            background: #e8f5e9;
+            border-left: 5px solid #66bb6a;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            color: #1b5e20;
         }
     </style>
 </head>
 <body>
 
-    <!-- Panneau de gauche : Les outils et l'espace de travail -->
+    <!-- Panneau de gauche : Construction -->
     <div class="panel">
-        <h2>1. Crée ton assemblage</h2>
-        <p>Clique sur une boîte pour l'ajouter :</p>
+        <h2>🧱 1. Crée ton histoire</h2>
+        <p>Clique sur une boîte magique pour l'ajouter à ton aventure :</p>
         
-        <div class="box-template" onclick="addBox('print')">Boîte : Afficher du texte (print)</div>
-        <div class="box-template" onclick="addBox('variable')">Boîte : Créer une variable</div>
-        <div class="box-template" onclick="addBox('if')">Boîte : Condition (Si...)</div>
+        <div class="box-template" onclick="addBox('print')">📢 Dire un mot (Afficher)</div>
+        <div class="box-template" onclick="addBox('variable')">📦 Ranger un trésor (Variable)</div>
+        <div class="box-template" onclick="addBox('if')">🤔 Poser une énigme (Condition)</div>
 
-        <h3>Espace de travail</h3>
+        <h3>Mon espace magique :</h3>
         <div id="workspace"></div>
 
-        <div id="warning-banner">⚠️ Attention : Certaines boîtes contiennent des erreurs ou sont vides. Remplis-les pour un pipeline valide.</div>
+        <div id="warning-banner">💡 Oups ! Une petite boîte est restée vide. Remplis-la pour que l'ordinateur comprenne tout bien !</div>
 
-        <button class="generate-btn" onclick="generateCode()">Générer le code Python 🚀</button>
+        <button class="generate-btn" onclick="generateCode()">Générer mon super code Python 🚀</button>
     </div>
 
-    <!-- Panneau de droite : Le code final -->
+    <!-- Panneau de droite : Résultat et Pédagogie -->
     <div class="panel">
-        <h2>2. Code Python généré</h2>
-        <pre id="output"># Ton code apparaîtra ici...</pre>
+        <h2>✨ 2. Le secret de l'ordinateur</h2>
+        <pre id="output"># Ton code apparaîtra ici magiquement...</pre>
+        
+        <div id="explanation" class="explanation-box" style="display:none;">
+            <strong>🧠 Ce que fait ton programme :</strong>
+            <p id="explanation-text" style="margin: 5px 0 0 0;"></p>
+        </div>
     </div>
 
     <script>
@@ -145,27 +170,30 @@
 
             let content = '';
             if (type === 'print') {
-                content = `<span>print(</span><input type="text" class="val1" value=""><span>)</span>`;
+                content = `<span>📢 Afficher :</span> <input type="text" class="val1" value="" placeholder="ex: Bonjour !">`;
             } else if (type === 'variable') {
-                content = `<input type="text" class="varName" value="" placeholder="nom" style="max-width:80px;"> <span>=</span> <input type="text" class="val1" value="" placeholder="valeur">`;
+                content = `<span>📦 Mettre</span> <input type="text" class="val1" value="" placeholder="valeur" style="width:70px;"> <span>dans la boîte</span> <input type="text" class="varName" value="" placeholder="nom" style="width:70px;">`;
             } else if (type === 'if') {
-                content = `<span>if</span> <input type="text" class="val1" value="" placeholder="condition"><span>:</span>`;
+                content = `<span>🤔 Si </span> <input type="text" class="val1" value="" placeholder="ex: score > 5"><span> alors :</span>`;
             }
 
-            div.innerHTML = content + `<button class="delete" onclick="this.parentElement.remove()">X</button>`;
+            div.innerHTML = content + `<button class="delete" onclick="this.parentElement.remove()">❌</button>`;
             workspace.appendChild(div);
         }
 
         function generateCode() {
             let boxes = workspace.getElementsByClassName('active-box');
             let pythonCode = "";
+            let explanationText = "";
             let hasError = false;
 
             let warningBanner = document.getElementById('warning-banner');
+            let explanationBox = document.getElementById('explanation');
             warningBanner.style.display = 'none';
 
             if (boxes.length === 0) {
-                document.getElementById('output').textContent = "# Ton espace de travail est vide !";
+                document.getElementById('output').textContent = "# Ton espace de travail est vide ! Ajoute une boîte à gauche.";
+                explanationBox.style.display = 'none';
                 return;
             }
 
@@ -174,7 +202,7 @@
                 let inputs = box.getElementsByTagName('input');
                 let boxHasError = false;
 
-                // Vérifier si un champ dans la boîte est vide
+                // Vérifier si un champ est vide
                 for (let input of inputs) {
                     if (input.value.trim() === "") {
                         boxHasError = true;
@@ -182,24 +210,33 @@
                     }
                 }
 
-                // Marquer visuellement la boîte si elle a une erreur
                 if (boxHasError) {
                     box.classList.add('error');
                 } else {
                     box.classList.remove('error');
                 }
 
-                // Génération du code si tout va bien pour cette boîte
+                // Génération propre avec gestion automatique des guillemets pour le texte simple si besoin
                 if (!boxHasError) {
                     if (type === 'print') {
-                        pythonCode += `print("${inputs[0].value}")\n`;
+                        let textVal = inputs[0].value;
+                        pythonCode += `print("${textVal}")\n`;
+                        explanationText += `• L'ordinateur prend un grand micro et crie : "${textVal}".<br>`;
                     } else if (type === 'variable') {
-                        pythonCode += `${inputs[0].value} = ${inputs[1].value}\n`;
+                        let varName = inputs[0].value; // Attention à l'ordre des inputs selon le HTML
+                        // Dans notre HTML : inputs[0] = valeur, inputs[1] = nom
+                        let val = inputs[0].value;
+                        let name = inputs[1].value;
+                        pythonCode += `${name} = ${val}\n`;
+                        explanationText += `• Il colle une étiquette "${name}" sur la valeur ${val} pour s'en souvenir.<br>`;
                     } else if (type === 'if') {
-                        pythonCode += `if ${inputs[0].value}:\n    # fais quelque chose ici\n`;
+                        let condition = inputs[0].value;
+                        pythonCode += `if ${condition}:\n    print("La condition est vraie !")\n`;
+                        explanationText += `• Il vérifie l'énigme (${condition}). Si c'est vrai, il fait une action spéciale !<br>`;
                     }
                 } else {
-                    pythonCode += `# [ERREUR] Boîte incomplète ignorée\n`;
+                    pythonCode += `# [Oups] Boîte incomplète ignorée\n`;
+                    explanationText += `• ⚠️ Une boîte incomplète a été mise de côté pour que le programme ne plante pas.<br>`;
                 }
             }
 
@@ -208,6 +245,8 @@
             }
 
             document.getElementById('output').textContent = pythonCode;
+            document.getElementById('explanation-text').innerHTML = explanationText;
+            explanationBox.style.display = 'block';
         }
     </script>
 </body>
