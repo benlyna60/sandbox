@@ -1,0 +1,4327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Aventure V4 — Laboratoire Python</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#f5f7fb;
+    --panel:#ffffff;
+    --border:#dfe5ef;
+    --text:#243044;
+    --muted:#718096;
+    --primary:#5b6ee1;
+    --primary-light:#eef0ff;
+    --green:#42a875;
+    --green-light:#eaf8f0;
+    --yellow:#e6a93b;
+    --yellow-light:#fff7e5;
+    --red:#d96b6b;
+    --red-light:#fff0f0;
+    --blue:#4d91d8;
+    --blue-light:#edf6ff;
+    --shadow:0 5px 18px rgba(40,55,80,.08);
+    --radius:16px;
+}
+
+body{
+    margin:0;
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+button,
+textarea,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header{
+    background:white;
+    border-bottom:1px solid var(--border);
+    padding:14px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo-icon{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    background:var(--primary-light);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+}
+
+.logo h1{
+    margin:0;
+    font-size:19px;
+}
+
+.logo small{
+    color:var(--muted);
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.status{
+    padding:8px 13px;
+    border-radius:20px;
+    background:var(--green-light);
+    color:var(--green);
+    font-size:13px;
+    font-weight:700;
+}
+
+.progress-mini{
+    width:130px;
+}
+
+.progress-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:4px;
+}
+
+.progress-bar{
+    height:7px;
+    background:#e8edf5;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    width:20%;
+    background:var(--primary);
+    border-radius:20px;
+    transition:.3s;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.toolbar{
+    padding:10px 20px;
+    background:#fafbfe;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.tool-btn{
+    border:1px solid var(--border);
+    background:white;
+    padding:8px 13px;
+    border-radius:10px;
+    color:var(--text);
+    font-weight:600;
+    font-size:13px;
+}
+
+.tool-btn:hover{
+    border-color:var(--primary);
+}
+
+.tool-btn.primary{
+    background:var(--primary);
+    color:white;
+    border-color:var(--primary);
+}
+
+.tool-btn.green{
+    background:var(--green);
+    color:white;
+    border-color:var(--green);
+}
+
+.tool-btn.yellow{
+    background:#fff8e8;
+    color:#9b6c13;
+}
+
+.toolbar-spacer{
+    flex:1;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.main{
+    flex:1;
+    display:grid;
+    grid-template-columns:270px minmax(400px,1fr) 310px;
+    gap:14px;
+    padding:14px;
+    max-width:1800px;
+    width:100%;
+    margin:auto;
+}
+
+.panel{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+
+.panel-title{
+    padding:13px 15px;
+    border-bottom:1px solid var(--border);
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.panel-content{
+    padding:14px;
+}
+
+/* =========================
+   LEFT
+========================= */
+
+.mode-switch{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+    padding:10px;
+}
+
+.mode-btn{
+    padding:9px 6px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#fafbfe;
+    font-weight:700;
+    font-size:12px;
+}
+
+.mode-btn.active{
+    background:var(--primary-light);
+    border-color:#c9cffc;
+    color:var(--primary);
+}
+
+.box{
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:12px;
+    margin-bottom:10px;
+    background:white;
+}
+
+.box-title{
+    font-weight:800;
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.box-text{
+    font-size:12px;
+    line-height:1.55;
+    color:#526174;
+}
+
+.goal-box{
+    background:#f7f7ff;
+    border-color:#dfe1ff;
+}
+
+.hierarchy{
+    font-size:12px;
+    line-height:1.8;
+}
+
+.hierarchy div{
+    padding-left:8px;
+}
+
+.hierarchy .level2{
+    padding-left:22px;
+}
+
+.hierarchy .level3{
+    padding-left:36px;
+}
+
+.hierarchy .level4{
+    padding-left:50px;
+}
+
+.brick{
+    width:100%;
+    border:1px solid var(--border);
+    background:#fafbfe;
+    border-radius:11px;
+    padding:9px 10px;
+    margin-bottom:7px;
+    text-align:left;
+    font-weight:650;
+    font-size:12px;
+}
+
+.brick:hover{
+    background:var(--primary-light);
+    border-color:#cbd0fb;
+}
+
+/* =========================
+   CENTER
+========================= */
+
+.learning-path{
+    padding:12px;
+    background:#fafbfe;
+    border-bottom:1px solid var(--border);
+}
+
+.step-track{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.step{
+    flex:1;
+    height:7px;
+    background:#e7ebf3;
+    border-radius:10px;
+}
+
+.step.active{
+    background:var(--primary);
+}
+
+.step.done{
+    background:var(--green);
+}
+
+.step-label{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:7px;
+    text-align:center;
+}
+
+.tabs{
+    display:flex;
+    border-bottom:1px solid var(--border);
+}
+
+.tab{
+    flex:1;
+    border:0;
+    background:white;
+    padding:12px;
+    font-weight:750;
+    color:var(--muted);
+}
+
+.tab.active{
+    color:var(--primary);
+    box-shadow:inset 0 -2px var(--primary);
+}
+
+.tab-content{
+    display:none;
+}
+
+.tab-content.active{
+    display:block;
+}
+
+.editor-wrap{
+    padding:14px;
+}
+
+textarea.code{
+    width:100%;
+    min-height:260px;
+    resize:vertical;
+    border:1px solid #ccd4e2;
+    border-radius:13px;
+    padding:14px;
+    background:#172033;
+    color:#edf3ff;
+    font-family:Consolas,Monaco,monospace;
+    font-size:14px;
+    line-height:1.65;
+    outline:none;
+}
+
+textarea.code:focus{
+    border-color:var(--primary);
+}
+
+.builder-area{
+    min-height:260px;
+    padding:14px;
+}
+
+.builder-block{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#f8f9fc;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:11px;
+    margin-bottom:8px;
+}
+
+.builder-number{
+    width:27px;
+    height:27px;
+    border-radius:9px;
+    background:var(--primary-light);
+    color:var(--primary);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:800;
+}
+
+.builder-code{
+    font-family:Consolas,monospace;
+    font-size:13px;
+    flex:1;
+}
+
+.delete-block{
+    border:0;
+    background:#fff0f0;
+    color:var(--red);
+    border-radius:8px;
+    padding:5px 8px;
+}
+
+.empty-builder{
+    border:2px dashed #dce2ec;
+    border-radius:14px;
+    padding:35px 15px;
+    text-align:center;
+    color:var(--muted);
+}
+
+.steps-list{
+    padding:14px;
+}
+
+.source-line{
+    display:flex;
+    gap:10px;
+    padding:8px;
+    border-radius:9px;
+    font-family:Consolas,monospace;
+    font-size:13px;
+}
+
+.source-line.active{
+    background:#fff4d8;
+}
+
+.line-number{
+    width:25px;
+    color:#9ba6b7;
+    text-align:right;
+}
+
+/* =========================
+   EDUCATIONAL BOXES
+========================= */
+
+.education{
+    padding:14px;
+}
+
+.education-box{
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:14px;
+    margin-bottom:10px;
+}
+
+.education-box h3{
+    margin:0 0 7px;
+    font-size:14px;
+}
+
+.education-box p{
+    margin:0;
+    font-size:13px;
+    line-height:1.6;
+    color:#566579;
+}
+
+.education-box.primary{
+    background:#f5f6ff;
+    border-color:#d8dcff;
+}
+
+.education-box.green{
+    background:#f1fbf5;
+    border-color:#d5efdf;
+}
+
+.education-box.yellow{
+    background:#fff9eb;
+    border-color:#f4e3b5;
+}
+
+.education-box.blue{
+    background:#f1f8ff;
+    border-color:#d5e8fb;
+}
+
+/* =========================
+   CONSOLE
+========================= */
+
+.input-area{
+    display:none;
+    padding:10px 14px;
+    background:#fff9e8;
+    border-top:1px solid #f0dfad;
+}
+
+.input-row{
+    display:flex;
+    gap:8px;
+}
+
+.input-row input{
+    flex:1;
+    border:1px solid #d9c98e;
+    border-radius:9px;
+    padding:9px;
+}
+
+.console{
+    margin:14px;
+    border-radius:13px;
+    overflow:hidden;
+    background:#172033;
+    color:#e8efff;
+}
+
+.console-header{
+    padding:9px 12px;
+    background:#202b41;
+    font-size:12px;
+    color:#aebbd2;
+}
+
+.console-output{
+    min-height:120px;
+    max-height:250px;
+    overflow:auto;
+    padding:12px;
+    font-family:Consolas,monospace;
+    font-size:13px;
+    white-space:pre-wrap;
+}
+
+.console-line{
+    margin-bottom:4px;
+}
+
+.console-error{
+    color:#ff9b9b;
+}
+
+.console-success{
+    color:#8ce0af;
+}
+
+.console-info{
+    color:#a9c8ff;
+}
+
+/* =========================
+   RIGHT
+========================= */
+
+.variable-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+}
+
+.variable-table th,
+.variable-table td{
+    border-bottom:1px solid #edf0f5;
+    padding:7px 5px;
+    text-align:left;
+}
+
+.variable-table th{
+    color:var(--muted);
+}
+
+.rule{
+    background:#fff8e8;
+    border-color:#f2dfad;
+}
+
+.lesson{
+    background:#f4f6ff;
+    border-color:#dce0ff;
+}
+
+.learning-list{
+    padding-left:18px;
+    margin:5px 0;
+}
+
+.learning-list li{
+    margin-bottom:5px;
+    font-size:12px;
+}
+
+/* =========================
+   CREATION
+========================= */
+
+.creation-panel{
+    display:none;
+}
+
+.creation-tools{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+}
+
+/* =========================
+   TEST
+========================= */
+
+.test-panel{
+    display:none;
+}
+
+.test-card{
+    background:#f8f9fd;
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:15px;
+}
+
+.test-title{
+    font-size:16px;
+    font-weight:850;
+    margin-bottom:6px;
+}
+
+.test-instruction{
+    font-size:13px;
+    color:#566579;
+    line-height:1.6;
+}
+
+.test-score{
+    display:none;
+    margin-top:12px;
+    padding:15px;
+    border-radius:14px;
+    background:#f2fbf5;
+    border:1px solid #cfead9;
+}
+
+.score-number{
+    font-size:30px;
+    font-weight:900;
+    color:var(--green);
+}
+
+.score-feedback{
+    font-size:13px;
+    line-height:1.6;
+    margin-top:5px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1100px){
+    .main{
+        grid-template-columns:220px 1fr;
+    }
+
+    .right-column{
+        grid-column:1 / -1;
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:10px;
+    }
+}
+
+@media(max-width:760px){
+    header{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .main{
+        grid-template-columns:1fr;
+        padding:8px;
+    }
+
+    .right-column{
+        display:block;
+    }
+
+    .main-left{
+        order:2;
+    }
+
+    .main-center{
+        order:1;
+    }
+
+    .right-column{
+        order:3;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+    <div class="logo">
+        <div class="logo-icon">🐍</div>
+        <div>
+            <h1>Python Aventure</h1>
+            <small>Laboratoire Python — apprendre en douceur</small>
+        </div>
+    </div>
+
+    <div class="header-right">
+        <div id="engineStatus" class="status">
+            🟢 Moteur pédagogique prêt
+        </div>
+
+        <div class="progress-mini">
+            <div class="progress-label">
+                <span>Progression</span>
+                <strong id="progressText">20%</strong>
+            </div>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="toolbar">
+
+    <button class="tool-btn primary" onclick="runPython()">
+        ▶ Tester
+    </button>
+
+    <button class="tool-btn" onclick="stepPrevious()">
+        ← Étape
+    </button>
+
+    <button class="tool-btn" onclick="stepNext()">
+        Étape →
+    </button>
+
+    <button class="tool-btn green" onclick="checkChallenge()">
+        📝 Vérifier mon test
+    </button>
+
+    <button class="tool-btn yellow" onclick="newChallenge()">
+        🔄 Nouveau test
+    </button>
+
+    <div class="toolbar-spacer"></div>
+
+    <button class="tool-btn" onclick="clearConsole()">
+        🧹 Effacer
+    </button>
+
+    <button class="tool-btn" onclick="resetApplication()">
+        ↺ Recommencer
+    </button>
+</div>
+
+<div class="main">
+
+<!-- =====================================================
+     LEFT COLUMN
+===================================================== -->
+
+<aside class="panel main-left">
+
+    <div class="mode-switch">
+        <button id="learnModeBtn" class="mode-btn active" onclick="setMainMode('learn')">
+            📚 Apprendre
+        </button>
+
+        <button id="createModeBtn" class="mode-btn" onclick="setMainMode('create')">
+            🛠️ Créer
+        </button>
+    </div>
+
+    <div class="panel-content">
+
+        <div class="box goal-box">
+            <div class="box-title">🎯 Objectif du moment</div>
+
+            <div id="goalText" class="box-text">
+                Comprendre comment créer une variable et utiliser sa valeur.
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-title">🧭 Où sommes-nous ?</div>
+
+            <div class="hierarchy">
+
+                <div>🐍 Programme</div>
+
+                <div class="level2">
+                    ↓ Instruction
+                </div>
+
+                <div class="level3">
+                    ↓ Élément
+                </div>
+
+                <div class="level4">
+                    ↓ Valeur / action
+                </div>
+
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="box-title">🧩 Boîtes Python</div>
+
+            <button class="brick" onclick="addBlock('print')">
+                📢 Afficher quelque chose
+            </button>
+
+            <button class="brick" onclick="addBlock('variable')">
+                📦 Créer une variable
+            </button>
+
+            <button class="brick" onclick="addBlock('input')">
+                💬 Demander une information
+            </button>
+
+            <button class="brick" onclick="addBlock('if')">
+                🔎 Vérifier une condition
+            </button>
+
+            <button class="brick" onclick="addBlock('comment')">
+                💭 Ajouter une explication
+            </button>
+        </div>
+
+        <div class="box">
+            <div class="box-title">📚 Petites leçons</div>
+
+            <button class="brick" onclick="loadLesson('variable')">
+                📦 Les variables
+            </button>
+
+            <button class="brick" onclick="loadLesson('print')">
+                📢 Afficher avec print()
+            </button>
+
+            <button class="brick" onclick="loadLesson('condition')">
+                🔎 Les conditions
+            </button>
+
+            <button class="brick" onclick="loadLesson('input')">
+                💬 Demander une information
+            </button>
+
+            <button class="brick" onclick="loadLesson('math')">
+                ➕ Faire des calculs
+            </button>
+        </div>
+
+    </div>
+</aside>
+
+
+<!-- =====================================================
+     CENTER COLUMN
+===================================================== -->
+
+<section class="panel main-center">
+
+    <div class="learning-path">
+
+        <div class="step-track">
+            <div id="track1" class="step active"></div>
+            <div id="track2" class="step"></div>
+            <div id="track3" class="step"></div>
+            <div id="track4" class="step"></div>
+            <div id="track5" class="step"></div>
+        </div>
+
+        <div id="stepLabel" class="step-label">
+            Étape 1 sur 5 — Comprendre
+        </div>
+
+    </div>
+
+    <div class="tabs">
+
+        <button id="tabBuilder" class="tab active" onclick="showTab('builder')">
+            🧩 Construire
+        </button>
+
+        <button id="tabCode" class="tab" onclick="showTab('code')">
+            💻 Code
+        </button>
+
+        <button id="tabSteps" class="tab" onclick="showTab('steps')">
+            🪜 Étapes
+        </button>
+
+    </div>
+
+
+    <!-- BUILDER -->
+
+    <div id="builderTab" class="tab-content active">
+
+        <div class="builder-area">
+
+            <div id="builderBlocks"></div>
+
+            <div id="emptyBuilder" class="empty-builder">
+                🧩 Ajoute une boîte à gauche pour construire ton programme.
+                <br><br>
+                Tu peux ensuite regarder le code créé automatiquement.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CODE -->
+
+    <div id="codeTab" class="tab-content">
+
+        <div class="editor-wrap">
+
+            <textarea
+                id="codeEditor"
+                class="code"
+                spellcheck="false"
+                placeholder="# Écris ton code Python ici..."
+            ></textarea>
+
+        </div>
+
+    </div>
+
+
+    <!-- STEPS -->
+
+    <div id="stepsTab" class="tab-content">
+
+        <div id="stepsList" class="steps-list"></div>
+
+    </div>
+
+
+    <!-- EDUCATIONAL AREA -->
+
+    <div class="education">
+
+        <div id="introBox" class="education-box primary">
+
+            <h3>🧭 Avant de commencer</h3>
+
+            <p id="introText">
+                Nous allons avancer tranquillement.
+                Une étape à la fois.
+                Tu vas d'abord comprendre ce que Python doit faire,
+                puis construire le code, puis le tester.
+            </p>
+
+        </div>
+
+
+        <div id="currentStepBox" class="education-box blue">
+
+            <h3>1️⃣ Première étape</h3>
+
+            <p id="currentStepText">
+                Une variable est comme une petite boîte.
+                Elle possède un nom et peut contenir une valeur.
+            </p>
+
+        </div>
+
+
+        <div id="explanationBox" class="education-box green">
+
+            <h3>💡 Ce qu'il faut retenir</h3>
+
+            <p id="explanationText">
+                Le nom de la variable permet de retrouver
+                l'information plus tard.
+            </p>
+
+        </div>
+
+
+        <div id="errorBox" class="education-box yellow" style="display:none;">
+
+            <h3>🌱 Petit indice</h3>
+
+            <p id="errorText"></p>
+
+        </div>
+
+    </div>
+
+
+    <!-- INPUT -->
+
+    <div id="inputArea" class="input-area">
+
+        <div id="inputPrompt" style="font-size:13px;font-weight:700;margin-bottom:7px;">
+            Python attend une réponse :
+        </div>
+
+        <div class="input-row">
+
+            <input id="pythonInput" type="text">
+
+            <button class="tool-btn primary" onclick="submitPythonInput()">
+                Valider
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONSOLE -->
+
+    <div class="console">
+
+        <div class="console-header">
+            🖥️ Console
+        </div>
+
+        <div id="consoleOutput" class="console-output">
+            <div class="console-line console-info">
+                Bienvenue dans Python Aventure 🌱
+            </div>
+
+            <div class="console-line">
+                Appuie sur « Tester » pour lancer ton programme.
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- CREATION -->
+
+    <div id="creationPanel" class="creation-panel">
+
+        <div class="education">
+
+            <div class="education-box primary">
+
+                <h3>🛠️ Espace Création</h3>
+
+                <p>
+                    Ici, tu peux expérimenter librement.
+                    Essaie une idée, modifie le code et regarde ce qui se passe.
+                    Il n'y a pas de mauvaise tentative.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TEST -->
+
+    <div id="testPanel" class="test-panel">
+
+        <div class="education">
+
+            <div class="test-card">
+
+                <div class="test-title">
+                    📝 Petit test
+                </div>
+
+                <div id="challengeText" class="test-instruction">
+                    Crée une variable appelée score et donne-lui la valeur 10.
+                    Ensuite, affiche-la.
+                </div>
+
+                <br>
+
+                <button class="tool-btn green" onclick="checkChallenge()">
+                    ⭐ Corriger mon travail
+                </button>
+
+                <div id="testScore" class="test-score">
+
+                    <div>
+                        Ta note :
+                    </div>
+
+                    <div id="scoreNumber" class="score-number">
+                        0 / 100
+                    </div>
+
+                    <div id="scoreFeedback" class="score-feedback">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     RIGHT COLUMN
+===================================================== -->
+
+<aside class="right-column">
+
+    <div class="panel">
+
+        <div class="panel-title">
+            📦 Variables
+        </div>
+
+        <div class="panel-content">
+
+            <table class="variable-table">
+
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Valeur</th>
+                    </tr>
+                </thead>
+
+                <tbody id="variablesTable">
+
+                    <tr>
+                        <td colspan="2">
+                            Aucune variable
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+            🧠 Règle importante
+        </div>
+
+        <div class="panel-content">
+
+            <div class="box rule">
+
+                <div class="box-text">
+
+                    Python lit les instructions dans un ordre précis.
+
+                    <br><br>
+
+                    <strong>
+                        1. Comprendre
+                        <br>
+                        2. Construire
+                        <br>
+                        3. Exécuter
+                        <br>
+                        4. Observer
+                        <br>
+                        5. Corriger
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+            📖 Mini-leçon
+        </div>
+
+        <div class="panel-content">
+
+            <div class="box lesson">
+
+                <div class="box-title" id="lessonTitle">
+                    📦 Les variables
+                </div>
+
+                <div class="box-text" id="lessonText">
+
+                    Une variable est une information
+                    que Python peut garder en mémoire.
+
+                    <br><br>
+
+                    Exemple :
+                    <br>
+
+                    <code>score = 10</code>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+            🌱 Ce que tu apprends
+        </div>
+
+        <div class="panel-content">
+
+            <ul class="learning-list" id="learningList">
+
+                <li>Comprendre une instruction</li>
+                <li>Créer une variable</li>
+                <li>Donner une valeur</li>
+                <li>Afficher une information</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</aside>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   PYTHON AVENTURE V4
+   Mini moteur Python pédagogique local
+========================================================= */
+
+
+/* =========================================================
+   DONNÉES DE L'APPLICATION
+========================================================= */
+
+let blocks = [];
+let blockId = 0;
+
+let progress = Number(
+    localStorage.getItem("pythonAventureProgress") || 20
+);
+
+let score = Number(
+    localStorage.getItem("pythonAventureScore") || 0
+);
+
+let level = Number(
+    localStorage.getItem("pythonAventureLevel") || 1
+);
+
+let currentStep = 0;
+let stepLines = [];
+
+let waitingForInput = false;
+let pendingInputResolver = null;
+
+let variables = {};
+
+let currentLesson = "variable";
+
+let currentChallenge = 0;
+
+
+/* =========================================================
+   MINI PYTHON ENGINE
+========================================================= */
+
+class MiniPythonError extends Error {
+
+    constructor(type, message, line){
+
+        super(message);
+
+        this.type = type;
+        this.line = line;
+
+    }
+
+}
+
+
+class MiniPythonEngine {
+
+    constructor(){
+
+        this.env = {};
+
+        this.output = null;
+
+        this.requestInput = null;
+
+    }
+
+
+    async run(code){
+
+        this.env = {};
+
+        const lines = this.prepareLines(code);
+
+        const tree = this.parseProgram(lines);
+
+        await this.executeNodes(tree);
+
+        return this.env;
+
+    }
+
+
+    prepareLines(code){
+
+        return code
+            .replace(/\r/g, "")
+            .split("\n")
+            .map((text,index)=>({
+
+                text:text,
+                number:index + 1,
+                indent:this.countIndent(text)
+
+            }));
+
+    }
+
+
+    countIndent(text){
+
+        let count = 0;
+
+        for(const c of text){
+
+            if(c === " "){
+                count++;
+            }
+            else if(c === "\t"){
+                count += 4;
+            }
+            else{
+                break;
+            }
+
+        }
+
+        return count;
+
+    }
+
+
+    parseProgram(lines){
+
+        const result = this.parseBlock(lines,0,0);
+
+        return result.nodes;
+
+    }
+
+
+    parseBlock(lines,index,indent){
+
+        const nodes = [];
+
+        while(index < lines.length){
+
+            const item = lines[index];
+
+            const raw = item.text.trim();
+
+            if(raw === "" || raw.startsWith("#")){
+
+                index++;
+
+                continue;
+
+            }
+
+
+            if(item.indent < indent){
+
+                break;
+
+            }
+
+
+            if(item.indent > indent){
+
+                throw new MiniPythonError(
+                    "IndentationError",
+                    "Cette indentation arrive trop tôt.",
+                    item.number
+                );
+
+            }
+
+
+            /* IF */
+
+            if(/^if\s+.+:$/.test(raw)){
+
+                const branches = [];
+
+                const condition = raw
+                    .replace(/^if\s+/,"")
+                    .replace(/:$/,"")
+                    .trim();
+
+                index++;
+
+                const first = this.parseBlock(
+                    lines,
+                    index,
+                    this.nextIndent(lines,index,indent)
+                );
+
+                branches.push({
+                    condition,
+                    body:first.nodes,
+                    line:item.number
+                });
+
+                index = first.index;
+
+
+                /* ELIF */
+
+                while(index < lines.length){
+
+                    const next = lines[index];
+
+                    const nextRaw = next.text.trim();
+
+                    if(
+                        next.indent === indent &&
+                        /^elif\s+.+:$/.test(nextRaw)
+                    ){
+
+                        const elifCondition = nextRaw
+                            .replace(/^elif\s+/,"")
+                            .replace(/:$/,"")
+                            .trim();
+
+                        index++;
+
+                        const branch = this.parseBlock(
+                            lines,
+                            index,
+                            this.nextIndent(lines,index,indent)
+                        );
+
+                        branches.push({
+                            condition:elifCondition,
+                            body:branch.nodes,
+                            line:next.number
+                        });
+
+                        index = branch.index;
+
+                    }
+                    else{
+                        break;
+                    }
+
+                }
+
+
+                /* ELSE */
+
+                let elseBody = [];
+
+                if(
+                    index < lines.length &&
+                    lines[index].indent === indent &&
+                    lines[index].text.trim() === "else:"
+                ){
+
+                    index++;
+
+                    const branch = this.parseBlock(
+                        lines,
+                        index,
+                        this.nextIndent(lines,index,indent)
+                    );
+
+                    elseBody = branch.nodes;
+
+                    index = branch.index;
+
+                }
+
+
+                nodes.push({
+                    type:"if",
+                    branches,
+                    elseBody,
+                    line:item.number
+                });
+
+                continue;
+
+            }
+
+
+            if(
+                raw === "else:" ||
+                raw.startsWith("elif ")
+            ){
+
+                break;
+
+            }
+
+
+            /* ASSIGNMENT */
+
+            const assignment = raw.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=(?!=)\s*(.+)$/
+            );
+
+            if(assignment){
+
+                nodes.push({
+
+                    type:"assign",
+                    name:assignment[1],
+                    expression:assignment[2],
+                    line:item.number
+
+                });
+
+                index++;
+
+                continue;
+
+            }
+
+
+            /* SIMPLE EXPRESSION */
+
+            if(
+                raw.startsWith("print(") ||
+                raw.startsWith("input(") ||
+                raw.startsWith("int(") ||
+                raw.startsWith("float(") ||
+                raw.startsWith("str(") ||
+                raw.startsWith("len(") ||
+                raw.startsWith("round(")
+            ){
+
+                nodes.push({
+
+                    type:"expression",
+                    expression:raw,
+                    line:item.number
+
+                });
+
+                index++;
+
+                continue;
+
+            }
+
+
+            throw new MiniPythonError(
+                "SyntaxError",
+                "Je ne reconnais pas encore cette instruction.",
+                item.number
+            );
+
+        }
+
+        return {
+            nodes,
+            index
+        };
+
+    }
+
+
+    nextIndent(lines,index,parentIndent){
+
+        if(index >= lines.length){
+            return parentIndent + 4;
+        }
+
+        const indent = lines[index].indent;
+
+        if(indent <= parentIndent){
+
+            throw new MiniPythonError(
+                "IndentationError",
+                "Le bloc doit être décalé vers la droite.",
+                lines[index].number
+            );
+
+        }
+
+        return indent;
+
+    }
+
+
+    async executeNodes(nodes){
+
+        for(const node of nodes){
+
+            if(node.type === "assign"){
+
+                this.env[node.name] =
+                    await this.evaluate(node.expression);
+
+            }
+
+            else if(node.type === "expression"){
+
+                await this.evaluate(node.expression);
+
+            }
+
+            else if(node.type === "if"){
+
+                let executed = false;
+
+                for(const branch of node.branches){
+
+                    const result =
+                        await this.evaluate(branch.condition);
+
+                    if(this.truthy(result)){
+
+                        await this.executeNodes(branch.body);
+
+                        executed = true;
+
+                        break;
+
+                    }
+
+                }
+
+                if(!executed && node.elseBody.length){
+
+                    await this.executeNodes(node.elseBody);
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    truthy(value){
+
+        return !!value;
+
+    }
+
+
+    async evaluate(expression){
+
+        const tokens = tokenize(expression);
+
+        const parser = new ExpressionParser(
+            tokens,
+            this.env,
+            this
+        );
+
+        return await parser.parse();
+
+    }
+
+}
+
+
+/* =========================================================
+   TOKENIZER
+========================================================= */
+
+function tokenize(text){
+
+    const tokens = [];
+
+    let i = 0;
+
+    while(i < text.length){
+
+        const c = text[i];
+
+        if(/\s/.test(c)){
+
+            i++;
+
+            continue;
+
+        }
+
+
+        if(c === '"' || c === "'"){
+
+            const quote = c;
+
+            let value = "";
+
+            i++;
+
+            while(i < text.length){
+
+                const current = text[i];
+
+                if(current === quote){
+
+                    i++;
+
+                    break;
+
+                }
+
+                if(current === "\\"){
+
+                    i++;
+
+                    if(i >= text.length) break;
+
+                    const escaped = text[i];
+
+                    if(escaped === "n") value += "\n";
+                    else if(escaped === "t") value += "\t";
+                    else if(escaped === "r") value += "\r";
+                    else value += escaped;
+
+                    i++;
+
+                    continue;
+
+                }
+
+                value += current;
+
+                i++;
+
+            }
+
+            tokens.push({
+                type:"STRING",
+                value
+            });
+
+            continue;
+
+        }
+
+
+        if(/[0-9]/.test(c)){
+
+            let number = c;
+
+            i++;
+
+            while(
+                i < text.length &&
+                /[0-9.]/.test(text[i])
+            ){
+
+                number += text[i];
+
+                i++;
+
+            }
+
+            tokens.push({
+                type:"NUMBER",
+                value:Number(number)
+            });
+
+            continue;
+
+        }
+
+
+        if(/[A-Za-z_]/.test(c)){
+
+            let word = c;
+
+            i++;
+
+            while(
+                i < text.length &&
+                /[A-Za-z0-9_]/.test(text[i])
+            ){
+
+                word += text[i];
+
+                i++;
+
+            }
+
+            tokens.push({
+                type:"IDENT",
+                value:word
+            });
+
+            continue;
+
+        }
+
+
+        const two = text.slice(i,i+2);
+
+        if(
+            two === "==" ||
+            two === "!=" ||
+            two === "<=" ||
+            two === ">=" ||
+            two === "**"
+        ){
+
+            tokens.push({
+                type:"OP",
+                value:two
+            });
+
+            i += 2;
+
+            continue;
+
+        }
+
+
+        if(
+            "+-*/%<>() ,".includes(c)
+        ){
+
+            if(c === "("){
+                tokens.push({
+                    type:"LPAREN",
+                    value:c
+                });
+            }
+
+            else if(c === ")"){
+                tokens.push({
+                    type:"RPAREN",
+                    value:c
+                });
+            }
+
+            else if(c === ","){
+                tokens.push({
+                    type:"COMMA",
+                    value:c
+                });
+
+            }
+
+            else{
+
+                tokens.push({
+                    type:"OP",
+                    value:c
+                });
+
+            }
+
+            i++;
+
+            continue;
+
+        }
+
+
+        throw new MiniPythonError(
+            "SyntaxError",
+            "Je ne comprends pas le symbole « " + c + " »."
+        );
+
+    }
+
+    tokens.push({
+        type:"EOF",
+        value:null
+    });
+
+    return tokens;
+
+}
+
+
+/* =========================================================
+   EXPRESSION PARSER
+========================================================= */
+
+class ExpressionParser {
+
+    constructor(tokens,env,engine){
+
+        this.tokens = tokens;
+        this.env = env;
+        this.engine = engine;
+        this.position = 0;
+
+    }
+
+
+    current(){
+
+        return this.tokens[this.position];
+
+    }
+
+
+    eat(){
+
+        return this.tokens[this.position++];
+
+    }
+
+
+    match(value){
+
+        if(this.current().value === value){
+
+            this.position++;
+
+            return true;
+
+        }
+
+        return false;
+
+    }
+
+
+    async parse(){
+
+        const result = await this.parseOr();
+
+        if(this.current().type !== "EOF"){
+
+            throw new MiniPythonError(
+                "SyntaxError",
+                "Il reste une partie de l'expression que je ne comprends pas."
+            );
+
+        }
+
+        return result;
+
+    }
+
+
+    async parseOr(){
+
+        let left = await this.parseAnd();
+
+        while(
+            this.current().type === "IDENT" &&
+            this.current().value === "or"
+        ){
+
+            this.eat();
+
+            const right = await this.parseAnd();
+
+            left = this.truth(left) || this.truth(right);
+
+        }
+
+        return left;
+
+    }
+
+
+    async parseAnd(){
+
+        let left = await this.parseComparison();
+
+        while(
+            this.current().type === "IDENT" &&
+            this.current().value === "and"
+        ){
+
+            this.eat();
+
+            const right = await this.parseComparison();
+
+            left = this.truth(left) && this.truth(right);
+
+        }
+
+        return left;
+
+    }
+
+
+    async parseComparison(){
+
+        let left = await this.parseAdd();
+
+        while(
+            this.current().type === "OP" &&
+            [
+                "==",
+                "!=",
+                "<",
+                ">",
+                "<=",
+                ">="
+            ].includes(this.current().value)
+        ){
+
+            const operator = this.eat().value;
+
+            const right = await this.parseAdd();
+
+            switch(operator){
+
+                case "==":
+                    left = this.equals(left,right);
+                    break;
+
+                case "!=":
+                    left = !this.equals(left,right);
+                    break;
+
+                case "<":
+                    left = left < right;
+                    break;
+
+                case ">":
+                    left = left > right;
+                    break;
+
+                case "<=":
+                    left = left <= right;
+                    break;
+
+                case ">=":
+                    left = left >= right;
+                    break;
+
+            }
+
+        }
+
+        return left;
+
+    }
+
+
+    async parseAdd(){
+
+        let left = await this.parseMultiply();
+
+        while(
+            this.current().type === "OP" &&
+            ["+","-"].includes(this.current().value)
+        ){
+
+            const operator = this.eat().value;
+
+            const right = await this.parseMultiply();
+
+            if(operator === "+"){
+
+                if(
+                    typeof left === "string" ||
+                    typeof right === "string"
+                ){
+
+                    left =
+                        this.pyStr(left) +
+                        this.pyStr(right);
+
+                }
+                else{
+
+                    left = Number(left) + Number(right);
+
+                }
+
+            }
+
+            else{
+
+                left = Number(left) - Number(right);
+
+            }
+
+        }
+
+        return left;
+
+    }
+
+
+    async parseMultiply(){
+
+        let left = await this.parsePower();
+
+        while(
+            this.current().type === "OP" &&
+            ["*","/","%"].includes(this.current().value)
+        ){
+
+            const operator = this.eat().value;
+
+            const right = await this.parsePower();
+
+            if(operator === "*"){
+
+                if(
+                    typeof left === "string" &&
+                    Number.isInteger(Number(right))
+                ){
+
+                    left = left.repeat(Number(right));
+
+                }
+                else{
+
+                    left = Number(left) * Number(right);
+
+                }
+
+            }
+
+            else if(operator === "/"){
+
+                if(Number(right) === 0){
+
+                    throw new MiniPythonError(
+                        "ZeroDivisionError",
+                        "On ne peut pas diviser par zéro."
+                    );
+
+                }
+
+                left =
+                    Number(left) /
+                    Number(right);
+
+            }
+
+            else{
+
+                left =
+                    Number(left) %
+                    Number(right);
+
+            }
+
+        }
+
+        return left;
+
+    }
+
+
+    async parsePower(){
+
+        let left = await this.parseUnary();
+
+        if(
+            this.current().type === "OP" &&
+            this.current().value === "**"
+        ){
+
+            this.eat();
+
+            const right = await this.parsePower();
+
+            left = Math.pow(
+                Number(left),
+                Number(right)
+            );
+
+        }
+
+        return left;
+
+    }
+
+
+    async parseUnary(){
+
+        if(
+            this.current().type === "OP" &&
+            this.current().value === "-"
+        ){
+
+            this.eat();
+
+            return -Number(
+                await this.parseUnary()
+            );
+
+        }
+
+
+        if(
+            this.current().type === "IDENT" &&
+            this.current().value === "not"
+        ){
+
+            this.eat();
+
+            return !this.truth(
+                await this.parseUnary()
+            );
+
+        }
+
+
+        return this.parsePrimary();
+
+    }
+
+
+    async parsePrimary(){
+
+        const token = this.eat();
+
+        if(token.type === "NUMBER"){
+            return token.value;
+        }
+
+
+        if(token.type === "STRING"){
+            return token.value;
+        }
+
+
+        if(token.type === "IDENT"){
+
+            if(token.value === "True"){
+                return true;
+            }
+
+            if(token.value === "False"){
+                return false;
+            }
+
+            if(token.value === "None"){
+                return null;
+            }
+
+
+            /* fonction */
+
+            if(this.current().type === "LPAREN"){
+
+                this.eat();
+
+                const args = [];
+
+                if(this.current().type !== "RPAREN"){
+
+                    while(true){
+
+                        args.push(
+                            await this.parseOr()
+                        );
+
+                        if(this.current().type === "COMMA"){
+
+                            this.eat();
+
+                            continue;
+
+                        }
+
+                        break;
+
+                    }
+
+                }
+
+                if(this.current().type !== "RPAREN"){
+
+                    throw new MiniPythonError(
+                        "SyntaxError",
+                        "Il manque une parenthèse fermante."
+                    );
+
+                }
+
+                this.eat();
+
+                return await this.callBuiltin(
+                    token.value,
+                    args
+                );
+
+            }
+
+
+            if(
+                Object.prototype.hasOwnProperty.call(
+                    this.env,
+                    token.value
+                )
+            ){
+
+                return this.env[token.value];
+
+            }
+
+
+            throw new MiniPythonError(
+                "NameError",
+                "La variable « " +
+                token.value +
+                " » n'existe pas encore."
+            );
+
+        }
+
+
+        if(token.type === "LPAREN"){
+
+            const value = await this.parseOr();
+
+            if(this.current().type !== "RPAREN"){
+
+                throw new MiniPythonError(
+                    "SyntaxError",
+                    "Il manque une parenthèse fermante."
+                );
+
+            }
+
+            this.eat();
+
+            return value;
+
+        }
+
+
+        throw new MiniPythonError(
+            "SyntaxError",
+            "Cette expression n'est pas encore comprise."
+        );
+
+    }
+
+
+    async callBuiltin(name,args){
+
+        if(name === "print"){
+
+            const text = args
+                .map(value=>this.pyStr(value))
+                .join(" ");
+
+            if(this.engine.output){
+
+                this.engine.output(text);
+
+            }
+
+            return null;
+
+        }
+
+
+        if(name === "input"){
+
+            const prompt =
+                args.length
+                    ? this.pyStr(args[0])
+                    : "";
+
+            if(!this.engine.requestInput){
+
+                return "";
+
+            }
+
+            return await this.engine.requestInput(prompt);
+
+        }
+
+
+        if(name === "int"){
+
+            if(args.length === 0){
+
+                throw new MiniPythonError(
+                    "TypeError",
+                    "int() a besoin d'une valeur."
+                );
+
+            }
+
+            const value = Number(args[0]);
+
+            if(!Number.isFinite(value)){
+
+                throw new MiniPythonError(
+                    "ValueError",
+                    "Cette valeur ne peut pas devenir un nombre entier."
+                );
+
+            }
+
+            return Math.trunc(value);
+
+        }
+
+
+        if(name === "float"){
+
+            if(args.length === 0){
+
+                throw new MiniPythonError(
+                    "TypeError",
+                    "float() a besoin d'une valeur."
+                );
+
+            }
+
+            const value = Number(args[0]);
+
+            if(!Number.isFinite(value)){
+
+                throw new MiniPythonError(
+                    "ValueError",
+                    "Cette valeur ne peut pas devenir un nombre."
+                );
+
+            }
+
+            return value;
+
+        }
+
+
+        if(name === "str"){
+
+            return this.pyStr(
+                args.length ? args[0] : ""
+            );
+
+        }
+
+
+        if(name === "len"){
+
+            if(!args.length){
+
+                throw new MiniPythonError(
+                    "TypeError",
+                    "len() a besoin d'une valeur."
+                );
+
+            }
+
+            return String(args[0]).length;
+
+        }
+
+
+        if(name === "round"){
+
+            return Math.round(
+                Number(args[0] || 0)
+            );
+
+        }
+
+
+        throw new MiniPythonError(
+            "NameError",
+            "La fonction « " +
+            name +
+            "() » n'est pas disponible dans cette version."
+        );
+
+    }
+
+
+    truth(value){
+
+        return !!value;
+
+    }
+
+
+    equals(a,b){
+
+        return a === b;
+
+    }
+
+
+    pyStr(value){
+
+        if(value === true) return "True";
+
+        if(value === false) return "False";
+
+        if(value === null) return "None";
+
+        return String(value);
+
+    }
+
+}
+
+
+/* =========================================================
+   ENGINE INSTANCE
+========================================================= */
+
+const miniPython = new MiniPythonEngine();
+
+miniPython.output = function(text){
+
+    appendConsole(text,"normal");
+
+};
+
+miniPython.requestInput = function(prompt){
+
+    return requestPythonInput(prompt);
+
+};
+
+
+/* =========================================================
+   CONSOLE
+========================================================= */
+
+function appendConsole(text,type="normal"){
+
+    const consoleOutput =
+        document.getElementById("consoleOutput");
+
+    const line =
+        document.createElement("div");
+
+    line.className =
+        "console-line";
+
+    if(type === "error"){
+        line.classList.add("console-error");
+    }
+
+    if(type === "success"){
+        line.classList.add("console-success");
+    }
+
+    if(type === "info"){
+        line.classList.add("console-info");
+    }
+
+    line.textContent = text;
+
+    consoleOutput.appendChild(line);
+
+    consoleOutput.scrollTop =
+        consoleOutput.scrollHeight;
+
+}
+
+
+function clearConsole(){
+
+    document.getElementById(
+        "consoleOutput"
+    ).innerHTML = "";
+
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+function requestPythonInput(prompt){
+
+    return new Promise(resolve=>{
+
+        waitingForInput = true;
+
+        pendingInputResolver = resolve;
+
+        document.getElementById(
+            "inputArea"
+        ).style.display = "block";
+
+        document.getElementById(
+            "inputPrompt"
+        ).textContent =
+            prompt || "Python attend une réponse :";
+
+        const input =
+            document.getElementById("pythonInput");
+
+        input.value = "";
+
+        input.focus();
+
+        appendConsole(
+            prompt || "",
+            "info"
+        );
+
+    });
+
+}
+
+
+function submitPythonInput(){
+
+    if(!waitingForInput) return;
+
+    const input =
+        document.getElementById("pythonInput");
+
+    const value = input.value;
+
+    appendConsole(
+        "> " + value,
+        "normal"
+    );
+
+    document.getElementById(
+        "inputArea"
+    ).style.display = "none";
+
+    waitingForInput = false;
+
+    if(pendingInputResolver){
+
+        const resolver =
+            pendingInputResolver;
+
+        pendingInputResolver = null;
+
+        resolver(value);
+
+    }
+
+}
+
+
+document.getElementById(
+    "pythonInput"
+).addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            submitPythonInput();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   RUN PYTHON
+========================================================= */
+
+async function runPython(){
+
+    if(waitingForInput){
+
+        appendConsole(
+            "Python attend encore ta réponse.",
+            "info"
+        );
+
+        return;
+
+    }
+
+    const code =
+        document.getElementById(
+            "codeEditor"
+        ).value;
+
+    if(!code.trim()){
+
+        showGentleError(
+            "Ton programme est encore vide. Ajoute une petite instruction pour commencer."
+        );
+
+        return;
+
+    }
+
+    clearConsole();
+
+    hideError();
+
+    appendConsole(
+        "▶ Je commence à lire ton programme...",
+        "info"
+    );
+
+    try{
+
+        variables = await miniPython.run(code);
+
+        appendConsole(
+            "✓ Programme terminé.",
+            "success"
+        );
+
+        updateVariables();
+
+        updateProgressAfterRun();
+
+        explainAfterExecution(
+            code,
+            true,
+            null
+        );
+
+    }
+
+    catch(error){
+
+        const message =
+            formatPythonError(error);
+
+        appendConsole(
+            "🌱 " + message,
+            "error"
+        );
+
+        showGentleError(
+            createEducationalError(error)
+        );
+
+        updateVariables();
+
+        explainAfterExecution(
+            code,
+            false,
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ERROR EXPLANATION
+========================================================= */
+
+function formatPythonError(error){
+
+    if(error instanceof MiniPythonError){
+
+        let text =
+            error.type + ": " + error.message;
+
+        if(error.line){
+
+            text +=
+                " (ligne " +
+                error.line +
+                ")";
+
+        }
+
+        return text;
+
+    }
+
+    return error.message ||
+        "Une petite erreur est survenue.";
+
+}
+
+
+function createEducationalError(error){
+
+    if(error instanceof MiniPythonError){
+
+        if(error.type === "NameError"){
+
+            return (
+                "Python cherche une variable qui n'existe pas encore. " +
+                "Regarde si tu as créé la variable avant de l'utiliser."
+            );
+
+        }
+
+        if(error.type === "IndentationError"){
+
+            return (
+                "Les instructions à l'intérieur d'un bloc doivent être " +
+                "décalées vers la droite."
+            );
+
+        }
+
+        if(error.type === "SyntaxError"){
+
+            return (
+                "Python ne comprend pas encore cette phrase. " +
+                "Regarde les parenthèses, les deux-points et l'orthographe."
+            );
+
+        }
+
+        if(error.type === "ValueError"){
+
+            return (
+                "La valeur donnée ne peut pas être transformée " +
+                "dans le format demandé."
+            );
+
+        }
+
+        if(error.type === "ZeroDivisionError"){
+
+            return (
+                "Une division par zéro n'est pas possible. " +
+                "Essaie avec un autre nombre."
+            );
+
+        }
+
+    }
+
+    return "Regardons ensemble ce qui doit être corrigé.";
+
+}
+
+
+function showGentleError(text){
+
+    const box =
+        document.getElementById("errorBox");
+
+    const errorText =
+        document.getElementById("errorText");
+
+    errorText.textContent = text;
+
+    box.style.display = "block";
+
+}
+
+
+function hideError(){
+
+    document.getElementById(
+        "errorBox"
+    ).style.display = "none";
+
+}
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+function updateVariables(){
+
+    const table =
+        document.getElementById(
+            "variablesTable"
+        );
+
+    table.innerHTML = "";
+
+    const keys =
+        Object.keys(variables);
+
+    if(!keys.length){
+
+        const row =
+            document.createElement("tr");
+
+        const cell =
+            document.createElement("td");
+
+        cell.colSpan = 2;
+
+        cell.textContent =
+            "Aucune variable";
+
+        row.appendChild(cell);
+
+        table.appendChild(row);
+
+        return;
+
+    }
+
+
+    keys.forEach(name=>{
+
+        const row =
+            document.createElement("tr");
+
+        const nameCell =
+            document.createElement("td");
+
+        const valueCell =
+            document.createElement("td");
+
+        nameCell.textContent = name;
+
+        valueCell.textContent =
+            formatValue(variables[name]);
+
+        row.appendChild(nameCell);
+
+        row.appendChild(valueCell);
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+function formatValue(value){
+
+    if(value === true) return "True";
+
+    if(value === false) return "False";
+
+    if(value === null) return "None";
+
+    return String(value);
+
+}
+
+
+/* =========================================================
+   BUILDER
+========================================================= */
+
+function addBlock(type){
+
+    blockId++;
+
+    let block;
+
+    if(type === "print"){
+
+        block = {
+            id:blockId,
+            type,
+            code:'print("Bonjour !")'
+        };
+
+    }
+
+    else if(type === "variable"){
+
+        block = {
+            id:blockId,
+            type,
+            code:"score = 10"
+        };
+
+    }
+
+    else if(type === "input"){
+
+        block = {
+            id:blockId,
+            type,
+            code:'prenom = input("Comment t\\'appelles-tu ? ")'
+        };
+
+    }
+
+    else if(type === "if"){
+
+        block = {
+            id:blockId,
+            type,
+            code:
+`if score >= 10:
+    print("Bravo !")`
+        };
+
+    }
+
+    else if(type === "comment"){
+
+        block = {
+            id:blockId,
+            type,
+            code:"# Mon commentaire"
+        };
+
+    }
+
+    blocks.push(block);
+
+    renderBlocks();
+
+    syncBuilderToCode();
+
+    showTab("builder");
+
+}
+
+
+function renderBlocks(){
+
+    const container =
+        document.getElementById(
+            "builderBlocks"
+        );
+
+    const empty =
+        document.getElementById(
+            "emptyBuilder"
+        );
+
+    container.innerHTML = "";
+
+    if(blocks.length === 0){
+
+        empty.style.display = "block";
+
+        return;
+
+    }
+
+    empty.style.display = "none";
+
+
+    blocks.forEach((block,index)=>{
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "builder-block";
+
+        const number =
+            document.createElement("div");
+
+        number.className =
+            "builder-number";
+
+        number.textContent =
+            index + 1;
+
+
+        const code =
+            document.createElement("div");
+
+        code.className =
+            "builder-code";
+
+        code.textContent =
+            block.code;
+
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.className =
+            "delete-block";
+
+        deleteButton.textContent =
+            "×";
+
+        deleteButton.onclick =
+            function(){
+
+                blocks =
+                    blocks.filter(
+                        item=>item.id !== block.id
+                    );
+
+                renderBlocks();
+
+                syncBuilderToCode();
+
+            };
+
+
+        row.appendChild(number);
+
+        row.appendChild(code);
+
+        row.appendChild(deleteButton);
+
+        container.appendChild(row);
+
+    });
+
+}
+
+
+function syncBuilderToCode(){
+
+    const code =
+        blocks
+            .map(block=>block.code)
+            .join("\n");
+
+    document.getElementById(
+        "codeEditor"
+    ).value = code;
+
+    updateSteps();
+
+}
+
+
+/* =========================================================
+   CODE EDITOR
+========================================================= */
+
+document.getElementById(
+    "codeEditor"
+).addEventListener(
+    "input",
+    function(){
+
+        updateSteps();
+
+    }
+);
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+function showTab(tab){
+
+    const tabs = [
+        "builder",
+        "code",
+        "steps"
+    ];
+
+    tabs.forEach(name=>{
+
+        document.getElementById(
+            name + "Tab"
+        ).classList.remove("active");
+
+        document.getElementById(
+            "tab" +
+            name.charAt(0).toUpperCase() +
+            name.slice(1)
+        ).classList.remove("active");
+
+    });
+
+
+    document.getElementById(
+        tab + "Tab"
+    ).classList.add("active");
+
+    document.getElementById(
+        "tab" +
+        tab.charAt(0).toUpperCase() +
+        tab.slice(1)
+    ).classList.add("active");
+
+}
+
+
+/* =========================================================
+   STEP VIEW
+========================================================= */
+
+function updateSteps(){
+
+    const code =
+        document.getElementById(
+            "codeEditor"
+        ).value;
+
+    stepLines =
+        code.split("\n");
+
+    const container =
+        document.getElementById(
+            "stepsList"
+        );
+
+    container.innerHTML = "";
+
+    if(!code.trim()){
+
+        container.innerHTML =
+            "<p style='color:#718096;font-size:13px;'>Ajoute du code pour voir les étapes.</p>";
+
+        return;
+
+    }
+
+
+    stepLines.forEach((line,index)=>{
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "source-line";
+
+        if(index === currentStep){
+
+            row.classList.add("active");
+
+        }
+
+
+        const number =
+            document.createElement("div");
+
+        number.className =
+            "line-number";
+
+        number.textContent =
+            index + 1;
+
+
+        const text =
+            document.createElement("div");
+
+        text.textContent =
+            line || " ";
+
+
+        row.appendChild(number);
+
+        row.appendChild(text);
+
+        container.appendChild(row);
+
+    });
+
+}
+
+
+function stepNext(){
+
+    if(!stepLines.length){
+
+        updateSteps();
+
+    }
+
+    if(!stepLines.length) return;
+
+    if(currentStep < stepLines.length - 1){
+
+        currentStep++;
+
+    }
+
+    highlightStep();
+
+    explainStep(currentStep);
+
+}
+
+
+function stepPrevious(){
+
+    if(currentStep > 0){
+
+        currentStep--;
+
+    }
+
+    highlightStep();
+
+    explainStep(currentStep);
+
+}
+
+
+function highlightStep(){
+
+    const rows =
+        document.querySelectorAll(
+            ".source-line"
+        );
+
+    rows.forEach(row=>
+        row.classList.remove("active")
+    );
+
+    if(rows[currentStep]){
+
+        rows[currentStep].classList.add("active");
+
+    }
+
+}
+
+
+function explainStep(index){
+
+    if(index < 0 || !stepLines[index]) return;
+
+    const line =
+        stepLines[index].trim();
+
+    let explanation =
+        "Observe cette instruction.";
+
+    if(line.startsWith("#")){
+
+        explanation =
+            "C'est un commentaire. Il sert à expliquer le programme à une personne.";
+
+    }
+
+    else if(/^print\s*\(/.test(line)){
+
+        explanation =
+            "Cette instruction demande à Python d'afficher une information.";
+
+    }
+
+    else if(/^[A-Za-z_]\w*\s*=/.test(line)){
+
+        explanation =
+            "Cette ligne crée ou modifie une variable. " +
+            "Le nom se trouve à gauche et la valeur à droite.";
+
+    }
+
+    else if(/^if\s+/.test(line)){
+
+        explanation =
+            "Cette ligne pose une question à Python. " +
+            "Le bloc en dessous sera exécuté si la condition est vraie.";
+
+    }
+
+    else if(/^else:/.test(line)){
+
+        explanation =
+            "Cette partie indique quoi faire lorsque la condition précédente est fausse.";
+
+    }
+
+    else if(/input\s*\(/.test(line)){
+
+        explanation =
+            "Cette instruction demande une information à la personne qui utilise le programme.";
+
+    }
+
+
+    document.getElementById(
+        "currentStepText"
+    ).textContent =
+        explanation;
+
+    document.getElementById(
+        "stepLabel"
+    ).textContent =
+        "Étape " +
+        (index + 1) +
+        " sur " +
+        stepLines.length +
+        " — Lecture guidée";
+
+}
+
+
+/* =========================================================
+   POST EXECUTION EXPLANATION
+========================================================= */
+
+function explainAfterExecution(
+    code,
+    success,
+    error
+){
+
+    const explanation =
+        document.getElementById(
+            "explanationText"
+        );
+
+    if(success){
+
+        explanation.textContent =
+            "Ton programme a été exécuté. " +
+            "Regarde maintenant les variables à droite " +
+            "et la console pour comprendre le résultat.";
+
+    }
+
+    else{
+
+        explanation.textContent =
+            "Une petite correction est nécessaire. " +
+            "Utilise l'indice affiché dans la boîte jaune, puis teste à nouveau.";
+
+    }
+
+}
+
+
+/* =========================================================
+   LESSONS
+========================================================= */
+
+const lessons = {
+
+    variable:{
+
+        title:"📦 Les variables",
+
+        goal:
+            "Comprendre comment Python garde une information.",
+
+        intro:
+            "Une variable est comme une petite boîte. " +
+            "On lui donne un nom et on place une valeur dedans.",
+
+        step:
+            "Commence par créer une variable. " +
+            "Le nom est à gauche et la valeur est à droite du signe =.",
+
+        explanation:
+            "score = 10 signifie : crée une boîte appelée score et place 10 dedans.",
+
+        code:
+`score = 10
+print(score)`,
+
+        learning:[
+            "Comprendre une variable",
+            "Donner une valeur",
+            "Réutiliser une variable",
+            "Afficher une valeur"
+        ]
+
+    },
+
+
+    print:{
+
+        title:"📢 Afficher avec print()",
+
+        goal:
+            "Apprendre à demander à Python d'afficher quelque chose.",
+
+        intro:
+            "La fonction print() permet de montrer une information dans la console.",
+
+        step:
+            "Commence par écrire print(), puis place ce que tu veux afficher entre parenthèses.",
+
+        explanation:
+            'print("Bonjour") demande à Python d'afficher le mot Bonjour.',
+
+        code:
+`print("Bonjour !")
+print("Bienvenue dans Python")`,
+
+        learning:[
+            "Utiliser print()",
+            "Afficher du texte",
+            "Comprendre la console"
+        ]
+
+    },
+
+
+    condition:{
+
+        title:"🔎 Les conditions",
+
+        goal:
+            "Apprendre à faire un choix dans un programme.",
+
+        intro:
+            "Une condition permet à Python de vérifier une situation.",
+
+        step:
+            "Python vérifie d'abord la condition. Ensuite, il choisit le bloc à exécuter.",
+
+        explanation:
+            "if score >= 10 signifie : si score est supérieur ou égal à 10, fais ce qui est dessous.",
+
+        code:
+`score = 10
+
+if score >= 10:
+    print("Bravo !")
+else:
+    print("Continue !")`,
+
+        learning:[
+            "Comprendre if",
+            "Comprendre une condition",
+            "Comprendre else",
+            "Faire un choix"
+        ]
+
+    },
+
+
+    input:{
+
+        title:"💬 Demander une information",
+
+        goal:
+            "Apprendre à demander une information à l'utilisateur.",
+
+        intro:
+            "input() permet au programme de poser une question.",
+
+        step:
+            "Python attend la réponse avant de continuer.",
+
+        explanation:
+            "La réponse peut être gardée dans une variable pour être utilisée ensuite.",
+
+        code:
+`prenom = input("Comment t'appelles-tu ? ")
+print("Bonjour", prenom)`,
+
+        learning:[
+            "Utiliser input()",
+            "Stocker une réponse",
+            "Réutiliser une information"
+        ]
+
+    },
+
+
+    math:{
+
+        title:"➕ Faire des calculs",
+
+        goal:
+            "Apprendre à faire un calcul avec des variables.",
+
+        intro:
+            "Python peut utiliser les nombres et effectuer des calculs.",
+
+        step:
+            "Crée d'abord les nombres, puis crée une variable qui contient le résultat.",
+
+        explanation:
+            "Le signe + permet d'additionner deux valeurs.",
+
+        code:
+`a = 5
+b = 3
+resultat = a + b
+
+print(resultat)`,
+
+        learning:[
+            "Utiliser des nombres",
+            "Faire une addition",
+            "Stocker un résultat"
+        ]
+
+    }
+
+};
+
+
+function loadLesson(name){
+
+    currentLesson = name;
+
+    const lesson =
+        lessons[name];
+
+    if(!lesson) return;
+
+
+    document.getElementById(
+        "goalText"
+    ).textContent =
+        lesson.goal;
+
+
+    document.getElementById(
+        "introText"
+    ).textContent =
+        lesson.intro;
+
+
+    document.getElementById(
+        "currentStepText"
+    ).textContent =
+        lesson.step;
+
+
+    document.getElementById(
+        "explanationText"
+    ).textContent =
+        lesson.explanation;
+
+
+    document.getElementById(
+        "codeEditor"
+    ).value =
+        lesson.code;
+
+
+    document.getElementById(
+        "lessonTitle"
+    ).textContent =
+        lesson.title;
+
+
+    document.getElementById(
+        "lessonText"
+    ).textContent =
+        lesson.intro;
+
+
+    const list =
+        document.getElementById(
+            "learningList"
+        );
+
+    list.innerHTML = "";
+
+    lesson.learning.forEach(item=>{
+
+        const li =
+            document.createElement("li");
+
+        li.textContent = item;
+
+        list.appendChild(li);
+
+    });
+
+
+    blocks = [];
+
+    renderBlocks();
+
+    currentStep = 0;
+
+    updateSteps();
+
+    updateLearningPath();
+
+    showTab("code");
+
+    appendConsole(
+        "📚 Nouvelle leçon : " +
+        lesson.title,
+        "info"
+    );
+
+}
+
+
+/* =========================================================
+   MAIN MODE
+========================================================= */
+
+function setMainMode(mode){
+
+    const learnButton =
+        document.getElementById(
+            "learnModeBtn"
+        );
+
+    const createButton =
+        document.getElementById(
+            "createModeBtn"
+        );
+
+    if(mode === "learn"){
+
+        learnButton.classList.add("active");
+
+        createButton.classList.remove("active");
+
+        document.getElementById(
+            "creationPanel"
+        ).style.display = "none";
+
+        document.getElementById(
+            "testPanel"
+        ).style.display = "none";
+
+    }
+
+    else{
+
+        createButton.classList.add("active");
+
+        learnButton.classList.remove("active");
+
+        document.getElementById(
+            "creationPanel"
+        ).style.display = "block";
+
+    }
+
+}
+
+
+/* =========================================================
+   CHALLENGES
+========================================================= */
+
+const challenges = [
+
+    {
+        title:"📦 Test 1 — Ma première variable",
+
+        text:
+            "Crée une variable appelée score et donne-lui la valeur 10. Ensuite, affiche-la.",
+
+        codeHint:
+            "score = 10\nprint(score)",
+
+        check:function(env,code){
+
+            return (
+                env.score === 10 &&
+                /print\s*\(\s*score\s*\)/.test(code)
+            );
+
+        },
+
+        partial:function(env,code){
+
+            let points = 0;
+
+            if(env.score === 10) points += 60;
+
+            if(
+                /print\s*\(\s*score\s*\)/.test(code)
+            ){
+
+                points += 40;
+
+            }
+
+            return points;
+
+        }
+
+    },
+
+    {
+        title:"📢 Test 2 — Afficher un message",
+
+        text:
+            'Fais afficher le message "Bonjour Python !" avec print().',
+
+        check:function(env,code){
+
+            return /print\s*\(\s*["']Bonjour Python !["']\s*\)/.test(code);
+
+        },
+
+        partial:function(env,code){
+
+            if(/print\s*\(/.test(code)) return 50;
+
+            return 0;
+
+        }
+
+    },
+
+    {
+        title:"➕ Test 3 — Faire un calcul",
+
+        text:
+            "Crée a = 5, crée b = 3, puis crée resultat avec l'addition de a et b.",
+
+        check:function(env,code){
+
+            return (
+                env.a === 5 &&
+                env.b === 3 &&
+                env.resultat === 8
+            );
+
+        },
+
+        partial:function(env,code){
+
+            let points = 0;
+
+            if(env.a === 5) points += 30;
+
+            if(env.b === 3) points += 30;
+
+            if(env.resultat === 8) points += 40;
+
+            return points;
+
+        }
+
+    },
+
+    {
+        title:"🔎 Test 4 — Une condition",
+
+        text:
+            'Crée score = 10 puis affiche "Bravo !" si score est supérieur ou égal à 10.',
+
+        check:function(env,code){
+
+            return (
+                env.score === 10 &&
+                /if\s+score\s*>=\s*10\s*:/.test(code) &&
+                /print\s*\(\s*["']Bravo !["']\s*\)/.test(code)
+            );
+
+        },
+
+        partial:function(env,code){
+
+            let points = 0;
+
+            if(env.score === 10) points += 30;
+
+            if(/if\s+score\s*>=\s*10\s*:/.test(code)){
+                points += 35;
+            }
+
+            if(/print\s*\(/.test(code)){
+                points += 35;
+            }
+
+            return points;
+
+        }
+
+    },
+
+    {
+        title:"💬 Test 5 — Poser une question",
+
+        text:
+            'Utilise input() pour demander le prénom et affiche ensuite "Bonjour" avec le prénom.',
+
+        check:function(env,code){
+
+            return (
+                /input\s*\(/.test(code) &&
+                /print\s*\(/.test(code)
+            );
+
+        },
+
+        partial:function(env,code){
+
+            let points = 0;
+
+            if(/input\s*\(/.test(code)){
+                points += 50;
+            }
+
+            if(/print\s*\(/.test(code)){
+                points += 50;
+            }
+
+            return points;
+
+        }
+
+    }
+
+];
+
+
+function newChallenge(){
+
+    currentChallenge =
+        Math.floor(
+            Math.random() *
+            challenges.length
+        );
+
+    showChallenge();
+
+}
+
+
+function showChallenge(){
+
+    const challenge =
+        challenges[currentChallenge];
+
+    document.getElementById(
+        "challengeText"
+    ).textContent =
+        challenge.title +
+        " — " +
+        challenge.text;
+
+    document.getElementById(
+        "testScore"
+    ).style.display =
+        "none";
+
+    setMainMode("create");
+
+    showTab("code");
+
+    appendConsole(
+        "📝 Nouveau test chargé.",
+        "info"
+    );
+
+}
+
+
+async function checkChallenge(){
+
+    const challenge =
+        challenges[currentChallenge];
+
+    const code =
+        document.getElementById(
+            "codeEditor"
+        ).value;
+
+
+    if(!code.trim()){
+
+        showGentleError(
+            "Commence par écrire une petite solution. Tu peux utiliser les boîtes à gauche pour t'aider."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const env =
+            await miniPython.run(code);
+
+        const exact =
+            challenge.check(
+                env,
+                code
+            );
+
+        let points;
+
+        if(exact){
+
+            points = 100;
+
+        }
+
+        else{
+
+            points =
+                challenge.partial(
+                    env,
+                    code
+                );
+
+        }
+
+
+        displayScore(points,exact);
+
+        if(exact){
+
+            progress =
+                Math.min(
+                    100,
+                    progress + 8
+                );
+
+            score += points;
+
+            saveProgress();
+
+            appendConsole(
+                "⭐ Test réussi !",
+                "success"
+            );
+
+        }
+
+        else{
+
+            appendConsole(
+                "🌱 Tu es sur la bonne route. Regarde les indications.",
+                "info"
+            );
+
+        }
+
+    }
+
+    catch(error){
+
+        showGentleError(
+            createEducationalError(error)
+        );
+
+        displayScore(
+            0,
+            false
+        );
+
+    }
+
+}
+
+
+function displayScore(points,exact){
+
+    const scoreBox =
+        document.getElementById(
+            "testScore"
+        );
+
+    const number =
+        document.getElementById(
+            "scoreNumber"
+        );
+
+    const feedback =
+        document.getElementById(
+            "scoreFeedback"
+        );
+
+    scoreBox.style.display = "block";
+
+    number.textContent =
+        points + " / 100";
+
+
+    if(exact){
+
+        feedback.textContent =
+            "🌟 Bravo ! Ton programme répond exactement à la consigne. " +
+            "Tu peux maintenant essayer le prochain défi.";
+
+    }
+
+    else if(points >= 70){
+
+        feedback.textContent =
+            "🌱 Très bon travail ! Une grande partie du programme est correcte. " +
+            "Relis tranquillement la consigne et regarde ce qui manque.";
+
+    }
+
+    else if(points >= 40){
+
+        feedback.textContent =
+            "💡 Tu as déjà trouvé une partie de la solution. " +
+            "Reviens aux étapes de la leçon et essaie encore.";
+
+    }
+
+    else{
+
+        feedback.textContent =
+            "🌱 Pas grave. Le test sert justement à apprendre. " +
+            "Utilise les boîtes et les indices pour construire ta solution.";
+
+    }
+
+}
+
+
+/* =========================================================
+   PROGRESSION
+========================================================= */
+
+function updateProgressAfterRun(){
+
+    progress =
+        Math.min(
+            100,
+            progress + 2
+        );
+
+    saveProgress();
+
+}
+
+
+function updateLearningPath(){
+
+    const tracks = [
+        "track1",
+        "track2",
+        "track3",
+        "track4",
+        "track5"
+    ];
+
+    tracks.forEach((id,index)=>{
+
+        const element =
+            document.getElementById(id);
+
+        element.classList.remove(
+            "active",
+            "done"
+        );
+
+        if(index < currentStep){
+
+            element.classList.add("done");
+
+        }
+
+        else if(index === currentStep){
+
+            element.classList.add("active");
+
+        }
+
+    });
+
+}
+
+
+function saveProgress(){
+
+    localStorage.setItem(
+        "pythonAventureProgress",
+        progress
+    );
+
+    localStorage.setItem(
+        "pythonAventureScore",
+        score
+    );
+
+    localStorage.setItem(
+        "pythonAventureLevel",
+        level
+    );
+
+    updateProgressUI();
+
+}
+
+
+function updateProgressUI(){
+
+    progress =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                progress
+            )
+        );
+
+    document.getElementById(
+        "progressText"
+    ).textContent =
+        progress + "%";
+
+    document.getElementById(
+        "progressFill"
+    ).style.width =
+        progress + "%";
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetApplication(){
+
+    blocks = [];
+
+    variables = {};
+
+    currentStep = 0;
+
+    renderBlocks();
+
+    document.getElementById(
+        "codeEditor"
+    ).value = "";
+
+    updateVariables();
+
+    updateSteps();
+
+    clearConsole();
+
+    hideError();
+
+    document.getElementById(
+        "testScore"
+    ).style.display =
+        "none";
+
+    appendConsole(
+        "🌱 Nous repartons tranquillement. Choisis une petite leçon pour commencer.",
+        "info"
+    );
+
+    loadLesson("variable");
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+function startApplication(){
+
+    updateProgressUI();
+
+    updateLearningPath();
+
+    renderBlocks();
+
+    loadLesson("variable");
+
+    document.getElementById(
+        "engineStatus"
+    ).textContent =
+        "🟢 Moteur Python pédagogique prêt";
+
+}
+
+
+startApplication();
+
+</script>
+
+</body>
+  </html>
