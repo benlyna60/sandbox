@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Code Python par Boîtes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        .panel {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h2 { margin-top: 0; color: #333; }
+        .box-template {
+            background: #e3f2fd;
+            border: 1px dashed #2196f3;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #0d47a1;
+            text-align: center;
+        }
+        .box-template:hover { background: #bbdefb; }
+        
+        #workspace {
+            min-height: 300px;
+            border: 2px dashed #ccc;
+            border-radius: 6px;
+            padding: 10px;
+            background: #fafafa;
+            margin-bottom: 15px;
+        }
+        .active-box {
+            background: white;
+            border: 1px solid #ccc;
+            border-left: 5px solid #2196f3;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: border 0.3s;
+        }
+        .active-box.error {
+            border-left: 5px solid #ff5252;
+            background: #ffebee;
+        }
+        .active-box input {
+            padding: 5px;
+            margin-left: 10px;
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .active-box button.delete {
+            background: #ff5252;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .active-box button.delete:hover { background: #ff1744; }
+        
+        button.generate-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button.generate-btn:hover { background: #43a047; }
+        
+        #warning-banner {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border: 1px solid #ef9a9a;
+            display: none;
+            font-size: 14px;
+        }
+
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            min-height: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Panneau de gauche : Les outils et l'espace de travail -->
+    <div class="panel">
+        <h2>1. Crée ton assemblage</h2>
+        <p>Clique sur une boîte pour l'ajouter :</p>
+        
+        <div class="box-template" onclick="addBox('print')">Boîte : Afficher du texte (print)</div>
+        <div class="box-template" onclick="addBox('variable')">Boîte : Créer une variable</div>
+        <div class="box-template" onclick="addBox('if')">Boîte : Condition (Si...)</div>
+
+        <h3>Espace de travail</h3>
+        <div id="workspace"></div>
+
+        <div id="warning-banner">⚠️ Attention : Certaines boîtes contiennent des erreurs ou sont vides. Remplis-les pour un pipeline valide.</div>
+
+        <button class="generate-btn" onclick="generateCode()">Générer le code Python 🚀</button>
+    </div>
+
+    <!-- Panneau de droite : Le code final -->
+    <div class="panel">
+        <h2>2. Code Python généré</h2>
+        <pre id="output"># Ton code apparaîtra ici...</pre>
+    </div>
+
+    <script>
+        let workspace = document.getElementById('workspace');
+
+        function addBox(type) {
+            let div = document.createElement('div');
+            div.className = 'active-box';
+            div.dataset.type = type;
+
+            let content = '';
+            if (type === 'print') {
+                content = `<span>print(</span><input type="text" class="val1" value=""><span>)</span>`;
+            } else if (type === 'variable') {
+                content = `<input type="text" class="varName" value="" placeholder="nom" style="max-width:80px;"> <span>=</span> <input type="text" class="val1" value="" placeholder="valeur">`;
+            } else if (type === 'if') {
+                content = `<span>if</span> <input type="text" class="val1" value="" placeholder="condition"><span>:</span>`;
+            }
+
+            div.innerHTML = content + `<button class="delete" onclick="this.parentElement.remove()">X</button>`;
+            workspace.appendChild(div);
+        }
+
+        function generateCode() {
+            let boxes = workspace.getElementsByClassName('active-box');
+            let pythonCode = "";
+            let hasError = false;
+
+            let warningBanner = document.getElementById('warning-banner');
+            warningBanner.style.display = 'none';
+
+            if (boxes.length === 0) {
+                document.getElementById('output').textContent = "# Ton espace de travail est vide !";
+                return;
+            }
+
+            for (let box of boxes) {
+                let type = box.dataset.type;
+                let inputs = box.getElementsByTagName('input');
+                let boxHasError = false;
+
+                // Vérifier si un champ dans la boîte est vide
+                for (let input of inputs) {
+                    if (input.value.trim() === "") {
+                        boxHasError = true;
+                        hasError = true;
+                    }
+                }
+
+                // Marquer visuellement la boîte si elle a une erreur
+                if (boxHasError) {
+                    box.classList.add('error');
+                } else {
+                    box.classList.remove('error');
+                }
+
+                // Génération du code si tout va bien pour cette boîte
+                if (!boxHasError) {
+                    if (type === 'print') {
+                        pythonCode += `print("${inputs[0].value}")\n`;
+                    } else if (type === 'variable') {
+                        pythonCode += `${inputs[0].value} = ${inputs[1].value}\n`;
+                    } else if (type === 'if') {
+                        pythonCode += `if ${inputs[0].value}:\n    # fais quelque chose ici\n`;
+                    }
+                } else {
+                    pythonCode += `# [ERREUR] Boîte incomplète ignorée\n`;
+                }
+            }
+
+            if (hasError) {
+                warningBanner.style.display = 'block';
+            }
+
+            document.getElementById('output').textContent = pythonCode;
+        }
+    </script>
+</body>
+</html>
