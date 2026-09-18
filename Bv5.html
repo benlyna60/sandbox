@@ -1,0 +1,2417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐍 Python Aventure V5</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #243044;
+}
+
+button,
+textarea,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.app {
+    max-width: 850px;
+    margin: auto;
+    min-height: 100vh;
+    padding: 18px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.progress {
+    background: white;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+
+/* =========================
+   MISSION
+========================= */
+
+.mission-card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+    margin-bottom: 18px;
+}
+
+.mission-number {
+    font-size: 14px;
+    font-weight: bold;
+    opacity: .6;
+    margin-bottom: 8px;
+}
+
+.mission-title {
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.mission-description {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+/* =========================
+   ETAPES
+========================= */
+
+.step {
+    background: #f7f9fc;
+    border-radius: 18px;
+    padding: 20px;
+    margin-top: 18px;
+}
+
+.step-title {
+    font-weight: 800;
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+.step-text {
+    line-height: 1.5;
+}
+
+/* =========================
+   EXEMPLE CODE
+========================= */
+
+.code-example {
+    background: #18202f;
+    color: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 12px;
+    font-family: monospace;
+    font-size: 18px;
+    overflow-x: auto;
+}
+
+/* =========================
+   CONSTRUCTION
+========================= */
+
+.builder {
+    margin-top: 18px;
+}
+
+.builder-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.builder-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.builder select,
+.builder input {
+    border: 2px solid #dbe1eb;
+    border-radius: 12px;
+    padding: 12px;
+    background: white;
+    min-height: 48px;
+}
+
+.builder select {
+    font-weight: bold;
+}
+
+.builder input {
+    flex: 1;
+    min-width: 180px;
+}
+
+/* =========================
+   CODE
+========================= */
+
+.code-box {
+    margin-top: 18px;
+}
+
+.code-box textarea {
+    width: 100%;
+    min-height: 110px;
+    resize: vertical;
+    border: 2px solid #dbe1eb;
+    border-radius: 14px;
+    padding: 15px;
+    font-family: monospace;
+    font-size: 17px;
+    outline: none;
+}
+
+.code-box textarea:focus {
+    border-color: #6c8cff;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+.btn {
+    border: none;
+    border-radius: 14px;
+    padding: 13px 20px;
+    font-weight: 800;
+    min-height: 50px;
+}
+
+.btn-main {
+    background: #4d6fff;
+    color: white;
+    flex: 1;
+}
+
+.btn-help {
+    background: #fff3c4;
+    color: #6d5500;
+}
+
+.btn-reset {
+    background: #eef1f6;
+    color: #344054;
+}
+
+.btn-next {
+    background: #39a96b;
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* =========================
+   RESULTAT
+========================= */
+
+.result {
+    margin-top: 18px;
+    border-radius: 18px;
+    padding: 18px;
+    background: #f3f6fa;
+}
+
+.result-title {
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.result-screen {
+    background: #111827;
+    color: #fff;
+    min-height: 70px;
+    border-radius: 12px;
+    padding: 15px;
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
+/* =========================
+   INDICE
+========================= */
+
+.hint {
+    display: none;
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 14px;
+    background: #fff8dc;
+    border-left: 5px solid #f2c94c;
+    line-height: 1.5;
+}
+
+.hint.visible {
+    display: block;
+}
+
+/* =========================
+   SUCCES
+========================= */
+
+.success {
+    display: none;
+    margin-top: 18px;
+    padding: 22px;
+    border-radius: 18px;
+    background: #eaf9f0;
+    border: 2px solid #83d5a4;
+    text-align: center;
+}
+
+.success.visible {
+    display: block;
+}
+
+.success-title {
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.stars {
+    font-size: 30px;
+    margin: 10px 0;
+}
+
+/* =========================
+   FIN
+========================= */
+
+.finish {
+    display: none;
+    background: white;
+    border-radius: 24px;
+    padding: 35px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+}
+
+.finish.visible {
+    display: block;
+}
+
+.finish h1 {
+    font-size: 32px;
+}
+
+/* =========================
+   INPUT PYTHON
+========================= */
+
+.python-input {
+    margin-top: 12px;
+    display: none;
+}
+
+.python-input.visible {
+    display: block;
+}
+
+.python-input input {
+    width: 100%;
+    border: 2px solid #dbe1eb;
+    border-radius: 12px;
+    padding: 14px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .app {
+        padding: 12px;
+    }
+
+    .mission-card {
+        padding: 20px;
+    }
+
+    .mission-title {
+        font-size: 25px;
+    }
+
+    .mission-description {
+        font-size: 16px;
+    }
+
+    .header {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .progress {
+        font-size: 13px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="header">
+        <div class="logo">🐍 Python Aventure</div>
+        <div class="progress" id="progress">Mission 1 / 8</div>
+    </header>
+
+
+    <!-- =========================
+         ZONE PRINCIPALE
+    ========================== -->
+
+    <main id="missionArea" class="mission-card">
+
+        <div class="mission-number" id="missionNumber">
+            MISSION 1
+        </div>
+
+        <div class="mission-title" id="missionTitle">
+            Fais parler Python
+        </div>
+
+        <div class="mission-description" id="missionDescription">
+            Ton premier objectif est simple :
+            demande à Python d'afficher
+            <strong>Bonjour !</strong>
+        </div>
+
+
+        <!-- ETAPE 1 -->
+
+        <div class="step">
+
+            <div class="step-title">
+                👀 Étape 1 — Regarde
+            </div>
+
+            <div class="step-text">
+                Pour afficher quelque chose,
+                Python utilise le mot <strong>print</strong>.
+            </div>
+
+            <div class="code-example" id="exampleCode">
+                print("Bonjour !")
+            </div>
+
+        </div>
+
+
+        <!-- ETAPE 2 -->
+
+        <div class="step">
+
+            <div class="step-title">
+                🧩 Étape 2 — À toi
+            </div>
+
+            <div class="step-text" id="taskText">
+                Écris le code demandé dans la boîte.
+            </div>
+
+            <div class="code-box">
+
+                <textarea
+                    id="codeInput"
+                    spellcheck="false"
+                    placeholder="Écris ton code ici..."
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- INDICE -->
+
+        <div class="hint" id="hint">
+            💡 <strong>Indice :</strong>
+            <span id="hintText"></span>
+        </div>
+
+
+        <!-- INPUT PYTHON -->
+
+        <div class="python-input" id="pythonInput">
+            <div class="step-text">
+                Python te pose une question :
+            </div>
+
+            <input
+                id="pythonInputField"
+                type="text"
+                placeholder="Écris ta réponse..."
+            >
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+            <button
+                type="button"
+                class="btn btn-main"
+                id="runButton"
+            >
+                ▶ Essayer
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-help"
+                id="hintButton"
+            >
+                💡 Indice
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-reset"
+                id="resetButton"
+            >
+                🔄 Recommencer
+            </button>
+
+        </div>
+
+
+        <!-- RESULTAT -->
+
+        <div class="result">
+
+            <div class="result-title">
+                🖥️ Python dit :
+            </div>
+
+            <div
+                class="result-screen"
+                id="resultScreen"
+            >
+                Prêt !
+            </div>
+
+        </div>
+
+
+        <!-- SUCCES -->
+
+        <div class="success" id="successBox">
+
+            <div class="success-title">
+                🎉 Mission réussie !
+            </div>
+
+            <div class="stars" id="stars">
+                ⭐⭐⭐
+            </div>
+
+            <div id="successMessage">
+                Tu viens de faire exécuter ton premier programme.
+            </div>
+
+            <button
+                type="button"
+                class="btn btn-next"
+                id="nextButton"
+            >
+                ➜ Mission suivante
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         FIN
+    ========================== -->
+
+    <section class="finish" id="finishScreen">
+
+        <h1>🏆 Aventure terminée !</h1>
+
+        <p>
+            Bravo !
+        </p>
+
+        <p id="finalMessage"></p>
+
+        <div class="stars" id="finalStars"></div>
+
+        <button
+            type="button"
+            class="btn btn-main"
+            id="restartAdventure"
+        >
+            🔄 Recommencer l'aventure
+        </button>
+
+    </section>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   PYTHON AVENTURE V5
+   Petit interpréteur Python éducatif local
+   Aucun serveur
+   Aucun CDN
+   Aucune API
+========================================================= */
+
+
+/* =========================================================
+   OUTILS
+========================================================= */
+
+function cleanString(value) {
+
+    return value
+        .replace(/\r/g, "")
+        .trim();
+
+}
+
+
+function removeComments(code) {
+
+    return code
+        .split("\n")
+        .map(line => {
+
+            const index = line.indexOf("#");
+
+            if (index >= 0) {
+                return line.slice(0, index);
+            }
+
+            return line;
+
+        })
+        .join("\n");
+
+}
+
+
+/* =========================================================
+   TOKENIZER
+========================================================= */
+
+class Tokenizer {
+
+    constructor(text) {
+
+        this.text = text;
+        this.position = 0;
+        this.tokens = [];
+
+    }
+
+
+    tokenize() {
+
+        while (this.position < this.text.length) {
+
+            this.skipSpaces();
+
+            if (this.position >= this.text.length) {
+                break;
+            }
+
+            const char = this.text[this.position];
+
+            if (
+                char === '"' ||
+                char === "'"
+            ) {
+
+                this.readString();
+
+            } else if (
+                /[0-9]/.test(char)
+            ) {
+
+                this.readNumber();
+
+            } else if (
+                /[A-Za-z_]/.test(char)
+            ) {
+
+                this.readIdentifier();
+
+            } else {
+
+                this.readOperator();
+
+            }
+
+        }
+
+        this.tokens.push({
+            type: "EOF",
+            value: null
+        });
+
+        return this.tokens;
+    }
+
+
+    skipSpaces() {
+
+        while (
+            this.position < this.text.length &&
+            /\s/.test(this.text[this.position])
+        ) {
+
+            this.position++;
+
+        }
+
+    }
+
+
+    readString() {
+
+        const quote = this.text[this.position];
+
+        this.position++;
+
+        let value = "";
+
+        while (this.position < this.text.length) {
+
+            const char = this.text[this.position];
+
+            if (char === "\\") {
+
+                this.position++;
+
+                if (this.position >= this.text.length) {
+                    break;
+                }
+
+                const next = this.text[this.position];
+
+                if (next === "n") {
+                    value += "\n";
+                } else if (next === "t") {
+                    value += "\t";
+                } else {
+                    value += next;
+                }
+
+                this.position++;
+
+                continue;
+            }
+
+            if (char === quote) {
+
+                this.position++;
+
+                break;
+
+            }
+
+            value += char;
+
+            this.position++;
+
+        }
+
+        this.tokens.push({
+            type: "STRING",
+            value
+        });
+
+    }
+
+
+    readNumber() {
+
+        let value = "";
+
+        while (
+            this.position < this.text.length &&
+            /[0-9.]/.test(this.text[this.position])
+        ) {
+
+            value += this.text[this.position];
+
+            this.position++;
+
+        }
+
+        this.tokens.push({
+            type: "NUMBER",
+            value: Number(value)
+        });
+
+    }
+
+
+    readIdentifier() {
+
+        let value = "";
+
+        while (
+            this.position < this.text.length &&
+            /[A-Za-z0-9_]/.test(this.text[this.position])
+        ) {
+
+            value += this.text[this.position];
+
+            this.position++;
+
+        }
+
+        this.tokens.push({
+            type: "IDENTIFIER",
+            value
+        });
+
+    }
+
+
+    readOperator() {
+
+        const two =
+            this.text.slice(
+                this.position,
+                this.position + 2
+            );
+
+        if (
+            ["==", "!=", "<=", ">=", "**"].includes(two)
+        ) {
+
+            this.tokens.push({
+                type: "OPERATOR",
+                value: two
+            });
+
+            this.position += 2;
+
+            return;
+        }
+
+        const char = this.text[this.position];
+
+        if (
+            "+-*/%<>()=,".includes(char)
+        ) {
+
+            this.tokens.push({
+                type: "OPERATOR",
+                value: char
+            });
+
+            this.position++;
+
+            return;
+        }
+
+        throw new Error(
+            "Je ne comprends pas encore ce symbole : " + char
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   PARSEUR D'EXPRESSIONS
+========================================================= */
+
+class ExpressionParser {
+
+    constructor(text, variables) {
+
+        this.tokens =
+            new Tokenizer(text).tokenize();
+
+        this.position = 0;
+        this.variables = variables;
+
+    }
+
+
+    current() {
+
+        return this.tokens[this.position];
+
+    }
+
+
+    consume(value = null) {
+
+        const token = this.current();
+
+        if (
+            value !== null &&
+            token.value !== value
+        ) {
+
+            throw new Error(
+                "Je m'attendais à : " + value
+            );
+
+        }
+
+        this.position++;
+
+        return token;
+
+    }
+
+
+    parse() {
+
+        const value = this.parseComparison();
+
+        if (
+            this.current().type !== "EOF"
+        ) {
+
+            throw new Error(
+                "Il y a quelque chose en trop dans cette expression."
+            );
+
+        }
+
+        return value;
+
+    }
+
+
+    parseComparison() {
+
+        let left =
+            this.parseAddition();
+
+        while (
+            ["==", "!=", "<", ">", "<=", ">="]
+                .includes(this.current().value)
+        ) {
+
+            const operator =
+                this.consume().value;
+
+            const right =
+                this.parseAddition();
+
+            switch (operator) {
+
+                case "==":
+                    left = left === right;
+                    break;
+
+                case "!=":
+                    left = left !== right;
+                    break;
+
+                case "<":
+                    left = left < right;
+                    break;
+
+                case ">":
+                    left = left > right;
+                    break;
+
+                case "<=":
+                    left = left <= right;
+                    break;
+
+                case ">=":
+                    left = left >= right;
+                    break;
+
+            }
+
+        }
+
+        return left;
+
+    }
+
+
+    parseAddition() {
+
+        let left =
+            this.parseMultiplication();
+
+        while (
+            ["+", "-"].includes(this.current().value)
+        ) {
+
+            const operator =
+                this.consume().value;
+
+            const right =
+                this.parseMultiplication();
+
+            if (operator === "+") {
+
+                if (
+                    typeof left === "string" ||
+                    typeof right === "string"
+                ) {
+
+                    left =
+                        String(left) + String(right);
+
+                } else {
+
+                    left = left + right;
+
+                }
+
+            } else {
+
+                left = left - right;
+
+            }
+
+        }
+
+        return left;
+
+    }
+
+
+    parseMultiplication() {
+
+        let left =
+            this.parsePower();
+
+        while (
+            ["*", "/", "%"].includes(
+                this.current().value
+            )
+        ) {
+
+            const operator =
+                this.consume().value;
+
+            const right =
+                this.parsePower();
+
+            if (operator === "*") {
+                left = left * right;
+            }
+
+            if (operator === "/") {
+
+                if (right === 0) {
+                    throw new Error(
+                        "On ne peut pas diviser par zéro."
+                    );
+                }
+
+                left = left / right;
+
+            }
+
+            if (operator === "%") {
+                left = left % right;
+            }
+
+        }
+
+        return left;
+
+    }
+
+
+    parsePower() {
+
+        let left =
+            this.parseUnary();
+
+        if (
+            this.current().value === "**"
+        ) {
+
+            this.consume("**");
+
+            const right =
+                this.parsePower();
+
+            left = left ** right;
+
+        }
+
+        return left;
+
+    }
+
+
+    parseUnary() {
+
+        if (
+            this.current().value === "-"
+        ) {
+
+            this.consume("-");
+
+            return -this.parseUnary();
+
+        }
+
+        if (
+            this.current().type === "IDENTIFIER" &&
+            this.current().value === "not"
+        ) {
+
+            this.consume();
+
+            return !this.parseUnary();
+
+        }
+
+        return this.parsePrimary();
+
+    }
+
+
+    parsePrimary() {
+
+        const token = this.current();
+
+        if (token.type === "NUMBER") {
+
+            this.consume();
+
+            return token.value;
+
+        }
+
+
+        if (token.type === "STRING") {
+
+            this.consume();
+
+            return token.value;
+
+        }
+
+
+        if (
+            token.type === "IDENTIFIER"
+        ) {
+
+            const name = token.value;
+
+            this.consume();
+
+            if (name === "True") {
+                return true;
+            }
+
+            if (name === "False") {
+                return false;
+            }
+
+            if (name === "None") {
+                return null;
+            }
+
+
+            if (
+                this.current().value === "("
+            ) {
+
+                return this.parseFunction(name);
+
+            }
+
+
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    this.variables,
+                    name
+                )
+            ) {
+
+                return this.variables[name];
+
+            }
+
+            throw new Error(
+                "Je ne connais pas encore la variable « " +
+                name +
+                " »."
+            );
+
+        }
+
+
+        if (
+            token.value === "("
+        ) {
+
+            this.consume("(");
+
+            const value =
+                this.parseComparison();
+
+            this.consume(")");
+
+            return value;
+
+        }
+
+
+        throw new Error(
+            "Je ne comprends pas cette partie du code."
+        );
+
+    }
+
+
+    parseFunction(name) {
+
+        this.consume("(");
+
+        const args = [];
+
+        if (
+            this.current().value !== ")"
+        ) {
+
+            args.push(
+                this.parseComparison()
+            );
+
+            while (
+                this.current().value === ","
+            ) {
+
+                this.consume(",");
+
+                args.push(
+                    this.parseComparison()
+                );
+
+            }
+
+        }
+
+        this.consume(")");
+
+        switch (name) {
+
+            case "len":
+                return String(args[0]).length;
+
+            case "int":
+                return parseInt(args[0], 10);
+
+            case "float":
+                return parseFloat(args[0]);
+
+            case "str":
+                return String(args[0]);
+
+            case "round":
+                return Math.round(args[0]);
+
+            default:
+                throw new Error(
+                    "La fonction " +
+                    name +
+                    " n'est pas encore disponible."
+                );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   MINI PYTHON
+========================================================= */
+
+class MiniPythonEngine {
+
+    constructor(inputProvider) {
+
+        this.inputProvider =
+            inputProvider;
+
+    }
+
+
+    async run(code) {
+
+        const variables = {};
+        const output = [];
+
+        const lines =
+            removeComments(code)
+                .split("\n")
+                .map(line => line.trim())
+                .filter(line => line !== "");
+
+
+        for (
+            let i = 0;
+            i < lines.length;
+            i++
+        ) {
+
+            const line = lines[i];
+
+            if (
+                line.startsWith("if ") ||
+                line.startsWith("elif ") ||
+                line === "else:"
+            ) {
+
+                throw new Error(
+                    "Les conditions arrivent dans une prochaine mission."
+                );
+
+            }
+
+
+            if (
+                line.startsWith("print(") &&
+                line.endsWith(")")
+            ) {
+
+                const inside =
+                    line.slice(6, -1);
+
+                const args =
+                    this.splitArguments(inside);
+
+                const values = [];
+
+                for (const arg of args) {
+
+                    values.push(
+                        this.evaluate(
+                            arg,
+                            variables
+                        )
+                    );
+
+                }
+
+                output.push(
+                    values
+                        .map(value =>
+                            this.formatValue(value)
+                        )
+                        .join(" ")
+                );
+
+                continue;
+
+            }
+
+
+            const inputMatch =
+                line.match(
+                    /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*input\((.*)\)$/
+                );
+
+
+            if (inputMatch) {
+
+                const name =
+                    inputMatch[1];
+
+                const question =
+                    this.evaluate(
+                        inputMatch[2],
+                        variables
+                    );
+
+                const answer =
+                    await this.inputProvider(
+                        String(question)
+                    );
+
+                variables[name] = answer;
+
+                continue;
+
+            }
+
+
+            const assignment =
+                line.match(
+                    /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)$/
+                );
+
+
+            if (assignment) {
+
+                const name =
+                    assignment[1];
+
+                const expression =
+                    assignment[2];
+
+                variables[name] =
+                    this.evaluate(
+                        expression,
+                        variables
+                    );
+
+                continue;
+
+            }
+
+
+            throw new Error(
+                "Je ne comprends pas encore cette ligne : " +
+                line
+            );
+
+        }
+
+
+        return {
+            output,
+            variables
+        };
+
+    }
+
+
+    evaluate(expression, variables) {
+
+        return new ExpressionParser(
+            expression,
+            variables
+        ).parse();
+
+    }
+
+
+    splitArguments(text) {
+
+        const result = [];
+
+        let current = "";
+        let depth = 0;
+        let quote = null;
+
+        for (
+            let i = 0;
+            i < text.length;
+            i++
+        ) {
+
+            const char = text[i];
+
+            if (
+                (char === '"' || char === "'")
+            ) {
+
+                if (quote === null) {
+                    quote = char;
+                } else if (quote === char) {
+                    quote = null;
+                }
+
+            }
+
+
+            if (
+                quote === null &&
+                char === "("
+            ) {
+
+                depth++;
+
+            }
+
+
+            if (
+                quote === null &&
+                char === ")"
+            ) {
+
+                depth--;
+
+            }
+
+
+            if (
+                char === "," &&
+                depth === 0 &&
+                quote === null
+            ) {
+
+                result.push(current.trim());
+
+                current = "";
+
+            } else {
+
+                current += char;
+
+            }
+
+        }
+
+
+        if (current.trim() !== "") {
+
+            result.push(
+                current.trim()
+            );
+
+        }
+
+        return result;
+
+    }
+
+
+    formatValue(value) {
+
+        if (value === null) {
+            return "None";
+        }
+
+        if (value === true) {
+            return "True";
+        }
+
+        if (value === false) {
+            return "False";
+        }
+
+        return String(value);
+
+    }
+
+}
+
+
+/* =========================================================
+   MISSIONS
+========================================================= */
+
+const missions = [
+
+    {
+        title: "Fais parler Python",
+        description:
+            'Ton premier objectif est simple : demande à Python d\'afficher "Bonjour !".',
+        example:
+            'print("Bonjour !")',
+        task:
+            "Écris le code qui affiche Bonjour !",
+        expectedOutput:
+            "Bonjour !",
+        hint:
+            'Utilise print avec "Bonjour !" entre les parenthèses.',
+        success:
+            "Tu viens de faire exécuter ton premier programme !"
+    },
+
+
+    {
+        title: "Change le message",
+        description:
+            "Maintenant, choisis ton propre message et fais-le afficher par Python.",
+        example:
+            'print("J\'aime Python !")',
+        task:
+            "Fais afficher exactement : J'adore apprendre !",
+        expectedOutput:
+            "J'adore apprendre !",
+        hint:
+            'Écris print("J\'adore apprendre !").',
+        success:
+            "Tu sais maintenant demander à Python d'afficher un message."
+    },
+
+
+    {
+        title: "Crée une boîte",
+        description:
+            "Une variable est comme une petite boîte dans laquelle Python peut garder une information.",
+        example:
+            'prenom = "Léo"',
+        task:
+            'Crée une variable appelée prenom contenant "Léo".',
+        expectedVariable: "prenom",
+        expectedValue: "Léo",
+        hint:
+            'Écris : prenom = "Léo"',
+        success:
+            "Bravo ! Tu viens de créer ta première variable."
+    },
+
+
+    {
+        title: "Montre ta variable",
+        description:
+            "Ta variable contient maintenant un prénom. Fais-le afficher par Python.",
+        example:
+            'prenom = "Léo"\nprint(prenom)',
+        task:
+            "Crée prenom puis affiche-le.",
+        expectedOutput:
+            "Léo",
+        expectedVariable: "prenom",
+        expectedValue: "Léo",
+        hint:
+            'Il faut d’abord écrire prenom = "Léo", puis print(prenom).',
+        success:
+            "Excellent ! Tu viens de faire utiliser une information gardée dans une variable."
+    },
+
+
+    {
+        title: "Fais calculer Python",
+        description:
+            "Python sait aussi faire des calculs.",
+        example:
+            "resultat = 5 + 3\nprint(resultat)",
+        task:
+            "Fais calculer 5 + 3 et affiche le résultat.",
+        expectedOutput:
+            "8",
+        hint:
+            "Crée resultat avec 5 + 3, puis affiche resultat.",
+        success:
+            "Bravo ! Python vient de faire un calcul pour toi."
+    },
+
+
+    {
+        title: "Pose une question",
+        description:
+            "Python peut demander une information à la personne qui utilise le programme.",
+        example:
+            'prenom = input("Quel est ton prénom ? ")\nprint(prenom)',
+        task:
+            "Demande le prénom puis affiche-le.",
+        expectedInput: true,
+        hint:
+            'Utilise input("Quel est ton prénom ? ") puis print(prenom).',
+        success:
+            "Super ! Ton programme peut maintenant discuter avec quelqu’un."
+    },
+
+
+    {
+        title: "Fais un choix",
+        description:
+            "Python peut prendre une décision avec une condition.",
+        example:
+            'age = 10\nif age >= 10:\n    print("Tu peux continuer !")',
+        task:
+            "Si age est au moins 10, affiche : Tu peux continuer !",
+        expectedCondition: true,
+        hint:
+            "Commence par age = 10, puis utilise if age >= 10:.",
+        success:
+            "Bravo ! Tu viens de donner une décision à Python."
+    },
+
+
+    {
+        title: "Grande mission",
+        description:
+            "Dernière mission : utilise une variable, un message et une condition.",
+        example:
+            'age = 10\nif age >= 10:\n    print("Bienvenue dans Python !")',
+        task:
+            "Si age vaut 10 ou plus, affiche : Bienvenue dans Python !",
+        expectedCondition: true,
+        expectedOutput:
+            "Bienvenue dans Python !",
+        hint:
+            'Utilise age = 10 puis if age >= 10: et affiche le message.',
+        success:
+            "Mission finale réussie ! Tu as construit plusieurs éléments importants de Python."
+    }
+
+];
+
+
+/* =========================================================
+   ETAT
+========================================================= */
+
+let currentMission = 0;
+
+let stars = [];
+
+try {
+
+    const saved =
+        JSON.parse(
+            localStorage.getItem(
+                "pythonAventureV5"
+            )
+        );
+
+    if (
+        saved &&
+        Number.isInteger(saved.currentMission)
+    ) {
+
+        currentMission =
+            Math.min(
+                saved.currentMission,
+                missions.length - 1
+            );
+
+    }
+
+    if (
+        saved &&
+        Array.isArray(saved.stars)
+    ) {
+
+        stars = saved.stars;
+
+    }
+
+} catch (error) {
+
+    currentMission = 0;
+    stars = [];
+
+}
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const missionNumber =
+    document.getElementById("missionNumber");
+
+const missionTitle =
+    document.getElementById("missionTitle");
+
+const missionDescription =
+    document.getElementById("missionDescription");
+
+const exampleCode =
+    document.getElementById("exampleCode");
+
+const taskText =
+    document.getElementById("taskText");
+
+const hint =
+    document.getElementById("hint");
+
+const hintText =
+    document.getElementById("hintText");
+
+const codeInput =
+    document.getElementById("codeInput");
+
+const runButton =
+    document.getElementById("runButton");
+
+const hintButton =
+    document.getElementById("hintButton");
+
+const resetButton =
+    document.getElementById("resetButton");
+
+const nextButton =
+    document.getElementById("nextButton");
+
+const resultScreen =
+    document.getElementById("resultScreen");
+
+const successBox =
+    document.getElementById("successBox");
+
+const successMessage =
+    document.getElementById("successMessage");
+
+const starsElement =
+    document.getElementById("stars");
+
+const progress =
+    document.getElementById("progress");
+
+const missionArea =
+    document.getElementById("missionArea");
+
+const finishScreen =
+    document.getElementById("finishScreen");
+
+const finalMessage =
+    document.getElementById("finalMessage");
+
+const finalStars =
+    document.getElementById("finalStars");
+
+const restartAdventure =
+    document.getElementById("restartAdventure");
+
+const pythonInput =
+    document.getElementById("pythonInput");
+
+const pythonInputField =
+    document.getElementById("pythonInputField");
+
+
+/* =========================================================
+   AFFICHAGE MISSION
+========================================================= */
+
+function loadMission() {
+
+    const mission =
+        missions[currentMission];
+
+    missionNumber.textContent =
+        "MISSION " +
+        (currentMission + 1);
+
+    missionTitle.textContent =
+        mission.title;
+
+    missionDescription.innerHTML =
+        mission.description;
+
+    exampleCode.textContent =
+        mission.example;
+
+    taskText.textContent =
+        mission.task;
+
+    hintText.textContent =
+        mission.hint;
+
+    codeInput.value = "";
+
+    resultScreen.textContent =
+        "Prêt !";
+
+    hint.classList.remove("visible");
+
+    successBox.classList.remove("visible");
+
+    pythonInput.classList.remove("visible");
+
+    pythonInputField.value = "";
+
+    progress.textContent =
+        "Mission " +
+        (currentMission + 1) +
+        " / " +
+        missions.length;
+
+}
+
+
+/* =========================================================
+   INDICE
+========================================================= */
+
+hintButton.addEventListener(
+    "click",
+    () => {
+
+        hint.classList.toggle(
+            "visible"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   RECOMMENCER MISSION
+========================================================= */
+
+resetButton.addEventListener(
+    "click",
+    () => {
+
+        loadMission();
+
+        codeInput.focus();
+
+    }
+);
+
+
+/* =========================================================
+   INPUT PYTHON
+========================================================= */
+
+function askPython(question) {
+
+    return new Promise(resolve => {
+
+        pythonInput.classList.add(
+            "visible"
+        );
+
+        pythonInputField.value = "";
+
+        pythonInputField.placeholder =
+            question;
+
+        pythonInputField.focus();
+
+
+        const finishInput = () => {
+
+            const value =
+                pythonInputField.value;
+
+            pythonInput.classList.remove(
+                "visible"
+            );
+
+            pythonInputField.removeEventListener(
+                "keydown",
+                keyHandler
+            );
+
+            resolve(value);
+
+        };
+
+
+        const keyHandler = event => {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                finishInput();
+
+            }
+
+        };
+
+
+        pythonInputField.addEventListener(
+            "keydown",
+            keyHandler
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   VERIFICATION
+========================================================= */
+
+function normalize(value) {
+
+    return String(value)
+        .trim()
+        .replace(/\s+/g, " ");
+
+}
+
+
+function checkMission(result) {
+
+    const mission =
+        missions[currentMission];
+
+    const output =
+        result.output
+            .map(value => String(value))
+            .join("\n");
+
+
+    /* CONDITION */
+
+    if (
+        mission.expectedCondition
+    ) {
+
+        if (
+            !codeInput.value.includes("if ")
+        ) {
+
+            return false;
+
+        }
+
+    }
+
+
+    /* VARIABLE */
+
+    if (
+        mission.expectedVariable
+    ) {
+
+        if (
+            !Object.prototype.hasOwnProperty.call(
+                result.variables,
+                mission.expectedVariable
+            )
+        ) {
+
+            return false;
+
+        }
+
+        if (
+            mission.expectedValue !== undefined &&
+            String(
+                result.variables[
+                    mission.expectedVariable
+                ]
+            ) !== String(
+                mission.expectedValue
+            )
+        ) {
+
+            return false;
+
+        }
+
+    }
+
+
+    /* OUTPUT */
+
+    if (
+        mission.expectedOutput !== undefined
+    ) {
+
+        if (
+            normalize(output) !==
+            normalize(
+                mission.expectedOutput
+            )
+        ) {
+
+            return false;
+
+        }
+
+    }
+
+
+    /* INPUT */
+
+    if (
+        mission.expectedInput
+    ) {
+
+        if (
+            !codeInput.value.includes(
+                "input("
+            )
+        ) {
+
+            return false;
+
+        }
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =========================================================
+   ESSAYER
+========================================================= */
+
+runButton.addEventListener(
+    "click",
+    async () => {
+
+        const code =
+            codeInput.value.trim();
+
+        if (!code) {
+
+            resultScreen.textContent =
+                "💡 Écris quelque chose dans la boîte avant d'essayer.";
+
+            return;
+
+        }
+
+
+        runButton.disabled = true;
+
+        runButton.textContent =
+            "⏳ Python travaille...";
+
+
+        try {
+
+            const engine =
+                new MiniPythonEngine(
+                    askPython
+                );
+
+            const result =
+                await engine.run(code);
+
+
+            if (
+                result.output.length > 0
+            ) {
+
+                resultScreen.textContent =
+                    result.output.join("\n");
+
+            } else {
+
+                resultScreen.textContent =
+                    "✓ Le programme s'est exécuté.";
+
+            }
+
+
+            const correct =
+                checkMission(result);
+
+
+            if (correct) {
+
+                missionSucceeded();
+
+            } else {
+
+                if (
+                    missions[currentMission]
+                        .expectedOutput
+                ) {
+
+                    resultScreen.textContent +=
+                        "\n\n💡 Ton programme fonctionne, mais le résultat demandé n'est pas encore exactement celui de la mission.";
+
+                } else {
+
+                    resultScreen.textContent +=
+                        "\n\n💡 Regarde la mission et vérifie ton code.";
+
+                }
+
+            }
+
+        } catch (error) {
+
+            resultScreen.textContent =
+                "💡 " +
+                friendlyError(
+                    error.message
+                );
+
+        }
+
+
+        runButton.disabled = false;
+
+        runButton.textContent =
+            "▶ Essayer";
+
+    }
+);
+
+
+/* =========================================================
+   ERREURS SIMPLES
+========================================================= */
+
+function friendlyError(message) {
+
+    if (
+        message.includes(
+            "Je ne comprends pas"
+        )
+    ) {
+
+        return (
+            message +
+            "\n\nEssaie de comparer ton code avec l'exemple."
+        );
+
+    }
+
+    return message;
+
+}
+
+
+/* =========================================================
+   SUCCES
+========================================================= */
+
+function missionSucceeded() {
+
+    const previousStars =
+        stars[currentMission] || 0;
+
+    let earned = 3;
+
+    if (
+        hint.classList.contains(
+            "visible"
+        )
+    ) {
+
+        earned = 2;
+
+    }
+
+    if (
+        previousStars > earned
+    ) {
+
+        earned =
+            previousStars;
+
+    }
+
+    stars[currentMission] =
+        earned;
+
+
+    successMessage.textContent =
+        missions[currentMission].success;
+
+
+    starsElement.textContent =
+        "⭐".repeat(earned);
+
+
+    successBox.classList.add(
+        "visible"
+    );
+
+
+    saveProgress();
+
+}
+
+
+/* =========================================================
+   MISSION SUIVANTE
+========================================================= */
+
+nextButton.addEventListener(
+    "click",
+    () => {
+
+        if (
+            currentMission <
+            missions.length - 1
+        ) {
+
+            currentMission++;
+
+            saveProgress();
+
+            loadMission();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        } else {
+
+            showFinish();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   FIN
+========================================================= */
+
+function showFinish() {
+
+    missionArea.style.display =
+        "none";
+
+    finishScreen.classList.add(
+        "visible"
+    );
+
+
+    const totalStars =
+        stars.reduce(
+            (total, value) =>
+                total + (value || 0),
+            0
+        );
+
+
+    finalMessage.textContent =
+        "Tu as terminé les " +
+        missions.length +
+        " missions et gagné " +
+        totalStars +
+        " étoiles sur " +
+        (missions.length * 3) +
+        ".";
+
+
+    finalStars.textContent =
+        "⭐".repeat(
+            Math.min(
+                totalStars,
+                15
+            )
+        );
+
+}
+
+
+/* =========================================================
+   RECOMMENCER TOUTE L'AVENTURE
+========================================================= */
+
+restartAdventure.addEventListener(
+    "click",
+    () => {
+
+        currentMission = 0;
+
+        stars = [];
+
+        saveProgress();
+
+        finishScreen.classList.remove(
+            "visible"
+        );
+
+        missionArea.style.display =
+            "block";
+
+        loadMission();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+);
+
+
+/* =========================================================
+   SAUVEGARDE
+========================================================= */
+
+function saveProgress() {
+
+    try {
+
+        localStorage.setItem(
+            "pythonAventureV5",
+            JSON.stringify({
+                currentMission,
+                stars
+            })
+        );
+
+    } catch (error) {
+
+        /* Rien de grave :
+           l'application continue
+           même sans sauvegarde. */
+
+    }
+
+}
+
+
+/* =========================================================
+   RACCOURCI CTRL + ENTER
+========================================================= */
+
+codeInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            (event.ctrlKey ||
+             event.metaKey) &&
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            runButton.click();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DEMARRAGE
+========================================================= */
+
+loadMission();
+
+</script>
+
+</body>
+  </html>
