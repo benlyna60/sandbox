@@ -56,6 +56,7 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-size: 14px;
         }
         .active-box[data-type="print"] { border-left-color: #42a5f5; }
         .active-box[data-type="variable"] { border-left-color: #66bb6a; }
@@ -95,8 +96,22 @@
             width: 100%;
             box-shadow: 0 4px 6px rgba(102, 187, 106, 0.3);
             transition: background 0.2s;
+            margin-bottom: 10px;
         }
         button.generate-btn:hover { background: #43a047; }
+
+        button.reset-btn {
+            background: #ffb74d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button.reset-btn:hover { background: #ffa726; }
         
         #warning-banner {
             background: #fff3e0;
@@ -122,11 +137,12 @@
         .explanation-box {
             background: #e8f5e9;
             border-left: 5px solid #66bb6a;
-            padding: 12px;
+            padding: 15px;
             margin-top: 15px;
             border-radius: 0 8px 8px 0;
             font-size: 14px;
             color: #1b5e20;
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -134,8 +150,8 @@
 
     <!-- Panneau de gauche : Construction -->
     <div class="panel">
-        <h2>🧱 1. Crée ton histoire</h2>
-        <p>Clique sur une boîte magique pour l'ajouter à ton aventure :</p>
+        <h2>🧱 1. Crée ton histoire magique</h2>
+        <p>Clique sur une brique pour l'ajouter dans ton monde de code :</p>
         
         <div class="box-template" onclick="addBox('print')">📢 Dire un mot (Afficher)</div>
         <div class="box-template" onclick="addBox('variable')">📦 Ranger un trésor (Variable)</div>
@@ -144,41 +160,57 @@
         <h3>Mon espace magique :</h3>
         <div id="workspace"></div>
 
-        <div id="warning-banner">💡 Oups ! Une petite boîte est restée vide. Remplis-la pour que l'ordinateur comprenne tout bien !</div>
+        <div id="warning-banner">💡 Oups ! Une boîte est restée un peu vide. Remplis-la pour que l'ordinateur ne se trompe pas !</div>
 
-        <button class="generate-btn" onclick="generateCode()">Générer mon super code Python 🚀</button>
+        <button class="generate-btn" onclick="generateCode()">Transformer en super code Python 🚀</button>
+        <button class="reset-btn" onclick="loadExamples()">💡 Charger les 3 exemples magiques</button>
     </div>
 
     <!-- Panneau de droite : Résultat et Pédagogie -->
     <div class="panel">
         <h2>✨ 2. Le secret de l'ordinateur</h2>
-        <pre id="output"># Ton code apparaîtra ici magiquement...</pre>
+        <pre id="output"># Clique sur "Transformer en super code Python" pour voir l'aventure !</pre>
         
         <div id="explanation" class="explanation-box" style="display:none;">
-            <strong>🧠 Ce que fait ton programme :</strong>
-            <p id="explanation-text" style="margin: 5px 0 0 0;"></p>
+            <strong>🧠 Ce que ton programme raconte à l'ordinateur :</strong>
+            <p id="explanation-text" style="margin: 8px 0 0 0;"></p>
         </div>
     </div>
 
     <script>
         let workspace = document.getElementById('workspace');
 
-        function addBox(type) {
+        // Fonction pour ajouter une boîte vide
+        function addBox(type, val1 = '', val2 = '') {
             let div = document.createElement('div');
             div.className = 'active-box';
             div.dataset.type = type;
 
             let content = '';
             if (type === 'print') {
-                content = `<span>📢 Afficher :</span> <input type="text" class="val1" value="" placeholder="ex: Bonjour !">`;
+                content = `<span>📢 Faire dire à l'ordi :</span> <input type="text" class="val1" value="${val1}" placeholder="ex: Bonjour !">`;
             } else if (type === 'variable') {
-                content = `<span>📦 Mettre</span> <input type="text" class="val1" value="" placeholder="valeur" style="width:70px;"> <span>dans la boîte</span> <input type="text" class="varName" value="" placeholder="nom" style="width:70px;">`;
+                content = `<span>📦 Mettre</span> <input type="text" class="valVal" value="${val1}" placeholder="ex: 10 ou 'chat'" style="width:90px;"> <span>dans la boîte</span> <input type="text" class="varName" value="${val2}" placeholder="ex: score" style="width:80px;">`;
             } else if (type === 'if') {
-                content = `<span>🤔 Si </span> <input type="text" class="val1" value="" placeholder="ex: score > 5"><span> alors :</span>`;
+                content = `<span>🤔 Si l'énigme </span> <input type="text" class="val1" value="${val1}" placeholder="ex: score > 5"><span> est vraie :</span>`;
             }
 
             div.innerHTML = content + `<button class="delete" onclick="this.parentElement.remove()">❌</button>`;
             workspace.appendChild(div);
+        }
+
+        // Charger automatiquement 3 exemples magiques au démarrage
+        function loadExamples() {
+            workspace.innerHTML = ""; // Vider l'espace
+            // Exemple 1 : Afficher un message
+            addBox('print', 'Bonjour jeune aventurier !');
+            // Exemple 2 : Créer une variable score
+            addBox('variable', '10', 'score');
+            // Exemple 3 : Poser une énigme
+            addBox('if', 'score > 5');
+            
+            // Générer le code directement pour l'expliquer tout de suite
+            generateCode();
         }
 
         function generateCode() {
@@ -192,7 +224,7 @@
             warningBanner.style.display = 'none';
 
             if (boxes.length === 0) {
-                document.getElementById('output').textContent = "# Ton espace de travail est vide ! Ajoute une boîte à gauche.";
+                document.getElementById('output').textContent = "# Ton espace de travail est vide ! Ajoute au moins une brique à gauche.";
                 explanationBox.style.display = 'none';
                 return;
             }
@@ -202,7 +234,6 @@
                 let inputs = box.getElementsByTagName('input');
                 let boxHasError = false;
 
-                // Vérifier si un champ est vide
                 for (let input of inputs) {
                     if (input.value.trim() === "") {
                         boxHasError = true;
@@ -216,27 +247,24 @@
                     box.classList.remove('error');
                 }
 
-                // Génération propre avec gestion automatique des guillemets pour le texte simple si besoin
                 if (!boxHasError) {
                     if (type === 'print') {
                         let textVal = inputs[0].value;
                         pythonCode += `print("${textVal}")\n`;
-                        explanationText += `• L'ordinateur prend un grand micro et crie : "${textVal}".<br>`;
+                        explanationText += `• <b>1. L'affichage :</b> L'ordinateur prend un grand haut-parleur et crie au monde entier : <em>"${textVal}"</em>.<br>`;
                     } else if (type === 'variable') {
-                        let varName = inputs[0].value; // Attention à l'ordre des inputs selon le HTML
-                        // Dans notre HTML : inputs[0] = valeur, inputs[1] = nom
                         let val = inputs[0].value;
                         let name = inputs[1].value;
                         pythonCode += `${name} = ${val}\n`;
-                        explanationText += `• Il colle une étiquette "${name}" sur la valeur ${val} pour s'en souvenir.<br>`;
+                        explanationText += `• <b>2. La boîte magique :</b> L'ordinateur prend une boîte, écrit l'étiquette <b>"${name}"</b> dessus, et range le trésor <b>${val}</b> à l'intérieur pour plus tard.<br>`;
                     } else if (type === 'if') {
                         let condition = inputs[0].value;
-                        pythonCode += `if ${condition}:\n    print("La condition est vraie !")\n`;
-                        explanationText += `• Il vérifie l'énigme (${condition}). Si c'est vrai, il fait une action spéciale !<br>`;
+                        pythonCode += `if ${condition}:\n    print("Bravo, l'énigme est réussie !")\n`;
+                        explanationText += `• <b>3. L'énigme :</b> L'ordinateur réfléchit et regarde si <em>(${condition})</em> est vrai. Si oui, il débloque un super pouvoir spécial !<br>`;
                     }
                 } else {
-                    pythonCode += `# [Oups] Boîte incomplète ignorée\n`;
-                    explanationText += `• ⚠️ Une boîte incomplète a été mise de côté pour que le programme ne plante pas.<br>`;
+                    pythonCode += `# [Oups] Une brique était incomplète !\n`;
+                    explanationText += `• ⚠️ Une boîte a été oubliée en route, l'ordinateur l'a mise de côté pour ne pas s'emmêler les pinceaux.<br>`;
                 }
             }
 
@@ -248,6 +276,11 @@
             document.getElementById('explanation-text').innerHTML = explanationText;
             explanationBox.style.display = 'block';
         }
+
+        // Lancer les exemples dès que la page s'ouvre
+        window.onload = function() {
+            loadExamples();
+        };
     </script>
 </body>
 </html>
