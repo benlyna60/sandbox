@@ -1,0 +1,4267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐍 Python Aventure V6</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1e293b;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: white;
+    border-bottom: 2px solid #e5e7eb;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    font-size: 31px;
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.logo small {
+    color: #64748b;
+}
+
+.progress {
+    background: #eef2ff;
+    color: #4338ca;
+    padding: 8px 13px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.container {
+    width: min(1050px, calc(100% - 24px));
+    margin: 22px auto 60px;
+}
+
+.intro {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.intro h2 {
+    margin: 0 0 7px;
+    font-size: 29px;
+}
+
+.intro p {
+    margin: 0;
+    color: #64748b;
+    font-size: 16px;
+}
+
+/* =========================================================
+   ONGLETS
+========================================================= */
+
+.tabs {
+    display: flex;
+    gap: 7px;
+    background: white;
+    padding: 7px;
+    border-radius: 15px;
+    margin-bottom: 18px;
+    box-shadow: 0 3px 14px rgba(0,0,0,.05);
+}
+
+.tab-button {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #64748b;
+}
+
+.tab-button:hover {
+    background: #f1f5f9;
+}
+
+.tab-button.active {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.section {
+    background: white;
+    border-radius: 19px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,.05);
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.section-title h3 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.explanation {
+    color: #64748b;
+    margin: -6px 0 16px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   PALETTE
+========================================================= */
+
+.palette {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.palette-button {
+    border: 2px solid;
+    border-radius: 14px;
+    padding: 14px;
+    text-align: left;
+    min-height: 88px;
+    transition: .15s;
+}
+
+.palette-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 13px rgba(0,0,0,.08);
+}
+
+.palette-button strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.palette-button span {
+    display: block;
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.35;
+}
+
+.palette-print {
+    background: #eff6ff;
+    border-color: #60a5fa;
+}
+
+.palette-variable {
+    background: #f0fdf4;
+    border-color: #4ade80;
+}
+
+.palette-ask {
+    background: #f5f3ff;
+    border-color: #a78bfa;
+}
+
+.palette-if {
+    background: #fefce8;
+    border-color: #facc15;
+}
+
+/* =========================================================
+   PROGRAMME
+========================================================= */
+
+.program {
+    min-height: 180px;
+    border: 3px dashed #cbd5e1;
+    border-radius: 17px;
+    padding: 15px;
+    background: #f8fafc;
+}
+
+.empty-program {
+    text-align: center;
+    padding: 42px 15px;
+    color: #94a3b8;
+    line-height: 1.7;
+}
+
+.program-node {
+    margin-bottom: 12px;
+}
+
+.program-node:last-child {
+    margin-bottom: 0;
+}
+
+/* =========================================================
+   BOITES
+========================================================= */
+
+.box {
+    border: 3px solid;
+    border-radius: 15px;
+    background: white;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,.05);
+}
+
+.box-header {
+    min-height: 50px;
+    padding: 8px 10px 8px 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.box-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+}
+
+.box-emoji {
+    font-size: 22px;
+}
+
+.box-actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.icon-button {
+    width: 31px;
+    height: 31px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,.75);
+    color: #334155;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.icon-button:hover {
+    background: white;
+}
+
+.box-body {
+    padding: 13px;
+    background: rgba(255,255,255,.8);
+}
+
+.box-help {
+    margin: 0 0 10px;
+    font-size: 13px;
+    color: #475569;
+}
+
+.box-print {
+    border-color: #3b82f6;
+}
+
+.box-print .box-header {
+    background: #dbeafe;
+}
+
+.box-variable {
+    border-color: #22c55e;
+}
+
+.box-variable .box-header {
+    background: #dcfce7;
+}
+
+.box-ask {
+    border-color: #8b5cf6;
+}
+
+.box-ask .box-header {
+    background: #ede9fe;
+}
+
+.box-if {
+    border-color: #eab308;
+}
+
+.box-if .box-header {
+    background: #fef3c7;
+}
+
+/* =========================================================
+   CHAMPS
+========================================================= */
+
+.field {
+    margin-bottom: 10px;
+}
+
+.field:last-child {
+    margin-bottom: 0;
+}
+
+.field label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    color: #475569;
+    margin-bottom: 5px;
+}
+
+.field input,
+.field select {
+    width: 100%;
+    border: 2px solid #dbe3ec;
+    border-radius: 9px;
+    background: white;
+    padding: 9px 10px;
+    outline: none;
+}
+
+.field input:focus,
+.field select:focus {
+    border-color: #64748b;
+}
+
+.inline-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.inline-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+/* =========================================================
+   HIERARCHIE
+========================================================= */
+
+.nested-area {
+    margin-top: 13px;
+    padding: 11px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 13px;
+    background: #f8fafc;
+}
+
+.nested-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #64748b;
+    margin-bottom: 9px;
+}
+
+.nested-empty {
+    padding: 13px 8px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.nested-node {
+    margin-bottom: 10px;
+    margin-left: 4px;
+}
+
+.nested-node:last-child {
+    margin-bottom: 0;
+}
+
+.add-inside {
+    width: 100%;
+    margin-top: 9px;
+    border: 2px dashed #94a3b8;
+    background: white;
+    color: #475569;
+    border-radius: 9px;
+    padding: 9px;
+}
+
+.add-inside:hover {
+    background: #f1f5f9;
+}
+
+/* =========================================================
+   MENU AJOUT INTERNE
+========================================================= */
+
+.inside-palette {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+    margin-top: 9px;
+}
+
+.inside-choice {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: white;
+    padding: 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.inside-choice:hover {
+    background: #f1f5f9;
+}
+
+/* =========================================================
+   BOUTONS
+========================================================= */
+
+.primary-button,
+.secondary-button,
+.danger-button {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: bold;
+}
+
+.primary-button {
+    background: #22c55e;
+    color: white;
+}
+
+.primary-button:hover {
+    background: #16a34a;
+}
+
+.secondary-button {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.secondary-button:hover {
+    background: #cbd5e1;
+}
+
+.danger-button {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.danger-button:hover {
+    background: #fecaca;
+}
+
+/* =========================================================
+   EXEMPLES
+========================================================= */
+
+.examples-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.example-card {
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 15px;
+    background: #fff;
+}
+
+.example-card h4 {
+    margin: 0 0 5px;
+    font-size: 17px;
+}
+
+.example-card-description {
+    color: #64748b;
+    font-size: 13px;
+    margin: 0 0 13px;
+}
+
+.example-preview {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 11px;
+}
+
+.example-preview .box {
+    box-shadow: none;
+}
+
+.example-preview .box-actions {
+    display: none;
+}
+
+.example-preview input,
+.example-preview select {
+    pointer-events: none;
+}
+
+.example-buttons {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.example-code {
+    display: none;
+    background: #0f172a;
+    color: #d1fae5;
+    padding: 11px;
+    border-radius: 9px;
+    margin-top: 10px;
+    overflow-x: auto;
+}
+
+.example-code pre {
+    margin: 0;
+    white-space: pre-wrap;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+}
+
+/* =========================================================
+   CODE
+========================================================= */
+
+.code-section {
+    background: #111827;
+    color: white;
+}
+
+.code-section h3 {
+    color: white;
+}
+
+.code-description {
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+.code-area {
+    background: #020617;
+    border-radius: 12px;
+    padding: 16px;
+    min-height: 150px;
+    overflow-x: auto;
+}
+
+.code-area pre {
+    margin: 0;
+    white-space: pre-wrap;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.code-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.test-output {
+    display: none;
+    margin-top: 13px;
+    padding: 13px;
+    border-radius: 10px;
+    background: #020617;
+    color: #bbf7d0;
+    white-space: pre-wrap;
+    font-family: Consolas, monospace;
+    line-height: 1.5;
+}
+
+.test-output.error {
+    color: #fecaca;
+}
+
+/* =========================================================
+   MODALE
+========================================================= */
+
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(15,23,42,.6);
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.modal-backdrop.visible {
+    display: flex;
+}
+
+.modal {
+    width: min(590px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 19px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+
+.modal-header {
+    padding: 16px 19px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+}
+
+.modal-close {
+    width: 33px;
+    height: 33px;
+    border: none;
+    border-radius: 50%;
+    background: #f1f5f9;
+}
+
+.modal-body {
+    padding: 19px;
+}
+
+.info-block {
+    margin-bottom: 16px;
+}
+
+.info-block:last-child {
+    margin-bottom: 0;
+}
+
+.info-block strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.info-example {
+    background: #f1f5f9;
+    border-radius: 9px;
+    padding: 10px;
+    font-family: Consolas, monospace;
+    white-space: pre-wrap;
+}
+
+.tip {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    border-radius: 7px;
+    padding: 11px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+    z-index: 200;
+    bottom: 18px;
+    left: 50%;
+    transform: translate(-50%, 25px);
+    background: #1e293b;
+    color: white;
+    padding: 11px 17px;
+    border-radius: 999px;
+    opacity: 0;
+    pointer-events: none;
+    transition: .2s;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 750px) {
+
+    .palette {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .examples-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+
+    .header {
+        padding: 12px;
+    }
+
+    .logo h1 {
+        font-size: 18px;
+    }
+
+    .logo-icon {
+        font-size: 26px;
+    }
+
+    .progress {
+        font-size: 11px;
+    }
+
+    .container {
+        width: calc(100% - 14px);
+        margin-top: 13px;
+    }
+
+    .intro h2 {
+        font-size: 24px;
+    }
+
+    .section {
+        padding: 14px;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+
+    .palette {
+        grid-template-columns: 1fr;
+    }
+
+    .inline-2,
+    .inline-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .inside-palette {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+
+        <div class="logo-icon">🐍</div>
+
+        <div>
+            <h1>Python Aventure</h1>
+            <small>Construis ton programme</small>
+        </div>
+
+    </div>
+
+    <div class="progress" id="progressText">
+        0 boîte
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <div class="intro">
+
+        <h2>Construis ton programme 🧩</h2>
+
+        <p>
+            Tu construis avec des boîtes.
+            Python écrit le vrai code pour toi.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         ONGLETS
+    ====================================================== -->
+
+    <div class="tabs">
+
+        <button
+            type="button"
+            class="tab-button active"
+            data-tab="build">
+            🧩 Construire
+        </button>
+
+        <button
+            type="button"
+            class="tab-button"
+            data-tab="examples">
+            💡 Exemples
+        </button>
+
+        <button
+            type="button"
+            class="tab-button"
+            data-tab="code">
+            🐍 Mon code
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         CONSTRUIRE
+    ====================================================== -->
+
+    <section
+        class="tab-panel active"
+        id="tab-build">
+
+        <section class="section">
+
+            <div class="section-title">
+
+                <h3>1. Choisis une boîte</h3>
+
+            </div>
+
+            <p class="explanation">
+                Chaque couleur a une fonction différente.
+                Commence simplement : choisis une boîte et remplis ce qu'elle demande.
+            </p>
+
+            <div class="palette">
+
+                <button
+                    type="button"
+                    class="palette-button palette-print"
+                    data-add="print">
+
+                    <strong>🟦 AFFICHER</strong>
+
+                    <span>
+                        Afficher un message ou une information.
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="palette-button palette-variable"
+                    data-add="variable">
+
+                    <strong>🟩 VARIABLE</strong>
+
+                    <span>
+                        Garder une information sous un nom.
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="palette-button palette-ask"
+                    data-add="ask">
+
+                    <strong>🟪 DEMANDER</strong>
+
+                    <span>
+                        Poser une question et garder la réponse.
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="palette-button palette-if"
+                    data-add="if">
+
+                    <strong>🟨 SI</strong>
+
+                    <span>
+                        Faire quelque chose seulement si une condition est vraie.
+                    </span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <section class="section">
+
+            <div class="section-title">
+
+                <h3>2. Ton algorithme</h3>
+
+                <button
+                    type="button"
+                    class="danger-button"
+                    id="clearButton">
+                    Tout effacer
+                </button>
+
+            </div>
+
+            <p class="explanation">
+                L'ordre des boîtes est important.
+                Les boîtes placées à l'intérieur d'une autre boîte suivent sa hiérarchie.
+            </p>
+
+            <div
+                class="program"
+                id="program">
+
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <!-- =====================================================
+         EXEMPLES
+    ====================================================== -->
+
+    <section
+        class="tab-panel"
+        id="tab-examples">
+
+        <section class="section">
+
+            <div class="section-title">
+
+                <h3>💡 Exemples</h3>
+
+            </div>
+
+            <p class="explanation">
+                Regarde comment les boîtes se combinent.
+                Tu peux ensuite utiliser un exemple comme point de départ.
+            </p>
+
+            <div
+                class="examples-grid"
+                id="examplesGrid">
+
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <!-- =====================================================
+         CODE
+    ====================================================== -->
+
+    <section
+        class="tab-panel"
+        id="tab-code">
+
+        <section class="section code-section">
+
+            <div class="section-title">
+
+                <h3>🐍 Ton vrai code Python</h3>
+
+            </div>
+
+            <p class="code-description">
+                Les boîtes sont transformées automatiquement
+                en véritable syntaxe Python.
+            </p>
+
+            <div class="code-area">
+
+                <pre id="pythonCode"># Ton code apparaîtra ici...</pre>
+
+            </div>
+
+            <div class="code-actions">
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    id="testButton">
+                    ▶ Tester
+                </button>
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="copyButton">
+                    📋 Copier le code
+                </button>
+
+            </div>
+
+            <div
+                id="testOutput"
+                class="test-output">
+            </div>
+
+        </section>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     MODALE INFORMATION
+========================================================== -->
+
+<div
+    class="modal-backdrop"
+    id="infoModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3 id="modalTitle">
+                Information
+            </h3>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="modalClose">
+                ✕
+            </button>
+
+        </div>
+
+        <div
+            class="modal-body"
+            id="modalBody">
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+<script>
+"use strict";
+
+/*
+============================================================
+PYTHON AVENTURE V6
+============================================================
+
+ARCHITECTURE
+
+L'enfant construit une structure de boîtes.
+
+Les boîtes sont ensuite transformées en vrai Python.
+
+Exemple :
+
+🟩 VARIABLE
+    prénom = Léo
+
+🟦 AFFICHER
+    prénom
+
+devient :
+
+prenom = "Léo"
+print(prenom)
+
+Une boîte peut contenir d'autres boîtes.
+
+Exemple :
+
+🟨 SI
+    age >= 10
+
+    🟦 AFFICHER
+        Tu peux continuer !
+
+devient :
+
+if age >= 10:
+    print("Tu peux continuer !")
+
+============================================================
+*/
+
+
+/* =========================================================
+   ÉTAT
+========================================================= */
+
+let programNodes = [];
+
+let nextId = 1;
+
+
+/* =========================================================
+   INFORMATIONS DES BOÎTES
+========================================================= */
+
+const BOX_INFO = {
+
+    print: {
+        title: "AFFICHER",
+        emoji: "🟦",
+
+        purpose:
+            "Cette boîte sert à afficher quelque chose à l'écran.",
+
+        hierarchy:
+            "AFFICHER est une action. Elle peut être placée directement dans le programme ou à l'intérieur d'une boîte comme SI.",
+
+        contains:
+            "Tu écris seulement ce que tu veux afficher. Tu n'écris pas print() et tu n'ajoutes pas les guillemets.",
+
+        example:
+            "Bonjour !",
+
+        python:
+            'print("Bonjour !")',
+
+        relation:
+            "AFFICHER peut utiliser une variable créée auparavant et peut être placé dans un SI."
+    },
+
+    variable: {
+        title: "VARIABLE",
+        emoji: "🟩",
+
+        purpose:
+            "Cette boîte sert à garder une information sous un nom.",
+
+        hierarchy:
+            "Une VARIABLE peut être placée dans le programme principal. Les autres boîtes peuvent ensuite utiliser cette information.",
+
+        contains:
+            "Tu donnes un nom et une valeur. Python s'occupe du signe égal et des guillemets.",
+
+        example:
+            "Nom : prénom\nValeur : Léo",
+
+        python:
+            'prenom = "Léo"',
+
+        relation:
+            "Une variable peut ensuite être utilisée dans AFFICHER ou dans SI."
+    },
+
+    ask: {
+        title: "DEMANDER",
+        emoji: "🟪",
+
+        purpose:
+            "Cette boîte permet de poser une question et de garder la réponse.",
+
+        hierarchy:
+            "DEMANDER est une action. Elle peut être placée dans le programme principal ou dans une boîte SI.",
+
+        contains:
+            "Tu écris la question et le nom de la variable qui gardera la réponse.",
+
+        example:
+            "Question : Quel est ton prénom ?\nVariable : prénom",
+
+        python:
+            'prenom = input("Quel est ton prénom ? ")',
+
+        relation:
+            "La réponse peut ensuite être utilisée par AFFICHER ou SI."
+    },
+
+    if: {
+        title: "SI",
+        emoji: "🟨",
+
+        purpose:
+            "Cette boîte permet de faire quelque chose seulement lorsqu'une condition est vraie.",
+
+        hierarchy:
+            "SI est une boîte qui peut contenir d'autres boîtes. Les boîtes placées à l'intérieur appartiennent au SI.",
+
+        contains:
+            "Tu construis une comparaison. Ensuite, tu places les actions qui doivent se produire dans la zone intérieure.",
+
+        example:
+            "âge ≥ 10\n\n    🟦 AFFICHER\n    Tu peux continuer !",
+
+        python:
+            'if age >= 10:\n    print("Tu peux continuer !")',
+
+        relation:
+            "SI permet de créer la première vraie structure hiérarchique du programme."
+    }
+
+};
+
+
+/* =========================================================
+   EXEMPLES
+========================================================= */
+
+const EXAMPLES = [
+
+    {
+        id: "bonjour",
+        title: "👋 Dire bonjour",
+        description:
+            "Le programme affiche simplement un message.",
+
+        nodes: [
+            {
+                type: "print",
+                text: "Bonjour !",
+                valueType: "text"
+            }
+        ]
+    },
+
+
+    {
+        id: "prenom",
+        title: "📛 Afficher un prénom",
+        description:
+            "On garde un prénom dans une variable puis on l'affiche.",
+
+        nodes: [
+            {
+                type: "variable",
+                name: "prenom",
+                value: "Léo",
+                valueType: "text"
+            },
+            {
+                type: "print",
+                text: "prenom",
+                valueType: "variable"
+            }
+        ]
+    },
+
+
+    {
+        id: "question",
+        title: "❓ Poser une question",
+        description:
+            "Le programme demande le prénom puis l'affiche.",
+
+        nodes: [
+            {
+                type: "ask",
+                question: "Quel est ton prénom ?",
+                name: "prenom"
+            },
+            {
+                type: "print",
+                text: "prenom",
+                valueType: "variable"
+            }
+        ]
+    },
+
+
+    {
+        id: "decision",
+        title: "🚦 Prendre une décision",
+        description:
+            "Le SI contient une boîte AFFICHER.",
+
+        nodes: [
+            {
+                type: "variable",
+                name: "age",
+                value: "12",
+                valueType: "number"
+            },
+            {
+                type: "if",
+                left: "age",
+                operator: ">=",
+                right: "10",
+                leftType: "variable",
+                rightType: "number",
+                children: [
+                    {
+                        type: "print",
+                        text: "Tu peux continuer !",
+                        valueType: "text"
+                    }
+                ]
+            }
+        ]
+    },
+
+
+    {
+        id: "decision2",
+        title: "⭐ Vérifier une réponse",
+        description:
+            "Une variable est comparée à un texte.",
+
+        nodes: [
+            {
+                type: "variable",
+                name: "couleur",
+                value: "bleu",
+                valueType: "text"
+            },
+            {
+                type: "if",
+                left: "couleur",
+                operator: "==",
+                right: "bleu",
+                leftType: "variable",
+                rightType: "text",
+                children: [
+                    {
+                        type: "print",
+                        text: "Bonne réponse !",
+                        valueType: "text"
+                    }
+                ]
+            }
+        ]
+    }
+
+];
+
+
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+
+function createId() {
+    return nextId++;
+}
+
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function pythonString(value) {
+
+    return JSON.stringify(String(value ?? ""));
+}
+
+
+function isNumber(value) {
+
+    const text = String(value ?? "").trim();
+
+    return /^-?\d+(\.\d+)?$/.test(text);
+}
+
+
+function cleanVariableName(value) {
+
+    let name = String(value ?? "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-zA-Z0-9_]/g, "_");
+
+    if (!name) {
+        name = "ma_variable";
+    }
+
+    if (/^\d/.test(name)) {
+        name = "_" + name;
+    }
+
+    return name;
+}
+
+
+function makePythonValue(value, type) {
+
+    const text = String(value ?? "").trim();
+
+    if (type === "number") {
+
+        return isNumber(text)
+            ? text
+            : "0";
+    }
+
+    if (type === "variable") {
+
+        return cleanVariableName(text);
+    }
+
+    return pythonString(text);
+}
+
+
+/* =========================================================
+   CRÉER UNE NOUVELLE BOÎTE
+========================================================= */
+
+function createNode(type) {
+
+    const node = {
+        id: createId(),
+        type: type
+    };
+
+
+    if (type === "print") {
+
+        node.text = "";
+        node.valueType = "text";
+    }
+
+
+    if (type === "variable") {
+
+        node.name = "";
+        node.value = "";
+        node.valueType = "text";
+    }
+
+
+    if (type === "ask") {
+
+        node.question = "";
+        node.name = "";
+    }
+
+
+    if (type === "if") {
+
+        node.left = "";
+        node.operator = "==";
+        node.right = "";
+
+        node.leftType = "variable";
+        node.rightType = "text";
+
+        node.children = [];
+    }
+
+
+    return node;
+}
+
+
+/* =========================================================
+   AJOUTER
+========================================================= */
+
+function addNode(type, parentChildren = null) {
+
+    const node = createNode(type);
+
+
+    if (parentChildren) {
+
+        parentChildren.push(node);
+
+    } else {
+
+        programNodes.push(node);
+    }
+
+
+    saveProgram();
+    renderProgram();
+    updateCode();
+
+    showToast("Boîte ajoutée !");
+}
+
+
+/* =========================================================
+   SUPPRIMER UNE BOÎTE
+========================================================= */
+
+function findNodeById(id, nodes = programNodes) {
+
+    for (const node of nodes) {
+
+        if (node.id === id) {
+            return node;
+        }
+
+        if (Array.isArray(node.children)) {
+
+            const found =
+                findNodeById(id, node.children);
+
+            if (found) {
+                return found;
+            }
+        }
+    }
+
+    return null;
+}
+
+
+function removeNodeById(id, nodes = programNodes) {
+
+    const index =
+        nodes.findIndex(node => node.id === id);
+
+
+    if (index !== -1) {
+
+        nodes.splice(index, 1);
+
+        return true;
+    }
+
+
+    for (const node of nodes) {
+
+        if (Array.isArray(node.children)) {
+
+            if (
+                removeNodeById(
+                    id,
+                    node.children
+                )
+            ) {
+                return true;
+            }
+        }
+    }
+
+
+    return false;
+}
+
+
+function deleteNode(id) {
+
+    const node =
+        findNodeById(id);
+
+
+    if (!node) {
+        return;
+    }
+
+
+    const hasChildren =
+        Array.isArray(node.children) &&
+        node.children.length > 0;
+
+
+    if (hasChildren) {
+
+        const confirmed =
+            window.confirm(
+                "Cette boîte contient " +
+                node.children.length +
+                " boîte(s).\n\n" +
+                "Si tu la supprimes, les boîtes à l'intérieur seront aussi supprimées.\n\n" +
+                "Veux-tu continuer ?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+    }
+
+
+    removeNodeById(id);
+
+    saveProgram();
+    renderProgram();
+    updateCode();
+
+    showToast("Boîte supprimée.");
+}
+
+
+/* =========================================================
+   DÉPLACER
+========================================================= */
+
+function moveNodeInArray(id, direction, nodes) {
+
+    const index =
+        nodes.findIndex(node => node.id === id);
+
+
+    if (index !== -1) {
+
+        const newIndex =
+            index + direction;
+
+
+        if (
+            newIndex < 0 ||
+            newIndex >= nodes.length
+        ) {
+            return false;
+        }
+
+
+        const temp =
+            nodes[index];
+
+        nodes[index] =
+            nodes[newIndex];
+
+        nodes[newIndex] =
+            temp;
+
+
+        return true;
+    }
+
+
+    for (const node of nodes) {
+
+        if (Array.isArray(node.children)) {
+
+            if (
+                moveNodeInArray(
+                    id,
+                    direction,
+                    node.children
+                )
+            ) {
+                return true;
+            }
+        }
+    }
+
+
+    return false;
+}
+
+
+function moveNode(id, direction) {
+
+    if (
+        moveNodeInArray(
+            id,
+            direction,
+            programNodes
+        )
+    ) {
+
+        saveProgram();
+        renderProgram();
+        updateCode();
+    }
+}
+
+
+/* =========================================================
+   RENDRE LE PROGRAMME
+========================================================= */
+
+function renderProgram() {
+
+    const program =
+        document.getElementById("program");
+
+
+    program.innerHTML = "";
+
+
+    if (programNodes.length === 0) {
+
+        program.innerHTML = `
+            <div class="empty-program">
+                👋 Ton programme est vide.
+                <br>
+                Choisis une boîte pour commencer.
+            </div>
+        `;
+
+    } else {
+
+        programNodes.forEach(
+            (node, index) => {
+
+                program.appendChild(
+                    renderNode(
+                        node,
+                        programNodes,
+                        index,
+                        false
+                    )
+                );
+
+            }
+        );
+    }
+
+
+    updateProgress();
+}
+
+
+/* =========================================================
+   RENDRE UNE BOÎTE
+========================================================= */
+
+function renderNode(
+    node,
+    parentNodes,
+    index,
+    readOnly = false
+) {
+
+    const wrapper =
+        document.createElement("div");
+
+    wrapper.className =
+        readOnly
+            ? "nested-node"
+            : (
+                parentNodes === programNodes
+                    ? "program-node"
+                    : "nested-node"
+            );
+
+
+    const box =
+        document.createElement("div");
+
+    box.className =
+        "box box-" +
+        node.type;
+
+
+    const info =
+        BOX_INFO[node.type];
+
+
+    /* HEADER */
+
+    const header =
+        document.createElement("div");
+
+    header.className =
+        "box-header";
+
+
+    const title =
+        document.createElement("div");
+
+    title.className =
+        "box-title";
+
+
+    title.innerHTML = `
+        <span class="box-emoji">
+            ${info.emoji}
+        </span>
+
+        <span>
+            ${escapeHTML(info.title)}
+        </span>
+    `;
+
+
+    const actions =
+        document.createElement("div");
+
+    actions.className =
+        "box-actions";
+
+
+    if (!readOnly) {
+
+        const up =
+            createIconButton(
+                "↑",
+                "Monter"
+            );
+
+        up.addEventListener(
+            "click",
+            () => moveNode(
+                node.id,
+                -1
+            )
+        );
+
+
+        const down =
+            createIconButton(
+                "↓",
+                "Descendre"
+            );
+
+        down.addEventListener(
+            "click",
+            () => moveNode(
+                node.id,
+                1
+            )
+        );
+
+
+        actions.appendChild(up);
+        actions.appendChild(down);
+    }
+
+
+    const infoButton =
+        createIconButton(
+            "❕",
+            "Comprendre"
+        );
+
+
+    infoButton.addEventListener(
+        "click",
+        () => openInfo(node.type)
+    );
+
+
+    actions.appendChild(infoButton);
+
+
+    if (!readOnly) {
+
+        const trash =
+            createIconButton(
+                "🗑️",
+                "Supprimer"
+            );
+
+
+        trash.addEventListener(
+            "click",
+            () => deleteNode(node.id)
+        );
+
+
+        actions.appendChild(trash);
+    }
+
+
+    header.appendChild(title);
+    header.appendChild(actions);
+
+
+    /* BODY */
+
+    const body =
+        document.createElement("div");
+
+    body.className =
+        "box-body";
+
+
+    if (node.type === "print") {
+
+        renderPrintBody(
+            body,
+            node,
+            readOnly
+        );
+    }
+
+
+    if (node.type === "variable") {
+
+        renderVariableBody(
+            body,
+            node,
+            readOnly
+        );
+    }
+
+
+    if (node.type === "ask") {
+
+        renderAskBody(
+            body,
+            node,
+            readOnly
+        );
+    }
+
+
+    if (node.type === "if") {
+
+        renderIfBody(
+            body,
+            node,
+            readOnly
+        );
+    }
+
+
+    box.appendChild(header);
+    box.appendChild(body);
+
+    wrapper.appendChild(box);
+
+
+    return wrapper;
+}
+
+
+function createIconButton(
+    text,
+    title
+) {
+
+    const button =
+        document.createElement("button");
+
+    button.type = "button";
+    button.className = "icon-button";
+    button.textContent = text;
+    button.title = title;
+
+    return button;
+}
+
+
+/* =========================================================
+   AFFICHER
+========================================================= */
+
+function renderPrintBody(
+    body,
+    node,
+    readOnly
+) {
+
+    body.innerHTML = `
+
+        <p class="box-help">
+            Écris seulement ce que tu veux afficher.
+        </p>
+
+        <div class="field">
+
+            <label>
+                Que veux-tu afficher ?
+            </label>
+
+            <input
+                type="text"
+                value="${escapeHTML(node.text)}"
+                placeholder="Bonjour !"
+                data-field="text"
+                ${readOnly ? "disabled" : ""}
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                C'est...
+            </label>
+
+            <select
+                data-field="valueType"
+                ${readOnly ? "disabled" : ""}
+            >
+
+                <option
+                    value="text"
+                    ${node.valueType === "text"
+                        ? "selected"
+                        : ""}>
+                    📝 Un texte
+                </option>
+
+                <option
+                    value="variable"
+                    ${node.valueType === "variable"
+                        ? "selected"
+                        : ""}>
+                    📦 Une variable
+                </option>
+
+                <option
+                    value="number"
+                    ${node.valueType === "number"
+                        ? "selected"
+                        : ""}>
+                    🔢 Un nombre
+                </option>
+
+            </select>
+
+        </div>
+    `;
+
+
+    if (!readOnly) {
+
+        connectFields(
+            body,
+            node
+        );
+    }
+}
+
+
+/* =========================================================
+   VARIABLE
+========================================================= */
+
+function renderVariableBody(
+    body,
+    node,
+    readOnly
+) {
+
+    body.innerHTML = `
+
+        <p class="box-help">
+            Donne un nom et une valeur à ton information.
+        </p>
+
+        <div class="inline-2">
+
+            <div class="field">
+
+                <label>
+                    Nom
+                </label>
+
+                <input
+                    type="text"
+                    value="${escapeHTML(node.name)}"
+                    placeholder="prénom"
+                    data-field="name"
+                    ${readOnly ? "disabled" : ""}
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Valeur
+                </label>
+
+                <input
+                    type="text"
+                    value="${escapeHTML(node.value)}"
+                    placeholder="Léo"
+                    data-field="value"
+                    ${readOnly ? "disabled" : ""}
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                La valeur est...
+            </label>
+
+            <select
+                data-field="valueType"
+                ${readOnly ? "disabled" : ""}
+            >
+
+                <option
+                    value="text"
+                    ${node.valueType === "text"
+                        ? "selected"
+                        : ""}>
+                    📝 Un texte
+                </option>
+
+                <option
+                    value="number"
+                    ${node.valueType === "number"
+                        ? "selected"
+                        : ""}>
+                    🔢 Un nombre
+                </option>
+
+                <option
+                    value="variable"
+                    ${node.valueType === "variable"
+                        ? "selected"
+                        : ""}>
+                    📦 Une variable
+                </option>
+
+            </select>
+
+        </div>
+    `;
+
+
+    if (!readOnly) {
+
+        connectFields(
+            body,
+            node
+        );
+    }
+}
+
+
+/* =========================================================
+   DEMANDER
+========================================================= */
+
+function renderAskBody(
+    body,
+    node,
+    readOnly
+) {
+
+    body.innerHTML = `
+
+        <p class="box-help">
+            Pose une question et garde la réponse.
+        </p>
+
+        <div class="inline-2">
+
+            <div class="field">
+
+                <label>
+                    Question
+                </label>
+
+                <input
+                    type="text"
+                    value="${escapeHTML(node.question)}"
+                    placeholder="Quel est ton prénom ?"
+                    data-field="question"
+                    ${readOnly ? "disabled" : ""}
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Nom de la variable
+                </label>
+
+                <input
+                    type="text"
+                    value="${escapeHTML(node.name)}"
+                    placeholder="prénom"
+                    data-field="name"
+                    ${readOnly ? "disabled" : ""}
+                >
+
+            </div>
+
+        </div>
+    `;
+
+
+    if (!readOnly) {
+
+        connectFields(
+            body,
+            node
+        );
+    }
+}
+
+
+/* =========================================================
+   SI
+========================================================= */
+
+function renderIfBody(
+    body,
+    node,
+    readOnly
+) {
+
+    body.innerHTML = `
+
+        <p class="box-help">
+            Compare deux valeurs. Les boîtes placées
+            à l'intérieur seront exécutées si la condition est vraie.
+        </p>
+
+        <div class="inline-3">
+
+            <div class="field">
+
+                <label>
+                    Première valeur
+                </label>
+
+                <input
+                    type="text"
+                    value="${escapeHTML(node.left)}"
+                    placeholder="age"
+                    data-field="left"
+                    ${readOnly ? "disabled" : ""}
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Comparaison
+                </label>
+
+                <select
+                    data-field="operator"
+                    ${readOnly ? "disabled" : ""}
+                >
+
+                    <option
+                        value="=="
+                        ${node.operator === "=="
+                            ? "selected"
+                            : ""}>
+                        est égal à
+                    </option>
+
+                    <option
+                        value="!="
+                        ${node.operator === "!="
+                            ? "selected"
+                            : ""}>
+                        est différent de
+                    </option>
+
+                    <option
+                        value=">"
+                        ${node.operator === ">"
+                            ? "selected"
+                            : ""}>
+                        est supérieur à
+                    </option>
+
+                    <option
+                        value="<"
+                        ${node.operator === "<"
+                            ? "selected"
+                            : ""}>
+                        est inférieur à
+                    </option>
+
+                    <option
+                        value=">="
+                        ${node.operator === ">="
+                            ? "selected"
+                            : ""}>
+                        supérieur ou égal à
+                    </option>
+
+                    <option
+                        value="<="
+                        ${node.operator === "<="
+                            ? "selected"
+                            : ""}>
+                        inférieur ou égal à
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Deuxième valeur
+                </label>
+
+                <input
+                    type="text"
+                    value="${escapeHTML(node.right)}"
+                    placeholder="10"
+                    data-field="right"
+                    ${readOnly ? "disabled" : ""}
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="inline-2">
+
+            <div class="field">
+
+                <label>
+                    Première valeur
+                </label>
+
+                <select
+                    data-field="leftType"
+                    ${readOnly ? "disabled" : ""}
+                >
+
+                    <option
+                        value="variable"
+                        ${node.leftType === "variable"
+                            ? "selected"
+                            : ""}>
+                        📦 Variable
+                    </option>
+
+                    <option
+                        value="number"
+                        ${node.leftType === "number"
+                            ? "selected"
+                            : ""}>
+                        🔢 Nombre
+                    </option>
+
+                    <option
+                        value="text"
+                        ${node.leftType === "text"
+                            ? "selected"
+                            : ""}>
+                        📝 Texte
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Deuxième valeur
+                </label>
+
+                <select
+                    data-field="rightType"
+                    ${readOnly ? "disabled" : ""}
+                >
+
+                    <option
+                        value="variable"
+                        ${node.rightType === "variable"
+                            ? "selected"
+                            : ""}>
+                        📦 Variable
+                    </option>
+
+                    <option
+                        value="number"
+                        ${node.rightType === "number"
+                            ? "selected"
+                            : ""}>
+                        🔢 Nombre
+                    </option>
+
+                    <option
+                        value="text"
+                        ${node.rightType === "text"
+                            ? "selected"
+                            : ""}>
+                        📝 Texte
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="nested-area">
+
+            <div class="nested-title">
+                📥 À l'intérieur du SI
+            </div>
+
+            <div class="children-container">
+            </div>
+
+            ${
+                readOnly
+                ? ""
+                : `
+                    <button
+                        type="button"
+                        class="add-inside">
+                        ➕ Ajouter une boîte ici
+                    </button>
+
+                    <div
+                        class="inside-palette"
+                        style="display:none">
+
+                        <button
+                            type="button"
+                            class="inside-choice"
+                            data-inside="print">
+                            🟦 AFFICHER
+                        </button>
+
+                        <button
+                            type="button"
+                            class="inside-choice"
+                            data-inside="variable">
+                            🟩 VARIABLE
+                        </button>
+
+                        <button
+                            type="button"
+                            class="inside-choice"
+                            data-inside="ask">
+                            🟪 DEMANDER
+                        </button>
+
+                    </div>
+                `
+            }
+
+        </div>
+    `;
+
+
+    if (!readOnly) {
+
+        connectFields(
+            body,
+            node
+        );
+    }
+
+
+    const childrenContainer =
+        body.querySelector(
+            ".children-container"
+        );
+
+
+    if (
+        !node.children ||
+        node.children.length === 0
+    ) {
+
+        childrenContainer.innerHTML = `
+            <div class="nested-empty">
+                Aucune boîte ici pour le moment.
+            </div>
+        `;
+
+    } else {
+
+        node.children.forEach(
+            (child, index) => {
+
+                childrenContainer.appendChild(
+                    renderNode(
+                        child,
+                        node.children,
+                        index,
+                        readOnly
+                    )
+                );
+
+            }
+        );
+    }
+
+
+    if (!readOnly) {
+
+        const addButton =
+            body.querySelector(
+                ".add-inside"
+            );
+
+        const palette =
+            body.querySelector(
+                ".inside-palette"
+            );
+
+
+        addButton.addEventListener(
+            "click",
+            function() {
+
+                palette.style.display =
+                    palette.style.display === "none"
+                        ? "grid"
+                        : "none";
+            }
+        );
+
+
+        palette
+            .querySelectorAll("[data-inside]")
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        const type =
+                            button.dataset.inside;
+
+                        node.children.push(
+                            createNode(type)
+                        );
+
+
+                        saveProgram();
+                        renderProgram();
+                        updateCode();
+
+                        showToast(
+                            "Boîte ajoutée à l'intérieur !"
+                        );
+                    }
+                );
+            });
+    }
+}
+
+
+/* =========================================================
+   CHAMPS
+========================================================= */
+
+function connectFields(
+    container,
+    node
+) {
+
+    container
+        .querySelectorAll("[data-field]")
+        .forEach(field => {
+
+            field.addEventListener(
+                "input",
+                function() {
+
+                    node[
+                        field.dataset.field
+                    ] = field.value;
+
+                    saveProgram();
+                    updateCode();
+                }
+            );
+
+
+            field.addEventListener(
+                "change",
+                function() {
+
+                    node[
+                        field.dataset.field
+                    ] = field.value;
+
+                    saveProgram();
+                    updateCode();
+                }
+            );
+        });
+}
+
+
+/* =========================================================
+   GÉNÉRATEUR PYTHON
+========================================================= */
+
+function generatePython(
+    nodes,
+    indentLevel = 0
+) {
+
+    const lines = [];
+
+    const indent =
+        "    ".repeat(indentLevel);
+
+
+    for (const node of nodes) {
+
+
+        /* AFFICHER */
+
+        if (node.type === "print") {
+
+            const value =
+                makePythonValue(
+                    node.text,
+                    node.valueType
+                );
+
+
+            lines.push(
+                indent +
+                "print(" +
+                value +
+                ")"
+            );
+        }
+
+
+        /* VARIABLE */
+
+        else if (
+            node.type === "variable"
+        ) {
+
+            const name =
+                cleanVariableName(
+                    node.name
+                );
+
+
+            const value =
+                makePythonValue(
+                    node.value,
+                    node.valueType
+                );
+
+
+            lines.push(
+                indent +
+                name +
+                " = " +
+                value
+            );
+        }
+
+
+        /* DEMANDER */
+
+        else if (
+            node.type === "ask"
+        ) {
+
+            const name =
+                cleanVariableName(
+                    node.name
+                );
+
+
+            const question =
+                pythonString(
+                    node.question
+                );
+
+
+            lines.push(
+                indent +
+                name +
+                " = input(" +
+                question +
+                ")"
+            );
+        }
+
+
+        /* SI */
+
+        else if (
+            node.type === "if"
+        ) {
+
+            const left =
+                makePythonValue(
+                    node.left,
+                    node.leftType
+                );
+
+
+            const right =
+                makePythonValue(
+                    node.right,
+                    node.rightType
+                );
+
+
+            lines.push(
+                indent +
+                "if " +
+                left +
+                " " +
+                node.operator +
+                " " +
+                right +
+                ":"
+            );
+
+
+            if (
+                !node.children ||
+                node.children.length === 0
+            ) {
+
+                lines.push(
+                    indent +
+                    "    pass"
+                );
+
+            } else {
+
+                const childCode =
+                    generatePython(
+                        node.children,
+                        indentLevel + 1
+                    );
+
+
+                if (childCode) {
+                    lines.push(childCode);
+                }
+            }
+        }
+    }
+
+
+    return lines.join("\n");
+}
+
+
+/* =========================================================
+   CODE
+========================================================= */
+
+function updateCode() {
+
+    const code =
+        generatePython(
+            programNodes
+        );
+
+
+    const element =
+        document.getElementById(
+            "pythonCode"
+        );
+
+
+    element.textContent =
+        code ||
+        "# Ton code apparaîtra ici...";
+}
+
+
+/* =========================================================
+   PROGRESSION
+========================================================= */
+
+function countNodes(nodes) {
+
+    let total = 0;
+
+
+    for (const node of nodes) {
+
+        total++;
+
+        if (node.children) {
+
+            total +=
+                countNodes(
+                    node.children
+                );
+        }
+    }
+
+
+    return total;
+}
+
+
+function updateProgress() {
+
+    const count =
+        countNodes(
+            programNodes
+        );
+
+
+    document.getElementById(
+        "progressText"
+    ).textContent =
+        count +
+        (
+            count === 1
+                ? " boîte"
+                : " boîtes"
+        );
+}
+
+
+/* =========================================================
+   INFOS
+========================================================= */
+
+function openInfo(type) {
+
+    const info =
+        BOX_INFO[type];
+
+
+    if (!info) {
+        return;
+    }
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        info.emoji +
+        " " +
+        info.title;
+
+
+    document.getElementById(
+        "modalBody"
+    ).innerHTML = `
+
+        <div class="info-block">
+
+            <strong>
+                🎯 À quoi sert cette boîte ?
+            </strong>
+
+            <div>
+                ${escapeHTML(info.purpose)}
+            </div>
+
+        </div>
+
+
+        <div class="info-block">
+
+            <strong>
+                🧩 Quelle est sa place dans la hiérarchie ?
+            </strong>
+
+            <div>
+                ${escapeHTML(info.hierarchy)}
+            </div>
+
+        </div>
+
+
+        <div class="info-block">
+
+            <strong>
+                ✏️ Qu'est-ce que j'écris ?
+            </strong>
+
+            <div>
+                ${escapeHTML(info.contains)}
+            </div>
+
+        </div>
+
+
+        <div class="info-block">
+
+            <strong>
+                💡 Exemple
+            </strong>
+
+            <div class="info-example">
+${escapeHTML(info.example)}
+            </div>
+
+        </div>
+
+
+        <div class="info-block">
+
+            <strong>
+                🐍 Vrai code Python
+            </strong>
+
+            <div class="info-example">
+${escapeHTML(info.python)}
+            </div>
+
+        </div>
+
+
+        <div class="info-block">
+
+            <strong>
+                🔗 Avec les autres boîtes
+            </strong>
+
+            <div>
+                ${escapeHTML(info.relation)}
+            </div>
+
+        </div>
+
+
+        <div class="tip">
+            💡 Tu écris seulement les informations.
+            La boîte s'occupe de la syntaxe Python.
+        </div>
+    `;
+
+
+    document.getElementById(
+        "infoModal"
+    ).classList.add("visible");
+}
+
+
+function closeInfo() {
+
+    document.getElementById(
+        "infoModal"
+    ).classList.remove("visible");
+}
+
+
+/* =========================================================
+   EXEMPLES
+========================================================= */
+
+function cloneNodes(nodes) {
+
+    return JSON.parse(
+        JSON.stringify(nodes)
+    );
+}
+
+
+function renderExamples() {
+
+    const container =
+        document.getElementById(
+            "examplesGrid"
+        );
+
+
+    container.innerHTML = "";
+
+
+    EXAMPLES.forEach(
+        example => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "example-card";
+
+
+            card.innerHTML = `
+
+                <h4>
+                    ${escapeHTML(
+                        example.title
+                    )}
+                </h4>
+
+                <p class="example-card-description">
+                    ${escapeHTML(
+                        example.description
+                    )}
+                </p>
+
+                <div class="example-preview">
+                </div>
+
+                <div class="example-buttons">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        data-example-info>
+                        👀 Voir le code
+                    </button>
+
+                    <button
+                        type="button"
+                        class="primary-button"
+                        data-example-use>
+                        🧩 Utiliser
+                    </button>
+
+                </div>
+
+                <div
+                    class="example-code"
+                    data-example-code>
+
+                    <pre></pre>
+
+                </div>
+            `;
+
+
+            const preview =
+                card.querySelector(
+                    ".example-preview"
+                );
+
+
+            const previewNodes =
+                cloneNodes(
+                    example.nodes
+                );
+
+
+            previewNodes.forEach(
+                (node, index) => {
+
+                    preview.appendChild(
+                        renderNode(
+                            node,
+                            previewNodes,
+                            index,
+                            true
+                        )
+                    );
+                }
+            );
+
+
+            const codeBox =
+                card.querySelector(
+                    "[data-example-code]"
+                );
+
+
+            codeBox.querySelector(
+                "pre"
+            ).textContent =
+                generatePython(
+                    example.nodes
+                );
+
+
+            const infoButton =
+                card.querySelector(
+                    "[data-example-info]"
+                );
+
+
+            infoButton.addEventListener(
+                "click",
+                function() {
+
+                    const visible =
+                        codeBox.style.display ===
+                        "block";
+
+
+                    codeBox.style.display =
+                        visible
+                            ? "none"
+                            : "block";
+
+
+                    infoButton.textContent =
+                        visible
+                            ? "👀 Voir le code"
+                            : "🙈 Cacher le code";
+                }
+            );
+
+
+            const useButton =
+                card.querySelector(
+                    "[data-example-use]"
+                );
+
+
+            useButton.addEventListener(
+                "click",
+                function() {
+
+                    const confirmed =
+                        programNodes.length === 0
+                            ? true
+                            : window.confirm(
+                                "Ton programme contient déjà des boîtes.\n\n" +
+                                "Ajouter cet exemple à la fin de ton programme ?"
+                            );
+
+
+                    if (!confirmed) {
+                        return;
+                    }
+
+
+                    const copied =
+                        cloneNodes(
+                            example.nodes
+                        );
+
+
+                    assignFreshIds(
+                        copied
+                    );
+
+
+                    programNodes.push(
+                        ...copied
+                    );
+
+
+                    saveProgram();
+                    renderProgram();
+                    updateCode();
+
+
+                    switchTab("build");
+
+
+                    showToast(
+                        "Exemple ajouté à ton programme !"
+                    );
+                }
+            );
+
+
+            container.appendChild(
+                card
+            );
+        }
+    );
+}
+
+
+function assignFreshIds(nodes) {
+
+    for (const node of nodes) {
+
+        node.id =
+            createId();
+
+
+        if (node.children) {
+
+            assignFreshIds(
+                node.children
+            );
+        }
+    }
+}
+
+
+/* =========================================================
+   ONGLETS
+========================================================= */
+
+function switchTab(name) {
+
+    document
+        .querySelectorAll(".tab-button")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.tab === name
+            );
+        });
+
+
+    document
+        .querySelectorAll(".tab-panel")
+        .forEach(panel => {
+
+            panel.classList.toggle(
+                "active",
+                panel.id ===
+                "tab-" + name
+            );
+        });
+}
+
+
+document
+    .querySelectorAll(".tab-button")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                switchTab(
+                    button.dataset.tab
+                );
+            }
+        );
+    });
+
+
+/* =========================================================
+   COPIER
+========================================================= */
+
+async function copyCode() {
+
+    const code =
+        generatePython(
+            programNodes
+        );
+
+
+    if (!code) {
+
+        showToast(
+            "Il n'y a aucun code à copier."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            code
+        );
+
+        showToast(
+            "Code Python copié !"
+        );
+
+    } catch {
+
+        showToast(
+            "La copie automatique n'est pas disponible."
+        );
+    }
+}
+
+
+/* =========================================================
+   MINI MOTEUR DE TEST
+========================================================= */
+
+class MiniPythonError
+    extends Error {
+
+    constructor(message) {
+
+        super(message);
+
+        this.name =
+            "MiniPythonError";
+    }
+}
+
+
+class MiniPythonEngine {
+
+    constructor() {
+
+        this.variables = {};
+        this.output = [];
+    }
+
+
+    run(code) {
+
+        this.variables = {};
+        this.output = [];
+
+
+        const lines =
+            code
+                .split("\n")
+                .map(raw => ({
+                    raw,
+                    text: raw.trim(),
+                    indent:
+                        raw.match(/^ */)[0].length
+                }))
+                .filter(
+                    line =>
+                        line.text !== ""
+                );
+
+
+        this.executeBlock(
+            lines,
+            0,
+            lines.length,
+            0
+        );
+
+
+        return {
+            output:
+                this.output.join("\n"),
+
+            variables:
+                this.variables
+        };
+    }
+
+
+    executeBlock(
+        lines,
+        start,
+        end,
+        indent
+    ) {
+
+        let i = start;
+
+
+        while (i < end) {
+
+            const line =
+                lines[i];
+
+
+            if (line.indent < indent) {
+                break;
+            }
+
+
+            if (line.indent > indent) {
+
+                throw new MiniPythonError(
+                    "Problème de hiérarchie."
+                );
+            }
+
+
+            const text =
+                line.text;
+
+
+            /* PRINT */
+
+            if (
+                text.startsWith("print(") &&
+                text.endsWith(")")
+            ) {
+
+                const expression =
+                    text.slice(
+                        6,
+                        -1
+                    );
+
+
+                const value =
+                    this.evaluateValue(
+                        expression
+                    );
+
+
+                this.output.push(
+                    String(value)
+                );
+
+
+                i++;
+
+                continue;
+            }
+
+
+            /* INPUT */
+
+            const inputMatch =
+                text.match(
+                    /^([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*input\((.*)\)$/
+                );
+
+
+            if (inputMatch) {
+
+                const name =
+                    inputMatch[1];
+
+                const question =
+                    this.evaluateValue(
+                        inputMatch[2]
+                    );
+
+
+                const answer =
+                    window.prompt(
+                        String(question)
+                    );
+
+
+                this.variables[name] =
+                    answer === null
+                        ? ""
+                        : answer;
+
+
+                i++;
+
+                continue;
+            }
+
+
+            /* VARIABLE */
+
+            const assignment =
+                text.match(
+                    /^([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(?!input\()(.+)$/
+                );
+
+
+            if (assignment) {
+
+                const name =
+                    assignment[1];
+
+                const expression =
+                    assignment[2];
+
+
+                this.variables[name] =
+                    this.evaluateValue(
+                        expression
+                    );
+
+
+                i++;
+
+                continue;
+            }
+
+
+            /* IF */
+
+            const ifMatch =
+                text.match(
+                    /^if\s+(.+):$/
+                );
+
+
+            if (ifMatch) {
+
+                const condition =
+                    this.evaluateCondition(
+                        ifMatch[1]
+                    );
+
+
+                const childStart =
+                    i + 1;
+
+
+                let childEnd =
+                    childStart;
+
+
+                while (
+                    childEnd < end &&
+                    lines[childEnd].indent >
+                    indent
+                ) {
+
+                    childEnd++;
+                }
+
+
+                if (condition) {
+
+                    this.executeBlock(
+                        lines,
+                        childStart,
+                        childEnd,
+                        indent + 4
+                    );
+                }
+
+
+                i =
+                    childEnd;
+
+                continue;
+            }
+
+
+            /* PASS */
+
+            if (text === "pass") {
+
+                i++;
+
+                continue;
+            }
+
+
+            throw new MiniPythonError(
+                "Instruction non reconnue : " +
+                text
+            );
+        }
+    }
+
+
+    evaluateValue(expression) {
+
+        const text =
+            expression.trim();
+
+
+        /* chaîne double */
+
+        if (
+            text.startsWith('"') &&
+            text.endsWith('"')
+        ) {
+
+            try {
+
+                return JSON.parse(
+                    text
+                );
+
+            } catch {
+
+                return text.slice(
+                    1,
+                    -1
+                );
+            }
+        }
+
+
+        /* chaîne simple */
+
+        if (
+            text.startsWith("'") &&
+            text.endsWith("'")
+        ) {
+
+            return text.slice(
+                1,
+                -1
+            );
+        }
+
+
+        /* nombre */
+
+        if (
+            /^-?\d+(\.\d+)?$/
+                .test(text)
+        ) {
+
+            return Number(text);
+        }
+
+
+        /* variable */
+
+        if (
+            Object.prototype.hasOwnProperty.call(
+                this.variables,
+                text
+            )
+        ) {
+
+            return this.variables[text];
+        }
+
+
+        return text;
+    }
+
+
+    evaluateCondition(
+        condition
+    ) {
+
+        const match =
+            condition.match(
+                /^(.+?)\s*(==|!=|>=|<=|>|<)\s*(.+)$/
+            );
+
+
+        if (!match) {
+
+            throw new MiniPythonError(
+                "Condition non reconnue : " +
+                condition
+            );
+        }
+
+
+        const left =
+            this.evaluateValue(
+                match[1]
+            );
+
+
+        const operator =
+            match[2];
+
+
+        const right =
+            this.evaluateValue(
+                match[3]
+            );
+
+
+        switch (operator) {
+
+            case "==":
+                return left == right;
+
+            case "!=":
+                return left != right;
+
+            case ">":
+                return Number(left) >
+                    Number(right);
+
+            case "<":
+                return Number(left) <
+                    Number(right);
+
+            case ">=":
+                return Number(left) >=
+                    Number(right);
+
+            case "<=":
+                return Number(left) <=
+                    Number(right);
+
+            default:
+                return false;
+        }
+    }
+}
+
+
+/* =========================================================
+   TESTER
+========================================================= */
+
+function testProgram() {
+
+    const code =
+        generatePython(
+            programNodes
+        );
+
+
+    const output =
+        document.getElementById(
+            "testOutput"
+        );
+
+
+    if (!code) {
+
+        output.style.display =
+            "block";
+
+        output.className =
+            "test-output error";
+
+        output.textContent =
+            "Ajoute au moins une boîte.";
+
+        return;
+    }
+
+
+    try {
+
+        const engine =
+            new MiniPythonEngine();
+
+
+        const result =
+            engine.run(
+                code
+            );
+
+
+        output.style.display =
+            "block";
+
+        output.className =
+            "test-output";
+
+
+        let message =
+            "✅ Programme exécuté !\n\n";
+
+
+        if (result.output) {
+
+            message +=
+                "Écran :\n" +
+                result.output;
+
+        } else {
+
+            message +=
+                "Le programme fonctionne mais n'affiche rien.";
+        }
+
+
+        output.textContent =
+            message;
+
+
+        showToast(
+            "Ton programme fonctionne !"
+        );
+
+    } catch (error) {
+
+        output.style.display =
+            "block";
+
+        output.className =
+            "test-output error";
+
+
+        output.textContent =
+            "⚠️ Une erreur est survenue.\n\n" +
+            error.message;
+    }
+}
+
+
+/* =========================================================
+   SAUVEGARDE
+========================================================= */
+
+function saveProgram() {
+
+    try {
+
+        localStorage.setItem(
+            "python-aventure-v6",
+            JSON.stringify(
+                programNodes
+            )
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Sauvegarde impossible.",
+            error
+        );
+    }
+}
+
+
+function loadProgram() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                "python-aventure-v6"
+            );
+
+
+        if (!saved) {
+            return;
+        }
+
+
+        const parsed =
+            JSON.parse(
+                saved
+            );
+
+
+        if (
+            Array.isArray(
+                parsed
+            )
+        ) {
+
+            programNodes =
+                parsed;
+
+            repairNodes(
+                programNodes
+            );
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "Programme sauvegardé illisible.",
+            error
+        );
+
+        programNodes = [];
+    }
+}
+
+
+function repairNodes(nodes) {
+
+    for (const node of nodes) {
+
+        if (!node.id) {
+
+            node.id =
+                createId();
+        }
+
+
+        if (
+            node.type === "print"
+        ) {
+
+            if (
+                typeof node.text !==
+                "string"
+            ) {
+
+                node.text = "";
+            }
+
+
+            if (!node.valueType) {
+
+                node.valueType =
+                    "text";
+            }
+        }
+
+
+        if (
+            node.type === "variable"
+        ) {
+
+            if (
+                typeof node.name !==
+                "string"
+            ) {
+
+                node.name = "";
+            }
+
+
+            if (
+                typeof node.value !==
+                "string"
+            ) {
+
+                node.value = "";
+            }
+
+
+            if (!node.valueType) {
+
+                node.valueType =
+                    "text";
+            }
+        }
+
+
+        if (
+            node.type === "ask"
+        ) {
+
+            if (
+                typeof node.question !==
+                "string"
+            ) {
+
+                node.question = "";
+            }
+
+
+            if (
+                typeof node.name !==
+                "string"
+            ) {
+
+                node.name = "";
+            }
+        }
+
+
+        if (
+            node.type === "if"
+        ) {
+
+            if (
+                typeof node.left !==
+                "string"
+            ) {
+
+                node.left = "";
+            }
+
+
+            if (
+                typeof node.right !==
+                "string"
+            ) {
+
+                node.right = "";
+            }
+
+
+            if (!node.operator) {
+
+                node.operator =
+                    "==";
+            }
+
+
+            if (!node.leftType) {
+
+                node.leftType =
+                    "variable";
+            }
+
+
+            if (!node.rightType) {
+
+                node.rightType =
+                    "text";
+            }
+
+
+            if (
+                !Array.isArray(
+                    node.children
+                )
+            ) {
+
+                node.children = [];
+            }
+
+
+            repairNodes(
+                node.children
+            );
+        }
+    }
+}
+
+
+/* =========================================================
+   EFFACER
+========================================================= */
+
+function clearProgram() {
+
+    if (
+        programNodes.length === 0
+    ) {
+
+        return;
+    }
+
+
+    const confirmed =
+        window.confirm(
+            "Veux-tu vraiment effacer tout ton programme ?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    programNodes = [];
+
+
+    saveProgram();
+    renderProgram();
+    updateCode();
+
+
+    document.getElementById(
+        "testOutput"
+    ).style.display =
+        "none";
+
+
+    showToast(
+        "Programme effacé."
+    );
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer = null;
+
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            function() {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2200
+        );
+}
+
+
+/* =========================================================
+   ÉVÉNEMENTS
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+
+        /* Charger le programme */
+
+        loadProgram();
+
+
+        /* Affichage */
+
+        renderProgram();
+
+        updateCode();
+
+
+        /* Exemples */
+
+        renderExamples();
+
+
+        /* Ajouter une boîte */
+
+        document
+            .querySelectorAll(
+                "[data-add]"
+            )
+            .forEach(
+                button => {
+
+                    button.addEventListener(
+                        "click",
+                        function() {
+
+                            addNode(
+                                button.dataset.add
+                            );
+                        }
+                    );
+                }
+            );
+
+
+        /* Effacer */
+
+        document
+            .getElementById(
+                "clearButton"
+            )
+            .addEventListener(
+                "click",
+                clearProgram
+            );
+
+
+        /* Tester */
+
+        document
+            .getElementById(
+                "testButton"
+            )
+            .addEventListener(
+                "click",
+                testProgram
+            );
+
+
+        /* Copier */
+
+        document
+            .getElementById(
+                "copyButton"
+            )
+            .addEventListener(
+                "click",
+                copyCode
+            );
+
+
+        /* Fermer info */
+
+        document
+            .getElementById(
+                "modalClose"
+            )
+            .addEventListener(
+                "click",
+                closeInfo
+            );
+
+
+        /* Cliquer hors de la fenêtre */
+
+        document
+            .getElementById(
+                "infoModal"
+            )
+            .addEventListener(
+                "click",
+                function(event) {
+
+                    if (
+                        event.target ===
+                        document.getElementById(
+                            "infoModal"
+                        )
+                    ) {
+
+                        closeInfo();
+                    }
+                }
+            );
+
+
+        /* ESC */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key ===
+                    "Escape"
+                ) {
+
+                    closeInfo();
+                }
+            }
+        );
+
+    }
+);
+
+</script>
+
+</body>
+              </html>
