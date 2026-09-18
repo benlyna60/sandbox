@@ -1,0 +1,5306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Aventure V7.2</title>
+
+<style>
+:root{
+    --blue:#3b82f6;
+    --blue-bg:#dbeafe;
+    --green:#22c55e;
+    --green-bg:#dcfce7;
+    --purple:#8b5cf6;
+    --purple-bg:#ede9fe;
+    --orange:#f97316;
+    --orange-bg:#ffedd5;
+    --yellow:#eab308;
+    --yellow-bg:#fef9c3;
+    --red:#ef4444;
+    --red-bg:#fee2e2;
+    --pink:#ec4899;
+    --pink-bg:#fce7f3;
+    --brown:#92400e;
+    --brown-bg:#fef3c7;
+    --gray:#64748b;
+    --gray-bg:#f1f5f9;
+
+    --dark:#172033;
+    --dark2:#243047;
+    --border:#dbe2ea;
+    --text:#172033;
+    --muted:#64748b;
+    --white:#ffffff;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f5f7fb;
+    color:var(--text);
+}
+
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    max-width:1250px;
+    margin:auto;
+    padding:18px;
+}
+
+header{
+    background:linear-gradient(135deg,#172033,#2f4161);
+    color:white;
+    border-radius:20px;
+    padding:22px;
+    margin-bottom:15px;
+    box-shadow:0 8px 25px rgba(0,0,0,.12);
+}
+
+header h1{
+    margin:0 0 6px;
+    font-size:28px;
+}
+
+header p{
+    margin:0;
+    opacity:.85;
+}
+
+.tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
+}
+
+.tab-btn{
+    border:0;
+    background:white;
+    border:1px solid var(--border);
+    padding:11px 16px;
+    border-radius:12px;
+    font-weight:bold;
+    color:var(--dark);
+}
+
+.tab-btn.active{
+    background:var(--dark);
+    color:white;
+}
+
+.tab{
+    display:none;
+}
+
+.tab.active{
+    display:block;
+}
+
+.panel{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px;
+    box-shadow:0 5px 18px rgba(0,0,0,.05);
+    margin-bottom:15px;
+}
+
+.panel h2{
+    margin-top:0;
+}
+
+.toolbar{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
+}
+
+.btn{
+    border:0;
+    border-radius:10px;
+    padding:10px 14px;
+    font-weight:bold;
+}
+
+.btn-dark{
+    background:var(--dark);
+    color:white;
+}
+
+.btn-blue{
+    background:var(--blue);
+    color:white;
+}
+
+.btn-green{
+    background:var(--green);
+    color:white;
+}
+
+.btn-red{
+    background:var(--red);
+    color:white;
+}
+
+.btn-light{
+    background:#eef2f7;
+    color:var(--dark);
+}
+
+.palette{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.palette button{
+    border:2px solid rgba(0,0,0,.1);
+    border-radius:13px;
+    padding:13px 8px;
+    font-weight:bold;
+    min-height:54px;
+}
+
+.palette-print{
+    background:var(--blue-bg);
+    border-color:#93c5fd !important;
+}
+
+.palette-variable{
+    background:var(--green-bg);
+    border-color:#86efac !important;
+}
+
+.palette-ask{
+    background:var(--purple-bg);
+    border-color:#c4b5fd !important;
+}
+
+.palette-calc{
+    background:var(--orange-bg);
+    border-color:#fdba74 !important;
+}
+
+.palette-if{
+    background:var(--yellow-bg);
+    border-color:#fde047 !important;
+}
+
+.palette-repeat{
+    background:var(--red-bg);
+    border-color:#fca5a5 !important;
+}
+
+.palette-list{
+    background:var(--pink-bg);
+    border-color:#f9a8d4 !important;
+}
+
+.palette-text{
+    background:var(--brown-bg);
+    border-color:#fcd34d !important;
+}
+
+.palette-comment{
+    background:var(--gray-bg);
+    border-color:#cbd5e1 !important;
+}
+
+.node{
+    margin:10px 0;
+    border-radius:15px;
+    overflow:hidden;
+    border:2px solid rgba(0,0,0,.10);
+    box-shadow:0 3px 9px rgba(0,0,0,.07);
+    transition:.2s;
+}
+
+.node.problem-node{
+    outline:4px solid rgba(239,68,68,.35);
+    box-shadow:0 0 0 5px rgba(239,68,68,.08);
+}
+
+.node-print{
+    background:var(--blue-bg);
+    border-color:#93c5fd;
+}
+
+.node-variable{
+    background:var(--green-bg);
+    border-color:#86efac;
+}
+
+.node-ask{
+    background:var(--purple-bg);
+    border-color:#c4b5fd;
+}
+
+.node-calc{
+    background:var(--orange-bg);
+    border-color:#fdba74;
+}
+
+.node-if{
+    background:var(--yellow-bg);
+    border-color:#fde047;
+}
+
+.node-repeat{
+    background:var(--red-bg);
+    border-color:#fca5a5;
+}
+
+.node-list{
+    background:var(--pink-bg);
+    border-color:#f9a8d4;
+}
+
+.node-text{
+    background:var(--brown-bg);
+    border-color:#fcd34d;
+}
+
+.node-comment{
+    background:var(--gray-bg);
+    border-color:#cbd5e1;
+}
+
+.node-head{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 12px;
+    background:rgba(255,255,255,.28);
+    border-bottom:1px solid rgba(0,0,0,.08);
+}
+
+.node-title{
+    font-weight:bold;
+    flex:1;
+}
+
+.node-actions{
+    display:flex;
+    gap:5px;
+}
+
+.node-actions button{
+    border:0;
+    width:32px;
+    height:32px;
+    border-radius:8px;
+    background:rgba(255,255,255,.65);
+}
+
+.node-body{
+    padding:13px;
+    background:transparent;
+}
+
+.field{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+    margin:7px 0;
+}
+
+.field label{
+    font-weight:bold;
+    min-width:95px;
+}
+
+.field input,
+.field select,
+.field textarea{
+    flex:1;
+    min-width:120px;
+    border:1px solid rgba(0,0,0,.18);
+    border-radius:9px;
+    padding:9px;
+    background:rgba(255,255,255,.85);
+}
+
+.children-zone{
+    margin-top:12px;
+    padding:10px;
+    border:2px dashed rgba(0,0,0,.18);
+    border-radius:12px;
+    background:rgba(255,255,255,.25);
+}
+
+.zone-title{
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.empty-zone{
+    color:#64748b;
+    font-size:13px;
+    padding:8px;
+}
+
+.code-box{
+    background:#111827;
+    color:#e5e7eb;
+    border-radius:14px;
+    padding:16px;
+    overflow:auto;
+}
+
+.code-box pre{
+    margin:0;
+    white-space:pre-wrap;
+    font-family:Consolas,monospace;
+}
+
+.result{
+    margin-top:15px;
+    border-radius:15px;
+    padding:15px;
+}
+
+.result-success{
+    background:#ecfdf5;
+    border:2px solid #86efac;
+}
+
+.result-neutral{
+    background:#f8fafc;
+    border:2px solid #cbd5e1;
+}
+
+.learning-error{
+    background:#fff;
+    border:2px solid #fca5a5;
+    border-radius:17px;
+    overflow:hidden;
+    box-shadow:0 6px 20px rgba(239,68,68,.12);
+}
+
+.learning-title{
+    background:var(--red-bg);
+    padding:15px;
+    font-size:19px;
+    font-weight:bold;
+}
+
+.learning-step{
+    padding:14px;
+    border-top:1px solid #e5e7eb;
+}
+
+.learning-step strong{
+    display:block;
+    margin-bottom:5px;
+}
+
+.learning-what{
+    background:#fff7f7;
+}
+
+.learning-why{
+    background:#f8faff;
+}
+
+.learning-fix{
+    background:#f5fff8;
+}
+
+.learning-example{
+    margin-top:10px;
+    padding:12px;
+    border-radius:12px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+}
+
+.mini-node{
+    border-radius:9px;
+    padding:8px 10px;
+    margin:5px 0;
+    font-weight:bold;
+    border:2px solid rgba(0,0,0,.1);
+}
+
+.mini-blue{
+    background:var(--blue-bg);
+    border-color:#93c5fd;
+}
+
+.mini-green{
+    background:var(--green-bg);
+    border-color:#86efac;
+}
+
+.mini-purple{
+    background:var(--purple-bg);
+    border-color:#c4b5fd;
+}
+
+.mini-yellow{
+    background:var(--yellow-bg);
+    border-color:#fde047;
+}
+
+.mini-red{
+    background:var(--red-bg);
+    border-color:#fca5a5;
+}
+
+.mini-orange{
+    background:var(--orange-bg);
+    border-color:#fdba74;
+}
+
+.mini-pink{
+    background:var(--pink-bg);
+    border-color:#f9a8d4;
+}
+
+.mini-brown{
+    background:var(--brown-bg);
+    border-color:#fcd34d;
+}
+
+.warning-box{
+    margin-top:12px;
+    background:#fff7ed;
+    border:2px solid #fdba74;
+    border-radius:12px;
+    padding:12px;
+}
+
+.success-box{
+    background:#ecfdf5;
+    border:2px solid #86efac;
+    border-radius:12px;
+    padding:12px;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.65);
+    z-index:1000;
+    padding:20px;
+    overflow:auto;
+}
+
+.modal.show{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.modal-card{
+    width:min(800px,100%);
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    max-height:90vh;
+    overflow:auto;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.close{
+    border:0;
+    background:#eef2f7;
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    font-size:20px;
+}
+
+.info-section{
+    margin:14px 0;
+    padding:13px;
+    border-radius:12px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+}
+
+.info-section h3{
+    margin-top:0;
+}
+
+.parent-area textarea{
+    width:100%;
+    min-height:260px;
+    resize:vertical;
+    padding:14px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    font-family:Consolas,monospace;
+}
+
+.example-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:14px;
+}
+
+.example-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,.05);
+}
+
+.example-card h3{
+    margin-top:0;
+}
+
+.progress-wrap{
+    margin:15px 0;
+}
+
+.progress{
+    height:12px;
+    border-radius:99px;
+    background:#e2e8f0;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0;
+    background:#22c55e;
+    transition:.3s;
+}
+
+.small{
+    font-size:13px;
+    color:var(--muted);
+}
+
+.empty-program{
+    text-align:center;
+    color:var(--muted);
+    padding:35px 10px;
+    border:2px dashed #cbd5e1;
+    border-radius:15px;
+}
+
+details{
+    margin-top:10px;
+}
+
+summary{
+    cursor:pointer;
+    font-weight:bold;
+}
+
+@media(max-width:700px){
+    .app{
+        padding:10px;
+    }
+
+    header h1{
+        font-size:23px;
+    }
+
+    .field{
+        align-items:stretch;
+    }
+
+    .field label{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+    <h1>🐍 Python Aventure V7.2</h1>
+    <p>Construis ton programme avec des boîtes et apprends pourquoi une erreur arrive.</p>
+</header>
+
+<div class="tabs">
+    <button class="tab-btn active" data-tab="build">🧩 Construire</button>
+    <button class="tab-btn" data-tab="examples">💡 Exemples</button>
+    <button class="tab-btn" data-tab="code">🐍 Mon code</button>
+    <button class="tab-btn" data-tab="parent">👨‍👩‍👧 Mode Parent</button>
+</div>
+
+
+<!-- =========================================================
+     CONSTRUIRE
+========================================================= -->
+
+<section id="tab-build" class="tab active">
+
+<div class="panel">
+
+<h2>🧩 Construis ton algorithme</h2>
+
+<p class="small">
+    Clique sur une boîte pour l'ajouter. Tu peux ensuite la déplacer,
+    la supprimer ou lui demander une explication.
+</p>
+
+<div class="palette">
+
+<button class="palette-print" onclick="addNode('print')">🟦 AFFICHER</button>
+<button class="palette-variable" onclick="addNode('variable')">🟩 VARIABLE</button>
+<button class="palette-ask" onclick="addNode('ask')">🟪 DEMANDER</button>
+<button class="palette-calc" onclick="addNode('calc')">🟧 CALCULER</button>
+<button class="palette-if" onclick="addNode('if')">🟨 SI</button>
+<button class="palette-repeat" onclick="addNode('repeat')">🟥 RÉPÉTER</button>
+<button class="palette-list" onclick="addNode('list')">🩷 LISTE</button>
+<button class="palette-text" onclick="addNode('text')">🟫 TEXTE</button>
+<button class="palette-comment" onclick="addNode('comment')">⚫ COMMENTAIRE</button>
+
+</div>
+
+<div class="toolbar">
+    <button class="btn btn-green" onclick="testProgram()">▶ Tester le programme</button>
+    <button class="btn btn-blue" onclick="openCode()">🐍 Voir le Python</button>
+    <button class="btn btn-light" onclick="clearProgram()">🗑️ Tout effacer</button>
+</div>
+
+<div class="progress-wrap">
+    <div class="small">Progression</div>
+    <div class="progress">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
+    <div id="progressText" class="small">0%</div>
+</div>
+
+<div id="programArea"></div>
+
+<div id="testResult"></div>
+
+</div>
+</section>
+
+
+<!-- =========================================================
+     EXEMPLES
+========================================================= -->
+
+<section id="tab-examples" class="tab">
+
+<div class="panel">
+
+<h2>💡 Exemples</h2>
+
+<p class="small">
+    Chaque exemple utilise les mêmes boîtes que dans le constructeur.
+</p>
+
+<div class="example-grid">
+
+<div class="example-card">
+    <h3>👋 Bonjour</h3>
+
+    <div class="mini-node mini-blue">
+        🟦 AFFICHER<br>
+        <span class="small">Bonjour !</span>
+    </div>
+
+    <button class="btn btn-blue" onclick="useExample('hello')">
+        Utiliser cet exemple
+    </button>
+</div>
+
+
+<div class="example-card">
+    <h3>🙋 Demander un prénom</h3>
+
+    <div class="mini-node mini-purple">
+        🟪 DEMANDER<br>
+        <span class="small">Comment tu t'appelles ?</span>
+    </div>
+
+    <div class="mini-node mini-blue">
+        🟦 AFFICHER<br>
+        <span class="small">prenom</span>
+    </div>
+
+    <button class="btn btn-blue" onclick="useExample('ask')">
+        Utiliser cet exemple
+    </button>
+</div>
+
+
+<div class="example-card">
+    <h3>🤔 Faire un choix</h3>
+
+    <div class="mini-node mini-purple">
+        🟪 DEMANDER<br>
+        <span class="small">Quel âge as-tu ?</span>
+    </div>
+
+    <div class="mini-node mini-yellow">
+        🟨 SI
+        <div class="mini-node mini-blue">
+            🟦 AFFICHER<br>
+            <span class="small">Tu es assez grand.</span>
+        </div>
+    </div>
+
+    <button class="btn btn-blue" onclick="useExample('if')">
+        Utiliser cet exemple
+    </button>
+</div>
+
+
+<div class="example-card">
+    <h3>🔁 Répéter</h3>
+
+    <div class="mini-node mini-red">
+        🟥 RÉPÉTER 3 fois
+
+        <div class="mini-node mini-blue">
+            🟦 AFFICHER<br>
+            <span class="small">Bonjour !</span>
+        </div>
+    </div>
+
+    <button class="btn btn-blue" onclick="useExample('repeat')">
+        Utiliser cet exemple
+    </button>
+</div>
+
+</div>
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     MON CODE
+========================================================= -->
+
+<section id="tab-code" class="tab">
+
+<div class="panel">
+
+<h2>🐍 Mon vrai code Python</h2>
+
+<div class="toolbar">
+    <button class="btn btn-blue" onclick="generateAndShowCode()">Actualiser</button>
+    <button class="btn btn-green" onclick="copyPython()">Copier le code</button>
+    <button class="btn btn-light" onclick="testProgram()">▶ Tester</button>
+</div>
+
+<div class="code-box">
+<pre id="pythonCode"># Ton code apparaîtra ici.</pre>
+</div>
+
+<div id="codeResult"></div>
+
+</div>
+</section>
+
+
+<!-- =========================================================
+     MODE PARENT
+========================================================= -->
+
+<section id="tab-parent" class="tab">
+
+<div class="panel parent-area">
+
+<h2>👨‍👩‍👧 Mode Parent</h2>
+
+<p>
+    Le parent peut écrire un petit programme Python.
+    Python Aventure essaiera de le transformer en boîtes.
+</p>
+
+<textarea id="parentCode" placeholder='Exemple :
+
+prenom = input("Comment tu t'appelles ?")
+print(prenom)
+'></textarea>
+
+<div class="toolbar">
+    <button class="btn btn-blue" onclick="parseParent()">🔄 Transformer en boîtes</button>
+    <button class="btn btn-light" onclick="putParentExample()">💡 Mettre un exemple</button>
+</div>
+
+<div id="parentResult"></div>
+
+</div>
+</section>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL INFO
+========================================================= -->
+
+<div id="infoModal" class="modal">
+
+<div class="modal-card">
+
+<div class="modal-header">
+    <h2 id="infoTitle">Information</h2>
+    <button class="close" onclick="closeInfo()">×</button>
+</div>
+
+<div id="infoContent"></div>
+
+</div>
+</div>
+
+
+<script>
+
+/* =========================================================
+   ÉTAT
+========================================================= */
+
+let programNodes = [];
+let nextId = 1;
+
+const STORAGE_KEY = "python_aventure_v72";
+
+
+/* =========================================================
+   INFORMATIONS PÉDAGOGIQUES
+========================================================= */
+
+const NODE_INFO = {
+
+print:{
+    title:"🟦 AFFICHER",
+
+    description:"Cette boîte affiche un message ou une information à l'écran.",
+
+    use:"Utilise-la quand tu veux que ton programme montre quelque chose.",
+
+    hierarchy:"Elle peut être placée directement dans le programme ou à l'intérieur d'un 🟨 SI ou d'un 🟥 RÉPÉTER.",
+
+    contains:"Elle contient le message ou la variable que tu veux afficher.",
+
+    python:"print(...)",
+
+    mistake:"Laisser la boîte vide ou essayer d'afficher une variable qui n'existe pas encore.",
+
+    example:"Écris Bonjour ! pour afficher le message.",
+
+    hierarchyExample:`
+        <div class="mini-node mini-yellow">
+            🟨 SI
+            <div class="mini-node mini-blue">
+                🟦 AFFICHER
+            </div>
+        </div>
+    `
+},
+
+variable:{
+    title:"🟩 VARIABLE",
+
+    description:"Une variable permet de donner un nom à une information pour pouvoir la réutiliser.",
+
+    use:"Utilise-la quand tu veux conserver une information.",
+
+    hierarchy:"Elle peut être créée avant une autre boîte qui utilisera cette information.",
+
+    contains:"Un nom et une valeur.",
+
+    python:"prenom = \"Léo\"",
+
+    mistake:"Donner un nom invalide ou essayer d'utiliser la variable avant de la créer.",
+
+    example:"Nom : prenom — Valeur : Léo",
+
+    hierarchyExample:`
+        <div class="mini-node mini-green">
+            🟩 VARIABLE
+            <div class="small">prenom = Léo</div>
+        </div>
+        <div class="mini-node mini-blue">
+            🟦 AFFICHER
+            <div class="small">prenom</div>
+        </div>
+    `
+},
+
+ask:{
+    title:"🟪 DEMANDER",
+
+    description:"Cette boîte pose une question et conserve la réponse.",
+
+    use:"Utilise-la lorsque ton programme doit demander quelque chose à la personne.",
+
+    hierarchy:"Elle est généralement placée avant une boîte qui utilise la réponse.",
+
+    contains:"Une question et le nom de la variable qui recevra la réponse.",
+
+    python:'prenom = input("Comment tu t’appelles ?")',
+
+    mistake:"Oublier le nom de la variable qui doit recevoir la réponse.",
+
+    example:"Question : Quel est ton prénom ? — Nom : prenom",
+
+    hierarchyExample:`
+        <div class="mini-node mini-purple">
+            🟪 DEMANDER
+            <div class="small">Quel est ton prénom ? → prenom</div>
+        </div>
+        <div class="mini-node mini-blue">
+            🟦 AFFICHER
+            <div class="small">prenom</div>
+        </div>
+    `
+},
+
+calc:{
+    title:"🟧 CALCULER",
+
+    description:"Cette boîte effectue un calcul et place le résultat dans une variable.",
+
+    use:"Utilise-la pour additionner, soustraire, multiplier ou diviser.",
+
+    hierarchy:"Elle doit être placée avant les boîtes qui utilisent son résultat.",
+
+    contains:"Une valeur à gauche, un opérateur, une valeur à droite et le nom du résultat.",
+
+    python:"total = 5 + 3",
+
+    mistake:"Oublier une valeur ou utiliser une variable qui n'a pas encore été créée.",
+
+    example:"5 + 3 → total",
+
+    hierarchyExample:`
+        <div class="mini-node mini-orange">
+            🟧 CALCULER
+            <div class="small">5 + 3 → total</div>
+        </div>
+        <div class="mini-node mini-blue">
+            🟦 AFFICHER
+            <div class="small">total</div>
+        </div>
+    `
+},
+
+if:{
+    title:"🟨 SI",
+
+    description:"Cette boîte permet au programme de prendre une décision.",
+
+    use:"Utilise-la quand une action dépend d'une condition.",
+
+    hierarchy:"Les actions qui doivent arriver seulement si la condition est vraie vont à l'intérieur de SI.",
+
+    contains:"Une comparaison et des boîtes à exécuter si la condition est vraie. Une partie SINON est possible.",
+
+    python:"if age >= 18:",
+
+    mistake:"Oublier une partie de la comparaison ou ne mettre aucune action dans SI.",
+
+    example:"SI âge >= 18 → AFFICHER « Tu peux entrer. »",
+
+    hierarchyExample:`
+        <div class="mini-node mini-yellow">
+            🟨 SI
+            <div class="small">âge >= 18</div>
+
+            <div class="mini-node mini-blue">
+                🟦 AFFICHER
+                <div class="small">Tu peux entrer.</div>
+            </div>
+        </div>
+    `
+},
+
+repeat:{
+    title:"🟥 RÉPÉTER",
+
+    description:"Cette boîte permet de refaire une ou plusieurs actions plusieurs fois.",
+
+    use:"Utilise-la quand une action doit être répétée.",
+
+    hierarchy:"Les actions à répéter doivent être placées à l'intérieur.",
+
+    contains:"Un nombre de répétitions et des boîtes enfants.",
+
+    python:"for _ in range(3):",
+
+    mistake:"Mettre un nombre invalide ou ne mettre aucune action à répéter.",
+
+    example:"RÉPÉTER 3 fois → AFFICHER Bonjour !",
+
+    hierarchyExample:`
+        <div class="mini-node mini-red">
+            🟥 RÉPÉTER 3 fois
+
+            <div class="mini-node mini-blue">
+                🟦 AFFICHER
+                <div class="small">Bonjour !</div>
+            </div>
+        </div>
+    `
+},
+
+list:{
+    title:"🩷 LISTE",
+
+    description:"Une liste permet de ranger plusieurs éléments ensemble.",
+
+    use:"Utilise-la lorsque tu veux conserver plusieurs valeurs sous un même nom.",
+
+    hierarchy:"Elle peut être créée avant les boîtes qui utiliseront la liste.",
+
+    contains:"Un nom et plusieurs éléments séparés par des virgules.",
+
+    python:'fruits = ["pomme", "banane"]',
+
+    mistake:"Oublier le nom de la liste ou les éléments.",
+
+    example:"Nom : fruits — Éléments : pomme, banane, orange",
+
+    hierarchyExample:`
+        <div class="mini-node mini-pink">
+            🩷 LISTE
+            <div class="small">fruits = pomme, banane</div>
+        </div>
+    `
+},
+
+text:{
+    title:"🟫 TEXTE",
+
+    description:"Cette boîte permet de transformer un texte.",
+
+    use:"Utilise-la pour mettre un texte en majuscules, minuscules ou connaître sa longueur.",
+
+    hierarchy:"Elle doit généralement être placée après la création du texte qu'elle utilise.",
+
+    contains:"Une source, une opération et une variable pour recevoir le résultat.",
+
+    python:"texte_maj = texte.upper()",
+
+    mistake:"Utiliser une source qui n'existe pas encore ou oublier le résultat.",
+
+    example:"texte → MAJUSCULES → résultat",
+
+    hierarchyExample:`
+        <div class="mini-node mini-brown">
+            🟫 TEXTE
+            <div class="small">prenom → majuscules → prenom_maj</div>
+        </div>
+    `
+},
+
+comment:{
+    title:"⚫ COMMENTAIRE",
+
+    description:"Un commentaire est une note destinée à expliquer le programme.",
+
+    use:"Utilise-le pour te rappeler ce que fait une partie du programme.",
+
+    hierarchy:"Il peut être placé presque partout.",
+
+    contains:"Un texte explicatif.",
+
+    python:"# Ceci est un commentaire",
+
+    mistake:"Un commentaire ne fait aucune action. Il ne faut donc pas attendre un résultat.",
+
+    example:"Écris : Cette partie demande le prénom.",
+
+    hierarchyExample:`
+        <div class="mini-node mini-gray">
+            ⚫ COMMENTAIRE
+            <div class="small">Cette partie demande le prénom.</div>
+        </div>
+    `
+}
+
+};
+
+
+/* =========================================================
+   CRÉATION DES BOÎTES
+========================================================= */
+
+function createNode(type){
+
+    const id = nextId++;
+
+    if(type === "print"){
+        return {
+            id,
+            type,
+            value:"",
+            valueType:"text"
+        };
+    }
+
+    if(type === "variable"){
+        return {
+            id,
+            type,
+            name:"",
+            value:"",
+            valueType:"text"
+        };
+    }
+
+    if(type === "ask"){
+        return {
+            id,
+            type,
+            question:"",
+            name:"reponse"
+        };
+    }
+
+    if(type === "calc"){
+        return {
+            id,
+            type,
+            left:"",
+            operator:"+",
+            right:"",
+            result:""
+        };
+    }
+
+    if(type === "if"){
+        return {
+            id,
+            type,
+            left:"",
+            operator:"==",
+            right:"",
+            leftType:"variable",
+            rightType:"text",
+            children:[],
+            elseChildren:[]
+        };
+    }
+
+    if(type === "repeat"){
+        return {
+            id,
+            type,
+            count:"3",
+            children:[]
+        };
+    }
+
+    if(type === "list"){
+        return {
+            id,
+            type,
+            name:"",
+            items:""
+        };
+    }
+
+    if(type === "text"){
+        return {
+            id,
+            type,
+            source:"",
+            operation:"upper",
+            result:""
+        };
+    }
+
+    if(type === "comment"){
+        return {
+            id,
+            type,
+            text:""
+        };
+    }
+
+    return null;
+}
+
+
+/* =========================================================
+   AJOUT
+========================================================= */
+
+function addNode(type, targetArray=null){
+
+    const node = createNode(type);
+
+    if(!node) return;
+
+    if(targetArray){
+        targetArray.push(node);
+    }else{
+        programNodes.push(node);
+    }
+
+    saveProgram();
+    renderProgram();
+}
+
+
+/* =========================================================
+   RENDU
+========================================================= */
+
+function renderProgram(){
+
+    const area = document.getElementById("programArea");
+
+    if(programNodes.length === 0){
+
+        area.innerHTML = `
+            <div class="empty-program">
+                <h3>Ton programme est vide</h3>
+                <p>Commence en cliquant sur une boîte colorée.</p>
+            </div>
+        `;
+
+    }else{
+        area.innerHTML = renderNodes(programNodes);
+    }
+
+    updateProgress();
+}
+
+
+function renderNodes(nodes){
+
+    return nodes.map(node => renderNode(node)).join("");
+}
+
+
+function renderNode(node){
+
+    const info = NODE_INFO[node.type];
+
+    let html = `
+    <div class="node node-${node.type}" id="node-${node.id}">
+
+        <div class="node-head">
+
+            <div class="node-title">
+                ${escapeHTML(info.title)}
+            </div>
+
+            <div class="node-actions">
+
+                <button onclick="showInfo('${node.type}')" title="Expliquer">
+                    ❕
+                </button>
+
+                <button onclick="moveNode(${node.id},-1)" title="Monter">
+                    ↑
+                </button>
+
+                <button onclick="moveNode(${node.id},1)" title="Descendre">
+                    ↓
+                </button>
+
+                <button onclick="deleteNode(${node.id})" title="Supprimer">
+                    🗑️
+                </button>
+
+            </div>
+        </div>
+
+        <div class="node-body">
+    `;
+
+
+    /* AFFICHER */
+
+    if(node.type === "print"){
+
+        html += `
+            <div class="field">
+                <label>Afficher</label>
+
+                <input
+                    data-id="${node.id}"
+                    data-field="value"
+                    value="${escapeAttr(node.value)}"
+                    placeholder="Bonjour ! ou une variable"
+                >
+
+                <select
+                    data-id="${node.id}"
+                    data-field="valueType"
+                >
+                    <option value="text" ${node.valueType==="text"?"selected":""}>Texte</option>
+                    <option value="variable" ${node.valueType==="variable"?"selected":""}>Variable</option>
+                    <option value="number" ${node.valueType==="number"?"selected":""}>Nombre</option>
+                </select>
+            </div>
+        `;
+    }
+
+
+    /* VARIABLE */
+
+    if(node.type === "variable"){
+
+        html += `
+            <div class="field">
+                <label>Nom</label>
+                <input
+                    data-id="${node.id}"
+                    data-field="name"
+                    value="${escapeAttr(node.name)}"
+                    placeholder="prenom"
+                >
+            </div>
+
+            <div class="field">
+                <label>Valeur</label>
+                <input
+                    data-id="${node.id}"
+                    data-field="value"
+                    value="${escapeAttr(node.value)}"
+                    placeholder="Léo"
+                >
+
+                <select
+                    data-id="${node.id}"
+                    data-field="valueType"
+                >
+                    <option value="text" ${node.valueType==="text"?"selected":""}>Texte</option>
+                    <option value="number" ${node.valueType==="number"?"selected":""}>Nombre</option>
+                    <option value="variable" ${node.valueType==="variable"?"selected":""}>Variable</option>
+                </select>
+            </div>
+        `;
+    }
+
+
+    /* DEMANDER */
+
+    if(node.type === "ask"){
+
+        html += `
+            <div class="field">
+                <label>Question</label>
+                <input
+                    data-id="${node.id}"
+                    data-field="question"
+                    value="${escapeAttr(node.question)}"
+                    placeholder="Comment t'appelles-tu ?"
+                >
+            </div>
+
+            <div class="field">
+                <label>Réponse dans</label>
+                <input
+                    data-id="${node.id}"
+                    data-field="name"
+                    value="${escapeAttr(node.name)}"
+                    placeholder="prenom"
+                >
+            </div>
+        `;
+    }
+
+
+    /* CALCULER */
+
+    if(node.type === "calc"){
+
+        html += `
+            <div class="field">
+
+                <label>Calcul</label>
+
+                <input
+                    data-id="${node.id}"
+                    data-field="left"
+                    value="${escapeAttr(node.left)}"
+                    placeholder="5 ou nombre"
+                >
+
+                <select
+                    data-id="${node.id}"
+                    data-field="operator"
+                >
+                    <option value="+" ${node.operator==="+"?"selected":""}>+</option>
+                    <option value="-" ${node.operator==="-"?"selected":""}>−</option>
+                    <option value="*" ${node.operator==="*"?"selected":""}>×</option>
+                    <option value="/" ${node.operator==="/"?"selected":""}>÷</option>
+                </select>
+
+                <input
+                    data-id="${node.id}"
+                    data-field="right"
+                    value="${escapeAttr(node.right)}"
+                    placeholder="3 ou nombre"
+                >
+
+                <span>→</span>
+
+                <input
+                    data-id="${node.id}"
+                    data-field="result"
+                    value="${escapeAttr(node.result)}"
+                    placeholder="resultat"
+                >
+
+            </div>
+        `;
+    }
+
+
+    /* SI */
+
+    if(node.type === "if"){
+
+        html += `
+            <div class="field">
+
+                <label>Si</label>
+
+                <input
+                    data-id="${node.id}"
+                    data-field="left"
+                    value="${escapeAttr(node.left)}"
+                    placeholder="age"
+                >
+
+                <select
+                    data-id="${node.id}"
+                    data-field="leftType"
+                >
+                    <option value="variable" ${node.leftType==="variable"?"selected":""}>Variable</option>
+                    <option value="number" ${node.leftType==="number"?"selected":""}>Nombre</option>
+                    <option value="text" ${node.leftType==="text"?"selected":""}>Texte</option>
+                </select>
+
+                <select
+                    data-id="${node.id}"
+                    data-field="operator"
+                >
+                    <option value="==" ${node.operator==="=="?"selected":""}>égal à</option>
+                    <option value="!=" ${node.operator==="!="?"selected":""}>différent de</option>
+                    <option value=">" ${node.operator===">"?"selected":""}>plus grand que</option>
+                    <option value="<" ${node.operator==="<"?"selected":""}>plus petit que</option>
+                    <option value=">=" ${node.operator===">="?"selected":""}>au moins</option>
+                    <option value="<=" ${node.operator==="<="?"selected":""}>au maximum</option>
+                </select>
+
+                <input
+                    data-id="${node.id}"
+                    data-field="right"
+                    value="${escapeAttr(node.right)}"
+                    placeholder="18"
+                >
+
+                <select
+                    data-id="${node.id}"
+                    data-field="rightType"
+                >
+                    <option value="variable" ${node.rightType==="variable"?"selected":""}>Variable</option>
+                    <option value="number" ${node.rightType==="number"?"selected":""}>Nombre</option>
+                    <option value="text" ${node.rightType==="text"?"selected":""}>Texte</option>
+                </select>
+
+            </div>
+        `;
+
+
+        html += `
+            <div class="children-zone">
+
+                <div class="zone-title">ALORS — si la condition est vraie</div>
+
+                ${
+                    node.children.length
+                    ? renderNodes(node.children)
+                    : `<div class="empty-zone">Ajoute une action ici.</div>`
+                }
+
+                <button
+                    class="btn btn-light"
+                    onclick="addChildPrompt(${node.id},'children')"
+                >
+                    + Ajouter dans ALORS
+                </button>
+
+            </div>
+        `;
+
+
+        html += `
+            <div class="children-zone">
+
+                <div class="zone-title">SINON — si la condition est fausse</div>
+
+                ${
+                    node.elseChildren.length
+                    ? renderNodes(node.elseChildren)
+                    : `<div class="empty-zone">Optionnel.</div>`
+                }
+
+                <button
+                    class="btn btn-light"
+                    onclick="addChildPrompt(${node.id},'elseChildren')"
+                >
+                    + Ajouter dans SINON
+                </button>
+
+            </div>
+        `;
+    }
+
+
+    /* RÉPÉTER */
+
+    if(node.type === "repeat"){
+
+        html += `
+            <div class="field">
+
+                <label>Répéter</label>
+
+                <input
+                    type="number"
+                    min="1"
+                    max="100"
+                    data-id="${node.id}"
+                    data-field="count"
+                    value="${escapeAttr(node.count)}"
+                >
+
+                <span>fois</span>
+
+            </div>
+
+            <div class="children-zone">
+
+                <div class="zone-title">
+                    ACTIONS À RÉPÉTER
+                </div>
+
+                ${
+                    node.children.length
+                    ? renderNodes(node.children)
+                    : `<div class="empty-zone">Ajoute une action ici.</div>`
+                }
+
+                <button
+                    class="btn btn-light"
+                    onclick="addChildPrompt(${node.id},'children')"
+                >
+                    + Ajouter dans RÉPÉTER
+                </button>
+
+            </div>
+        `;
+    }
+
+
+    /* LISTE */
+
+    if(node.type === "list"){
+
+        html += `
+            <div class="field">
+                <label>Nom</label>
+
+                <input
+                    data-id="${node.id}"
+                    data-field="name"
+                    value="${escapeAttr(node.name)}"
+                    placeholder="fruits"
+                >
+            </div>
+
+            <div class="field">
+                <label>Éléments</label>
+
+                <input
+                    data-id="${node.id}"
+                    data-field="items"
+                    value="${escapeAttr(node.items)}"
+                    placeholder="pomme, banane, orange"
+                >
+            </div>
+        `;
+    }
+
+
+    /* TEXTE */
+
+    if(node.type === "text"){
+
+        html += `
+            <div class="field">
+
+                <label>Texte</label>
+
+                <input
+                    data-id="${node.id}"
+                    data-field="source"
+                    value="${escapeAttr(node.source)}"
+                    placeholder="prenom"
+                >
+
+            </div>
+
+            <div class="field">
+
+                <label>Action</label>
+
+                <select
+                    data-id="${node.id}"
+                    data-field="operation"
+                >
+                    <option value="upper" ${node.operation==="upper"?"selected":""}>
+                        MAJUSCULES
+                    </option>
+
+                    <option value="lower" ${node.operation==="lower"?"selected":""}>
+                        minuscules
+                    </option>
+
+                    <option value="length" ${node.operation==="length"?"selected":""}>
+                        longueur
+                    </option>
+                </select>
+
+            </div>
+
+            <div class="field">
+
+                <label>Résultat</label>
+
+                <input
+                    data-id="${node.id}"
+                    data-field="result"
+                    value="${escapeAttr(node.result)}"
+                    placeholder="prenom_maj"
+                >
+
+            </div>
+        `;
+    }
+
+
+    /* COMMENTAIRE */
+
+    if(node.type === "comment"){
+
+        html += `
+            <div class="field">
+                <label>Note</label>
+
+                <input
+                    data-id="${node.id}"
+                    data-field="text"
+                    value="${escapeAttr(node.text)}"
+                    placeholder="Cette partie demande le prénom."
+                >
+            </div>
+        `;
+    }
+
+
+    html += `
+        </div>
+    </div>
+    `;
+
+    return html;
+}
+
+
+/* =========================================================
+   AJOUT D'ENFANT
+========================================================= */
+
+function addChildPrompt(parentId, zone){
+
+    const choice = window.prompt(
+`Quelle boîte veux-tu ajouter ?
+
+1 = 🟦 AFFICHER
+2 = 🟩 VARIABLE
+3 = 🟪 DEMANDER
+4 = 🟧 CALCULER
+5 = 🟨 SI
+6 = 🟥 RÉPÉTER
+7 = 🩷 LISTE
+8 = 🟫 TEXTE
+9 = ⚫ COMMENTAIRE`
+    );
+
+    const types = {
+        "1":"print",
+        "2":"variable",
+        "3":"ask",
+        "4":"calc",
+        "5":"if",
+        "6":"repeat",
+        "7":"list",
+        "8":"text",
+        "9":"comment"
+    };
+
+    const type = types[String(choice || "").trim()];
+
+    if(!type) return;
+
+    const found = findNodeAndParent(
+        programNodes,
+        parentId,
+        null,
+        null
+    );
+
+    if(!found) return;
+
+    if(!Array.isArray(found.node[zone])){
+        found.node[zone] = [];
+    }
+
+    found.node[zone].push(createNode(type));
+
+    saveProgram();
+    renderProgram();
+}
+
+
+/* =========================================================
+   RECHERCHE D'UN NŒUD
+========================================================= */
+
+function findNodeAndParent(nodes,id,parent=null,zone=null){
+
+    for(let i=0;i<nodes.length;i++){
+
+        const node = nodes[i];
+
+        if(node.id === id){
+            return {
+                node,
+                parent,
+                zone,
+                index:i,
+                array:nodes
+            };
+        }
+
+        if(node.children){
+
+            const found = findNodeAndParent(
+                node.children,
+                id,
+                node,
+                "children"
+            );
+
+            if(found) return found;
+        }
+
+        if(node.elseChildren){
+
+            const found = findNodeAndParent(
+                node.elseChildren,
+                id,
+                node,
+                "elseChildren"
+            );
+
+            if(found) return found;
+        }
+    }
+
+    return null;
+}
+
+
+/* =========================================================
+   SUPPRESSION
+========================================================= */
+
+function deleteNode(id){
+
+    const found = findNodeAndParent(
+        programNodes,
+        id
+    );
+
+    if(!found) return;
+
+    const node = found.node;
+
+    const hasChildren =
+        (node.children && node.children.length > 0) ||
+        (node.elseChildren && node.elseChildren.length > 0);
+
+    if(hasChildren){
+
+        const ok = confirm(
+            "Cette boîte contient d'autres boîtes.\n\n" +
+            "Si tu la supprimes, ses boîtes enfants seront aussi supprimées.\n\n" +
+            "Veux-tu continuer ?"
+        );
+
+        if(!ok) return;
+    }
+
+    found.array.splice(found.index,1);
+
+    saveProgram();
+    renderProgram();
+}
+
+
+/* =========================================================
+   DÉPLACEMENT
+========================================================= */
+
+function moveNode(id,direction){
+
+    const found = findNodeAndParent(
+        programNodes,
+        id
+    );
+
+    if(!found) return;
+
+    const newIndex = found.index + direction;
+
+    if(
+        newIndex < 0 ||
+        newIndex >= found.array.length
+    ){
+        return;
+    }
+
+    const temp = found.array[found.index];
+
+    found.array[found.index] =
+        found.array[newIndex];
+
+    found.array[newIndex] = temp;
+
+    saveProgram();
+    renderProgram();
+}
+
+
+/* =========================================================
+   MODIFICATION DES CHAMPS
+========================================================= */
+
+document.addEventListener("input",handleFieldChange);
+document.addEventListener("change",handleFieldChange);
+
+function handleFieldChange(event){
+
+    const el = event.target;
+
+    if(!el.dataset.id || !el.dataset.field){
+        return;
+    }
+
+    const id = Number(el.dataset.id);
+
+    const found = findNodeAndParent(
+        programNodes,
+        id
+    );
+
+    if(!found) return;
+
+    found.node[el.dataset.field] = el.value;
+
+    saveProgram();
+
+    if(document.activeElement !== el){
+        renderProgram();
+    }
+}
+
+
+/* =========================================================
+   GÉNÉRATION PYTHON
+========================================================= */
+
+function generatePython(nodes,indentLevel=0){
+
+    const lines = [];
+    const indent = "    ".repeat(indentLevel);
+
+    for(const node of nodes){
+
+        if(node.type === "print"){
+
+            const value =
+                expressionToPython(
+                    node.value,
+                    node.valueType
+                );
+
+            lines.push(
+                indent + `print(${value})`
+            );
+        }
+
+
+        else if(node.type === "variable"){
+
+            if(node.name){
+
+                const value =
+                    expressionToPython(
+                        node.value,
+                        node.valueType
+                    );
+
+                lines.push(
+                    indent +
+                    `${node.name} = ${value}`
+                );
+            }
+        }
+
+
+        else if(node.type === "ask"){
+
+            if(node.name){
+
+                lines.push(
+                    indent +
+                    `${node.name} = input(${pythonString(node.question)})`
+                );
+            }
+        }
+
+
+        else if(node.type === "calc"){
+
+            if(node.result){
+
+                lines.push(
+                    indent +
+                    `${node.result} = ${operandToPython(node.left)} ${node.operator} ${operandToPython(node.right)}`
+                );
+            }
+        }
+
+
+        else if(node.type === "if"){
+
+            lines.push(
+                indent +
+                `if ${conditionToPython(node)}:`
+            );
+
+            if(node.children.length){
+
+                lines.push(
+                    generatePython(
+                        node.children,
+                        indentLevel + 1
+                    )
+                );
+
+            }else{
+
+                lines.push(
+                    indent + "    pass"
+                );
+            }
+
+
+            if(node.elseChildren.length){
+
+                lines.push(
+                    indent + "else:"
+                );
+
+                lines.push(
+                    generatePython(
+                        node.elseChildren,
+                        indentLevel + 1
+                    )
+                );
+            }
+        }
+
+
+        else if(node.type === "repeat"){
+
+            lines.push(
+                indent +
+                `for _ in range(${Number(node.count) || 0}):`
+            );
+
+            if(node.children.length){
+
+                lines.push(
+                    generatePython(
+                        node.children,
+                        indentLevel + 1
+                    )
+                );
+
+            }else{
+
+                lines.push(
+                    indent + "    pass"
+                );
+            }
+        }
+
+
+        else if(node.type === "list"){
+
+            const items =
+                String(node.items || "")
+                .split(",")
+                .map(x => x.trim())
+                .filter(Boolean)
+                .map(x => pythonString(x))
+                .join(", ");
+
+            lines.push(
+                indent +
+                `${node.name} = [${items}]`
+            );
+        }
+
+
+        else if(node.type === "text"){
+
+            const source =
+                operandToPython(node.source);
+
+            if(node.operation === "upper"){
+
+                lines.push(
+                    indent +
+                    `${node.result} = ${source}.upper()`
+                );
+
+            }else if(node.operation === "lower"){
+
+                lines.push(
+                    indent +
+                    `${node.result} = ${source}.lower()`
+                );
+
+            }else if(node.operation === "length"){
+
+                lines.push(
+                    indent +
+                    `${node.result} = len(${source})`
+                );
+            }
+        }
+
+
+        else if(node.type === "comment"){
+
+            lines.push(
+                indent +
+                `# ${node.text || ""}`
+            );
+        }
+    }
+
+    return lines.join("\n");
+}
+
+
+function expressionToPython(value,type){
+
+    value = String(value ?? "").trim();
+
+    if(type === "variable"){
+        return value || '""';
+    }
+
+    if(type === "number"){
+        return value || "0";
+    }
+
+    return pythonString(value);
+}
+
+
+function operandToPython(value){
+
+    value = String(value ?? "").trim();
+
+    if(isIdentifier(value)){
+        return value;
+    }
+
+    if(isNumber(value)){
+        return value;
+    }
+
+    return pythonString(value);
+}
+
+
+function conditionToPython(node){
+
+    const left =
+        node.leftType === "variable"
+        ? node.left
+        : node.leftType === "number"
+        ? node.left
+        : pythonString(node.left);
+
+    const right =
+        node.rightType === "variable"
+        ? node.right
+        : node.rightType === "number"
+        ? node.right
+        : pythonString(node.right);
+
+    return `${left} ${node.operator} ${right}`;
+}
+
+
+function pythonString(value){
+
+    return JSON.stringify(
+        String(value ?? "")
+    );
+}
+
+
+/* =========================================================
+   VALIDATION PÉDAGOGIQUE V7.2
+========================================================= */
+
+function validateProgram(nodes){
+
+    const known = new Set();
+
+    const errors = [];
+
+    validateNodes(
+        nodes,
+        known,
+        errors
+    );
+
+    return errors;
+}
+
+
+function validateNodes(nodes,known,errors){
+
+    for(const node of nodes){
+
+        if(errors.length >= 20){
+            return;
+        }
+
+        /* -------------------------
+           AFFICHER
+        ------------------------- */
+
+        if(node.type === "print"){
+
+            if(!String(node.value || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "empty_print",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            if(
+                node.valueType === "variable" &&
+                !known.has(node.value.trim())
+            ){
+
+                errors.push(
+                    pedagogicalError(
+                        "missing_variable",
+                        node.id,
+                        {
+                            name:node.value.trim()
+                        }
+                    )
+                );
+            }
+        }
+
+
+        /* -------------------------
+           VARIABLE
+        ------------------------- */
+
+        else if(node.type === "variable"){
+
+            if(!String(node.name || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "empty_variable_name",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            if(!isIdentifier(node.name)){
+
+                errors.push(
+                    pedagogicalError(
+                        "invalid_variable_name",
+                        node.id,
+                        {
+                            name:node.name
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            if(!String(node.value || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "empty_variable_value",
+                        node.id,
+                        {
+                            name:node.name
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            if(
+                node.valueType === "variable" &&
+                !known.has(node.value.trim())
+            ){
+
+                errors.push(
+                    pedagogicalError(
+                        "missing_variable",
+                        node.id,
+                        {
+                            name:node.value.trim()
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            known.add(node.name.trim());
+        }
+
+
+        /* -------------------------
+           DEMANDER
+        ------------------------- */
+
+        else if(node.type === "ask"){
+
+            if(!String(node.question || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "empty_question",
+                        node.id
+                    )
+                );
+            }
+
+            if(!String(node.name || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "empty_ask_name",
+                        node.id
+                    )
+                );
+
+            }else if(!isIdentifier(node.name)){
+
+                errors.push(
+                    pedagogicalError(
+                        "invalid_variable_name",
+                        node.id,
+                        {
+                            name:node.name
+                        }
+                    )
+                );
+
+            }else{
+
+                known.add(node.name.trim());
+            }
+        }
+
+
+        /* -------------------------
+           CALCULER
+        ------------------------- */
+
+        else if(node.type === "calc"){
+
+            if(!String(node.left || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "calc_left_empty",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            if(!String(node.right || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "calc_right_empty",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            if(!String(node.result || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "calc_result_empty",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            if(!isIdentifier(node.result)){
+
+                errors.push(
+                    pedagogicalError(
+                        "invalid_variable_name",
+                        node.id,
+                        {
+                            name:node.result
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            if(
+                isIdentifier(node.left) &&
+                !known.has(node.left)
+            ){
+
+                errors.push(
+                    pedagogicalError(
+                        "missing_variable",
+                        node.id,
+                        {
+                            name:node.left
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            if(
+                isIdentifier(node.right) &&
+                !known.has(node.right)
+            ){
+
+                errors.push(
+                    pedagogicalError(
+                        "missing_variable",
+                        node.id,
+                        {
+                            name:node.right
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            if(
+                node.operator === "/" &&
+                isNumber(node.right) &&
+                Number(node.right) === 0
+            ){
+
+                errors.push(
+                    pedagogicalError(
+                        "division_zero",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            known.add(node.result.trim());
+        }
+
+
+        /* -------------------------
+           SI
+        ------------------------- */
+
+        else if(node.type === "if"){
+
+            if(!String(node.left || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "if_left_empty",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            if(!String(node.right || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "if_right_empty",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            if(
+                node.leftType === "variable" &&
+                !known.has(node.left.trim())
+            ){
+
+                errors.push(
+                    pedagogicalError(
+                        "missing_variable",
+                        node.id,
+                        {
+                            name:node.left.trim()
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            if(
+                node.rightType === "variable" &&
+                !known.has(node.right.trim())
+            ){
+
+                errors.push(
+                    pedagogicalError(
+                        "missing_variable",
+                        node.id,
+                        {
+                            name:node.right.trim()
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            if(!node.children.length){
+
+                errors.push(
+                    pedagogicalError(
+                        "empty_if",
+                        node.id
+                    )
+                );
+            }
+
+            /*
+             * Les variables créées dans un SI ne sont pas considérées
+             * comme forcément disponibles après le SI.
+             */
+            const branchKnown = new Set(known);
+
+            validateNodes(
+                node.children,
+                branchKnown,
+                errors
+            );
+
+            const elseKnown = new Set(known);
+
+            validateNodes(
+                node.elseChildren || [],
+                elseKnown,
+                errors
+            );
+        }
+
+
+        /* -------------------------
+           RÉPÉTER
+        ------------------------- */
+
+        else if(node.type === "repeat"){
+
+            const count = Number(node.count);
+
+            if(
+                !Number.isInteger(count) ||
+                count < 1 ||
+                count > 100
+            ){
+
+                errors.push(
+                    pedagogicalError(
+                        "invalid_repeat",
+                        node.id,
+                        {
+                            count:node.count
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            if(!node.children.length){
+
+                errors.push(
+                    pedagogicalError(
+                        "empty_repeat",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            const repeatKnown = new Set(known);
+
+            validateNodes(
+                node.children,
+                repeatKnown,
+                errors
+            );
+        }
+
+
+        /* -------------------------
+           LISTE
+        ------------------------- */
+
+        else if(node.type === "list"){
+
+            if(!String(node.name || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "empty_list_name",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            if(!isIdentifier(node.name)){
+
+                errors.push(
+                    pedagogicalError(
+                        "invalid_variable_name",
+                        node.id,
+                        {
+                            name:node.name
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            if(!String(node.items || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "empty_list_items",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            known.add(node.name.trim());
+        }
+
+
+        /* -------------------------
+           TEXTE
+        ------------------------- */
+
+        else if(node.type === "text"){
+
+            if(!String(node.source || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "empty_text_source",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            if(
+                isIdentifier(node.source) &&
+                !known.has(node.source.trim())
+            ){
+
+                errors.push(
+                    pedagogicalError(
+                        "missing_variable",
+                        node.id,
+                        {
+                            name:node.source.trim()
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            if(!String(node.result || "").trim()){
+
+                errors.push(
+                    pedagogicalError(
+                        "empty_text_result",
+                        node.id
+                    )
+                );
+
+                continue;
+            }
+
+            if(!isIdentifier(node.result)){
+
+                errors.push(
+                    pedagogicalError(
+                        "invalid_variable_name",
+                        node.id,
+                        {
+                            name:node.result
+                        }
+                    )
+                );
+
+                continue;
+            }
+
+            known.add(node.result.trim());
+        }
+
+
+        /* -------------------------
+           COMMENTAIRE
+        ------------------------- */
+
+        else if(node.type === "comment"){
+
+            /* Aucun problème. */
+        }
+    }
+}
+
+
+/* =========================================================
+   MESSAGES PÉDAGOGIQUES
+========================================================= */
+
+function pedagogicalError(type,nodeId,data={}){
+
+    const name =
+        data.name || "";
+
+    const messages = {
+
+        empty_print:{
+            title:"🟦 AFFICHER n'a rien à afficher",
+            what:"La boîte AFFICHER est vide.",
+            why:"Python doit recevoir quelque chose à afficher : un message, un nombre ou une variable.",
+            fix:"Écris un message comme « Bonjour ! » ou choisis une variable existante.",
+            example:`
+                <div class="mini-node mini-blue">
+                    🟦 AFFICHER
+                    <div class="small">Bonjour !</div>
+                </div>
+            `
+        },
+
+        missing_variable:{
+            title:"🧠 Cette variable n'existe pas encore",
+            what:`Le programme essaie d'utiliser « ${escapeHTML(name)} », mais cette information n'a pas encore été créée.`,
+            why:"Python doit connaître une variable avant de pouvoir utiliser son nom.",
+            fix:"Crée d'abord cette variable avec 🟩 VARIABLE ou récupère-la avec 🟪 DEMANDER.",
+            example:`
+                <div class="mini-node mini-purple">
+                    🟪 DEMANDER
+                    <div class="small">Quel est ton prénom ? → prenom</div>
+                </div>
+
+                <div class="mini-node mini-blue">
+                    🟦 AFFICHER
+                    <div class="small">prenom</div>
+                </div>
+            `
+        },
+
+        empty_variable_name:{
+            title:"🟩 VARIABLE n'a pas de nom",
+            what:"La variable n'a pas de nom.",
+            why:"Pour réutiliser une information, Python a besoin d'un nom pour cette information.",
+            fix:"Donne-lui un nom comme prenom, age ou score.",
+            example:`
+                <div class="mini-node mini-green">
+                    🟩 VARIABLE
+                    <div class="small">Nom : prenom</div>
+                </div>
+            `
+        },
+
+        empty_variable_value:{
+            title:"🟩 VARIABLE n'a pas de valeur",
+            what:"La variable a un nom, mais aucune valeur.",
+            why:"Une variable doit recevoir une information avant d'être utilisée.",
+            fix:"Ajoute une valeur, par exemple « Léo » ou « 12 ».",
+            example:`
+                <div class="mini-node mini-green">
+                    🟩 VARIABLE
+                    <div class="small">prenom = Léo</div>
+                </div>
+            `
+        },
+
+        invalid_variable_name:{
+            title:"🟩 Ce nom de variable n'est pas valide",
+            what:`« ${escapeHTML(name)} » ne peut pas être utilisé comme nom de variable Python.`,
+            why:"Un nom de variable ne doit pas contenir d'espace et doit commencer par une lettre ou un soulignement.",
+            fix:"Essaie par exemple prenom, age ou mon_prenom.",
+            example:`
+                <div class="mini-node mini-green">
+                    🟩 VARIABLE
+                    <div class="small">mon_prenom = Léo</div>
+                </div>
+            `
+        },
+
+        empty_question:{
+            title:"🟪 DEMANDER n'a pas de question",
+            what:"La boîte DEMANDER ne contient aucune question.",
+            why:"Une boîte DEMANDER doit savoir quelle information elle doit demander.",
+            fix:"Écris une question comme « Quel est ton prénom ? ».",
+            example:`
+                <div class="mini-node mini-purple">
+                    🟪 DEMANDER
+                    <div class="small">Quel est ton prénom ?</div>
+                </div>
+            `
+        },
+
+        empty_ask_name:{
+            title:"🟪 DEMANDER ne sait pas où mettre la réponse",
+            what:"La réponse n'a pas de nom de variable.",
+            why:"Python doit conserver la réponse quelque part pour pouvoir la réutiliser.",
+            fix:"Donne un nom comme prenom ou reponse.",
+            example:`
+                <div class="mini-node mini-purple">
+                    🟪 DEMANDER
+                    <div class="small">Quel âge as-tu ? → age</div>
+                </div>
+            `
+        },
+
+        calc_left_empty:{
+            title:"🟧 Le premier nombre manque",
+            what:"Le calcul commence sans valeur.",
+            why:"Pour calculer, Python a besoin d'une valeur de départ.",
+            fix:"Écris par exemple 5 ou utilise une variable existante.",
+            example:`
+                <div class="mini-node mini-orange">
+                    🟧 CALCULER
+                    <div class="small">5 + 3 → total</div>
+                </div>
+            `
+        },
+
+        calc_right_empty:{
+            title:"🟧 Le deuxième nombre manque",
+            what:"Le calcul n'a pas de deuxième valeur.",
+            why:"Une opération comme 5 + 3 nécessite deux valeurs.",
+            fix:"Ajoute une deuxième valeur.",
+            example:`
+                <div class="mini-node mini-orange">
+                    🟧 CALCULER
+                    <div class="small">5 + 3 → total</div>
+                </div>
+            `
+        },
+
+        calc_result_empty:{
+            title:"🟧 Le résultat n'a pas de nom",
+            what:"Le calcul est présent mais aucun nom n'est donné au résultat.",
+            why:"Python doit savoir où conserver le résultat.",
+            fix:"Donne-lui un nom comme total ou resultat.",
+            example:`
+                <div class="mini-node mini-orange">
+                    🟧 CALCULER
+                    <div class="small">5 + 3 → total</div>
+                </div>
+            `
+        },
+
+        division_zero:{
+            title:"🟧 Impossible de diviser par zéro",
+            what:"Ton programme demande une division par 0.",
+            why:"En Python, comme en mathématiques, une division par zéro n'est pas possible.",
+            fix:"Utilise un autre nombre pour le diviseur.",
+            example:`
+                <div class="mini-node mini-orange">
+                    🟧 CALCULER
+                    <div class="small">10 ÷ 2 → resultat</div>
+                </div>
+            `
+        },
+
+        if_left_empty:{
+            title:"🟨 La condition du SI est incomplète",
+            what:"La première partie de la comparaison est vide.",
+            why:"Pour prendre une décision, Python doit savoir quoi comparer.",
+            fix:"Ajoute une variable ou une valeur.",
+            example:`
+                <div class="mini-node mini-yellow">
+                    🟨 SI
+                    <div class="small">age ≥ 18</div>
+                </div>
+            `
+        },
+
+        if_right_empty:{
+            title:"🟨 La condition du SI est incomplète",
+            what:"La deuxième partie de la comparaison est vide.",
+            why:"Une comparaison doit avoir quelque chose à comparer.",
+            fix:"Ajoute par exemple 18, une autre variable ou un texte.",
+            example:`
+                <div class="mini-node mini-yellow">
+                    🟨 SI
+                    <div class="small">age ≥ 18</div>
+                </div>
+            `
+        },
+
+        empty_if:{
+            title:"🟨 Le SI n'a aucune action",
+            what:"La condition existe mais aucune boîte n'est placée dans ALORS.",
+            why:"Une condition seule ne fait rien. Elle doit décider quelle action effectuer.",
+            fix:"Ajoute une boîte à l'intérieur du SI.",
+            example:`
+                <div class="mini-node mini-yellow">
+                    🟨 SI
+                    <div class="mini-node mini-blue">
+                        🟦 AFFICHER
+                        <div class="small">Tu peux entrer.</div>
+                    </div>
+                </div>
+            `
+        },
+
+        invalid_repeat:{
+            title:"🟥 Le nombre de répétitions n'est pas valide",
+            what:`La boîte RÉPÉTER contient « ${escapeHTML(String(data.count || ""))} ».`,
+            why:"Pour répéter une action, Python a besoin d'un nombre entier positif.",
+            fix:"Utilise par exemple 3. Python Aventure accepte de 1 à 100 répétitions.",
+            example:`
+                <div class="mini-node mini-red">
+                    🟥 RÉPÉTER 3 fois
+                </div>
+            `
+        },
+
+        empty_repeat:{
+            title:"🟥 RÉPÉTER n'a aucune action",
+            what:"La boîte RÉPÉTER ne contient aucune boîte à répéter.",
+            why:"Répéter un programme vide ne permet pas de faire une action.",
+            fix:"Place une boîte à l'intérieur, par exemple AFFICHER.",
+            example:`
+                <div class="mini-node mini-red">
+                    🟥 RÉPÉTER 3 fois
+
+                    <div class="mini-node mini-blue">
+                        🟦 AFFICHER
+                        <div class="small">Bonjour !</div>
+                    </div>
+                </div>
+            `
+        },
+
+        empty_list_name:{
+            title:"🩷 La liste n'a pas de nom",
+            what:"La liste ne possède pas de nom.",
+            why:"Python utilise le nom pour retrouver la liste.",
+            fix:"Donne-lui un nom comme fruits ou animaux.",
+            example:`
+                <div class="mini-node mini-pink">
+                    🩷 LISTE
+                    <div class="small">fruits = pomme, banane</div>
+                </div>
+            `
+        },
+
+        empty_list_items:{
+            title:"🩷 La liste est vide",
+            what:"Aucun élément n'a été placé dans la liste.",
+            why:"Une liste est faite pour ranger un ou plusieurs éléments.",
+            fix:"Ajoute par exemple pomme, banane, orange.",
+            example:`
+                <div class="mini-node mini-pink">
+                    🩷 LISTE
+                    <div class="small">fruits = pomme, banane</div>
+                </div>
+            `
+        },
+
+        empty_text_source:{
+            title:"🟫 TEXTE n'a pas de texte source",
+            what:"La boîte TEXTE ne sait pas quel texte transformer.",
+            why:"Il faut donner un texte ou une variable contenant du texte.",
+            fix:"Écris par exemple bonjour ou utilise une variable existante.",
+            example:`
+                <div class="mini-node mini-brown">
+                    🟫 TEXTE
+                    <div class="small">bonjour → MAJUSCULES → resultat</div>
+                </div>
+            `
+        },
+
+        empty_text_result:{
+            title:"🟫 Le résultat TEXTE n'a pas de nom",
+            what:"La transformation est définie mais son résultat n'est pas nommé.",
+            why:"Python doit savoir où conserver le nouveau texte.",
+            fix:"Donne un nom comme texte_maj.",
+            example:`
+                <div class="mini-node mini-brown">
+                    🟫 TEXTE
+                    <div class="small">bonjour → MAJUSCULES → texte_maj</div>
+                </div>
+            `
+        }
+
+    };
+
+    const m =
+        messages[type] ||
+        messages.empty_print;
+
+    return {
+        type,
+        nodeId,
+        title:m.title,
+        what:m.what,
+        why:m.why,
+        fix:m.fix,
+        example:m.example
+    };
+}
+
+
+/* =========================================================
+   TEST DU PROGRAMME
+========================================================= */
+
+function testProgram(){
+
+    clearProblemHighlights();
+
+    const result =
+        document.getElementById("testResult");
+
+    if(programNodes.length === 0){
+
+        result.innerHTML = `
+            <div class="learning-error">
+
+                <div class="learning-title">
+                    🧠 Ton programme est encore vide
+                </div>
+
+                <div class="learning-step learning-what">
+                    <strong>🔴 Ce qui ne va pas</strong>
+                    Il n'y a aucune boîte à exécuter.
+                </div>
+
+                <div class="learning-step learning-why">
+                    <strong>🧠 Pourquoi ?</strong>
+                    Un programme doit contenir au moins une action.
+                </div>
+
+                <div class="learning-step learning-fix">
+                    <strong>🛠️ Comment commencer ?</strong>
+                    Ajoute par exemple une boîte 🟦 AFFICHER.
+                </div>
+
+                <div class="learning-example">
+                    <strong>💡 Exemple</strong>
+
+                    <div class="mini-node mini-blue">
+                        🟦 AFFICHER
+                        <div class="small">Bonjour !</div>
+                    </div>
+                </div>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    /*
+     * ÉTAPE 1 :
+     * on vérifie le programme AVANT de l'exécuter.
+     */
+    const errors =
+        validateProgram(programNodes);
+
+
+    if(errors.length > 0){
+
+        showLearningError(
+            errors[0],
+            errors.length
+        );
+
+        highlightNode(
+            errors[0].nodeId
+        );
+
+        return;
+    }
+
+
+    /*
+     * ÉTAPE 2 :
+     * si la structure est correcte,
+     * on exécute réellement le mini Python.
+     */
+
+    const code =
+        generatePython(programNodes);
+
+    try{
+
+        const engine =
+            new MiniPythonEngine();
+
+        const output =
+            engine.run(code);
+
+        result.innerHTML = `
+            <div class="result result-success">
+
+                <h3>✅ Programme réussi !</h3>
+
+                <p>
+                    Ton programme a été compris et exécuté.
+                </p>
+
+                <div class="code-box">
+                    <pre>${escapeHTML(output || "(Aucun affichage)")}</pre>
+                </div>
+
+            </div>
+        `;
+
+    }catch(error){
+
+        const pedagogical =
+            explainRuntimeError(error);
+
+        showLearningError(
+            pedagogical,
+            1
+        );
+
+        if(pedagogical.nodeId){
+            highlightNode(
+                pedagogical.nodeId
+            );
+        }
+    }
+}
+
+
+/* =========================================================
+   AFFICHAGE DE L'ERREUR PÉDAGOGIQUE
+========================================================= */
+
+function showLearningError(error,count){
+
+    const result =
+        document.getElementById("testResult");
+
+    result.innerHTML = `
+
+        <div class="learning-error">
+
+            <div class="learning-title">
+                🧠 On va comprendre ce qui s'est passé
+            </div>
+
+            <div class="learning-step learning-what">
+
+                <strong>🔴 Ce qui ne va pas</strong>
+
+                <div>
+                    ${error.what}
+                </div>
+
+            </div>
+
+
+            <div class="learning-step learning-why">
+
+                <strong>🧠 Pourquoi ?</strong>
+
+                <div>
+                    ${error.why}
+                </div>
+
+            </div>
+
+
+            <div class="learning-step learning-fix">
+
+                <strong>🛠️ Comment réparer ?</strong>
+
+                <div>
+                    ${error.fix}
+                </div>
+
+            </div>
+
+
+            <div class="learning-example">
+
+                <strong>💡 Exemple</strong>
+
+                ${error.example}
+
+            </div>
+
+            ${
+                count > 1
+                ? `
+                <div class="warning-box">
+                    Il y a aussi ${count - 1} autre(s) point(s) à vérifier.
+                    Commence par celui-ci, puis reteste le programme.
+                </div>
+                `
+                : ""
+            }
+
+        </div>
+    `;
+
+    result.scrollIntoView({
+        behavior:"smooth",
+        block:"nearest"
+    });
+}
+
+
+/* =========================================================
+   ERREURS D'EXÉCUTION
+========================================================= */
+
+function explainRuntimeError(error){
+
+    if(
+        error &&
+        error.code === "UNKNOWN_VARIABLE"
+    ){
+
+        return {
+            nodeId:error.nodeId || null,
+            title:"Variable inconnue",
+            what:`Python cherche la variable « ${escapeHTML(error.name || "")} », mais elle n'existe pas.`,
+            why:"Une variable doit être créée avant d'être utilisée.",
+            fix:`Crée « ${escapeHTML(error.name || "")} » avec 🟩 VARIABLE ou 🟪 DEMANDER avant de l'utiliser.`,
+            example:`
+                <div class="mini-node mini-green">
+                    🟩 VARIABLE
+                    <div class="small">${escapeHTML(error.name || "prenom")} = Léo</div>
+                </div>
+
+                <div class="mini-node mini-blue">
+                    🟦 AFFICHER
+                    <div class="small">${escapeHTML(error.name || "prenom")}</div>
+                </div>
+            `
+        };
+    }
+
+
+    if(
+        error &&
+        error.code === "DIVISION_ZERO"
+    ){
+
+        return {
+            nodeId:error.nodeId || null,
+            title:"Division par zéro",
+            what:"Le programme essaie de diviser un nombre par zéro.",
+            why:"Une division par zéro n'est pas définie.",
+            fix:"Change le nombre utilisé comme diviseur.",
+            example:`
+                <div class="mini-node mini-orange">
+                    🟧 CALCULER
+                    <div class="small">10 ÷ 2 → resultat</div>
+                </div>
+            `
+        };
+    }
+
+
+    if(
+        error &&
+        error.code === "INVALID_ARITHMETIC"
+    ){
+
+        return {
+            nodeId:error.nodeId || null,
+            title:"Calcul impossible",
+            what:"Python n'arrive pas à effectuer ce calcul.",
+            why:"Les opérations mathématiques doivent utiliser des valeurs compatibles.",
+            fix:"Vérifie les deux valeurs du calcul et l'opérateur utilisé.",
+            example:`
+                <div class="mini-node mini-orange">
+                    🟧 CALCULER
+                    <div class="small">5 + 3 → total</div>
+                </div>
+            `
+        };
+    }
+
+
+    return {
+        nodeId:null,
+        title:"Instruction non comprise",
+        what:"Une partie du programme n'a pas pu être exécutée.",
+        why:"Cette instruction ne fait pas encore partie des instructions enseignées par Python Aventure.",
+        fix:"Reviens aux boîtes disponibles et construis le programme avec les actions enseignées.",
+        example:`
+            <div class="mini-node mini-blue">
+                🟦 AFFICHER
+                <div class="small">Bonjour !</div>
+            </div>
+        `
+    };
+}
+
+
+/* =========================================================
+   MINI PYTHON ENGINE
+========================================================= */
+
+class MiniPyError extends Error{
+
+    constructor(code,message,details={}){
+
+        super(message);
+
+        this.code = code;
+        Object.assign(this,details);
+    }
+}
+
+
+class MiniPythonEngine{
+
+    constructor(){
+
+        this.variables = {};
+        this.output = [];
+    }
+
+
+    run(code){
+
+        const lines =
+            code
+            .split("\n")
+            .map((raw,index)=>({
+
+                raw,
+                lineNumber:index + 1,
+                indent:this.getIndent(raw),
+                text:raw.trim()
+
+            }))
+            .filter(x=>x.text.length > 0);
+
+
+        this.executeBlock(
+            lines,
+            0,
+            0
+        );
+
+        return this.output.join("\n");
+    }
+
+
+    getIndent(line){
+
+        const match =
+            line.match(/^ */);
+
+        return match
+            ? match[0].length
+            : 0;
+    }
+
+
+    executeBlock(lines,start,endIndent){
+
+        let i = start;
+
+        while(i < lines.length){
+
+            const item = lines[i];
+
+            if(item.indent < endIndent){
+                break;
+            }
+
+            if(item.indent > endIndent){
+
+                i++;
+                continue;
+            }
+
+            const text = item.text;
+
+
+            if(text.startsWith("#")){
+
+                i++;
+                continue;
+            }
+
+
+            /*
+             * IF
+             */
+
+            if(text.startsWith("if ") && text.endsWith(":")){
+
+                const conditionText =
+                    text.slice(3,-1).trim();
+
+                const block =
+                    this.collectChildBlock(
+                        lines,
+                        i + 1,
+                        item.indent
+                    );
+
+                let elseBlock = null;
+
+                let nextIndex =
+                    block.nextIndex;
+
+                if(
+                    nextIndex < lines.length &&
+                    lines[nextIndex].indent === item.indent &&
+                    lines[nextIndex].text === "else:"
+                ){
+
+                    elseBlock =
+                        this.collectChildBlock(
+                            lines,
+                            nextIndex + 1,
+                            item.indent
+                        );
+
+                    nextIndex =
+                        elseBlock.nextIndex;
+                }
+
+                const condition =
+                    this.evaluateCondition(
+                        conditionText
+                    );
+
+                if(condition){
+
+                    this.executeBlock(
+                        block.lines,
+                        0,
+                        this.getBlockIndent(block.lines)
+                    );
+
+                }else if(elseBlock){
+
+                    this.executeBlock(
+                        elseBlock.lines,
+                        0,
+                        this.getBlockIndent(elseBlock.lines)
+                    );
+                }
+
+                i = nextIndex;
+
+                continue;
+            }
+
+
+            /*
+             * FOR
+             */
+
+            if(
+                text.startsWith("for _ in range(") &&
+                text.endsWith("):")
+            ){
+
+                const match =
+                    text.match(
+                        /^for _ in range\((.+)\):$/
+                    );
+
+                if(!match){
+
+                    throw new MiniPyError(
+                        "INVALID_ARITHMETIC",
+                        "Boucle invalide"
+                    );
+                }
+
+                const count =
+                    Number(
+                        this.evaluateExpression(
+                            match[1]
+                        )
+                    );
+
+                const block =
+                    this.collectChildBlock(
+                        lines,
+                        i + 1,
+                        item.indent
+                    );
+
+                for(let n=0;n<count;n++){
+
+                    this.executeBlock(
+                        block.lines,
+                        0,
+                        this.getBlockIndent(block.lines)
+                    );
+                }
+
+                i = block.nextIndex;
+
+                continue;
+            }
+
+
+            /*
+             * ELSE isolé
+             */
+
+            if(text === "else:"){
+                i++;
+                continue;
+            }
+
+
+            /*
+             * PASS
+             */
+
+            if(text === "pass"){
+
+                i++;
+                continue;
+            }
+
+
+            /*
+             * PRINT
+             */
+
+            if(text.startsWith("print(")){
+
+                if(!text.endsWith(")")){
+
+                    throw new MiniPyError(
+                        "INVALID_ARITHMETIC",
+                        "print invalide"
+                    );
+                }
+
+                const inside =
+                    text.slice(
+                        6,
+                        -1
+                    );
+
+                const value =
+                    this.evaluateExpression(
+                        inside
+                    );
+
+                this.output.push(
+                    String(value)
+                );
+
+                i++;
+
+                continue;
+            }
+
+
+            /*
+             * ASSIGNMENT
+             */
+
+            const assignment =
+                text.match(
+                    /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)$/
+                );
+
+            if(assignment){
+
+                const name =
+                    assignment[1];
+
+                const expression =
+                    assignment[2];
+
+                this.variables[name] =
+                    this.evaluateExpression(
+                        expression
+                    );
+
+                i++;
+
+                continue;
+            }
+
+
+            throw new MiniPyError(
+                "UNKNOWN_INSTRUCTION",
+                "Instruction inconnue"
+            );
+        }
+
+        return i;
+    }
+
+
+    collectChildBlock(lines,start,parentIndent){
+
+        const result = [];
+        let i = start;
+
+        while(
+            i < lines.length &&
+            lines[i].indent > parentIndent
+        ){
+
+            result.push(lines[i]);
+            i++;
+        }
+
+        return {
+            lines:result,
+            nextIndex:i
+        };
+    }
+
+
+    getBlockIndent(lines){
+
+        if(!lines.length){
+            return 0;
+        }
+
+        return Math.min(
+            ...lines.map(x=>x.indent)
+        );
+    }
+
+
+    evaluateExpression(expression){
+
+        let text =
+            String(expression || "")
+            .trim();
+
+
+        /*
+         * Chaîne
+         */
+
+        if(
+            (
+                text.startsWith('"') &&
+                text.endsWith('"')
+            ) ||
+            (
+                text.startsWith("'") &&
+                text.endsWith("'")
+            )
+        ){
+
+            return text.slice(
+                1,
+                -1
+            );
+        }
+
+
+        /*
+         * Nombre
+         */
+
+        if(isNumber(text)){
+            return Number(text);
+        }
+
+
+        /*
+         * Liste
+         */
+
+        if(
+            text.startsWith("[") &&
+            text.endsWith("]")
+        ){
+
+            const inside =
+                text.slice(
+                    1,
+                    -1
+                ).trim();
+
+            if(!inside){
+                return [];
+            }
+
+            return inside
+                .split(",")
+                .map(x=>{
+
+                    x=x.trim();
+
+                    if(
+                        (
+                            x.startsWith('"') &&
+                            x.endsWith('"')
+                        ) ||
+                        (
+                            x.startsWith("'") &&
+                            x.endsWith("'")
+                        )
+                    ){
+                        return x.slice(1,-1);
+                    }
+
+                    if(isNumber(x)){
+                        return Number(x);
+                    }
+
+                    return x;
+                });
+        }
+
+
+        /*
+         * upper
+         */
+
+        const upper =
+            text.match(
+                /^(.+)\.upper\(\)$/
+            );
+
+        if(upper){
+
+            return String(
+                this.evaluateExpression(
+                    upper[1]
+                )
+            ).toUpperCase();
+        }
+
+
+        /*
+         * lower
+         */
+
+        const lower =
+            text.match(
+                /^(.+)\.lower\(\)$/
+            );
+
+        if(lower){
+
+            return String(
+                this.evaluateExpression(
+                    lower[1]
+                )
+            ).toLowerCase();
+        }
+
+
+        /*
+         * len
+         */
+
+        const len =
+            text.match(
+                /^len\((.+)\)$/
+            );
+
+        if(len){
+
+            const value =
+                this.evaluateExpression(
+                    len[1]
+                );
+
+            return value.length;
+        }
+
+
+        /*
+         * input
+         */
+
+        const input =
+            text.match(
+                /^input\((.*)\)$/
+            );
+
+        if(input){
+
+            const question =
+                this.evaluateExpression(
+                    input[1]
+                );
+
+            const answer =
+                window.prompt(
+                    String(question)
+                );
+
+            return answer === null
+                ? ""
+                : answer;
+        }
+
+
+        /*
+         * Variable
+         */
+
+        if(isIdentifier(text)){
+
+            if(
+                !Object.prototype.hasOwnProperty.call(
+                    this.variables,
+                    text
+                )
+            ){
+
+                throw new MiniPyError(
+                    "UNKNOWN_VARIABLE",
+                    "Variable inconnue",
+                    {
+                        name:text
+                    }
+                );
+            }
+
+            return this.variables[text];
+        }
+
+
+        /*
+         * Calcul simple
+         */
+
+        const arithmetic =
+            this.findArithmeticOperator(text);
+
+        if(arithmetic){
+
+            const left =
+                this.evaluateExpression(
+                    arithmetic.left
+                );
+
+            const right =
+                this.evaluateExpression(
+                    arithmetic.right
+                );
+
+            if(
+                typeof left !== "number" ||
+                typeof right !== "number"
+            ){
+
+                throw new MiniPyError(
+                    "INVALID_ARITHMETIC",
+                    "Calcul impossible"
+                );
+            }
+
+            if(
+                arithmetic.operator === "/" &&
+                right === 0
+            ){
+
+                throw new MiniPyError(
+                    "DIVISION_ZERO",
+                    "Division par zéro"
+                );
+            }
+
+            if(arithmetic.operator === "+"){
+                return left + right;
+            }
+
+            if(arithmetic.operator === "-"){
+                return left - right;
+            }
+
+            if(arithmetic.operator === "*"){
+                return left * right;
+            }
+
+            if(arithmetic.operator === "/"){
+                return left / right;
+            }
+        }
+
+
+        throw new MiniPyError(
+            "UNKNOWN_INSTRUCTION",
+            "Expression non comprise"
+        );
+    }
+
+
+    findArithmeticOperator(text){
+
+        const operators = ["+","-","*","/"];
+
+        for(const operator of operators){
+
+            const index =
+                text.indexOf(
+                    operator
+                );
+
+            if(index > 0){
+
+                return {
+                    left:text.slice(0,index).trim(),
+                    operator,
+                    right:text.slice(index+1).trim()
+                };
+            }
+        }
+
+        return null;
+    }
+
+
+    evaluateCondition(condition){
+
+        const operators =
+            ["==","!=",">=","<=",">","<"];
+
+        for(const operator of operators){
+
+            const index =
+                condition.indexOf(
+                    operator
+                );
+
+            if(index >= 0){
+
+                const leftText =
+                    condition
+                    .slice(0,index)
+                    .trim();
+
+                const rightText =
+                    condition
+                    .slice(
+                        index + operator.length
+                    )
+                    .trim();
+
+                const left =
+                    this.evaluateExpression(
+                        leftText
+                    );
+
+                const right =
+                    this.evaluateExpression(
+                        rightText
+                    );
+
+                if(operator === "=="){
+                    return left === right;
+                }
+
+                if(operator === "!="){
+                    return left !== right;
+                }
+
+                if(operator === ">"){
+                    return left > right;
+                }
+
+                if(operator === "<"){
+                    return left < right;
+                }
+
+                if(operator === ">="){
+                    return left >= right;
+                }
+
+                if(operator === "<="){
+                    return left <= right;
+                }
+            }
+        }
+
+        throw new MiniPyError(
+            "UNKNOWN_INSTRUCTION",
+            "Condition inconnue"
+        );
+    }
+}
+
+
+/* =========================================================
+   MODE PARENT
+========================================================= */
+
+function parseParent(){
+
+    const code =
+        document.getElementById(
+            "parentCode"
+        ).value;
+
+    const result =
+        document.getElementById(
+            "parentResult"
+        );
+
+    if(!code.trim()){
+
+        result.innerHTML = `
+            <div class="warning-box">
+                Écris d'abord un petit programme Python.
+            </div>
+        `;
+
+        return;
+    }
+
+    const parsed =
+        parseParentPython(code);
+
+    programNodes =
+        parsed.nodes;
+
+    nextId =
+        parsed.nextId;
+
+    saveProgram();
+    renderProgram();
+
+    result.innerHTML = `
+
+        <div class="success-box">
+            <strong>✅ Transformation terminée</strong>
+
+            <p>
+                Les instructions reconnues ont été transformées
+                en boîtes.
+            </p>
+
+            ${
+                parsed.warnings.length
+                ? `
+                <div class="warning-box">
+
+                    <strong>⚠️ Certaines lignes n'ont pas été reconnues :</strong>
+
+                    <ul>
+                        ${
+                            parsed.warnings
+                            .map(x=>`<li>${escapeHTML(x)}</li>`)
+                            .join("")
+                        }
+                    </ul>
+
+                    Elles n'ont pas été inventées ni transformées
+                    automatiquement.
+                </div>
+                `
+                : `
+                <p>
+                    Toutes les lignes reconnues ont été transformées.
+                </p>
+                `
+            }
+        </div>
+    `;
+
+    activateTab("build");
+}
+
+
+function parseParentPython(code){
+
+    const lines =
+        code.split("\n");
+
+    const nodes = [];
+
+    let next = 1;
+
+    const stack = [
+        {
+            indent:-1,
+            children:nodes,
+            node:null
+        }
+    ];
+
+    const warnings = [];
+
+    for(let i=0;i<lines.length;i++){
+
+        const raw =
+            lines[i];
+
+        if(!raw.trim()){
+            continue;
+        }
+
+        const indent =
+            raw.match(/^ */)[0].length;
+
+        const text =
+            raw.trim();
+
+        while(
+            stack.length > 1 &&
+            indent <= stack[stack.length-1].indent
+        ){
+            stack.pop();
+        }
+
+        const current =
+            stack[stack.length-1].children;
+
+
+        if(text.startsWith("#")){
+
+            current.push({
+                id:next++,
+                type:"comment",
+                text:text.slice(1).trim()
+            });
+
+            continue;
+        }
+
+
+        /*
+         * IF
+         */
+
+        const ifMatch =
+            text.match(
+                /^if\s+(.+):$/
+            );
+
+        if(ifMatch){
+
+            const condition =
+                parseParentCondition(
+                    ifMatch[1]
+                );
+
+            if(!condition){
+
+                warnings.push(
+                    `Ligne ${i+1} : condition SI non reconnue.`
+                );
+
+                continue;
+            }
+
+            const node = {
+                id:next++,
+                type:"if",
+                left:condition.left,
+                operator:condition.operator,
+                right:condition.right,
+                leftType:detectParentType(condition.left),
+                rightType:detectParentType(condition.right),
+                children:[],
+                elseChildren:[]
+            };
+
+            current.push(node);
+
+            stack.push({
+                indent,
+                children:node.children,
+                node
+            });
+
+            continue;
+        }
+
+
+        /*
+         * ELSE
+         */
+
+        if(text === "else:"){
+
+            const parentIf =
+                findLastIf(nodes);
+
+            if(!parentIf){
+
+                warnings.push(
+                    `Ligne ${i+1} : SINON sans SI correspondant.`
+                );
+
+                continue;
+            }
+
+            while(
+                stack.length > 1 &&
+                stack[stack.length-1].indent >= indent
+            ){
+                stack.pop();
+            }
+
+            stack.push({
+                indent,
+                children:parentIf.elseChildren,
+                node:parentIf
+            });
+
+            continue;
+        }
+
+
+        /*
+         * FOR
+         */
+
+        const repeatMatch =
+            text.match(
+                /^for\s+_\s+in\s+range\((.+)\):$/
+            );
+
+        if(repeatMatch){
+
+            const node = {
+                id:next++,
+                type:"repeat",
+                count:repeatMatch[1].trim(),
+                children:[]
+            };
+
+            current.push(node);
+
+            stack.push({
+                indent,
+                children:node.children,
+                node
+            });
+
+            continue;
+        }
+
+
+        /*
+         * PRINT
+         */
+
+        const printMatch =
+            text.match(
+                /^print\((.*)\)$/
+            );
+
+        if(printMatch){
+
+            const value =
+                stripPythonQuotes(
+                    printMatch[1]
+                );
+
+            current.push({
+                id:next++,
+                type:"print",
+                value,
+                valueType:
+                    isIdentifier(printMatch[1].trim())
+                    ? "variable"
+                    : isNumber(printMatch[1].trim())
+                    ? "number"
+                    : "text"
+            });
+
+            continue;
+        }
+
+
+        /*
+         * INPUT
+         */
+
+        const inputMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*input\((.*)\)$/
+            );
+
+        if(inputMatch){
+
+            current.push({
+                id:next++,
+                type:"ask",
+                question:
+                    stripPythonQuotes(
+                        inputMatch[2]
+                    ),
+                name:inputMatch[1]
+            });
+
+            continue;
+        }
+
+
+        /*
+         * LISTE
+         */
+
+        const listMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*\[(.*)\]$/
+            );
+
+        if(listMatch){
+
+            const items =
+                listMatch[2]
+                .split(",")
+                .map(x=>stripPythonQuotes(x.trim()))
+                .filter(Boolean)
+                .join(", ");
+
+            current.push({
+                id:next++,
+                type:"list",
+                name:listMatch[1],
+                items
+            });
+
+            continue;
+        }
+
+
+        /*
+         * TEXTE UPPER
+         */
+
+        const upperMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)\.upper\(\)$/
+            );
+
+        if(upperMatch){
+
+            current.push({
+                id:next++,
+                type:"text",
+                source:stripPythonQuotes(upperMatch[2]),
+                operation:"upper",
+                result:upperMatch[1]
+            });
+
+            continue;
+        }
+
+
+        /*
+         * TEXTE LOWER
+         */
+
+        const lowerMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)\.lower\(\)$/
+            );
+
+        if(lowerMatch){
+
+            current.push({
+                id:next++,
+                type:"text",
+                source:stripPythonQuotes(lowerMatch[2]),
+                operation:"lower",
+                result:lowerMatch[1]
+            });
+
+            continue;
+        }
+
+
+        /*
+         * LEN
+         */
+
+        const lenMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*len\((.+)\)$/
+            );
+
+        if(lenMatch){
+
+            current.push({
+                id:next++,
+                type:"text",
+                source:stripPythonQuotes(lenMatch[2]),
+                operation:"length",
+                result:lenMatch[1]
+            });
+
+            continue;
+        }
+
+
+        /*
+         * CALCUL
+         */
+
+        const calcMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)\s*([+\-*\/])\s*(.+)$/
+            );
+
+        if(calcMatch){
+
+            current.push({
+                id:next++,
+                type:"calc",
+                left:stripPythonQuotes(calcMatch[2].trim()),
+                operator:calcMatch[3],
+                right:stripPythonQuotes(calcMatch[4].trim()),
+                result:calcMatch[1]
+            });
+
+            continue;
+        }
+
+
+        /*
+         * VARIABLE SIMPLE
+         */
+
+        const variableMatch =
+            text.match(
+                /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)$/
+            );
+
+        if(variableMatch){
+
+            const value =
+                variableMatch[2].trim();
+
+            current.push({
+                id:next++,
+                type:"variable",
+                name:variableMatch[1],
+                value:stripPythonQuotes(value),
+                valueType:
+                    isIdentifier(value)
+                    ? "variable"
+                    : isNumber(value)
+                    ? "number"
+                    : "text"
+            });
+
+            continue;
+        }
+
+
+        warnings.push(
+            `Ligne ${i+1} : "${text}"`
+        );
+    }
+
+    return {
+        nodes,
+        warnings,
+        nextId:next
+    };
+}
+
+
+function parseParentCondition(condition){
+
+    const operators =
+        ["==","!=",">=","<=",">","<"];
+
+    for(const operator of operators){
+
+        const index =
+            condition.indexOf(operator);
+
+        if(index >= 0){
+
+            return {
+                left:
+                    stripPythonQuotes(
+                        condition
+                        .slice(0,index)
+                        .trim()
+                    ),
+
+                operator,
+
+                right:
+                    stripPythonQuotes(
+                        condition
+                        .slice(
+                            index + operator.length
+                        )
+                        .trim()
+                    )
+            };
+        }
+    }
+
+    return null;
+}
+
+
+function detectParentType(value){
+
+    value =
+        String(value || "").trim();
+
+    if(isIdentifier(value)){
+        return "variable";
+    }
+
+    if(isNumber(value)){
+        return "number";
+    }
+
+    return "text";
+}
+
+
+function stripPythonQuotes(value){
+
+    value =
+        String(value || "").trim();
+
+    if(
+        (
+            value.startsWith('"') &&
+            value.endsWith('"')
+        ) ||
+        (
+            value.startsWith("'") &&
+            value.endsWith("'")
+        )
+    ){
+        return value.slice(1,-1);
+    }
+
+    return value;
+}
+
+
+function findLastIf(nodes){
+
+    for(let i=nodes.length-1;i>=0;i--){
+
+        const node = nodes[i];
+
+        if(node.type === "if"){
+            return node;
+        }
+
+        if(node.children){
+
+            const found =
+                findLastIf(node.children);
+
+            if(found) return found;
+        }
+
+        if(node.elseChildren){
+
+            const found =
+                findLastIf(node.elseChildren);
+
+            if(found) return found;
+        }
+    }
+
+    return null;
+}
+
+
+/* =========================================================
+   EXEMPLES
+========================================================= */
+
+function useExample(name){
+
+    if(name === "hello"){
+
+        programNodes = [
+            {
+                id:1,
+                type:"print",
+                value:"Bonjour !",
+                valueType:"text"
+            }
+        ];
+
+        nextId = 2;
+    }
+
+
+    if(name === "ask"){
+
+        programNodes = [
+            {
+                id:1,
+                type:"ask",
+                question:"Comment tu t'appelles ?",
+                name:"prenom"
+            },
+            {
+                id:2,
+                type:"print",
+                value:"prenom",
+                valueType:"variable"
+            }
+        ];
+
+        nextId = 3;
+    }
+
+
+    if(name === "if"){
+
+        programNodes = [
+            {
+                id:1,
+                type:"ask",
+                question:"Quel âge as-tu ?",
+                name:"age"
+            },
+            {
+                id:2,
+                type:"if",
+                left:"age",
+                operator:">=",
+                right:"18",
+                leftType:"variable",
+                rightType:"number",
+
+                children:[
+                    {
+                        id:3,
+                        type:"print",
+                        value:"Tu es assez grand.",
+                        valueType:"text"
+                    }
+                ],
+
+                elseChildren:[
+                    {
+                        id:4,
+                        type:"print",
+                        value:"Tu es encore jeune.",
+                        valueType:"text"
+                    }
+                ]
+            }
+        ];
+
+        nextId = 5;
+    }
+
+
+    if(name === "repeat"){
+
+        programNodes = [
+            {
+                id:1,
+                type:"repeat",
+                count:"3",
+
+                children:[
+                    {
+                        id:2,
+                        type:"print",
+                        value:"Bonjour !",
+                        valueType:"text"
+                    }
+                ]
+            }
+        ];
+
+        nextId = 3;
+    }
+
+    saveProgram();
+    renderProgram();
+    activateTab("build");
+}
+
+
+/* =========================================================
+   CODE
+========================================================= */
+
+function generateAndShowCode(){
+
+    const code =
+        generatePython(
+            programNodes
+        );
+
+    document.getElementById(
+        "pythonCode"
+    ).textContent =
+        code || "# Ton programme est vide.";
+}
+
+
+function openCode(){
+
+    generateAndShowCode();
+
+    activateTab("code");
+}
+
+
+function copyPython(){
+
+    const code =
+        generatePython(
+            programNodes
+        );
+
+    if(!code){
+        return;
+    }
+
+    navigator.clipboard
+        .writeText(code)
+        .then(()=>{
+
+            document.getElementById(
+                "codeResult"
+            ).innerHTML = `
+                <div class="success-box">
+                    ✅ Code copié !
+                </div>
+            `;
+
+        })
+        .catch(()=>{
+
+            document.getElementById(
+                "codeResult"
+            ).innerHTML = `
+                <div class="warning-box">
+                    Impossible de copier automatiquement.
+                    Sélectionne le code et copie-le manuellement.
+                </div>
+            `;
+        });
+}
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+function saveProgram(){
+
+    try{
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({
+                programNodes,
+                nextId
+            })
+        );
+
+    }catch(error){
+
+        console.warn(
+            "Sauvegarde impossible",
+            error
+        );
+    }
+}
+
+
+function loadProgram(){
+
+    try{
+
+        const raw =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+        if(!raw){
+            return;
+        }
+
+        const data =
+            JSON.parse(raw);
+
+        if(
+            data &&
+            Array.isArray(data.programNodes)
+        ){
+
+            programNodes =
+                repairNodes(
+                    data.programNodes
+                );
+
+            nextId =
+                Number(data.nextId) || 1;
+        }
+
+    }catch(error){
+
+        programNodes = [];
+        nextId = 1;
+    }
+}
+
+
+function repairNodes(nodes){
+
+    return nodes.map(node=>{
+
+        if(
+            node.type === "if"
+        ){
+
+            node.children =
+                Array.isArray(node.children)
+                ? repairNodes(node.children)
+                : [];
+
+            node.elseChildren =
+                Array.isArray(node.elseChildren)
+                ? repairNodes(node.elseChildren)
+                : [];
+        }
+
+        if(node.type === "repeat"){
+
+            node.children =
+                Array.isArray(node.children)
+                ? repairNodes(node.children)
+                : [];
+        }
+
+        return node;
+    });
+}
+
+
+function clearProgram(){
+
+    if(!programNodes.length){
+        return;
+    }
+
+    const ok =
+        confirm(
+            "Veux-tu vraiment supprimer tout le programme ?"
+        );
+
+    if(!ok){
+        return;
+    }
+
+    programNodes = [];
+    nextId = 1;
+
+    saveProgram();
+    renderProgram();
+    clearProblemHighlights();
+
+    document.getElementById(
+        "testResult"
+    ).innerHTML = "";
+}
+
+
+/* =========================================================
+   PROGRESSION
+========================================================= */
+
+function countNodes(nodes){
+
+    let count = 0;
+
+    for(const node of nodes){
+
+        count++;
+
+        if(node.children){
+            count += countNodes(node.children);
+        }
+
+        if(node.elseChildren){
+            count += countNodes(node.elseChildren);
+        }
+    }
+
+    return count;
+}
+
+
+function updateProgress(){
+
+    const count =
+        countNodes(
+            programNodes
+        );
+
+    const progress =
+        Math.min(
+            100,
+            count * 10
+        );
+
+    document.getElementById(
+        "progressBar"
+    ).style.width =
+        progress + "%";
+
+    document.getElementById(
+        "progressText"
+    ).textContent =
+        progress + "%";
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+function showInfo(type){
+
+    const info =
+        NODE_INFO[type];
+
+    if(!info){
+        return;
+    }
+
+    document.getElementById(
+        "infoTitle"
+    ).textContent =
+        info.title;
+
+
+    document.getElementById(
+        "infoContent"
+    ).innerHTML = `
+
+        <div class="info-section">
+
+            <h3>🧠 À quoi ça sert ?</h3>
+
+            <p>${info.description}</p>
+
+            <div class="learning-example">
+                <strong>💡 Exemple</strong>
+                <p>${info.example}</p>
+            </div>
+
+        </div>
+
+
+        <div class="info-section">
+
+            <h3>🎯 Quand l'utiliser ?</h3>
+
+            <p>${info.use}</p>
+
+            <div class="learning-example">
+                <strong>💡 Exemple</strong>
+                <p>
+                    Utilise cette boîte lorsque tu veux
+                    réaliser l'action décrite.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="info-section">
+
+            <h3>🏗️ Quelle est sa hiérarchie ?</h3>
+
+            <p>${info.hierarchy}</p>
+
+            <div class="learning-example">
+
+                <strong>💡 Exemple visuel</strong>
+
+                ${info.hierarchyExample}
+
+            </div>
+
+        </div>
+
+
+        <div class="info-section">
+
+            <h3>📦 Qu'est-ce qu'elle contient ?</h3>
+
+            <p>${info.contains}</p>
+
+            <div class="learning-example">
+                <strong>💡 Exemple</strong>
+                <p>${info.example}</p>
+            </div>
+
+        </div>
+
+
+        <div class="info-section">
+
+            <h3>🐍 Quel vrai Python est créé ?</h3>
+
+            <div class="code-box">
+                <pre>${escapeHTML(info.python)}</pre>
+            </div>
+
+            <div class="learning-example">
+                <strong>💡 À retenir</strong>
+                <p>
+                    La boîte colorée est simplement une façon
+                    plus facile d'apprendre avant d'écrire
+                    directement cette syntaxe.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="info-section">
+
+            <h3>⚠️ Erreur fréquente</h3>
+
+            <p>${info.mistake}</p>
+
+            <div class="learning-example">
+                <strong>💡 Exemple</strong>
+                <p>
+                    Si une information doit être créée avant
+                    d'être utilisée, place la boîte qui crée
+                    l'information en premier.
+                </p>
+            </div>
+
+        </div>
+    `;
+
+    document.getElementById(
+        "infoModal"
+    ).classList.add("show");
+}
+
+
+function closeInfo(){
+
+    document.getElementById(
+        "infoModal"
+    ).classList.remove("show");
+}
+
+
+document.getElementById(
+    "infoModal"
+).addEventListener(
+    "click",
+    function(event){
+
+        if(event.target === this){
+            closeInfo();
+        }
+    }
+);
+
+
+/* =========================================================
+   ONGLETS
+========================================================= */
+
+document.querySelectorAll(
+    ".tab-btn"
+).forEach(button=>{
+
+    button.addEventListener(
+        "click",
+        ()=>{
+
+            activateTab(
+                button.dataset.tab
+            );
+        }
+    );
+});
+
+
+function activateTab(tabName){
+
+    document.querySelectorAll(
+        ".tab-btn"
+    ).forEach(button=>{
+
+        button.classList.toggle(
+            "active",
+            button.dataset.tab === tabName
+        );
+    });
+
+
+    document.querySelectorAll(
+        ".tab"
+    ).forEach(tab=>{
+
+        tab.classList.toggle(
+            "active",
+            tab.id === "tab-" + tabName
+        );
+    });
+
+
+    if(tabName === "code"){
+        generateAndShowCode();
+    }
+}
+
+
+/* =========================================================
+   HIGHLIGHT ERREUR
+========================================================= */
+
+function highlightNode(id){
+
+    if(!id) return;
+
+    const node =
+        document.getElementById(
+            "node-" + id
+        );
+
+    if(!node) return;
+
+    node.classList.add(
+        "problem-node"
+    );
+
+    setTimeout(()=>{
+
+        node.scrollIntoView({
+            behavior:"smooth",
+            block:"center"
+        });
+
+    },100);
+}
+
+
+function clearProblemHighlights(){
+
+    document.querySelectorAll(
+        ".problem-node"
+    ).forEach(node=>{
+
+        node.classList.remove(
+            "problem-node"
+        );
+    });
+}
+
+
+/* =========================================================
+   OUTILS
+========================================================= */
+
+function isIdentifier(value){
+
+    return /^[A-Za-z_][A-Za-z0-9_]*$/
+        .test(
+            String(value || "").trim()
+        );
+}
+
+
+function isNumber(value){
+
+    return /^-?\d+(\.\d+)?$/
+        .test(
+            String(value || "").trim()
+        );
+}
+
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+function escapeAttr(value){
+
+    return escapeHTML(value);
+}
+
+
+/* =========================================================
+   EXEMPLE MODE PARENT
+========================================================= */
+
+function putParentExample(){
+
+    document.getElementById(
+        "parentCode"
+    ).value =
+`prenom = input("Comment tu t'appelles ?")
+print(prenom)
+
+age = 18
+
+if age >= 18:
+    print("Tu peux entrer.")
+else:
+    print("Tu es encore jeune.")
+
+for _ in range(3):
+    print("Bonjour !")`;
+}
+
+
+/* =========================================================
+   DÉMARRAGE
+========================================================= */
+
+loadProgram();
+renderProgram();
+
+</script>
+
+</body>
+  </html>
