@@ -1,4 +1,60 @@
 ----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 21:00:05
+TITRE: How the malaria parasite boosts its transmission potential under stress conditions
+LIEN: https://phys.org/news/2026-09-malaria-parasite-boosts-transmission-potential.html
+CONTENU: The malaria parasite is able to detect changes in its host's environment and respond by increasing the production of sexual forms capable of being transmitted to mosquitoes. A study led by the Barcelona Institute for Global Health (ISGlobal) identifies the molecular mechanism underlying this process. The findings, published in Nature Microbiology, answer what has been one of the major unanswered questions in malaria research for decades.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 21:00:01
+TITRE: Sacred springs of South Africa—pure waters or polluted? We found tiny bits of plastic in the samples we tested
+LIEN: https://phys.org/news/2026-09-sacred-south-africa-pure-polluted.html
+CONTENU: Across South Africa, natural springs are more than sources of freshwater. Some are places of healing, spiritual cleansing and rituals, where communities collect water and maintain longstanding cultural connections with the environment. For example, during cleansing rituals, people bathe in or collect spring water as a way of seeking spiritual renewal, healing and protection. These are known as sacred springs.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 19:30:01
+TITRE: Reconstructing the Great Miami Hurricane of 1926
+LIEN: https://phys.org/news/2026-09-reconstructing-great-miami-hurricane.html
+CONTENU: The first storm warning for the Miami area wasn't issued until only a few hours before the powerful cyclone made landfall just south of downtown, leaving residents with little time to prepare for what would become the hurricane of their nightmares.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 19:20:01
+TITRE: Two-color light steers electrons through graphene's transient topological state
+LIEN: https://phys.org/news/2026-09-electrons-graphene-transient-topological-state.html
+CONTENU: The electronic properties of materials are typically determined by their structure under normal, undisturbed conditions, when they are in a state known as equilibrium. Intense light beams, however, can temporarily reshape a material's electronic band structure (i.e., the range of energy states available to electrons), potentially giving rise to new electronic behaviors.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 19:00:04
+TITRE: A molecular bridge connects two signaling pathways critical for pollen development
+LIEN: https://phys.org/news/2026-09-molecular-bridge-pathways-critical-pollen.html
+CONTENU: Cells rely on complex signaling networks in which different molecular pathways communicate with one another. Small GTPases act as molecular switches in these networks, controlling diverse cellular processes such as intracellular transport and cell morphogenesis. Although crosstalk between different families of small GTPases is established in animal cells, whether and how such crosstalk occurs in plants has remained largely unknown.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 18:00:01
+TITRE: Australia's vast Nullarbor Plain hides deep caves that can teach us about alien worlds
+LIEN: https://phys.org/news/2026-09-australia-vast-nullarbor-plain-deep.html
+CONTENU: Stretching more than 200,000 square kilometers (77,000 square miles) across southern Australia, the vast, flat plains of the Nullarbor mark one of the world's largest regions of limestone. It formed when an ancient shallow sea retreated some 14 million years ago.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 17:00:02
+TITRE: Bringing ice sheets to life: Releasing a dynamic ice sheet modeling workflow for Australia's climate model
+LIEN: https://phys.org/news/2026-09-ice-sheets-life-dynamic-sheet.html
+CONTENU: Ice sheets are fundamental components of the Earth system. Antarctica and Greenland, the two ice sheets currently on Earth, don't just affect their own regions: What happens on these vast masses of land ice influences weather, climate, society and the environment around the planet.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-19 20:35:12
