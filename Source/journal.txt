@@ -1,4 +1,84 @@
 ----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 16:00:02
+TITRE: Global population dataset uses buildings to reveal people's daily movement patterns
+LIEN: https://phys.org/news/2026-09-global-population-dataset-reveal-people.html
+CONTENU: Researchers at the Department of Energy's (DOE) Oak Ridge National Laboratory (ORNL) have released LandScan Mosaic, a next-generation global population distribution dataset that estimates where people are by modeling how buildings are used and occupied throughout the day. Built on the foundation of ORNL's widely used LandScan Global, one of the world's most accurate population distribution datasets, Mosaic's enhancements will improve disaster response, humanitarian assistance, infrastructure planning and national security missions worldwide.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 15:30:02
+TITRE: How narwhal 'scientists' track Arctic warming
+LIEN: https://phys.org/news/2026-08-narwhal-scientists-track-arctic.html
+CONTENU: The fight against climate change has a new, spiral-tusked ally: the narwhal.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 14:20:01
+TITRE: Meet Earth's newest wild cat species, the first named in over a century
+LIEN: https://phys.org/news/2026-09-earth-wild-cat-species-century.html
+CONTENU: A previously unknown cat species has been identified in plain sight: at a wildlife sanctuary in Bolivia, where the small, spotted feline had been living for years.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 14:08:16
+TITRE: A humpback whale was spotted in a California river, 60 miles from its Pacific Ocean home
+LIEN: https://phys.org/news/2026-09-humpback-whale-california-river-miles.html
+CONTENU: Denny Glover was hoping for a big catch when he went fishing with buddies on the Sacramento River, but he wasn't expecting a fully grown humpback whale.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 14:00:02
+TITRE: The monsters that weren't: Dinosaur and tusked-beast claims in San rock art unravel
+LIEN: https://phys.org/news/2026-09-monsters-werent-dinosaur-tusked-beast.html
+CONTENU: For decades, an idea has grown in paleontology that, long before scientists began digging up and reconstructing dinosaur bones, the Indigenous San and Basotho in southern Africa noticed them too, incorporating them into songs, myths and immortalizing them on cave walls. But under closer scrutiny, these claims begin to crumble.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 13:30:01
+TITRE: Rethinking how we assess students could improve their well-being
+LIEN: https://phys.org/news/2026-09-rethinking-students.html
+CONTENU: When you were in school, what stressed you out the most? For many students, classroom assessments—graded tests, quizzes, group work, presentations, labs and the like—would be near the top of the list.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 12:40:01
+TITRE: Florida scrub-jays attempt to breed at unusually young age after large-scale translocation
+LIEN: https://phys.org/news/2026-09-florida-jays-unusually-young-age.html
+CONTENU: For nearly two decades, biologist Lauren Deaner has worked with Florida scrub-jays, contributing to population recovery efforts and translocations. Now, as a doctoral researcher in UCF's integrative biology program, she is using that field experience to investigate how genetics, behavior and population dynamics influence the long-term recovery of imperiled species.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 11:40:01
+TITRE: Protein map reveals how red blood cells rapidly adjust to low oxygen
+LIEN: https://phys.org/news/2026-09-protein-reveals-red-blood-cells.html
+CONTENU: Scientists map the hidden protein network that helps red blood cells adapt to oxygen
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 11:20:01
+TITRE: Loss of Y chromosome in men could be an early warning sign of cancer
+LIEN: https://phys.org/news/2026-09-loss-chromosome-men-early-cancer.html
+CONTENU: A study initiated by Dr. Dan Theodorescu, a physician-scientist at the University of Arizona Cancer Center, revealed that the loss of the Y chromosome in men's body tissue could pave the way for cancer to develop. According to research recently published in JCI Insights, the loss of the chromosome, which is common in men as they age, creates a preneoplastic field effect, a hidden zone of genetic vulnerability in normal tissue that provides fertile ground for cancer to develop.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-19 11:00:06
+TITRE: Scientists simulate cosmic crashes to test whether icy moons gain or lose their ability to sustain life
+LIEN: https://phys.org/news/2026-09-scientists-simulate-cosmic-icy-moons.html
+CONTENU: Many of the moons orbiting Saturn, Uranus and Neptune likely conceal oceans of liquid water beneath miles of icy shell. Because life as we know it needs water, these buried oceans rank among the most promising places to search for life beyond Earth.
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-09-19 04:00:00
