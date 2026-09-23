@@ -1,5 +1,326 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-23 20:29:00
+TITRE: Un candidat péquiste dit avoir menti sur le discours en immigration de son parti
+LIEN: https://www.ledevoir.com/politique/quebec/1011449/candidat-pequiste-dit-avoir-menti-discours-immigration-parti
+CONTENU: Gabriel Pallotta avait affirmé que lui et plusieurs autres candidats souhaitent voir le parti «assainir» son message.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-23 19:14:40
+TITRE: Donald Trump va recevoir Xi Jinping avec faste
+LIEN: https://www.ledevoir.com/monde/etats-unis/1011362/donald-trump-recoit-xi-jinping-avec-faste
+CONTENU: Pour cette rare visite, le président américain accueillera exceptionnellement le dirigeant chinois à l’aéroport.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-23 14:35:00
+TITRE: Trois médias chassés de la Maison-Blanche exhortent un juge à rétablir leur accès
+LIEN: https://www.ledevoir.com/monde/etats-unis/1011251/acces-medias-maison-blanche-est-privilege-plaide-gouvernement-trump
+CONTENU: CNN, MS NOW et Politico sont accusés par Donald Trump de relayer de «fausses informations».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-23 21:23:00
+TITRE: Les Blue Jays sont éliminés des séries
+LIEN: https://www.ledevoir.com/sports/1011467/blue-jays-sont-elimines-series
+CONTENU: Les Orioles de Baltimore ont vaincu les Blue Jays de Toronto 4-2, mercredi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-23 19:06:00
+TITRE: Craintes d’une accentuation du déclin démographique si Québec garde le cap en immigration
+LIEN: https://www.ledevoir.com/actualites/immigration/1011359/craintes-accentuation-declin-demographique-si-quebec-garde-cap-immigration
+CONTENU: Étude en main, les gens d’affaires de la région de Montréal pressent le prochain gouvernement à changer de cap.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-23 20:00:00
+TITRE: Déjà dans la tourmente, l’auteur québécois Thélyson Orélien est accusé de plagiat
+LIEN: https://www.ledevoir.com/lire/1011377/deja-tourmente-auteur-quebecois-thelyson-orelien-est-accuse-plagiat
+CONTENU: On lui reproche d’avoir copié des passages de textes d’opinion. Il est aussi accusé d’avoir généré un roman par IA.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 21:00:00
+TITRE: Le journal de 23h00 du mercredi 23 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-23h00/le-journal-de-23h00-du-mercredi-23-septembre-2026-1186368
+CONTENU: Article de référence : "Le journal de 23h00 du mercredi 23 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 20:00:00
+TITRE: Le journal de 22h00 du mercredi 23 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-22h00/le-journal-de-22h00-du-mercredi-23-septembre-2026-7982122
+CONTENU: Article de référence : "Le journal de 22h00 du mercredi 23 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 18:30:00
+TITRE: Le 20h30/minuit du mercredi 23 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-20h30-minuit/le-20h30-minuit-du-mercredi-23-septembre-2026-2978025
+CONTENU: Article de référence : "Le 20h30/minuit du mercredi 23 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 18:00:00
+TITRE: Le journal de 20h00 du mercredi 23 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-info-a-20h00/le-journal-de-20h00-du-mercredi-23-septembre-2026-3262350
+CONTENU: Article de référence : "Le journal de 20h00 du mercredi 23 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 17:35:00
+TITRE: Trump / Xi : à quoi va ressembler le face-à-face entre les deux rivaux ? Les informés de franceinfo du 23 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-informes-de-franceinfo/les-informes-de-franceinfo-du-mercredi-23-septembre-2026-1261767
+CONTENU: Tous les soirs, les informés débattent de l'actualité autour d'Hadrien Bect.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 17:00:00
+TITRE: Le journal de 19h00 du mercredi 23 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-19h00/le-journal-de-19h00-du-mercredi-23-septembre-2026-5845853
+CONTENU: Article de référence : "Le journal de 19h00 du mercredi 23 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 22:07:05
+TITRE: Attentats du 13-Novembre: face à la possible libération du "logisticien", la justice belge prendra le temps d'entendre les victimes
+LIEN: https://www.bfmtv.com/international/europe/belgique/attentats-du-13-novembre-face-a-la-possible-liberation-du-logisticien-la-justice-belge-prendra-le-temps-d-entendre-les-victimes_AD-202609230951.html
+CONTENU: Le tribunal belge va prendre le temps d'entendre les victimes des attentats du 13 novembre 2015 qui le souhaitent, après la demande de libération conditionnelle du "logisticien" belge Mohamed Bakkali qui fait polémique. Les victimes peuvent notamment être entendues à huis clos par le tribunal de l'application des peines.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 21:45:15
+TITRE: FORUM BFMTV - Dette: "Les Gafam captent énormément d'argent en France, mais paient tous leurs impôts en Irlande", note Marc, blogueur bons plans
+LIEN: https://www.bfmtv.com/economie/video-forum-bfmtv-dette-les-gafam-captent-enormement-d-argent-en-france-mais-paient-tous-leurs-impots-en-irlande-note-marc-blogueur-bons-plans_VN-202609230949.html
+CONTENU: BFMTV propose un nouveau numéro du FORUM BFMTV: "Vie chère, carburant: jusqu'où tiendront les Français?" présenté par Maxime Switek. La chaîne consacre une soirée spéciale pour permettre à des citoyens, des personnalités politiques et des spécialistes d'échanger en direct sur l'explosion exceptionnelle du prix du carburant impactant durement la vie quotidienne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 21:42:42
+TITRE: Tech &amp; Co, la quotidienne - Mercredi 23 septembre
+LIEN: https://www.bfmtv.com/economie/replay-emissions/tech-and-co/video-tech-co-la-quotidienne-mercredi-23-septembre_VN-202609230952.html
+CONTENU: Mercredi 23 septembre, François Sorel a reçu Thomas Serval, PDG de Baracoda, Fanny Bouton, directrice du Quantique chez OVHcloud, Frédéric Simottel, journaliste BFM Business, Jean-Baptiste Huet, journaliste BFM Business, Sylvain Trinel, journaliste BFM Tech, et Marc-Henri Frouin, CEO et fondateur de Niryo, dans l'émission Tech &amp; Co, la quotidienne sur BFM Business. Retrouvez l'émission du lundi au jeudi et réécoutez-la en podcast.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 21:09:31
+TITRE: Après une expression rappelant l'Allemagne nazie, Jean-Philippe Tanguy se défend
+LIEN: https://www.bfmtv.com/politique/front-national/video-apres-une-expression-rappelant-l-allemagne-nazie-jean-philippe-tanguy-se-defend_VN-202609230937.html
+CONTENU: Samedi 19 septembre, à Vierzon dans le Cher, le député du Rassemblement national tenait un discours dans lequel il a prononcé "Le travail rend libre". Une phrase dont la traduction allemande est inscrite sur l'entrée du camp de concentration et d'extermination d'Auschwitz.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 21:01:18
+TITRE: FORUM BFMTV - "Je trouve qu'on a de la chance d'avoir de grandes entreprises en France", explique Stéphanie Delestre, entrepreneure et investisseuse
+LIEN: https://www.bfmtv.com/economie/video-forum-bfmtv-je-trouve-qu-on-a-de-la-chance-d-avoir-de-grandes-entreprises-en-france-explique-stephanie-delestre-entrepreneure-et-investisseuse_VN-202609230934.html
+CONTENU: BFMTV propose un nouveau numéro du FORUM BFMTV: "Vie chère, carburant: jusqu'où tiendront les Français?" présenté par Maxime Switek. La chaîne consacre une soirée spéciale pour permettre à des citoyens, des personnalités politiques et des spécialistes d'échanger en direct sur l'explosion exceptionnelle du prix du carburant impactant durement la vie quotidienne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 20:59:45
+TITRE: Meublés touristiques: un "influenceur en immobilier" condamné à une amende de 440.000 euros
+LIEN: https://www.bfmtv.com/marseille/meubles-touristiques-un-influenceur-en-immobilier-condamne-a-une-amende-de-440-000-euros_AD-202609230933.html
+CONTENU: Ce mercredi 23 septembre, un "influenceur en immobilier" a été condamné à des amendes civiles de 440.000 euros pour avoir enfreint les réglementations sur les meublés touristiques à Marseille.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 20:54:55
+TITRE: Primaire socialiste: la Cour d'appel rejette à son tour la demande de réintégration de Philippe Brun
+LIEN: https://www.bfmtv.com/politique/elections/presidentielle/primaire-socialiste-la-cour-d-appel-rejette-a-son-tour-la-demande-de-reintegration-de-philippe-brun_AD-202609230931.html
+CONTENU: La Cour d'appel indique que "les nouvelles pièces versées aux débats" ont confirmé "l'existence d'un signalement" d'une plaignante auprès d'un membre de la direction nationale du PS.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 13:21:05
+TITRE: INFO BFM MARSEILLE PROVENCE. Un homme blessé par arme à feu à Marseille, son pronostic vital engagé
+LIEN: https://www.bfmtv.com/marseille/info-bfm-marseille-provence-un-homme-blesse-par-arme-a-feu-a-marseille-son-pronostic-vital-engage_AN-202609230566.html
+CONTENU: Ce mercredi 23 septembre, un homme a été blessé par arme à feu près du stade de la Blancarde dans le 12e arrondissement de Marseille.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 20:23:55
+TITRE: Visite du pape Léon XIV en France: le ministre de l'Intérieur Laurent Nuñez assure qu'il "n'y a pas de menace caractérisée"
+LIEN: https://www.bfmtv.com/police-justice/visite-du-pape-leon-xiv-en-france-le-ministre-de-l-interieur-laurent-nunez-assure-qu-il-n-y-a-pas-de-menace-caracterisee_AN-202609230927.html
+CONTENU: Invité du 20h de France 2, ce mercredi 23 septembre, le ministre de l'Intérieur Laurent Nuñez a détaillé le plan de sécurité autour de la visite du pape en France ce week-end.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 20:22:54
+TITRE: FORUM BFMTV - Carburants: "L'Union européenne est hors-sol", affirme Matthieu Valet, député européen du "Rassemblement national"
+LIEN: https://www.bfmtv.com/economie/video-forum-bfmtv-carburants-l-union-europeenne-est-hors-sol-affirme-matthieu-valet-depute-europeen-du-rassemblement-national_VN-202609230929.html
+CONTENU: BFMTV propose un nouveau numéro du FORUM BFMTV: "Vie chère, carburant: jusqu'où tiendront les Français?" présenté par Maxime Switek. La chaîne consacre une soirée spéciale pour permettre à des citoyens, des personnalités politiques et des spécialistes d'échanger en direct sur l'explosion exceptionnelle du prix du carburant impactant durement la vie quotidienne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 19:24:16
+TITRE: Législatives au Maroc: fin du vote sur fond de faible engouement chez les jeunes
+LIEN: https://www.rfi.fr/fr/afrique/20260923-l%C3%A9gislatives-au-maroc-fin-du-vote-sur-fond-de-faible-engouement-chez-les-jeunes
+CONTENU: Après une journée de scrutin, les bureaux de vote ont fermé au Maroc, où près de 16 millions d’électeurs étaient appelés aux urnes mercredi 23 septembre pour élire les 395 membres de la Chambre des représentants. Un an après un mouvement de contestation, le vote des jeunes est particulièrement scruté : leur participation pourrait être très faible.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 18:03:14
+TITRE: Inde: la Commission électorale accusée de supprimer des millions d’électeurs des listes pour favoriser le pouvoir
+LIEN: https://www.rfi.fr/fr/asie-pacifique/20260923-inde-la-commission-%C3%A9lectorale-accus%C3%A9e-de-supprimer-des-millions-d-%C3%A9lecteurs-des-listes-pour-favoriser-le-pouvoir
+CONTENU: En Inde, une enquête publiée dans la presse mercredi 23 septembre met gravement en cause les méthodes de la Commission électorale et l’accuse d’avoir mené des campagnes de suppression massive d’électeurs. Ces méthodes illégales font écho aux propos de l’opposition et des minorités, qui affirment depuis des années que des électeurs ont été privés de leur droit de vote. Le même jour, la Cour suprême émet des doutes si la même commission serait vraiment indépendante du pouvoir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 21:47:24
+TITRE: France: au procès Aramburu, 27 ans de prison requis contre Loïk Le Priol, 20 ans contre Romain Bouvier
+LIEN: https://www.rfi.fr/fr/france/20260923-france-au-proc%C3%A8s-aramburu-27-ans-de-prison-requis-contre-lo%C3%AFk-le-priol-20-ans-contre-romain-bouvier
+CONTENU: Au procès de l’assassinat en 2022 de l’ex-rugbyman argentin Federico Aramburu, l’heure était au réquisitoire ce mercredi 23 septembre. L’avocat général a requis 27 ans de prison contre Loïk Le Priol, poursuivi pour assassinat et auteur des tirs mortels, et 20 ans contre Romain Bouvier, poursuivi pour tentative d’assassinat après avoir tiré le premier sur le rugbyman, le blessant à deux reprises.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 18:38:06
+TITRE: Yémen: les Houthis déplorent plusieurs morts dans des frappes saoudiennes et menacent les intérêts américains
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260923-y%C3%A9men-les-houthis-d%C3%A9plorent-plusieurs-morts-dans-des-frappes-saoudiennes-et-menacent-les-int%C3%A9r%C3%AAts-am%C3%A9ricains
+CONTENU: Les frappes saoudiennes au Yémen ont fait mercredi 23 septembre au moins dix morts et 14 blessés ces dernières heures, selon la télévision des rebelles houthis. La chaîne Almasirah fait état de victimes civiles dans les provinces de Taëz et d’Al-Jawf. Parallèlement, les combats se poursuivent entre les Houthis et les forces gouvernementales yéménites, soutenues par Riyad.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 22:12:23
+TITRE: Après 18 mois de brouille, le Rwanda et la Belgique rétablissent leurs relations diplomatiques
+LIEN: https://www.rfi.fr/fr/afrique/20260923-apr%C3%A8s-18-mois-de-brouille-le-rwanda-et-la-belgique-r%C3%A9tablissent-leurs-relations-diplomatiques
+CONTENU: Dans leur déclaration, les deux pays affirment que cette décision est le résultat de plusieurs rencontres dont la première a été facilitée par le Qatar, à Doha, en juin 2025. La rupture entre Kigali et Bruxelles était intervenue trois mois plus tôt, en mars 2025, à l'initiative des autorités rwandaises qui reprochaient à la Belgique de prendre fait et cause contre le Rwanda dans le conflit qui déchire l'est de la République démocratique du Congo (RDC).
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 20:26:36
+TITRE: L’Algérie présente sa loi réinstaurant la peine de mort contre les incendies volontaires et les enlèvements d’enfants
+LIEN: https://www.rfi.fr/fr/afrique/20260923-l-alg%C3%A9rie-pr%C3%A9sente-sa-loi-r%C3%A9instaurant-la-peine-de-mort-contre-les-incendies-volontaires-et-les-enl%C3%A8vements-d-enfants
+CONTENU: Le projet de loi révisant le Code pénal algérien a été présenté lundi 21 septembre par le ministre de la Justice Lotfi Boudjemaâ devant la Commission des affaires juridiques et administratives, des libertés et des droits humains de l’Assemblée populaire nationale. Chargé par le président Abdelmadjid Tebboune de proposer rapidement des modifications, Lotfi Boudjemaâ a dévoilé les contours du projet, mais les associations s’insurgent contre le texte.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 22:20:08
+TITRE: Starch-based sensor changes color to indicate moisture in food packaging
+LIEN: https://phys.org/news/2026-09-starch-based-sensor-moisture-food.html
+CONTENU: Brazilian researchers have developed a biodegradable, starch-based sensor that changes color when moisture enters food packaging. With the addition of cobalt chloride, the sensor changes from blue to pink as moisture levels rise and back to blue as they fall. Consumers and manufacturers could use it to monitor the quality and crispness of foods such as cookies with the naked eye or a cellphone camera, without complex equipment.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 22:20:05
+TITRE: Gene editing produces soybean with more than 90% oleic acid
+LIEN: https://phys.org/news/2026-09-gene-soybean-oleic-acid.html
+CONTENU: Sejong University researchers have developed a high-quality soybean with improved oxidative stability, reduced saturated fat and increased seed fatty acid content. The
+research team led by Hyun Uk Kim, a professor in the Department of Bio-Industrial Resources Engineering at Sejong University, created the soybean line containing up to 90.2% oleic acid using CRISPR/Cas9 gene-editing technology. The study is published in the Plant Biotechnology Journal.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 22:00:10
+TITRE: Bee-made propolis boosts an antifungal drug against yeast pathogens in lab tests
+LIEN: https://phys.org/news/2026-09-bee-propolis-boosts-antifungal-drug.html
+CONTENU: Propolis may not only inhibit the growth of certain fungi but also affect the activity of drugs used to treat fungal infections. Researchers have investigated how an ethanolic extract of Polish propolis interacts with various antifungal agents.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 22:00:02
+TITRE: Banking patterns could help identify people experiencing financial abuse, UK study finds
+LIEN: https://phys.org/news/2026-09-banking-patterns-people-experiencing-financial.html
+CONTENU: Telltale signs of financial abuse, such as depleted savings, increasing debts and declining credit scores, can be identified in bank records, according to an analysis of U.K. banking data published in Nature. The findings reveal up to 373 indicators of financial behavior that could help pinpoint customers who may be experiencing economic abuse.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 21:40:07
+TITRE: Central surface density of dark matter agrees with the prediction of a new theory of gravity
+LIEN: https://phys.org/news/2026-09-central-surface-density-dark-theory.html
+CONTENU: A researcher from Sejong University has used a new theory of gravity proposed by Erik Verlinde to predict the observed central surface density of dark matter. The study was published in Physics of the Dark Universe on Sept. 20.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 21:40:05
+TITRE: Aiming at number 9: CASPAR targets fluorine in new science run
+LIEN: https://phys.org/news/2026-09-aiming-caspar-fluorine-science.html
+CONTENU: The Compact Accelerator System for Performing Astrophysical Research (CASPAR) recreates conditions inside stars to study how elements are made. The experiment recently restarted with a new target—the ninth element on the periodic table, fluorine.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 21:20:08
+TITRE: The Antarctic's only two flowering plants reveal opposing strategies for surviving long-term warming
+LIEN: https://phys.org/news/2026-09-antarctic-reveal-opposing-strategies-surviving.html
+CONTENU: A team of Chilean and Spanish researchers has published the results of one of the longest-running in-situ warming experiments in maritime Antarctica in the journal Physiologia Plantarum. The experiment exposed the Antarctic continent's only two native vascular plant species, Deschampsia antarctica (Antarctic hairgrass) and Colobanthus quitensis (Antarctic pearlwort), to passive warming chambers (Open Top Chambers, OTCs) for seven years.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 21:20:04
+TITRE: Graphene measurements reveal energy-loss and quantum-coherence exponents diverge under gate control
+LIEN: https://phys.org/news/2026-09-graphene-reveal-energy-loss-quantum.html
+CONTENU: Scientists have shown that the two exponents (inelastic scattering exponent and dephasing exponent) commonly used to describe electron scattering in graphene do not necessarily follow the same behavior. Using gated epitaxial graphene, a multi-institutional team of researchers independently extracted the two exponents through current-heating measurements and weak-localization analysis. The contrasting gate-voltage dependence provides evidence that energy relaxation and loss of quantum phase coherence can be governed by different microscopic processes.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 21:00:09
+TITRE: How ChatGPT served up false information before the 2024 election
+LIEN: https://phys.org/news/2026-09-chatgpt-false-election.html
+CONTENU: On Oct. 25, 2024, 10 days before the election that would return Republican Donald Trump to the White House and more than three months after Kamala Harris ascended to the top of the Democratic ticket, ChatGPT was still telling users that Joe Biden was running for a second term as president.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 21:00:05
+TITRE: Evolved enzymes build tuberculosis antibiotic ingredient in the desired form, potentially reducing waste
+LIEN: https://phys.org/news/2026-09-evolved-enzymes-tuberculosis-antibiotic-ingredient.html
+CONTENU: Tuberculosis, or TB, is a contagious bacterial infection that primarily affects the lungs. While curative treatments exist, more than 80% of cases occur in low- and middle-income nations, where drug-resistant strains are on the rise and the cost of medications is a burden. A new class of antibiotics has shown promise against multidrug- and extensively drug-resistant TB, but its manufacturing cost is a barrier to access in poorer countries that need the treatments most.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-23 17:00:14
+TITRE: L’offensive masculiniste à l’assaut des salles de classe
+LIEN: https://www.lemonde.fr/idees/article/2026/09/23/l-offensive-masculiniste-a-l-assaut-des-salles-de-classe_6780949_3232.html
+CONTENU: Dans « L’école, champ de bataille », le politiste québécois Francis Dupuis-Déri montre comment le milieu scolaire est un point névralgique de la « bataille culturelle » ultraconservatrice que mènent les masculinistes et les tenants de discours hostiles à la diversité.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-23 15:16:18
+TITRE: Freelances ou salariés : qui profite vraiment des gains de productivité de l’IA dans la tech ?
+LIEN: https://www.blogdumoderateur.com/freelances-salaries-qui-profite-gains-productivite-ia-tech/
+CONTENU: La moitié des 1 035 pros de la tech interrogés par Shakers déclarent produire au moins 26 % de plus grâce à l'IA. Plus de la moitié des salariés n'en voient pourtant pas la couleur, au contraire des freelances.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-09-23 17:36:35
 TITRE: EN DIRECT, guerre en Ukraine : la Russie ne fera « pas de trêve » dans la guerre en Ukraine, répète Sergueï Lavrov devant l’ONU
