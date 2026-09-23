@@ -1,5 +1,548 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-23 04:00:00
+TITRE: Pop Montréal, gardien de l’esprit montréalais, fête ses 25 ans
+LIEN: https://www.ledevoir.com/culture/musique/1011110/pop-montreal-gardien-esprit-montrealais-fete-25-ans
+CONTENU: Son directeur revient sur l’histoire du festival qui rassemble cette année près de 200 propositions musicales.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-23 14:13:00
+TITRE: Le gros délire queer de Jean-Michel Blais
+LIEN: https://www.ledevoir.com/culture/musique/1011248/gros-delire-queer-jean-michel-blais
+CONTENU: «Rock’n nonne», «Les mystérieuses cités d’or» et les chœurs chrétiens ont inspiré la composition de «mirador», son 4e album.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-23 13:29:00
+TITRE: La désinformation par l’IA prolifère à l’approche des élections de mi-mandat
+LIEN: https://www.ledevoir.com/monde/etats-unis/1011227/desinformation-ia-prolifere-approche-elections-mi-mandat
+CONTENU: Au Texas, notamment, le républicain Ken Paxton utilise la technologie pour attaquer son adversaire démocrate James Talarico.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-23 10:19:01
+TITRE: La femme trouvée morte au centre-ville de Montréal a  été assassinée, confirme le SPVM
+LIEN: https://www.ledevoir.com/actualites/societe/1011188/femme-trouvee-morte-centre-ville-montreal-ete-assassinee-confirme-spvm
+CONTENU: Il s’agit du 19e homicide à survenir sur son territoire depuis le début de l’année. Aucune arrestation n’a été effectuée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-23 09:28:27
+TITRE: L’IA pour la première fois en débat au Conseil de sécurité de l’ONU
+LIEN: https://www.lemonde.fr/international/article/2026/09/23/l-ia-pour-la-premiere-fois-en-debat-au-conseil-de-securite-de-l-onu_6780876_3210.html
+CONTENU: Les dirigeants d’OpenAI et d’Anthropic, ainsi que le Français Clément Delangue, cofondateur de Hugging Face, doivent s’exprimer, mercredi, à New York. Mardi, la France s’est tenue à l’écart d’une « déclaration » portée par 20 pays, réclamant des mesures contraignantes face à la course à l’intelligence artificielle.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-23 04:30:09
+TITRE: Primaire à gauche : la valse-hésitation d’Olivier Faure
+LIEN: https://www.lemonde.fr/politique/article/2026/09/23/primaire-a-gauche-la-valse-hesitation-d-olivier-faure_6780618_823448.html
+CONTENU: La candidature à la primaire de l’espace social-démocrate du premier secrétaire du PS n’avait rien d’une évidence. Pour se distinguer de son principal rival, Raphaël Glucksmann, ce fin tacticien multiplie les marqueurs à gauche. Aux côtés de ses quatre concurrents, il a rendez-vous mercredi soir avec un panel de Français sur LCI.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-23 10:00:03
+TITRE: Guerre en Ukraine : des deux côtés du front, l’essor des drones dopés à l’IA
+LIEN: https://www.lemonde.fr/international/article/2026/09/23/guerre-en-ukraine-des-deux-cotes-du-front-l-essor-des-drones-dopes-a-l-ia_6780882_3210.html
+CONTENU: L’armée ukrainienne effectue déjà quotidiennement des missions avec des aéronefs embarquant des modules d’intelligence artificielle pour reconnaître et atteindre leur cible. Côté russe, les développements sont massifs et rapides, permettant à des drones de moyenne portée d’effectuer des missions en totale autonomie.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-23 04:00:26
+TITRE: En Cisjordanie, le deuil sur soixante-neuf ans d’une famille juive, le risque de la peine de mort pour l’assaillant palestinien
+LIEN: https://www.lemonde.fr/international/article/2026/09/23/en-cisjordanie-apres-le-meurtre-d-un-colon-le-spectre-de-la-peine-de-mort-pour-l-assaillant-palestinien_6780579_3210.html
+CONTENU: En pleine campagne électorale, la droite israélienne s’est saisie de l’émotion provoquée par la mort d’un colon, tué soixante-neuf ans après son grand-père en Algérie, pour faire appliquer une loi contestée instaurant la peine capitale pour des meurtres « terroristes » commis par des Palestiniens.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-23 10:17:04
+TITRE: A Paris, un rempart gaulois découvert sur l’île de la Cité, une « avancée majeure » quant aux origines de la capitale
+LIEN: https://www.lemonde.fr/sciences/article/2026/09/23/a-paris-un-rempart-gaulois-decouvert-sur-l-ile-de-la-cite-une-avancee-majeure-quant-aux-origines-de-la-capitale_6780889_1650684.html
+CONTENU: Ce mur de pierre et de bois d’une vingtaine de mètres a été mis au jour sous l’Hôtel-Dieu, sur l’île de la Cité, a annoncé mercredi le ministère de la culture. Il pourrait être un fragment de rempart de la Lutèce de la tribu gauloise des Parisii, auquel Jules César faisait référence dans son récit de la conquête de la ville, en 52 avant notre ère.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-23 09:00:27
+TITRE: « Les Roches rouges », de Bruno Dumont : un western dont les enfants sont les héros
+LIEN: https://www.lemonde.fr/culture/article/2026/09/23/les-roches-rouges-de-bruno-dumont-un-western-dont-les-enfants-sont-les-heros_6780873_3246.html
+CONTENU: Le cinéaste met en scène, au cœur de l’été, deux bandes de gamins intrépides livrés à eux-mêmes. Le film loue, avec tendresse, leur vivacité et leur audace.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-23 04:00:38
+TITRE: L’inquiétude sur le mal-être des agriculteurs grandit après une année catastrophique : « Les gens sont à bout »
+LIEN: https://www.lemonde.fr/economie/article/2026/09/23/l-inquietude-sur-le-mal-etre-des-agriculteurs-grandit-apres-une-annee-catastrophique-les-gens-sont-a-bout_6780584_3234.html
+CONTENU: L’association Solidarité paysans, qui aide des exploitants en détresse depuis près de trente-cinq ans, publie, mercredi, son premier rapport annuel sur les difficultés du secteur, à partir de la cohorte de plus de 3 600 éleveurs ou cultivateurs qu’elle a accompagnés en 2025.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-23 07:51:28
+TITRE: Carburants : l’aide aux grands rouleurs est « une usine à gaz » qui ne « répond pas au problème », dénonce Sophie Binet, la secrétaire générale de la CGT
+LIEN: https://www.lemonde.fr/economie/article/2026/09/23/carburants-l-aide-aux-grands-rouleurs-est-une-usine-a-gaz-qui-ne-repond-pas-au-probleme-denonce-sophie-binet-la-secretaire-generale-de-la-cgt_6780797_3234.html
+CONTENU: L’exécutif a annoncé mardi la prolongation des aides jusqu’à la fin de 2026 et l’élargissement de l’aide aux grands rouleurs, qui doit bénéficier à potentiellement 5,5 millions de personnes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-23 09:52:07
+TITRE: L’accès à la Maison Blanche est « un privilège, pas un droit », juge l’administration Trump après l’exclusion de journalistes
+LIEN: https://www.lemonde.fr/international/article/2026/09/23/l-acces-a-la-maison-blanche-est-un-privilege-pas-un-droit-juge-l-administration-trump-apres-l-exclusion-de-journalistes_6780881_3210.html
+CONTENU: Le ministère de la justice estime que le gouvernement peut contrôler l’accès des journalistes à des zones présidentielles restreintes, y compris pour des raisons liées à des désaccords sur leur couverture, après l’exclusion de CNN, MS NOW et « Politico ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-09-23 04:00:44
+TITRE: E. Jean Carroll, la coriace qui a réussi à mettre Donald Trump au tapis
+LIEN: https://www.lemonde.fr/m-le-mag/article/2026/09/23/e-jean-carroll-la-coriace-qui-a-reussi-a-mettre-donald-trump-au-tapis_6780582_4500055.html
+CONTENU: L’écrivaine et journaliste a intenté deux procès au civil contre le président américain pour agression sexuelle et diffamation. Dans « Not my type », qui vient de paraître, elle raconte les coulisses de ce combat hors norme dont elle est sortie victorieuse.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 16:00:00
+TITRE: Le journal de 18h00 du mercredi 23 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-18h00/le-journal-de-18h00-du-mercredi-23-septembre-2026-7524617
+CONTENU: Article de référence : "Le journal de 18h00 du mercredi 23 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 15:46:00
+TITRE: La question des informés du mercredi 23 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/la-question-des-informes/la-question-des-informes-du-mercredi-23-septembre-2026-4483123
+CONTENU: Article de référence : "La question des informés du mercredi 23 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 15:41:00
+TITRE: À Kiev, l'école a lieu dans les abris souterrains, "une véritable torture pour les enfants"
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/a-kiev-l-ecole-a-lieu-dans-les-abris-souterrains-une-veritable-torture-pour-les-enfants-7797370
+CONTENU: Comment maintenir un semblant de normalité à l’école alors que les attaques aériennes se multiplient à Kiev ? Jour et nuit, la Russie frappe la capitale ukrainienne, avec ses drones à réaction, plus rapides et plus difficiles à intercepter.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 15:00:00
+TITRE: L'Iran n'a "jamais été un agresseur" et "n'a jamais démarré de guerre", a déclaré mercredi le président iranien
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-17h00/l-iran-n-a-jamais-ete-un-agresseur-et-n-a-jamais-demarre-de-guerre-a-declare-mercredi-le-president-iranien-1047334
+CONTENU: À l’ONU, le président iranien Massoud Pezeshkian affirme que son pays "n’a jamais été un agresseur" et "n’a jamais démarré de guerre" face aux Etats-Unis et à Israël. En France, Jean-Noël Barrot appelle au maintien des élections législatives palestiniennes, le 28 novembre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 15:00:00
+TITRE: Le 17/19h30 du mercredi 23 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-17-19h30/le-17-19h30-du-mercredi-23-septembre-2026-2630137
+CONTENU: Article de référence : "Le 17/19h30 du mercredi 23 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 13:00:00
+TITRE: Le 15/17 du mercredi 23 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-15-17/le-15-17-du-mercredi-23-septembre-2026-8372940
+CONTENU: Les invités de 15h à 17h, sur France Info radio
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 12:00:00
+TITRE: Roman de Thélyson Orélien : le président du Goncourt appelle à la prudence avant d’avoir des "preuves irréfutables"
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/roman-de-thelyson-orelien-le-president-du-goncourt-appelle-a-la-prudence-avant-d-avoir-des-preuves-irrefutables-4927561
+CONTENU: L'écrivain Thélyson Orélien, l'une des stars de la rentrée littéraire française, est la cible d'attaques sur X l'accusant d'avoir eu recours à l'intelligence artificielle pour écrire son roman "C'était ça ou mourir", ce qu'il a fermement démenti.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 11:00:00
+TITRE: Le journal de 13h00 du mercredi 23 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-13h00/le-journal-de-13h00-du-mercredi-23-septembre-2026-2816540
+CONTENU: Article de référence : "Le journal de 13h00 du mercredi 23 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 10:22:00
+TITRE: Hausse des prix des carburants : "Le covoiturage explose depuis début mars", constate un spécialiste des transports
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/hausse-des-prix-des-carburants-le-covoiturage-explose-depuis-debut-mars-constate-un-specialiste-des-transports-7328360
+CONTENU: Les Français cherchent des parades pour limiter l'impact de la hausse des prix des carburants sur leur budget. Certains choisissent  de s'orienter vers d'autres modes de transport, comme l'explique, Arnaud Aymé, spécialiste des transports au cabinet de conseil Sia Partners.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-23 10:00:00
+TITRE: Victime de violences sexuelles à Notre-Dame de Bétharram, un homme demande à être débaptisé
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/victime-de-violences-sexuelles-a-notre-dame-de-betharram-un-homme-demande-a-etre-debaptise-2140818
+CONTENU: Victime de violences sexuelles et de sévices au sein de l’institution béarnaise, Brice Ducos demande à être "effacé de tout" et débaptisé dans une lettre à l'Église catholique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 15:28:48
+TITRE: Sénatoriales: Gérard Larcher en campagne pour l'union de la droite et du centre dans les départements concernés
+LIEN: https://www.bfmtv.com/politique/parlement/senatoriales-gerard-larcher-en-campagne-pour-l-union-de-la-droite-et-du-centre-dans-les-departements-concernes_AD-202609230663.html
+CONTENU: Le président du Sénat, Gérard Larcher, multiplie ses déplacements dans les départements concernés par les élections sénatoriales de ce dimanche 27 septembre pour faire campagne en faveur de l'union de la droite et du centre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 15:26:29
+TITRE: Pape Léon XIV en France: dans le Val d'Oise, plusieurs "pape-zones" vont retransmettre la visite de l’évêque
+LIEN: https://www.bfmtv.com/societe/religions/pape-leon-xiv-en-france-dans-le-val-d-oise-plusieurs-pape-zones-vont-retransmettre-la-visite-de-l-eveque_AN-202609230661.html
+CONTENU: Alors que le pape Léon XIV prépare sa venue à Paris vendredi 25 et samedi 26 septembre, plusieurs paroisses du Val-d’Oise ont annoncé ouvrir leurs portes aux fidèles souhaitant visionner l’événement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-22 16:06:20
+TITRE: Le corps d'une femme "dissimulé sous des sacs plastiques" découvert lors d'un contrôle douanier sur l'A8, une enquête ouverte pour "meurtre sur ex-conjoint"
+LIEN: https://www.bfmtv.com/cote-d-azur/le-corps-d-une-femme-dissimule-sous-des-sacs-plastiques-decouvert-lors-d-un-controle-douanier-une-enquete-ouverte-pour-meurtre-sur-ex-conjoint_AN-202609220700.html
+CONTENU: Ce lundi 21 septembre, le corps d'une jeune femme a été découvert "sous des sacs plastiques" lors d'un contrôle routier près de Brignolles dans le Var. Les proches de la victime lancent un appel aux dons pour rapatrier le corps au Brésil.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 15:24:06
+TITRE: "Tu manges deux bouchées, tu te bouffes les doigts": le tout petit sandwich à 1,95 euro de Marie Blachère fait rire les réseaux sociaux, le groupe révèle surtout que ses clients dépensent moins
+LIEN: https://www.bfmtv.com/economie/consommation/tu-manges-deux-bouchees-tu-te-bouffes-les-doigts-le-tout-petit-sandwich-a-1-95-euro-de-marie-blachere-fait-rire-les-reseaux-sociaux-le-groupe-revele-surtout-que-ses-clients-depensent-moins_AV-202609230660.html
+CONTENU: Le géant de la boulangerie justifie ce produit par les arbitrages des consommateurs et la préservation du pouvoir d'achat. Sur les réseaux sociaux, les critiques fusent.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 15:23:13
+TITRE: Taylor Swift annonce une réédition de son album "The Life of a Showgirl" avec 4 titres inédits
+LIEN: https://www.bfmtv.com/culture/musique/taylor-swift-annonce-une-reedition-de-son-album-the-life-of-a-showgirl-avec-4-titres-inedits_AN-202609230659.html
+CONTENU: Au lendemain de l'annonce de la sortie d'un nouveau single "Patient Zero", la pop star en remet une couche, révélant qu'une réédition de "The Life of Showgirl", avec quatre nouveaux titres, sortira dans les bacs ce vendredi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 15:19:22
+TITRE: SONDAGE BFMTV. Aides carburant: 70% des Français jugent les annonces du gouvernement insuffisantes
+LIEN: https://www.bfmtv.com/economie/video-sondage-bfmtv-aides-carburant-70-des-francais-jugent-les-annonces-du-gouvernement-insuffisantes_VN-202609230658.html
+CONTENU: Le gouvernement a annoncé mardi 22 septembre la prolongation et l'élargissement de certaines aides pour faire face à la flambée des prix du carburant. Des annonces qui ont convaincu moins de 30% des Français, selon un sondage Elabe réalisé pour BFMTV.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 15:16:39
+TITRE: Donald Trump veut interdire les exportations de Diesel US ⛽
+LIEN: https://www.bfmtv.com/economie/video-donald-trump-veut-interdire-les-exportations-de-diesel-us_VN-202609230652.html
+CONTENU: Donald Trump veut interdire les exportations de Diesel US ⛽
+
+
+"Le problème ce n'est pas simplement le pétrole, ça va être le raffinage et les distillats".
+
+
+🎙️ @GuillSommerer
+💬 @ldauphas
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 15:15:50
+TITRE: Corps retrouvé dans une voiture sur l'A8 à Brignoles : le suspect conteste, le parquet requiert la détention provisoire
+LIEN: https://www.bfmtv.com/cote-d-azur/corps-retrouve-dans-une-voiture-sur-l-a8-a-brignoles-le-suspect-conteste-le-parquet-requiert-la-detention-provisoire_AV-202609230651.html
+CONTENU: Ce mercredi 23 septembre, le parquet de Nice requiert le placement en détention provisoire de l'homme suspecté d'avoir tué une femme retrouvée dans une voiture lors d'un contrôle douanier sur l'A8.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 15:14:22
+TITRE: Xenia Fedorova: Jean-Noël Barrot "se félicite" des sanctions européennes prises à son encontre
+LIEN: https://www.bfmtv.com/politique/gouvernement/xenia-fedorova-jean-noel-barrot-se-felicite-des-sanctions-europeennes-prises-a-son-encontre_AV-202609230650.html
+CONTENU: Le ministre des Affaires étrangères s'est "félicité" ce mercredi 23 septembre de la prise de sanctions par l'Union européenne à l'encontre de Xenia Fedorova, chronique pro-Kremlin visée par un arrêté d'expulsion en France.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-23 15:07:01
+TITRE: "Cessez-le-feu énergétique" entre l'Ukraine et la Russie: "Cela ne résout pas la guerre", déclare Marco Rubio
+LIEN: https://www.bfmtv.com/international/amerique-nord/etats-unis/video-cessez-le-feu-energetique-entre-l-ukraine-et-la-russie-cela-ne-resout-pas-la-guerre-declare-marco-rubio_VN-202609230649.html
+CONTENU: Marco Rubio, Secrétaire d'État aux États-Unis répond aux questions des journalistes sur un potentiel "cessez-le-feu énergétique" entre l'Ukraine et la Russie, ce mercredi 23 septembre, à New York.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 07:01:44
+TITRE: «Ils m’ont tout pris»: enquête sur les expulsions de masse de l’administration Trump vers le Mexique
+LIEN: https://www.rfi.fr/fr/am%C3%A9riques/20260923-ils-m-ont-tout-pris-enqu%C3%AAte-sur-les-expulsions-de-masse-de-l-administration-trump-vers-le-mexique
+CONTENU: Une enquête menée par Forbidden Stories et 26 médias partenaires, dont RFI, lève le voile sur les expulsions de masse orchestrées par l’administration Trump depuis son retour au pouvoir en janvier 2025. Intitulée « The Deportation Project », cette investigation met en lumière le sort des migrants expulsés vers des pays tiers, avec un focus particulier sur le Mexique, principale destination de ces renvois.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 12:10:54
+TITRE: DIRECT - Assemblée générale de l’ONU: «Nous avons été victimes du terrorisme», affirme le président iranien
+LIEN: https://www.rfi.fr/fr/monde/20260923-direct-assembl%C3%A9e-g%C3%A9n%C3%A9rale-de-l-onu-iran-guerre-en-ukraine-et-ia-au-programme-de-la-2e-journ%C3%A9e
+CONTENU: La 81e Assemblée générale des Nations unies se tient jusqu’au 28 septembre à New York. Après les discours de Donald Trump et celui d’Emmanuel Macron mardi, l'Iran occupe ce mercredi 23 septembre le centre des préoccupations. À la tribune, son président, Massoud Pezeshkian, a estimé que son pays avait été « victime du terrorisme » avec l'attaque américaine et israélienne. Parmi les premiers dirigeants à prendre la parole, le président syrien Ahmed al-Charaa s'est attaqué à Israël sans le nommer, en affirmant que « le Golan restera un territoire syrien ». L'État hébreu occupe ce territoire depuis 1967.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 15:25:49
+TITRE: Guerre en Ukraine: Zelensky se dit «prêt» à un «moratoire» sur les sites énergétiques, le Kremlin reste muet
+LIEN: https://www.rfi.fr/fr/europe/20260923-guerre-en-ukraine-volodymyr-zelensky-se-dit-pr%C3%AAt-%C3%A0-un-moratoire-sur-les-frappes-contre-les-sites-%C3%A9nerg%C3%A9tiques
+CONTENU: À la tribune de l’Assemblée générale de l’ONU, le président français Emmanuel Macron a plaidé mardi 22 septembre pour un « double moratoire » sur les frappes contre les sites énergétiques en Russie et en Ukraine. Volodymyr Zelensky a ensuite fait savoir à Donald Trump qu’il était « prêt » à cesser les frappes sur les installations énergétiques russes, à condition que Moscou fasse de même. Mais selon des experts, il y a peu de chances que le Kremlin suive.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 12:35:51
+TITRE: Israël en colère après le discours d'Emmanuel Macron à l'ONU sur la Cisjordanie
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260923-isra%C3%ABl-en-col%C3%A8re-apr%C3%A8s-le-discours-d-emmanuel-macron-%C3%A0-l-onu-sur-la-cisjordanie
+CONTENU: En affirmant lors de son discours à l’Assemblée générale de l’ONU que le Hamas n'a jamais été actif en Cisjordanie, où siège l'Autorité palestinienne, Emmanuel Macron s'est attiré une riposte cinglante de la classe politique israélienne. Les propos du chef de l'État français ne passent pas.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 15:00:08
+TITRE: Assemblée générale de l'ONU: Washington a refusé son visa au dirigeant soudanais Abdel Fattah al-Burhan
+LIEN: https://www.rfi.fr/fr/afrique/20260923-aux-%C3%A9tats-unis-washington-refuse-son-visa-au-dirigeant-soudanais-abdel-fattah-al-burhan
+CONTENU: Alors que le leader soudanais devrait s’exprimer jeudi 24 septembre à la tribune de l'Assemblée générale de l'ONU, le général Abdel Fattah al-Burhan n’a toujours pas obtenu de visa pour les États-Unis. Selon plusieurs sources, Washington chercherait à imposer des conditions à la venue du chef de l'armée soudanaise et leader du conseil souverain. Mais cette décision irait à l'encontre des textes entre le pays et l'ONU.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 15:11:56
+TITRE: La Bolivie renoue avec le FMI: «C'était le programme de Rodrigo Paz»
+LIEN: https://www.rfi.fr/fr/am%C3%A9riques/20260923-bolivie-pablo-barnier-khawam-rodrigo-paz-fmi-pereira-evo-morales
+CONTENU: Le souhait du président bolivien, élu l'an passé, tend à se concrétiser : son pays, qui fait face à une crise économique grave, vient de suivre une recommandation du Fonds monétaire international (FMI). Entretien avec Pablo Barnier-Khawam, chercheur associé au Centre de recherche et de documentation sur les Amériques (Creda).
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 06:51:25
+TITRE: Migrants expulsés par les États-Unis: en Afrique, des vies en suspens et des droits bafoués
+LIEN: https://www.rfi.fr/fr/afrique/20260923-migrants-expuls%C3%A9s-par-les-%C3%A9tats-unis-en-afrique-des-vies-en-suspens-et-des-droits-bafou%C3%A9s
+CONTENU: Dernier volet de notre enquête menée avec le consortium Forbidden Stories. Après avoir révélé les dessous des accords passés par les États-Unis avec les pays qui acceptent ses expulsés, nous nous intéressons au coût humain de cette politique. Que deviennent ceux qui sont envoyés vers des pays qu’ils ne connaissent pas ? Sur le continent africain, certains sont détenus, d’autres vivent cachés ou sans statut. Et leurs avocats se retrouvent face à des batailles inédites.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 10:51:27
+TITRE: Un dernier sommet sur le climat pour Antonio Guterres, ardent défenseur de l’environnement
+LIEN: https://www.rfi.fr/fr/environnement/20260923-un-dernier-sommet-sur-le-climat-pour-antonio-guterres-ardent-d%C3%A9fenseur-de-l-environnement
+CONTENU: En pleine Assemblée générale de l'ONU à New York, où plus de 130 chefs d’État et de gouvernement se succèdent à la tribune, le secrétaire général de l'organisation, Antonio Guterres, organise, ce mercredi 23 septembre 2026, un sommet sur le climat. Objectif : relancer l'action climatique dans un monde en crise.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-23 10:39:08
+TITRE: Cisjordanie occupée: dans la vallée du Jourdain, l’indifférence des colons face aux sanctions internationales
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260923-cisjordanie-occup%C3%A9e-dans-la-vall%C3%A9e-du-jourdain-l-indiff%C3%A9rence-des-colons-face-aux-sanctions-internationales
+CONTENU: Aux Pays-Bas, l’interdiction d’importer, d’acheter et de vendre des produits issus des colonies israéliennes est entrée en vigueur ce mardi 22 septembre 2026. La mesure intervient deux semaines après l’annonce, par douze pays, dont la France, de restreindre le commerce avec les colonies, jugées illégales au regard du droit international. Sur place, dans la vallée du Jourdain, l’un des principaux territoires agricoles des colonies, les producteurs israéliens assurent qu’ils n’en ont que faire et qu’ils sauront s’adapter pour trouver de nouveaux marchés.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 15:40:11
+TITRE: Report calls for government to introduce a charge on disposable cups
+LIEN: https://phys.org/news/2026-09-disposable-cups.html
+CONTENU: Around 2.5 billion single-use cups are used in the U.K. every year, yet fewer than 1% are recycled. They contribute to litter, contaminate recycling streams and increase waste management and street cleaning costs for local authorities and taxpayers.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 15:40:08
+TITRE: Why a healthy seafloor matters for the Earth system
+LIEN: https://phys.org/news/2026-09-healthy-seafloor-earth.html
+CONTENU: The seafloor is more than just the ground beneath the sea. Two-thirds of Earth's surface is covered by oceans, which have an average depth of almost 4 kilometers (2.5 miles). For a long time, the seafloor's remoteness protected it from widespread human disturbance. But that is changing: Bottom trawling now reaches depths of around 4,000 meters (13,100 feet) and already disturbs up to 2% of the global seafloor each year.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 15:20:13
+TITRE: Hunting broadly not responsible for birds declining across Europe, study finds
+LIEN: https://phys.org/news/2026-09-broadly-responsible-birds-declining-europe.html
+CONTENU: Hunting is not the main reason bird populations are declining across Europe, according to new research from University College Dublin in collaboration with the Spanish research institute Instituto de Investigación en Recursos Cinegéticos (IREC).
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 15:20:10
+TITRE: Hairy feet, red eyes: Salish Sea reveals two sea spider species new to science
+LIEN: https://phys.org/news/2026-09-hairy-feet-red-eyes-salish.html
+CONTENU: If you're swimming in the Salish Sea late at night and feel a skittering along your calves, tiny hairy feet tip-tapping their way higher and higher toward your face, don't worry—it's probably just the stuff of nightmares: hairy-legged, red-eyed sea spiders newly discovered by UBC researchers.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 15:00:38
+TITRE: Governments across Australia know how to stop violence against Indigenous women, they just don't do it
+LIEN: https://phys.org/news/2026-09-australia-violence-indigenous-women-dont.html
+CONTENU: Indigenous women and children experience disproportionate levels of family violence. Aboriginal and Torres Strait Islander women are killed at rates up to six times higher than non-Indigenous women, overwhelmingly by intimate partners (76%) or family members.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 15:00:30
+TITRE: Adding limestone to Mississippi River Basin farmlands acts as a major carbon sink, study finds
+LIEN: https://phys.org/news/2026-09-adding-limestone-mississippi-river-basin.html
+CONTENU: In a discovery as broad and far-reaching as the Big Muddy itself, a new Yale–led study says farmers in the Mississippi River Basin are storing more carbon dioxide (CO2) in the soil than they emit when they add limestone to their fields, an agricultural practice known as "liming."
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 15:00:18
+TITRE: How evolution shaped the human skeleton: Clues from cartilage
+LIEN: https://phys.org/news/2026-09-evolution-human-skeleton-clues-cartilage.html
+CONTENU: Human and chimpanzee genomes are more than 98% identical, and the genes themselves barely differ. The changes that make us human are thought to hide instead in the DNA that controls when and where genes switch on.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 15:00:05
+TITRE: Bat genomes and fossils point to a European origin 65 million years ago
+LIEN: https://phys.org/news/2026-09-genomes-fossils-european-million-years.html
+CONTENU: New research from the University of St Andrews has created the largest combined study of bat genomes and fossils ever undertaken, finding that bats most likely originated in Europe around 65 million years ago before spreading across the world.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 15:00:02
+TITRE: How social brains allow animal groups to escape danger
+LIEN: https://phys.org/news/2026-09-social-brains-animal-groups-danger.html
+CONTENU: Social behavior is found across the tree of life, with animals of all types benefiting from living in a group environment. Large bird flocks and fish schools coordinate their actions by sharing information among individuals. This is especially important when groups are attacked by predators, since information about a threat must promptly pass between members of the group to enable effective escape. Yet, how this information is passed between individuals has remained a mystery.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-09-23 14:40:16
+TITRE: Earth may have gained optimal conditions for life's chemistry 4.33 billion years ago
+LIEN: https://phys.org/news/2026-09-earth-gained-optimal-conditions-life.html
+CONTENU: Conditions on early Earth may have become stable enough to sustain the chemistry associated with the origins of life around 4.33 billion years ago, according to new research co-led by Planetary Science Institute senior scientist Oleg Abramov.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-23 15:00:18
+TITRE: Présidentielle 2027 : « La primaire se voit prêter à nouveau des vertus magiques, après avoir été écartée »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/23/presidentielle-2027-la-primaire-se-voit-preter-a-nouveau-des-vertus-magiques-apres-avoir-ete-ecartee_6780925_3232.html
+CONTENU: Dans un système partisan éclaté, ce mode de désignation ne sert plus à départager les candidats de partis forts, mais de forcer l’union pour passer le cap du second tour, analysent les politistes Rémi Lefebvre et Eric Treille dans une tribune au « Monde ».
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-23 14:34:37
+TITRE: À l’ONU, Trump s’adresse à ses électeurs
+LIEN: https://www.lemonde.fr/liberons-les-crayons/article/2026/09/23/a-l-onu-trump-s-adresse-a-ses-electeurs_6780921_6598835.html
+CONTENU: Mardi 22 septembre, au siège des Nations unies à New York, Donald Trump a profité de l’Assemblée générale de l’ONU pour défendre son bilan géopolitique. Vu par Fares Garabet (Syrie).
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-23 14:32:34
+TITRE: Temps scolaire
+LIEN: https://www.lemonde.fr/une-annee-au-lycee/article/2026/09/23/temps-scolaire_6780920_6567162.html
+CONTENU: Article de référence : "Temps scolaire"
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-23 14:30:13
+TITRE: Vu par… Plop &amp; KanKr
+LIEN: https://www.lemonde.fr/idees/article/2026/09/23/vu-par-plop-kankr_6780919_3232.html
+CONTENU: Le dessin paru en une du « Monde » le 23 septembre est signé par le dessinateur français, membre de l’association Cartooning for Peace.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-23 13:00:15
+TITRE: Visite du pape en France : « Léon XIV propose de redonner aux racines chrétiennes leur pouvoir unificateur et leur fécondité en Europe »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/23/visite-du-pape-en-france-leon-xiv-propose-de-redonner-aux-racines-chretiennes-leur-pouvoir-unificateur-et-leur-fecondite-en-europe_6780905_3232.html
+CONTENU: De passage en France, le souverain pontife devrait adresser un nouveau message à l’Europe, lundi 28 septembre, à Metz, alors que l’intrication religieuse et politique du continent s’est transformée, observe Blandine Chelini-Pont, professeure d’histoire contemporaine, dans une tribune au « Monde ».
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-23 12:00:07
+TITRE: « Après l’échec de Trump face à l’Iran, l’offensive des houthistes constitue un coup supplémentaire porté à un fragile château de cartes »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/23/apres-l-echec-de-trump-face-a-l-iran-l-offensive-des-houthistes-constitue-un-coup-supplementaire-porte-a-un-fragile-chateau-de-cartes_6780896_3232.html
+CONTENU: Les rebelles du Yémen sont parvenus à éloigner les Etats-Unis de son principal allié régional, l’Arabie saoudite, relève dans sa chronique Gilles Paris, éditorialiste au « Monde ».
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-23 13:45:10
+TITRE: Jev, un nouveau modèle d’IA conçu pour prendre des décisions rapides et structurées
+LIEN: https://www.blogdumoderateur.com/jev-modele-ia/
+CONTENU: Développé par une startup fondée par un ancien chercheur d'OpenAI, Jev est le premier représentant d'une nouvelle catégorie de modèles d'IA qui ne génèrent pas de texte, mais des décisions structurées assorties de probabilités.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-23 13:30:30
+TITRE: 32 modèles en 9 mois : qui veut vraiment ralentir l’IA ?
+LIEN: https://www.blogdumoderateur.com/32-modeles-9-mois-qui-veut-vraiment-ralentir-ia/
+CONTENU: Depuis l'été, les dirigeants d'Anthropic, d'OpenAI et de Google DeepMind plaident pour temporiser le développement de l'IA. Notre décompte raconte une autre histoire. Avec 32 annonces de modèles depuis janvier, 2026 a déjà dépassé toute l'année 2025.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-23 12:00:07
+TITRE: Avec son Agentic Marketing Platform, Ibexa veut faire du marketeur un chef d’orchestre d’agents IA
+LIEN: https://www.blogdumoderateur.com/agentic-marketing-platform-ibexa-marketeur-chef-orchestre-agents-ia/
+CONTENU: L'éditeur européen pose une couche d'agents sur les six produits de sa gamme martech, dont Ibexa, qui regroupe les six solutions réunies sous sa marque en début d'année. Chaque équipe y branche le modèle de son choix.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-23 09:11:47
+TITRE: Claude Opus 5.5 : Anthropic promet le niveau de Fable 5.1 pour 40 % moins cher
+LIEN: https://www.blogdumoderateur.com/claude-opus-5-5-anthropic/
+CONTENU: Anthropic dévoile Claude Opus 5.5, premier modèle de la famille 5.5. La firme revendique le niveau de Fable 5.1 sur la plupart des tâches, pour un coût d'usage inférieur de 40 % à la précédente version.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-23 09:07:54
+TITRE: OpenAI lance GPT-6 Sol et Luna, avec des tarifs API divisés par deux
+LIEN: https://www.blogdumoderateur.com/openai-lance-gpt-6-sol-luna-tarifs-api-divises-deux/
+CONTENU: Trois semaines après Astra, OpenAI élargit sa gamme GPT-6 avec deux modèles plus légers. Leur prix dans l'API est divisé par deux par rapport aux tarifs promotionnels de GPT-5.6.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-23 07:17:08
+TITRE: Alaio Vibecode : Bitrix24 ouvre la création d’applications par IA à tous les métiers
+LIEN: https://www.blogdumoderateur.com/alaio-vibecode-bitrix24-creation-applications-ia/
+CONTENU: Bitrix24 ouvre sa plateforme de vibe coding en entreprise. Les applications générées par l’IA sont hébergées sur des serveurs non exposés à Internet et publiées dans un catalogue interne, avec une gestion centralisée des accès.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-23 06:00:51
+TITRE: Reconversion : vos compétences correspondent-elles à un métier du digital ?
+LIEN: https://www.blogdumoderateur.com/reconversion-competences-correspondent-metier-digital/
+CONTENU: Sens de l'organisation, goût pour l'analyse, aisance relationnelle... De nombreuses compétences développées dans d'autres secteurs sont transférables vers les métiers du numérique. Saurez-vous deviner à quels postes elles correspondent ? À vous de jouer.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-23 05:00:46
+TITRE: Comment les data centers se sont invités dans la vie politique américaine
+LIEN: https://www.blogdumoderateur.com/data-centers-vie-politique-americaine/
+CONTENU: Sept Américains sur dix se disent opposés à l'implantation d'un data center près de chez eux. Depuis janvier, plus de 45 millions de dollars de spots de campagne mentionnent ces infrastructures, dans les deux camps.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-09-23 10:42:25
 TITRE: Un entrepreneur français accuse l'armée israélienne de crime de guerre après l'arrachage d'oliviers centenaires appartenant à sa famille au Liban
