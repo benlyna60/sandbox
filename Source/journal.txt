@@ -1,5 +1,309 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-24 13:21:19
+TITRE: Les Canadiens sont favorables à ce qu’Ottawa devienne «membre associé» de l’UE
+LIEN: https://www.ledevoir.com/politique/canada/1011563/canadiens-sont-favorables-ce-ottawa-devienne-membre-associe-ue
+CONTENU: Ils voient d’un bon œil la perspective que les firmes canadiennes aient un meilleur accès aux marchés européens.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-24 10:28:15
+TITRE: Carney affirme avoir étudié le risque d’une intervention militaire américaine
+LIEN: https://www.ledevoir.com/politique/canada/1011527/carney-affirme-avoir-etudie-risque-intervention-militaire-americaine
+CONTENU: «Il serait irresponsable de ne pas s’y préparer», a expliqué le premier ministre canadien au «New York Times».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-24 20:47:25
+TITRE: Une chatte parmi les travailleurs temporaires de l’Estrie
+LIEN: https://www.ledevoir.com/politique/quebec/1011779/chatte-parmi-travailleurs-temporaires-estrie
+CONTENU: Charles Milliard a visité jeudi les Serres St-Élie, à Sherbrooke.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-24 18:29:00
+TITRE: Thélyson Orélien est exclu du Salon du livre de l’Estrie, Boréal suspend la promotion de son livre
+LIEN: https://www.ledevoir.com/lire/1011713/thelyson-orelien-est-exclu-salon-livre-estrie
+CONTENU: L’auteur est accusé de plagiat et d’avoir écrit son livre «C’était ça ou mourir» avec l’IA.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-24 20:15:00
+TITRE: Des signes avant-coureurs ignorés avant des meurtres d’enfants au Québec, dénonce une étude
+LIEN: https://www.ledevoir.com/politique/canada/1011755/signes-avant-coureurs-ignores-avant-meurtres-enfants-quebec-denonce-etude
+CONTENU: Les organismes de protection n’ont pas interprété adéquatement les signes de danger, souligne-t-elle.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-09-24 22:12:11
+TITRE: Les chefs s’attaquent sur des propos tenus la veille lors du débat
+LIEN: https://www.ledevoir.com/politique/quebec/1011845/chefs-attaquent-propos-tenus-veille-lors-debat
+CONTENU: Duhaime s’est attiré les foudres de ses rivaux après avoir affirmé vouloir expulser 70000 demandeurs d’asile du Québec.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-24 21:00:00
+TITRE: Le journal de 23h00 du jeudi 24 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-23h00/le-journal-de-23h00-du-jeudi-24-septembre-2026-4144457
+CONTENU: Article de référence : "Le journal de 23h00 du jeudi 24 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-24 20:00:00
+TITRE: Le journal de 22h00 du jeudi 24 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-22h00/le-journal-de-22h00-du-jeudi-24-septembre-2026-5968691
+CONTENU: Article de référence : "Le journal de 22h00 du jeudi 24 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-24 19:17:00
+TITRE: Menace russe et prix des carburants : ce qu'il faut retenir de l'interview d'Emmanuel Macron
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/menace-russe-et-prix-des-carburants-ce-qu-il-faut-retenir-de-l-interview-d-emmanuel-macron-1309033
+CONTENU: L'interview d'Emmanuel Macron sur TF1 et France 2 aura duré une quarantaine de minutes et comme attendu, l'état de la menace russe et la flambée des prix à la pompe ont occupé l'essentiel de cet entretien.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-24 18:30:00
+TITRE: Le 20h30/minuit du jeudi 24 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-20h30-minuit/le-20h30-minuit-du-jeudi-24-septembre-2026-7698685
+CONTENU: Article de référence : "Le 20h30/minuit du jeudi 24 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-24 18:00:00
+TITRE: Le journal de 20h00 du jeudi 24 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-info-a-20h00/le-journal-de-20h00-du-jeudi-24-septembre-2026-5568772
+CONTENU: Article de référence : "Le journal de 20h00 du jeudi 24 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-24 17:35:00
+TITRE: Les informés de franceinfo du jeudi 24 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-informes-de-franceinfo/les-informes-de-franceinfo-du-jeudi-24-septembre-2026-6946557
+CONTENU: Article de référence : "Les informés de franceinfo du jeudi 24 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-24 17:00:00
+TITRE: Le journal de 19h00 du jeudi 24 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-19h00/le-journal-de-19h00-du-jeudi-24-septembre-2026-1748711
+CONTENU: Article de référence : "Le journal de 19h00 du jeudi 24 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-24 16:12:00
+TITRE: Intelligence artificielle : les patrons américains de la tech "veulent une régulation qui sert leurs intérêts"
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/intelligence-artificielle-les-patrons-americains-de-la-tech-veulent-une-regulation-qui-sert-leurs-interets-6138259
+CONTENU: Une IA a infiltré un site gouvernemental australien et accédé à des données de santé. L'incident fait suite à plusieurs alertes sur les dangers, lancées notamment par les géants du secteur. Une façon pour eux de monopoliser et de façonner le débat, selon le chercheur Irénée Régnauld.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-24 16:00:00
+TITRE: Le journal de 18h00 du jeudi 24 septembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-18h00/le-journal-de-18h00-du-jeudi-24-septembre-2026-5627880
+CONTENU: Article de référence : "Le journal de 18h00 du jeudi 24 septembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-09-24 15:46:00
+TITRE: Violences sexuelles : pourquoi les jeunes ont encore du mal à en parler ?
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/la-question-des-informes/la-question-des-informes-du-jeudi-24-septembre-2026-2683520
+CONTENU: Lancée dimanche soir, la plateforme Noted s'adresse aux 13-25 ans pour recueillir leurs témoignages sur les violences. Quatre jours après son lancement, Eve Simonet affirme avoir déjà reçu plus d'une centaine de témoignages.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-24 20:34:32
+TITRE: Tech &amp; Co Business - Jeudi 24 septembre
+LIEN: https://www.bfmtv.com/economie/replay-emissions/01-business/video-tech-co-business-jeudi-24-septembre_VN-202609240925.html
+CONTENU: Ce jeudi 24 septembre, Frédéric Simottel a reçu Catherine Mayenobe, directrice générale déléguée du groupe Caisse des Dépôts ; Henri d'Agrain, délégué général du Cigref ; Habib Messaoudi, vice-président et practice leader cloud, applications, data &amp; AI chez Kyndryl ; ainsi que François Soubien, PDG du Groupe Talan, dans l'émission Tech&amp;Co Business sur BFM Business. Retrouvez l'émission le samedi et réécoutez la en podcast.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-24 20:29:05
+TITRE: Prix des carburants: "Je suis pour un plafond absolu à 2,50 euros le litre", affirme Dominique de Villepin, ancien Premier ministre
+LIEN: https://www.bfmtv.com/politique/video-prix-des-carburants-je-suis-pour-un-plafond-absolu-a-2-50-euros-le-litre-affirme-dominique-de-villepin-ancien-premier-ministre_VN-202609240920.html
+CONTENU: Dominique de Villepin, ancien Premier ministre, était invité sur le plateau de BFMTV, ce jeudi 24 septembre. Il s'est notamment exprimé sur les prix des carburants.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-24 20:25:49
+TITRE: Un policier condamné à du sursis pour avoir frappé un suspect en garde à vue à Lyon
+LIEN: https://www.bfmtv.com/lyon/un-policier-condamne-a-du-sursis-pour-avoir-frappe-un-suspect-en-garde-a-vue-a-lyon_AD-202609240917.html
+CONTENU: Jeudi 24 septembre, un policier de Lyon a été condamné à de la prison avec sursis pour avoir frappé un suspect lors de sa garde à vue en mai 2025.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-24 20:19:42
+TITRE: Macron : "On va envoyer des soldats en Arabie saoudite" - 24/09
+LIEN: https://www.bfmtv.com/replay-emissions/bfm-grand-soir/video-macron-on-va-envoyer-des-soldats-en-arabie-saoudite-24-09_VN-202609240914.html
+CONTENU: Chaque soir, Maxime Switek vous accompagne de 21h à 00h dans BFM Grand Soir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-24 20:16:01
+TITRE: Royal : “Les Français vont être déçus” - 24/09
+LIEN: https://www.bfmtv.com/replay-emissions/bfm-grand-soir/video-royal-les-francais-vont-etre-decus-24-09_VN-202609240918.html
+CONTENU: Chaque soir, Maxime Switek vous accompagne de 21h à 00h dans BFM Grand Soir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-24 20:15:32
+TITRE: Agents IA : l'heure du passage à  l'échelle - 24/09
+LIEN: https://www.bfmtv.com/economie/replay-emissions/01-business/video-agents-ia-l-heure-du-passage-a-l-echelle-24-09_VN-202609240911.html
+CONTENU: Ce jeudi 24 septembre, Habib Messaoudi, vice-président et Practice Leader Cloud, Applications, Data &amp; AI chez Kyndryl, et François Soubien, PDG du Groupe Talan, se sont penchés sur l'adoption de l'intelligence artificielle par les entreprises et sur le passage à l'échelle des agents IA, dans l'émission Tech&amp;Co Business présentée par Frédéric Simottel depuis l'AIM Marseille. Tech&amp;Co Business est à voir ou écouter le mardi sur BFM Business.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-24 20:14:49
+TITRE: Moyens militaires envoyés en Arabie Saoudite: Dominique de Villepin, fondateur de “La France Humaniste”, estime “qu’Emmanuel Macron veut faire un geste vis-à-vis de l’Arabie Saoudite qui se retrouve bien seule”
+LIEN: https://www.bfmtv.com/politique/video-moyens-militaires-envoyes-en-arabie-saoudite-dominique-de-villepin-fondateur-de-la-france-humaniste-estime-qu-emmanuel-macron-veut-faire-un-geste-vis-a-vis-de-l-arabie-saoudite-qui-se-retrouve-bien-seule_VN-202609240910.html
+CONTENU: Dans une interview ce jeudi 24 septembre, Emmanuel Macron a annoncé l'envoi de "moyens militaires" pour "protéger" un site énergétique clé en Arabie saoudite. Le chef de l'État va également "réunir les pays du G7" pour "regarder s’il y a besoin à ce moment-là, de libérer des stocks à nouveau pour détendre le marché" du gaz et du pétrole.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-24 20:09:41
+TITRE: Femme tuée par balle en pleine rue à Vars: l'oncle remis en liberté et assigné à résidence
+LIEN: https://www.bfmtv.com/bfm-dici/femme-tuee-par-balle-en-pleine-rue-a-vars-l-oncle-remis-en-liberte-et-assigne-a-residence_AN-202609240905.html
+CONTENU: Ce jeudi 24 septembre, l'oncle de la femme retrouvée morte en pleine rue à Vars en mai a été remis en liberté et "assigné à résidence" a indiqué le parquet général de Grenoble.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-09-24 20:06:02
+TITRE: "Je ne l'aime pas tous les jours": après la sortie du film de "Dix pour cent", Grégory Montel se confie sur son métier "absolument épuisant"
+LIEN: https://www.bfmtv.com/culture/cinema-series/je-ne-l-aime-pas-tous-les-jours-apres-la-sortie-du-film-de-dix-pour-cent-gregory-montel-se-confie-sur-son-metier-absolument-epuisant_AV-202609240900.html
+CONTENU: À l'affiche du film Dix pour cent sorti deux semaines plus tôt, Grégory Montiel s'est confié sur son métier au micro de BFM DICI ce jeudi 24 septembre. S'il le trouve "de plus en plus dur", il ajoute qu'être acteur lui "convient".
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-24 17:40:15
+TITRE: Bassirou Diomaye Faye sur RFI et France 24: «Qui de mieux que Macky Sall pour défendre la place de l'Afrique à l’ONU?»
+LIEN: https://www.rfi.fr/fr/podcasts/le-grand-invit%C3%A9-afrique/20260924-exclusif-bassirou-diomaye-faye-sur-rfi-et-france-24-%C3%A9voque-macky-sall-sonko-et-la-dissolution-de-l-assembl%C3%A9e
+CONTENU: Bassirou Diomaye Faye est l’invité de RFI et France 24 en marge de l’Assemblée générale de l’ONU 2026, ce 24 septembre à New York. Au micro de Mounia Daoudi et de Marc Perelman, le président du Sénégal revient sur la crise que traverse cette institution et la succession du Portugais Antonio Guterres au poste de Secrétaire général des Nations unies. « Qui de mieux pour défendre la réforme de l'architecture financière internationale que le président Macky Sall », insiste-t-il au sujet de son prédécesseur à la tête de l’État sénégalais et ancien adversaire politique. Bassirou Diomaye Faye défend également le programme d’aide de 2,2 milliards de dollars signé avec le FMI le 1er septembre. Il enjoint les opposants à ce plan, incarnés notamment par son ex-Premier ministre Ousmane Sonko, à adopter un « comportement patriotique » lors du futur vote sur la loi de finances rectificative de son pays. Entretien exclusif.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-24 20:09:35
+TITRE: Face à la crise des carburants, Emmanuel Macron annonce l’envoi de moyens militaires en Arabie saoudite
+LIEN: https://www.rfi.fr/fr/france/20260924-face-%C3%A0-la-crise-des-carburants-emmanuel-macron-annonce-l-envoi-de-moyens-militaires-en-arabie-saoudite
+CONTENU: « La situation est grave » : Emmanuel Macron a annoncé jeudi l'envoi de « moyens militaires » en Arabie saoudite, défendant son action internationale pour faire baisser les prix du carburant, sans toutefois exclure de devoir, à terme, baisser les taxes pour éviter leur envol.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-24 16:28:00
+TITRE: E. Jean Carroll: « La vérité a triomphé et Donald Trump a dû payer pour ses mensonges »
+LIEN: https://www.rfi.fr/fr/culture/20260924-e-jean-carroll-la-v%C3%A9rit%C3%A9-a-triomph%C3%A9-et-donald-trump-a-d%C3%BB-payer-pour-ses-mensonges
+CONTENU: Donald Trump l'a traitée de "menteuse". Mais 30 ans après avoir été agressée dans une cabine d'essayage, la justice lui a donné raison. À 82 ans, E Jean Carroll raconte cette bataille judiciaire dans son livre Not My Type : La femme qui a fait plier Donald Trump, qui paraît aujourd'hui en France aux éditions du Cherche Midi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-24 22:06:27
+TITRE: Une jeunesse malgache en plein doute, un an après le soulèvement contre le régime d’Andry Rajoelina
+LIEN: https://www.rfi.fr/fr/podcasts/reportage-afrique/20260924-une-jeunesse-malgache-en-plein-doute-un-an-apr%C3%A8s-le-soul%C3%A8vement-contre-le-r%C3%A9gime-d-andry-rajoelina
+CONTENU: Il y a un an, la jeunesse malgache descendait dans la rue pour protester contre les coupures d’eau et d’électricité, la corruption galopante et les restrictions à la liberté d’expression. Cette mobilisation historique avait conduit trois semaines plus tard à la chute d’Andry Rajoelina et à la prise de pouvoir des militaires du Capsat. Un an après, la Gen Z entrevoit-elle de meilleures perspectives pour son avenir ? Son quotidien s’est-il amélioré ? Se sent-elle écoutée par les autorités de transition ? Témoignage de jeunes Malgaches à Antananarivo.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-24 22:02:27
+TITRE: À Clichy-sous-Bois, des jeunes en pèlerinage se préparent à l'arrivée du pape
+LIEN: https://www.rfi.fr/fr/podcasts/reportage-france/20260924-%C3%A0-clichy-sous-bois-des-jeunes-en-p%C3%A8lerinage-se-pr%C3%A9parent-%C3%A0-l-arriv%C3%A9e-du-pape
+CONTENU: Alors que le pape est attendu au Stade de France ce 25 septembre au soir, l'évêque de Saint-Denis, Mgr Étienne Guillet, souhaite que cet événement ne soit pas une fête que pour les catholiques. Les jeunes de 17 à 35 ans seront à l'honneur pour une veillée de prière avec le souverain pontife. Le pèlerinage diocésain de Notre-Dame-des-Anges à Clichy-sous-Bois est un grand rendez-vous catholique de la Seine-Saint-Denis. Il a pour but de lancer la rentrée pastorale. Ce dimanche 14 septembre, ce pèlerinage avait une couleur particulière, les jeunes fidèles se préparaient à la venue du pape dans la joie.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-24 21:11:20
+TITRE: Éliminatoires CAN 2027: bonne opération pour le Cameroun face aux Comores
+LIEN: https://www.rfi.fr/fr/afrique-foot/20260924-%C3%A9liminatoires-can-2027-bonne-op%C3%A9ration-pour-le-cameroun-face-aux-comores
+CONTENU: Le Cameroun retrouvait les Comores ce jeudi 24 septembre 2026 à Garoua pour le début des éliminatoires de la CAN 2027. Les Lions indomptables se sont imposés face aux Comores (3-1).
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-24 21:42:42
+TITRE: Procès Aramburu: l'avocat de Le Priol dénonce un dossier «pollué» par la focalisation sur l'ultradroite
+LIEN: https://www.rfi.fr/fr/france/20260924-proc%C3%A8s-aramburu-l-avocat-de-le-priol-d%C3%A9nonce-un-dossier-pollu%C3%A9-par-la-focalisation-sur-l-ultradroite
+CONTENU: La parole à la défense, au procès de l’assassinat en 2022 de l’ex-rugbyman argentin Federico Aramburu. La cour a notamment entendu les conseils de Loïk Le Priol, l’auteur des tirs mortels, poursuivi pour assassinat, contre lequel 27 ans de prison ont été requis. Ses avocats ont dénoncé un dossier « pollué » par la focalisation sur l’appartenance de Loïk Le Priol à l’ultradroite.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-24 22:10:35
+TITRE: Madagascar: comment la Russie cherche à s'imposer dans l'océan Indien
+LIEN: https://www.rfi.fr/fr/afrique/20260924-madagascar-comment-la-russie-cherche-%C3%A0-s-imposer-dans-l-oc%C3%A9an-indien
+CONTENU: Moins d'un an après le changement de régime à Madagascar, une enquête publiée le 23 septembre 2026 par le collectif All Eyes On Wagner (AEOW) de l’ONG INPACT montre comment la Russie a mené sur la Grande Île une offensive rapide et protéiforme, pour en faire un point d'appui stratégique dans l'océan Indien.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-09-24 17:20:21
+TITRE: Gaza: la Cnuced alerte sur la plus grave crise économique observée de l'histoire
+LIEN: https://www.rfi.fr/fr/moyen-orient/20260924-gaza-la-cnuced-alerte-sur-la-plus-grave-crise-%C3%A9conomique-observ%C3%A9e-de-l-histoire
+CONTENU: Peut-on encore parler d'économie palestinienne ? Après 60 ans d'occupation israélienne, l'activité est plus bridée que jamais dans les Territoires. La guerre à Gaza a « réduit à néant des décennies de développement », alerte ce jeudi 24 septembre l'ONU. Elle estime qu'il faudrait plus de 71 milliards de dollars pour reconstruire l'enclave. C'est tout simplement la plus grave crise économique observée dans l'histoire.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-24 18:00:04
+TITRE: IA et littérature : « Personne, dans cette querelle, ne se demande si un écrivain a le droit de travailler avec une machine »
+LIEN: https://www.lemonde.fr/idees/article/2026/09/24/ia-et-litterature-personne-dans-cette-querelle-ne-se-demande-si-un-ecrivain-a-le-droit-de-travailler-avec-une-machine_6781575_3232.html
+CONTENU: L’écrivain Sébastien Bailly regrette, dans une tribune au « Monde » que les auteurs n’aient le choix qu’entre deux postures vis-à-vis de l’intelligence artificielle : celle de l’innocent ou celle du tricheur. Lui revendique la possibilité pour un écrivain d’utiliser cet outil, en toute transparence.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-24 17:00:29
+TITRE: Rendez-vous de l’histoire : à Blois, les marchands à l’honneur dans une nouvelle géographie commerciale planétaire
+LIEN: https://www.lemonde.fr/idees/article/2026/09/24/rendez-vous-de-l-histoire-a-blois-les-marchands-a-l-honneur-dans-une-nouvelle-geographie-commerciale-planetaire_6781566_3232.html
+CONTENU: Penser le commerce comme autre chose qu’une affaire de marchandises : c’est tout l’enjeu du hors-série que « Le Monde », partenaire de l’événement, propose aux lecteurs.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-09-24 16:25:57
+TITRE: Style IA
+LIEN: https://www.lemonde.fr/idees/article/2026/09/24/style-ia_6781560_3232.html
+CONTENU: Alors que les doutes entourent l’utilisation de l’IA dans l’écriture romanesque, le monde de l’édition est en plein trouble.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-09-24 18:27:49
+TITRE: SEO : Google déploie une mise à jour de ses algorithmes (September 2026 spam update)
+LIEN: https://www.blogdumoderateur.com/seo-google-september-2026-spam-update/
+CONTENU: Google lance la September 2026 Spam Update, sa quatrième mise à jour antispam de l'année, à peine plus d'un mois après la précédente.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-09-24 16:02:30
 TITRE: EN DIRECT, interview d’Emmanuel Macron : suivez la prise de parole du chef de l’Etat, sur TF1 et France 2, à sept mois de l’élection présidentielle
