@@ -1,6 +1,502 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-06 09:20:55
+TITRE: Coup d’œil sur les résultats en quatre graphiques
+LIEN: https://www.ledevoir.com/politique/quebec/1014710/coup-oeil-resultats-quatre-graphiques
+CONTENU: Retour en cartes et en données sur les résultats du scrutin.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-06 13:18:00
+TITRE: Les autorités électorales reportent les élections en Haïti
+LIEN: https://www.ledevoir.com/monde/ameriques/1014752/autorites-electorales-reportent-elections-haiti
+CONTENU: Le premier tour des élections présidentielle et législatives, prévu le 13 décembre, est reporté sine die.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-06 04:00:00
+TITRE: Que reste-t-il du 7 octobre?
+LIEN: https://www.ledevoir.com/opinion/editoriaux/1014548/reste-il-7-octobre
+CONTENU: Des Juifs israéliens traumatisés, des Palestiniens martyrisés et spoliés et un monde occidental divisé.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-06 10:54:00
+TITRE: Le Belge Francis Halzen décroche le Nobel de physique pour ses travaux sur les neutrinos
+LIEN: https://www.ledevoir.com/actualites/science/1014719/belge-francis-halzen-decroche-nobel-physique-travaux-neutrinos
+CONTENU: Pour le comité Nobel, le physicien de 82 ans a jeté les bases d’un tout «nouveau type d’astronomie».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-06 04:00:00
+TITRE: Le choix du peuple
+LIEN: https://www.ledevoir.com/opinion/idees/1014611/choix-peuple
+CONTENU: Une foule de gens de toutes origines et de toutes classes sociales se sont reconnus dans « C’était ça ou mourir ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-06 04:00:00
+TITRE: Les Canadiens resserrent leur budget pour les Fêtes
+LIEN: https://www.ledevoir.com/economie/consommation/1014596/canadiens-resserrent-budget-fetes
+CONTENU: Les consommateurs prévoient de débourser en moyenne 1487 $, soit 11 % de moins que l’an dernier.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-06 12:00:18
+TITRE: EN DIRECT, blocage des lycées | Dans les cortèges de la mobilisation lycéenne à Paris, Rennes, Marseille et Clermont-Ferrand : « Assez grandes pour se faire gazer, mais pas pour manifester »
+LIEN: https://www.lemonde.fr/societe/live/2026/10/06/en-direct-blocage-des-lycees-dans-les-corteges-de-la-mobilisation-lyceenne-a-paris-rennes-marseille-et-clermont-ferrand-assez-grandes-pour-se-faire-gazer-mais-pas-pour-manifester_6788487_3224.html
+CONTENU: Près de 900 établissements sont fermés ou perturbés mardi, dont 250 en Ile-de-France, selon les autorités. Des actions et manifestations ont lieu partout en France, mardi, notamment à Lille, à Nîmes, à Toulouse, ou à Lyon, où sont nos envoyés spéciaux.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-06 08:26:03
+TITRE: Présidentielle 2027 : Marine Le Pen et le RN présentent leur contre-budget, avec « 140 milliards d’euros nets d’économies » en cinq ans
+LIEN: https://www.lemonde.fr/politique/article/2026/10/06/presidentielle-2027-marine-le-pen-promet-140-milliards-d-euros-nets-d-economies-d-ici-2032_6788959_823448.html
+CONTENU: Cette trajectoire budgétaire « sera confortée par l’adoption d’une règle d’or budgétaire constitutionnelle adoptée par référendum », a précisé la cheffe de file du parti d’extrême droite.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-06 12:00:22
+TITRE: EN DIRECT, guerre en Ukraine : la Bulgarie dénonce une attaque de drones « absolument inacceptable » contre deux navires en mer Noire
+LIEN: https://www.lemonde.fr/international/live/2026/10/06/en-direct-guerre-en-ukraine-la-bulgarie-denonce-une-attaque-de-drones-absolument-inacceptable-contre-deux-navires-en-mer-noire_6787996_3210.html
+CONTENU: « Nous voyons que la guerre s’intensifie », a constaté le premier ministre bulgare, Roumen Radev, sans accuser ni l’Ukraine, ni la Russie d’être derrière l’attaque survenue dans la nuit de lundi à mardi contre deux navires dans la zone économique exclusive de son pays en mer Noire
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-06 09:08:47
+TITRE: Au Brésil, les scandales n’ont pas contrarié l’ascension politique de Flavio Bolsonaro
+LIEN: https://www.lemonde.fr/international/article/2026/10/06/au-bresil-les-scandales-n-ont-pas-contrarie-l-ascension-politique-de-flavio-bolsonaro_6788965_3210.html
+CONTENU: Arrivé en tête au premier tour de la présidentielle brésilienne, dimanche 4 octobre, avec 47 % des voix, le fils aîné de l’ex-président Jair Bolsonaro fait l’objet d’une enquête de police pour blanchiment d’argent et corruption.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-06 09:55:02
+TITRE: Un ancien chef du renseignement extérieur allemand arrêté pour « espionnage constitutif de trahison »
+LIEN: https://www.lemonde.fr/international/article/2026/10/06/un-ancien-chef-du-renseignement-exterieur-allemand-august-hanning-arrete-pour-espionnage_6788973_3210.html
+CONTENU: Selon le parquet fédéral allemand, August Hanning aurait notamment utilisé des contenus classifiés, transmis par l’un de ses anciens collaborateurs, afin de rédiger, dans le cadre de ses activités de consultant privé, une analyse pour un « officier d’un service renseignement étranger ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-06 04:00:14
+TITRE: Comment la FIFA a contourné son règlement pour favoriser la qualification de la République démocratique du Congo à la Coupe du monde 2026
+LIEN: https://www.lemonde.fr/sport/article/2026/10/06/comment-la-fifa-a-contourne-son-reglement-pour-favoriser-la-qualification-de-la-republique-democratique-du-congo-a-la-coupe-du-monde-2026_6788836_3242.html
+CONTENU: Selon des documents internes dont « Le Monde » a pris connaissance, l’instance présidée par Gianni Infantino n’a appliqué aucune sanction après l’alignement d’un joueur congolais inéligible lors de plusieurs matchs qualificatifs pour le Mondial, passant outre son propre code de discipline, la jurisprudence et les recommandations de ses juristes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-06 11:15:43
+TITRE: 7-Octobre : une manifestation à l’appel du collectif Urgence Palestine interdite à Paris, le jour des commémorations des attaques du Hamas
+LIEN: https://www.lemonde.fr/international/article/2026/10/06/une-manifestation-du-collectif-urgence-palestine-a-ete-interdite-a-paris-le-jour-des-commemorations-du-7-octobre_6788988_3210.html
+CONTENU: Le collectif a dénoncé une « censure politique » et annoncé qu’il déposerait un recours devant le tribunal administratif. La préfecture a justifié cet arrêté par la prévention de « risques importants de troubles à l’ordre public ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-06 09:56:34
+TITRE: Le prix Nobel de physique 2026 est décerné au Belge Francis Halzen pour ses travaux sur les neutrinos
+LIEN: https://www.lemonde.fr/sciences/article/2026/10/06/le-prix-nobel-de-physique-2026-est-decerne-au-belge-francis-halzen-pour-ses-travaux-sur-les-neutrinos_6788974_1650684.html
+CONTENU: La distinction est la deuxième de la saison des Nobel, après le prix de médecine décerné lundi à un trio américano-allemand pour leurs recherches visant à percer les mystères du cerveau.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-06 09:32:47
+TITRE: Municipales à Wittelsheim : l’élection de la seule maire RN d’Alsace annulée par le tribunal administratif
+LIEN: https://www.lemonde.fr/politique/article/2026/10/06/municipales-a-wittelsheim-l-election-de-la-seule-maire-rn-d-alsace-annulee-par-le-tribunal-administratif_6788970_823448.html
+CONTENU: La justice a retenu deux irrégularités qui ont « altéré la sincérité du scrutin et justifient, ainsi, l’annulation des opérations électorales de la commune, eu égard notamment au faible écart de voix entre la première et la deuxième liste ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-06 03:48:30
+TITRE: Sur le campus de l’université américaine de Cornell, « tout le monde est révolté » par la gestion d’une affaire de viols en réunion
+LIEN: https://www.lemonde.fr/international/article/2026/10/06/sur-le-campus-de-cornell-aux-etats-unis-tout-le-monde-est-revolte-par-la-gestion-d-une-affaire-de-viols-par-la-police-et-l-universite_6788831_3210.html
+CONTENU: Alors étudiante, une jeune femme avait affirmé avoir été droguée et violée en 2024 par sept membres d’une fraternité de la prestigieuse école américaine. Beaucoup d’étudiants estiment que les agresseurs présumés n’ont pas été suffisamment sanctionnés. En septembre, la plaignante a saisi la Cour suprême de l’Etat de New York.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-10-06 13:00:00
+TITRE: Le 15/17 du mardi 06 octobre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-15-17/le-15-17-du-mardi-06-octobre-2026-3131727
+CONTENU: Article de référence : "Le 15/17 du mardi 06 octobre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-10-06 11:00:00
+TITRE: À Lens, les lycéens sous le choc après l’accident qui a coûté une main à un manifestant
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/a-lens-les-lyceens-marques-apres-l-accident-qui-a-coute-la-main-a-un-manifestant-3495027
+CONTENU: Un adolescent de 15 ans a perdu sa main lundi après qu'un policier a lancé une grenade assourdissante devant un lycée à Lens. Certains jeunes restent mobilisés mardi, cette fois avec les syndicats. D'autres craignent désormais les violences policières.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-10-06 11:00:00
+TITRE: Le journal de 13h00 du mardi 06 octobre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-13h00/le-journal-de-13h00-du-mardi-06-octobre-2026-9404310
+CONTENU: Article de référence : "Le journal de 13h00 du mardi 06 octobre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-10-06 10:00:00
+TITRE: Le journal de 12h00 du mardi 06 octobre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-12h00/le-journal-de-12h00-du-mardi-06-octobre-2026-5389008
+CONTENU: Article de référence : "Le journal de 12h00 du mardi 06 octobre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-10-06 10:00:00
+TITRE: Le 12/15 du mardi 06 octobre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-12-15/le-12-15-du-mardi-06-octobre-2026-3577090
+CONTENU: Article de référence : "Le 12/15 du mardi 06 octobre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-10-06 08:30:00
+TITRE: Œufs contaminés aux PFAS : un toxicologue appelle à "renouveler les sols" dans les zones à risque
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/oeufs-contamines-aux-pfas-un-toxicologue-appelle-a-renouveler-les-sols-dans-les-zones-a-risque-4978254
+CONTENU: Près de 60% des œufs analysés dans une enquête de Radio France contiennent des PFAS et un quart dépassent les normes de qualité. Des scientifiques appellent à agir sur les sols et à limiter la consommation dans les zones les plus contaminées.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-10-06 07:30:00
+TITRE: Le 9h30/midi du mardi 06 octobre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-9h30-midi/le-9h30-midi-du-mardi-06-octobre-2026-1465810
+CONTENU: Article de référence : "Le 9h30/midi du mardi 06 octobre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-10-06 07:06:00
+TITRE: Les informés du matin du mardi 06 octobre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-informes-du-matin/les-informes-du-matin-du-mardi-06-octobre-2026-2844313
+CONTENU: Tous les jours, les informés débattent de l'actualité autour d'Agathe Lambret et de Renaud Dély.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-06 12:52:01
+TITRE: Mobilisation lycéenne: la CGT dénombre 260.000 manifestants hors Paris ce mardi matin, le ministère de l'Intérieur recense 86.000 personnes
+LIEN: https://www.bfmtv.com/societe/manifestations/mobilisation-lyceenne-la-cgt-denombre-260-000-manifestants-hors-paris-ce-mardi-matin-le-ministere-de-l-interieur-recense-86-000-personnes_AD-202610060595.html
+CONTENU: Dans de nombreuses métropoles, des cortèges de lycéens ont réclamé dans la matinée ce mardi 6 octobre plus de moyens pour leurs établissements, sous haute surveillance des autorités, pour l'"acte III" du mouvement qui a démarré le 17 septembre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-06 12:50:55
+TITRE: Mobilisation lycéenne: à Pau, les élèves ont applaudi les pompiers venus éteindre un feu
+LIEN: https://www.bfmtv.com/societe/video-mobilisation-lyceenne-a-pau-les-eleves-ont-applaudi-les-pompiers-venus-eteindre-un-feu_VN-202610060596.html
+CONTENU: Grande journée de manifestation partout en France pour l'acte III de la mobilisation lycéenne. Soutenus par les syndicats, notamment de l'Éducation nationale qui appelle à faire grève, les lycéens sont attendus en nombre dans la rue ce mardi. Un mouvement redouté par Matignon, qui dénonce des "violences urbaines".
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-06 12:49:09
+TITRE: Loire-Atlantique: le département placé en vigilance jaune pour des risques d'orages
+LIEN: https://www.bfmtv.com/meteo/intemperies/loire-atlantique-le-departement-place-en-vigilance-jaune-pour-des-risques-d-orages_AN-202610060594.html
+CONTENU: Le département de la Loire-Atlantique a été placé, ce mardi 6 octobre, en vigilance jaune pour des risques d'orages jusqu'à ce mercredi. D'autres départements de la façade ouest, mais également du sud de la France sont concernés.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-06 12:48:44
+TITRE: Guerre au Moyen-Orient: le Qatar affirme que les négociations entre l'Iran et les États-Unis se poursuivent
+LIEN: https://www.bfmtv.com/international/moyen-orient/iran/guerre-au-moyen-orient-le-qatar-affirme-que-les-negociations-entre-l-iran-et-les-etats-unis-se-poursuivent_AD-202610060593.html
+CONTENU: Le Qatar indique que les pourparlers entre les États-Unis et l'Iran "continuent" sous sa médiation.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-06 12:46:39
+TITRE: INFO BFM NICE. Mobilisation lycéenne: les campus de l’université Côte d’Azur vont rouvrir normalement ce mercredi
+LIEN: https://www.bfmtv.com/cote-d-azur/info-bfm-nice-mobilisation-lyceenne-les-campus-de-l-universite-cote-d-azur-vont-rouvrir-normalement-ce-mercredi_AV-202610060591.html
+CONTENU: Les campus de l'Université Côte-d'Azur vont rouvrir ce mercredi 7 octobre. Ils étaient fermés ce mardi 6 octobre pour assurer la sécurité des étudiants en ce jour de manifestations lycéennes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-06 12:46:33
+TITRE: "C'est un acte de trahison, il sera poursuivi pour cela": Jean-Luc Mélenchon s'en prend au gouverneur de la Banque de France pour ses propos sur la dette
+LIEN: https://www.bfmtv.com/economie/economie-social/france/c-est-un-acte-de-trahison-il-sera-poursuivi-pour-cela-jean-luc-melenchon-s-en-prend-au-gouverneur-de-la-banque-de-france-pour-ses-propos-sur-la-dette_AV-202610060590.html
+CONTENU: Le candidat de La France Insoumise pour la prochaine élection présidentielle a déclaré sur X que les déclarations d'Emmanuel Moulin sont "un acte de trahison". Ce dernier a estimé la veille que "si nous n'agissons pas, il existe effectivement un risque d'être progressivement étranglés par la hausse des taux d'intérêt".
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-06 12:36:02
+TITRE: "Ce qui est difficile, c’est de passer après Karl": l'ancienne directrice artistique de Chanel raconte son évinction brutale
+LIEN: https://www.bfmtv.com/luxe/ce-qui-est-difficile-c-est-de-passer-apres-karl-l-ancienne-directrice-artistique-de-chanel-raconte-son-evinction-brutale_AD-202610060582.html
+CONTENU: Discrète, réservée et peu médiatique, Virginie Viard a passé plus de trente ans au sein de la maison Chanel, longtemps dans l’ombre de Karl Lagerfeld, auquel elle a succédé après sa mort, en 2019. Propulsée directrice artistique de l’une des marques les plus désirables au monde, elle sera évincé en 2024, à la veille d’un défilé. Un départ aussi brutal qu’inattendu pour celle qui avait œuvré pendant tant d’années au service de la maison au double C et qui raconte aujourd’hui son expérience dans un livre autobiographique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-06 12:31:54
+TITRE: Des chefs étoilés se mobilisent en Gironde pour la Banque alimentaire autour d'un dîner caritatif
+LIEN: https://www.bfmtv.com/gironde/des-chefs-etoiles-se-mobilisent-en-gironde-pour-la-banque-alimentaire-autour-d-un-diner-caritatif_AN-202610060574.html
+CONTENU: Une dizaine de chefs cuisiniers reconnus organise un grand dîner caritatif, le jeudi 15 octobre à l'hôtel de ville de Bordeaux. L'intégralité des fonds sera reversée à la banque alimentaire de Gironde, au profit des plus démunis.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-06 12:28:32
+TITRE: Besançon: une crèche visée par un tir de mortier, la mairie annonce porter plainte
+LIEN: https://www.bfmtv.com/police-justice/besancon-une-creche-visee-par-un-tir-de-mortier-la-mairie-annonce-porter-plainte_AN-202610060569.html
+CONTENU: Lundi 5 octobre à la mi-journée, une crèche du quartier de la Planoise, à Besançon, a reçu un impact de mortier d'artifice. Le maire LR Ludovic Fagaut, qui y voit un lien avec les manifestations lycéennes qui se déroulent dans la ville, indique avoir déposé plainte.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-06 12:27:34
+TITRE: "Il se déshonore": Mathilde Panot appelle à la démission de Laurent Nuñez qui "permet le pire" face aux mobilisations des lycéens
+LIEN: https://www.bfmtv.com/politique/la-france-insoumise/il-se-deshonore-mathilde-panot-appelle-a-la-demission-de-laurent-nunez-qui-permet-le-pire-face-aux-mobilisations-des-lyceens_AN-202610060566.html
+CONTENU: La présidente du groupe La France insoumise à l'Assemblée nationale, Mathilde Panot, a appelé à la démission du ministre de l'Intérieur Laurent Nuñez estimant qu'il permettait "une répression jamais vue" des forces de l'ordre contre les lycéens.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-06 06:54:32
+TITRE: EN DIRECT - Mobilisation des lycéens: entre 86 000 et 260 000 manifestants à la mi-journée, le cortège se lance à Paris
+LIEN: https://www.rfi.fr/fr/france/20261006-en-direct-france-grosse-journ%C3%A9e-de-manifestation-pour-les-lyc%C3%A9es-rejoints-par-des-syndicats-profs-et-%C3%A9tudiants
+CONTENU: 86 000 personnes ont déjà été décomptées par le ministère de l'Intérieur à la mi-journée dans les manifestations à travers la France, à l'occasion de l'« Acte III » du mouvement des lycéens, ce mardi 6 octobre. La CGT, elle, en annonce 260 000. Le cortège parisien s'élance de la place de la République. Suivez notre direct.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-06 12:23:16
+TITRE: Haïti: le Conseil électoral annonce le report des élections
+LIEN: https://www.rfi.fr/fr/am%C3%A9riques/20261006-ha%C3%AFti-le-conseil-%C3%A9lectoral-annonce-le-report-des-%C3%A9lections
+CONTENU: Les autorités électorales haïtiennes ont annoncé le report des premières étapes du processus électoral, décalant ainsi sine die les élections présidentielle et législatives qui devaient débuter le 13 décembre, dans un pays rongé par la violence des gangs, a-t-on appris mardi dans un communiqué.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-06 10:00:29
+TITRE: Le prix Nobel de physique décerné au Belge Francis Halzen pour ses travaux sur les neutrinos
+LIEN: https://www.rfi.fr/fr/science/20261006-le-prix-nobel-de-physique-d%C3%A9cern%C3%A9-au-belge-francis-halzen
+CONTENU: Le prix Nobel de physique 2026 a été décerné mardi 6 octobre au Belge Francis Halzen. Le physicien de 82 ans a été récompensé « pour ses contributions décisives à l'observatoire de neutrinos IceCube et à la découverte de neutrinos de haute énergie d'origine astrophysique », a expliqué le comité Nobel, réuni à Stockholm.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-06 10:11:38
+TITRE: Mobilisation lycéenne en France: comment la désinformation alimente les tensions
+LIEN: https://www.rfi.fr/fr/france/20261006-mobilisation-lyc%C3%A9enne-en-france-comment-la-d%C3%A9sinformation-alimente-les-tensions
+CONTENU: En France, la mobilisation lycéenne ne faiblit pas. Des dizaines de milliers d’élèves sont dans les rues ce mardi 6 octobre pour une nouvelle journée de mobilisation. Sur les réseaux sociaux, ce climat de tension est particulièrement propice à la désinformation. À six mois de l’élection présidentielle, des comptes influents multiplient les infox afin de diviser et manipuler l’opinion publique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-06 10:22:12
+TITRE: France: Emmanuel Macron a assisté à l’essai d’un nouveau missile nucléaire M51 tiré depuis un sous-marin
+LIEN: https://www.rfi.fr/fr/france/20261006-france-emmanuel-macron-a-assist%C3%A9-%C3%A0-l-essai-d-un-nouveau-missile-nucl%C3%A9aire-m51-tir%C3%A9-depuis-un-sous-marin
+CONTENU: Emmanuel Macron a assisté, mardi 6 octobre, à un « premier tir » d'exercice d'un missile intercontinental lancé depuis un sous-marin nucléaire lanceur d'engins au large du Finistère, ont annoncé l'Élysée et le ministère des Armées.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-06 09:20:44
+TITRE: Russie: Moscou visée par une attaque meurtrière de plusieurs centaines de drones ukrainiens
+LIEN: https://www.rfi.fr/fr/europe/20261006-russie-moscou-vis%C3%A9e-par-une-attaque-meurtri%C3%A8re-de-plusieurs-centaines-de-drones-ukrainiens
+CONTENU: Moscou a été visée dans la nuit du lundi 5 au mardi 6 octobre par une attaque d'une rare ampleur mobilisant des centaines de drones dans la périphérie de la capitale. L'attaque a fait au moins deux morts, ont indiqué les autorités russes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-06 09:05:39
+TITRE: Le Kenya annonce un premier mort d'Ebola sur son sol
+LIEN: https://www.rfi.fr/fr/en-bref/20261006-le-kenya-annonce-un-premier-mort-d-ebola-sur-son-sol
+CONTENU: Un Kényan vivant en République démocratique du Congo (RDC) est mort d'Ebola lundi soir dans un hôpital de Nairobi, a annoncé ce mardi le ministre kényan de la Santé, première infection et premier décès lié à cette maladie jamais recensés dans ce pays d'Afrique de l'Est. Aden Duale a déclaré que cet homme – dont l’identité n’a pas été révélée – est tombé malade il y a environ un mois et avait été soigné en RDC, avant de se rendre par la route à Kampala, la capitale ougandaise, pour prendre un vol pour Nairobi le 3 octobre.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-06 13:15:43
+TITRE: Petite histoire sensorielle de la truffe à l’époque moderne
+LIEN: https://theconversation.com/petite-histoire-sensorielle-de-la-truffe-a-lepoque-moderne-291384
+CONTENU: Aux XVIᵉ et XVIIᵉ&amp;nbsp;siècles, la truffe semble connaître un regain d’intérêt, tant chez les naturalistes que chez les spécialistes de l’art culinaire.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-06 13:14:29
+TITRE: A camera combined with AI could help further diagnosis of movement disorders like spinal muscular atrophy in newborns
+LIEN: https://theconversation.com/a-camera-combined-with-ai-could-help-further-diagnosis-of-movement-disorders-like-spinal-muscular-atrophy-in-newborns-293152
+CONTENU: Detecting impaired motor function in infants using AI-driven motion capture is producing promising results. A French research team introduces the new screening tool for spinal muscular atrophy (SMA).
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-06 11:53:08
+TITRE: L’optogénétique récompensée par le Nobel : un siècle d’innovations pour cartographier et contrôler le cerveau
+LIEN: https://theconversation.com/loptogenetique-recompensee-par-le-nobel-un-siecle-dinnovations-pour-cartographier-et-controler-le-cerveau-293722
+CONTENU: Le prix Nobel de médecine 2026 récompense les travaux à l’origine de l’optogénétique, une technique qui permet de contrôler l’activité des neurones grâce à la lumière. Une avancée qui couronne plus d’un siècle de progrès technologiques…
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-06 11:00:17
+TITRE: Endurance des collégiens : ce que les tests scolaires disent de leur santé
+LIEN: https://theconversation.com/endurance-des-collegiens-ce-que-les-tests-scolaires-disent-de-leur-sante-292941
+CONTENU: Les tests de sixième signalent un niveau d’endurance préoccupant. Que mesurent-ils et que nous apprennent-ils des élèves&amp;nbsp;?
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-06 11:00:08
+TITRE: D’une algue au cerveau : l’étonnante histoire du Nobel de médecine 2026
+LIEN: https://theconversation.com/dune-algue-au-cerveau-letonnante-histoire-du-nobel-de-medecine-2026-293723
+CONTENU: Le prix Nobel de médecine 2026 récompense les pionniers de l’optogénétique, une technique qui permet de contrôler les cellules nerveuses grâce à la lumière. a révolutionné l’étude du cerveau.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-06 10:12:43
+TITRE: Alliés potentiels, non-convaincus, détracteurs… comment dépasser les clivages créés par les ZFE ?
+LIEN: https://theconversation.com/allies-potentiels-non-convaincus-detracteurs-comment-depasser-les-clivages-crees-par-les-zfe-292801
+CONTENU: Des travaux de recherche ont identifié six&amp;nbsp;profils types selon leur rapport aux ZFE et aux mesures d’accompagnement, précieux pour mieux cibler ces dernières.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-06 07:53:18
+TITRE: L’histoire d’Argos, le fidèle chien d’Ulysse, éclaire la place des animaux dans la Grèce antique
+LIEN: https://theconversation.com/lhistoire-dargos-le-fidele-chien-dulysse-eclaire-la-place-des-animaux-dans-la-grece-antique-288398
+CONTENU: Dans l’«&amp;nbsp;Odyssée&amp;nbsp;», les retrouvailles entre Ulysse et son chien Argos comptent parmi les scènes les plus émouvantes de toute la littérature antique. Elles révèlent aussi la place essentielle qu’occupaient les animaux dans la vie quotidienne des Grecs.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-06 07:38:41
+TITRE: Le long voyage du riz, de la préhistoire aux rizières du monde entier
+LIEN: https://theconversation.com/le-long-voyage-du-riz-de-la-prehistoire-aux-rizieres-du-monde-entier-288943
+CONTENU: D’où vient le riz ? Et comment s’est-il diffusé jusqu’à devenir l’un des piliers de la sécurité alimentaire mondiale ?
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-10-06 10:12:06
+TITRE: Francis Halzen wins Nobel Prize in physics for work on high-energy neutrinos of astrophysical origin
+LIEN: https://phys.org/news/2026-10-francis-halzen-nobel-prize-physics.html
+CONTENU: Francis Halzen won the Nobel Prize in physics on Tuesday for his contributions to the IceCube Neutrino Observatory and his discovery of high-energy neutrinos of astrophysical origin.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-10-06 09:00:01
+TITRE: Nature's capacity to 'bounce back' when species are lost is vastly overestimated, global analysis finds
+LIEN: https://phys.org/news/2026-10-nature-capacity-species-lost-vastly.html
+CONTENU: The idea that ecosystems carry plenty of backup, so if a small number of species become extinct there is little harm, has been greatly overestimated, according to the largest global study of its kind.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-10-06 06:20:09
+TITRE: California scientist wins a Nobel Prize, then makes school lunches for his kids
+LIEN: https://phys.org/news/2026-10-california-scientist-nobel-prize-school.html
+CONTENU: Dr. Karl Deisseroth spent hours fielding congratulatory calls after learning early Monday that he had won a Nobel Prize for medicine for helping to open a new field of brain science called optogenetics.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-10-06 06:20:04
+TITRE: Switching on brain cells: The Nobel-winning science of optogenetics
+LIEN: https://phys.org/news/2026-10-brain-cells-nobel-science-optogenetics.html
+CONTENU: In optogenetics, scientists control neurons by stimulating them with light—potentially unlocking breakthroughs for conditions such as dementia, depression and blindness.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-10-06 05:41:48
+TITRE: Russia reports a worker at a Siberian plague institute got pneumonia from an unknown cause and died
+LIEN: https://phys.org/news/2026-10-russia-worker-siberian-plague-pneumonia.html
+CONTENU: Russian authorities have quarantined a hospital and are monitoring contacts of an employee at a plague research institute in Siberia who contracted pneumonia of an "unknown" cause. Local state TV said the woman died last week.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-10-06 13:00:16
+TITRE: Loi intégrale contre les violences sexuelles et sexistes : « En réservant la prise en charge du parcours de soins aux mineurs, le texte exclut la majorité des victimes »
+LIEN: https://www.lemonde.fr/idees/article/2026/10/06/loi-integrale-contre-les-violences-sexuelles-et-sexistes-en-reservant-la-prise-en-charge-du-parcours-de-soins-aux-mineurs-le-texte-exclut-la-majorite-des-victimes_6789000_3232.html
+CONTENU: La proposition de loi, débattue à l’Assemblée nationale, propose aux mineurs un parcours de soins remboursé par la solidarité nationale. Dans une tribune au « Monde », un collectif de personnalités, dont Camille Kouchner et Romain Lemire, déplore que le texte refuse ce droit aux adultes.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-10-06 12:00:07
+TITRE: Denis Mukwege et Zeid Ra’ad Al-Hussein : « La République démocratique du Congo doit engager un véritable processus de justice transitionnelle »
+LIEN: https://www.lemonde.fr/idees/article/2026/10/06/denis-mukwege-et-zeid-ra-ad-al-hussein-la-republique-democratique-du-congo-doit-engager-un-veritable-processus-de-justice-transitionnelle_6788992_3232.html
+CONTENU: Trente ans après le début de la guerre en RDC, les deux figures de la paix appellent, dans une tribune au « Monde », à la création d’un tribunal international spécial pour le Congo, pour en finir avec l’impunité et la répétition des violences.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-10-06 09:30:09
+TITRE: Israël et le traumatisme du 7-Octobre
+LIEN: https://www.lemonde.fr/idees/article/2026/10/06/israel-et-le-traumatisme-du-7-octobre_6788969_3232.html
+CONTENU: Trois ans après les attaques terroristes commises par le Hamas, le traumatisme reste profond au sein de la société israélienne, empêchant tout examen critique de la riposte menée par Benyamin Nétanyahou, qui s’est traduite par l’anéantissement de Gaza.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-10-06 07:22:31
+TITRE: Samy Cohen, politiste : « Lorsqu’il s’agit d’un Arabe, la politique en Israël ne connaît ni gauche ni droite »
+LIEN: https://www.lemonde.fr/idees/article/2026/10/06/samy-cohen-politiste-lorsqu-il-s-agit-d-un-arabe-la-politique-en-israel-ne-connait-ni-gauche-ni-droite_6788948_3232.html
+CONTENU: En exerçant son droit de grâce dans l’affaire Elor Azaria, impliquant un soldat reconnu coupable d’un crime contre un Palestinien, le président israélien, Isaac Herzog, s’inscrit dans la lignée de ses prédécesseurs également membres du Parti travailliste, et porte un coup sévère à la démocratie, regrette le chercheur, dans une tribune au « Monde ».
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-10-06 13:17:50
+TITRE: « Ne jamais chercher keh92.fun » : c’est quoi ces faux commentaires qui envahissent Instagram ?
+LIEN: https://www.blogdumoderateur.com/keh92-faux-commentaires-instagram/
+CONTENU: Depuis plusieurs jours, les bots envahissent les posts Instagram des comptes d'influenceurs et de médias français. Mais qui se cache derrière ces profils ?
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-10-06 09:25:26
+TITRE: Comment recevoir des fichiers volumineux avec TransferNow
+LIEN: https://www.blogdumoderateur.com/comment-recevoir-fichiers-volumineux-transfernow/
+CONTENU: Recevoir des fichiers volumineux se révèle souvent plus laborieux que de les envoyer. Tour d'horizon des méthodes proposées par TransferNow pour collecter des fichiers lourds auprès de clients et de prestataires.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-10-06 09:24:30
+TITRE: Les textes générés par ChatGPT vont intégrer un filigrane invisible
+LIEN: https://www.blogdumoderateur.com/textes-chatgpt-filigrane-invisible/
+CONTENU: La technologie d'OpenAI oriente le choix des mots de ses modèles pour laisser une empreinte invisible, pouvant être repérée par son détecteur. Mais la méthode a ses failles.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Le Blog du Modérateur
+DATE: 2026-10-06 09:23:49
+TITRE: Gemini limite les modèles accessibles sur la version gratuite
+LIEN: https://www.blogdumoderateur.com/gemini-limite-modeles-accessibles-version-gratuite/
+CONTENU: À partir du 9 octobre, les comptes Gemini sans abonnement n'auront plus accès qu'au modèle Flash-Lite. Les abonnés AI Plus perdent de leur côté l'accès au modèle Pro.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
 DATE: 2026-10-06 04:14:00
 TITRE: Le plan de match du Parti québécois au pouvoir
 LIEN: https://www.ledevoir.com/politique/quebec/1014635/plan-match-parti-quebecois-pouvoir
