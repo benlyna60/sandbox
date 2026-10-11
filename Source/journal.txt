@@ -1,5 +1,365 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-10 15:45:00
+TITRE: Une attaque à l’aéroport international de Riyad fait 12 morts et plus de 300 blessés
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1016057/aeroport-riyad-nouveau-pris-cible-selon-autorites
+CONTENU: Parmi les défunts figurent quatre citoyens saoudiens et huit autres ressortissants étrangers.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-11 01:49:22
+TITRE: L’Éthiopie affirme à l’ONU qu’elle agit en légitime défense contre l’Érythrée
+LIEN: https://www.ledevoir.com/monde/afrique/1016081/ethiopie-affirme-onu-elle-agit-legitime-defense-contre-erythree
+CONTENU: Asmara rejette l’argument et accuse son voisin de chercher à s’arroger de force un accès souverain à la mer Rouge.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-10 14:07:00
+TITRE: Trump s’en prend à Zelensky et veut un nouveau président en Ukraine
+LIEN: https://www.ledevoir.com/monde/europe/1016048/frappes-russes-zaporijjia-ont-fait-15-morts-samedi
+CONTENU: Des frappes russes sur Zaporijjia ont fait 21 morts samedi.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-10 04:00:00
+TITRE: Les poubelles disparaîtront graduellement du parc La Fontaine
+LIEN: https://www.ledevoir.com/actualites/transports-urbanisme/1016006/poubelles-disparaitront-graduellement-parc-fontaine
+CONTENU: La Ville de Montréal relance le projet de stations de tri, cette fois en prévoyant une période de transition.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-10 23:21:00
+TITRE: Un homme meurt après avoir été attaqué par un tigre dans un zoo britannique
+LIEN: https://www.ledevoir.com/actualites/1016078/homme-meurt-apres-avoir-ete-attaque-tigre-zoo-britannique
+CONTENU: Des agents  mènent actuellement des investigations sur le site.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-10 04:00:00
+TITRE: Connaissez-vous ces secrets et particularités du métro?
+LIEN: https://www.ledevoir.com/actualites/transports-urbanisme/1015886/connaissez-vous-ces-secrets-particularites-metro
+CONTENU: Stations secrètes, scènes de cinéma et visite du pape… «Le Devoir» en présente quelques-uns.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-10 15:35:00
+TITRE: Le gouvernement indien empêche la révolte contre la commission électorale
+LIEN: https://www.ledevoir.com/monde/asie/1016054/gouvernement-indien-empeche-revolte-contre-commission-electorale
+CONTENU: La police a interpellé dans la matinée les trois principaux chefs du mouvement des «cafards».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-11 03:35:41
+TITRE: Du monde agricole aux lycées, la France à bout de nerfs
+LIEN: https://www.lemonde.fr/politique/article/2026/10/11/du-monde-agricole-aux-lycees-la-france-a-bout-de-nerfs_6791233_823448.html
+CONTENU: Canicules dévastatrices pour l’agriculture, dette hors de contrôle, forte augmentation des taux d’intérêt, baisse importante du pouvoir d’achat, crise du logement, chômage en hausse, mouvement lycéen… Pris dans une spirale de crises, le pays hésite entre révolte et abattement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-11 03:27:15
+TITRE: EN DIRECT, guerre en Ukraine : Donald Trump affirme que Vladimir Poutine « aimerait voir un règlement » avec Kiev
+LIEN: https://www.lemonde.fr/international/live/2026/10/11/en-direct-guerre-en-ukraine-donald-trump-affirme-que-vladimir-poutine-aimerait-voir-un-reglement-avec-kiev_6791198_3210.html
+CONTENU: « Je pense que la Russie aimerait conclure un accord, et nous en avons parlé plusieurs fois (…), mais, pour une raison ou pour une autre, Zelensky ne veut pas conclure d’accord », a déclaré le président américain à des journalistes samedi, après avoir affirmé qu’« il [était] temps pour l’Ukraine d’avoir un nouveau président ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-11 03:15:02
+TITRE: Arabie saoudite : 12 morts et plus de 300 blessés dans une attaque contre l’aéroport de Riyad, imputée aux houthistes
+LIEN: https://www.lemonde.fr/international/article/2026/10/11/arabie-saoudite-douze-morts-et-plus-de-300-blesses-dans-une-attaque-contre-l-aeroport-de-riyad-imputee-aux-houthistes_6791016_3211.html
+CONTENU: Quatre Saoudiens et huit étrangers, dont un Américain, figurent parmi les personnes tuées, a précisé l’autorité de l’aviation civile saoudienne. Cette attaque est la plus meurtrière qu’ait connue le royaume depuis plus de dix ans.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-11 04:00:01
+TITRE: En Cisjordanie occupée, la solitude des Palestiniens : « Filmer ce qui se passe à nos portes est devenu notre seul recours face à l’impuissance de la justice »
+LIEN: https://www.lemonde.fr/international/article/2026/10/11/en-cisjordanie-occupee-la-solitude-des-palestiniens-filmer-ce-qui-se-passe-a-nos-portes-est-devenu-notre-seul-recours-face-a-l-impuissance-de-la-justice_6791268_3210.html
+CONTENU: Loin d’être appliquées, les rares décisions rendues par la Cour suprême israélienne, plus haute juridiction de l’Etat hébreu, en faveur de Palestiniens dépossédés de leurs terres ou de leurs foyers par les colons israéliens sont annulées par la force ou par les autorités militaires.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-10 20:15:37
+TITRE: Octobre rose : Mathilde Panot refuse de porter le ruban, tollé au gouvernement et au RN
+LIEN: https://www.lemonde.fr/politique/article/2026/10/10/octobre-rose-mathilde-panot-refuse-de-porter-le-ruban-tolle-au-gouvernement-et-au-rn_6791027_823448.html
+CONTENU: La députée LFI dénonce le « cynisme » d’une campagne qu’elle relie à l’industrie chimique et à Israël, des propos que la ministre de la santé juge « approximatifs » et dans lesquels Marine Le Pen voit de l’antisémitisme.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-11 03:42:17
+TITRE: Autoroute A69 : une dernière manifestation des opposants avant la mise en service début novembre
+LIEN: https://www.lemonde.fr/planete/article/2026/10/11/autoroute-a69-une-derniere-manifestation-des-opposants-avant-la-mise-en-service-debut-novembre_6791234_3244.html
+CONTENU: Soutenue par ​La Voie​ est libre, Les Soulèvements de la Terre et Extinction Rebellion, la marche contre cette autoroute reliant Castres à Toulouse a réuni samedi entre 1 100 et 1 500 personnes dans le calme.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-11 05:02:33
+TITRE: Deux hommes mis en examen après la mort d'un Britannique de 84 ans dans un village du Gers
+LIEN: https://www.bfmtv.com/police-justice/faits-divers/deux-hommes-mis-en-examen-apres-la-mort-d-un-britannique-de-84-ans-dans-un-village-du-gers_AN-202610110071.html
+CONTENU: Le corps d'un Britannique de 84 ans avait été retrouvé à son domicile dans le Gers en septembre dernier. Il présentait une plaie à la tête. Deux personnes avaient été interpellées.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-11 04:59:00
+TITRE: Elle rapporte près de 5% quand le livret A est à 1,7% et l'assurance-vie à 2,7%: comment un particulier peut-il acheter de la dette française et est-ce risqué?
+LIEN: https://www.bfmtv.com/economie/patrimoine/elle-rapporte-pres-de-5-quand-le-livret-a-est-a-1-7-et-l-assurance-vie-a-2-7-comment-un-particulier-peut-il-acheter-de-la-dette-francaise-et-est-ce-risque_AV-202610110028.html
+CONTENU: Dans le contexte actuel de hausse des taux, acheter une obligation française peut être vu comme une opportunité pour les investisseurs particuliers en quête de diversification de leur portefeuille.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-11 04:55:34
+TITRE: Comment isoler son logement du froid, sans le transformer en bouilloire thermique ?
+LIEN: https://www.bfmtv.com/societe/video-comment-isoler-son-logement-du-froid-sans-le-transformer-en-bouilloire-thermique_VN-202610110070.html
+CONTENU: Historiquement pensée pour braver l’hiver, l’isolation des logements doit aujourd’hui relever un nouveau défi : faire face aux canicules estivales. Protéger son habitat à la fois du froid et de la chaleur est-il vraiment compatible ?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-11 04:53:29
+TITRE: L'ÉDITO POLITIQUE - Primaire sociale-démocrate: après le vote, l'impossible union?
+LIEN: https://www.bfmtv.com/politique/elections/presidentielle/video-l-edito-politique-primaire-sociale-democrate-apres-le-vote-l-impossible-union_VN-202610110069.html
+CONTENU: À 22h, ce samedi 10 octobre, 107.356 personnes avaient voté lors du premier tour de la primaire sociale-démocrate qui a débuté vendredi. Environ 140.000 électeurs sont inscrits pour choisir le candidat qui représentera cette facette de la gauche pour l'élection présidentielle.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-11 04:49:02
+TITRE: L'outarde canepetière, une espèce d'oiseau en voie de disparition en France
+LIEN: https://www.bfmtv.com/environnement/climat/video-l-outarde-canepetiere-une-espece-d-oiseau-en-voie-de-disparition-en-france_VN-202610110068.html
+CONTENU: Moins 73% d’animaux sauvages en moins dans le monde depuis 50 ans. C’est le chiffre choc sortit par le WWF ce jour dans son rapport Planète vivante. Mais il n’y a pas que les pandas, les éléphants ou les tigres qui sont en danger. En France aussi des espèces sont en voie de disparition. Comme l’outarde canepetière, un oiseau dont il reste quelques centaines d’individus seulement, mais qui résiste grâce à l’action de certaines associations et d’agriculteurs.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-11 04:40:06
+TITRE: Primaire sociale-démocrate: une élection pleine d'inconnues
+LIEN: https://www.bfmtv.com/politique/elections/presidentielle/video-primaire-a-gauche-une-election-pleine-d-inconnues_VN-202610110066.html
+CONTENU: À 22h, ce samedi 10 octobre, 107.356 personnes avaient voté lors du premier tour de la primaire sociale-démocrate qui a débuté vendredi. Environ 140.000 électeurs sont inscrits pour choisir le candidat qui représentera cette facette de la gauche pour l'élection présidentielle.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-11 04:37:57
+TITRE: Le bâtiment Censive de l'université de Nantes saccagé, après quatre jours d'occupation par les étudiants
+LIEN: https://www.bfmtv.com/societe/video-le-batiment-censive-de-l-universite-de-nantes-saccage-apres-quatre-jours-d-occupation-par-les-etudiants_VN-202610110065.html
+CONTENU: Après 4 jours d’occupation par les étudiants, le campus de l’Université de Nantes a été évacué ce samedi 10 octobre. Le bâtiment où se réunissait les étudiants protestataires est dans un état lamentable. Les dégradations sont estimées à plusieurs centaines de milliers d’euros.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-11 04:33:38
+TITRE: Prix des carburants: à Ostwald, en Alsace, la barre des trois euros le litre presque franchie
+LIEN: https://www.bfmtv.com/economie/video-prix-des-carburants-a-ostwald-en-alsace-la-barre-des-trois-euros-le-litre-presque-franchie_VN-202610110064.html
+CONTENU: Les prix du carburant mettent encore et toujours les nerfs des automobilistes à rude épreuve. La baisse tarde à venir, malgré le déblocage des 100 millions de barils de gasoil et de pétrole brut.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-11 04:30:55
+TITRE: L'État veut prélever 17% sur les comptes, Livrets A et assurances-vie oubliés
+LIEN: https://www.bfmtv.com/economie/video-l-etat-veut-prelever-17-sur-les-comptes-livrets-a-et-assurances-vie-oublies_VN-202610110062.html
+CONTENU: Dans son projet de budget pour 2027, présenté en conseil des ministres ce jeudi, le gouvernement plaide pour l'instauration d'un prélèvement exceptionnel sur les avoirs en déshérence qui pourrait rapporter 1,4 milliard d'euros en 2027.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-11 04:30:00
+TITRE: "Cela peut monter jusqu'à 300.000 dollars": les salaires fous des électriciens américains qui construisent les data centers de l'IA et gagnent autant que des banquiers de Wall Street
+LIEN: https://www.bfmtv.com/economie/entreprises/cela-peut-monter-jusqu-a-300-000-dollars-les-salaires-fous-des-electriciens-americains-qui-construisent-les-data-centers-de-l-ia-et-gagnent-autant-que-des-banquiers-de-wall-street_AV-202610110044.html
+CONTENU: L'essor des data centers aux États-Unis crée une forte demande d'électriciens qualifiés. Certains, qui ne dépassent pas trente ans, touchent parfois jusqu'à 300.000 dollars par an, même si les conditions de travail peuvent rebuter.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-11 06:00:24
+TITRE: DIRECT - Yémen: le Premier ministre pakistanais condamne l'attaque «odieuse» contre l'aéroport de Riyad
+LIEN: https://www.rfi.fr/fr/moyen-orient/20261011-direct-y%C3%A9men-le-premier-ministre-pakistanais-condamne-l-attaque-odieuse-contre-l-a%C3%A9roport-de-riyad
+CONTENU: Au moins 12 personnes ont été tuées et 309 blessées dans une attaque samedi 10 octobre contre l'aéroport de Riyad, la plus meurtrière en plus de dix ans dans le royaume, ont annoncé les autorités saoudiennes, accusant les Houthis du Yémen. Ce dimanche, le Premier ministre pakistanais Shebaz Sharif a condamné l'attaque « inacceptable » qui constitue « une grave menace pour la paix et la stabilité régionales ». Les États-Unis disent réfléchir à s’engager dans le conflit.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-11 02:49:29
+TITRE: Envoi de la réserve d'or à l'étranger, spéculation: en Argentine, l'étrange gestion de la Banque centrale
+LIEN: https://www.rfi.fr/fr/am%C3%A9riques/20261011-argentine-o%C3%B9-est-pass%C3%A9-l-or-de-la-banque-centrale-accus%C3%A9e-d-avoir-perdu-plus-d-un-milliard-de-dollars
+CONTENU: En Argentine, un rapport de la Cour des comptes épingle la Banque centrale, mise en cause pour la perte de plus d’un milliard de dollars en spéculant sur le cours de l’or. L'accusation intervient alors que l’envoi à l’étranger d’une partie des réserves physiques d’or du pays suscite toujours la controverse...
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-11 05:14:24
+TITRE: Ukraine: malgré la guerre, les médias veulent défendre leur rôle de contre-pouvoir
+LIEN: https://www.rfi.fr/fr/europe/20261011-ukraine-malgr%C3%A9-la-guerre-les-m%C3%A9dias-veulent-d%C3%A9fendre-leur-r%C3%B4le-de-contre-pouvoir
+CONTENU: Même si leurs révélations peuvent ternir l'image du pays, les journalistes ukrainiens continuent d’enquêter sur des affaires internes. L'enjeu n'est pas seulement démocratique : dénoncer la corruption est aussi une manière de mieux faire face à la guerre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-10 22:33:29
+TITRE: L'Ukraine face au fléau des drones russes Geran-5
+LIEN: https://www.rfi.fr/fr/podcasts/lignes-de-d%C3%A9fense/20261010-l-ukraine-face-au-fl%C3%A9au-des-drones-russes-geran-5
+CONTENU: Les frappes russes précipitent Kiev en mode « survie » avant l'hiver, indique le maire de la capitale ukrainienne, alors que les bombardements russes s'intensifient sur la ville. Tandis que la ligne de front reste pour l'essentiel figée, Moscou accentue ses frappes de longue portée contre Kiev, recourant notamment à des missiles balistiques et à des drones à réaction difficiles à intercepter : des Géran-5 qui fragilisent la défense ukrainienne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-11 05:58:02
+TITRE: Inde: la justice ordonne la libération des chefs des «cafards», la jeunesse reste combative
+LIEN: https://www.rfi.fr/fr/asie-pacifique/20261011-inde-la-justice-ordonne-la-lib%C3%A9ration-des-chefs-des-cafards-la-jeunesse-reste-combative
+CONTENU: La capitale indienne se réveille dans une atmosphère d'état de siège. Le bras de fer entre la société civile et les autorités se poursuit sur le front de la contestation contre la suppression de 130 millions d'électeurs. Le chef de la commission électorale, Gyanesh Kumar, est accusé de favoriser le BJP de Narendra Modi au pouvoir. Malgré la répression policière et les milliers d'arrestations, les jeunes promettent de revenir à la charge. Dimanche 11 octobre, un tribunal de New Delhi a ordonné la remise en liberté des trois chefs du mouvement des « cafards ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-11 05:20:19
+TITRE: La société palestinienne entre indignation et désillusion après le nouveau report des législatives
+LIEN: https://www.rfi.fr/fr/moyen-orient/20261011-la-soci%C3%A9t%C3%A9-palestinienne-entre-indignation-et-d%C3%A9sillusion-apr%C3%A8s-le-nouveau-report-des-l%C3%A9gislatives
+CONTENU: Nouveau rendez-vous manqué pour la démocratie palestinienne. Mahmoud Abbas a décrété samedi 10 octobre le report de près d’un an des législatives prévues fin novembre, fixant désormais le scrutin au 11 septembre 2027, conjointement avec la présidentielle. Le président de l'Autorité palestinienne invoque les entraves israéliennes, mais dans les territoires comme en ligne, ce énième report alimente une vive désillusion.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-11 04:10:51
+TITRE: Conflit dans l’est de la RDC: fin de la visite de la délégation de l'Union africaine
+LIEN: https://www.rfi.fr/fr/afrique/20261011-conflit-dans-l-est-de-la-rdc-fin-de-la-visite-de-la-d%C3%A9l%C3%A9gation-de-l-union-africaine
+CONTENU: La délégation de l'Union Africaine a de nouveau rencontré le président Tshisekedi, le samedi 10 octobre 2026, à Kinshasa. Cette mission, composée des anciens présidents Uhuru Kenyatta du Kenya,  Mokgweetsi Masisi du Botswana, Sahle-Work Zewde d’Éthiopie et Catherine Samba-Panza de Centrafrique avaient, plus tôt dans la semaine, eu des entretiens avec Paul Kagame à Kigali et l'AFC M23 à Goma, pour tenter de trouver une sortie à la crise dans l'est du Congo.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-11 06:38:25
+TITRE: L'Éthiopie et l'Érythrée au bord de l'affrontement
+LIEN: https://www.rfi.fr/fr/afrique/20261011-l-%C3%A9thiopie-et-l-%C3%A9rythr%C3%A9e-au-bord-de-l-affrontement
+CONTENU: En Éthiopie au Tigré, les troupes fédérales progressent toujours plus vers le nord et la frontière avec l'Érythrée où sont postées les troupes érythréennes. L'Érythrée a demandé hier au Conseil de sécurité de l'ONU de condamner la « déclaration de guerre déplorable » de l'Éthiopie, avertissant qu'elle « déstabilisera la région toute entière ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: RFI (Actualités)
+DATE: 2026-10-11 07:41:38
+TITRE: Le changement climatique aggrave l'avenir des jeunes filles, selon une étude
+LIEN: https://www.rfi.fr/fr/environnement/20261011-le-changement-climatique-aggrave-l-avenir-des-jeunes-filles-selon-une-%C3%A9tude
+CONTENU: Le réchauffement climatique met aussi en péril l'avenir des jeunes filles. À l'occasion de la Journée internationale consacrée à la défense de leurs droits, ce dimanche 11 octobre, c'est le constat alarmant de l'ONG Plan International, dans un rapport publié à l'occasion. L'organisation a interrogé 5 000 adolescentes et jeunes femmes dans cinq pays, dont le Sénégal, le Kenya et le Bangladesh. Et une écrasante majorité d'entre elles en subit déjà les effets.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-11 06:54:35
+TITRE: What is umami?
+LIEN: https://theconversation.com/what-is-umami-293748
+CONTENU: Umami is the fifth flavour to join the rather elite circle of our basic tastes alongside sweet, sour, salty and bitter. But what is this meaty, brothy flavour that even cats are crazy about?
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-11 06:53:27
+TITRE: La perte du « goût » est en réalité souvent une perte d’odorat
+LIEN: https://theconversation.com/la-perte-du-gout-est-en-realite-souvent-une-perte-dodorat-291502
+CONTENU: Un rhume, un accident ou le simple fait de vieillir peuvent affecter notre capacité à percevoir les goûts. Dans la plupart des cas, ces symptômes résultent d’un dysfonctionnement de notre système olfactif.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-11 06:52:52
+TITRE: Grand âge : comment les Ehpad repensent leurs liens avec la vie locale
+LIEN: https://theconversation.com/grand-age-comment-les-ehpad-repensent-leurs-liens-avec-la-vie-locale-285955
+CONTENU: Longtemps pensés comme des lieux de vie de et de soin à part, les Ehpad cherchent à s’ouvrir sur leur territoire. Cette évolution transforme leurs services, leurs usages et leur architecture.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-11 06:52:07
+TITRE: Trump peut-il acheter les midterms ?
+LIEN: https://theconversation.com/trump-peut-il-acheter-les-midterms-293621
+CONTENU: Donald Trump l’a promis&amp;nbsp;: si les républicains gagnent les midterms, chaque citoyen adulte recevra 5&amp;nbsp;000&amp;nbsp;dollars. Une promesse risquée à bien des égards.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-11 06:51:40
+TITRE: Pourquoi le prix du bois chute-t-il après un incendie ou une tempête ?
+LIEN: https://theconversation.com/pourquoi-le-prix-du-bois-chute-t-il-apres-un-incendie-ou-une-tempete-292838
+CONTENU: Après une tempête ou un incendie, de nombreux arbres endommagés peuvent être vendus si on agit rapidement. L’afflux de bois à écouler sur le marché fait baisser les prix. À l’inverse, une production en baisse fait remonter les prix.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-11 06:51:15
+TITRE: Près de 2,7 € de retombées économiques pour chaque euro investi : les universités, moteurs de croissance des territoires
+LIEN: https://theconversation.com/pres-de-2-7-de-retombees-economiques-pour-chaque-euro-investi-les-universites-moteurs-de-croissance-des-territoires-293061
+CONTENU: Si les dépenses des universités ont des effets économiques directs sur les territoires, des travaux montrent combien la formation et la recherche jouent aussi sur leur compétitivité.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-11 06:50:55
+TITRE: Programmes déclarés « sérieux » ou « intenables » : rendre les hypothèses économiques discutables est un enjeu démocratique pour 2027
+LIEN: https://theconversation.com/programmes-declares-serieux-ou-intenables-rendre-les-hypotheses-economiques-discutables-est-un-enjeu-democratique-pour-2027-285978
+CONTENU: En amont du débat public, ce sont souvent des modèles macroéconomiques, et des hypothèses rarement explicitées, qui tracent la frontière entre l’envisageable et l’irréaliste.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-11 06:50:06
+TITRE: « Dark kitchens » : comment les cuisines fantômes transforment nos villes et notre manière de manger
+LIEN: https://theconversation.com/dark-kitchens-comment-les-cuisines-fantomes-transforment-nos-villes-et-notre-maniere-de-manger-291912
+CONTENU: Cuisines sans salle ni vitrine, les dark kitchens bouleversent la restauration urbaine. Une mutation logistique qui transforme aussi notre manière de manger.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-11 06:49:07
+TITRE: Les animes du studio Ghibli et la culture du riz au Japon
+LIEN: https://theconversation.com/les-animes-du-studio-ghibli-et-la-culture-du-riz-au-japon-288741
+CONTENU: La culture et la consommation du riz sont des marqueurs très forts de l’identité japonaise, que l’on retrouve illustrés avec précision dans les films du studio Ghibli.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-10-11 00:30:01
+TITRE: Zimbabwe's dinosaurs were different from South Africa's: New species offers clues
+LIEN: https://phys.org/news/2026-10-zimbabwe-dinosaurs-south-africa-species.html
+CONTENU: Africa boasts up to 25% of Earth's animal and plant species. This diversity is driven by varied habitats: harsh deserts, vast grasslands, dense forests, towering mountains, lush coastlines and teeming seas. It is also due to deep evolutionary roots, as many animal and plant groups originated here in the distant past. Paleontologists have been excavating this material for nearly two centuries.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-10-11 07:00:07
+TITRE: « Pour réformer les retraites, augmenter le taux d’emploi est la seule solution durable »
+LIEN: https://www.lemonde.fr/idees/article/2026/10/11/pour-reformer-les-retraites-augmenter-le-taux-d-emploi-est-la-seule-solution-durable_6791477_3232.html
+CONTENU: Alors que la France fait la politique de l’autruche depuis trente ans, l’économiste Charles Dennery estime, dans une tribune au « Monde » qu’il faut reporter l’âge légal, miser sur l’emploi des seniors et réduire les dépenses publiques pour sauver le régime des retraites.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-10-11 04:00:12
+TITRE: « La question environnementale a mis en lumière et banalisé, ces dernières années, l’usage politique du maintien de l’ordre »
+LIEN: https://www.lemonde.fr/idees/article/2026/10/11/la-question-environnementale-a-mis-en-lumiere-et-banalise-ces-dernieres-annees-l-usage-politique-du-maintien-de-l-ordre_6791270_3232.html
+CONTENU: La gravité des troubles à l’ordre public est jugée à l’aune du positionnement politique de ceux qui les commettent, dénonce, dans sa chronique, Stéphane Foucart, journaliste au service Planète.
+
+----------------------------------------
+CATEGORIE: ESSAIS
+SOURCE: Le Monde (Idées & Analyses)
+DATE: 2026-10-11 04:00:01
+TITRE: Delphine Horvilleur, rabbine : « Après le 7-Octobre, il m’a fallu du temps pour parler de la souffrance des Palestiniens innocents »
+LIEN: https://www.lemonde.fr/le-monde-des-religions/article/2026/10/11/delphine-horvilleur-rabbine-apres-le-7-octobre-il-m-a-fallu-du-temps-pour-parler-de-la-souffrance-des-palestiniens-innocents_6791269_6038514.html
+CONTENU: Trois ans après le 7-Octobre en Israël et le début de la guerre d’anéantissement contre Gaza, la rabbine revient, dans un entretien au « Monde », sur ce que ces drames ont provoqué en elle, dans la communauté juive et dans la société entière, alors qu’approchent des élections cruciales en Israël et en France.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-10-10 20:37:34
 TITRE: EN DIRECT, guerre en Ukraine : face à Donald Trump, qui réclame « un nouveau président » à Kiev, le Royaume-Uni assure Volodymyr Zelensky de sa « totale solidarité »
