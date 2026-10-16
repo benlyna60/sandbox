@@ -6,6 +6,78 @@
         <description>Base d'apprentissage massive, robuste et structurée</description>
         
         <item>
+            <title><![CDATA[80 ans du statut de la fonction publique : comment préserver les principes tout en faisant évoluer les pratiques]]></title>
+            <link>https://www.lemonde.fr/idees/article/2026/10/16/80-ans-du-statut-de-la-fonction-publique-comment-preserver-les-principes-tout-en-faisant-evoluer-les-pratiques_6795467_3232.html</link>
+            <pubDate>2026-10-16 09:00:07</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[Dans un contexte social et politique exigeant, la fonction publique doit se réinventer en démontrant son efficacité. Les principes d’égalité, de neutralité, mais aussi de performance, énoncés le 19 octobre 1946 dans la loi créant le premier statut républicain de ses agents, peuvent continuer de la guider.]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[Etats généraux de la douleur des femmes : « Il faut mieux écouter, et faire de cette exigence un levier d’amélioration des pratiques de soin »]]></title>
+            <link>https://www.lemonde.fr/idees/article/2026/10/16/etats-generaux-de-la-douleur-des-femmes-il-faut-mieux-ecouter-et-faire-de-cette-exigence-un-levier-d-amelioration-des-pratiques-de-soin_6795324_3232.html</link>
+            <pubDate>2026-10-16 06:00:24</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[La souffrance féminine est souvent minimisée, dénonce le comité d’experts des Etats généraux de la douleur des femmes, dans une tribune au « Monde ». Dans ses recommandations, présentées le 19 octobre, il préconise une plus grande connaissance des spécificités de genre.]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[« La promiscuité de responsables syndicaux avec l’extrême droite, notamment ceux d’Alliance, s’avère particulièrement inquiétante pour notre démocratie »]]></title>
+            <link>https://www.lemonde.fr/idees/article/2026/10/16/la-promiscuite-de-responsables-syndicaux-avec-l-extreme-droite-s-avere-particulierement-inquietante-pour-notre-democratie_6795184_3232.html</link>
+            <pubDate>2026-10-16 04:00:19</pubDate>
+            <category>ESSAIS</category>
+            <description><![CDATA[Là où le RN prend le pouvoir, les droits syndicaux sont menacés, rappellent André Thomas et Nicolas Blanc, anciens secrétaires nationaux de la CFE-CGC, dans une tribune au « Monde ». Ils demandent l’exclusion d’Alliance, syndicat de la police nationale, par respect pour l’apolitisme revendiqué par la confédération.]]></description>
+            <source>Le Monde (Idées & Analyses)</source>
+        </item>
+        <item>
+            <title><![CDATA[Les IA risquent-elles de se dévorer elles-mêmes ?]]></title>
+            <link>https://www.blogdumoderateur.com/ia-risquent-se-devorer-elles-memes/</link>
+            <pubDate>2026-10-16 05:30:54</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Des notes internes de Microsoft et OpenAI l’admettent : en privant les sites de trafic, l’IA tarit les contenus humains dont elle a besoin. Elle menace ainsi l'entrainement de ses propres modèles.]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[Salaire, IA, réseaux : comment le métier de CM a changé en 5 ans]]></title>
+            <link>https://www.blogdumoderateur.com/comment-metier-cm-change-5-ans/</link>
+            <pubDate>2026-10-16 05:00:57</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Comment le community management a-t-il évolué ces cinq dernières années ? Réponse en dix chiffres.]]></description>
+            <source>Le Blog du Modérateur</source>
+        </item>
+        <item>
+            <title><![CDATA[The next developer interface is ambient intelligence]]></title>
+            <link>https://github.blog/news-insights/company-news/the-next-developer-interface-is-ambient-intelligence/</link>
+            <pubDate>2026-10-15 19:39:27</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[AI, agents, voice, and physical controls are shifting software development from operating tools to expressing intent—and helping developers stay focused on building.]]></description>
+            <source>GitHub Blog</source>
+        </item>
+        <item>
+            <title><![CDATA[Staying Evergreen: How we automated secure access and repo hygiene in a shared org]]></title>
+            <link>https://github.blog/engineering/platform-security/staying-evergreen-how-we-automated-secure-access-and-repo-hygiene-in-a-shared-org/</link>
+            <pubDate>2026-10-15 18:00:00</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Put native GitHub features to work to review outside collaborator access and archive stale repositories.]]></description>
+            <source>GitHub Blog</source>
+        </item>
+        <item>
+            <title><![CDATA[GitHub availability report: September 2026]]></title>
+            <link>https://github.blog/news-insights/company-news/github-availability-report-september-2026/</link>
+            <pubDate>2026-10-14 20:01:35</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[In September, we experienced two incidents that resulted in degraded performance across GitHub services.]]></description>
+            <source>GitHub Blog</source>
+        </item>
+        <item>
+            <title><![CDATA[From 2,500 requests to 24: Rebuilding star history without the stargazers]]></title>
+            <link>https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/</link>
+            <pubDate>2026-10-14 19:11:33</pubDate>
+            <category>TECH</category>
+            <description><![CDATA[Our new repo star history API now provides trends without returning individual identities or requiring unbounded database work. These are the engineering tradeoffs we made.]]></description>
+            <source>GitHub Blog</source>
+        </item>
+        <item>
             <title><![CDATA[«Instinct» : Angèle ne s’excusera pas]]></title>
             <link>https://www.ledevoir.com/culture/musique/1017341/instinct-angele-ne-excusera-pas</link>
             <pubDate>2026-10-16 04:00:00</pubDate>
