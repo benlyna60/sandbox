@@ -1,4 +1,20 @@
 ----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-16 14:31:04
+TITRE: Ménopause : une pause au milieu de la vie, non une date de péremption
+LIEN: https://theconversation.com/menopause-une-pause-au-milieu-de-la-vie-non-une-date-de-peremption-294380
+CONTENU: À l’occasion de la Journée mondiale de la ménopause du 18 octobre, la philosophe Gloria&amp;nbsp;Origgi invite à penser cette expérience comme une transformation plutôt que comme un déclin.
+
+----------------------------------------
+CATEGORIE: TECH
+SOURCE: Siècle Digital
+DATE: 2026-10-16 11:41:01
+TITRE: Les sites web voient leur trafic provenant de ChatGPT s’effondrer à cause d’un changement inattendu
+LIEN: https://siecledigital.fr/2026/10/16/le-trafic-provenant-de-chatgpt-seffondre-dans-les-statistiques-mais-les-visites-nont-pas-forcement-disparu/
+CONTENU: Le trafic provenant de ChatGPT enregistre une baisse significative dans les statistiques. Les visites ne sont pas moins nombreuses pour autant. ChatGPT a temporairement cessé d’ajouter des paramètres UTM à certains liens, ce qui complique la mesure du trafic qu’il génère. Il est donc difficile de savoir d’où proviennent les clics. ChatGPT aurait supprimé les […]
+
+----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
 DATE: 2026-10-16 13:43:00
