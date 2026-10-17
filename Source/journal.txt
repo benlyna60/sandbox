@@ -1,6 +1,214 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-17 04:00:00
+TITRE: Combien coûte une épicerie équilibrée à Montréal?
+LIEN: https://www.ledevoir.com/economie/consommation/1017584/combien-coute-epicerie-equilibree-montreal
+CONTENU: Le prix pour se nourrir sainement demeure stable, mais inaccessible pour plusieurs familles.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-17 15:30:00
+TITRE: Le pape Léon rentre au Vatican, quatre jours après une opération pour un cancer du poumon
+LIEN: https://www.ledevoir.com/monde/europe/1017680/pape-leon-rentre-vatican-quatre-jours-apres-operation-cancer-poumon
+CONTENU: Le souverain pontife a quelque semaines pour récupérer avant un voyage en Amérique latine en novembre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-17 14:00:00
+TITRE: Quoi voir sur vos écrans cette fin de semaine?
+LIEN: https://www.ledevoir.com/culture/cinema/1017674/quoi-voir-ecrans-cette-fin-semaine
+CONTENU: Une sélection de nos critiques pour guider vos visionnages du week-end.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-17 14:20:00
+TITRE: De Paris à Marseille, une mobilisation contre la «vie chère» émaillée de scènes de chaos
+LIEN: https://www.ledevoir.com/monde/europe/1017677/france-mobilisation-contre-vie-chere-emaillee-scenes-chaos
+CONTENU: Les manifestations un peu partout au pays réunissaient notamment des gilets jaunes, des lycéens et des salariés.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-17 14:36:57
+TITRE: EN DIRECT, manifestations du 17 octobre : la situation se tend dans plusieurs villes ; la résidence de la préfète « saccagée » à Bordeaux ; « nous ne nous laisserons pas intimider », assure Sébastien Lecornu
+LIEN: https://www.lemonde.fr/societe/live/2026/10/17/en-direct-manifestations-du-17-octobre-a-paris-et-dans-les-grandes-villes-de-france-des-corteges-calmes-et-des-scenes-d-affrontements-avec-les-forces-de-l-ordre_6795855_3224.html
+CONTENU: Dans la capitale, mais aussi à Lille, à Lyon et à Marseille, de fortes tensions ont été signalées par nos journalistes sur le terrain. Des destructions ont aussi été observées dans les grandes villes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-17 14:51:49
+TITRE: EN DIRECT, guerre en Ukraine : Donald Trump exempte la Russie de nouvelles sanctions, Kiev dénonce un encouragement à poursuivre les attaques
+LIEN: https://www.lemonde.fr/international/live/2026/10/17/en-direct-guerre-en-ukraine-donald-trump-exempte-la-russie-de-nouvelles-sanctions-kiev-denonce-un-encouragement-a-poursuivre-les-attaques_6791198_3210.html
+CONTENU: Dans un décret publié vendredi soir par la Maison Blanche, le président américain « exempte l’application des sanctions, restrictions et droits de douane prévue dans le Graham Act ». Cette loi constituait la première action majeure du Congrès contre Moscou depuis le retour au pouvoir de Donald Trump.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-17 15:00:07
+TITRE: Une omoplate de Néandertalien perforée par un projectile de bois découverte
+LIEN: https://www.lemonde.fr/sciences/article/2026/10/17/une-omoplate-de-neandertalien-perforee-par-un-projectile-de-bois-decouverte_6796409_1650684.html
+CONTENU: Les restes d’un individu inhumé il y a 75 000 ans dans la grotte de Shanidar, dans le Kurdistan irakien, portent les traces de graves blessures, dont la dernière a été fatale.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-17 12:00:12
+TITRE: « Beaucoup de gens ne mangeraient pas s’ils ne venaient pas là » : à Alès, une cantine solidaire contre la vie chère
+LIEN: https://www.lemonde.fr/economie/article/2026/10/17/beaucoup-de-gens-ne-mangeraient-pas-s-ils-ne-venaient-pas-la-a-ales-une-cantine-solidaire-contre-la-vie-chere_6796306_3234.html
+CONTENU: Dans la sous-préfecture du Gard, où 30 % de la population vit sous le seuil de pauvreté, un lieu associatif propose des repas pour quelques euros aux personnes aux revenus modestes. Depuis le début de la crise énergétique et les tensions sur le pouvoir d’achat, un nouveau public frappe à sa porte.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-17 15:08:53
+TITRE: Au Maroc, un nouveau gouvernement formé, mais peu de changement, sauf pour les femmes
+LIEN: https://www.lemonde.fr/international/article/2026/10/17/au-maroc-un-nouveau-gouvernement-forme-mais-peu-de-changement-sauf-pour-les-femmes_6796443_3210.html
+CONTENU: Trente-deux ministres ont prêté serment devant le roi du pays, Mohammed VI, vendredi 16 octobre, mais 40 % d’entre eux étaient déjà en poste. Les femmes, elles, reculent dans la hiérarchie gouvernementale.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-17 14:58:36
+TITRE: Cisjordanie occupée: un maire français frappé par des colons lors de l'attaque d'un convoi de diplomates européens
+LIEN: https://www.bfmtv.com/international/moyen-orient/israel/cisjordanie-occupee-un-maire-francais-frappe-par-des-colons-lors-de-l-attaque-d-un-convoi-de-diplomates-europeens_AN-202610170260.html
+CONTENU: D'après une vidéo, il s'agirait de Bernard Baudoux, maire communiste d'Aulnoye-Aymeries (Nord).
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-17 16:11:11
+TITRE: Manifestations du 17 octobre: Marine Le Pen s'en prend à La France insoumise, Jean-Luc Mélenchon juge "lamentable" la stratégie du maintien de l'ordre
+LIEN: https://www.bfmtv.com/politique/manifestations-du-17-octobre-marine-le-pen-s-en-prend-a-la-france-insoumise-jean-luc-melenchon-juge-lamentable-la-strategie-du-maintien-de-l-ordre_AD-202610170286.html
+CONTENU: La candidate du Rassemblement national a fustigé ce samedi 17 octobre "les discours des députés de Jean-Luc Mélenchon" contribuant selon elle à "légitimer la violence". Le leader de la France insoumise a pour sa part jugé que "l'affrontement semble être le but de cette stratégie de 'maintien de l'ordre'".
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-17 16:08:14
+TITRE: Avant les accusations d'usage de l'IA et de plagiat, Thélyson Orélien avait signé un contrat avec sa maison d'édition pour un deuxième livre
+LIEN: https://www.bfmtv.com/culture/livres-bd/avant-les-accusations-d-usage-de-l-ia-et-de-plagiat-thelyson-orelien-avait-signe-un-contrat-avec-sa-maison-d-edition-pour-un-deuxieme-livre_AN-202610170284.html
+CONTENU: Ce vendredi 16 octobre, le co-directeur général de la maison d’édition Boréal, qui publie l'ouvrage de Thélyson Orélien au Canada, a révélé qu'un accord avait été signé avec l'auteur canado-haïtien bien avant les polémiques, pour la publication d'un deuxième ouvrage.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-17 09:38:02
+TITRE: DIRECT. Strasbourg-PSG: les Parisiens sont menés en Alsace
+LIEN: https://rmcsport.bfmtv.com/football/clubs/paris-saint-germain/direct-strasbourg-psg-suivez-en-live-le-match-de-la-7e-journee-de-ligue-1_LS-202610170161.html
+CONTENU: Après son festival européen, mercredi soir sur le terrain de Manchester City (4-2), le PSG se déplace à Strasbourg ce samedi en Ligue 1. Coup d'envoi à 17h15 dans le direct commenté de RMC Sport.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-17 15:59:20
+TITRE: PSG-Strasbourg: des gilets jaunes dans le parcage parisien à la Meinau en plein week-end de mobilisation
+LIEN: https://rmcsport.bfmtv.com/football/ligue-1/psg-strasbourg-des-gilets-jaunes-dans-le-parcage-parisien-a-la-meinau-en-plein-week-end-de-mobilisation_AV-202610170280.html
+CONTENU: Plusieurs supporters parisiens qui ont fait le déplacement en Alsace pour assister au match de la 7e journée de Ligue 1 Strasbourg-PSG samedi après-midi portaient des gilets jaunes dans le parcage visiteur. Ce samedi marquait le retour du mouvement de protestation qui a marqué le premier mandat d’Emmanuel Macron en 2018.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-17 15:52:53
+TITRE: Manifestations du 17 octobre: scènes de violence dans la capitale, des commerces saccagés et incendiés
+LIEN: https://www.bfmtv.com/societe/manifestations/video-manifestations-du-17-octobre-scenes-de-violence-dans-la-capitale-des-commerces-saccages-et-incendies_VN-202610170279.html
+CONTENU: Un samedi de mobilisation pour réunir différentes "colères": anciens gilets jaunes, lycéens, étudiants, militants du climat et même agriculteurs se donnent rendez-vous pour une journée protéiforme contre la "vie chère" avec des blocages et manifestations dont l'ampleur est difficile à prévoir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-17 15:52:37
+TITRE: 158 ans de prison chacun: au Mexique, les meurtriers de trois surfeurs étrangers lourdement condamnés
+LIEN: https://www.bfmtv.com/international/amerique-latine/mexique/158-ans-de-prison-de-chacun-au-mexique-les-meurtriers-de-trois-surfeurs-etrangers-lourdement-condamnes_AN-202610170278.html
+CONTENU: Deux ans après les meurtres de deux surfeurs australiens et d'un Américain, en avril 2024, qui avaient choqué les États-Unis et l'Australie, la justice mexicaine a condamné les trois meurtriers à 158 ans et neuf mois de prison.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-17 15:50:31
+TITRE: Guerre au Moyen-Orient: L'Iran dit soutenir "un processus politique" pour mettre fin au conflit entre l'Arabie Saoudit et les Houthis du Yemen
+LIEN: https://www.bfmtv.com/international/moyen-orient/iran/guerre-au-moyen-orient-l-iran-dit-soutenir-un-processus-politique-pour-mettre-fin-au-conflit-entre-l-arabie-saoudit-et-les-houthis-du-yemen_AV-202610170277.html
+CONTENU: Face aux tensions et aux violences de plus en plus importantes entre l'Arabie saoudite et les Houthis du Yémen, l'Iran a pris la parole, assurant vouloir soutenir "un processus politique inclusif et global".
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-17 15:48:36
+TITRE: "Le 17 c'est Warzone!": le créateur de contenu Rayan PSN interpellé et placé en garde à vue
+LIEN: https://www.bfmtv.com/police-justice/video-le-17-c-est-warzone-le-createur-de-contenu-rayan-psn-interpelle-et-place-en-garde-a-vue_VN-202610170276.html
+CONTENU: Concerné par un signalement du préfet de police de Paris pour incitation à commettre un délit ou un crime, car il a appelé selon les autorités à participer à des émeutes ce samedi 17 octobre, l'influenceur Rayan PSN a été interpellé et placé en garde à vue.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-17 08:09:01
+TITRE: Dans nos déchets organiques, du plastique qui limite l’efficacité de la collecte
+LIEN: https://theconversation.com/dans-nos-dechets-organiques-du-plastique-qui-limite-lefficacite-de-la-collecte-287105
+CONTENU: La présence de certains plastiques considérés à tort comme étant compatibles avec la méthanisation freine les processus de valorisation.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-17 08:08:34
+TITRE: Face aux incertitudes budgétaires de 2027, les universités françaises poussées à changer de modèle ?
+LIEN: https://theconversation.com/face-aux-incertitudes-budgetaires-de-2027-les-universites-francaises-poussees-a-changer-de-modele-293365
+CONTENU: Les universités françaises abordent 2027 dans une situation financière de plus en plus fragile. Les choix budgétaires à venir pourraient accélérer une transformation profonde de leur modèle de financement.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-17 08:07:53
+TITRE: Gare aux boycotts ! En temps de guerre, les entreprises doivent protéger leur réputation
+LIEN: https://theconversation.com/gare-aux-boycotts-en-temps-de-guerre-les-entreprises-doivent-proteger-leur-reputation-288640
+CONTENU: Si les conflits génèrent souvent des risques opérationnels, ils peuvent aussi nuire à la réputation des entreprises, dont les décisions sont surveillées de près.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: The Conversation France
+DATE: 2026-10-17 08:07:18
+TITRE: « Nationaliser les pertes et privatiser les profits » ? Ce que nous apprend le précédent de la location-gérance de Boussac de 1981 à 1984
+LIEN: https://theconversation.com/nationaliser-les-pertes-et-privatiser-les-profits-ce-que-nous-apprend-le-precedent-de-la-location-gerance-de-boussac-de-1981-a-1984-292485
+CONTENU: Connaissez-vous la location-gérance&amp;nbsp;? Ce mécanisme légal très prisé de la grande distribution a été mobilisé dans le redressement de l’entreprise Boussac au début des années&amp;nbsp;1980.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-10-17 17:00:05
+TITRE: What an ancient volcanic eruption teaches us about resilience today
+LIEN: https://phys.org/news/2026-10-ancient-volcanic-eruption-resilience-today.html
+CONTENU: When a massive environmental disaster strikes, do societies simply collapse and disappear? Or do people find a way to adapt, rebuild and recover?
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-10-17 16:00:01
+TITRE: Hand-cranked device tells blood type and red cell levels in 1 minute
+LIEN: https://phys.org/news/2026-10-cranked-device-blood-red-cell.html
+CONTENU: When someone is badly injured, doctors urgently need two facts: the patient's blood type, so that a transfusion is safe, and their hematocrit, the share of the blood made up of red blood cells, which reveals blood loss or anemia. Hospitals measure both with large machines that need electricity and trained staff, which are often unavailable in ambulances, disaster zones or remote clinics.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-10-17 15:40:01
+TITRE: Salt crystals could hold clues to life beneath Enceladus's ice
+LIEN: https://phys.org/news/2026-10-salt-crystals-clues-life-beneath.html
+CONTENU: The ocean beneath Saturn's moon Enceladus lies under kilometers of ice, but some of its contents do reach the surface. Jets near the south pole spray out water vapor and icy particles, offering a way to investigate the hidden ocean without drilling down to it.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-10-17 15:00:01
+TITRE: Australian scavengers don't just eat everything and slink away. They approach a carcass like a buffet
+LIEN: https://phys.org/news/2026-10-australian-scavengers-dont-approach-carcass.html
+CONTENU: When scientists talk about scavengers, you might imagine an animal sniffing out or stumbling across a carcass, eating as much as possible and slinking away.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
 DATE: 2026-10-17 12:30:00
 TITRE: Aucun candidat à la tête de l’ONU n’a l’appui des cinq membres permanents du Conseil
 LIEN: https://www.ledevoir.com/monde/1017668/aucun-candidat-tete-onu-appui-cinq-membres-permanents-conseil
