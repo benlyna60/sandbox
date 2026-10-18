@@ -1,5 +1,53 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-17 18:20:00
+TITRE: Pourquoi la colère contre «la vie chère» gagne-t-elle les rues de France?
+LIEN: https://www.ledevoir.com/monde/europe/1017692/francais-mobilisent-contre-vie-chere
+CONTENU: Dans la foulée des mobilisations lycéennes, les jeunes ont été rejoints samedi par plusieurs groupes de la société.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-17 21:58:00
+TITRE: Aux États-Unis, la contestation anti-Trump s’emploie à mobiliser dans les urnes
+LIEN: https://www.ledevoir.com/monde/etats-unis/1017701/etats-unis-contestation-anti-trump-emploie-mobiliser-urnes
+CONTENU: À deux semaines des élections, le mouvement «No Kings» appelle les Américains à voter contre le milliardaire américain.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-10-17 20:31:00
+TITRE: «Les suppliantes»: le calvaire de l’imploration
+LIEN: https://www.ledevoir.com/culture/theatre/1017695/suppliantes-calvaire-imploration
+CONTENU: Les affres de la migration trouvent écho dans la tragédie d’Eschyle présentée au théâtre Prospero.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-10-18 01:00:50
+TITRE: En Cisjordanie occupée, des colons attaquent un convoi diplomatique européen et frappent un maire français
+LIEN: https://www.lemonde.fr/international/article/2026/10/18/en-cisjordanie-des-colons-attaquent-un-convoi-diplomatique-europeen-et-frappent-un-maire-du-nord-de-la-france_6796789_3210.html
+CONTENU: Le bureau du premier ministre israélien, Benyamin Nétanyahou, a affirmé que les diplomates auraient dû coordonner leurs déplacements avec l’armée de l’Etat hébreu. Il a aussi mis en avant que l’édile du nord de la France roué de coups, Bernard Baudoux, 78 ans, était un communiste connu pour soutenir la cause palestinienne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: BFMTV (Info)
+DATE: 2026-10-17 23:51:41
+TITRE: Édition spéciale : Des scènes de chaos à Paris, Lyon et Marseille - 17/10
+LIEN: https://www.bfmtv.com/replay-emissions/bfm-grand-soir/video-edition-speciale-des-scenes-de-chaos-a-paris-lyon-et-marseille-17-10_VN-202610170403.html
+CONTENU: Chaque week-end, Alice Darfeuille vous accompagne de 21h à 00h dans BFM Grand Soir.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-10-18 00:30:01
+TITRE: World's oldest shipwreck discovered off coast of Turkey
+LIEN: https://phys.org/news/2026-10-world-oldest-shipwreck-coast-turkey.html
+CONTENU: A shipwreck off the coast of Turkey is the oldest shipwreck in the world, our team of archaeologists believes. There's little left of the ship itself, but based on clues from its cargo—including pottery vessels—a research team I was part of has tentatively dated the wreck to around 2700–2400 B.C.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: BFMTV (Info)
 DATE: 2026-10-17 22:12:21
 TITRE: Manifestations du 17 octobre: Sébastien Lecornu annonce "1.200 interpellations" et pointe "des degrés de violence inacceptables"
