@@ -1,6 +1,70 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-02 00:55:23
+TITRE: Quoi retenir de la fin de semaine?
+LIEN: https://www.ledevoir.com/actualites/1021442/quoi-retenir-fin-semaine
+CONTENU: L’actualité du week-end des 31 octobre et 1er novembre en résumé.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-02 00:18:00
+TITRE: Une élue démocrate soutient un candidat républicain dans le Michigan
+LIEN: https://www.ledevoir.com/monde/etats-unis/1021439/elue-democrate-soutient-candidat-republicain-michigan-elections-mi-mandat
+CONTENU: Stevens accorde son «soutien à Mike Rogers» et s’est affichée à ses côtés en campagne pour les élections de mi-mandat.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-01 23:24:00
+TITRE: Kimi Antonelli devient le plus jeune champion de l’histoire de la Formule 1
+LIEN: https://www.ledevoir.com/sports/1021433/kimi-antonelli-devient-plus-jeune-champion-histoire-formule-1
+CONTENU: Antonelli a pris une avance insurmontable au classement sur ses coéquipiers George Russell et Lewis Hamilton.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-02 04:30:50
+TITRE: Midterms 2026 : les reniements de Donald Trump l’exposent à un vote sanction de la part des électeurs américains
+LIEN: https://www.lemonde.fr/international/article/2026/11/02/midterms-2026-les-reniements-de-donald-trump-l-exposent-a-un-vote-sanction-de-la-part-des-electeurs-americains_6804843_3210.html
+CONTENU: La guerre en Iran et l’envolée du coût de la vie, malgré les promesses du président des Etats-Unis de juguler l’inflation et de ne plus engager son pays dans une aventure militaire extérieure, suscitent de fortes interrogations dans le camp républicain.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-02 05:00:19
+TITRE: A la tête de la FIFA, les nombreux avantages fiscaux, matériels et financiers de Gianni Infantino
+LIEN: https://www.lemonde.fr/sport/article/2026/11/02/a-la-tete-de-la-fifa-les-nombreux-avantages-fiscaux-materiels-et-financiers-de-gianni-infantino_6804880_3242.html
+CONTENU: Selon des documents inédits, dont « Le Monde » a pris connaissance, le président de la Fédération internationale de football bénéficie de règles internes particulièrement avantageuses. L’instance lui paie, en toute discrétion, l’intégralité de ses impôts aux Etats-Unis pour les trois dernières années.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-02 01:16:33
+TITRE: Médecine générale : 3 000 « docteurs juniors » déployés sur le territoire français pour répondre aux déserts médicaux
+LIEN: https://www.lemonde.fr/sante/article/2026/11/02/medecine-generale-3-000-docteurs-juniors-deployes-sur-le-territoire-pour-repondre-aux-deserts-medicaux_6804771_1651302.html
+CONTENU: Environ 80 % de ces étudiants en dernière année ont été affectés dans des zones en grande difficulté d’accès aux soins. A partir de lundi, ils assureront, pendant un an de stage, les consultations, soins et suivi des maladies chroniques, tout en restant sous la responsabilité d’un praticien maître de stage.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-02 00:25:21
+TITRE: Le Wegovy, médicament antiobésité, arrive en comprimé dans les pharmacies françaises
+LIEN: https://www.lemonde.fr/sante/article/2026/11/02/marche-des-medicaments-antiobesite-le-wegovy-arrive-en-comprime-dans-les-pharmacies-francaises_6804738_1651302.html
+CONTENU: Le traitement développé par Novo Nordisk, jusqu’ici administré par injection en France, est désormais disponible sous forme orale, alors que le fabricant danois et son concurrent américain, Eli Lilly, rivalisent pour s’imposer sur un marché mondial en forte croissance.
+
+----------------------------------------
+CATEGORIE: UNIVERSITÉ & RECHERCHE
+SOURCE: Phys.org
+DATE: 2026-11-02 01:30:07
+TITRE: Global sexual health: Why communal knowledge about pleasure and well-being matters
+LIEN: https://phys.org/news/2026-10-global-sexual-health-communal-knowledge.html
+CONTENU: For decades, discussions and decisions about access to contraception, abortion, maternal health care, HIV prevention and treatment, comprehensive sexuality education, gender equity and protection from sexual violence have largely flowed in one direction: from the Global North to the Global South.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
 DATE: 2026-11-01 22:22:37
 TITRE: Près de 150 pompiers luttent contre un incendie majeur dans le quartier Petite-Bourgogne
 LIEN: https://www.ledevoir.com/actualites/societe/1021415/pres-150-pompiers-luttent-contre-incendie-majeur-quartier-petite-bourgogne
