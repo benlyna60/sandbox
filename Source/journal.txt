@@ -1,6 +1,62 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-08 14:30:00
+TITRE: Quoi lire cette semaine?
+LIEN: https://www.ledevoir.com/lire/1023266/quoi-lire-cette-semaine
+CONTENU: Une sélection de nos critiques pour guider vos lectures de la semaine.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-08 16:05:14
+TITRE: Moscou espère que la défaite républicaine ne bouleverse pas les négociations
+LIEN: https://www.ledevoir.com/monde/europe/1023272/moscou-espere-defaite-republicaine-ne-bouleverse-pas-negociations
+CONTENU: Les démocrates pourraient inscrire à l’ordre du jour une augmentation des aides financières à l’Ukraine.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-08 16:45:00
+TITRE: Quatre candidats s’affrontent pour le poste de secrétaire général de l’OIF
+LIEN: https://www.ledevoir.com/politique/quebec/1023281/quatre-candidats-affrontent-poste-secretaire-general-oif
+CONTENU: La course se déroule cette année sur fond de tensions géopolitiques et militaires entre le Rwanda et la RDC.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-08 18:35:00
+TITRE: Face aux enquêtes promises par les démocrates, Trump veut rendre coup pour coup
+LIEN: https://www.ledevoir.com/monde/etats-unis/1023290/face-enquetes-promises-democrates-trump-veut-rendre-coup-coup
+CONTENU: Les démocrates veulent utiliser leur majorité parlementaire pour enquêter sur la «corruption» de son gouvernement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-08 13:50:00
+TITRE: Erdogan et Aliev affichent leur «unité» après des tensions
+LIEN: https://www.ledevoir.com/monde/europe/1023263/president-turc-erdogan-azerbaidjan-apaiser-tensions
+CONTENU: Des règles sur le port du voile islamique à l’école en Azerbaïdjan étaient à la source des tensions avec la Turquie.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-08 14:40:00
+TITRE: Le secrétaire général de l’ONU parle d’une «heure de vérité» pour la lutte climatique
+LIEN: https://www.ledevoir.com/actualites/environnement/1023269/secretaire-general-onu-parle-heure-verite-lutte-climatique
+CONTENU: António Guterres adresse un message urgent aux dirigeants mondiaux à l’aune d’une réunion en Turquie.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-07 21:10:00
+TITRE: Chargé de former un gouvernement en Israël, Eisenkot appelle à l’unité
+LIEN: https://www.ledevoir.com/monde/moyen-orient/1023230/president-israelien-charge-eisenkot-former-gouvernement
+CONTENU: Il s’est dit ouvert à une coalition incluant la formation de son adversaire Benjamin Nétanyahou.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
 DATE: 2026-11-08 13:20:00
 TITRE: Des centaines de milliers d’Ukrainiens sans électricité après des frappes russes
 LIEN: https://www.ledevoir.com/monde/europe/1023260/centaines-milliers-ukrainiens-electricite-apres-frappes-russes
