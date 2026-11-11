@@ -1,5 +1,325 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-11 05:00:00
+TITRE: Agences de placement et chasseurs de têtes taillent leur place dans les écoles
+LIEN: https://www.ledevoir.com/actualites/education/1023935/agences-placement-chasseurs-tetes-taillent-place-ecoles
+CONTENU: Le recours à leurs services témoigne de l’ampleur qu’ont prise les pénuries de personnel dans le réseau scolaire.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-11 05:00:00
+TITRE: Une âme dans un robot?
+LIEN: https://www.ledevoir.com/opinion/libre-opinion/1023962/ame-robot
+CONTENU: La conscience fait partie des mystères du monde qui ne sont pas à la veille d’être compris.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-11 05:00:00
+TITRE: Des ISBN limités pour les livres générés par l’IA
+LIEN: https://www.ledevoir.com/lire/1023977/isbn-limites-livres-generes-ia
+CONTENU: Bibliothèque et Archives Canada a récemment modifié ses conditions d’octroi de numéros d’identification.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-11 05:00:00
+TITRE: «Villeneuve. L'ascension d'une légende»: portrait du pilote en jeune homme
+LIEN: https://www.ledevoir.com/culture/cinema/1023890/villeneuve-ascension-legende-portrait-pilote-jeune-homme
+CONTENU: Rémi Goulet impressionne dans une biographie aussi touchante et chaleureuse qu’énergique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-11 11:37:54
+TITRE: Les pourparlers entre Kiev et Moscou prennent fin à Abou Dhabi
+LIEN: https://www.ledevoir.com/monde/europe/1024079/pourparlers-entre-kiev-moscou-prennent-fin-abou-dhabi
+CONTENU: La seconde journée de ces discussions sous médiation américaine aura duré moins de deux heures.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-11 05:00:00
+TITRE: Femmes voilées ou droits voilés
+LIEN: https://www.ledevoir.com/opinion/idees/1023971/femmes-voilees-ou-droits-voiles
+CONTENU: Comment justifier que des personnes formées et motivées soient écartées de leur parcours professionnel?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-11 05:00:00
+TITRE: Maîtres chez nous, vraiment?
+LIEN: https://www.ledevoir.com/opinion/chroniques/1023965/maitres-nous-vraiment
+CONTENU: Une communauté d’esprits relie les gouvernements Carney et St-Pierre Plamondon.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-11 05:00:00
+TITRE: Le cégep en français, un puissant agent de socialisation et d’inclusion
+LIEN: https://www.ledevoir.com/opinion/idees/1023968/cegep-francais-puissant-agent-socialisation-inclusion
+CONTENU: L’extension de la loi 101 au cégep promet des retombées colossales sur l’écosystème culturel et médiatique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-11 05:00:00
+TITRE: Les limites de l’approche fédérale
+LIEN: https://www.ledevoir.com/opinion/editoriaux/1023959/limites-approche-federale
+CONTENU: Québec et Ottawa sont condamnés à s’entendre pour faire reculer l’itinérance.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-11 05:00:00
+TITRE: Les écrans ouverts de Po B.K. Lomami
+LIEN: https://www.ledevoir.com/culture/arts-visuels/1023974/ecrans-ouverts-po-b-k-lomami
+CONTENU: L’artiste-chercheuse utilise le numérique pour explorer le coût humain et écologique des technologies.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-11 06:00:07
+TITRE: Défense : les espoirs déçus de la coopération franco-allemande sous Emmanuel Macron, des chars aux avions de combat
+LIEN: https://www.lemonde.fr/international/article/2026/11/11/les-espoirs-decus-de-la-cooperation-franco-allemande-de-defense-sous-macron_6808941_3210.html
+CONTENU: A l’occasion d’une assemblée parlementaire, lundi 9 novembre, Paris et Berlin ont fait le bilan d’une relation contrariée en matière de défense, qui a mené à l’abandon du projet d’avion de combat SCAF et à la remise en cause d’un projet de char, estimés à 200 milliards d’euros.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-11 05:00:15
+TITRE: « Aux Etats-Unis, les démocrates ont deux ans pour redessiner une politique étrangère à partir d’un champ de ruines »
+LIEN: https://www.lemonde.fr/idees/article/2026/11/11/aux-etats-unis-les-democrates-ont-deux-ans-pour-redessiner-une-politique-etrangere-a-partir-d-un-champ-de-ruines_6808933_3232.html
+CONTENU: Si la politique à l’égard d’Israël n’est plus un sujet de division au sein du Parti démocrate, des dissensions sont en revanche à attendre sur la relation avec la Chine, analyse Gilles Paris, éditorialiste au « Monde », dans sa chronique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-11 05:00:21
+TITRE: Arrêts maladie pour raisons de santé mentale : la délicate prise en charge des troubles liés au travail
+LIEN: https://www.lemonde.fr/societe/article/2026/11/11/arrets-maladie-pour-raisons-de-sante-mentale-la-delicate-prise-en-charge-des-troubles-lies-au-travail_6808931_3224.html
+CONTENU: Alors que les consultations spécialisées dans les troubles psychiques liés au travail, en Ile-de-France, voient affluer les patients, le gouvernement appelle à une « réforme structurelle » de la prise en charge des arrêts maladie dans le cadre des débats budgétaires. A Garches et à Paris, des équipes alertent sur l’écart entre les orientations politiques et la réalité de l’épuisement professionnel.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-11 08:00:10
+TITRE: Immobilier : les transactions ralentissent sur fond de hausse des taux d’intérêt
+LIEN: https://www.lemonde.fr/economie/article/2026/11/11/immobilier-les-transactions-ralentissent-sur-fond-de-hausse-des-taux-d-interet_6808945_3234.html
+CONTENU: Les prix affichent une légère baisse, insuffisante pour compenser les difficultés d’accès au crédit, tandis que le marché de la location reste bloqué.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-11 04:00:02
+TITRE: Comment Nvidia s’est retrouvée au cœur d’un scandale international, entre espionne chinoise, guerre des puces et indifférence de Donald Trump
+LIEN: https://www.lemonde.fr/economie/article/2026/11/11/comment-nvidia-s-est-retrouve-au-c-ur-d-un-scandale-international-entre-espionne-chinoise-guerre-des-puces-et-indifference-de-donald-trump_6808922_3234.html
+CONTENU: Le fondateur du géant des microprocesseurs américain a reconnu une liaison avec une entrepreneuse soupçonnée d’avoir travaillé pour Pékin, alors placé sous embargo, en pleine course à l’intelligence artificielle entre les deux pays.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-11 11:32:51
+TITRE: Antoine Dupont en numéro 10, la surprise de Fabien Galthié pour affronter l’Afrique du Sud
+LIEN: https://www.lemonde.fr/sport/article/2026/11/11/antoine-dupont-en-numero-10-la-surprise-de-fabien-galthie-pour-affronter-l-afrique-du-sud_6808964_3242.html
+CONTENU: Face à la cascade de blessures, le capitaine du XV de France occupera le poste de demi d’ouverture, vendredi, dans le match du Championnat des nations face aux doubles champions du monde.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-11 11:21:04
+TITRE: En Espagne, une grève générale pour défendre l’accès au logement et le pouvoir d’achat
+LIEN: https://www.lemonde.fr/international/article/2026/11/11/en-espagne-une-greve-generale-pour-defendre-l-acces-au-logement-et-le-pouvoir-d-achat_6808962_3210.html
+CONTENU: Le suivi de ce mouvement, qui doit se concrétiser par des défilés, mercredi en fin d’après-midi, notamment à Madrid et Barcelone, servira de baromètre du mécontentement social avant les élections législatives du 29 novembre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-11 10:46:51
+TITRE: Christophe Gleizes, journaliste détenu en Algérie depuis cinq cents jours : RSF organise un match solidaire pour appeler à sa libération
+LIEN: https://www.lemonde.fr/actualite-medias/article/2026/11/11/christophe-gleizes-journaliste-detenu-en-algerie-depuis-500-jours-rsf-organise-un-match-solidaire-pour-appeler-a-sa-liberation_6808956_3236.html
+CONTENU: Des personnalités du sport, des médias et de la culture s’unissent lors d’un match inédit pour soutenir Christophe Gleizes, unique journaliste français détenu à l’étranger.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-11 02:30:07
+TITRE: La Suède stupéfaite après l’achat d’une immense forêt par Alex Karp, patron de Palantir
+LIEN: https://www.lemonde.fr/international/article/2026/11/11/la-suede-stupefaite-apres-l-achat-d-une-immense-foret-par-alex-karp-patron-de-palantir_6808917_3210.html
+CONTENU: L’acquisition de 15 000 hectares de bois par le milliardaire américain suscite rumeurs et interrogations dans le royaume scandinave, où les syndicats réclament plus de transparence sur les activités de la compagnie d’analyse de données.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-11 11:01:54
+TITRE: A la COP31, l’ONU presse les dirigeants d’agir contre les énergies fossiles : « La vérité, brutale, est que la crise du climat nous dépasse », déclare Antonio Guterres
+LIEN: https://www.lemonde.fr/planete/article/2026/11/11/a-la-cop31-l-onu-presse-les-dirigeants-d-agir-contre-les-energies-fossiles-la-verite-brutale-est-que-la-crise-du-climat-nous-depasse-declare-antonio-guterres_6808958_3244.html
+CONTENU: Le chef de l’ONU a exhorté les responsables réunis pour parler du climat à éliminer les énergies fossiles et à outrepasser leurs différends pour coopérer sur les meilleures façons de lutter contre le réchauffement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-11 12:31:48
+TITRE: Vague d’alerte à la bombe : plus de 300 établissements scolaires évacués en Italie, des menaces visent l’Irlande et le Royaume-Uni
+LIEN: https://www.lefigaro.fr/international/italie-300-etablissements-scolaires-evacues-apres-des-alertes-a-la-bombe-20261111
+CONTENU: Le ministre italien de l’Éducation, Giuseppe Valditara, a annoncé, mercredi, que 300 écoles ont été évacuées suite à des alertes à la bombe. Des menaces ont également visé des établissements en Irlande et au Royaume-Uni.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-11 05:00:00
+TITRE: La percée de David Lisnard dans la campagne présidentielle crée des remous chez les maires de France
+LIEN: https://www.lefigaro.fr/elections/presidentielles/la-percee-de-david-lisnard-dans-la-campagne-presidentielle-cree-des-remous-chez-les-maires-de-france-20261111
+CONTENU: DÉCRYPTAGE - Sa double ambition de se représenter à la tête de l’AMF, tout en étant candidat à la présidentielle, interroge au sein de l’association. Mais le maire de Cannes promet de « faire entendre la voix des maires ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-11 11:45:23
+TITRE: André Laignel : « Respectons notre accord de gouvernance conclu à l’AMF avec David Lisnard »
+LIEN: https://www.lefigaro.fr/elections/presidentielles/andre-laignel-respectons-notre-accord-de-gouvernance-conclu-a-l-amf-avec-david-lisnard-20261111
+CONTENU: ENTRETIEN - Après la décision du Parti socialiste de ne pas soutenir David Lisnard, candidat à sa réélection à la tête de l’Association des maires de France, le premier vice-président PS de l’association défend les termes de l’accord tissé avec le maire de Cannes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-10 21:08:17
+TITRE: Présidentielle : Retailleau propose de fixer la primaire aux 31 janvier et 7 février 2027, «le temps d’en définir les modalités et de faire campagne»
+LIEN: https://www.lefigaro.fr/elections/presidentielles/presidentielle-retailleau-propose-de-fixer-la-primaire-aux-31-janvier-et-7-fevrier-le-temps-d-en-definir-les-modalites-et-de-faire-campagne-20261110
+CONTENU: INFO LE FIGARO - Le candidat LR à l’Élysée a adressé mardi un courrier à Gabriel Attal, Édouard Philippe et David Lisnard pour accélérer la tenue d’une primaire et offrir «une alternative claire à tous ces électeurs déboussolés» face au match annoncé entre LFI et le RN.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-10 21:08:18
+TITRE: Éric Zemmour se lance dans une seconde campagne présidentielle
+LIEN: https://www.lefigaro.fr/elections/presidentielles/candidats/eric-zemmour-se-lance-dans-une-seconde-campagne-presidentielle-20261110
+CONTENU: Cherchant à dissiper les doutes, le président de Reconquête a officialisé ce mardi soir sa candidature sur TF1.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-11 10:00:00
+TITRE: À quel âge devient-on vieux ? Nos lecteurs de plus de 60 ans racontent le moment où ils en ont pris conscience
+LIEN: https://www.lefigaro.fr/actualite-france/a-quel-age-devient-on-vieux-nos-lecteurs-de-plus-de-60-ans-racontent-le-moment-ou-ils-en-ont-pris-conscience-20261111
+CONTENU: VIEUX, MOI ? (1/2) - Comment arrive le «coup de vieux» ? Le sentiment de vieillir surgit-il à la faveur d’un déclic ou s’installe-t-il plutôt par petites touches ? À travers 66 témoignages, nos lecteurs racontent le moment où leur âge s’est soudain rappelé à eux.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-11 12:55:03
+TITRE: EN DIRECT - Commémorations du 11 novembre : «La victoire de 1918 fut celle d’une nation tout entière et cet enseignement vaut pour aujourd’hui» exhorte Marine Le Pen
+LIEN: https://www.lefigaro.fr/politique/en-direct-commemorations-du-11-novembre-emmanuel-macron-preside-sa-derniere-ceremonie-de-son-quinquennat-20261111
+CONTENU: Dans son fief électoral d’Hénin-Beaumont, Marine Le Pen a rendu hommage à ces «anonymes devenus des héros» qui ont donné leur vie pour la France.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-11 11:34:19
+TITRE: 11-Novembre : hommage aux soldats morts en 2026, ravivage de la flamme… Revivez les temps forts en vidéo des commémorations
+LIEN: https://www.lefigaro.fr/actualite-france/11-novembre-hommage-aux-soldats-morts-en-2026-ravivage-de-la-flamme-revivez-les-temps-forts-en-video-des-commemorations-20261111
+CONTENU: VIDÉO - Emmanuel Macron a présidé ce mercredi les cérémonies du 108e anniversaire de l’Armistice de 1918. De l’hommage aux soldats français morts en 2026 au ravivage de la flamme du Soldat inconnu sous l’Arc de Triomphe, retour sur les temps forts de cette matinée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-11 09:00:00
+TITRE: 11 novembre : Roccia, le rapace star d’un régiment de parachutistes
+LIEN: https://www.lefigaro.fr/flash-actu/11-novembre-roccia-le-rapace-star-d-un-regiment-de-parachutistes-20261111
+CONTENU: Rencontre avec Roccia, pygargue à queue blanche, la mascotte du 17e régiment du génie parachutiste de Montauban, entre devoir de mémoire et découverte.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-10-29 10:16:02
+TITRE: Quiz 11 novembre : testez vos connaissances sur ce jour dédié à la mémoire des morts pour la France
+LIEN: https://etudiant.lefigaro.fr/article/college/quiz-que-commemore-t-on-vraiment-le-11-novembre-20251111/
+CONTENU: QUIZ – Le souvenir du 11 novembre reste vivant dans la mémoire des Français. Testez vos connaissances sur cette date symbole de paix et de mémoire.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-11 05:46:00
+TITRE: franceinfo monde du mercredi 11 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/franceinfo-monde/franceinfo-monde-du-mercredi-11-novembre-2026-3319420
+CONTENU: Article de référence : "franceinfo monde du mercredi 11 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-11 05:35:30
+TITRE: L'histoire du jour du mercredi 11 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-histoire-du-jour/l-histoire-du-jour-du-mercredi-11-novembre-2026-5078696
+CONTENU: Article de référence : "L'histoire du jour du mercredi 11 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-11 05:25:00
+TITRE: franceinfo ASIE / AMERIQUE du mercredi 11 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/franceinfo-asie-amerique/franceinfo-asie-amerique-du-mercredi-11-novembre-2026-1186979
+CONTENU: Article de référence : "franceinfo ASIE / AMERIQUE du mercredi 11 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-11 05:22:30
+TITRE: franceinfo ECO du mercredi 11 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/franceinfo-eco/franceinfo-eco-du-mercredi-11-novembre-2026-3173331
+CONTENU: Article de référence : "franceinfo ECO du mercredi 11 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-11 05:00:00
+TITRE: Le 6/9 du mercredi 11 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-6-9/le-6-9-du-mercredi-11-novembre-2026-5294929
+CONTENU: Article de référence : "Le 6/9 du mercredi 11 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-11 05:00:00
+TITRE: Le journal de 6h00 du mercredi 11 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-6h00/le-journal-de-6h00-du-mercredi-11-novembre-2026-5406276
+CONTENU: Article de référence : "Le journal de 6h00 du mercredi 11 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-11 04:55:00
+TITRE: Le reveil de l'eco du mercredi 11 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-reveil-de-l-eco/le-reveil-de-l-eco-du-mercredi-11-novembre-2026-8149654
+CONTENU: Article de référence : "Le reveil de l'eco du mercredi 11 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-11 04:50:00
+TITRE: Le choix franceinfo: du mercredi 11 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-choix-de-franceinfo/le-choix-franceinfo-du-mercredi-11-novembre-2026-1758900
+CONTENU: Article de référence : "Le choix franceinfo: du mercredi 11 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-11 04:22:30
+TITRE: Le monde d'Elodie du mercredi 11 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-monde-d-elodie/le-monde-d-elodie-du-mercredi-11-novembre-2026-6047471
+CONTENU: Article de référence : "Le monde d'Elodie du mercredi 11 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-11 04:00:00
+TITRE: Le 5/6 du mercredi 11 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-5-6/le-5-6-du-mercredi-11-novembre-2026-7457840
+CONTENU: Article de référence : "Le 5/6 du mercredi 11 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-11-11 00:28:21
 TITRE: Etats-Unis : Pete Hegseth, défiant et offensif, échappe à une tentative de destitution au Congrès
