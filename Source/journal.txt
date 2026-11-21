@@ -1,6 +1,142 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 05:00:00
+TITRE: Au Venezuela, le changement est déjà en marche
+LIEN: https://www.ledevoir.com/monde/ameriques/1026587/venezuela-changement-est-deja-marche
+CONTENU: L’arrestation de Nicolás Maduro a ravivé les aspirations démocratiques du pays. «Les gens attendent des élections.»
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 05:00:00
+TITRE: Le rapprochement Canada-UE menacé par la présidentielle française
+LIEN: https://www.ledevoir.com/politique/canada/1026662/rapprochement-canada-ue-menace-presidentielle-francaise
+CONTENU: La perspective d’une montée de l’extrême droite et d’une victoire de Marine Le Pen n’est pas le seul écueil à l’horizon.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 05:00:00
+TITRE: Les «considérations idéologiques» et l’éducation supérieure
+LIEN: https://www.ledevoir.com/opinion/chroniques/1026695/considerations-ideologiques-education-superieure
+CONTENU: Les préoccupations sur la langue, sur l’immigration et sur le «wokisme» menacent de créer de nouveaux problèmes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 05:00:00
+TITRE: «Malemort»: déterrer le père pour mieux le tuer
+LIEN: https://www.ledevoir.com/lire/1026437/malemort-deterrer-pere-mieux-tuer
+CONTENU: Sébastien La Rocque offre une «ultime sépulture» à son père dans ce troisième roman aux accents fantastiques.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 05:00:00
+TITRE: L’alliance avec le Canada vue par les députés européens
+LIEN: https://www.ledevoir.com/monde/europe/1026767/alliance-canada-vue-deputes-europeens
+CONTENU: Certains élus rencontrés au Parlement européen émettent des réserves quant à l’idée de faire du Canada un membre associé.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 05:00:00
+TITRE: L’horreur gagne le cœur de l’édition québécoise
+LIEN: https://www.ledevoir.com/lire/1026407/horreur-gagne-coeur-edition-quebecoise
+CONTENU: La bibliothèque noire se garnit et s’inspire de l’Amérique latine pour faire exploser les frontières du genre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 05:00:00
+TITRE: Jean-Christophe Réhel, une vie devant lui
+LIEN: https://www.ledevoir.com/lire/1025972/jean-christophe-rehel-vie-devant-lui
+CONTENU: À 37 ans, l’écrivain confirme sa vocation avec son nouveau roman, «Plasticine».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 05:00:00
+TITRE: Les vieilles enseignes commerciales ont-elles encore droit de cité?
+LIEN: https://www.ledevoir.com/actualites/societe/1026602/vieilles-enseignes-commerciales-ont-elles-encore-droit-cite
+CONTENU: Conserver une enseigne ne signifie pas nécessairement préserver la place qu’elle occupait dans la ville.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 05:00:00
+TITRE: La malédiction conservatrice
+LIEN: https://www.ledevoir.com/opinion/chroniques/1026734/malediction-conservatrice
+CONTENU: Les troupes de Pierre Poilievre n’y peuvent rien, face à Mark Carney.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 05:00:00
+TITRE: Une transition à l’ombre des ambitions américaines
+LIEN: https://www.ledevoir.com/monde/ameriques/1026596/transition-ombre-ambitions-americaines
+CONTENU: La population vénézuélienne se montre généralement très lucide sur les réelles intentions du gouvernement Trump.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-21 04:30:08
+TITRE: Sixième samedi de manifestations contre la vie chère en France, dans un contexte de baisse de la mobilisation
+LIEN: https://www.lemonde.fr/societe/article/2026/11/21/sixieme-samedi-de-manifestations-contre-la-vie-chere-en-france-dans-un-contexte-de-baisse-de-la-mobilisation_6813913_3224.html
+CONTENU: L’ampleur de cette nouvelle journée de protestation reste difficile à anticiper. Cet « acte VI » s’inscrit aussi dans le cadre d’un appel européen de syndicats et associations de défense du droit au logement à des actions coordonnées sur trois jours, de vendredi à dimanche.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-21 04:30:24
+TITRE: Etats-Unis : de retour d’Asie, Donald Trump défend sa proximité avec Vladimir Poutine et Xi Jinping
+LIEN: https://www.lemonde.fr/international/article/2026/11/21/etats-unis-de-retour-d-asie-donald-trump-defend-sa-proximite-avec-vladimir-poutine-et-xi-jinping_6813916_3210.html
+CONTENU: Le président américain s’est félicité vendredi, à Washington, des discussions menées avec ses homologues russe et chinois, notamment au sujet de l’Ukraine. Un compte rendu qui montre que le milliardaire continue de poursuivre ses chimères quant à un règlement de ce conflit.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-21 00:33:30
+TITRE: Aux Etats-Unis, Wall Street en déroute après la dégringolade des sociétés liées à l’intelligence artificielle
+LIEN: https://www.lemonde.fr/economie/article/2026/11/21/aux-etats-unis-wall-street-en-deroute-apres-la-degringolade-des-societes-liees-a-l-intelligence-artificielle_6813811_3234.html
+CONTENU: Les inquiétudes sur le modèle économique des entreprises, les incertitudes sur l’avenir des data centers et les déboires du champion Nvidia ont effacé des milliards de dollars de valorisation, la Bourse américaine vivant une de ses pires semaines depuis la crise liée au Covid.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-21 05:38:14
+TITRE: EN DIRECT, guerre en Ukraine : deux morts et 47 blessés dans des frappes russes sur Kryvy Rih, ville natale de Volodymyr Zelensky
+LIEN: https://www.lemonde.fr/international/live/2026/11/21/en-direct-guerre-en-ukraine-deux-morts-et-47-blesses-dans-des-frappes-russes-sur-kryvy-rih-ville-natale-de-volodymyr-zelensky_6810982_3210.html
+CONTENU: Un enfant de 7 ans et une infirmière âgée de 20 ans ont été tués lors de cette série d’attaques dans le sud-est de l’Ukraine. « Une soirée et une nuit tragiques », déplore Oleksandr Vilkoul, chef du conseil de défense de Kryvy Rih.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-20 18:30:00
+TITRE: Présidentielle 2027 : meetings, déplacements… Le plan de Raphaël Glucksmann pour tenter de se relancer
+LIEN: https://www.lefigaro.fr/elections/presidentielles/presidentielle-2027-meetings-deplacements-le-plan-de-raphael-glucksmann-pour-tenter-de-se-relancer-20261120
+CONTENU: DÉCRYPTAGE - En perte de vitesse dans les sondages, le candidat social-démocrate a prévu deux à trois déplacements par semaine jusqu’à l’hiver, avant un premier grand meeting crucial le 6 décembre.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-20 19:10:00
+TITRE: Guillaume Tabard : « Le rêve élyséen des anciens de Matignon »
+LIEN: https://www.lefigaro.fr/elections/presidentielles/guillaume-tabard-le-reve-elyseen-des-anciens-de-matignon-20261120
+CONTENU: CONTRE-POINT - Les anciens chefs de gouvernement aspirant à devenir chef de l’État sont confrontés à la même équation délicate : comment faire de cette fonction passée un gage de stature, donc de crédibilité, sans être renvoyé à son bilan.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-20 19:35:15
+TITRE: Artex, Cairn, PentAGI : ces hordes d’IA «offensives» qui font trembler la Commission européenne, le FBI et l’économie mondiale
+LIEN: https://www.lefigaro.fr/secteur/high-tech/artex-cairn-pentagi-ces-hordes-d-ia-offensives-qui-font-trembler-la-commission-europeenne-le-fbi-et-l-economie-mondiale-20261120
+CONTENU: DÉCRYPTAGE - Plusieurs rapports chocs issus de Microsoft, Google, du FBI et de nombreuses sociétés de cybersécurité avertissent que ces nouveaux outils d’IA pourraient mener d’ici six mois des cyberattaques d’ampleur, sans que l’humain n’intervienne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
 DATE: 2026-11-20 21:04:00
 TITRE: Jonathan Blanchet ira directement en procès pour le meurtre de Gabie Renaud
 LIEN: https://www.ledevoir.com/actualites/justice/1026725/jonathan-blanchet-ira-directement-proces-meurtre-gabie-renaud
