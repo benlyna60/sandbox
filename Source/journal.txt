@@ -1,6 +1,246 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-22 13:30:27
+TITRE: L’ONU adopte une entente limitée sur l’utilisation de l’IA dans l’armement
+LIEN: https://www.ledevoir.com/monde/1026854/onu-adopte-entente-limitee-utilisation-ia-armement
+CONTENU: De tels systèmes pourraient échapper au contrôle humain et devenir incontrôlables, mettent un garde des experts.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-22 15:03:10
+TITRE: Les libéraux lancent un comité de travail en vue du Sommet sur l’itinérance
+LIEN: https://www.ledevoir.com/politique/quebec/1026860/liberaux-lancent-comite-travail-vue-sommet-itinerance
+CONTENU: Composé de six membres, il sera présidé par James Hughes, ancien PDG de la Mission Old Brewery.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-22 14:00:00
+TITRE: Le monde divisé échoue à adopter un accord à la COP31
+LIEN: https://www.ledevoir.com/actualites/environnement/1026857/monde-divise-echoue-adopter-accord-cop31
+CONTENU: Le projet de compromis  ne contenait toujours pas d’appel explicite à omettre le charbon, le pétrole ou le gaz fossile.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-22 17:04:00
+TITRE: Trio de choc pour «Werther» à Montréal
+LIEN: https://www.ledevoir.com/culture/musique/1026869/trio-choc-werther-montreal
+CONTENU: Le ténor Julien Dran illumine la production de l’opéra de Massenet à l’Opéra de Montréal.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-22 16:12:46
+TITRE: Des groupes dénoncent l’inaction de la ministre Dabrusin face aux reculs climatiques
+LIEN: https://www.ledevoir.com/politique/canada/1026866/groupes-denoncent-inaction-ministre-dabrusin-face-reculs-climatiques
+CONTENU: Le gouvernement fédéral fait face à une action en justice concernant la trajectoire du Canada en matière d’engagements sur les émissions.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 13:00:03
+TITRE: Présidentielle 2027 : découvrez les grandes tendances des sondages avec notre agrégateur
+LIEN: https://www.lemonde.fr/les-decodeurs/article/2026/11/22/presidentielle-2027-decouvrez-ce-que-disent-les-sondages-avec-notre-agregateur_6814213_4355770.html
+CONTENU: Avec notre agrégateur, explorez les tendances fortes qui se dégagent des nombreuses enquêtes d’opinion menées en vue du premier et du second tour de l’élection présidentielle.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 17:11:49
+TITRE: La COP31 s’achève sur un échec, sans accord devant la division des pays sur les énergies fossiles
+LIEN: https://www.lemonde.fr/climat/article/2026/11/22/la-cop31-s-acheve-sur-un-echec-sans-accord-devant-la-division-des-pays-sur-les-energies-fossiles_6814199_1652613.html
+CONTENU: « Nous n’approuverons pas une décision (…) ne mentionnant même pas les combustibles fossiles, qui sont le principal moteur du changement climatique », a déclaré le ministre du climat irlandais, Darragh O’Brien, dont le pays assure actuellement la présidence du Conseil de l’Union européenne.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 14:01:15
+TITRE: Fuites vers le RN : Marine Le Pen dit n’avoir « jamais reçu d’informations confidentielles » du préfet Hugues Moutouh
+LIEN: https://www.lemonde.fr/societe/article/2026/11/22/fuites-vers-le-rn-marine-le-pen-dit-n-avoir-jamais-recu-d-informations-confidentielles-du-prefet-hugues-moutouh_6814216_3224.html
+CONTENU: La candidate du RN à l’élection présidentielle 2027 a également assuré ne pas connaître personnellement le haut fonctionnaire, qui a annoncé, samedi, avoir demandé à être relevé de ses fonctions.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 05:00:20
+TITRE: Le Groupe Castel, empire discret de la bière et du vin, secoué par une guerre de pouvoir
+LIEN: https://www.lemonde.fr/economie/article/2026/11/22/le-groupe-castel-empire-discret-de-la-biere-et-du-vin-secoue-par-une-guerre-de-pouvoir_6814179_3234.html
+CONTENU: Un âpre conflit de gouvernance tourmente le géant des boissons, au sein duquel on se dispute l’héritage, spirituel comme financier, de son charismatique fondateur, Pierre Castel. La 11ᵉ fortune française vient d’avoir 100 ans.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 13:10:18
+TITRE: L’Italie secouée par le suicide de l’ancien chef de la police Gianni De Gennaro
+LIEN: https://www.lemonde.fr/international/article/2026/11/22/l-italie-secouee-par-le-suicide-de-l-ancien-chef-de-la-police_6814214_3210.html
+CONTENU: La mort de Gianni De Gennaro survient alors qu’il était mis en examen pour avoir entravé l’enquête sur l’assassinat, en 1992, du juge antimafia Paolo Borsellino. Aux côtés du magistrat Giovanni Falcone, tué la même année, il avait joué un rôle déterminant pour retourner certains parrains.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 14:30:05
+TITRE: Le « poisson à poumons » éclaire l’énigme de la sortie de la mer des vertébrés
+LIEN: https://www.lemonde.fr/sciences/article/2026/11/22/le-poisson-a-poumons-eclaire-l-enigme-de-la-sortie-de-la-mer-des-vertebres_6814219_1650684.html
+CONTENU: L’été venu, le dipneuste africain s’enterre et transforme sa peau grâce à une toxine véhiculée par le système immunitaire. Et si nos ancêtres avaient emprunté le même chemin il y a 400 millions d’années ?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 15:44:58
+TITRE: EN DIRECT, guerre en Ukraine : les secours « poursuivent leur intervention » après l’attaque d’un immeuble d’habitation par un drone russe, près de Kiev
+LIEN: https://www.lemonde.fr/international/live/2026/11/22/en-direct-guerre-en-ukraine-les-secours-poursuivent-leurs-interventions-apres-l-attaque-d-un-immeuble-d-habitation-par-un-drone-russe-pres-de-kiev_6814183_3210.html
+CONTENU: L’attaque d’un immeuble de cinq étages par un drone russe à Dymer – au nord de Kiev – a tué deux personnes, et onze autres sont portées disparues.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 16:00:04
+TITRE: Aux Etats-Unis, Melat Kiros, 29 ans, démocrate, socialiste et première femme de la génération Z à entrer au Congrès
+LIEN: https://www.lemonde.fr/international/article/2026/11/22/aux-etats-unis-melat-kiros-29-ans-democrate-socialiste-et-premiere-femme-de-la-generation-z-a-entrer-au-congres_6814225_3210.html
+CONTENU: Née en Ethiopie et élue à la Chambre des représentants lors des midterms dans le Colorado, cette ex-avocate incarne une jeune génération de parlementaires qui renouvellent aussi bien la forme que le fond de leurs messages.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 17:09:44
+TITRE: L’ascension éclair de la paire française Arribagé-Olivetti, sacrés « maîtres » des finales ATP à peine un an après leurs débuts
+LIEN: https://www.lemonde.fr/sport/article/2026/11/22/l-ascension-eclair-de-la-paire-francaise-arribage-olivetti-sacres-maitres-des-finales-atp-a-peine-un-an-apres-leurs-debuts_6814235_3242.html
+CONTENU: Les Français l’ont emporté, dimanche à Turin, en finale du tournoi des maîtres face à la paire Arévalo-Pavic (3-6, 7-6, 10-6). Une victoire qui vient couronner une première saison presque parfaite.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 17:21:58
+TITRE: L’idée d’une « règle d’or » budgétaire dans la Constitution soutenue par Marine Le Pen et Thierry Breton, critiquée par Gabriel Zucman
+LIEN: https://www.lemonde.fr/politique/article/2026/11/22/l-idee-d-une-regle-d-or-budgetaire-dans-la-constitution-soutenue-par-marine-le-pen-et-thierry-breton-critiquee-par-gabriel-zucman_6814238_823448.html
+CONTENU: Le projet d’un Congrès convoqué par Emmanuel Macron sur ce sujet avant l’élection présidentielle, évoqué dans « La Tribune Dimanche », et sur lequel l’Elysée n’a fait aucun commentaire, consisterait à faire adopter un projet de loi constitutionnel encadrant les déficits publics.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-22 20:34:01
+TITRE: Présidentielle 2027 : pour David Lisnard, une primaire sans Édouard Philippe n’aurait « aucun sens »
+LIEN: https://www.lefigaro.fr/elections/presidentielles/primaires-droite/presidentielle-2027-pour-david-lisnard-une-primaire-sans-edouard-philippe-n-aurait-aucun-sens-20261122
+CONTENU: Invité dimanche du « Grand Oral 2027 BFMTV-Le Figaro », le candidat Nouvelle Énergie à l’Élysée, porté par sa percée dans les sondages, pose ses conditions à une primaire.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-22 18:00:58
+TITRE: L’éditorial de Vincent Trémolet de Villers : « La dynamique David Lisnard, bulle ou réalité ? »
+LIEN: https://www.lefigaro.fr/vox/politique/l-editorial-de-vincent-tremolet-de-villers-la-dynamique-david-lisnard-bulle-ou-realite-20261122
+CONTENU: Tout est possible dans cette campagne chamboule-tout, mais, aujourd’hui, le « moment Lisnard » est tout sauf un artifice médiatique ou numérique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-22 17:12:47
+TITRE: Budget : Emmanuel Macron envisagerait un Congrès sur la règle d’or, droite et RN sont favorables mais critiques
+LIEN: https://www.lefigaro.fr/politique/budget-emmanuel-macron-envisagerait-un-congres-sur-la-regle-d-or-droite-et-rn-sont-favorables-mais-critiques-20261122
+CONTENU: Le président songerait à réunir députés et sénateurs en janvier, en s’appuyant sur un projet de loi constitutionnelle adopté par l’Assemblée et le Sénat en 2011, mais jamais soumis au vote final.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-22 18:40:24
+TITRE: La règle d’or peut-elle vraiment contraindre la France à sortir de la spirale infernale de la dette ?
+LIEN: https://www.lefigaro.fr/conjoncture/la-regle-d-or-peut-elle-vraiment-contraindre-la-france-a-sortir-de-la-spirale-infernale-de-la-dette-20261122
+CONTENU: DÉCRYPTAGE - Ce mécanisme, plébiscité par plusieurs candidats à l’élection présidentielle, interdirait aux parlementaires de voter une loi de finances dépassant un certain niveau de déficit public.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-22 19:42:38
+TITRE: Diffusion de caricatures, propos racistes et salut nazi : le patron de la police saisit la justice dans une école de police
+LIEN: https://www.lefigaro.fr/actualite-france/diffusion-de-caricatures-propos-racistes-et-salut-nazi-le-patron-de-la-police-saisit-la-justice-dans-une-ecole-de-police-20261122
+CONTENU: Des échanges inappropriés  dans des boucles privées entre des élèves de la 31e promotion de l’ENSP de Cannes-Écluse, dont la plupart seront diplômés début 2027, sont désormais entre les mains de la justice. À ce stade, un élève a été suspendu.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-22 17:00:00
+TITRE: Le journal de 18h00 du dimanche 22 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-18h00/le-journal-de-18h00-du-dimanche-22-novembre-2026-1886741
+CONTENU: Article de référence : "Le journal de 18h00 du dimanche 22 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-22 16:23:00
+TITRE: Didier Barbelivien chante ses souvenirs de Julien Clerc
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/ces-chansons-qui-font-l-actu/ces-chansons-qui-font-l-actu-du-dimanche-22-novembre-2026-5191302
+CONTENU: Il avait quatorze ans en 1968 et consacre une chanson de son dernier album à sa passion d'alors pour le premier 45 tours de son futur confrère. En cela, il nous rappelle que le bon vieux temps est un sujet classique et inépuisable pour les artistes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-22 16:20:30
+TITRE: franceinfo monde du dimanche 22 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/franceinfo-monde/franceinfo-monde-du-dimanche-22-novembre-2026-7564115
+CONTENU: Article de référence : "franceinfo monde du dimanche 22 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-22 16:00:00
+TITRE: Le 17/20 du dimanche 22 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-17-20-du-week-end/le-17-20-du-dimanche-22-novembre-2026-1651458
+CONTENU: Article de référence : "Le 17/20 du dimanche 22 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-22 16:00:00
+TITRE: Le journal de 17h00 du dimanche 22 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-17h00/le-journal-de-17h00-du-dimanche-22-novembre-2026-1745933
+CONTENU: Article de référence : "Le journal de 17h00 du dimanche 22 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-22 14:55:30
+TITRE: "The Altruits": la cryptomonnaie pour les nuls
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-empire-des-series/l-empire-des-series-du-dimanche-22-novembre-2026-2952618
+CONTENU: Une escroquerie à 8 milliards de dollars, deux geeks surdoués et une chute spectaculaire : Netflix revient sur le scandale FTX et ses dérives dans "Les Altruistes", une série fascinante.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-22 14:50:30
+TITRE: Comment prévenir la mort subite du nourrisson ?
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/c-est-ma-sante-conseils-avec-l-ap-hp/c-est-ma-sante-conseils-avec-l-assistance-publique-hopitaux-de-paris-du-dimanche-22-novembre-2026-7987049
+CONTENU: Le syndrome de mort subite du nourrisson touche les bébés de moins de deux ans. Il existe des recommandations pour éviter ce drame.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-22 13:52:00
+TITRE: 5 secondes pour cloner une voix
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/nouveau-monde/nouveau-monde-du-dimanche-22-novembre-2026-7151813
+CONTENU: Le terme de "deepfake" désigne généralement ces images ou vidéos qui semblent vraies, mais qui sont fabriquées avec l’intelligence artificielle. Attention, ce phénomène touche aussi l’audio. (Un rendez-vous en partenariat avec le magazine "Sciences et Avenir")
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-22 13:20:00
+TITRE: Sabyl Ghoussoub : "j'ai avant tout écrit un livre d'amour"
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-invite-culture/l-invite-culture-du-dimanche-22-novembre-2026-5725415
+CONTENU: Dans "Mon Imam" Sabyl Ghoussoub brise des tabous sur la religion puisqu'il est question de sexualité dans l'Islam. Mais c'est avant tout un roman en liberté où l'auteur se cherche lui-même dans le chaos du Moyen-Orient.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-22 13:00:00
+TITRE: Le 14/17 du dimanche 22 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-14-17-du-week-end/le-14-17-du-dimanche-22-novembre-2026-6519695
+CONTENU: Article de référence : "Le 14/17 du dimanche 22 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
 DATE: 2026-11-21 05:00:00
 TITRE: «Je refuse de devenir itinérante», le cri du cœur de Céline Donahoe
 LIEN: https://www.ledevoir.com/actualites/societe/1026665/je-refuse-devenir-itinerante-cri-coeur-celine-donahoe
