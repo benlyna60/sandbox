@@ -1,5 +1,133 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 15:27:44
+TITRE: Les partys de bureau du temps des Fêtes s’adaptent à l’époque
+LIEN: https://www.ledevoir.com/actualites/societe/1026803/partys-bureau-temps-fetes-adaptent-epoque
+CONTENU: Télétravail, diversité culturelle, famille; plusieurs obstacles viennent compliquer l’organisation.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 23:02:55
+TITRE: Le Mexique arrête un baron de la drogue recherché par le FBI
+LIEN: https://www.ledevoir.com/actualites/justice/1026836/mexique-arrete-baron-drogue-recherche-fbi
+CONTENU: Les États-Unis, qui offraient une récompense de cinq millions pour son arrestation, ont demandé son extradition.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 21:53:00
+TITRE: Des étudiants envisagent de lancer une grève illimitée durant la session d’hiver
+LIEN: https://www.ledevoir.com/actualites/education/1026830/etudiants-envisagent-lancer-greve-illimitee-durant-session-hiver
+CONTENU: Ils soutiennent que l’heure n’est plus à l’attente et veulent voir des changements rapidement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-21 23:34:03
+TITRE: Zelensky réaffirme son souhait de voir l’Ukraine adhérer à l’OTAN
+LIEN: https://www.ledevoir.com/monde/europe/1026839/zelensky-reaffirme-souhait-voir-ukraine-adherer-otan
+CONTENU: Le dirigeant ukrainien estime que faire partie de cette alliance militaire permettrait de garantir la sécurité du pays.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 04:55:02
+TITRE: Mobilisations lycéennes : les déchirements des parents, à la fois inquiets, fiers, en soutien ou en colère
+LIEN: https://www.lemonde.fr/societe/article/2026/11/22/mouvement-lyceen-inquiets-fiers-en-soutien-ou-en-colere-les-dechirements-des-parents-d-eleves-touches-par-la-mobilisation_6814146_3224.html
+CONTENU: « Le Monde » a recueilli les témoignages de dizaines de parents d’élèves de lycées mobilisés depuis deux mois. Pro ou antiblocage racontent leurs inquiétudes pour la scolarité de leurs enfants ou face aux risques de violences, mais aussi leur fierté de voir une génération se mobiliser pour son avenir.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 01:42:54
+TITRE: Championnat des nations : le XV de France écarte l’Argentine et donne rendez-vous aux Springboks pour des retrouvailles musclées en finale
+LIEN: https://www.lemonde.fr/sport/article/2026/11/22/championnat-des-nations-le-xv-de-france-ecarte-l-argentine-et-donne-rendez-vous-aux-springboks-pour-des-retrouvailles-musclees-en-finale_6814075_3242.html
+CONTENU: Les joueurs de Fabien Galthié ont souffert avant de surclasser (45-17) les Pumas, samedi, au Stade de France. Deux semaines après les avoir battus, les Bleus affronteront les Sud-Africains en finale de la compétition, dimanche 29 novembre, à Londres.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 05:29:37
+TITRE: EN DIRECT, guerre en Ukraine : un cargo russe attaqué en mer Baltique ; des drones ukrainiens produits au Royaume-Uni… Les dernières informations
+LIEN: https://www.lemonde.fr/international/live/2026/11/22/en-direct-guerre-en-ukraine-un-cargo-russe-attaque-en-mer-baltique-des-drones-ukrainiens-produits-au-royaume-uni-les-dernieres-informations_6814183_3210.html
+CONTENU: Le ministre de la défense ukrainien, Ievheni Khmara, et son homologue britannique, Wes Streeting, ont signé de nouveaux accords permettant la production, sur le sol britannique, de drones de frappe conçus par l’Ukraine et destinés aux forces armées ukrainiennes.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-22 05:05:07
+TITRE: A Saint-Maur-des-Fossés, le chêne quadricentenaire résiste au promoteur immobilier
+LIEN: https://www.lemonde.fr/planete/article/2026/11/22/a-saint-maur-des-fosses-le-chene-quadricentenaire-resiste-au-promoteur-immobilier_6814180_3244.html
+CONTENU: Des habitants de la commune val-de-marnaise se mobilisent pour contrecarrer un projet immobilier menaçant le plus vieux chêne pédonculé d’Ile-de-France, un arbre chéri de nombreux riverains et qui fait l’objet d’une pétition ayant obtenu 85 000 signatures.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-22 03:16:19
+TITRE: COP31 : nouveau projet de décision finale, toujours sans mention des énergies fossiles
+LIEN: https://www.lefigaro.fr/international/cop31-nouveau-projet-de-decision-finale-toujours-sans-mention-des-energies-fossiles-20261122
+CONTENU: Le document ne contient pas d’appel explicite à sortir du charbon, pétrole ou du gaz fossile, dont l’utilisation est la principale cause du changement climatique.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-21 23:00:00
+TITRE: franceinfo la nuit du dimanche 22 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/franceinfo-nuit/franceinfo-la-nuit-du-dimanche-22-novembre-2026-2641047
+CONTENU: Article de référence : "franceinfo la nuit du dimanche 22 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-21 22:20:00
+TITRE: Triomphe du XV de France face à l'Argentine : "Cette jeunesse nous montre de belles choses" pour Guy Accoceberry
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/le-xv-de-france-signe-une-victoire-eclatante-face-a-l-argentine-pour-s-offrir-une-finale-contre-l-afrique-du-sud-3159111
+CONTENU: Porté par ses stars et ses jeunes espoirs, Le XV de France s'est largement imposé face à l'Argentine (45-17) au Stade de France, inscrivant sept essais. Les Bleus retrouveront l'Afrique du Sud pour la finale du Championnat des nations.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-21 22:00:00
+TITRE: Le journal de 23h00 du samedi 21 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-23h00/le-journal-de-23h00-du-samedi-21-novembre-2026-9902430
+CONTENU: Article de référence : "Le journal de 23h00 du samedi 21 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-21 21:00:00
+TITRE: Le journal de 22h00 du samedi 21 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-22h00/le-journal-de-22h00-du-samedi-21-novembre-2026-3730880
+CONTENU: Article de référence : "Le journal de 22h00 du samedi 21 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-21 19:00:00
+TITRE: Le 20/minuit du samedi 21 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-20-minuit-du-week-end/le-20-minuit-du-samedi-21-novembre-2026-9202466
+CONTENU: Article de référence : "Le 20/minuit du samedi 21 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-21 18:00:00
+TITRE: Le journal de 19h00 du samedi 21 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-19h00/le-journal-de-19h00-du-samedi-21-novembre-2026-6072588
+CONTENU: Article de référence : "Le journal de 19h00 du samedi 21 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-21 17:05:00
+TITRE: Quel rôle peut viser Rafael Nadal au Real Madrid ?
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-documents-franceinfo/quel-role-peut-viser-rafael-nadal-au-real-madrid-1791151
+CONTENU: Élu avec une écrasante majorité, Rafael Nadal fait son entrée au conseil d'administration du Real Madrid. Comment se voit l'ancienne star du tennis espagnol au sein du club qui a toujours fait partie de sa vie ?
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
 SOURCE: Le Monde (Une)
 DATE: 2026-11-21 21:00:02
 TITRE: Fuites de Beauvau vers le RN : d’un email trouvé au domicile d’un ami de Marine Le Pen aux suspicions visant le préfet Hugues Moutouh, itinéraire d’une enquête sensible
