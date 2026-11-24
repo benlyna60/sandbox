@@ -1,6 +1,254 @@
 ----------------------------------------
 CATEGORIE: ACTUALITÉS
 SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: Larkin électrise le Centre Bell, mais le Canadien s’incline
+LIEN: https://www.ledevoir.com/sports/1027247/larkin-electrise-centre-bell-mais-canadien-incline
+CONTENU: Le nouveau venu a participé au seul but de son équipe, moins de 24 heures après son arrivée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: Aymeric Caron, une voix sous pression
+LIEN: https://www.ledevoir.com/lire/1027205/aymeric-caron-voix-sous-pression
+CONTENU: L’auteur et politicien français publie au Québec «Occident grave», un manifeste sur la faillite de l’humanité à Gaza.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: Le vouvoiement à l’école, «un coup d’épée dans l’eau», selon Arseneau
+LIEN: https://www.ledevoir.com/politique/quebec/1027172/vouvoiement-ecole-coup-epee-eau-selon-arseneau
+CONTENU: Le ministre de l’Éducation nationale n’envisage toutefois pas, à l’heure actuelle, d’abroger ce règlement.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: Les fourches caudines
+LIEN: https://www.ledevoir.com/opinion/chroniques/1027169/fourches-caudines
+CONTENU: Le jugement de la Cour supérieure sur le serment au roi constitue une véritable gifle à la démocratie québécoise.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: Du chaos, nous tisserons des liens
+LIEN: https://www.ledevoir.com/opinion/chroniques/1027148/chaos-nous-tisserons-liens
+CONTENU: Dans un Liban attaqué, les artistes luttent à leur manière pour se reconnecter.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: Emna Mâaref, d’amour et de distance
+LIEN: https://www.ledevoir.com/culture/musique/1027133/emna-maaref-amour-distance
+CONTENU: La musicienne, qui a fait paraître son premier album pendant l’été, ouvre le bal du Festival Triste.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: Le retour vers le futur de Nvidia
+LIEN: https://www.ledevoir.com/opinion/chroniques/1027202/retour-vers-futur-nvidia
+CONTENU: Son p.-d.g. vedette était trop important pour être renvoyé, mais Nvidia ne sort pas indemne de cette saga.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: La question du génocide
+LIEN: https://www.ledevoir.com/opinion/editoriaux/1027142/question-genocide
+CONTENU: Pour plusieurs experts, le jugement de la Cour internationale de Justice dans le dossier des Rohingyas est exceptionnel.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: Pourquoi les intellectuels sont-ils plus de gauche?
+LIEN: https://www.ledevoir.com/opinion/idees/1027121/pourquoi-intellectuels-sont-ils-plus-gauche
+CONTENU: L’éducation n’est pas un gage de vertu, mais elle aide en tout cas à tolérer la complexité.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: Nos émotions monétisées
+LIEN: https://www.ledevoir.com/opinion/chroniques/1027115/emotions-monetisees
+CONTENU: Les modèles économiques de l’IA générative font de nous des ressources pour les géants de la tech.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-24 04:30:09
+TITRE: Le « come-back » spectaculaire de Jensen Huang à la tête de Nvidia, sous la pression de Donald Trump et des marchés financiers
+LIEN: https://www.lemonde.fr/economie/article/2026/11/24/le-come-back-spectaculaire-de-jensen-huang-a-la-tete-de-nvidia-sous-la-pression-de-donald-trump-et-des-marches-financiers_6814669_3234.html
+CONTENU: Ecarté il y a onze jours après la révélation de sa relation extraconjugale avec une femme soupçonnée de transmettre des informations aux services secrets chinois, le PDG a été réintégré, lundi, par le conseil d’administration du géant des semi-conducteurs.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-24 04:00:12
+TITRE: Inflation : pourquoi la hausse des cours de l’énergie tarde à se répercuter sur l’ensemble des prix en France
+LIEN: https://www.lemonde.fr/economie/article/2026/11/24/inflation-pourquoi-la-hausse-des-cours-de-l-energie-tarde-a-se-repercuter-sur-l-ensemble-des-prix-en-france_6814604_3234.html
+CONTENU: L’atonie de l’activité économique française et la remontée du chômage freinent la répercussion de l’envolée des cours du pétrole et du gaz à l’ensemble de l’économie. Mais la donne pourrait changer.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-24 05:00:40
+TITRE: Les épargnants ont retiré près de 10 milliards d’euros de leurs Livret A depuis janvier, un record depuis dix ans
+LIEN: https://www.lemonde.fr/argent/article/2026/11/24/les-epargnants-ont-retire-pres-de-10-milliards-d-euros-de-leurs-livret-a-depuis-janvier-un-record-depuis-dix-ans_6814708_1657007.html
+CONTENU: Les discussions sur la hausse de son plafond, voulue par le gouvernement, sont toujours en cours. Son taux d’intérêt pourrait passer de 1,7 % actuellement à 2,8 % en février.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-24 05:00:31
+TITRE: « Je suis une enfant gâtée, c’est sûr » : en Inde, la jeunesse dorée profite de ses privilèges
+LIEN: https://www.lemonde.fr/international/article/2026/11/24/je-suis-une-enfant-gatee-c-est-sur-en-inde-la-jeunesse-doree-profite-de-ses-privileges_6814709_3210.html
+CONTENU: « Inde, la jeunesse fracturée » (2/4). Si une vaste majorité de jeunes Indiens souffre de l’absence de perspectives, d’autres, plus fortunés, jouissent d’un train de vie privilégié dans un pays connu pour ses inégalités.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-24 05:10:40
+TITRE: Déraillement d’un TER en Normandie : quatre hommes interpellés pour acte de malveillance présumé
+LIEN: https://www.lemonde.fr/societe/article/2026/11/24/deraillement-d-un-ter-en-normandie-quatre-hommes-interpelles-pour-acte-de-malveillance-presume_6814711_3224.html
+CONTENU: La garde à vue d’un père de 45 ans, de ses deux fils jumeaux, âgés de 22 ans, et d’un autre homme interpellés lundi matin près de Rouen, peut durer jusqu’à quatre-vingt-seize heures. Un morceau de rail avait été découvert sur les voies après l’accident qui avait fait 44 blessés, le 11 septembre 2026.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Monde (Une)
+DATE: 2026-11-23 19:57:41
+TITRE: Grand Paris Express : l’ouverture de la nouvelle ligne 18 du métro plus compromise que jamais
+LIEN: https://www.lemonde.fr/economie/article/2026/11/23/grand-paris-express-l-ouverture-de-la-nouvelle-ligne-18-du-metro-plus-compromise-que-jamais_6814446_3234.html
+CONTENU: Valérie Pécresse, présidente de la région Ile-de-France, a convoqué une réunion d’urgence avec les acteurs concernés et enjoint Alstom, concepteur du système d’automatisation, à trouver « des solutions pour fiabiliser son logiciel ».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-24 05:52:19
+TITRE: Inflation, pouvoir d’achat en berne… le Livret A connaît sa pire année depuis 2008
+LIEN: https://www.lefigaro.fr/conjoncture/inflation-pouvoir-d-achat-en-berne-le-livret-a-connait-sa-pire-annee-depuis-2008-20261124
+CONTENU: Depuis janvier, les Français ont retiré 9,54 milliards d’euros de plus qu’ils n’en ont déposé sur ce placement, dont le rendement ne suffit plus à compenser la hausse des prix.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-20 09:30:00
+TITRE: Placements : le Livret A va-t-il enfin redevenir rentable ?
+LIEN: https://www.lefigaro.fr/argent/placements-le-livret-a-va-t-il-enfin-redevenir-rentable-20261120
+CONTENU: DÉCRYPTAGE - Son rendement pourrait grimper à 2,7 % en février et son plafond être rehaussé de 22 950 à 30 000 €.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-23 20:09:37
+TITRE: « Un destin magnifique s’annonçait » : la vie brisée de la lumineuse Judith Camarcat, mortellement poussée sur les voies du RER B
+LIEN: https://www.lefigaro.fr/faits-divers/un-destin-magnifique-s-annoncait-la-vie-brisee-de-la-lumineuse-judith-camarcat-mortellement-poussee-sur-les-voies-du-rer-b-20261123
+CONTENU: RÉCIT - Cette jeune femme de 31 ans, passée par le lycée Henri-IV et HEC, est décédée en mars 2025. L’état psychiatrique du meurtrier, schizophrène et gros consommateur de drogue, et son éventuelle irresponsabilité pénale sont au cœur du dossier.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: Dans son journal spirituel, le pape François révèle ses combats contre «le diable», qui lui est apparu à plusieurs reprises
+LIEN: https://www.lefigaro.fr/actualite-france/dans-son-journal-spirituel-le-pape-francois-revele-ses-combats-contre-le-diable-qui-lui-est-apparu-a-plusieurs-reprises-20261124
+CONTENU: DÉCRYPTAGE - Un livre, qui sort ce mardi dans le monde entier, dévoile les notes personnelles du pape argentin, écrites avant son élection et pendant son pontificat. Dans ces textes d’une rare intensité, il décrit sa face sombre, ce «Jorge arrogant, autosuffisant, cynique et menteur avec lui-même».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Figaro (Actualités)
+DATE: 2026-11-24 05:00:00
+TITRE: Cardinal Victor Manuel Fernandez : «Lorsque j’ai reçu le “Journal spirituel” du pape François et que je l’ai lu, j’ai éprouvé un véritable choc»
+LIEN: https://www.lefigaro.fr/actualite-france/cardinal-victor-manuel-fernandez-lorsque-j-ai-recu-le-journal-spirituel-du-pape-francois-et-que-je-l-ai-lu-j-ai-eprouve-un-veritable-choc-20261124
+CONTENU: EXCLUSIF - Ami personnel du pape argentin, mort en 2025, l’actuel préfet du Dicastère de la Doctrine de la Foi explique l’enjeu de la publication de son «Journal spirituel».
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-23 22:00:00
+TITRE: Le journal de 23h00 du lundi 23 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-23h00/le-journal-de-23h00-du-lundi-23-novembre-2026-4564626
+CONTENU: Article de référence : "Le journal de 23h00 du lundi 23 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-23 21:00:00
+TITRE: Le journal de 22h00 du lundi 23 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-22h00/le-journal-de-22h00-du-lundi-23-novembre-2026-3240436
+CONTENU: Article de référence : "Le journal de 22h00 du lundi 23 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-23 19:30:00
+TITRE: Le 20h30/minuit du lundi 23 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-20h30-minuit/le-20h30-minuit-du-lundi-23-novembre-2026-6068100
+CONTENU: Article de référence : "Le 20h30/minuit du lundi 23 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-23 19:02:00
+TITRE: Règle d'or, les dessous d'une annonce autant économique que politique... Les informés du lundi 23 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-informes-de-franceinfo/les-informes-du-lundi-23-novembre-2026-9072597
+CONTENU: Tous les soirs, les informés débattent de l'actualité autour d'Hadrien Bect.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-23 19:00:00
+TITRE: Le journal de 20h00 du lundi 23 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/l-info-a-20h00/le-journal-de-20h00-du-lundi-23-novembre-2026-6302073
+CONTENU: Article de référence : "Le journal de 20h00 du lundi 23 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-23 18:35:00
+TITRE: Les informes du lundi 23 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/les-informes-de-franceinfo/les-informes-de-franceinfo-du-lundi-23-novembre-2026-5562200
+CONTENU: Article de référence : "Les informes du lundi 23 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-23 18:00:00
+TITRE: Le journal de 19h00 du lundi 23 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-19h00/le-journal-de-19h00-du-lundi-23-novembre-2026-6210409
+CONTENU: Article de référence : "Le journal de 19h00 du lundi 23 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-23 17:00:00
+TITRE: Le journal de 18h00 du lundi 23 novembre 2026
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-18h00/le-journal-de-18h00-du-lundi-23-novembre-2026-1892459
+CONTENU: Article de référence : "Le journal de 18h00 du lundi 23 novembre 2026"
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-23 16:46:00
+TITRE: Emmanuel Macron a-t-il réindustrialisé la France ?
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/la-question-des-informes/la-question-des-informes-du-lundi-23-novembre-2026-8952478
+CONTENU: Invité de franceinfo, l'ancien président du Medef salue les efforts d'Emmanuel Macron pour renforcer l'attractivité de la France, mais regrette une fiscalité trop élevée et un climat politique défavorable aux entreprises.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: France Info (Fil info)
+DATE: 2026-11-23 16:00:00
+TITRE: Retour du patron de Nvidia, tensions entre la Finlande et la Russie, règle d'or… Les informations à retenir à 17h
+LIEN: https://www.radiofrance.fr/franceinfo/podcasts/le-journal-de-17h00/retour-du-patron-de-nvidia-tensions-entre-la-finlande-et-la-russie-regle-d-or-les-informations-a-retenir-a-17h-5609420
+CONTENU: Dans l'actualité de ce 23 novembre 2026, l'action Nvidia remonte en Bourse, la Finlande convoque l'ambassadeur russe et l''idée de la règle d'or relancée.
+
+----------------------------------------
+CATEGORIE: ACTUALITÉS
+SOURCE: Le Devoir (Actualités)
 DATE: 2026-11-23 16:52:00
 TITRE: Le serment des députés au roi est obligatoire, tranche la Cour supérieure
 LIEN: https://www.ledevoir.com/politique/quebec/1027058/serment-roi-est-finalement-obligatoire-deputes-tranche-cour-superieure
